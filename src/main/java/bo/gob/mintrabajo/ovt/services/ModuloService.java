@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IModuloService;
+import bo.gob.mintrabajo.ovt.entities.UsrModuloEntity;
 import bo.gob.mintrabajo.ovt.repositories.ModuloRepository;
 
 import javax.ejb.TransactionAttribute;

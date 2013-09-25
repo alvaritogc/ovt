@@ -1,5 +1,7 @@
 package bo.gob.mintrabajo.ovt.api;
 
+import bo.gob.mintrabajo.ovt.entities.UsrModuloEntity;
+
 import java.math.BigDecimal;
 import java.util.List;
 
