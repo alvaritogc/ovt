@@ -11,13 +11,30 @@ import java.util.Collection;
  * Time: 5:33 PM
  */
 
-@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.PerUnidadEntityPK.class)
-@javax.persistence.Table(name = "PER_UNIDAD", schema = "ROE", catalog = "")
+@IdClass(PerUnidadEntityPK.class)
+@Table(name = "PER_UNIDAD", schema = "ROE", catalog = "")
 @Entity
 public class PerUnidadEntity implements Serializable {
     private String idPersona;
+    private int idUnidad;
+    private String nombreComercial;
+    private Timestamp fechaNacimiento;
+    private String nroCajaSalud;
+    private String nroAfp;
+    private String nroFundaempresa;
+    private String nroOtro;
+    private String observaciones;
+    private String tipoSociedad;
+    private String tipoEmpresa;
+    private String actividadDeclarada;
+    private String estadoUnidad;
+    private String nroReferencial;
+    private Timestamp fechaBitacora;
+    private String registroBitacora;
+    private PerPersonaEntity perPersonaByIdPersona;
+    private Collection<PerUsuarioEntity> perUsuarios;
 
-    @javax.persistence.Column(name = "ID_PERSONA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
+    @Column(name = "ID_PERSONA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
     @Id
     public String getIdPersona() {
         return idPersona;
@@ -27,9 +44,7 @@ public class PerUnidadEntity implements Serializable {
         this.idPersona = idPersona;
     }
 
-    private int idUnidad;
-
-    @javax.persistence.Column(name = "ID_UNIDAD", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "ID_UNIDAD", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
     public int getIdUnidad() {
         return idUnidad;
@@ -39,9 +54,7 @@ public class PerUnidadEntity implements Serializable {
         this.idUnidad = idUnidad;
     }
 
-    private String nombreComercial;
-
-    @javax.persistence.Column(name = "NOMBRE_COMERCIAL", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
+    @Column(name = "NOMBRE_COMERCIAL", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
     @Basic
     public String getNombreComercial() {
         return nombreComercial;
@@ -51,9 +64,7 @@ public class PerUnidadEntity implements Serializable {
         this.nombreComercial = nombreComercial;
     }
 
-    private Timestamp fechaNacimiento;
-
-    @javax.persistence.Column(name = "FECHA_NACIMIENTO", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    @Column(name = "FECHA_NACIMIENTO", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
     @Basic
     public Timestamp getFechaNacimiento() {
         return fechaNacimiento;
@@ -63,9 +74,7 @@ public class PerUnidadEntity implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    private String nroCajaSalud;
-
-    @javax.persistence.Column(name = "NRO_CAJA_SALUD", nullable = true, insertable = true, updatable = true, length = 80, precision = 0)
+    @Column(name = "NRO_CAJA_SALUD", nullable = true, insertable = true, updatable = true, length = 80, precision = 0)
     @Basic
     public String getNroCajaSalud() {
         return nroCajaSalud;
@@ -75,9 +84,7 @@ public class PerUnidadEntity implements Serializable {
         this.nroCajaSalud = nroCajaSalud;
     }
 
-    private String nroAfp;
-
-    @javax.persistence.Column(name = "NRO_AFP", nullable = true, insertable = true, updatable = true, length = 80, precision = 0)
+    @Column(name = "NRO_AFP", nullable = true, insertable = true, updatable = true, length = 80, precision = 0)
     @Basic
     public String getNroAfp() {
         return nroAfp;
@@ -87,9 +94,7 @@ public class PerUnidadEntity implements Serializable {
         this.nroAfp = nroAfp;
     }
 
-    private String nroFundaempresa;
-
-    @javax.persistence.Column(name = "NRO_FUNDAEMPRESA", nullable = true, insertable = true, updatable = true, length = 80, precision = 0)
+    @Column(name = "NRO_FUNDAEMPRESA", nullable = true, insertable = true, updatable = true, length = 80, precision = 0)
     @Basic
     public String getNroFundaempresa() {
         return nroFundaempresa;
@@ -99,9 +104,7 @@ public class PerUnidadEntity implements Serializable {
         this.nroFundaempresa = nroFundaempresa;
     }
 
-    private String nroOtro;
-
-    @javax.persistence.Column(name = "NRO_OTRO", nullable = true, insertable = true, updatable = true, length = 80, precision = 0)
+    @Column(name = "NRO_OTRO", nullable = true, insertable = true, updatable = true, length = 80, precision = 0)
     @Basic
     public String getNroOtro() {
         return nroOtro;
@@ -111,9 +114,7 @@ public class PerUnidadEntity implements Serializable {
         this.nroOtro = nroOtro;
     }
 
-    private String observaciones;
-
-    @javax.persistence.Column(name = "OBSERVACIONES", nullable = false, insertable = true, updatable = true, length = 500, precision = 0)
+    @Column(name = "OBSERVACIONES", nullable = false, insertable = true, updatable = true, length = 500, precision = 0)
     @Basic
     public String getObservaciones() {
         return observaciones;
@@ -123,9 +124,7 @@ public class PerUnidadEntity implements Serializable {
         this.observaciones = observaciones;
     }
 
-    private String tipoSociedad;
-
-    @javax.persistence.Column(name = "TIPO_SOCIEDAD", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
+    @Column(name = "TIPO_SOCIEDAD", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
     @Basic
     public String getTipoSociedad() {
         return tipoSociedad;
@@ -135,9 +134,7 @@ public class PerUnidadEntity implements Serializable {
         this.tipoSociedad = tipoSociedad;
     }
 
-    private String tipoEmpresa;
-
-    @javax.persistence.Column(name = "TIPO_EMPRESA", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
+    @Column(name = "TIPO_EMPRESA", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
     @Basic
     public String getTipoEmpresa() {
         return tipoEmpresa;
@@ -147,9 +144,7 @@ public class PerUnidadEntity implements Serializable {
         this.tipoEmpresa = tipoEmpresa;
     }
 
-    private String actividadDeclarada;
-
-    @javax.persistence.Column(name = "ACTIVIDAD_DECLARADA", nullable = false, insertable = true, updatable = true, length = 500, precision = 0)
+    @Column(name = "ACTIVIDAD_DECLARADA", nullable = false, insertable = true, updatable = true, length = 500, precision = 0)
     @Basic
     public String getActividadDeclarada() {
         return actividadDeclarada;
@@ -159,9 +154,7 @@ public class PerUnidadEntity implements Serializable {
         this.actividadDeclarada = actividadDeclarada;
     }
 
-    private String estadoUnidad;
-
-    @javax.persistence.Column(name = "ESTADO_UNIDAD", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
+    @Column(name = "ESTADO_UNIDAD", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
     @Basic
     public String getEstadoUnidad() {
         return estadoUnidad;
@@ -171,9 +164,7 @@ public class PerUnidadEntity implements Serializable {
         this.estadoUnidad = estadoUnidad;
     }
 
-    private String nroReferencial;
-
-    @javax.persistence.Column(name = "NRO_REFERENCIAL", nullable = false, insertable = true, updatable = true, length = 120, precision = 0)
+    @Column(name = "NRO_REFERENCIAL", nullable = false, insertable = true, updatable = true, length = 120, precision = 0)
     @Basic
     public String getNroReferencial() {
         return nroReferencial;
@@ -183,9 +174,7 @@ public class PerUnidadEntity implements Serializable {
         this.nroReferencial = nroReferencial;
     }
 
-    private Timestamp fechaBitacora;
-
-    @javax.persistence.Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    @Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -195,9 +184,7 @@ public class PerUnidadEntity implements Serializable {
         this.fechaBitacora = fechaBitacora;
     }
 
-    private String registroBitacora;
-
-    @javax.persistence.Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
+    @Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -263,10 +250,8 @@ public class PerUnidadEntity implements Serializable {
         return result;
     }
 
-    private PerPersonaEntity perPersonaByIdPersona;
-
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", nullable = false)
+    @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", nullable = false)
     public PerPersonaEntity getPerPersonaByIdPersona() {
         return perPersonaByIdPersona;
     }
@@ -275,8 +260,6 @@ public class PerUnidadEntity implements Serializable {
         this.perPersonaByIdPersona = perPersonaByIdPersona;
     }
 
-    private Collection<PerUsuarioEntity> perUsuarios;
-
     @OneToMany(mappedBy = "perUnidad")
     public Collection<PerUsuarioEntity> getPerUsuarios() {
         return perUsuarios;
@@ -284,5 +267,16 @@ public class PerUnidadEntity implements Serializable {
 
     public void setPerUsuarios(Collection<PerUsuarioEntity> perUsuarios) {
         this.perUsuarios = perUsuarios;
+    }
+
+    private Collection<DocDocumentoEntity> docDocumentos;
+
+    @OneToMany(mappedBy = "perUnidad")
+    public Collection<DocDocumentoEntity> getDocDocumentos() {
+        return docDocumentos;
+    }
+
+    public void setDocDocumentos(Collection<DocDocumentoEntity> docDocumentos) {
+        this.docDocumentos = docDocumentos;
     }
 }

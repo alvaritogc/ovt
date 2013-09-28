@@ -12,12 +12,20 @@ import java.util.Collection;
  * Time: 5:33 PM
  */
 
-@javax.persistence.Table(name = "USR_ROL", schema = "ROE", catalog = "")
+@Table(name = "USR_ROL", schema = "ROE", catalog = "")
 @Entity
 public class UsrRolEntity implements Serializable {
     private int idRol;
+    private String nombre;
+    private BigInteger esInterno;
+    private String estado;
+    private Timestamp fechaBitacora;
+    private String registroBitacora;
+    private UsrModuloEntity usrModuloByIdModulo;
+    private Collection<UsrRolRecursoEntity> usrRolRecursosByIdRol;
+    private Collection<UsrUsuarioRolEntity> usrUsuarioRolsByIdRol;
 
-    @javax.persistence.Column(name = "ID_ROL", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "ID_ROL", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
     public int getIdRol() {
         return idRol;
@@ -27,9 +35,7 @@ public class UsrRolEntity implements Serializable {
         this.idRol = idRol;
     }
 
-    private String nombre;
-
-    @javax.persistence.Column(name = "NOMBRE", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
+    @Column(name = "NOMBRE", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
     @Basic
     public String getNombre() {
         return nombre;
@@ -39,9 +45,7 @@ public class UsrRolEntity implements Serializable {
         this.nombre = nombre;
     }
 
-    private BigInteger esInterno;
-
-    @javax.persistence.Column(name = "ES_INTERNO", nullable = false, insertable = true, updatable = true, length = 1, precision = 0)
+    @Column(name = "ES_INTERNO", nullable = false, insertable = true, updatable = true, length = 1, precision = 0)
     @Basic
     public BigInteger getEsInterno() {
         return esInterno;
@@ -51,9 +55,7 @@ public class UsrRolEntity implements Serializable {
         this.esInterno = esInterno;
     }
 
-    private String estado;
-
-    @javax.persistence.Column(name = "ESTADO", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+    @Column(name = "ESTADO", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
     @Basic
     public String getEstado() {
         return estado;
@@ -63,9 +65,7 @@ public class UsrRolEntity implements Serializable {
         this.estado = estado;
     }
 
-    private Timestamp fechaBitacora;
-
-    @javax.persistence.Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    @Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -75,9 +75,7 @@ public class UsrRolEntity implements Serializable {
         this.fechaBitacora = fechaBitacora;
     }
 
-    private String registroBitacora;
-
-    @javax.persistence.Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
+    @Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -117,10 +115,8 @@ public class UsrRolEntity implements Serializable {
         return result;
     }
 
-    private UsrModuloEntity usrModuloByIdModulo;
-
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO", nullable = false)
+    @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO", nullable = false)
     public UsrModuloEntity getUsrModuloByIdModulo() {
         return usrModuloByIdModulo;
     }
@@ -128,8 +124,6 @@ public class UsrRolEntity implements Serializable {
     public void setUsrModuloByIdModulo(UsrModuloEntity usrModuloByIdModulo) {
         this.usrModuloByIdModulo = usrModuloByIdModulo;
     }
-
-    private Collection<UsrRolRecursoEntity> usrRolRecursosByIdRol;
 
     @OneToMany(mappedBy = "usrRolByIdRol")
     public Collection<UsrRolRecursoEntity> getUsrRolRecursosByIdRol() {
@@ -139,8 +133,6 @@ public class UsrRolEntity implements Serializable {
     public void setUsrRolRecursosByIdRol(Collection<UsrRolRecursoEntity> usrRolRecursosByIdRol) {
         this.usrRolRecursosByIdRol = usrRolRecursosByIdRol;
     }
-
-    private Collection<UsrUsuarioRolEntity> usrUsuarioRolsByIdRol;
 
     @OneToMany(mappedBy = "usrRolByIdRol")
     public Collection<UsrUsuarioRolEntity> getUsrUsuarioRolsByIdRol() {

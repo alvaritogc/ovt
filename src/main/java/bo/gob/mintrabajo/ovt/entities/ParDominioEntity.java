@@ -11,13 +11,21 @@ import java.util.Collection;
  * Time: 5:33 PM
  */
 
-@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.ParDominioEntityPK.class)
-@javax.persistence.Table(name = "PAR_DOMINIO", schema = "ROE", catalog = "")
+@IdClass(ParDominioEntityPK.class)
+@Table(name = "PAR_DOMINIO", schema = "ROE", catalog = "")
 @Entity
 public class ParDominioEntity implements Serializable {
     private String idDominio;
+    private String valor;
+    private String descripcion;
+    private String observacion;
+    private Timestamp fechaBitacora;
+    private String registroBitacora;
+    private ParDominioEntity parDominio;
+    private Collection<ParDominioEntity> parDominios;
+    private UsrModuloEntity usrModuloByIdModulo;
 
-    @javax.persistence.Column(name = "ID_DOMINIO", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
+    @Column(name = "ID_DOMINIO", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
     @Id
     public String getIdDominio() {
         return idDominio;
@@ -27,9 +35,7 @@ public class ParDominioEntity implements Serializable {
         this.idDominio = idDominio;
     }
 
-    private String valor;
-
-    @javax.persistence.Column(name = "VALOR", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
+    @Column(name = "VALOR", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
     @Id
     public String getValor() {
         return valor;
@@ -39,9 +45,7 @@ public class ParDominioEntity implements Serializable {
         this.valor = valor;
     }
 
-    private String descripcion;
-
-    @javax.persistence.Column(name = "DESCRIPCION", nullable = false, insertable = true, updatable = true, length = 120, precision = 0)
+    @Column(name = "DESCRIPCION", nullable = false, insertable = true, updatable = true, length = 120, precision = 0)
     @Basic
     public String getDescripcion() {
         return descripcion;
@@ -51,9 +55,7 @@ public class ParDominioEntity implements Serializable {
         this.descripcion = descripcion;
     }
 
-    private String observacion;
-
-    @javax.persistence.Column(name = "OBSERVACION", nullable = false, insertable = true, updatable = true, length = 120, precision = 0)
+    @Column(name = "OBSERVACION", nullable = false, insertable = true, updatable = true, length = 120, precision = 0)
     @Basic
     public String getObservacion() {
         return observacion;
@@ -63,9 +65,7 @@ public class ParDominioEntity implements Serializable {
         this.observacion = observacion;
     }
 
-    private Timestamp fechaBitacora;
-
-    @javax.persistence.Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    @Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -75,9 +75,7 @@ public class ParDominioEntity implements Serializable {
         this.fechaBitacora = fechaBitacora;
     }
 
-    private String registroBitacora;
-
-    @javax.persistence.Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
+    @Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -117,10 +115,8 @@ public class ParDominioEntity implements Serializable {
         return result;
     }
 
-    private ParDominioEntity parDominio;
-
     @ManyToOne
-    @javax.persistence.JoinColumns({@javax.persistence.JoinColumn(name = "ID_DOMINIO_PADRE", referencedColumnName = "ID_DOMINIO"), @javax.persistence.JoinColumn(name = "VALOR_PADRE", referencedColumnName = "VALOR")})
+    @JoinColumns({@JoinColumn(name = "ID_DOMINIO_PADRE", referencedColumnName = "ID_DOMINIO"), @JoinColumn(name = "VALOR_PADRE", referencedColumnName = "VALOR")})
     public ParDominioEntity getParDominio() {
         return parDominio;
     }
@@ -128,8 +124,6 @@ public class ParDominioEntity implements Serializable {
     public void setParDominio(ParDominioEntity parDominio) {
         this.parDominio = parDominio;
     }
-
-    private Collection<ParDominioEntity> parDominios;
 
     @OneToMany(mappedBy = "parDominio")
     public Collection<ParDominioEntity> getParDominios() {
@@ -139,8 +133,6 @@ public class ParDominioEntity implements Serializable {
     public void setParDominios(Collection<ParDominioEntity> parDominios) {
         this.parDominios = parDominios;
     }
-
-    private UsrModuloEntity usrModuloByIdModulo;
 
     @ManyToOne
     @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO", nullable = false)

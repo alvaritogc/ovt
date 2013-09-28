@@ -1,9 +1,6 @@
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -13,13 +10,19 @@ import java.sql.Timestamp;
  * Time: 5:33 PM
  */
 
-@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.UsrUsuarioRolEntityPK.class)
-@javax.persistence.Table(name = "USR_USUARIO_ROL", schema = "ROE", catalog = "")
+@IdClass(UsrUsuarioRolEntityPK.class)
+@Table(name = "USR_USUARIO_ROL", schema = "ROE", catalog = "")
 @Entity
 public class UsrUsuarioRolEntity implements Serializable {
     private int idUsuario;
+    private int idRol;
+    private Timestamp fechaBitacora;
+    private String registroBitacora;
+    private UsrModuloEntity usrModuloByIdModulo;
+    private UsrRolEntity usrRolByIdRol;
+    private UsrUsuarioEntity usrUsuarioByIdUsuario;
 
-    @javax.persistence.Column(name = "ID_USUARIO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "ID_USUARIO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
     public int getIdUsuario() {
         return idUsuario;
@@ -29,9 +32,7 @@ public class UsrUsuarioRolEntity implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    private int idRol;
-
-    @javax.persistence.Column(name = "ID_ROL", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "ID_ROL", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
     public int getIdRol() {
         return idRol;
@@ -41,9 +42,7 @@ public class UsrUsuarioRolEntity implements Serializable {
         this.idRol = idRol;
     }
 
-    private Timestamp fechaBitacora;
-
-    @javax.persistence.Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    @Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -53,9 +52,7 @@ public class UsrUsuarioRolEntity implements Serializable {
         this.fechaBitacora = fechaBitacora;
     }
 
-    private String registroBitacora;
-
-    @javax.persistence.Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
+    @Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -91,10 +88,8 @@ public class UsrUsuarioRolEntity implements Serializable {
         return result;
     }
 
-    private UsrModuloEntity usrModuloByIdModulo;
-
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO", nullable = false)
+    @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO", nullable = false)
     public UsrModuloEntity getUsrModuloByIdModulo() {
         return usrModuloByIdModulo;
     }
@@ -103,10 +98,8 @@ public class UsrUsuarioRolEntity implements Serializable {
         this.usrModuloByIdModulo = usrModuloByIdModulo;
     }
 
-    private UsrRolEntity usrRolByIdRol;
-
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL", nullable = false)
+    @JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL", nullable = false)
     public UsrRolEntity getUsrRolByIdRol() {
         return usrRolByIdRol;
     }
@@ -115,10 +108,8 @@ public class UsrUsuarioRolEntity implements Serializable {
         this.usrRolByIdRol = usrRolByIdRol;
     }
 
-    private UsrUsuarioEntity usrUsuarioByIdUsuario;
-
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO", nullable = false)
+    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO", nullable = false)
     public UsrUsuarioEntity getUsrUsuarioByIdUsuario() {
         return usrUsuarioByIdUsuario;
     }

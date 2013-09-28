@@ -14,7 +14,8 @@ public class UsrUsuarioRecursoEntityPK implements Serializable {
     private int idUsuario;
     private int idRecurso;
 
-@Id@Column(name = "ID_USUARIO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+@Id
+@Column(name = "ID_USUARIO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
 public int getIdUsuario() {
     return idUsuario;
 }
@@ -23,7 +24,8 @@ public int getIdUsuario() {
         this.idUsuario = idUsuario;
     }
 
-    @Id@Column(name = "ID_RECURSO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Id
+    @Column(name = "ID_RECURSO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     public int getIdRecurso() {
         return idRecurso;
     }

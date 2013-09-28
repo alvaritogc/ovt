@@ -1,9 +1,6 @@
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -13,13 +10,19 @@ import java.sql.Timestamp;
  * Time: 5:33 PM
  */
 
-@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.PerUsuarioEntityPK.class)
-@javax.persistence.Table(name = "PER_USUARIO", schema = "ROE", catalog = "")
+@IdClass(PerUsuarioEntityPK.class)
+@Table(name = "PER_USUARIO", schema = "ROE", catalog = "")
 @Entity
 public class PerUsuarioEntity implements Serializable {
     private int idUsuario;
+    private String idPersona;
+    private int idUnidad;
+    private Timestamp fechaBitacora;
+    private String registroBitacora;
+    private PerUnidadEntity perUnidad;
+    private UsrUsuarioEntity usrUsuarioByIdUsuario;
 
-    @javax.persistence.Column(name = "ID_USUARIO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "ID_USUARIO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
     public int getIdUsuario() {
         return idUsuario;
@@ -29,9 +32,7 @@ public class PerUsuarioEntity implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    private String idPersona;
-
-    @javax.persistence.Column(name = "ID_PERSONA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
+    @Column(name = "ID_PERSONA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
     @Id
     public String getIdPersona() {
         return idPersona;
@@ -41,9 +42,7 @@ public class PerUsuarioEntity implements Serializable {
         this.idPersona = idPersona;
     }
 
-    private int idUnidad;
-
-    @javax.persistence.Column(name = "ID_UNIDAD", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "ID_UNIDAD", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
     public int getIdUnidad() {
         return idUnidad;
@@ -53,9 +52,7 @@ public class PerUsuarioEntity implements Serializable {
         this.idUnidad = idUnidad;
     }
 
-    private Timestamp fechaBitacora;
-
-    @javax.persistence.Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    @Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -65,9 +62,7 @@ public class PerUsuarioEntity implements Serializable {
         this.fechaBitacora = fechaBitacora;
     }
 
-    private String registroBitacora;
-
-    @javax.persistence.Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
+    @Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -105,10 +100,8 @@ public class PerUsuarioEntity implements Serializable {
         return result;
     }
 
-    private PerUnidadEntity perUnidad;
-
     @ManyToOne
-    @javax.persistence.JoinColumns({@javax.persistence.JoinColumn(name = "ID_UNIDAD", referencedColumnName = "ID_UNIDAD", nullable = false), @javax.persistence.JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", nullable = false)})
+    @JoinColumns({@JoinColumn(name = "ID_UNIDAD", referencedColumnName = "ID_UNIDAD", nullable = false), @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", nullable = false)})
     public PerUnidadEntity getPerUnidad() {
         return perUnidad;
     }
@@ -117,10 +110,8 @@ public class PerUsuarioEntity implements Serializable {
         this.perUnidad = perUnidad;
     }
 
-    private UsrUsuarioEntity usrUsuarioByIdUsuario;
-
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO", nullable = false)
+    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO", nullable = false)
     public UsrUsuarioEntity getUsrUsuarioByIdUsuario() {
         return usrUsuarioByIdUsuario;
     }

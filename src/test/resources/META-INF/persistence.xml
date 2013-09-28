@@ -13,6 +13,11 @@
         <class>bo.gob.mintrabajo.ovt.entities.PerPersonaEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.PerUnidadEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.PerUsuarioEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocBinariosEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocDefinicionEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocEstadoEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocTransicionEntity</class>
 
         <properties>
             <property name="openjpa.ConnectionURL" value="jdbc:oracle:thin:@192.168.50.7:1521:DESA"/>

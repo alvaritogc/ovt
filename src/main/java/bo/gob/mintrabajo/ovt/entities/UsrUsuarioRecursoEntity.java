@@ -1,9 +1,6 @@
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -14,13 +11,21 @@ import java.sql.Timestamp;
  * Time: 5:33 PM
  */
 
-@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.UsrUsuarioRecursoEntityPK.class)
-@javax.persistence.Table(name = "USR_USUARIO_RECURSO", schema = "ROE", catalog = "")
+@IdClass(UsrUsuarioRecursoEntityPK.class)
+@Table(name = "USR_USUARIO_RECURSO", schema = "ROE", catalog = "")
 @Entity
 public class UsrUsuarioRecursoEntity implements Serializable {
     private int idUsuario;
+    private int idRecurso;
+    private BigInteger esDenegado;
+    private String wx;
+    private Timestamp fechaLimite;
+    private Timestamp fechaBitacora;
+    private String registroBitacora;
+    private UsrRecursoEntity usrRecursoByIdRecurso;
+    private UsrUsuarioEntity usrUsuarioByIdUsuario;
 
-    @javax.persistence.Column(name = "ID_USUARIO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "ID_USUARIO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
     public int getIdUsuario() {
         return idUsuario;
@@ -30,9 +35,7 @@ public class UsrUsuarioRecursoEntity implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    private int idRecurso;
-
-    @javax.persistence.Column(name = "ID_RECURSO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "ID_RECURSO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
     public int getIdRecurso() {
         return idRecurso;
@@ -42,9 +45,7 @@ public class UsrUsuarioRecursoEntity implements Serializable {
         this.idRecurso = idRecurso;
     }
 
-    private BigInteger esDenegado;
-
-    @javax.persistence.Column(name = "ES_DENEGADO", nullable = false, insertable = true, updatable = true, length = 1, precision = 0)
+    @Column(name = "ES_DENEGADO", nullable = false, insertable = true, updatable = true, length = 1, precision = 0)
     @Basic
     public BigInteger getEsDenegado() {
         return esDenegado;
@@ -54,9 +55,7 @@ public class UsrUsuarioRecursoEntity implements Serializable {
         this.esDenegado = esDenegado;
     }
 
-    private String wx;
-
-    @javax.persistence.Column(name = "WX", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+    @Column(name = "WX", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
     @Basic
     public String getWx() {
         return wx;
@@ -66,9 +65,7 @@ public class UsrUsuarioRecursoEntity implements Serializable {
         this.wx = wx;
     }
 
-    private Timestamp fechaLimite;
-
-    @javax.persistence.Column(name = "FECHA_LIMITE", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    @Column(name = "FECHA_LIMITE", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
     @Basic
     public Timestamp getFechaLimite() {
         return fechaLimite;
@@ -78,9 +75,7 @@ public class UsrUsuarioRecursoEntity implements Serializable {
         this.fechaLimite = fechaLimite;
     }
 
-    private Timestamp fechaBitacora;
-
-    @javax.persistence.Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    @Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -90,9 +85,7 @@ public class UsrUsuarioRecursoEntity implements Serializable {
         this.fechaBitacora = fechaBitacora;
     }
 
-    private String registroBitacora;
-
-    @javax.persistence.Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
+    @Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -134,10 +127,8 @@ public class UsrUsuarioRecursoEntity implements Serializable {
         return result;
     }
 
-    private UsrRecursoEntity usrRecursoByIdRecurso;
-
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "ID_RECURSO", referencedColumnName = "ID_RECURSO", nullable = false)
+    @JoinColumn(name = "ID_RECURSO", referencedColumnName = "ID_RECURSO", nullable = false)
     public UsrRecursoEntity getUsrRecursoByIdRecurso() {
         return usrRecursoByIdRecurso;
     }
@@ -146,10 +137,8 @@ public class UsrUsuarioRecursoEntity implements Serializable {
         this.usrRecursoByIdRecurso = usrRecursoByIdRecurso;
     }
 
-    private UsrUsuarioEntity usrUsuarioByIdUsuario;
-
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO", nullable = false)
+    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO", nullable = false)
     public UsrUsuarioEntity getUsrUsuarioByIdUsuario() {
         return usrUsuarioByIdUsuario;
     }

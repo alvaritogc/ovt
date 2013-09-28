@@ -1,9 +1,6 @@
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -13,13 +10,19 @@ import java.sql.Timestamp;
  * Time: 5:33 PM
  */
 
-@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.UsrRolRecursoEntityPK.class)
-@javax.persistence.Table(name = "USR_ROL_RECURSO", schema = "ROE", catalog = "")
+@IdClass(UsrRolRecursoEntityPK.class)
+@Table(name = "USR_ROL_RECURSO", schema = "ROE", catalog = "")
 @Entity
 public class UsrRolRecursoEntity implements Serializable {
     private int idRol;
+    private int idRecurso;
+    private String wx;
+    private Timestamp fechaBitacora;
+    private String registroBitacora;
+    private UsrRecursoEntity usrRecursoByIdRecurso;
+    private UsrRolEntity usrRolByIdRol;
 
-    @javax.persistence.Column(name = "ID_ROL", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "ID_ROL", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
     public int getIdRol() {
         return idRol;
@@ -29,9 +32,7 @@ public class UsrRolRecursoEntity implements Serializable {
         this.idRol = idRol;
     }
 
-    private int idRecurso;
-
-    @javax.persistence.Column(name = "ID_RECURSO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "ID_RECURSO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
     public int getIdRecurso() {
         return idRecurso;
@@ -41,9 +42,7 @@ public class UsrRolRecursoEntity implements Serializable {
         this.idRecurso = idRecurso;
     }
 
-    private String wx;
-
-    @javax.persistence.Column(name = "WX", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+    @Column(name = "WX", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
     @Basic
     public String getWx() {
         return wx;
@@ -53,9 +52,7 @@ public class UsrRolRecursoEntity implements Serializable {
         this.wx = wx;
     }
 
-    private Timestamp fechaBitacora;
-
-    @javax.persistence.Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    @Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -65,9 +62,7 @@ public class UsrRolRecursoEntity implements Serializable {
         this.fechaBitacora = fechaBitacora;
     }
 
-    private String registroBitacora;
-
-    @javax.persistence.Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
+    @Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -105,10 +100,8 @@ public class UsrRolRecursoEntity implements Serializable {
         return result;
     }
 
-    private UsrRecursoEntity usrRecursoByIdRecurso;
-
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "ID_RECURSO", referencedColumnName = "ID_RECURSO", nullable = false)
+    @JoinColumn(name = "ID_RECURSO", referencedColumnName = "ID_RECURSO", nullable = false)
     public UsrRecursoEntity getUsrRecursoByIdRecurso() {
         return usrRecursoByIdRecurso;
     }
@@ -117,10 +110,8 @@ public class UsrRolRecursoEntity implements Serializable {
         this.usrRecursoByIdRecurso = usrRecursoByIdRecurso;
     }
 
-    private UsrRolEntity usrRolByIdRol;
-
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL", nullable = false)
+    @JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL", nullable = false)
     public UsrRolEntity getUsrRolByIdRol() {
         return usrRolByIdRol;
     }

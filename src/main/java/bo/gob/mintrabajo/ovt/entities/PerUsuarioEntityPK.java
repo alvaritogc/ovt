@@ -12,18 +12,21 @@ import java.io.Serializable;
 
 public class PerUsuarioEntityPK implements Serializable {
     private int idUsuario;
-    private String idPersona;@Id@Column(name = "ID_USUARIO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-                             public int getIdUsuario() {
+    private String idPersona;
+    private int idUnidad;
+
+@Id
+@Column(name = "ID_USUARIO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+public int getIdUsuario() {
         return idUsuario;
     }
-
-    private int idUnidad;
 
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
         }
 
-    @Id@Column(name = "ID_PERSONA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
+    @Id
+    @Column(name = "ID_PERSONA", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
 public String getIdPersona() {
     return idPersona;
 }
@@ -31,7 +34,9 @@ public String getIdPersona() {
     public void setIdPersona(String idPersona) {
         this.idPersona = idPersona;
     }
-@Id@Column(name = "ID_UNIDAD", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+
+@Id
+@Column(name = "ID_UNIDAD", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
 public int getIdUnidad() {
     return idUnidad;
 }

@@ -14,7 +14,8 @@ public class ParDominioEntityPK implements Serializable {
     private String idDominio;
     private String valor;
 
-@Id@Column(name = "ID_DOMINIO", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
+@Id
+@Column(name = "ID_DOMINIO", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
 public String getIdDominio() {
     return idDominio;
 }
@@ -23,7 +24,8 @@ public String getIdDominio() {
         this.idDominio = idDominio;
     }
 
-    @Id@Column(name = "VALOR", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
+    @Id
+    @Column(name = "VALOR", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
     public String getValor() {
         return valor;
     }
