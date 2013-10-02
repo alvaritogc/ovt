@@ -30,7 +30,8 @@ public class UsersService implements Users {
 
     @Override
     public UsrUsuarioEntity findByUsuarioAndClave(String user, String password) {
-        return repository.findByUsuarioAndClave(user, password);
+//        retrun repository.findByUsuarioAndClave(user, password);
+        return null;
     }
 
     @Override
