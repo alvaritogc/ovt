@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 
-@Named
+@Named("definitionService")
 @TransactionAttribute
 public class DefinicionService implements IDefinicionService {
 
@@ -23,5 +23,10 @@ public class DefinicionService implements IDefinicionService {
     @Override
     public DocDefinicionEntity guardarDefincion(DocDefinicionEntity docDefinicionEntity){
         return repository.save(docDefinicionEntity);
+    }
+
+    @Override
+    public long getSize() {
+        return repository.count();
     }
 }

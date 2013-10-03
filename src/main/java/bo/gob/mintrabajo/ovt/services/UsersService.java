@@ -9,29 +9,62 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.sql.DataSource;
+import java.util.List;
 
-@Named
+@Named("usrSrv")
 @TransactionAttribute
 public class UsersService implements Users {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UsersService.class);
+//    private static final Logger LOGGER = LoggerFactory.getLogger(UsersService.class);
 
     private final UserRepository repository;
+
+    private final EntityManager entityManager;
+
+    private final DataSource dataSource;
 
     // SOLO CUANDO SE NECESITE URGENTE private final EntityManager entityManager;
 
     // NO ESTA PERMITIDO private LytServidoresTrabajoEntity e1;
 
     @Inject
-    public UsersService(UserRepository repository) {
+    public UsersService(UserRepository repository, EntityManager entityManager, DataSource dataSource) {
         //EntityManager entityManager) {
         this.repository = repository;
         // this.entityManager = entityManager;
+        this.entityManager = entityManager;
+        this.dataSource = dataSource;
     }
 
     @Override
     public UsrUsuarioEntity findByUsuarioAndClave(String user, String password) {
-//        retrun repository.findByUsuarioAndClave(user, password);
-        return null;
+        UsrUsuarioEntity newUsrUsuarioEntity = new UsrUsuarioEntity();
+        newUsrUsuarioEntity.setUsuario(user);
+        newUsrUsuarioEntity.setClave(password);
+        newUsrUsuarioEntity.setEstadoUsuario("Activo");
+
+        repository.findByExample(newUsrUsuarioEntity, null, null, -1, -1);
+
+
+//        entityManager.createNamedQuery("{call '''hacer-algo()'''}")
+
+        List<UsrUsuarioEntity> username = repository.findByAttribute("username", user, -1, -1);
+        if (username.isEmpty()) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+
+        UsrUsuarioEntity usrUsuarioEntity = username.get(0);
+
+        if (!password.equals(usrUsuarioEntity.getClave())) {
+            throw new RuntimeException("Password equivocado");
+        }
+
+        if (usrUsuarioEntity.getFechaInhabilitacion().getTime() < System.currentTimeMillis()) {
+            //....
+        }
+
+        return usrUsuarioEntity;
     }
 
     @Override
