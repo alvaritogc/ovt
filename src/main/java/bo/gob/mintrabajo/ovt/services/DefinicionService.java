@@ -1,6 +1,6 @@
 package bo.gob.mintrabajo.ovt.services;
 
-import bo.gob.mintrabajo.ovt.api.Definicion;
+import bo.gob.mintrabajo.ovt.api.IDefinicionService;
 import bo.gob.mintrabajo.ovt.entities.DocDefinicionEntity;
 import bo.gob.mintrabajo.ovt.repositories.DefincionRepository;
 
@@ -11,7 +11,7 @@ import javax.inject.Named;
 
 @Named
 @TransactionAttribute
-public class DefinicionService implements Definicion{
+public class DefinicionService implements IDefinicionService {
 
     private final DefincionRepository repository;
 

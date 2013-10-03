@@ -1,8 +1,8 @@
 package bo.gob.mintrabajo.ovt.action;
 
+import bo.gob.mintrabajo.ovt.api.IDefinicionService;
 import bo.gob.mintrabajo.ovt.entities.DocDefinicionEntity;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
-import bo.gob.mintrabajo.ovt.api.Definicion;
 import bo.gob.mintrabajo.ovt.repositories.UserRepository;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackDefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -26,7 +26,7 @@ public class HomePage extends WebPage {
     private UserRepository repositoryUser;
 
     @SpringBean
-    private Definicion defincion;
+    private IDefinicionService defincion;
 
 
     public HomePage() {
