@@ -24,12 +24,32 @@ import org.springframework.data.repository.query.Param;
 @OpenJpaSettings
 public interface RecursoRepository extends OpenJpaRepository<UsrRecursoEntity, BigDecimal>{
 
-    /*
+    
+//    @Query(
+//            "   select rec "
+//            + " from UsrRecursoEntity rec fetch all properties"
+//            + " where "
+//            + " r.idRecurso IN ("
+//            + "     select rolRec.idRecurso "
+//            + "     from UsrRolRecursoEntity rolRec "
+//            + "     where "
+//            + "     rolRec.idRol IN ("
+//            + "         select usRol.idRol"
+//            + "         from UsrUsuarioRolEntity usRol"
+//            + "         where usRol.idUsuario = :idUsuario"
+//            + "     )"
+//            + " )"
+//            //+ " and rec.idRecurso NOT IN ("
+//            //+ "     select usRec.idRecurso"
+//            //+ "     from UsrUsuarioRecursoEntity usRec"
+//            //+ "     where usRec.idUsuario = :idUsuario"
+//            //+ " )"
+//            )
     @Query(
             "   select rec "
-            + " from UsrRecursoEntity rec fetch all properties"
+            + " from UsrRecursoEntity rec"
             + " where "
-            + " r.idRecurso IN ("
+            + " rec.idRecurso IN ("
             + "     select rolRec.idRecurso "
             + "     from UsrRolRecursoEntity rolRec "
             + "     where "
@@ -39,13 +59,13 @@ public interface RecursoRepository extends OpenJpaRepository<UsrRecursoEntity, B
             + "         where usRol.idUsuario = :idUsuario"
             + "     )"
             + " )"
-            //+ " and rec.idRecurso NOT IN ("
-            //+ "     select usRec.idRecurso"
-            //+ "     from UsrUsuarioRecursoEntity usRec"
-            //+ "     where usRec.idUsuario = :idUsuario"
-            //+ " )"
+            + " and rec.idRecurso NOT IN ("
+            + "     select usRec.idRecurso"
+            + "     from UsrUsuarioRecursoEntity usRec"
+            + "     where usRec.idUsuario = :idUsuario"
+            + " )"
             )
     List<UsrRecursoEntity> buscarPorUsuario(@Param("idUsuario") BigDecimal idUsuario);
-    */
+    
 }
 

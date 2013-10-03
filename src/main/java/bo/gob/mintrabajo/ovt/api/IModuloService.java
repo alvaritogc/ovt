@@ -19,4 +19,6 @@ public interface IModuloService {
     public boolean delete(UsrModuloEntity modulo);
 
     public UsrModuloEntity findById(BigDecimal id);
+    
+    public UsrModuloEntity buscarPorId( String idModulo);
 }

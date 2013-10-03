@@ -86,4 +86,16 @@ public class ModuloService implements IModuloService {
 
         return modulo;
     }
+    
+    @Override
+    public UsrModuloEntity buscarPorId( String idModulo){
+        UsrModuloEntity modulo;
+        try {
+            modulo = moduloRepository.buscarPorId(idModulo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            modulo = null;
+        }
+        return modulo;
+    }
 }

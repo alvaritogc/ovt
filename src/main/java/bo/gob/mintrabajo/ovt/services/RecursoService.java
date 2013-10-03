@@ -41,6 +41,8 @@ public class RecursoService implements IRecursoService{
     
     @Override
     public UsrRecursoEntity save(UsrRecursoEntity recurso) {
+        return recursoRepository.save(recurso);
+        /*
         UsrRecursoEntity usrRecursoEntity;
 
         try {
@@ -50,7 +52,7 @@ public class RecursoService implements IRecursoService{
             usrRecursoEntity = null;
         }
 
-        return usrRecursoEntity;
+        return usrRecursoEntity;*/
     }
 
     @Override
@@ -86,14 +88,14 @@ public class RecursoService implements IRecursoService{
         List<UsrRecursoEntity> allRecursos;
 
         try {
-            //allRecursos = recursoRepository.buscarPorUsuario(idUsuario);
+            allRecursos = recursoRepository.buscarPorUsuario(idUsuario);
             //allRecursos = recursoRepository.findAll();
         } catch (Exception e) {
             e.printStackTrace();
             allRecursos = null;
         }
-        //return allRecursos;
-        return null;
+        return allRecursos;
+        //return null;
     }
     
 }
