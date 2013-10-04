@@ -1,48 +1,45 @@
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.sql.Timestamp;
 
 /**
- * User: gveramendi
- * Date: 9/25/13
- * Time: 5:33 PM
+ * User: Renato Velasquez.
+ * Date: 03-10-13
  */
-
-@IdClass(UsrRolRecursoEntityPK.class)
-@Table(name = "USR_ROL_RECURSO", schema = "ROE", catalog = "")
+@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.UsrRolRecursoEntityPK.class)
+@javax.persistence.Table(name = "USR_ROL_RECURSO", schema = "ROE", catalog = "")
 @Entity
-public class UsrRolRecursoEntity implements Serializable {
-    private int idRol;
-    private int idRecurso;
-    private String wx;
-    private Timestamp fechaBitacora;
-    private String registroBitacora;
-    private UsrRecursoEntity usrRecursoByIdRecurso;
-    private UsrRolEntity usrRolByIdRol;
+public class UsrRolRecursoEntity {
+    private Integer idRol;
 
-    @Column(name = "ID_ROL", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @javax.persistence.Column(name = "ID_ROL")
     @Id
-    public int getIdRol() {
+    public Integer getIdRol() {
         return idRol;
     }
 
-    public void setIdRol(int idRol) {
+    public void setIdRol(Integer idRol) {
         this.idRol = idRol;
     }
 
-    @Column(name = "ID_RECURSO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    private Integer idRecurso;
+
+    @javax.persistence.Column(name = "ID_RECURSO")
     @Id
-    public int getIdRecurso() {
+    public Integer getIdRecurso() {
         return idRecurso;
     }
 
-    public void setIdRecurso(int idRecurso) {
+    public void setIdRecurso(Integer idRecurso) {
         this.idRecurso = idRecurso;
     }
 
-    @Column(name = "WX", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+    private String wx;
+
+    @javax.persistence.Column(name = "WX")
     @Basic
     public String getWx() {
         return wx;
@@ -52,7 +49,9 @@ public class UsrRolRecursoEntity implements Serializable {
         this.wx = wx;
     }
 
-    @Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    private Timestamp fechaBitacora;
+
+    @javax.persistence.Column(name = "FECHA_BITACORA")
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -62,7 +61,9 @@ public class UsrRolRecursoEntity implements Serializable {
         this.fechaBitacora = fechaBitacora;
     }
 
-    @Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    private String registroBitacora;
+
+    @javax.persistence.Column(name = "REGISTRO_BITACORA")
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -79,10 +80,10 @@ public class UsrRolRecursoEntity implements Serializable {
 
         UsrRolRecursoEntity that = (UsrRolRecursoEntity) o;
 
-        if (idRecurso != that.idRecurso) return false;
-        if (idRol != that.idRol) return false;
         if (fechaBitacora != null ? !fechaBitacora.equals(that.fechaBitacora) : that.fechaBitacora != null)
             return false;
+        if (idRecurso != null ? !idRecurso.equals(that.idRecurso) : that.idRecurso != null) return false;
+        if (idRol != null ? !idRol.equals(that.idRol) : that.idRol != null) return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
             return false;
         if (wx != null ? !wx.equals(that.wx) : that.wx != null) return false;
@@ -92,31 +93,11 @@ public class UsrRolRecursoEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = idRol;
-        result = 31 * result + idRecurso;
+        int result = idRol != null ? idRol.hashCode() : 0;
+        result = 31 * result + (idRecurso != null ? idRecurso.hashCode() : 0);
         result = 31 * result + (wx != null ? wx.hashCode() : 0);
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "ID_RECURSO", referencedColumnName = "ID_RECURSO", nullable = false)
-    public UsrRecursoEntity getUsrRecursoByIdRecurso() {
-        return usrRecursoByIdRecurso;
-    }
-
-    public void setUsrRecursoByIdRecurso(UsrRecursoEntity usrRecursoByIdRecurso) {
-        this.usrRecursoByIdRecurso = usrRecursoByIdRecurso;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL", nullable = false)
-    public UsrRolEntity getUsrRolByIdRol() {
-        return usrRolByIdRol;
-    }
-
-    public void setUsrRolByIdRol(UsrRolEntity usrRolByIdRol) {
-        this.usrRolByIdRol = usrRolByIdRol;
     }
 }

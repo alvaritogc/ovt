@@ -3,28 +3,18 @@ package bo.gob.mintrabajo.ovt.entities;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import java.sql.Timestamp;
-import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
- * User: gveramendi
- * Date: 9/28/13
- * Time: 4:42 PM
- * To change this template use File | Settings | File Templates.
+ * User: Renato Velasquez.
+ * Date: 03-10-13
  */
 @javax.persistence.Table(name = "DOC_DEFINICION", schema = "ROE", catalog = "")
 @Entity
 public class DocDefinicionEntity {
     private String codDocumento;
-    private String nombre;
-    private String tipoGrupoDocumento;
-    private Timestamp fechaBitacora;
-    private String registroBitacora;
-    private Collection<DocDocumentoEntity> docDocumentosByCodDocumento;
 
-    @javax.persistence.Column(name = "COD_DOCUMENTO", nullable = false, insertable = true, updatable = true, length = 20, precision = 0)
+    @javax.persistence.Column(name = "COD_DOCUMENTO")
     @Id
     public String getCodDocumento() {
         return codDocumento;
@@ -34,7 +24,9 @@ public class DocDefinicionEntity {
         this.codDocumento = codDocumento;
     }
 
-    @javax.persistence.Column(name = "NOMBRE", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
+    private String nombre;
+
+    @javax.persistence.Column(name = "NOMBRE")
     @Basic
     public String getNombre() {
         return nombre;
@@ -44,7 +36,9 @@ public class DocDefinicionEntity {
         this.nombre = nombre;
     }
 
-    @javax.persistence.Column(name = "TIPO_GRUPO_DOCUMENTO", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
+    private String tipoGrupoDocumento;
+
+    @javax.persistence.Column(name = "TIPO_GRUPO_DOCUMENTO")
     @Basic
     public String getTipoGrupoDocumento() {
         return tipoGrupoDocumento;
@@ -54,7 +48,9 @@ public class DocDefinicionEntity {
         this.tipoGrupoDocumento = tipoGrupoDocumento;
     }
 
-    @javax.persistence.Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    private Timestamp fechaBitacora;
+
+    @javax.persistence.Column(name = "FECHA_BITACORA")
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -64,7 +60,9 @@ public class DocDefinicionEntity {
         this.fechaBitacora = fechaBitacora;
     }
 
-    @javax.persistence.Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    private String registroBitacora;
+
+    @javax.persistence.Column(name = "REGISTRO_BITACORA")
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -101,14 +99,5 @@ public class DocDefinicionEntity {
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "docDefinicionByCodDocumento")
-    public Collection<DocDocumentoEntity> getDocDocumentosByCodDocumento() {
-        return docDocumentosByCodDocumento;
-    }
-
-    public void setDocDocumentosByCodDocumento(Collection<DocDocumentoEntity> docDocumentosByCodDocumento) {
-        this.docDocumentosByCodDocumento = docDocumentosByCodDocumento;
     }
 }

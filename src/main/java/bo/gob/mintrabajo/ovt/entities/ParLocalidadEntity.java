@@ -9,32 +9,43 @@ import java.sql.Timestamp;
  * User: Renato Velasquez.
  * Date: 03-10-13
  */
-@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.UsrUsuarioRolEntityPK.class)
-@javax.persistence.Table(name = "USR_USUARIO_ROL", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "PAR_LOCALIDAD", schema = "ROE", catalog = "")
 @Entity
-public class UsrUsuarioRolEntity {
-    private Integer idUsuario;
+public class ParLocalidadEntity {
+    private String codLocalidad;
 
-    @javax.persistence.Column(name = "ID_USUARIO")
+    @javax.persistence.Column(name = "COD_LOCALIDAD")
     @Id
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public String getCodLocalidad() {
+        return codLocalidad;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setCodLocalidad(String codLocalidad) {
+        this.codLocalidad = codLocalidad;
     }
 
-    private Integer idRol;
+    private String descripcion;
 
-    @javax.persistence.Column(name = "ID_ROL")
-    @Id
-    public Integer getIdRol() {
-        return idRol;
+    @javax.persistence.Column(name = "DESCRIPCION")
+    @Basic
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    private String tipoLocalidad;
+
+    @javax.persistence.Column(name = "TIPO_LOCALIDAD")
+    @Basic
+    public String getTipoLocalidad() {
+        return tipoLocalidad;
+    }
+
+    public void setTipoLocalidad(String tipoLocalidad) {
+        this.tipoLocalidad = tipoLocalidad;
     }
 
     private Timestamp fechaBitacora;
@@ -66,13 +77,15 @@ public class UsrUsuarioRolEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UsrUsuarioRolEntity that = (UsrUsuarioRolEntity) o;
+        ParLocalidadEntity that = (ParLocalidadEntity) o;
 
+        if (codLocalidad != null ? !codLocalidad.equals(that.codLocalidad) : that.codLocalidad != null) return false;
+        if (descripcion != null ? !descripcion.equals(that.descripcion) : that.descripcion != null) return false;
         if (fechaBitacora != null ? !fechaBitacora.equals(that.fechaBitacora) : that.fechaBitacora != null)
             return false;
-        if (idRol != null ? !idRol.equals(that.idRol) : that.idRol != null) return false;
-        if (idUsuario != null ? !idUsuario.equals(that.idUsuario) : that.idUsuario != null) return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
+            return false;
+        if (tipoLocalidad != null ? !tipoLocalidad.equals(that.tipoLocalidad) : that.tipoLocalidad != null)
             return false;
 
         return true;
@@ -80,8 +93,9 @@ public class UsrUsuarioRolEntity {
 
     @Override
     public int hashCode() {
-        int result = idUsuario != null ? idUsuario.hashCode() : 0;
-        result = 31 * result + (idRol != null ? idRol.hashCode() : 0);
+        int result = codLocalidad != null ? codLocalidad.hashCode() : 0;
+        result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
+        result = 31 * result + (tipoLocalidad != null ? tipoLocalidad.hashCode() : 0);
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;

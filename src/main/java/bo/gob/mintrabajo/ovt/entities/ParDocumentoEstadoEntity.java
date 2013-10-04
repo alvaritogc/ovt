@@ -3,50 +3,37 @@ package bo.gob.mintrabajo.ovt.entities;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
  * Date: 03-10-13
  */
-@javax.persistence.Table(name = "USR_ROL", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "PAR_DOCUMENTO_ESTADO", schema = "ROE", catalog = "")
 @Entity
-public class UsrRolEntity {
-    private Integer idRol;
+public class ParDocumentoEstadoEntity {
+    private String codEstado;
 
-    @javax.persistence.Column(name = "ID_ROL")
+    @javax.persistence.Column(name = "COD_ESTADO")
     @Id
-    public Integer getIdRol() {
-        return idRol;
+    public String getCodEstado() {
+        return codEstado;
     }
 
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
+    public void setCodEstado(String codEstado) {
+        this.codEstado = codEstado;
     }
 
-    private String nombre;
+    private String descripcion;
 
-    @javax.persistence.Column(name = "NOMBRE")
+    @javax.persistence.Column(name = "DESCRIPCION")
     @Basic
-    public String getNombre() {
-        return nombre;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    private BigInteger esInterno;
-
-    @javax.persistence.Column(name = "ES_INTERNO")
-    @Basic
-    public BigInteger getEsInterno() {
-        return esInterno;
-    }
-
-    public void setEsInterno(BigInteger esInterno) {
-        this.esInterno = esInterno;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     private String estado;
@@ -90,14 +77,13 @@ public class UsrRolEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UsrRolEntity that = (UsrRolEntity) o;
+        ParDocumentoEstadoEntity that = (ParDocumentoEstadoEntity) o;
 
-        if (esInterno != null ? !esInterno.equals(that.esInterno) : that.esInterno != null) return false;
+        if (codEstado != null ? !codEstado.equals(that.codEstado) : that.codEstado != null) return false;
+        if (descripcion != null ? !descripcion.equals(that.descripcion) : that.descripcion != null) return false;
         if (estado != null ? !estado.equals(that.estado) : that.estado != null) return false;
         if (fechaBitacora != null ? !fechaBitacora.equals(that.fechaBitacora) : that.fechaBitacora != null)
             return false;
-        if (idRol != null ? !idRol.equals(that.idRol) : that.idRol != null) return false;
-        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
             return false;
 
@@ -106,9 +92,8 @@ public class UsrRolEntity {
 
     @Override
     public int hashCode() {
-        int result = idRol != null ? idRol.hashCode() : 0;
-        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
-        result = 31 * result + (esInterno != null ? esInterno.hashCode() : 0);
+        int result = codEstado != null ? codEstado.hashCode() : 0;
+        result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
         result = 31 * result + (estado != null ? estado.hashCode() : 0);
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);

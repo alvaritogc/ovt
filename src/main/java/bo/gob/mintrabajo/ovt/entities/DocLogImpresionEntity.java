@@ -9,32 +9,19 @@ import java.sql.Timestamp;
  * User: Renato Velasquez.
  * Date: 03-10-13
  */
-@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.UsrUsuarioRolEntityPK.class)
-@javax.persistence.Table(name = "USR_USUARIO_ROL", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "DOC_LOG_IMPRESION", schema = "ROE", catalog = "")
 @Entity
-public class UsrUsuarioRolEntity {
-    private Integer idUsuario;
+public class DocLogImpresionEntity {
+    private Integer idDoclogimpresion;
 
-    @javax.persistence.Column(name = "ID_USUARIO")
+    @javax.persistence.Column(name = "ID_DOCLOGIMPRESION")
     @Id
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public Integer getIdDoclogimpresion() {
+        return idDoclogimpresion;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    private Integer idRol;
-
-    @javax.persistence.Column(name = "ID_ROL")
-    @Id
-    public Integer getIdRol() {
-        return idRol;
-    }
-
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
+    public void setIdDoclogimpresion(Integer idDoclogimpresion) {
+        this.idDoclogimpresion = idDoclogimpresion;
     }
 
     private Timestamp fechaBitacora;
@@ -66,12 +53,12 @@ public class UsrUsuarioRolEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UsrUsuarioRolEntity that = (UsrUsuarioRolEntity) o;
+        DocLogImpresionEntity that = (DocLogImpresionEntity) o;
 
         if (fechaBitacora != null ? !fechaBitacora.equals(that.fechaBitacora) : that.fechaBitacora != null)
             return false;
-        if (idRol != null ? !idRol.equals(that.idRol) : that.idRol != null) return false;
-        if (idUsuario != null ? !idUsuario.equals(that.idUsuario) : that.idUsuario != null) return false;
+        if (idDoclogimpresion != null ? !idDoclogimpresion.equals(that.idDoclogimpresion) : that.idDoclogimpresion != null)
+            return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
             return false;
 
@@ -80,8 +67,7 @@ public class UsrUsuarioRolEntity {
 
     @Override
     public int hashCode() {
-        int result = idUsuario != null ? idUsuario.hashCode() : 0;
-        result = 31 * result + (idRol != null ? idRol.hashCode() : 0);
+        int result = idDoclogimpresion != null ? idDoclogimpresion.hashCode() : 0;
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;

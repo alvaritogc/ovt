@@ -5,32 +5,29 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
- * User: gveramendi
- * Date: 9/25/13
- * Time: 5:33 PM
+ * User: Renato Velasquez.
+ * Date: 03-10-13
  */
-
 public class UsrRolRecursoEntityPK implements Serializable {
-    private int idRol;
-    private int idRecurso;
+    private Integer idRol;
+    private Integer idRecurso;
 
-@Id
-@Column(name = "ID_ROL", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-public int getIdRol() {
-    return idRol;
-}
+    @Id
+    @Column(name = "ID_ROL")
+    public Integer getIdRol() {
+        return idRol;
+    }
 
-    public void setIdRol(int idRol) {
+    public void setIdRol(Integer idRol) {
         this.idRol = idRol;
     }
 
-    @Id
-    @Column(name = "ID_RECURSO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-    public int getIdRecurso() {
+    @Id@Column(name = "ID_RECURSO")
+    public Integer getIdRecurso() {
         return idRecurso;
     }
 
-    public void setIdRecurso(int idRecurso) {
+    public void setIdRecurso(Integer idRecurso) {
         this.idRecurso = idRecurso;
     }
 
@@ -41,15 +38,15 @@ public int getIdRol() {
 
         UsrRolRecursoEntityPK that = (UsrRolRecursoEntityPK) o;
 
-        if (idRecurso != that.idRecurso) return false;
-        if (idRol != that.idRol) return false;
+        if (idRecurso != null ? !idRecurso.equals(that.idRecurso) : that.idRecurso != null) return false;
+        if (idRol != null ? !idRol.equals(that.idRol) : that.idRol != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = idRol;
-        result = 31 * result + idRecurso;
+        int result = idRol != null ? idRol.hashCode() : 0;
+        result = 31 * result + (idRecurso != null ? idRecurso.hashCode() : 0);
         return result;
 }}
