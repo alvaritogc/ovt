@@ -18,6 +18,6 @@ public interface IUnidadService {
     public PerUnidadEntity save(PerUnidadEntity unidad);
     public boolean delete(PerUnidadEntity unidad);
     public PerUnidadEntity findById(BigDecimal id);
-    public List<PerUnidadEntity> listarPorUsuario( BigDecimal idUsuario);
+//    public List<PerUnidadEntity> listarPorUsuario( BigDecimal idUsuario);
     
 }
