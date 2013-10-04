@@ -1,0 +1,52 @@
+migration/migration-phase1.sql
+migration/migration-phase1.json.sql
+migration/migration-phase2.sql
+migration/migration-phase2.json.sql
+migration/migration-phase3.sql
+migration/migration-phase3.json.sql
+migration/migration-phase4.sql
+migration/migration-phase4.json.sql
+
+# IDEA metadata and output dirs
+*.iml
+*.ipr
+*.iws
+.idea
+out
+.fuse*
+
+# Eclipse
+.classpath
+.factorypath
+.project
+.settings
+
+# NetBeans
+nbactions.xml
+nb-configuration.xml
+profiles.xml
+
+# Generales
+*~
+build
+build.sh
+derby.com.mc4.api.log
+.DS_Store
+.gradle
+*.java.hsp
+jmx.com.mc4.api.log
+jxl.com.mc4.api.log
+run.sh
+*.sonarj
+*.sw*
+
+# Maven
+target
+*.releaseBackup
+
+#Java errors
+hs_err_*.com.mc4.api.log
+
+# Atomikos
+*.epoch
+tmlog*
