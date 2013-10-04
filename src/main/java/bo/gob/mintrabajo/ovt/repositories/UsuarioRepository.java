@@ -15,4 +15,13 @@ import org.springframework.data.repository.query.Param;
 
 @OpenJpaSettings
 public interface UsuarioRepository extends OpenJpaRepository<UsrUsuarioEntity, BigDecimal>{
+    
+    @Query(
+            "   select u "
+            + " from UsrUsuarioEntity u"
+            + " where "
+            + " u.usuario= :usuario"
+            + " and u.clave= :clave"
+            )
+    List<UsrUsuarioEntity> login(@Param("usuario") String usuario,@Param("clave") String clave);
 }

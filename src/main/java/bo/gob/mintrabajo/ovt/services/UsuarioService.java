@@ -84,6 +84,7 @@ public class UsuarioService implements IUsuarioService{
     
     @Override
     public boolean login(String username, String password) {
+        /*
         UsrUsuarioEntity usrUsuarioEntity=null;
 
         try {
@@ -97,7 +98,52 @@ public class UsuarioService implements IUsuarioService{
         }
         else{
             return true;
+//        }*/
+//        UsrUsuarioEntity newUsrUsuarioEntity = new UsrUsuarioEntity();
+//        newUsrUsuarioEntity.setUsuario(user);
+//        newUsrUsuarioEntity.setClave(password);
+//        newUsrUsuarioEntity.setEstadoUsuario("Activo");
+//
+//        repository.findByExample(newUsrUsuarioEntity, null, null, -1, -1);
+
+
+//        entityManager.createNamedQuery("{call '''hacer-algo()'''}")
+        System.out.println("");
+        System.out.println("=================================================");
+        System.out.println("=================================================");
+        System.out.println("=================================================");
+        System.out.println("usuario: "+username+" pass: "+password);
+        System.out.println("=================================================");
+        System.out.println("=================================================");
+        List<UsrUsuarioEntity> listaUsuarios=null;
+        
+        try{
+            listaUsuarios = usuarioRepository.findByAttribute("usuario", username, -1, -1);
         }
+        catch(Exception e){
+            System.out.println("=================================================1");
+            throw new RuntimeException("Error en el metodo");
+        }
+        
+        
+        //List<UsrUsuarioEntity> listaUsuarios = usuarioRepository.login(username, password);
+        if (listaUsuarios.isEmpty()) {
+            System.out.println("=================================================2");
+            throw new RuntimeException("Usuario no encontrado");
+        }
+
+        UsrUsuarioEntity usrUsuarioEntity = listaUsuarios.get(0);
+
+        if (!password.equals(usrUsuarioEntity.getClave())) {
+            System.out.println("=================================================3");
+            throw new RuntimeException("Password equivocado");
+        }
+        /*
+        if (usrUsuarioEntity.getFechaInhabilitacion().getTime() < System.currentTimeMillis()) {
+            //....
+        }*/
+        
+        return true;
     }
     
 }

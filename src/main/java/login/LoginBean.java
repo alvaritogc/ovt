@@ -3,6 +3,7 @@ package login;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.api.Users;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
+import javax.annotation.PostConstruct;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -10,36 +11,67 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 
 /**
- * User: Renato Velasquez.
- * Date: 03-10-13
+ * User: Renato Velasquez. Date: 03-10-13
  */
 @ManagedBean
 public class LoginBean {
 
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
-    
     @ManagedProperty(value = "#{usrSrv}")
     public Users usrSrv;
-
     private String username;
-
     private String password;
 
+    @PostConstruct
+    public void ini() {
+        System.out.println("===========================================");
+        System.out.println("===========================================");
+        System.out.println("===========================================");
+        System.out.println("==========================init=============");
+        System.out.println("===========================================");
+        System.out.println("===========================================");
+        username = "";
+        password = "";
+    }
+
     public String login() {
-        try{
-            iUsuarioService.login(username, password);
-        }catch(Exception e){
-            System.out.println("Error :  ");
-        }
         try {
-            UsrUsuarioEntity byUsuarioAndClave = usrSrv.findByUsuarioAndClave(username, password);
-            System.out.println(byUsuarioAndClave);
+            System.out.println("===========================================");
+            System.out.println("===========================================");
+            iUsuarioService.login(username, password);
+            System.out.println("login ok");
+            System.out.println("===========================================");
+            System.out.println("===========================================");
+            return "loggin";
         } catch (RuntimeException e) {
-            FacesContext.getCurrentInstance().addMessage(e.getMessage(), new FacesMessage(e.getMessage()));
+            FacesContext context = FacesContext.getCurrentInstance();  
+            context.addMessage(null, new FacesMessage(e.getMessage(), "Hello " ));  
+            System.out.println("===========================================");
+            System.out.println("===========================================");
+            System.out.println("Error :  " + e.getMessage());
+            System.out.println("===========================================");
+            System.out.println("===========================================");
         }
-        System.out.println("sdkjfsdlkfjsdlkf sldkjfsldkfj ");
-        return "/djd";
+        catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();  
+            context.addMessage(null, new FacesMessage(e.getMessage(), "Hello "));  
+            System.out.println("===========================================");
+            System.out.println("===========================================");
+            System.out.println("Error :  " + e.getMessage());
+            System.out.println("===========================================");
+            System.out.println("===========================================");
+        }
+        password = "";
+        /*
+         try {
+         UsrUsuarioEntity byUsuarioAndClave = usrSrv.findByUsuarioAndClave(username, password);
+         System.out.println(byUsuarioAndClave);
+         } catch (RuntimeException e) {
+         FacesContext.getCurrentInstance().addMessage(e.getMessage(), new FacesMessage(e.getMessage()));
+         }*/
+        //System.out.println("sdkjfsdlkfjsdlkf sldkjfsldkfj ");
+        return "";
     }
 
     public String getUsername() {

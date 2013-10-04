@@ -9,5 +9,16 @@
     <application>
         <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
     </application>
+    
+    <!-- INDEX -->
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>loggin</from-outcome>
+            <to-view-id>/pages/inicio.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
+        </navigation-case>
+    </navigation-rule>
 
 </faces-config>
