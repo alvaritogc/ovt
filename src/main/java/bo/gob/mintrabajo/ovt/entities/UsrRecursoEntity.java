@@ -1,8 +1,6 @@
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -10,12 +8,24 @@ import java.sql.Timestamp;
  * User: Renato Velasquez.
  * Date: 03-10-13
  */
-@javax.persistence.Table(name = "USR_RECURSO", schema = "ROE", catalog = "")
+@Table(name = "USR_RECURSO", schema = "ROE", catalog = "")
 @Entity
 public class UsrRecursoEntity {
     private Integer idRecurso;
+    private String tipoRecurso;
+    private String tipoPlataforma;
+    private Integer orden;
+    private String etiqueta;
+    private String descripcion;
+    private String ejecutable;
+    private BigInteger esVerificable;
+    private String estado;
+    private Timestamp fechaBitacora;
+    private String registroBitacora;
+    private String idModulo;
+    private Integer idRecursoPadre;
 
-    @javax.persistence.Column(name = "ID_RECURSO")
+    @Column(name = "ID_RECURSO")
     @Id
     public Integer getIdRecurso() {
         return idRecurso;
@@ -25,9 +35,7 @@ public class UsrRecursoEntity {
         this.idRecurso = idRecurso;
     }
 
-    private String tipoRecurso;
-
-    @javax.persistence.Column(name = "TIPO_RECURSO")
+    @Column(name = "TIPO_RECURSO")
     @Basic
     public String getTipoRecurso() {
         return tipoRecurso;
@@ -37,9 +45,7 @@ public class UsrRecursoEntity {
         this.tipoRecurso = tipoRecurso;
     }
 
-    private String tipoPlataforma;
-
-    @javax.persistence.Column(name = "TIPO_PLATAFORMA")
+    @Column(name = "TIPO_PLATAFORMA")
     @Basic
     public String getTipoPlataforma() {
         return tipoPlataforma;
@@ -49,9 +55,7 @@ public class UsrRecursoEntity {
         this.tipoPlataforma = tipoPlataforma;
     }
 
-    private Integer orden;
-
-    @javax.persistence.Column(name = "ORDEN")
+    @Column(name = "ORDEN")
     @Basic
     public Integer getOrden() {
         return orden;
@@ -61,9 +65,7 @@ public class UsrRecursoEntity {
         this.orden = orden;
     }
 
-    private String etiqueta;
-
-    @javax.persistence.Column(name = "ETIQUETA")
+    @Column(name = "ETIQUETA")
     @Basic
     public String getEtiqueta() {
         return etiqueta;
@@ -73,9 +75,7 @@ public class UsrRecursoEntity {
         this.etiqueta = etiqueta;
     }
 
-    private String descripcion;
-
-    @javax.persistence.Column(name = "DESCRIPCION")
+    @Column(name = "DESCRIPCION")
     @Basic
     public String getDescripcion() {
         return descripcion;
@@ -85,9 +85,7 @@ public class UsrRecursoEntity {
         this.descripcion = descripcion;
     }
 
-    private String ejecutable;
-
-    @javax.persistence.Column(name = "EJECUTABLE")
+    @Column(name = "EJECUTABLE")
     @Basic
     public String getEjecutable() {
         return ejecutable;
@@ -97,9 +95,7 @@ public class UsrRecursoEntity {
         this.ejecutable = ejecutable;
     }
 
-    private BigInteger esVerificable;
-
-    @javax.persistence.Column(name = "ES_VERIFICABLE")
+    @Column(name = "ES_VERIFICABLE")
     @Basic
     public BigInteger getEsVerificable() {
         return esVerificable;
@@ -109,9 +105,7 @@ public class UsrRecursoEntity {
         this.esVerificable = esVerificable;
     }
 
-    private String estado;
-
-    @javax.persistence.Column(name = "ESTADO")
+    @Column(name = "ESTADO")
     @Basic
     public String getEstado() {
         return estado;
@@ -121,9 +115,7 @@ public class UsrRecursoEntity {
         this.estado = estado;
     }
 
-    private Timestamp fechaBitacora;
-
-    @javax.persistence.Column(name = "FECHA_BITACORA")
+    @Column(name = "FECHA_BITACORA")
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -133,9 +125,7 @@ public class UsrRecursoEntity {
         this.fechaBitacora = fechaBitacora;
     }
 
-    private String registroBitacora;
-
-    @javax.persistence.Column(name = "REGISTRO_BITACORA")
+    @Column(name = "REGISTRO_BITACORA")
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -185,5 +175,25 @@ public class UsrRecursoEntity {
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;
+    }
+
+    @Column(name = "ID_MODULO")
+    @Basic
+    public String getIdModulo() {
+        return idModulo;
+    }
+
+    public void setIdModulo(String idModulo) {
+        this.idModulo = idModulo;
+    }
+
+    @Column(name = "ID RECURSO_PADRE")
+    @Basic
+    public Integer getIdRecursoPadre() {
+        return idRecursoPadre;
+    }
+
+    public void setIdRecursoPadre(Integer idRecursoPadre) {
+        this.idRecursoPadre = idRecursoPadre;
     }
 }

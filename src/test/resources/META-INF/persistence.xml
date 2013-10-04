@@ -17,12 +17,13 @@
         <class>bo.gob.mintrabajo.ovt.entities.PerUnidadEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.PerUsuarioUnidadEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.UsrModuloEntity</class>
-        <class>bo.gob.mintrabajo.ovt.entities.UsrRecursoEntity</class>
+
         <class>bo.gob.mintrabajo.ovt.entities.UsrRolEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.UsrRolRecursoEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.UsrUsuarioRecursoEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.UsrUsuarioRolEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrRecursoEntity</class>
 
         <properties>
             <property name="openjpa.ConnectionURL" value="jdbc:oracle:thin:@192.168.50.7:1521:DESA"/>
