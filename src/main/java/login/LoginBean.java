@@ -1,5 +1,6 @@
-package bo.gob.mintrabajo.ovt.model;
+package login;
 
+import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.api.Users;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
 
@@ -15,6 +16,9 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 public class LoginBean {
 
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioService;
+    
     @ManagedProperty(value = "#{usrSrv}")
     public Users usrSrv;
 
@@ -23,6 +27,11 @@ public class LoginBean {
     private String password;
 
     public String login() {
+        try{
+            iUsuarioService.login(username, password);
+        }catch(Exception e){
+            System.out.println("Error :  ");
+        }
         try {
             UsrUsuarioEntity byUsuarioAndClave = usrSrv.findByUsuarioAndClave(username, password);
             System.out.println(byUsuarioAndClave);
@@ -55,5 +64,13 @@ public class LoginBean {
 
     public void setUsrSrv(Users usrSrv) {
         this.usrSrv = usrSrv;
+    }
+
+    public IUsuarioService getiUsuarioService() {
+        return iUsuarioService;
+    }
+
+    public void setiUsuarioService(IUsuarioService iUsuarioService) {
+        this.iUsuarioService = iUsuarioService;
     }
 }

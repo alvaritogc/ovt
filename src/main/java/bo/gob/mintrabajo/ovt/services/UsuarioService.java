@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author pc01
  */
-@Named
+@Named("usuarioService")
 @TransactionAttribute
 public class UsuarioService implements IUsuarioService{
     
@@ -84,10 +84,10 @@ public class UsuarioService implements IUsuarioService{
     
     @Override
     public boolean login(String username, String password) {
-        UsrUsuarioEntity usrUsuarioEntity;
+        UsrUsuarioEntity usrUsuarioEntity=null;
 
         try {
-            usrUsuarioEntity = usuarioRepository.login(username,password);
+            //usrUsuarioEntity = usuarioRepository.login(username,password);
         } catch (Exception e) {
             e.printStackTrace();
             usrUsuarioEntity = null;

@@ -20,22 +20,26 @@ public class UsersService implements Users {
 
     private final UserRepository repository;
 
-    private final EntityManager entityManager;
-
-    private final DataSource dataSource;
 
     // SOLO CUANDO SE NECESITE URGENTE private final EntityManager entityManager;
 
     // NO ESTA PERMITIDO private LytServidoresTrabajoEntity e1;
 
     @Inject
-    public UsersService(UserRepository repository, EntityManager entityManager, DataSource dataSource) {
+    public UsersService(UserRepository repository) {
         //EntityManager entityManager) {
         this.repository = repository;
-        // this.entityManager = entityManager;
-        this.entityManager = entityManager;
-        this.dataSource = dataSource;
     }
+    
+    
+//     @Inject
+//    public UsersService(UserRepository repository, EntityManager entityManager, DataSource dataSource) {
+//        //EntityManager entityManager) {
+//        this.repository = repository;
+//        // this.entityManager = entityManager;
+//        this.entityManager = entityManager;
+//        this.dataSource = dataSource;
+//    }
 
     @Override
     public UsrUsuarioEntity findByUsuarioAndClave(String user, String password) {
