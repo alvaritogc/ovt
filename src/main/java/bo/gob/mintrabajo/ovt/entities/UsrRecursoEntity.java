@@ -1,50 +1,33 @@
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.Collection;
 
 /**
- * User: gveramendi
- * Date: 9/25/13
- * Time: 5:33 PM
+ * User: Renato Velasquez.
+ * Date: 03-10-13
  */
-
-@Table(name = "USR_RECURSO", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "USR_RECURSO", schema = "ROE", catalog = "")
 @Entity
-public class UsrRecursoEntity implements Serializable {
-    private int idRecurso;
-    private String tipoRecurso;
-    private String tipoPlataforma;
-    private int orden;
-    private String etiqueta;
-    private String descripcion;
-    private String ejecutable;
-    private BigInteger esVerificable;
-    private String estado;
-    private Timestamp fechaBitacora;
-    private String registroBitacora;
-    private UsrModuloEntity usrModuloByIdModulo;
-    private UsrRecursoEntity usrRecursoByIdRecursoPadre;
-    private Collection<UsrRecursoEntity> usrRecursosByIdRecurso;
-    private UsrRecursoEntity usrRecursoByIdRecurso;
-    private UsrRecursoEntity usrRecursoByIdRecurso_0;
-    private Collection<UsrRolRecursoEntity> usrRolRecursosByIdRecurso;
-    private Collection<UsrUsuarioRecursoEntity> usrUsuarioRecursosByIdRecurso;
+public class UsrRecursoEntity {
+    private Integer idRecurso;
 
-    @Column(name = "ID_RECURSO", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @javax.persistence.Column(name = "ID_RECURSO")
     @Id
-    public int getIdRecurso() {
+    public Integer getIdRecurso() {
         return idRecurso;
     }
 
-    public void setIdRecurso(int idRecurso) {
+    public void setIdRecurso(Integer idRecurso) {
         this.idRecurso = idRecurso;
     }
 
-    @Column(name = "TIPO_RECURSO", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
+    private String tipoRecurso;
+
+    @javax.persistence.Column(name = "TIPO_RECURSO")
     @Basic
     public String getTipoRecurso() {
         return tipoRecurso;
@@ -54,7 +37,9 @@ public class UsrRecursoEntity implements Serializable {
         this.tipoRecurso = tipoRecurso;
     }
 
-    @Column(name = "TIPO_PLATAFORMA", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
+    private String tipoPlataforma;
+
+    @javax.persistence.Column(name = "TIPO_PLATAFORMA")
     @Basic
     public String getTipoPlataforma() {
         return tipoPlataforma;
@@ -64,17 +49,21 @@ public class UsrRecursoEntity implements Serializable {
         this.tipoPlataforma = tipoPlataforma;
     }
 
-    @Column(name = "ORDEN", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+    private Integer orden;
+
+    @javax.persistence.Column(name = "ORDEN")
     @Basic
-    public int getOrden() {
+    public Integer getOrden() {
         return orden;
     }
 
-    public void setOrden(int orden) {
+    public void setOrden(Integer orden) {
         this.orden = orden;
     }
 
-    @Column(name = "ETIQUETA", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
+    private String etiqueta;
+
+    @javax.persistence.Column(name = "ETIQUETA")
     @Basic
     public String getEtiqueta() {
         return etiqueta;
@@ -84,7 +73,9 @@ public class UsrRecursoEntity implements Serializable {
         this.etiqueta = etiqueta;
     }
 
-    @Column(name = "DESCRIPCION", nullable = false, insertable = true, updatable = true, length = 120, precision = 0)
+    private String descripcion;
+
+    @javax.persistence.Column(name = "DESCRIPCION")
     @Basic
     public String getDescripcion() {
         return descripcion;
@@ -94,7 +85,9 @@ public class UsrRecursoEntity implements Serializable {
         this.descripcion = descripcion;
     }
 
-    @Column(name = "EJECUTABLE", nullable = false, insertable = true, updatable = true, length = 500, precision = 0)
+    private String ejecutable;
+
+    @javax.persistence.Column(name = "EJECUTABLE")
     @Basic
     public String getEjecutable() {
         return ejecutable;
@@ -104,7 +97,9 @@ public class UsrRecursoEntity implements Serializable {
         this.ejecutable = ejecutable;
     }
 
-    @Column(name = "ES_VERIFICABLE", nullable = false, insertable = true, updatable = true, length = 1, precision = 0)
+    private BigInteger esVerificable;
+
+    @javax.persistence.Column(name = "ES_VERIFICABLE")
     @Basic
     public BigInteger getEsVerificable() {
         return esVerificable;
@@ -114,7 +109,9 @@ public class UsrRecursoEntity implements Serializable {
         this.esVerificable = esVerificable;
     }
 
-    @Column(name = "ESTADO", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+    private String estado;
+
+    @javax.persistence.Column(name = "ESTADO")
     @Basic
     public String getEstado() {
         return estado;
@@ -124,7 +121,9 @@ public class UsrRecursoEntity implements Serializable {
         this.estado = estado;
     }
 
-    @Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    private Timestamp fechaBitacora;
+
+    @javax.persistence.Column(name = "FECHA_BITACORA")
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -134,7 +133,9 @@ public class UsrRecursoEntity implements Serializable {
         this.fechaBitacora = fechaBitacora;
     }
 
-    @Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    private String registroBitacora;
+
+    @javax.persistence.Column(name = "REGISTRO_BITACORA")
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -151,8 +152,6 @@ public class UsrRecursoEntity implements Serializable {
 
         UsrRecursoEntity that = (UsrRecursoEntity) o;
 
-        if (idRecurso != that.idRecurso) return false;
-        if (orden != that.orden) return false;
         if (descripcion != null ? !descripcion.equals(that.descripcion) : that.descripcion != null) return false;
         if (ejecutable != null ? !ejecutable.equals(that.ejecutable) : that.ejecutable != null) return false;
         if (esVerificable != null ? !esVerificable.equals(that.esVerificable) : that.esVerificable != null)
@@ -161,6 +160,8 @@ public class UsrRecursoEntity implements Serializable {
         if (etiqueta != null ? !etiqueta.equals(that.etiqueta) : that.etiqueta != null) return false;
         if (fechaBitacora != null ? !fechaBitacora.equals(that.fechaBitacora) : that.fechaBitacora != null)
             return false;
+        if (idRecurso != null ? !idRecurso.equals(that.idRecurso) : that.idRecurso != null) return false;
+        if (orden != null ? !orden.equals(that.orden) : that.orden != null) return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
             return false;
         if (tipoPlataforma != null ? !tipoPlataforma.equals(that.tipoPlataforma) : that.tipoPlataforma != null)
@@ -172,10 +173,10 @@ public class UsrRecursoEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = idRecurso;
+        int result = idRecurso != null ? idRecurso.hashCode() : 0;
         result = 31 * result + (tipoRecurso != null ? tipoRecurso.hashCode() : 0);
         result = 31 * result + (tipoPlataforma != null ? tipoPlataforma.hashCode() : 0);
-        result = 31 * result + orden;
+        result = 31 * result + (orden != null ? orden.hashCode() : 0);
         result = 31 * result + (etiqueta != null ? etiqueta.hashCode() : 0);
         result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
         result = 31 * result + (ejecutable != null ? ejecutable.hashCode() : 0);
@@ -184,71 +185,5 @@ public class UsrRecursoEntity implements Serializable {
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO", nullable = false)
-    public UsrModuloEntity getUsrModuloByIdModulo() {
-        return usrModuloByIdModulo;
-    }
-
-    public void setUsrModuloByIdModulo(UsrModuloEntity usrModuloByIdModulo) {
-        this.usrModuloByIdModulo = usrModuloByIdModulo;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "ID RECURSO_PADRE", referencedColumnName = "ID_RECURSO")
-    public UsrRecursoEntity getUsrRecursoByIdRecursoPadre() {
-        return usrRecursoByIdRecursoPadre;
-    }
-
-    public void setUsrRecursoByIdRecursoPadre(UsrRecursoEntity usrRecursoByIdRecursoPadre) {
-        this.usrRecursoByIdRecursoPadre = usrRecursoByIdRecursoPadre;
-    }
-
-    @OneToMany(mappedBy = "usrRecursoByIdRecursoPadre")
-    public Collection<UsrRecursoEntity> getUsrRecursosByIdRecurso() {
-        return usrRecursosByIdRecurso;
-    }
-
-    public void setUsrRecursosByIdRecurso(Collection<UsrRecursoEntity> usrRecursosByIdRecurso) {
-        this.usrRecursosByIdRecurso = usrRecursosByIdRecurso;
-    }
-
-    @OneToOne
-    @JoinColumn(name = "ID_RECURSO", referencedColumnName = "ID_RECURSO", nullable = false)
-    public UsrRecursoEntity getUsrRecursoByIdRecurso() {
-        return usrRecursoByIdRecurso;
-    }
-
-    public void setUsrRecursoByIdRecurso(UsrRecursoEntity usrRecursoByIdRecurso) {
-        this.usrRecursoByIdRecurso = usrRecursoByIdRecurso;
-    }
-
-    @OneToOne(mappedBy = "usrRecursoByIdRecurso")
-    public UsrRecursoEntity getUsrRecursoByIdRecurso_0() {
-        return usrRecursoByIdRecurso_0;
-    }
-
-    public void setUsrRecursoByIdRecurso_0(UsrRecursoEntity usrRecursoByIdRecurso_0) {
-        this.usrRecursoByIdRecurso_0 = usrRecursoByIdRecurso_0;
-    }
-
-    @OneToMany(mappedBy = "usrRecursoByIdRecurso")
-    public Collection<UsrRolRecursoEntity> getUsrRolRecursosByIdRecurso() {
-        return usrRolRecursosByIdRecurso;
-    }
-
-    public void setUsrRolRecursosByIdRecurso(Collection<UsrRolRecursoEntity> usrRolRecursosByIdRecurso) {
-        this.usrRolRecursosByIdRecurso = usrRolRecursosByIdRecurso;
-    }
-
-    @OneToMany(mappedBy = "usrRecursoByIdRecurso")
-    public Collection<UsrUsuarioRecursoEntity> getUsrUsuarioRecursosByIdRecurso() {
-        return usrUsuarioRecursosByIdRecurso;
-    }
-
-    public void setUsrUsuarioRecursosByIdRecurso(Collection<UsrUsuarioRecursoEntity> usrUsuarioRecursosByIdRecurso) {
-        this.usrUsuarioRecursosByIdRecurso = usrUsuarioRecursosByIdRecurso;
     }
 }

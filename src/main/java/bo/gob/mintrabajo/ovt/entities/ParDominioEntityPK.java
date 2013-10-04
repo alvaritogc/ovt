@@ -5,17 +5,14 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
- * User: gveramendi
- * Date: 9/25/13
- * Time: 5:33 PM
+ * User: Renato Velasquez.
+ * Date: 03-10-13
  */
-
 public class ParDominioEntityPK implements Serializable {
     private String idDominio;
     private String valor;
 
-@Id
-@Column(name = "ID_DOMINIO", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
+@Id@Column(name = "ID_DOMINIO")
 public String getIdDominio() {
     return idDominio;
 }
@@ -24,8 +21,7 @@ public String getIdDominio() {
         this.idDominio = idDominio;
     }
 
-    @Id
-    @Column(name = "VALOR", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
+    @Id@Column(name = "VALOR")
     public String getValor() {
         return valor;
     }

@@ -9,26 +9,25 @@ import java.sql.Timestamp;
  * User: Renato Velasquez.
  * Date: 03-10-13
  */
-@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.DocTransicionEntityPK.class)
-@javax.persistence.Table(name = "DOC_TRANSICION", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "DOC_LOG_ESTADO", schema = "ROE", catalog = "")
 @Entity
-public class DocTransicionEntity {
-    private String codDocumento;
+public class DocLogEstadoEntity {
+    private Integer idLogestado;
 
-    @javax.persistence.Column(name = "COD_DOCUMENTO")
+    @javax.persistence.Column(name = "ID_LOGESTADO")
     @Id
-    public String getCodDocumento() {
-        return codDocumento;
+    public Integer getIdLogestado() {
+        return idLogestado;
     }
 
-    public void setCodDocumento(String codDocumento) {
-        this.codDocumento = codDocumento;
+    public void setIdLogestado(Integer idLogestado) {
+        this.idLogestado = idLogestado;
     }
 
     private String codEstadoInicial;
 
     @javax.persistence.Column(name = "COD_ESTADO_INICIAL")
-    @Id
+    @Basic
     public String getCodEstadoInicial() {
         return codEstadoInicial;
     }
@@ -40,25 +39,13 @@ public class DocTransicionEntity {
     private String codEstadoFinal;
 
     @javax.persistence.Column(name = "COD_ESTADO_FINAL")
-    @Id
+    @Basic
     public String getCodEstadoFinal() {
         return codEstadoFinal;
     }
 
     public void setCodEstadoFinal(String codEstadoFinal) {
         this.codEstadoFinal = codEstadoFinal;
-    }
-
-    private String estado;
-
-    @javax.persistence.Column(name = "ESTADO")
-    @Basic
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     private Timestamp fechaBitacora;
@@ -90,16 +77,15 @@ public class DocTransicionEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DocTransicionEntity that = (DocTransicionEntity) o;
+        DocLogEstadoEntity that = (DocLogEstadoEntity) o;
 
-        if (codDocumento != null ? !codDocumento.equals(that.codDocumento) : that.codDocumento != null) return false;
         if (codEstadoFinal != null ? !codEstadoFinal.equals(that.codEstadoFinal) : that.codEstadoFinal != null)
             return false;
         if (codEstadoInicial != null ? !codEstadoInicial.equals(that.codEstadoInicial) : that.codEstadoInicial != null)
             return false;
-        if (estado != null ? !estado.equals(that.estado) : that.estado != null) return false;
         if (fechaBitacora != null ? !fechaBitacora.equals(that.fechaBitacora) : that.fechaBitacora != null)
             return false;
+        if (idLogestado != null ? !idLogestado.equals(that.idLogestado) : that.idLogestado != null) return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
             return false;
 
@@ -108,10 +94,9 @@ public class DocTransicionEntity {
 
     @Override
     public int hashCode() {
-        int result = codDocumento != null ? codDocumento.hashCode() : 0;
+        int result = idLogestado != null ? idLogestado.hashCode() : 0;
         result = 31 * result + (codEstadoInicial != null ? codEstadoInicial.hashCode() : 0);
         result = 31 * result + (codEstadoFinal != null ? codEstadoFinal.hashCode() : 0);
-        result = 31 * result + (estado != null ? estado.hashCode() : 0);
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;

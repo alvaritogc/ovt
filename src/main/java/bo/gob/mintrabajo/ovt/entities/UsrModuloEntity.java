@@ -1,31 +1,20 @@
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.sql.Timestamp;
-import java.util.Collection;
 
 /**
- * User: gveramendi
- * Date: 9/25/13
- * Time: 5:33 PM
+ * User: Renato Velasquez.
+ * Date: 03-10-13
  */
-
-@Table(name = "USR_MODULO", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "USR_MODULO", schema = "ROE", catalog = "")
 @Entity
-public class UsrModuloEntity implements Serializable {
+public class UsrModuloEntity {
     private String idModulo;
-    private String nombre;
-    private String tipoModulo;
-    private String tipoArea;
-    private Timestamp fechaBitacora;
-    private String registroBitacora;
-    private Collection<ParDominioEntity> parDominiosByIdModulo;
-    private Collection<UsrRecursoEntity> usrRecursosByIdModulo;
-    private Collection<UsrRolEntity> usrRolsByIdModulo;
-    private Collection<UsrUsuarioRolEntity> usrUsuarioRolsByIdModulo;
 
-    @Column(name = "ID_MODULO", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+    @javax.persistence.Column(name = "ID_MODULO")
     @Id
     public String getIdModulo() {
         return idModulo;
@@ -35,7 +24,9 @@ public class UsrModuloEntity implements Serializable {
         this.idModulo = idModulo;
     }
 
-    @Column(name = "NOMBRE", nullable = false, insertable = true, updatable = true, length = 80, precision = 0)
+    private String nombre;
+
+    @javax.persistence.Column(name = "NOMBRE")
     @Basic
     public String getNombre() {
         return nombre;
@@ -45,7 +36,9 @@ public class UsrModuloEntity implements Serializable {
         this.nombre = nombre;
     }
 
-    @Column(name = "TIPO_MODULO", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
+    private String tipoModulo;
+
+    @javax.persistence.Column(name = "TIPO_MODULO")
     @Basic
     public String getTipoModulo() {
         return tipoModulo;
@@ -55,7 +48,9 @@ public class UsrModuloEntity implements Serializable {
         this.tipoModulo = tipoModulo;
     }
 
-    @Column(name = "TIPO_AREA", nullable = false, insertable = true, updatable = true, length = 15, precision = 0)
+    private String tipoArea;
+
+    @javax.persistence.Column(name = "TIPO_AREA")
     @Basic
     public String getTipoArea() {
         return tipoArea;
@@ -65,7 +60,9 @@ public class UsrModuloEntity implements Serializable {
         this.tipoArea = tipoArea;
     }
 
-    @Column(name = "FECHA_BITACORA", nullable = false, insertable = true, updatable = true, length = 7, precision = 0)
+    private Timestamp fechaBitacora;
+
+    @javax.persistence.Column(name = "FECHA_BITACORA")
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -75,7 +72,9 @@ public class UsrModuloEntity implements Serializable {
         this.fechaBitacora = fechaBitacora;
     }
 
-    @Column(name = "REGISTRO_BITACORA", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    private String registroBitacora;
+
+    @javax.persistence.Column(name = "REGISTRO_BITACORA")
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -113,41 +112,5 @@ public class UsrModuloEntity implements Serializable {
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "usrModuloByIdModulo")
-    public Collection<ParDominioEntity> getParDominiosByIdModulo() {
-        return parDominiosByIdModulo;
-    }
-
-    public void setParDominiosByIdModulo(Collection<ParDominioEntity> parDominiosByIdModulo) {
-        this.parDominiosByIdModulo = parDominiosByIdModulo;
-    }
-
-    @OneToMany(mappedBy = "usrModuloByIdModulo")
-    public Collection<UsrRecursoEntity> getUsrRecursosByIdModulo() {
-        return usrRecursosByIdModulo;
-    }
-
-    public void setUsrRecursosByIdModulo(Collection<UsrRecursoEntity> usrRecursosByIdModulo) {
-        this.usrRecursosByIdModulo = usrRecursosByIdModulo;
-    }
-
-    @OneToMany(mappedBy = "usrModuloByIdModulo")
-    public Collection<UsrRolEntity> getUsrRolsByIdModulo() {
-        return usrRolsByIdModulo;
-    }
-
-    public void setUsrRolsByIdModulo(Collection<UsrRolEntity> usrRolsByIdModulo) {
-        this.usrRolsByIdModulo = usrRolsByIdModulo;
-    }
-
-    @OneToMany(mappedBy = "usrModuloByIdModulo")
-    public Collection<UsrUsuarioRolEntity> getUsrUsuarioRolsByIdModulo() {
-        return usrUsuarioRolsByIdModulo;
-    }
-
-    public void setUsrUsuarioRolsByIdModulo(Collection<UsrUsuarioRolEntity> usrUsuarioRolsByIdModulo) {
-        this.usrUsuarioRolsByIdModulo = usrUsuarioRolsByIdModulo;
     }
 }
