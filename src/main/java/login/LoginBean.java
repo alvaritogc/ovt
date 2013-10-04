@@ -1,6 +1,5 @@
 package login;
 
-import auth.AuthenticationRealm;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.api.Users;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
