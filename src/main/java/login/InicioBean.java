@@ -53,7 +53,7 @@ public class InicioBean {
 
     public void cargarPeridosPendientes() {
         listaPeriodosPendientes = new ArrayList<SelectItem>();
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 0; i < 10; i++) {
             listaPeriodosPendientes.add(new SelectItem(i, ("Periodo pendiente " + i)));
             System.out.println("adicionados " + i);
         }
