@@ -18,6 +18,5 @@ public interface IUsuarioService {
     public UsrUsuarioEntity save(UsrUsuarioEntity usuario);
     public boolean delete(UsrUsuarioEntity usuario);
     public UsrUsuarioEntity findById(BigDecimal id);
-    public boolean login(String username, String password);
-//    public DataSource obtenerDataSource();
+    public int login(String username, String password);
 }

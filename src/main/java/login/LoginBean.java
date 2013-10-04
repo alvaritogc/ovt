@@ -11,6 +11,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ import org.slf4j.LoggerFactory;
  * User: Renato Velasquez. Date: 03-10-13
  */
 @ManagedBean
-public class LoginBean extends JdbcRealm {
+public class LoginBean{
     //
     private static final Logger logger = LoggerFactory.getLogger(LoginBean.class);
     //
@@ -47,8 +48,10 @@ public class LoginBean extends JdbcRealm {
         logger.info("login()");
         try {
             logger.info("iUsuarioService.login("+username+","+password+")");
-            iUsuarioService.login(username, password);
+            int idUsuario= iUsuarioService.login(username, password);
             logger.info("usuario aceptado");
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            session.setAttribute("idUsuario", idUsuario);
             return "loggin";
         } catch (RuntimeException e) {
             FacesContext context = FacesContext.getCurrentInstance();  

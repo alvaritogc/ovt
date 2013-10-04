@@ -86,7 +86,7 @@ public class UsuarioService implements IUsuarioService{
     }
     
     @Override
-    public boolean login(String username, String password) {
+    public int login(String username, String password) {
         logger.info("login("+username+","+password+")");
         /*
         UsrUsuarioEntity usrUsuarioEntity=null;
@@ -133,7 +133,8 @@ public class UsuarioService implements IUsuarioService{
         if (usrUsuarioEntity.getFechaInhabilitacion().getTime() < System.currentTimeMillis()) {
             //....
         }*/
-        return true;
+        return usrUsuarioEntity.getIdUsuario();
+        //return true;
     }
     
 }
