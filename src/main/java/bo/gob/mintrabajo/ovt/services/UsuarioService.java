@@ -11,17 +11,19 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author pc01
+ * @author VHTC
  */
 @Named("usuarioService")
 @TransactionAttribute
 public class UsuarioService implements IUsuarioService{
-    
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
     private final UsuarioRepository usuarioRepository;
-
+        
     @Inject
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
@@ -29,6 +31,7 @@ public class UsuarioService implements IUsuarioService{
     
     @Override
     public List<UsrUsuarioEntity> getAllUsuarios() {
+        logger.info("getAllUsuarios()");
         List<UsrUsuarioEntity> allUsuarios;
 
         try {
@@ -42,22 +45,21 @@ public class UsuarioService implements IUsuarioService{
     
     @Override
     public UsrUsuarioEntity save(UsrUsuarioEntity usuario) {
+        logger.info("save()");
         UsrUsuarioEntity usrUsuarioEntity;
-
         try {
             usrUsuarioEntity = usuarioRepository.save(usuario);
         } catch (Exception e) {
             e.printStackTrace();
             usrUsuarioEntity = null;
         }
-
         return usrUsuarioEntity;
     }
 
     @Override
     public boolean delete(UsrUsuarioEntity usuario) {
+        logger.info("delete()");
         boolean deleted = false;
-
         try {
             usuarioRepository.delete(usuario);
             deleted = true;
@@ -70,6 +72,7 @@ public class UsuarioService implements IUsuarioService{
 
     @Override
     public UsrUsuarioEntity findById(BigDecimal id) {
+        logger.info("findById()");
         UsrUsuarioEntity usrUsuarioEntity;
 
         try {
@@ -84,11 +87,12 @@ public class UsuarioService implements IUsuarioService{
     
     @Override
     public boolean login(String username, String password) {
+        logger.info("login("+username+","+password+")");
         /*
         UsrUsuarioEntity usrUsuarioEntity=null;
 
         try {
-            //usrUsuarioEntity = usuarioRepository.login(username,password);
+            usrUsuarioEntity = usuarioRepository.login(username,password);
         } catch (Exception e) {
             e.printStackTrace();
             usrUsuarioEntity = null;
@@ -98,51 +102,37 @@ public class UsuarioService implements IUsuarioService{
         }
         else{
             return true;
-//        }*/
+        }*/
 //        UsrUsuarioEntity newUsrUsuarioEntity = new UsrUsuarioEntity();
 //        newUsrUsuarioEntity.setUsuario(user);
 //        newUsrUsuarioEntity.setClave(password);
 //        newUsrUsuarioEntity.setEstadoUsuario("Activo");
 //
 //        repository.findByExample(newUsrUsuarioEntity, null, null, -1, -1);
-
-
-//        entityManager.createNamedQuery("{call '''hacer-algo()'''}")
-        System.out.println("");
-        System.out.println("=================================================");
-        System.out.println("=================================================");
-        System.out.println("=================================================");
-        System.out.println("usuario: "+username+" pass: "+password);
-        System.out.println("=================================================");
-        System.out.println("=================================================");
+//
+//
+//        entityManager.createNamedQuery("{call '''hacer-algo()'''}")ç
+        
+        //DataSource dataSource=
         List<UsrUsuarioEntity> listaUsuarios=null;
         
         try{
             listaUsuarios = usuarioRepository.findByAttribute("usuario", username, -1, -1);
         }
         catch(Exception e){
-            System.out.println("=================================================1");
-            throw new RuntimeException("Error en el metodo");
+            throw new RuntimeException("Error en el login");
         }
-        
-        
-        //List<UsrUsuarioEntity> listaUsuarios = usuarioRepository.login(username, password);
         if (listaUsuarios.isEmpty()) {
-            System.out.println("=================================================2");
             throw new RuntimeException("Usuario no encontrado");
         }
-
         UsrUsuarioEntity usrUsuarioEntity = listaUsuarios.get(0);
-
         if (!password.equals(usrUsuarioEntity.getClave())) {
-            System.out.println("=================================================3");
-            throw new RuntimeException("Password equivocado");
+            throw new RuntimeException("Contraseña equivocada");
         }
         /*
         if (usrUsuarioEntity.getFechaInhabilitacion().getTime() < System.currentTimeMillis()) {
             //....
         }*/
-        
         return true;
     }
     
