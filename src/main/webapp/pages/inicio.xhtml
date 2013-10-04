@@ -17,7 +17,7 @@
                             <f:selectItem itemLabel="Planilla trimestral" itemValue="" />  
                             <f:selectItems value="#{inicioBean.listaPlanillas}" />  
                             <p:ajax update="@all"  
-                                    listener="#{inicioBean.cargarPeridosPendientes()}" />  
+                                    listener="#{inicioBean.cargarPeridosPendientes}" />
                         </p:selectOneMenu>  
                         <p:outputLabel value=""/>
 
