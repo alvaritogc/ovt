@@ -4,13 +4,16 @@
  */
 package login;
 
+import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 //import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import bo.gob.mintrabajo.ovt.entities.UsrRecursoEntity;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -24,7 +27,10 @@ import javax.faces.context.FacesContext;
 //import javax.servlet.http.HttpSession;
 //
 import javax.faces.application.FacesMessage;  
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;  
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 //import org.primefaces.component.menuitem.MenuItem;
 //import org.primefaces.component.submenu.Submenu;
 //import org.primefaces.model.DefaultMenuModel;
@@ -34,97 +40,41 @@ import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;  
 import org.primefaces.model.menu.DefaultSubMenu;  
 import org.primefaces.model.menu.MenuModel;  
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
   
 
 @ManagedBean(name = "templateInicioBean")
 @SessionScoped
 public class TemplateInicioBean implements Serializable{
-
-    //private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-    private BigInteger idUsuario;
+    //
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    private int idUsuario;
+    private static final Logger logger = LoggerFactory.getLogger(TemplateInicioBean.class);
+    //
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioService;
+    //
     private List<UsrRecursoEntity> listaRecursos;
     private MenuModel model;
 
     @PostConstruct
     public void ini() {
-        System.out.println("================================");
-        System.out.println("================================");
-        System.out.println("TemplateInicioBean.init()");
-        System.out.println("================================");
-        System.out.println("================================");
-
-        //idUsuario = (BigInteger) session.getAttribute("idUsuario");
-        System.out.println("idUsuario: " + idUsuario);
+        logger.info("TemplateInicioBean.init()");
+        int idUsuario=(Integer)session.getAttribute("idUsuario");
+        BigDecimal bi = BigDecimal.valueOf(idUsuario);
+        logger.info("Buscando usuario"+bi);
+        UsrUsuarioEntity usuario= iUsuarioService.findById(bi);
+        logger.info("usuario ok");
         cargar();
-        crearMenu();
     }
 
     public void cargar() {
+        crearMenu();
     }
-
-    public List<UsrRecursoEntity> obtenerRecursos(String valor, int cantidad) {
-        List<UsrRecursoEntity> listaRecursos = new ArrayList<UsrRecursoEntity>();
-        for (int i = 1; i <= cantidad; i++) {
-            UsrRecursoEntity recurso = new UsrRecursoEntity();
-            recurso.getDescripcion();//descripcion
-            recurso.setEjecutable(valor+i);//#{logginBEAN.algo
-            recurso.setEsVerificable(BigInteger.ZERO);//
-            recurso.setEstado(valor+i);
-            recurso.setEtiqueta(valor+i);
-            recurso.setFechaBitacora(new Timestamp(2013, 2, 2, 2, 2, 2, 2));
-            recurso.setIdRecurso(1);
-            recurso.setOrden(0);
-            recurso.setRegistroBitacora(valor+i);
-            recurso.setTipoPlataforma(valor+i);
-            recurso.setTipoRecurso(valor+i);
-        }
-        return listaRecursos;
-    }
-
-    
 
     public void crearMenu() {
         model = new DefaultMenuModel();
-        //First submenu  
-//        Submenu submenu = new Submenu();
-//        submenu.setLabel("Dynamic Submenu 1");
-//
-//        MenuItem item = new MenuItem();
-//        item.setValue("Dynamic Menuitem 1.1");
-//        item.setUrl("#");
-//        submenu.getChildren().add(item);
-//        
-//        item = new MenuItem();
-//        item.setValue("Salir");
-//        submenu.getChildren().add(item);
-//
-//        model.addSubmenu(submenu);
-//
-//
-//        submenu = new Submenu();
-//        submenu.setLabel("Dynamic Submenu 2");
-//
-//        item = new MenuItem();
-//        item.setValue("Dynamic Menuitem 2.1");
-//        item.setUrl("#");
-//        submenu.getChildren().add(item);
-//
-//        item = new MenuItem();
-//        item.setValue("Dynamic Menuitem 2.2");
-//        item.setUrl("#");
-//        submenu.getChildren().add(item);
-//
-//        Submenu submenu1 = new Submenu();
-//        submenu1.setLabel("Dynamic Submenu 2.1");
-//
-//        item = new MenuItem();
-//        item.setValue("Dynamic Menuitem 2.1.1");
-//        item.setUrl("#");
-//        submenu1.getChildren().add(item);
-//
-//        submenu.getChildren().add(submenu1);
-//        model.addSubmenu(submenu);
-        
          DefaultSubMenu firstSubmenu = new DefaultSubMenu("Dynamic Submenu");  
           
         DefaultMenuItem item = new DefaultMenuItem("External");  
@@ -167,14 +117,13 @@ public class TemplateInicioBean implements Serializable{
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         // Usar el contexto de JSF para invalidar la sesión,
         // NO EL DE SERVLETS (nada de HttpServletRequest)
-//        String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
-//        ((HttpSession) ctx.getSession(false)).invalidate();
+        String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
+        ((HttpSession) ctx.getSession(false)).invalidate();
 
         // Redirección de nuevo con el contexto de JSF,
         // si se usa una HttpServletResponse fallará.
         // Sin embargo, como ya está fuera del ciclo de vida
         // de JSF se debe usar la ruta completa 
-        /*
         try {
             ctx.redirect(ctxPath + "/faces/index.xhtml");
         } catch (IOException e) {
@@ -182,8 +131,6 @@ public class TemplateInicioBean implements Serializable{
             e.printStackTrace();
         }
         return "";
-        * */
-        return "/faces/index.xhtml";
     }
 
     public MenuModel getModel() {
@@ -192,5 +139,13 @@ public class TemplateInicioBean implements Serializable{
 
     public void setModel(MenuModel model) {
         this.model = model;
+    }
+
+    public IUsuarioService getiUsuarioService() {
+        return iUsuarioService;
+    }
+
+    public void setiUsuarioService(IUsuarioService iUsuarioService) {
+        this.iUsuarioService = iUsuarioService;
     }
 }

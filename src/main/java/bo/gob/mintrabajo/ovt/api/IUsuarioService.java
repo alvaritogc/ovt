@@ -7,6 +7,7 @@ package bo.gob.mintrabajo.ovt.api;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.sql.DataSource;
 
 /**
  *
@@ -17,5 +18,5 @@ public interface IUsuarioService {
     public UsrUsuarioEntity save(UsrUsuarioEntity usuario);
     public boolean delete(UsrUsuarioEntity usuario);
     public UsrUsuarioEntity findById(BigDecimal id);
-    public boolean login(String username, String password);
+    public int login(String username, String password);
 }

@@ -3,64 +3,63 @@ package login;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.api.Users;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
+import java.io.IOException;
+import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+import org.apache.shiro.realm.jdbc.JdbcRealm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * User: Renato Velasquez. Date: 03-10-13
  */
 @ManagedBean
-public class LoginBean {
-
+public class LoginBean{
+    //
+    private static final Logger logger = LoggerFactory.getLogger(LoginBean.class);
+    //
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
     @ManagedProperty(value = "#{usrSrv}")
     public Users usrSrv;
+    //
     private String username;
-    private String password;
+    private String password;    
 
     @PostConstruct
     public void ini() {
-        System.out.println("===========================================");
-        System.out.println("===========================================");
-        System.out.println("===========================================");
-        System.out.println("==========================init=============");
-        System.out.println("===========================================");
-        System.out.println("===========================================");
+        logger.info("********************************************************************");
+        logger.info("********************************************************************");
+        logger.info("******************************LoginBean.init()**********************************");
+        logger.info("********************************************************************");
+        logger.info("********************************************************************");
         username = "";
         password = "";
+        //
     }
 
     public String login() {
+        logger.info("login()");
         try {
-            System.out.println("===========================================");
-            System.out.println("===========================================");
-            iUsuarioService.login(username, password);
-            System.out.println("login ok");
-            System.out.println("===========================================");
-            System.out.println("===========================================");
+            logger.info("iUsuarioService.login("+username+","+password+")");
+            int idUsuario= iUsuarioService.login(username, password);
+            logger.info("usuario aceptado");
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            session.setAttribute("idUsuario", idUsuario);
             return "loggin";
         } catch (RuntimeException e) {
             FacesContext context = FacesContext.getCurrentInstance();  
             context.addMessage(null, new FacesMessage(e.getMessage(), "Hello " ));  
-            System.out.println("===========================================");
-            System.out.println("===========================================");
-            System.out.println("Error :  " + e.getMessage());
-            System.out.println("===========================================");
-            System.out.println("===========================================");
         }
         catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();  
             context.addMessage(null, new FacesMessage(e.getMessage(), "Hello "));  
-            System.out.println("===========================================");
-            System.out.println("===========================================");
-            System.out.println("Error :  " + e.getMessage());
-            System.out.println("===========================================");
-            System.out.println("===========================================");
         }
         password = "";
         /*
@@ -70,7 +69,6 @@ public class LoginBean {
          } catch (RuntimeException e) {
          FacesContext.getCurrentInstance().addMessage(e.getMessage(), new FacesMessage(e.getMessage()));
          }*/
-        //System.out.println("sdkjfsdlkfjsdlkf sldkjfsldkfj ");
         return "";
     }
 

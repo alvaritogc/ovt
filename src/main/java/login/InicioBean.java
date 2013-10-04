@@ -2,37 +2,47 @@ package login;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 
 import bo.gob.mintrabajo.ovt.api.*;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.model.SelectItem;
-import javax.inject.Inject;
 //
 import javax.faces.application.FacesMessage;  
 import javax.faces.context.FacesContext;  
+import javax.servlet.http.HttpSession;
 import org.primefaces.event.FileUploadEvent;  
 import org.primefaces.model.UploadedFile;  
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@ManagedBean(name = "inicioBean")
-@RequestScoped
-//@ViewScoped
+@ManagedBean
+@ViewScoped
 public class InicioBean {
-
+    //
+    private static final Logger logger = LoggerFactory.getLogger(InicioBean.class);
+    //
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioService;
+    //
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    //
     private int idPlanilla;
     private List<SelectItem> listaPlanillas;
     private List<SelectItem> listaPeriodosPendientes;
 
     @PostConstruct
     public void ini() {
-        System.out.println("===================================================");
-        System.out.println("===================================================");
-        System.out.println("InicioBean.init");
-        System.out.println("===================================================");
-        System.out.println("===================================================");
+        logger.info("InicioBean.init()");
+        int idUsuario=(Integer)session.getAttribute("idUsuario");
+        BigDecimal bi = BigDecimal.valueOf(idUsuario);
+        logger.info("Buscando usuario"+bi);
+        UsrUsuarioEntity usuario= iUsuarioService.findById(bi);
+        logger.info("usuario ok");
         cargar();
     }
 
@@ -59,6 +69,7 @@ public class InicioBean {
         }
     }
 
+    /* Get -  set*/
     public List<SelectItem> getListaPlanillas() {
         return listaPlanillas;
     }
@@ -81,5 +92,13 @@ public class InicioBean {
 
     public void setIdPlanilla(int idPlanilla) {
         this.idPlanilla = idPlanilla;
+    }
+
+    public IUsuarioService getiUsuarioService() {
+        return iUsuarioService;
+    }
+
+    public void setiUsuarioService(IUsuarioService iUsuarioService) {
+        this.iUsuarioService = iUsuarioService;
     }
 }
