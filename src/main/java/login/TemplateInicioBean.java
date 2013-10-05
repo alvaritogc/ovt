@@ -20,6 +20,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -31,11 +32,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ManagedBean(name = "templateInicioBean")
-@SessionScoped
+@RequestScoped
 public class TemplateInicioBean implements Serializable {
     //
 
-    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    private HttpSession session;
     private int idUsuario;
     private static final Logger logger = LoggerFactory.getLogger(TemplateInicioBean.class);
     //
@@ -46,16 +47,59 @@ public class TemplateInicioBean implements Serializable {
     //
     private List<UsrRecursoEntity> listaRecursos;
     private MenuModel model;
+    //
+    private String username;
+    private String password;    
+
+    
 
     @PostConstruct
     public void ini() {
+        username="";
+        password="";
+        //
+        idUsuario=0;
+        listaRecursos=new ArrayList<UsrRecursoEntity>();
         logger.info("TemplateInicioBean.init()");
-        idUsuario = (Integer) session.getAttribute("idUsuario");
-        BigDecimal bi = BigDecimal.valueOf(idUsuario);
-        logger.info("Buscando usuario" + bi);
-        UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
-        logger.info("usuario ok");
-        cargar();
+        try {
+            session= (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            idUsuario = (Integer) session.getAttribute("idUsuario");
+            BigDecimal bi = BigDecimal.valueOf(idUsuario);
+            logger.info("Buscando usuario" + bi);
+            UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
+            logger.info("usuario ok");
+            cargar();
+        } catch (Exception e) {
+            e.printStackTrace();
+            model = new DefaultMenuModel();
+            DefaultMenuItem item = new DefaultMenuItem("Salir");
+            item.setIcon("ui-icon-search");
+            item.setCommand("#{templateInicioBean.logout()}");
+            model.addElement(item);
+        }
+
+    }
+    
+    public String login() {
+        logger.info("login()");
+        try {
+            logger.info("iUsuarioService.login("+username+","+password+")");
+            int idUsuario= iUsuarioService.login(username, password);
+            logger.info("usuario aceptado");
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            session.setAttribute("idUsuario", idUsuario);
+            ini();
+            return "login";
+        } catch (RuntimeException e) {
+            FacesContext context = FacesContext.getCurrentInstance();  
+            context.addMessage(null, new FacesMessage(e.getMessage(), "Hello " ));  
+        }
+        catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();  
+            context.addMessage(null, new FacesMessage(e.getMessage(), "Hello "));  
+        }
+        password = "";
+        return "";
     }
 
     public void cargar() {
@@ -71,6 +115,7 @@ public class TemplateInicioBean implements Serializable {
         item.setIcon("ui-icon-search");
         item.setCommand("#{templateInicioBean.logout()}");
         model.addElement(item);
+
 
     }
 
@@ -111,19 +156,18 @@ public class TemplateInicioBean implements Serializable {
             System.out.println("========================================");
             System.out.println("========================================");
             System.out.println("========================================");
-            System.out.println("Padre"+recurso.getEtiqueta());
-            System.out.println("Hijo"+recursoHijo.getEtiqueta());
-            if(recursoHijo.getIdRecursoPadre()!=null && recursoHijo.getIdRecursoPadre().equals(recurso.getIdRecurso())){
+            System.out.println("Padre" + recurso.getEtiqueta());
+            System.out.println("Hijo" + recursoHijo.getEtiqueta());
+            if (recursoHijo.getIdRecursoPadre() != null && recursoHijo.getIdRecursoPadre().equals(recurso.getIdRecurso())) {
                 System.out.println("es su hijo");
-                if(tieneHijos(recursoHijo)){
+                if (tieneHijos(recursoHijo)) {
                     System.out.println("tiene sub hijos");
                     DefaultSubMenu subMenuHijo = crearMenuHijos(recursoHijo);
                     subMenu.addElement(subMenuHijo);
-                }
-                else{
+                } else {
                     System.out.println("no tiene sub hijos adicionado");
                     DefaultMenuItem item = new DefaultMenuItem(recursoHijo.getEtiqueta());
-                    item.setUrl("" + recursoHijo.getEjecutable());
+                    item.setUrl("/faces"+ recursoHijo.getEjecutable());
                     subMenu.addElement(item);
                 }
             }
@@ -136,15 +180,15 @@ public class TemplateInicioBean implements Serializable {
 
     public boolean tieneHijos(UsrRecursoEntity recurso) {
         for (UsrRecursoEntity recursoHijo : listaRecursos) {
-            if(recurso.getIdRecurso()!=recursoHijo.getIdRecurso()){
-                if (recursoHijo.getIdRecursoPadre()!=null && recursoHijo.getIdRecursoPadre().equals( recurso.getIdRecurso())) {
-                System.out.println("yyyy");
-                System.out.println("" + recurso.getEtiqueta() + " padre de : " + recursoHijo.getEtiqueta());
-                System.out.println("yyyy");
-                return true;
+            if (recurso.getIdRecurso() != recursoHijo.getIdRecurso()) {
+                if (recursoHijo.getIdRecursoPadre() != null && recursoHijo.getIdRecursoPadre().equals(recurso.getIdRecurso())) {
+                    System.out.println("yyyy");
+                    System.out.println("" + recurso.getEtiqueta() + " padre de : " + recursoHijo.getEtiqueta());
+                    System.out.println("yyyy");
+                    return true;
+                }
             }
-            }
-            
+
         }
         System.out.println("xxxxx");
         return false;
@@ -162,7 +206,8 @@ public class TemplateInicioBean implements Serializable {
         // Sin embargo, como ya está fuera del ciclo de vida
         // de JSF se debe usar la ruta completa 
         try {
-            ctx.redirect(ctxPath + "/faces/index.xhtml");
+            //ctx.redirect(ctxPath + "/faces/index.xhtml");
+            ctx.redirect(ctxPath + "/faces/pages/inicio.xhtml");
         } catch (IOException e) {
             System.out.println("Error en cerrar sesion");
             e.printStackTrace();
@@ -192,5 +237,29 @@ public class TemplateInicioBean implements Serializable {
 
     public void setiRecursoService(IRecursoService iRecursoService) {
         this.iRecursoService = iRecursoService;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

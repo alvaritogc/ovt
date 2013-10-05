@@ -20,5 +20,14 @@
             </redirect>
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/pages/inicio.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/pages/bienvenida.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
+        </navigation-case>
+    </navigation-rule>
 
 </faces-config>

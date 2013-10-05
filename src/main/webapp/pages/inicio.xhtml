@@ -9,33 +9,29 @@
     <ui:composition template="../pages/template/templateInicio.xhtml">
         <ui:define name="content">
             <h:form>
-                
-                <p:panel header="Presentación de planillas" >  
-                    <h:panelGrid columns="2" cellpadding="5">  
-                        
-                        <p:selectOneMenu  value="#{inicioBean.idPlanilla}">  
-                            <f:selectItem itemLabel="Planilla trimestral" itemValue="" />  
-                            <f:selectItems value="#{inicioBean.listaPlanillas}" />  
-                            <p:ajax update="@all"  
-                                    listener="#{inicioBean.cargarPeridosPendientes}" />
-                        </p:selectOneMenu>  
-                        <p:outputLabel value=""/>
 
-                        <p:outputLabel value="Periodos pendientes "/>
-                        <p:selectOneMenu value="#{inicioBean.idPlanilla}">  
-                            <f:selectItem itemLabel="Seleccione" itemValue="" />  
-                            <f:selectItems value="#{inicioBean.listaPeriodosPendientes}" />  
-                        </p:selectOneMenu>  
-                    </h:panelGrid>  
-
-                    <p:separator />  
-
-                    <p:fileUpload fileUploadListener="#{inicioBean.handleFileUpload}" mode="advanced"  
-                                  auto="true"
-                                  update="messages"  sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|txt)$/"/>  
-                    <p:growl id="messages" showDetail="true"/>  
-
-                </p:panel>  
+                <h1>BIENVENIDO</h1>
+                <p class="lead">El Servicio de Impuestos Nacionales, SIN, le ofrece el acceso a la Oficina Virtual, la cual le permitirá realizar sus trámites de forma telemática, manteniéndole informado en todo momento del estado de los mismos. Actualmente la Oficina Virtual le brinda los siguientes servicios:</p>
+                <ul>
+                    <li>Inscripción, actualización y modificación de información en el Padrón Nacional Biométrico Digital de Contribuyentes (PBD-11) - Formulario MASI-001.</li>
+                    <li>Presentación y Consulta de Declaraciones Juradas Sin Datos.</li>
+                    <li>Consultar su Situación Tributaria (Mi@SiT).</li>
+                    <li>Consultar su Extracto Tributario.</li>
+                    <li>Certificación Padrón Nacional Biométrico Digital de Contribuyentes.</li>
+                    <li>Certificación de Declaraciones Juradas.</li>
+                    <li>Presentación de Declaraciones Juradas Newton.</li>
+                    <li>Nuevo Sistema de Facturación.</li>
+                    <li> Envió de Información DaVinci.</li>
+                </ul>
+                <h2>OFICINA MÓVIL DISPONIBLE PARA DISPOSITIVOS INTELIGENTES</h2>
+                <p class="lead">La Oficina Móvil de Impuestos Nacionales, le ofrece los siguientes servicios:</p>
+                <ul>
+                    <li> Presentar declaraciones juradas consignando únicamente datos de cabecera, señalando el formulario, mes y año correspondientes al periodo que se desea declarar.</li>
+                    <li>Consultar su extracto tributario</li>
+                    <li> Consultar las fechas de vencimientos</li>
+                    <li>Consultar su Situación Tributaria</li>
+                    <li> Presentar denuncias por no emisión de facturas</li>
+                </ul>
             </h:form>
         </ui:define>
     </ui:composition>

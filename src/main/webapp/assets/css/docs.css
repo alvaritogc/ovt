@@ -240,7 +240,7 @@ only screen and (     -o-min-device-pixel-ratio: 2/1) {
 .subhead {
   text-align: left;
   border-bottom: 1px solid #ddd;
-  margin-top:65px;/*margin-top:39px;*/
+  margin-top:0px;/*margin-top:39px;*/
    background: #014A99; /* Old browsers */
 }
 .subhead h1 {
