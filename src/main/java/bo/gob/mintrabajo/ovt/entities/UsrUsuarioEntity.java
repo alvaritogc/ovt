@@ -8,12 +8,23 @@ import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
- * Date: 03-10-13
+ * Date: 05-10-13
  */
 @javax.persistence.Table(name = "USR_USUARIO", schema = "ROE", catalog = "")
 @Entity
 public class UsrUsuarioEntity {
     private Integer idUsuario;
+    private String usuario;
+    private String clave;
+    private String tipoAutenticacion;
+    private BigInteger esInterno;
+    private BigInteger esDelegado;
+    private String idPersona;
+    private Timestamp fechaInhabilitacion;
+    private Timestamp fechaRehabilitacion;
+    private String estadoUsuario;
+    private Timestamp fechaBitacora;
+    private String registroBitacora;
 
     @javax.persistence.Column(name = "ID_USUARIO")
     @Id
@@ -25,8 +36,6 @@ public class UsrUsuarioEntity {
         this.idUsuario = idUsuario;
     }
 
-    private String usuario;
-
     @javax.persistence.Column(name = "USUARIO")
     @Basic
     public String getUsuario() {
@@ -36,8 +45,6 @@ public class UsrUsuarioEntity {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-
-    private String clave;
 
     @javax.persistence.Column(name = "CLAVE")
     @Basic
@@ -49,8 +56,6 @@ public class UsrUsuarioEntity {
         this.clave = clave;
     }
 
-    private String tipoAutenticacion;
-
     @javax.persistence.Column(name = "TIPO_AUTENTICACION")
     @Basic
     public String getTipoAutenticacion() {
@@ -60,8 +65,6 @@ public class UsrUsuarioEntity {
     public void setTipoAutenticacion(String tipoAutenticacion) {
         this.tipoAutenticacion = tipoAutenticacion;
     }
-
-    private BigInteger esInterno;
 
     @javax.persistence.Column(name = "ES_INTERNO")
     @Basic
@@ -73,8 +76,6 @@ public class UsrUsuarioEntity {
         this.esInterno = esInterno;
     }
 
-    private BigInteger esDelegado;
-
     @javax.persistence.Column(name = "ES_DELEGADO")
     @Basic
     public BigInteger getEsDelegado() {
@@ -85,7 +86,15 @@ public class UsrUsuarioEntity {
         this.esDelegado = esDelegado;
     }
 
-    private Timestamp fechaInhabilitacion;
+    @javax.persistence.Column(name = "ID_PERSONA")
+    @Basic
+    public String getIdPersona() {
+        return idPersona;
+    }
+
+    public void setIdPersona(String idPersona) {
+        this.idPersona = idPersona;
+    }
 
     @javax.persistence.Column(name = "FECHA_INHABILITACION")
     @Basic
@@ -97,8 +106,6 @@ public class UsrUsuarioEntity {
         this.fechaInhabilitacion = fechaInhabilitacion;
     }
 
-    private Timestamp fechaRehabilitacion;
-
     @javax.persistence.Column(name = "FECHA_REHABILITACION")
     @Basic
     public Timestamp getFechaRehabilitacion() {
@@ -108,8 +115,6 @@ public class UsrUsuarioEntity {
     public void setFechaRehabilitacion(Timestamp fechaRehabilitacion) {
         this.fechaRehabilitacion = fechaRehabilitacion;
     }
-
-    private String estadoUsuario;
 
     @javax.persistence.Column(name = "ESTADO_USUARIO")
     @Basic
@@ -121,8 +126,6 @@ public class UsrUsuarioEntity {
         this.estadoUsuario = estadoUsuario;
     }
 
-    private Timestamp fechaBitacora;
-
     @javax.persistence.Column(name = "FECHA_BITACORA")
     @Basic
     public Timestamp getFechaBitacora() {
@@ -132,8 +135,6 @@ public class UsrUsuarioEntity {
     public void setFechaBitacora(Timestamp fechaBitacora) {
         this.fechaBitacora = fechaBitacora;
     }
-
-    private String registroBitacora;
 
     @javax.persistence.Column(name = "REGISTRO_BITACORA")
     @Basic
@@ -163,6 +164,7 @@ public class UsrUsuarioEntity {
             return false;
         if (fechaRehabilitacion != null ? !fechaRehabilitacion.equals(that.fechaRehabilitacion) : that.fechaRehabilitacion != null)
             return false;
+        if (idPersona != null ? !idPersona.equals(that.idPersona) : that.idPersona != null) return false;
         if (idUsuario != null ? !idUsuario.equals(that.idUsuario) : that.idUsuario != null) return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
             return false;
@@ -181,6 +183,7 @@ public class UsrUsuarioEntity {
         result = 31 * result + (tipoAutenticacion != null ? tipoAutenticacion.hashCode() : 0);
         result = 31 * result + (esInterno != null ? esInterno.hashCode() : 0);
         result = 31 * result + (esDelegado != null ? esDelegado.hashCode() : 0);
+        result = 31 * result + (idPersona != null ? idPersona.hashCode() : 0);
         result = 31 * result + (fechaInhabilitacion != null ? fechaInhabilitacion.hashCode() : 0);
         result = 31 * result + (fechaRehabilitacion != null ? fechaRehabilitacion.hashCode() : 0);
         result = 31 * result + (estadoUsuario != null ? estadoUsuario.hashCode() : 0);
