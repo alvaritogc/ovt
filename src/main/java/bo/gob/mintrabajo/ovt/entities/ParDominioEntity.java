@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
- * Date: 03-10-13
+ * Date: 05-10-13
  */
 @javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.ParDominioEntityPK.class)
 @javax.persistence.Table(name = "PAR_DOMINIO", schema = "ROE", catalog = "")
