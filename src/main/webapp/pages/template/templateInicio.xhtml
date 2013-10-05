@@ -57,7 +57,7 @@
 ================================================== -->
         <header class="jumbotron subhead" id="overview">
             <div class="container">
-                <h1>Oficina Virtual de Trámites</h1>
+                <h1>Oficina Virtual Laboral </h1>
                 <p class="lead">Ministerio de trabajo, empleo y previsión social.</p>
             </div>
         </header>
@@ -81,9 +81,7 @@
                             </span>
                             <h:inputSecret value="#{templateInicioBean.password}" required="true" requiredMessage="Debe completar el campo Password"/>
                         </div>       
-                        <label class="checkbox">
-                            <input type="checkbox" value="remember-me"/> Recordarme
-                        </label>
+                        
                         <p:commandButton styleClass="btn btn-large btn-primary" value="Entrar" action="#{templateInicioBean.login}" update="@all" />
                         <p:messages id="messages" />
                         </p:panel>
@@ -101,16 +99,7 @@
                 <div class="span9">
                      <h:form id="idBarraDeMenu" rendered="#{templateInicioBean.idUsuario eq 0 ? false:  true}">
                             <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
-                                <f:facet name="options">  
-                                    <p:panelGrid columns="2" style="border-style: none">
-                                        <p:outputLabel value="#{templateInicioBean.nombreDeUsuario}"/>
-                                        <h:graphicImage value="/images/user.jpg"  width="20px" height="20px"/>
-                                    </p:panelGrid>
-                                </f:facet> 
                             </p:menubar> 
-
-                            
-
                         </h:form>
                     <ui:insert name="content">
                         Content
