@@ -102,7 +102,10 @@
                      <h:form id="idBarraDeMenu" rendered="#{templateInicioBean.idUsuario eq 0 ? false:  true}">
                             <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
                                 <f:facet name="options">  
-                                    <h:graphicImage value="/images/user.jpg"  width="20px" height="20px"/>
+                                    <p:panelGrid columns="2" style="border-style: none">
+                                        <p:outputLabel value="#{templateInicioBean.nombreDeUsuario}"/>
+                                        <h:graphicImage value="/images/user.jpg"  width="20px" height="20px"/>
+                                    </p:panelGrid>
                                 </f:facet> 
                             </p:menubar> 
 

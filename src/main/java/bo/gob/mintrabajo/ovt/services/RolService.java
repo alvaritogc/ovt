@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author pc01
  */
-@Named
+@Named("rolService")
 @TransactionAttribute
 public class RolService implements IRolService{
     private final RolRepository rolRepository;

@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author pc01
  */
-@Named
+@Named("usuarioRolService")
 @TransactionAttribute
 public class UsuarioRolService implements IUsuarioRolService{
     

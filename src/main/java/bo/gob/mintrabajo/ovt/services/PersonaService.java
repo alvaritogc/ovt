@@ -20,7 +20,7 @@ import java.util.List;
  * Time: 6:38 PM
  */
 
-@Named
+@Named("personaService")
 @TransactionAttribute
 public class PersonaService implements IPersonaService{
     private final PersonaRepository personaRepository;

@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author pc01
  */
-@Named
+@Named("dominioService")
 @TransactionAttribute
 public class DominioService implements IDominioService{
     
