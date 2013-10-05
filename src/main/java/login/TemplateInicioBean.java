@@ -62,7 +62,6 @@ public class TemplateInicioBean implements Serializable {
         model = new DefaultMenuModel();
         try {
             BigDecimal bi = BigDecimal.valueOf(idUsuario);
-
             listaRecursos = iRecursoService.buscarPorUsuario(bi);
             logger.info("" + listaRecursos.size());
         } catch (Exception e) {
@@ -72,39 +71,83 @@ public class TemplateInicioBean implements Serializable {
         item.setIcon("ui-icon-search");
         item.setCommand("#{templateInicioBean.logout()}");
         model.addElement(item);
-        
+
     }
 
     public void crearMenuRecurso() {
         logger.info("crearMenuRecurso()");
-        for (UsrRecursoEntity recurso : listaRecursos){
-            logger.info("1");
-            if(recurso.getIdRecursoPadre()==null || recurso.getIdRecursoPadre()==0){
-                DefaultSubMenu subMenu=crearMenuHijos(recurso);
+        for (UsrRecursoEntity recurso : listaRecursos) {
+            logger.info("====");
+            logger.info("id:" + recurso.getIdRecurso());
+            logger.info("rec:" + recurso.getEtiqueta());
+            logger.info("padre:" + recurso.getIdRecursoPadre());
+            logger.info("====");
+            System.out.println("");
+            if (recurso.getIdRecursoPadre() == null) {
+                DefaultSubMenu subMenu = crearMenuHijos(recurso);
                 model.addElement(subMenu);
             }
         }
     }
 
-    public boolean tieneHijos(int idRecurso) {
-        for (UsrRecursoEntity recurso : listaRecursos) {
-            if (recurso.getIdRecursoPadre() == idRecurso) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public DefaultSubMenu crearMenuHijos(UsrRecursoEntity recurso) {
         logger.info("crearMenuHijos()");
         DefaultSubMenu subMenu = new DefaultSubMenu(recurso.getEtiqueta());
-        
+        System.out.println("Creando hijos para " + recurso.getEtiqueta());
         for (UsrRecursoEntity recursoHijo : listaRecursos) {
-            DefaultMenuItem item = new DefaultMenuItem(recursoHijo.getEtiqueta());
-            item.setUrl("" + recursoHijo.getEjecutable());
-            subMenu.addElement(item);
+//            System.out.println("recurso Hijo " + recursoHijo.getEtiqueta());
+//            if (recurso.getIdRecurso() != recursoHijo.getIdRecurso()) {
+//                if (tieneHijos(recursoHijo)) {
+//                    System.out.println("Tiene Hijos");
+//                    DefaultSubMenu subMenuHijo = crearMenuHijos(recursoHijo);
+//                    subMenu.addElement(subMenuHijo);
+//                } else {
+//                    System.out.println("creando item");
+//                    DefaultMenuItem item = new DefaultMenuItem(recursoHijo.getEtiqueta());
+//                    item.setUrl("" + recursoHijo.getEjecutable());
+//                    subMenu.addElement(item);
+//                }
+//            }
+            System.out.println("========================================");
+            System.out.println("========================================");
+            System.out.println("========================================");
+            System.out.println("Padre"+recurso.getEtiqueta());
+            System.out.println("Hijo"+recursoHijo.getEtiqueta());
+            if(recursoHijo.getIdRecursoPadre()!=null && recursoHijo.getIdRecursoPadre().equals(recurso.getIdRecurso())){
+                System.out.println("es su hijo");
+                if(tieneHijos(recursoHijo)){
+                    System.out.println("tiene sub hijos");
+                    DefaultSubMenu subMenuHijo = crearMenuHijos(recursoHijo);
+                    subMenu.addElement(subMenuHijo);
+                }
+                else{
+                    System.out.println("no tiene sub hijos adicionado");
+                    DefaultMenuItem item = new DefaultMenuItem(recursoHijo.getEtiqueta());
+                    item.setUrl("" + recursoHijo.getEjecutable());
+                    subMenu.addElement(item);
+                }
+            }
+            System.out.println("========================================");
+            System.out.println("========================================");
+            System.out.println("========================================");
         }
         return subMenu;
+    }
+
+    public boolean tieneHijos(UsrRecursoEntity recurso) {
+        for (UsrRecursoEntity recursoHijo : listaRecursos) {
+            if(recurso.getIdRecurso()!=recursoHijo.getIdRecurso()){
+                if (recursoHijo.getIdRecursoPadre()!=null && recursoHijo.getIdRecursoPadre().equals( recurso.getIdRecurso())) {
+                System.out.println("yyyy");
+                System.out.println("" + recurso.getEtiqueta() + " padre de : " + recursoHijo.getEtiqueta());
+                System.out.println("yyyy");
+                return true;
+            }
+            }
+            
+        }
+        System.out.println("xxxxx");
+        return false;
     }
 
     public String logout() {

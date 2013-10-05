@@ -59,16 +59,17 @@
                     </button>
                     <!--<a class="brand" href="./index.html"></a>-->
                     <div class="nav-collapse collapse">
-
-                        <h:form>
+                        <h:form id="idBarraDeMenu">
                             <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
-                                <p:menuitem value="Quit" url="http://www.primefaces.org" icon="ui-icon-close" />  
                                 <f:facet name="options">  
-                                    <p:menuButton value="Opciones" styleClass="btn btn-navbar" >  
-                                        <p:menuitem value="Salir" actionListener="#{templateInicioBean.logout}"  icon="ui-icon-disk"/>
-                                    </p:menuButton> 
+                                    <p:commandButton id="dynaButton" value="*" type="button"/>
                                 </f:facet> 
                             </p:menubar> 
+
+                            <p:slideMenu overlay="true" trigger=":idBarraDeMenu:dynaButton" my="left top" at="left bottom" style="width:180px; left:980px;top:40px;">   
+                                <p:menuitem value="Salir" action="#{templateInicioBean.logout}"/>  
+                            </p:slideMenu> 
+
                         </h:form>
                     </div>
                 </div>
@@ -81,11 +82,11 @@
             <!-- Docs nav
             ================================================== -->
             <div class="row">
-                
+
                 <div class="span9">
-                     <ui:insert name="content">
-                Content
-            </ui:insert>
+                    <ui:insert name="content">
+                        Content
+                    </ui:insert>
                 </div>
             </div>
 
