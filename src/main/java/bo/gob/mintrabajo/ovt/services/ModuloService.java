@@ -18,7 +18,7 @@ import java.util.List;
  * Time: 6:38 PM
  */
 
-@Named
+@Named("moduloService")
 @TransactionAttribute
 public class ModuloService implements IModuloService {
 

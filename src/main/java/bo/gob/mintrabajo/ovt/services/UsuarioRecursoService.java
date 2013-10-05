@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author pc01
  */
-@Named
+@Named("usuarioRecursoService")
 @TransactionAttribute
 public class UsuarioRecursoService implements IUsuarioRecursoService{
     private final UsuarioRecursoRepository usuarioRecursoRepository;

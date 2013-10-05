@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author pc01
  */
-@Named
+@Named("unidadService")
 @TransactionAttribute
 public class UnidadService implements IUnidadService{
     private final UnidadRepository unidadRepository;

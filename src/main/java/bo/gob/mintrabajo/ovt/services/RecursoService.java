@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author pc01
  */
-@Named
+@Named("recursoService")
 @TransactionAttribute
 public class RecursoService implements IRecursoService{
     
