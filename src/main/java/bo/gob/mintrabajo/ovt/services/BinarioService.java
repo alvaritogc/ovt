@@ -12,7 +12,7 @@ import javax.inject.Named;
  * User: Renato Velasquez
  * Date: 03-10-13
  */
-@Named
+@Named("binService")
 @TransactionAttribute
 public class BinarioService implements IBinarioService{
 
