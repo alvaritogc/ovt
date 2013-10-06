@@ -119,6 +119,58 @@ public class DocDocumentoEntity {
     public void setIdEstadoDocumento(String idEstadoDocumento) {
         this.idEstadoDocumento = idEstadoDocumento;
     }
+    
+    private String idPersona;
+    @javax.persistence.Column(name = "ID_PERSONA")
+    @Basic
+    public String getIdPersona() {
+        return idPersona;
+    }
+    public void setIdPersona(String idPersona) {
+        this.idPersona = idPersona;
+    }
+
+    private Integer idUnidad;
+    @javax.persistence.Column(name = "ID_UNIDAD")
+    @Basic
+    public Integer getIdUnidad() {
+        return idUnidad;
+    }
+    public void setIdUnidad(Integer idUnidad) {
+        this.idUnidad = idUnidad;
+    }
+    
+    private String codDocumento;
+    @javax.persistence.Column(name = "COD_DOCUMENTO")
+    @Basic
+    public String getCodDocumento() {
+        return codDocumento;
+    }
+    public void setCodDocumento(String codDocumento) {
+        this.codDocumento = codDocumento;
+    }
+    
+    private Integer version;
+    @javax.persistence.Column(name = "VERSION")
+    @Basic
+    public Integer getVersion() {
+        return version;
+    }
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+    
+    private Integer idDocumentoRef;
+    @javax.persistence.Column(name = "ID_DOCUMENTO_REF")
+    @Basic
+    public Integer getIdDocumentoRef() {
+        return idDocumentoRef;
+    }
+    public void setIdDocumentoRef(Integer idDocumentoRef) {
+        this.idDocumentoRef = idDocumentoRef;
+    }
+    
+    
 
     @Override
     public boolean equals(Object o) {
@@ -158,4 +210,11 @@ public class DocDocumentoEntity {
         result = 31 * result + (idEstadoDocumento != null ? idEstadoDocumento.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "DocDocumentoEntity{" + "idDocumento=" + idDocumento + ", numeroDocumento=" + numeroDocumento + ", fechaDocumento=" + fechaDocumento + ", fechaReferenca=" + fechaReferenca + ", tipoMedioRegistro=" + tipoMedioRegistro + ", fechaBitacora=" + fechaBitacora + ", registroBitacora=" + registroBitacora + ", codEstado=" + codEstado + ", idEstadoDocumento=" + idEstadoDocumento + ", idPersona=" + idPersona + ", idUnidad=" + idUnidad + ", codDocumento=" + codDocumento + ", version=" + version + ", idDocumentoRef=" + idDocumentoRef + '}';
+    }
+    
+    
 }

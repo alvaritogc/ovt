@@ -79,37 +79,38 @@ public class DocumentoService implements IDocumentoService{
         return entity;
     }
     
-     //@Override
+    @Override
     public DocDocumentoEntity guardar(DocDocumentoEntity documento) {
-        if(documento!=null){
+        if(documento==null){
+            System.out.println("Error en el documento");
             throw new RuntimeException("Error en el documento");
         }
-        //documento.setIdPersona
-        //documento.setIdUni 
-        //documento.setCodDocumento
-        //documento.setVersion
-        //documento.set
-        documento.setNumeroDocumento(documento.getIdDocumento());
+        //
+        documento.setIdDocumento(1);
+        //
+        documento.setCodDocumento("PTR");
+        documento.setVersion(1);
+        documento.setNumeroDocumento(1);
         Date date= new java.util.Date();
         documento.setFechaDocumento(new Timestamp(date.getTime()));
-        //documento.setiddocumentoREf
+        //
+        documento.setIdDocumentoRef(null);
+        //
         documento.setCodEstado("000");
         documento.setFechaReferenca(null);
         documento.setTipoMedioRegistro("OFVIR");
         documento.setFechaBitacora(new Timestamp(date.getTime()));
-        documento.setRegistroBitacora("");
+        //
+        documento.setIdEstadoDocumento("1");
         //
         DocDocumentoEntity entity;
-        try {
-            entity = repository.save(documento);
-        } catch (Exception e) {
-            e.printStackTrace();
-            entity = null;
-            throw new RuntimeException("Error al guardar el documento");
-        }
+        //
+        //System.out.println(""+documento.toString());
+        entity = repository.save(documento);
         return entity;
     }
     
+    @Override
     public List<DocDocumentoEntity> listarPorPersona(String idPersona) {
         List<DocDocumentoEntity> lista;
         try {
