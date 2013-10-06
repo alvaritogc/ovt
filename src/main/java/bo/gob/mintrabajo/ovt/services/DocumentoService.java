@@ -86,11 +86,12 @@ public class DocumentoService implements IDocumentoService{
             throw new RuntimeException("Error en el documento");
         }
         //
-        documento.setIdDocumento(1);
+        documento.setIdDocumento(repository.findAll().size()+1);
         //
         documento.setCodDocumento("PTR");
         documento.setVersion(1);
-        documento.setNumeroDocumento(1);
+        //documento.setNumeroDocumento(1);
+        documento.setNumeroDocumento(repository.findAll().size()+1);
         Date date= new java.util.Date();
         documento.setFechaDocumento(new Timestamp(date.getTime()));
         //

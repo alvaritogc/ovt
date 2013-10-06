@@ -5,6 +5,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import bo.gob.mintrabajo.ovt.api.*;
+import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
 import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
 import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
@@ -36,11 +37,15 @@ public class BienvenidaBean {
     private IPersonaService iPersonaService;
     @ManagedProperty(value = "#{unidadService}")
     private IUnidadService iUnidadService;
+    @ManagedProperty(value = "#{documentoService}")
+    private IDocumentoService iDocumentoService;
     //
     private String textoBenvenida;
     //
     private PerPersonaEntity persona;
     private List<PerUnidadEntity> listaUnidades;
+    //
+    private List<DocDocumentoEntity> listaDocumentos;
 
     @PostConstruct
     public void ini() {
@@ -58,8 +63,20 @@ public class BienvenidaBean {
     public void cargar() {
         textoBenvenida="Bienvenido  OVT";
         listaUnidades=iUnidadService.listarPorPersona(persona.getIdPersona());
+        cargarDocumentos();
     }
-    
+    public void cargarDocumentos(){
+        try{
+            listaDocumentos=iDocumentoService.listarPorPersona(persona.getIdPersona());
+            if(listaDocumentos==null){
+            listaDocumentos=new ArrayList<DocDocumentoEntity>();
+        }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            listaDocumentos=new ArrayList<DocDocumentoEntity>();
+        }
+    }
 
     public IUsuarioService getiUsuarioService() {
         return iUsuarioService;
@@ -107,5 +124,21 @@ public class BienvenidaBean {
 
     public void setListaUnidades(List<PerUnidadEntity> listaUnidades) {
         this.listaUnidades = listaUnidades;
+    }
+
+    public IDocumentoService getiDocumentoService() {
+        return iDocumentoService;
+    }
+
+    public void setiDocumentoService(IDocumentoService iDocumentoService) {
+        this.iDocumentoService = iDocumentoService;
+    }
+
+    public List<DocDocumentoEntity> getListaDocumentos() {
+        return listaDocumentos;
+    }
+
+    public void setListaDocumentos(List<DocDocumentoEntity> listaDocumentos) {
+        this.listaDocumentos = listaDocumentos;
     }
 }
