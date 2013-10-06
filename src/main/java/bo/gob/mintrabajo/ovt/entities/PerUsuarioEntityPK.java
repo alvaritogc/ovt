@@ -8,35 +8,35 @@ import java.io.Serializable;
  * User: Renato Velasquez.
  * Date: 06-10-13
  */
-public class PerUsuarioUnidadEntityPK implements Serializable {
-    private Integer idUsuario;
-    private String idPersona;@Id@Column(name = "ID_USUARIO")
-                             public Integer getIdUsuario() {
-        return idUsuario;
+public class PerUsuarioEntityPK implements Serializable {
+    private String idPersona;
+    private Integer idUnidad;@Id@Column(name = "ID_PERSONA")
+                             public String getIdPersona() {
+        return idPersona;
     }
 
-    private Integer idUnidad;
-
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
-        }
-
-    @Id
-@Column(name = "ID_PERSONA")
-public String getIdPersona() {
-    return idPersona;
-}
+    private Integer idUsuario;
 
     public void setIdPersona(String idPersona) {
         this.idPersona = idPersona;
+        }
+
+        @Id
+    @Column(name = "ID_UNIDAD")
+    public Integer getIdUnidad() {
+        return idUnidad;
     }
-@Id@Column(name = "ID_UNIDAD")
-public Integer getIdUnidad() {
-    return idUnidad;
-}
 
     public void setIdUnidad(Integer idUnidad) {
         this.idUnidad = idUnidad;
+    }
+@Id@Column(name = "ID_USUARIO")
+public Integer getIdUsuario() {
+    return idUsuario;
+}
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override
@@ -44,7 +44,7 @@ public Integer getIdUnidad() {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PerUsuarioUnidadEntityPK that = (PerUsuarioUnidadEntityPK) o;
+        PerUsuarioEntityPK that = (PerUsuarioEntityPK) o;
 
         if (idPersona != null ? !idPersona.equals(that.idPersona) : that.idPersona != null) return false;
         if (idUnidad != null ? !idUnidad.equals(that.idUnidad) : that.idUnidad != null) return false;
@@ -55,8 +55,8 @@ public Integer getIdUnidad() {
 
     @Override
     public int hashCode() {
-        int result = idUsuario != null ? idUsuario.hashCode() : 0;
-        result = 31 * result + (idPersona != null ? idPersona.hashCode() : 0);
+        int result = idPersona != null ? idPersona.hashCode() : 0;
         result = 31 * result + (idUnidad != null ? idUnidad.hashCode() : 0);
+        result = 31 * result + (idUsuario != null ? idUsuario.hashCode() : 0);
         return result;
 }}

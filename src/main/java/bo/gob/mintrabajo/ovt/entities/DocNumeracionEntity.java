@@ -6,8 +6,9 @@ import javax.persistence.Id;
 
 /**
  * User: Renato Velasquez.
- * Date: 05-10-13
+ * Date: 06-10-13
  */
+@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.DocNumeracionEntityPK.class)
 @javax.persistence.Table(name = "DOC_NUMERACION", schema = "ROE", catalog = "")
 @Entity
 public class DocNumeracionEntity {
@@ -26,7 +27,7 @@ public class DocNumeracionEntity {
     private Integer version;
 
     @javax.persistence.Column(name = "VERSION")
-    @Basic
+    @Id
     public Integer getVersion() {
         return version;
     }

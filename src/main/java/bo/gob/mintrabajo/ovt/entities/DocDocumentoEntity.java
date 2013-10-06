@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
- * Date: 05-10-13
+ * Date: 06-10-13
  */
 @javax.persistence.Table(name = "DOC_DOCUMENTO", schema = "ROE", catalog = "")
 @Entity
@@ -22,42 +22,6 @@ public class DocDocumentoEntity {
 
     public void setIdDocumento(Integer idDocumento) {
         this.idDocumento = idDocumento;
-    }
-
-    private String idPersona;
-
-    @javax.persistence.Column(name = "ID_PERSONA")
-    @Basic
-    public String getIdPersona() {
-        return idPersona;
-    }
-
-    public void setIdPersona(String idPersona) {
-        this.idPersona = idPersona;
-    }
-
-    private Integer idUnidad;
-
-    @javax.persistence.Column(name = "ID_UNIDAD")
-    @Basic
-    public Integer getIdUnidad() {
-        return idUnidad;
-    }
-
-    public void setIdUnidad(Integer idUnidad) {
-        this.idUnidad = idUnidad;
-    }
-
-    private String codDocumento;
-
-    @javax.persistence.Column(name = "COD_DOCUMENTO")
-    @Basic
-    public String getCodDocumento() {
-        return codDocumento;
-    }
-
-    public void setCodDocumento(String codDocumento) {
-        this.codDocumento = codDocumento;
     }
 
     private Integer numeroDocumento;
@@ -82,30 +46,6 @@ public class DocDocumentoEntity {
 
     public void setFechaDocumento(Timestamp fechaDocumento) {
         this.fechaDocumento = fechaDocumento;
-    }
-
-    private Integer idDocumentoRef;
-
-    @javax.persistence.Column(name = "ID_DOCUMENTO_REF")
-    @Basic
-    public Integer getIdDocumentoRef() {
-        return idDocumentoRef;
-    }
-
-    public void setIdDocumentoRef(Integer idDocumentoRef) {
-        this.idDocumentoRef = idDocumentoRef;
-    }
-
-    private String codEstado;
-
-    @javax.persistence.Column(name = "COD_ESTADO")
-    @Basic
-    public String getCodEstado() {
-        return codEstado;
-    }
-
-    public void setCodEstado(String codEstado) {
-        this.codEstado = codEstado;
     }
 
     private Timestamp fechaReferenca;
@@ -156,6 +96,30 @@ public class DocDocumentoEntity {
         this.registroBitacora = registroBitacora;
     }
 
+    private String codEstado;
+
+    @javax.persistence.Column(name = "COD_ESTADO")
+    @Basic
+    public String getCodEstado() {
+        return codEstado;
+    }
+
+    public void setCodEstado(String codEstado) {
+        this.codEstado = codEstado;
+    }
+
+    private String idEstadoDocumento;
+
+    @javax.persistence.Column(name = "ID_ESTADO_DOCUMENTO")
+    @Basic
+    public String getIdEstadoDocumento() {
+        return idEstadoDocumento;
+    }
+
+    public void setIdEstadoDocumento(String idEstadoDocumento) {
+        this.idEstadoDocumento = idEstadoDocumento;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -163,8 +127,6 @@ public class DocDocumentoEntity {
 
         DocDocumentoEntity that = (DocDocumentoEntity) o;
 
-        if (codDocumento != null ? !codDocumento.equals(that.codDocumento) : that.codDocumento != null) return false;
-        if (codEstado != null ? !codEstado.equals(that.codEstado) : that.codEstado != null) return false;
         if (fechaBitacora != null ? !fechaBitacora.equals(that.fechaBitacora) : that.fechaBitacora != null)
             return false;
         if (fechaDocumento != null ? !fechaDocumento.equals(that.fechaDocumento) : that.fechaDocumento != null)
@@ -172,10 +134,8 @@ public class DocDocumentoEntity {
         if (fechaReferenca != null ? !fechaReferenca.equals(that.fechaReferenca) : that.fechaReferenca != null)
             return false;
         if (idDocumento != null ? !idDocumento.equals(that.idDocumento) : that.idDocumento != null) return false;
-        if (idDocumentoRef != null ? !idDocumentoRef.equals(that.idDocumentoRef) : that.idDocumentoRef != null)
+        if (idEstadoDocumento != null ? !idEstadoDocumento.equals(that.idEstadoDocumento) : that.idEstadoDocumento != null)
             return false;
-        if (idPersona != null ? !idPersona.equals(that.idPersona) : that.idPersona != null) return false;
-        if (idUnidad != null ? !idUnidad.equals(that.idUnidad) : that.idUnidad != null) return false;
         if (numeroDocumento != null ? !numeroDocumento.equals(that.numeroDocumento) : that.numeroDocumento != null)
             return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
@@ -189,17 +149,13 @@ public class DocDocumentoEntity {
     @Override
     public int hashCode() {
         int result = idDocumento != null ? idDocumento.hashCode() : 0;
-        result = 31 * result + (idPersona != null ? idPersona.hashCode() : 0);
-        result = 31 * result + (idUnidad != null ? idUnidad.hashCode() : 0);
-        result = 31 * result + (codDocumento != null ? codDocumento.hashCode() : 0);
         result = 31 * result + (numeroDocumento != null ? numeroDocumento.hashCode() : 0);
         result = 31 * result + (fechaDocumento != null ? fechaDocumento.hashCode() : 0);
-        result = 31 * result + (idDocumentoRef != null ? idDocumentoRef.hashCode() : 0);
-        result = 31 * result + (codEstado != null ? codEstado.hashCode() : 0);
         result = 31 * result + (fechaReferenca != null ? fechaReferenca.hashCode() : 0);
         result = 31 * result + (tipoMedioRegistro != null ? tipoMedioRegistro.hashCode() : 0);
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
+        result = 31 * result + (idEstadoDocumento != null ? idEstadoDocumento.hashCode() : 0);
         return result;
     }
 }

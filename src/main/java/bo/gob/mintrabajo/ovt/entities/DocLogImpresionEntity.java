@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
- * Date: 05-10-13
+ * Date: 06-10-13
  */
 @javax.persistence.Table(name = "DOC_LOG_IMPRESION", schema = "ROE", catalog = "")
 @Entity
@@ -22,18 +22,6 @@ public class DocLogImpresionEntity {
 
     public void setIdDoclogimpresion(Integer idDoclogimpresion) {
         this.idDoclogimpresion = idDoclogimpresion;
-    }
-
-    private Integer idDocumento;
-
-    @javax.persistence.Column(name = "ID_DOCUMENTO")
-    @Basic
-    public Integer getIdDocumento() {
-        return idDocumento;
-    }
-
-    public void setIdDocumento(Integer idDocumento) {
-        this.idDocumento = idDocumento;
     }
 
     private Timestamp fechaBitacora;
@@ -71,7 +59,6 @@ public class DocLogImpresionEntity {
             return false;
         if (idDoclogimpresion != null ? !idDoclogimpresion.equals(that.idDoclogimpresion) : that.idDoclogimpresion != null)
             return false;
-        if (idDocumento != null ? !idDocumento.equals(that.idDocumento) : that.idDocumento != null) return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
             return false;
 
@@ -81,7 +68,6 @@ public class DocLogImpresionEntity {
     @Override
     public int hashCode() {
         int result = idDoclogimpresion != null ? idDoclogimpresion.hashCode() : 0;
-        result = 31 * result + (idDocumento != null ? idDocumento.hashCode() : 0);
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;

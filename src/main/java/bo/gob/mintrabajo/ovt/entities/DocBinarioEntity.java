@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
- * Date: 05-10-13
+ * Date: 06-10-13
  */
 @javax.persistence.Table(name = "DOC_BINARIO", schema = "ROE", catalog = "")
 @Entity

@@ -77,7 +77,7 @@ public class TemplateInicioBean implements Serializable {
             logger.info("usuario ok");
             cargar();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             model = new DefaultMenuModel();
             DefaultMenuItem item = new DefaultMenuItem("Salir");
             item.setIcon("ui-icon-search");

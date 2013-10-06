@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
- * Date: 05-10-13
+ * Date: 06-10-13
  */
 @javax.persistence.Table(name = "DOC_LOG_ESTADO", schema = "ROE", catalog = "")
 @Entity
@@ -22,6 +22,18 @@ public class DocLogEstadoEntity {
 
     public void setIdLogestado(Integer idLogestado) {
         this.idLogestado = idLogestado;
+    }
+
+    private Integer idDocumento;
+
+    @javax.persistence.Column(name = "ID_DOCUMENTO")
+    @Basic
+    public Integer getIdDocumento() {
+        return idDocumento;
+    }
+
+    public void setIdDocumento(Integer idDocumento) {
+        this.idDocumento = idDocumento;
     }
 
     private String codEstadoInicial;
@@ -85,6 +97,7 @@ public class DocLogEstadoEntity {
             return false;
         if (fechaBitacora != null ? !fechaBitacora.equals(that.fechaBitacora) : that.fechaBitacora != null)
             return false;
+        if (idDocumento != null ? !idDocumento.equals(that.idDocumento) : that.idDocumento != null) return false;
         if (idLogestado != null ? !idLogestado.equals(that.idLogestado) : that.idLogestado != null) return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
             return false;
@@ -95,6 +108,7 @@ public class DocLogEstadoEntity {
     @Override
     public int hashCode() {
         int result = idLogestado != null ? idLogestado.hashCode() : 0;
+        result = 31 * result + (idDocumento != null ? idDocumento.hashCode() : 0);
         result = 31 * result + (codEstadoInicial != null ? codEstadoInicial.hashCode() : 0);
         result = 31 * result + (codEstadoFinal != null ? codEstadoFinal.hashCode() : 0);
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);

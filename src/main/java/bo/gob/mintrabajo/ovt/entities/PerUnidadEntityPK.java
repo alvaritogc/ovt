@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * User: Renato Velasquez.
- * Date: 05-10-13
+ * Date: 06-10-13
  */
 public class PerUnidadEntityPK implements Serializable {
     private String idPersona;

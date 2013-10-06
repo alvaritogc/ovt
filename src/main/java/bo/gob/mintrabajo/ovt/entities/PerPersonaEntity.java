@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
- * Date: 05-10-13
+ * Date: 06-10-13
  */
 @javax.persistence.Table(name = "PER_PERSONA", schema = "ROE", catalog = "")
 @Entity
@@ -97,18 +97,6 @@ public class PerPersonaEntity {
         this.esNatural = esNatural;
     }
 
-    private String codLocalidad;
-
-    @javax.persistence.Column(name = "COD_LOCALIDAD")
-    @Basic
-    public String getCodLocalidad() {
-        return codLocalidad;
-    }
-
-    public void setCodLocalidad(String codLocalidad) {
-        this.codLocalidad = codLocalidad;
-    }
-
     private Timestamp fechaBitacora;
 
     @javax.persistence.Column(name = "FECHA_BITACORA")
@@ -144,7 +132,6 @@ public class PerPersonaEntity {
             return false;
         if (apellidoPaterno != null ? !apellidoPaterno.equals(that.apellidoPaterno) : that.apellidoPaterno != null)
             return false;
-        if (codLocalidad != null ? !codLocalidad.equals(that.codLocalidad) : that.codLocalidad != null) return false;
         if (esNatural != null ? !esNatural.equals(that.esNatural) : that.esNatural != null) return false;
         if (fechaBitacora != null ? !fechaBitacora.equals(that.fechaBitacora) : that.fechaBitacora != null)
             return false;
@@ -170,7 +157,6 @@ public class PerPersonaEntity {
         result = 31 * result + (apellidoPaterno != null ? apellidoPaterno.hashCode() : 0);
         result = 31 * result + (apellidoMaterno != null ? apellidoMaterno.hashCode() : 0);
         result = 31 * result + (esNatural != null ? esNatural.hashCode() : 0);
-        result = 31 * result + (codLocalidad != null ? codLocalidad.hashCode() : 0);
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;

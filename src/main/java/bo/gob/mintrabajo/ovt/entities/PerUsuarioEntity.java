@@ -9,44 +9,44 @@ import java.sql.Timestamp;
  * User: Renato Velasquez.
  * Date: 06-10-13
  */
-@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.UsrRolRecursoEntityPK.class)
-@javax.persistence.Table(name = "USR_ROL_RECURSO", schema = "ROE", catalog = "")
+@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.PerUsuarioEntityPK.class)
+@javax.persistence.Table(name = "PER_USUARIO", schema = "ROE", catalog = "")
 @Entity
-public class UsrRolRecursoEntity {
-    private Integer idRol;
+public class PerUsuarioEntity {
+    private String idPersona;
 
-    @javax.persistence.Column(name = "ID_ROL")
+    @javax.persistence.Column(name = "ID_PERSONA")
     @Id
-    public Integer getIdRol() {
-        return idRol;
+    public String getIdPersona() {
+        return idPersona;
     }
 
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
+    public void setIdPersona(String idPersona) {
+        this.idPersona = idPersona;
     }
 
-    private Integer idRecurso;
+    private Integer idUnidad;
 
-    @javax.persistence.Column(name = "ID_RECURSO")
+    @javax.persistence.Column(name = "ID_UNIDAD")
     @Id
-    public Integer getIdRecurso() {
-        return idRecurso;
+    public Integer getIdUnidad() {
+        return idUnidad;
     }
 
-    public void setIdRecurso(Integer idRecurso) {
-        this.idRecurso = idRecurso;
+    public void setIdUnidad(Integer idUnidad) {
+        this.idUnidad = idUnidad;
     }
 
-    private String wx;
+    private Integer idUsuario;
 
-    @javax.persistence.Column(name = "WX")
-    @Basic
-    public String getWx() {
-        return wx;
+    @javax.persistence.Column(name = "ID_USUARIO")
+    @Id
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setWx(String wx) {
-        this.wx = wx;
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     private Timestamp fechaBitacora;
@@ -78,24 +78,24 @@ public class UsrRolRecursoEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UsrRolRecursoEntity that = (UsrRolRecursoEntity) o;
+        PerUsuarioEntity that = (PerUsuarioEntity) o;
 
         if (fechaBitacora != null ? !fechaBitacora.equals(that.fechaBitacora) : that.fechaBitacora != null)
             return false;
-        if (idRecurso != null ? !idRecurso.equals(that.idRecurso) : that.idRecurso != null) return false;
-        if (idRol != null ? !idRol.equals(that.idRol) : that.idRol != null) return false;
+        if (idPersona != null ? !idPersona.equals(that.idPersona) : that.idPersona != null) return false;
+        if (idUnidad != null ? !idUnidad.equals(that.idUnidad) : that.idUnidad != null) return false;
+        if (idUsuario != null ? !idUsuario.equals(that.idUsuario) : that.idUsuario != null) return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
             return false;
-        if (wx != null ? !wx.equals(that.wx) : that.wx != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = idRol != null ? idRol.hashCode() : 0;
-        result = 31 * result + (idRecurso != null ? idRecurso.hashCode() : 0);
-        result = 31 * result + (wx != null ? wx.hashCode() : 0);
+        int result = idPersona != null ? idPersona.hashCode() : 0;
+        result = 31 * result + (idUnidad != null ? idUnidad.hashCode() : 0);
+        result = 31 * result + (idUsuario != null ? idUsuario.hashCode() : 0);
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;

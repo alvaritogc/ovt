@@ -7,8 +7,9 @@ import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
- * Date: 05-10-13
+ * Date: 06-10-13
  */
+@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.DocDefinicionEntityPK.class)
 @javax.persistence.Table(name = "DOC_DEFINICION", schema = "ROE", catalog = "")
 @Entity
 public class DocDefinicionEntity {
@@ -22,6 +23,18 @@ public class DocDefinicionEntity {
 
     public void setCodDocumento(String codDocumento) {
         this.codDocumento = codDocumento;
+    }
+
+    private Integer version;
+
+    @javax.persistence.Column(name = "VERSION")
+    @Id
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     private String nombre;
@@ -58,7 +71,9 @@ public class DocDefinicionEntity {
 
     public void setFechaBitacora(Timestamp fechaBitacora) {
         this.fechaBitacora = fechaBitacora;
-    }    private String registroBitacora;
+    }
+
+    private String registroBitacora;
 
     @javax.persistence.Column(name = "REGISTRO_BITACORA")
     @Basic
@@ -85,6 +100,7 @@ public class DocDefinicionEntity {
             return false;
         if (tipoGrupoDocumento != null ? !tipoGrupoDocumento.equals(that.tipoGrupoDocumento) : that.tipoGrupoDocumento != null)
             return false;
+        if (version != null ? !version.equals(that.version) : that.version != null) return false;
 
         return true;
     }
@@ -92,6 +108,7 @@ public class DocDefinicionEntity {
     @Override
     public int hashCode() {
         int result = codDocumento != null ? codDocumento.hashCode() : 0;
+        result = 31 * result + (version != null ? version.hashCode() : 0);
         result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
         result = 31 * result + (tipoGrupoDocumento != null ? tipoGrupoDocumento.hashCode() : 0);
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);

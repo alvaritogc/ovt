@@ -1,14 +1,17 @@
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
- * Date: 03-10-13
+ * Date: 06-10-13
  */
-@Table(name = "USR_RECURSO", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "USR_RECURSO", schema = "ROE", catalog = "")
 @Entity
 public class UsrRecursoEntity {
     private Integer idRecurso;
@@ -25,7 +28,7 @@ public class UsrRecursoEntity {
     private String idModulo;
     private Integer idRecursoPadre;
 
-    @Column(name = "ID_RECURSO")
+    @javax.persistence.Column(name = "ID_RECURSO")
     @Id
     public Integer getIdRecurso() {
         return idRecurso;
@@ -35,7 +38,7 @@ public class UsrRecursoEntity {
         this.idRecurso = idRecurso;
     }
 
-    @Column(name = "TIPO_RECURSO")
+    @javax.persistence.Column(name = "TIPO_RECURSO")
     @Basic
     public String getTipoRecurso() {
         return tipoRecurso;
@@ -45,7 +48,7 @@ public class UsrRecursoEntity {
         this.tipoRecurso = tipoRecurso;
     }
 
-    @Column(name = "TIPO_PLATAFORMA")
+    @javax.persistence.Column(name = "TIPO_PLATAFORMA")
     @Basic
     public String getTipoPlataforma() {
         return tipoPlataforma;
@@ -55,7 +58,7 @@ public class UsrRecursoEntity {
         this.tipoPlataforma = tipoPlataforma;
     }
 
-    @Column(name = "ORDEN")
+    @javax.persistence.Column(name = "ORDEN")
     @Basic
     public Integer getOrden() {
         return orden;
@@ -65,7 +68,7 @@ public class UsrRecursoEntity {
         this.orden = orden;
     }
 
-    @Column(name = "ETIQUETA")
+    @javax.persistence.Column(name = "ETIQUETA")
     @Basic
     public String getEtiqueta() {
         return etiqueta;
@@ -75,7 +78,7 @@ public class UsrRecursoEntity {
         this.etiqueta = etiqueta;
     }
 
-    @Column(name = "DESCRIPCION")
+    @javax.persistence.Column(name = "DESCRIPCION")
     @Basic
     public String getDescripcion() {
         return descripcion;
@@ -85,7 +88,7 @@ public class UsrRecursoEntity {
         this.descripcion = descripcion;
     }
 
-    @Column(name = "EJECUTABLE")
+    @javax.persistence.Column(name = "EJECUTABLE")
     @Basic
     public String getEjecutable() {
         return ejecutable;
@@ -95,7 +98,7 @@ public class UsrRecursoEntity {
         this.ejecutable = ejecutable;
     }
 
-    @Column(name = "ES_VERIFICABLE")
+    @javax.persistence.Column(name = "ES_VERIFICABLE")
     @Basic
     public BigInteger getEsVerificable() {
         return esVerificable;
@@ -105,7 +108,7 @@ public class UsrRecursoEntity {
         this.esVerificable = esVerificable;
     }
 
-    @Column(name = "ESTADO")
+    @javax.persistence.Column(name = "ESTADO")
     @Basic
     public String getEstado() {
         return estado;
@@ -115,7 +118,7 @@ public class UsrRecursoEntity {
         this.estado = estado;
     }
 
-    @Column(name = "FECHA_BITACORA")
+    @javax.persistence.Column(name = "FECHA_BITACORA")
     @Basic
     public Timestamp getFechaBitacora() {
         return fechaBitacora;
@@ -125,7 +128,7 @@ public class UsrRecursoEntity {
         this.fechaBitacora = fechaBitacora;
     }
 
-    @Column(name = "REGISTRO_BITACORA")
+    @javax.persistence.Column(name = "REGISTRO_BITACORA")
     @Basic
     public String getRegistroBitacora() {
         return registroBitacora;
@@ -133,6 +136,26 @@ public class UsrRecursoEntity {
 
     public void setRegistroBitacora(String registroBitacora) {
         this.registroBitacora = registroBitacora;
+    }
+
+    @Column(name = "ID_MODULO")
+    @Basic
+    public String getIdModulo() {
+        return idModulo;
+    }
+
+    public void setIdModulo(String idModulo) {
+        this.idModulo = idModulo;
+    }
+
+    @Column(name = "ID RECURSO_PADRE")
+    @Basic
+    public Integer getIdRecursoPadre() {
+        return idRecursoPadre;
+    }
+
+    public void setIdRecursoPadre(Integer idRecursoPadre) {
+        this.idRecursoPadre = idRecursoPadre;
     }
 
     @Override
@@ -175,25 +198,5 @@ public class UsrRecursoEntity {
         result = 31 * result + (fechaBitacora != null ? fechaBitacora.hashCode() : 0);
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;
-    }
-
-    @Column(name = "ID_MODULO")
-    @Basic
-    public String getIdModulo() {
-        return idModulo;
-    }
-
-    public void setIdModulo(String idModulo) {
-        this.idModulo = idModulo;
-    }
-
-    @Column(name = "ID RECURSO_PADRE")
-    @Basic
-    public Integer getIdRecursoPadre() {
-        return idRecursoPadre;
-    }
-
-    public void setIdRecursoPadre(Integer idRecursoPadre) {
-        this.idRecursoPadre = idRecursoPadre;
     }
 }

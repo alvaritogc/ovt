@@ -6,23 +6,35 @@ import java.io.Serializable;
 
 /**
  * User: Renato Velasquez.
- * Date: 05-10-13
+ * Date: 06-10-13
  */
 public class DocTransicionEntityPK implements Serializable {
     private String codDocumento;
-    private String codEstadoInicial;@Id
-                                    @Column(name = "COD_DOCUMENTO")
-                                    public String getCodDocumento() {
+    private Integer version;private String codEstadoInicial;
+    private String codEstadoFinal;
+
+    @Id
+    @Column(name = "COD_DOCUMENTO")
+    public String getCodDocumento() {
         return codDocumento;
     }
 
-    private String codEstadoFinal;
+    @Id
+    @Column(name = "VERSION")
+    public Integer getVersion() {
+        return version;
+    }
 
     public void setCodDocumento(String codDocumento) {
         this.codDocumento = codDocumento;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
         }
 
-    @Id@Column(name = "COD_ESTADO_INICIAL")
+    @Id
+@Column(name = "COD_ESTADO_INICIAL")
 public String getCodEstadoInicial() {
     return codEstadoInicial;
 }
@@ -51,6 +63,7 @@ public String getCodEstadoFinal() {
             return false;
         if (codEstadoInicial != null ? !codEstadoInicial.equals(that.codEstadoInicial) : that.codEstadoInicial != null)
             return false;
+        if (version != null ? !version.equals(that.version) : that.version != null) return false;
 
         return true;
     }
@@ -58,6 +71,7 @@ public String getCodEstadoFinal() {
     @Override
     public int hashCode() {
         int result = codDocumento != null ? codDocumento.hashCode() : 0;
+        result = 31 * result + (version != null ? version.hashCode() : 0);
         result = 31 * result + (codEstadoInicial != null ? codEstadoInicial.hashCode() : 0);
         result = 31 * result + (codEstadoFinal != null ? codEstadoFinal.hashCode() : 0);
         return result;

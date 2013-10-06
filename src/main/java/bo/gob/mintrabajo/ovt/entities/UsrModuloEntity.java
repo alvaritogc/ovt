@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
- * Date: 03-10-13
+ * Date: 06-10-13
  */
 @javax.persistence.Table(name = "USR_MODULO", schema = "ROE", catalog = "")
 @Entity
