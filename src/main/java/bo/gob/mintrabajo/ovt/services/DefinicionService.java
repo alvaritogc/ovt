@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 
-@Named("definitionService")
+@Named("definicionService")
 @TransactionAttribute
 public class DefinicionService implements IDefinicionService {
     

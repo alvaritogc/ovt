@@ -62,10 +62,10 @@
                         </p:menubar> 
                     </h:form>
                     <h:form enctype="multipart/form-data">
-                        <p:fileUpload fileUploadListener="#{presentacionPlanillasBean.guardarBinario}" mode="advanced" update="messages" auto="false" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                        <p:fileUpload fileUploadListener="#{presentacionPlanillasBean.guardar}" mode="advanced" update="messages" auto="false" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
                         <p:growl id="messages" showDetail="true"/>
                     </h:form>
-                    <h:commandButton action="#{presentacionPlanillasBean.mensaje}" value="mensaje"/>
+
                 </div>
             </div>
 
