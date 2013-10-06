@@ -18,5 +18,6 @@ public interface IPersonaService {
     public PerPersonaEntity save(PerPersonaEntity persona);
     public boolean delete(PerPersonaEntity persona);
     public PerPersonaEntity findById(BigDecimal id);
+    public PerPersonaEntity buscarPorId(String id);
     
 }

@@ -85,4 +85,18 @@ public class PersonaService implements IPersonaService{
         return perPersonaEntity;
     }
     
+    @Override
+    public PerPersonaEntity buscarPorId(String id) {
+        PerPersonaEntity perPersonaEntity;
+        
+        try {
+            perPersonaEntity = personaRepository.findByAttribute("idPersona", id, -1, -1).get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            perPersonaEntity = null;
+        }
+
+        return perPersonaEntity;
+    }
+    
 }

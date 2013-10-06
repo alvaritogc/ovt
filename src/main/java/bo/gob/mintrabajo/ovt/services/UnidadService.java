@@ -80,16 +80,16 @@ public class UnidadService implements IUnidadService{
         return perUnidadEntity;
     }
     
-//    public List<PerUnidadEntity> listarPorUsuario( BigDecimal idUsuario){
-//        List<PerUnidadEntity> lista;
-//
-//        try {
-//            lista = unidadRepository.listarPorUsuario(idUsuario);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            lista = null;
-//        }
-//        return lista;
-//    }
+    @Override
+    public List<PerUnidadEntity> listarPorPersona( String idPersona){
+        List<PerUnidadEntity> lista;
+        try {
+            lista = unidadRepository.findByAttribute("idPersona", idPersona, -1, -1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
+    }
     
 }
