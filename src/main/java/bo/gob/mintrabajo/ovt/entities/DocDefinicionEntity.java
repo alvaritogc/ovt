@@ -58,9 +58,7 @@ public class DocDefinicionEntity {
 
     public void setFechaBitacora(Timestamp fechaBitacora) {
         this.fechaBitacora = fechaBitacora;
-    }
-
-    private String registroBitacora;
+    }    private String registroBitacora;
 
     @javax.persistence.Column(name = "REGISTRO_BITACORA")
     @Basic
