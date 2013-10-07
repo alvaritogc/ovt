@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * User: Renato Velasquez.
  * Date: 06-10-13
  */
-@javax.persistence.Table(name = "USR_RECURSO", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "USR_RECURSO", schema = "OVT", catalog = "")
 @Entity
 public class UsrRecursoEntity {
     private Integer idRecurso;

@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  * User: Renato Velasquez.
  * Date: 06-10-13
  */
-@javax.persistence.Table(name = "DOC_LOG_ESTADO", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "DOC_LOG_ESTADO", schema = "OVT", catalog = "")
 @Entity
 public class DocLogEstadoEntity {
     private Integer idLogestado;

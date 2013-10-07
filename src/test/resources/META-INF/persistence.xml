@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
              version="2.0">
-    <persistence-unit name="roe" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="ovt" transaction-type="RESOURCE_LOCAL">
         <class>bo.gob.mintrabajo.ovt.entities.DocBinarioEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.DocDefinicionEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity</class>
@@ -31,8 +31,8 @@
         <properties>
             <property name="openjpa.ConnectionURL" value="jdbc:oracle:thin:@192.168.50.7:1521:DESA"/>
             <property name="openjpa.ConnectionDriverName" value="oracle.jdbc.OracleDriver"/>
-            <property name="openjpa.ConnectionUserName" value="roe"/>
-            <property name="openjpa.ConnectionPassword" value="roe"/>
+            <property name="openjpa.ConnectionUserName" value="ovt"/>
+            <property name="openjpa.ConnectionPassword" value="ovt"/>
         </properties>
     </persistence-unit>
 </persistence>

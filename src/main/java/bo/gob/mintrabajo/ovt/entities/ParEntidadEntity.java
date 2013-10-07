@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  * User: Renato Velasquez.
  * Date: 06-10-13
  */
-@javax.persistence.Table(name = "PAR_ENTIDAD", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "PAR_ENTIDAD", schema = "OVT", catalog = "")
 @Entity
 public class ParEntidadEntity {
     private Integer idEntidad;

@@ -29,5 +29,20 @@
             </redirect>
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>irInicioPublico</from-outcome>
+            <to-view-id>/pages/inicio.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>irInicioPrivado</from-outcome>
+            <to-view-id>/pages/bienvenida.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
+        </navigation-case>
+    </navigation-rule>
 
 </faces-config>

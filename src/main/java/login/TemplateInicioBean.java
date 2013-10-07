@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
@@ -53,6 +54,8 @@ public class TemplateInicioBean implements Serializable {
     //
     private String username;
     private String password;
+    //
+    private Date fecha;
 
     @PostConstruct
     public void ini() {
@@ -65,6 +68,8 @@ public class TemplateInicioBean implements Serializable {
         listaRecursos = new ArrayList<UsrRecursoEntity>();
         nombreDeUsuario="";
         nombreDeUnidad="";
+        //
+        fecha=new Date();
         //
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -185,6 +190,14 @@ public class TemplateInicioBean implements Serializable {
         password = "";
         return "";
     }
+    
+    public String irInicioPublico(){
+        return "irInicioPublico";
+    }
+    public String irInicioPrivado(){
+        return "irInicioPrivado";
+    }
+    
 
     public MenuModel getModel() {
         return model;
@@ -248,5 +261,13 @@ public class TemplateInicioBean implements Serializable {
 
     public void setNombreDeUnidad(String nombreDeUnidad) {
         this.nombreDeUnidad = nombreDeUnidad;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 }

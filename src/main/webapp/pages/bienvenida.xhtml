@@ -14,9 +14,9 @@
                     <p:outputLabel value="#{bienvenidaBean.persona.tipoIdentificacion}: " style="size: 20px;"/>
                     <p:outputLabel value="#{bienvenidaBean.persona.nroIdentificacion}" />
                 </p:panelGrid>
-                <p:dataTable id="idListaUnidades" value="#{bienvenidaBean.listaUnidades}" var="o">
+                <p:dataTable id="idListaUnidades" value="#{bienvenidaBean.listaUnidades}" var="o"  >
                     <p:column headerText="Nombre comercial" >
-                        <h:outputText value="#{o.nombreComercial}" />  
+                        <h:outputText value="#{o.nombreComercial}"/>  
                     </p:column>
                     <p:column headerText="Fecha nacimiento" >
                         <h:outputText value="#{o.fechaNacimiento}" >
@@ -35,13 +35,13 @@
                 </p:dataTable>
                 <br/>
                 <h3>Documentos</h3>
-                
+
                 <p:dataTable id="idListaDocumentos" value="#{bienvenidaBean.listaDocumentos}" var="o1">
                     <p:column headerText="Número de documento">
                         <h:outputText value="#{o1.numeroDocumento}"/>
                     </p:column>
                     <p:column headerText="Código estado">
-                        <h:outputText value="#{o1.codEstado}"/>
+                        <h:outputText value="#{o1.documentoEstadoDescripcion}"/>
                     </p:column>
                     <p:column headerText="Tipo Medio Registro">
                         <h:outputText value="#{o1.tipoMedioRegistro}"/>
@@ -52,7 +52,7 @@
                         </h:outputText>
                     </p:column>
                 </p:dataTable>
-                
+
             </h:form>
         </ui:define>
     </ui:composition>

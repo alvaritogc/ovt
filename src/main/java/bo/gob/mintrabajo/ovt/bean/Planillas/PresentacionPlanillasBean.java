@@ -97,7 +97,7 @@ public class PresentacionPlanillasBean {
             ServletFileUpload sfu  = new ServletFileUpload(factory);
 
             Class.forName("oracle.jdbc.OracleDriver");
-            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.50.7:1521:DESA", "roe", "roe");
+            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.50.7:1521:DESA", "ovt", "ovt");
             con.setAutoCommit(false);
             PreparedStatement ps = con.prepareStatement("insert into DOC_BINARIO values(?,?,?,?,?,?,?)");
             ps.setInt(1, r.nextInt());

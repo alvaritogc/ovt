@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * Date: 06-10-13
  */
 @javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.PerUnidadEntityPK.class)
-@javax.persistence.Table(name = "PER_UNIDAD", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "PER_UNIDAD", schema = "OVT", catalog = "")
 @Entity
 public class PerUnidadEntity {
     private String idPersona;

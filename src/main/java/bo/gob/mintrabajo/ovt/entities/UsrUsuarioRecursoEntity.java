@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * Date: 06-10-13
  */
 @javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.UsrUsuarioRecursoEntityPK.class)
-@javax.persistence.Table(name = "USR_USUARIO_RECURSO", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "USR_USUARIO_RECURSO", schema = "OVT", catalog = "")
 @Entity
 public class UsrUsuarioRecursoEntity {
     private Integer idUsuario;

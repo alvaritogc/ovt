@@ -4,12 +4,13 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import javax.persistence.Transient;
 
 /**
  * User: Renato Velasquez.
  * Date: 06-10-13
  */
-@javax.persistence.Table(name = "DOC_DOCUMENTO", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "DOC_DOCUMENTO", schema = "OVT", catalog = "")
 @Entity
 public class DocDocumentoEntity {
     private Integer idDocumento;
@@ -215,6 +216,18 @@ public class DocDocumentoEntity {
     public String toString() {
         return "DocDocumentoEntity{" + "idDocumento=" + idDocumento + ", numeroDocumento=" + numeroDocumento + ", fechaDocumento=" + fechaDocumento + ", fechaReferenca=" + fechaReferenca + ", tipoMedioRegistro=" + tipoMedioRegistro + ", fechaBitacora=" + fechaBitacora + ", registroBitacora=" + registroBitacora + ", codEstado=" + codEstado + ", idEstadoDocumento=" + idEstadoDocumento + ", idPersona=" + idPersona + ", idUnidad=" + idUnidad + ", codDocumento=" + codDocumento + ", version=" + version + ", idDocumentoRef=" + idDocumentoRef + '}';
     }
+        //private ParDocumentoEstadoEntity parDocumentoEstadoEntity;
+    
+    private String documentoEstadoDescripcion;
+    
+    @Transient
+    public String getDocumentoEstadoDescripcion() {
+        return documentoEstadoDescripcion;
+    }
+
+    public void setDocumentoEstadoDescripcion(String documentoEstadoDescripcion) {
+        this.documentoEstadoDescripcion = documentoEstadoDescripcion;
+    } 
     
     
 }

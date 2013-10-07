@@ -9,7 +9,7 @@ import javax.persistence.Id;
  * Date: 06-10-13
  */
 @javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.DocNumeracionEntityPK.class)
-@javax.persistence.Table(name = "DOC_NUMERACION", schema = "ROE", catalog = "")
+@javax.persistence.Table(name = "DOC_NUMERACION", schema = "OVT", catalog = "")
 @Entity
 public class DocNumeracionEntity {
     private String codDocumento;
