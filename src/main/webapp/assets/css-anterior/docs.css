@@ -12,7 +12,7 @@
 
 body {
   position: relative;
-  /* padding-top: 40px;*/
+ /* padding-top: 40px;*/
 }
 
 /* Code in headings */
@@ -54,7 +54,7 @@ body > .navbar .brand:hover {
 
 /* padding for in-page bookmarks and fixed navbar */
 section {
-  padding-top: 5px;
+  padding-top: 15px;
 }
 section > .page-header,
 section > .lead {
@@ -89,7 +89,7 @@ hr.soften {
 ------------------------- */
 .jumbotron {
   position: relative;
-  padding: 15px 15px;
+  padding: 15px 0;
   color: #999;
   text-align: center;
  /* text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);*/
@@ -240,8 +240,8 @@ only screen and (     -o-min-device-pixel-ratio: 2/1) {
 .subhead {
   text-align: left;
   border-bottom: 1px solid #ddd;
-  /*margin-top:39px;*/
-   background: #014A99 url(../img/bg_head2.jpg) no-repeat; /* Old browsers */
+  margin-top:0px;/*margin-top:39px;*/
+   background: #014A99; /* Old browsers */
 }
 .subhead h1 {
   font-size: 25px;
@@ -779,7 +779,7 @@ form.bs-docs-example {
 
 .bs-docs-sidenav {
   width: 228px;
-  margin: 15px 0 0;
+  margin: 30px 0 0;
   /*opacity: 0.8;*/
   padding: 0;
   background-color: #fff;
@@ -827,9 +827,8 @@ form.bs-docs-example {
   opacity: .25;
 }
 .bs-docs-sidenav > li > a:hover {
-  background-color: #A0A0FF;
+  background-color: #e9e9e9;
   border-left: 3px solid #00079C;
-  color:#fff;
 }
 .bs-docs-sidenav a:hover .icon-chevron-right {
   opacity: .5;
@@ -1053,7 +1052,6 @@ form.bs-docs-example {
     max-width: 180px;
   }
 
-
   /* Examples: modal */
   .modal-example .modal {
     position: relative;
@@ -1068,14 +1066,4 @@ form.bs-docs-example {
     padding-top: 20px;
     padding-bottom: 20px;
   }
-  .logo   {
-margin: 0;
-  }
-}
-.teclado {
-    background: url(../img/teclado_icono.png) no-repeat; /* Old browsers */
-    width: 37px;
-    height: 37px;
-    float: right;
-    margin: -4px 0 0 0;
 }
