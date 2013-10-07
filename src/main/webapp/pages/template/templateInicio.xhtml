@@ -76,9 +76,9 @@
             <div class="row">
                 <div class="span3 bs-docs-sidebar">
                     <h:form>
-                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPublico()}" style="width: 100%"
+                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPublico}" style="width: 100%"
                                          rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}"/>
-                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado()}" style="width: 100%"
+                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado}" style="width: 100%"
                                          rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}"/>                        
                     </h:form>
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}">
@@ -101,7 +101,7 @@
                         <p:panel  header="Servicios publicos">
                             <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/informacion.xhtml"> Pasos trámite planilla  trimestral</a>
                             <br/>
-                            <!--<a href="# {facesContext.externalContext.requestContextPath}/faces/pages/formularioUnico.xhtml"> Formulario </a>-->
+                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/formularioUnico.xhtml"> Formulario Único </a>
                         </p:panel>
                         <br/>
                     </h:form>

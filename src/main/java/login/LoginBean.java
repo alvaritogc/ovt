@@ -4,6 +4,7 @@ import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.api.Users;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 
@@ -30,7 +31,9 @@ public class LoginBean{
     public Users usrSrv;
     //
     private String username;
-    private String password;    
+    private String password;
+
+    private Date fecha;
 
     @PostConstruct
     public void ini() {
@@ -102,5 +105,13 @@ public class LoginBean{
 
     public void setiUsuarioService(IUsuarioService iUsuarioService) {
         this.iUsuarioService = iUsuarioService;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 }
