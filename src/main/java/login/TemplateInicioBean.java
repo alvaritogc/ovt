@@ -86,7 +86,7 @@ public class TemplateInicioBean implements Serializable {
             model = new DefaultMenuModel();
             DefaultMenuItem item = new DefaultMenuItem("Salir");
             item.setIcon("ui-icon-search");
-            item.setCommand("#{templateInicioBean.logout()}");
+            item.setCommand("#{templateInicioBean.logout}");
             model.addElement(item);
             nombreDeUsuario="Invitado";
         }
@@ -105,7 +105,7 @@ public class TemplateInicioBean implements Serializable {
         crearMenuRecurso();
         DefaultMenuItem item = new DefaultMenuItem("Salir");
         item.setIcon("ui-icon-search");
-        item.setCommand("#{templateInicioBean.logout()}");
+        item.setCommand("#{templateInicioBean.logout}");
         model.addElement(item);
     }
 
