@@ -2,6 +2,8 @@ package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
 import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
+import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstadoEntity;
+import bo.gob.mintrabajo.ovt.repositories.DocumentoEstadoRepository;
 import bo.gob.mintrabajo.ovt.repositories.DocumentoRepository;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -21,10 +23,12 @@ import javax.inject.Named;
 public class DocumentoService implements IDocumentoService{
 
     private final DocumentoRepository repository;
+    private final DocumentoEstadoRepository documentoEstadoRepository;
 
     @Inject
-    public DocumentoService(DocumentoRepository repository) {
+    public DocumentoService(DocumentoRepository repository,DocumentoEstadoRepository documentoEstadoRepository) {
         this.repository = repository;
+        this.documentoEstadoRepository=documentoEstadoRepository;
     }
     
     @Override
@@ -116,6 +120,10 @@ public class DocumentoService implements IDocumentoService{
         List<DocDocumentoEntity> lista;
         try {
             lista = repository.findByAttribute("idPersona", idPersona, -1, -1);
+            for(DocDocumentoEntity documento:lista){
+                ParDocumentoEstadoEntity documentoEstado=documentoEstadoRepository.findByAttribute("codEstado", documento.getCodEstado(), -1, -1).get(0);
+                documento.setDocumentoEstadoDescripcion(documentoEstado.getDescripcion());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             lista = null;
