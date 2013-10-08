@@ -8,4 +8,6 @@ import bo.gob.mintrabajo.ovt.entities.DocBinarioEntity;
  */
 public interface IBinarioService {
     DocBinarioEntity guardarBinario(DocBinarioEntity docBinariosEntity);
+
+    Long contar();
 }

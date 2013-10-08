@@ -27,4 +27,9 @@ public class BinarioService implements IBinarioService{
     public DocBinarioEntity guardarBinario(DocBinarioEntity docBinariosEntity){
         return repository.save(docBinariosEntity);
     }
+
+    @Override
+    public Long contar(){
+        return repository.count();
+    }
 }
