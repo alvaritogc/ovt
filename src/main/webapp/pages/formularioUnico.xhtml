@@ -44,7 +44,7 @@
 
 <p:row>
     <p:column colspan="4" rowspan="2">
-        <p:graphicImage value="#{facesContext.externalContext.requestContextPath}/assets/img/escudo-prime.png" />
+        <p:graphicImage value="#{facesContext.externalContext.requestContextPath}/assets/img/escudo-prime.png"/>
     </p:column>
     <p:column colspan="8">
         <p align="center">
@@ -87,7 +87,7 @@
     </p:column>
     <p:column colspan="1">
         <div align="CENTER">
-        <p:selectBooleanCheckbox value=""/>
+            <p:selectBooleanCheckbox value=""/>
         </div>
     </p:column>
     <p:column colspan="5">
@@ -116,13 +116,16 @@
     <p:column colspan="4"/>
     <p:column colspan="4">
         <p:outputLabel value="3.1 Nro de empleador MTEPS"/>
-        <p:inputText value="#{formularioUnicoBean.perPersonaEntity.idPersona}" style="width: 150px; height: 10px" readonly="true"/>
+        <p:inputText value="#{formularioUnicoBean.perPersonaEntity.idPersona}" style="width: 150px; height: 10px"
+                     readonly="true"/>
         <br/>
         <p:outputLabel value="3.4 Nombre o razón social"/>
-        <p:inputText value="#{formularioUnicoBean.perPersonaEntity.nombreRazonSocial}" style="width: 150px; height: 10px" readonly="true"/>
+        <p:inputText value="#{formularioUnicoBean.perPersonaEntity.nombreRazonSocial}"
+                     style="width: 150px; height: 10px" readonly="true"/>
         <br/>
         <p:outputLabel value="3.7 Ciudad o localidad"/>
-        <p:inputText value="#{formularioUnicoBean.perPersonaEntity.nombreRazonSocial}" style="width: 150px; height: 10px"/>
+        <p:inputText value="#{formularioUnicoBean.perPersonaEntity.nombreRazonSocial}"
+                     style="width: 150px; height: 10px"/>
         <br/>
         <p:outputLabel value="3.10 Nro"/>
         <p:inputText value="" style="width: 150px; height: 10px"/>
@@ -166,65 +169,78 @@
     <p:column colspan="4"/>
     <p:column colspan="4">
         <p:outputLabel value="4.1 Nro de asegurados al ente gestor de salud a corto plazo"/>
-        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.}" style="width: 150px; height: 10px"/>
+        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroAsegCaja}" style="width: 150px; height: 10px"/>
         <br/>
         <p:outputLabel value="4.4 Nro de afiliados seguro a largo plazo"/>
-        <p:inputText value="" style="width: 150px; height: 10px"/>
+        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroAsegAfp}" style="width: 150px; height: 10px"/>
     </p:column>
     <p:column colspan="4">
         <p:outputLabel value="4.2 Monto aportado (Bs)"/>
-        <p:inputText value="" style="width: 150px; height: 10px"/>
+        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroAsegCaja}" style="width: 150px; height: 10px"/>
         <br/>
         <p:outputLabel value="4.5 Monto aportado (Bs)"/>
-        <p:inputText value="" style="width: 150px; height: 10px"/>
+        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroAsegAfp}" style="width: 150px; height: 10px"/>
     </p:column>
     <p:column colspan="4">
         <p:outputLabel value="4.3 Ente gestores de salud corto plazo"/>
-        <p:selectOneMenu style="width: 150px; height: 20px">
-            <f:selectItem itemValue="ninguno" itemLabel="seleccione"/>
-            <f:selectItem itemValue="b" itemLabel="Caja nacional de salud"/>
-            <f:selectItem itemValue="a" itemLabel="Caja petrolera"/>
+        <p:selectOneMenu value="#{formularioUnicoBean.docPlanillaEntity.idEntidadSalud}"
+                         style="width: 150px; height: 20px" required="true">
+            <f:selectItem itemValue="#{null}" itemLabel="seleccione"/>
+            <!--<f:selectItems value="# {formularioUnicoBean.obtenerEntidad()}" var="entidad"  itemValue="# {entidad.idEntidad}" itemLabel="# {entidad.descripcion}" />-->
         </p:selectOneMenu>
     </p:column>
 </p:row>
 
 <p:row>
-    <p:column colspan="6" style="background-color: #1A4498; color: #FFFFFF">
+    <p:column colspan="7" style="background-color: #1A4498; color: #FFFFFF">
         <p:outputLabel value="5. COMPOSICIÓN SALARIAL"/>
     </p:column>
-    <p:column colspan="10" style="background-color: #1A4498; color: #FFFFFF">
+    <p:column colspan="9" style="background-color: #1A4498; color: #FFFFFF">
         <p:outputLabel value="6. TRABAJADORES"/>
     </p:column>
 </p:row>
 
 <p:row>
-    <p:column colspan="6">
+    <p:column colspan="7">
         <p:panelGrid columns="2">
             <p:outputLabel value="5.1 Haber básico"/>
-            <p:inputText value="" style="width: 100px; height: 10px"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.haberBasico}"
+                         style="width: 100px; height: 10px"/>
             <p:outputLabel value="5.2 Bono de antigüedad"/>
-            <p:inputText value="" style="width: 100px; height: 10px"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.bonoAntiguedad}"
+                         style="width: 100px; height: 10px"/>
             <p:outputLabel value="5.3 Bono de producción"/>
-            <p:inputText value="" style="width: 100px; height: 10px"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.bonoProduccion}"
+                         style="width: 100px; height: 10px"/>
             <p:outputLabel value="5.4 Subsidio de frontera"/>
-            <p:inputText value="" style="width: 100px; height: 10px"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.subsidioFrontera}"
+                         style="width: 100px; height: 10px"/>
             <p:outputLabel value="5.5 Labor extraordinaria"/>
-            <p:inputText value="" style="width: 100px; height: 10px"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.laborExtra}"
+                         style="width: 100px; height: 10px"/>
             <p:outputLabel value="5.6 Otros bonos"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.otrosBonos}"
+                         style="width: 100px; height: 10px"/>
+            <p:outputLabel value="5.7 Total ganado"/>
             <p:inputText value="" style="width: 100px; height: 10px"/>
-            <p:outputLabel value="5.6 Total ganado"/>
-            <p:inputText value="" style="width: 100px; height: 10px"/>
+            <p:outputLabel value="5.8 Aporte a las AFPs"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.aporteAfp}" style="width: 100px; height: 10px"/>
+            <p:outputLabel value="5.9 RC-IVA"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.rciva}" style="width: 100px; height: 10px"/>
+            <!-- Falta Gary !!!!!!!!!!! -->
         </p:panelGrid>
     </p:column>
-    <p:column colspan="10">
+    <p:column colspan="9">
         <p:panelGrid columns="4">
             <p:outputLabel value=""/>
             <p:outputLabel value="Varones"/>
             <p:outputLabel value="Mujeres"/>
             <p:outputLabel value="Total"/>
             <p:outputLabel value="6.1 Total trabajadores"/>
-            <p:inputText value="" style="width: 50px; height: 10px"/>
-            <p:inputText value="" style="width: 50px; height: 10px"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroContratadosH}"
+                         style="width: 50px; height: 10px" required="true"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroContratadosM}"
+                         style="width: 50px; height: 10px" required="true"/>
             <p:inputText value="" style="width: 50px; height: 10px"/>
             <p:outputLabel value="-"/><p:outputLabel value="-"/><p:outputLabel value="-"/><p:outputLabel value="-"/>
             <p:outputLabel value=""/>
@@ -232,16 +248,22 @@
             <p:outputLabel value="Mujeres"/>
             <p:outputLabel value="Total"/>
             <p:outputLabel value="6.2 Personas jubiladas"/>
-            <p:inputText value="" style="width: 50px; height: 10px"/>
-            <p:inputText value="" style="width: 50px; height: 10px"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroJubiladosH}"
+                         style="width: 50px; height: 10px" required="true"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroJubiladosM}"
+                         style="width: 50px; height: 10px" required="true"/>
             <p:inputText value="" style="width: 50px; height: 10px"/>
             <p:outputLabel value="6.3 Personas extranjeras"/>
-            <p:inputText value="" style="width: 50px; height: 10px"/>
-            <p:inputText value="" style="width: 50px; height: 10px"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroExtranjerosH}"
+                         style="width: 50px; height: 10px" required="true"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroExtranjerosM}"
+                         style="width: 50px; height: 10px" required="true"/>
             <p:inputText value="" style="width: 50px; height: 10px"/>
             <p:outputLabel value="6.4 Personas con discapacidad"/>
-            <p:inputText value="" style="width: 50px; height: 10px"/>
-            <p:inputText value="" style="width: 50px; height: 10px"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroDiscapacidadH}"
+                         style="width: 50px; height: 10px" required="true"/>
+            <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroDiscapacidadM}"
+                         style="width: 50px; height: 10px" required="true"/>
             <p:inputText value="" style="width: 50px; height: 10px"/>
             <p:outputLabel value="6.5 Personas contratadas en el trimestre"/>
             <p:inputText value="" style="width: 50px; height: 10px"/>
@@ -256,14 +278,14 @@
 </p:row>
 
 <p:row>
-    <p:column colspan="6"/>
-    <p:column colspan="10" style="background-color: #1A4498; color: #FFFFFF">
+    <p:column colspan="7"/>
+    <p:column colspan="9" style="background-color: #1A4498; color: #FFFFFF">
         <p:outputLabel value="7. ACCIDENTES Y ENFERMEDADES DE TRABAJO"/>
     </p:column>
 </p:row>
 <p:row>
-    <p:column colspan="6"/>
-    <p:column colspan="10">
+    <p:column colspan="7"/>
+    <p:column colspan="9">
         <p:panelGrid columns="2">
             <p:outputLabel value="7.1 Nro total de accidentes en el trimestre"/>
             <p:inputText value="" style="width: 50px; height: 10px"/>
@@ -322,8 +344,8 @@
 </p:row>
 
 </p:panelGrid>
+        <p:commandButton value="Guardar" action="#{formularioUnicoBean.guardarPlanilla}" ajax="false"/>
 </h:form>
-
 </ui:define>
 </ui:composition>
 </html>

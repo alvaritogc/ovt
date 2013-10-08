@@ -20,7 +20,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "ID_PLANILLA")
     @Id
-    Integer getIdPlanilla() {
+    public Integer getIdPlanilla() {
         return idPlanilla;
     }
 
@@ -32,7 +32,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "ID_DOCUMENTO")
     @Basic
-    Integer getIdDocumento() {
+    public Integer getIdDocumento() {
         return idDocumento;
     }
 
@@ -56,7 +56,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "TIPO_PLANILLA")
     @Basic
-    String getTipoPlanilla() {
+    public String getTipoPlanilla() {
         return tipoPlanilla;
     }
 
@@ -68,7 +68,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_ASEG_CAJA")
     @Basic
-    Integer getNroAsegCaja() {
+    public Integer getNroAsegCaja() {
         return nroAsegCaja;
     }
 
@@ -80,7 +80,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "MONTO_ASEG_CAJA")
     @Basic
-    BigDecimal getMontoAsegCaja() {
+    public BigDecimal getMontoAsegCaja() {
         return montoAsegCaja;
     }
 
@@ -92,7 +92,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "ID_ENTIDAD_SALUD")
     @Basic
-    Integer getIdEntidadSalud() {
+    public Integer getIdEntidadSalud() {
         return idEntidadSalud;
     }
 
@@ -104,7 +104,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_ASEG_AFP")
     @Basic
-    Integer getNroAsegAfp() {
+    public Integer getNroAsegAfp() {
         return nroAsegAfp;
     }
 
@@ -116,7 +116,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "MONTO_ASEG_AFP")
     @Basic
-    BigDecimal getMontoAsegAfp() {
+    public BigDecimal getMontoAsegAfp() {
         return montoAsegAfp;
     }
 
@@ -128,7 +128,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "HABER_BASICO")
     @Basic
-    BigDecimal getHaberBasico() {
+    public BigDecimal getHaberBasico() {
         return haberBasico;
     }
 
@@ -140,7 +140,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "BONO_ANTIGUEDAD")
     @Basic
-    BigDecimal getBonoAntiguedad() {
+    public BigDecimal getBonoAntiguedad() {
         return bonoAntiguedad;
     }
 
@@ -152,7 +152,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "BONO_PRODUCCION")
     @Basic
-    BigDecimal getBonoProduccion() {
+    public BigDecimal getBonoProduccion() {
         return bonoProduccion;
     }
 
@@ -164,7 +164,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "SUBSIDIO_FRONTERA")
     @Basic
-    BigDecimal getSubsidioFrontera() {
+    public BigDecimal getSubsidioFrontera() {
         return subsidioFrontera;
     }
 
@@ -176,7 +176,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "LABOR_EXTRA")
     @Basic
-    BigDecimal getLaborExtra() {
+    public BigDecimal getLaborExtra() {
         return laborExtra;
     }
 
@@ -188,7 +188,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "OTROS_BONOS")
     @Basic
-    BigDecimal getOtrosBonos() {
+    public BigDecimal getOtrosBonos() {
         return otrosBonos;
     }
 
@@ -200,7 +200,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "APORTE_AFP")
     @Basic
-    BigDecimal getAporteAfp() {
+    public BigDecimal getAporteAfp() {
         return aporteAfp;
     }
 
@@ -212,7 +212,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "RCIVA")
     @Basic
-    BigDecimal getRciva() {
+    public BigDecimal getRciva() {
         return rciva;
     }
 
@@ -224,7 +224,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "OTROS_DESCUENTOS")
     @Basic
-    BigDecimal getOtrosDescuentos() {
+    public BigDecimal getOtrosDescuentos() {
         return otrosDescuentos;
     }
 
@@ -236,7 +236,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_M")
     @Basic
-    Integer getNroM() {
+    public Integer getNroM() {
         return nroM;
     }
 
@@ -248,7 +248,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_H")
     @Basic
-    Integer getNroH() {
+    public Integer getNroH() {
         return nroH;
     }
 
@@ -260,7 +260,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_JUBILADOS_M")
     @Basic
-    Integer getNroJubiladosM() {
+    public Integer getNroJubiladosM() {
         return nroJubiladosM;
     }
 
@@ -272,7 +272,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_JUBILADOS_H")
     @Basic
-    Integer getNroJubiladosH() {
+    public Integer getNroJubiladosH() {
         return nroJubiladosH;
     }
 
@@ -284,7 +284,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_EXTRANJEROS_M")
     @Basic
-    Integer getNroExtranjerosM() {
+    public Integer getNroExtranjerosM() {
         return nroExtranjerosM;
     }
 
@@ -296,7 +296,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_EXTRANJEROS_H")
     @Basic
-    Integer getNroExtranjerosH() {
+    public Integer getNroExtranjerosH() {
         return nroExtranjerosH;
     }
 
@@ -308,7 +308,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_DISCAPACIDAD_M")
     @Basic
-    Integer getNroDiscapacidadM() {
+    public Integer getNroDiscapacidadM() {
         return nroDiscapacidadM;
     }
 
@@ -320,7 +320,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_DISCAPACIDAD_H")
     @Basic
-    Integer getNroDiscapacidadH() {
+    public Integer getNroDiscapacidadH() {
         return nroDiscapacidadH;
     }
 
@@ -332,7 +332,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_CONTRATADOS_M")
     @Basic
-    Integer getNroContratadosM() {
+    public Integer getNroContratadosM() {
         return nroContratadosM;
     }
 
@@ -344,7 +344,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_CONTRATADOS_H")
     @Basic
-    Integer getNroContratadosH() {
+    public Integer getNroContratadosH() {
         return nroContratadosH;
     }
 
@@ -356,7 +356,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_RETIRADOS_M")
     @Basic
-    Integer getNroRetiradosM() {
+    public Integer getNroRetiradosM() {
         return nroRetiradosM;
     }
 
@@ -368,7 +368,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_RETIRADOS_H")
     @Basic
-    Integer getNroRetiradosH() {
+    public Integer getNroRetiradosH() {
         return nroRetiradosH;
     }
 
@@ -380,7 +380,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_ACCIDENTES")
     @Basic
-    Integer getNroAccidentes() {
+    public Integer getNroAccidentes() {
         return nroAccidentes;
     }
 
@@ -392,7 +392,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_MUERTES")
     @Basic
-    Integer getNroMuertes() {
+    public Integer getNroMuertes() {
         return nroMuertes;
     }
 
@@ -404,7 +404,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_ENFERMEDADES")
     @Basic
-    Integer getNroEnfermedades() {
+    public Integer getNroEnfermedades() {
         return nroEnfermedades;
     }
 
@@ -416,7 +416,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "ID_ENTIDAD_BANCO")
     @Basic
-    Integer getIdEntidadBanco() {
+    public Integer getIdEntidadBanco() {
         return idEntidadBanco;
     }
 
@@ -428,7 +428,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "FECHA_OPERACION")
     @Basic
-    Timestamp getFechaOperacion() {
+    public Timestamp getFechaOperacion() {
         return fechaOperacion;
     }
 
@@ -440,7 +440,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "MONTO_OPERACION")
     @Basic
-    BigDecimal getMontoOperacion() {
+    public BigDecimal getMontoOperacion() {
         return montoOperacion;
     }
 
@@ -452,7 +452,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NUM_OPERACION")
     @Basic
-    String getNumOperacion() {
+    public String getNumOperacion() {
         return numOperacion;
     }
 
