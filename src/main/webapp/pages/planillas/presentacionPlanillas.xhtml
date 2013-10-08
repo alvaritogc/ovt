@@ -4,6 +4,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Simple JSF Facelets page</title>
@@ -31,29 +32,35 @@
             ================================================== -->
             <div class="row">
                 <div class="span3 bs-docs-sidebar">
+                    <h:form>
+                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPublico}" style="width: 100%"
+                                         rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}"/>
+                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado}" style="width: 100%"
+                                         rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}"/>
+                    </h:form>
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}">
                         <p:panel  >
                             <h2 class="form-signin-heading">Conéctate</h2>
                             <div class="input-prepend"><span class="add-on"><i class="icon-white icon-user"></i></span>
-                                <h:inputText value="#{templateInicioBean.username}" />
+                                <h:inputText value="#{templateInicioBean.username}" style="width: 104px; font-size: 10px" />
                             </div>
                             <div class="input-prepend"><span class="add-on"><i class="icon-white icon-lock"></i>
                                 </span>
-                                <h:inputSecret value="#{templateInicioBean.password}" required="true" requiredMessage="Debe completar el campo Password"/>
-                            </div>       
+                                <h:inputSecret value="#{templateInicioBean.password}" required="true" requiredMessage="Debe completar el campo Password" style="width: 104px; font-size: 10px" />
+                            </div>
 
-                            <p:commandButton styleClass="btn btn-large btn-primary" value="Entrar" action="#{templateInicioBean.login}" update="@all" />
+                            <p:commandButton styleClass="btn btn-large btn-primary" value="Entrar" action="#{templateInicioBean.login}" update="@all" />      <div class="teclado"></div>
                             <p:messages id="messages" />
                         </p:panel>
                     </h:form>
 
                     <h:form>
                         <p:panel  header="Servicios publicos">
-                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/inicio.xhtml"> Inicio</a>
+                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/informacion.xhtml"> Pasos trámite planilla  trimestral</a>
                             <br/>
-                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/informacion.xhtml"> Infornación</a>
+                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/formularioUnico.xhtml"> Formulario Único </a>
                         </p:panel>
-
+                        <br/>
                     </h:form>
                 </div>
                 <div class="span9">
@@ -61,10 +68,32 @@
                         <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
                         </p:menubar> 
                     </h:form>
+
+
                     <h:form enctype="multipart/form-data">
-                        <p:fileUpload fileUploadListener="#{presentacionPlanillasBean.guardar}" mode="advanced" update="messages" auto="false" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="PLANILLA TRIMESTRAL"/>
+                            <h:outputLabel value=""/>
+
+                            <h:outputLabel value="Periodos Pendientes: "/>
+
+                            iodo<p:selectOneMenu value="#{presentacionPlanillasBean.periodo}">
+
+                            <f:selectItem itemLabel="2013 T3 - Enero - Marzo" itemValue="2013 T3 - Enero - Marzo" />
+                            <f:selectItem itemLabel="2013 T3 - Abril - Junio" itemValue="2013 T3 - Abril - Junio" />
+                            <f:selectItem itemLabel="2013 T3 - Julio - Septiembre" itemValue="2013 T3 - Julio - Septiembre" />
+                            <f:selectItem itemLabel="2013 T3 - Octubre - Diciembre" itemValue="2013 T3 - Octubre - Diciembre" />
+                        </p:selectOneMenu>
+                            <h:outputLabel value=""/><h:outputLabel value=""/>
+                        </h:panelGrid>
+
+                        <p:fileUpload fileUploadListener="#{presentacionPlanillasBean.guardar}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
+                                      invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
+                                      mode="advanced" update="messages" auto="false" fileLimit="1" label="Seleccione"
+                                      sizeLimit="100000" allowTypes="/(\.|\/)(xls|xlsx|csv|png)$/"/>
                         <p:growl id="messages" showDetail="true"/>
                     </h:form>
+
 
                 </div>
             </div>

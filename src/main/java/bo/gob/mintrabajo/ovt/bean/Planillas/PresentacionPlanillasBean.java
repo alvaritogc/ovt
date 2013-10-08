@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
-import java.util.Random;
 
 @ManagedBean
 @ViewScoped
@@ -87,10 +86,7 @@ public class PresentacionPlanillasBean {
         documento.setRegistroBitacora(""+idUsuario);
         documento = idDocumentoService.guardar(documento);
         logger.info("7");
-        Random r= new Random(1000);
 
-        documento = idDocumentoService.guardar(documento);
-        logger.info("7");
 
         DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
         docPlanillaEntity.setPeriodo(periodo);
