@@ -1,8 +1,10 @@
 package bo.gob.mintrabajo.ovt.bean.Formulario;
 
+import bo.gob.mintrabajo.ovt.api.IEntidadService;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
+import bo.gob.mintrabajo.ovt.entities.ParEntidadEntity;
 import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +41,9 @@ public class formularioUnicoBean {
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
 
+    @ManagedProperty(value = "#{entidadService}")
+    private IEntidadService iEntidadService;
+
     private PerPersonaEntity perPersonaEntity;
     private DocPlanillaEntity docPlanillaEntity;
 
@@ -51,6 +57,12 @@ public class formularioUnicoBean {
         docPlanillaEntity = new DocPlanillaEntity();
     }
 
+    //** Obtenemos todos las entidades de la tabla ENTIDAD **//
+    public List<ParEntidadEntity> obtenerEntidad(){
+
+        List<ParEntidadEntity> tmpLista = iEntidadService.getEntidadLista();
+        return tmpLista;
+    }
 
 
 
@@ -86,5 +98,13 @@ public class formularioUnicoBean {
 
     public void setDocPlanillaEntity(DocPlanillaEntity docPlanillaEntity) {
         this.docPlanillaEntity = docPlanillaEntity;
+    }
+
+    public IEntidadService getiEntidadService() {
+        return iEntidadService;
+    }
+
+    public void setiEntidadService(IEntidadService iEntidadService) {
+        this.iEntidadService = iEntidadService;
     }
 }

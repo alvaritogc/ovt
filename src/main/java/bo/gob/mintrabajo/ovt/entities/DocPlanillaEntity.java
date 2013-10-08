@@ -20,11 +20,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "ID_PLANILLA")
     @Id
-    Integer getIdPlanilla() {
+    public Integer getIdPlanilla() {
         return idPlanilla;
     }
 
-    void setIdPlanilla(Integer idPlanilla) {
+    public void setIdPlanilla(Integer idPlanilla) {
         this.idPlanilla = idPlanilla;
     }
 
@@ -32,11 +32,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "ID_DOCUMENTO")
     @Basic
-    Integer getIdDocumento() {
+    public Integer getIdDocumento() {
         return idDocumento;
     }
 
-    void setIdDocumento(Integer idDocumento) {
+    public void setIdDocumento(Integer idDocumento) {
         this.idDocumento = idDocumento;
     }
 
@@ -48,7 +48,7 @@ public class DocPlanillaEntity {
         return periodo;
     }
 
-    void setPeriodo(String periodo) {
+    public void setPeriodo(String periodo) {
         this.periodo = periodo;
     }
 
@@ -56,11 +56,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "TIPO_PLANILLA")
     @Basic
-    String getTipoPlanilla() {
+    public String getTipoPlanilla() {
         return tipoPlanilla;
     }
 
-    void setTipoPlanilla(String tipoPlanilla) {
+    public void setTipoPlanilla(String tipoPlanilla) {
         this.tipoPlanilla = tipoPlanilla;
     }
 
@@ -68,11 +68,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_ASEG_CAJA")
     @Basic
-    Integer getNroAsegCaja() {
+    public Integer getNroAsegCaja() {
         return nroAsegCaja;
     }
 
-    void setNroAsegCaja(Integer nroAsegCaja) {
+    public void setNroAsegCaja(Integer nroAsegCaja) {
         this.nroAsegCaja = nroAsegCaja;
     }
 
@@ -80,11 +80,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "MONTO_ASEG_CAJA")
     @Basic
-    BigDecimal getMontoAsegCaja() {
+    public BigDecimal getMontoAsegCaja() {
         return montoAsegCaja;
     }
 
-    void setMontoAsegCaja(BigDecimal montoAsegCaja) {
+    public void setMontoAsegCaja(BigDecimal montoAsegCaja) {
         this.montoAsegCaja = montoAsegCaja;
     }
 
@@ -92,11 +92,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "ID_ENTIDAD_SALUD")
     @Basic
-    Integer getIdEntidadSalud() {
+    public Integer getIdEntidadSalud() {
         return idEntidadSalud;
     }
 
-    void setIdEntidadSalud(Integer idEntidadSalud) {
+    public void setIdEntidadSalud(Integer idEntidadSalud) {
         this.idEntidadSalud = idEntidadSalud;
     }
 
@@ -104,11 +104,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_ASEG_AFP")
     @Basic
-    Integer getNroAsegAfp() {
+    public Integer getNroAsegAfp() {
         return nroAsegAfp;
     }
 
-    void setNroAsegAfp(Integer nroAsegAfp) {
+    public void setNroAsegAfp(Integer nroAsegAfp) {
         this.nroAsegAfp = nroAsegAfp;
     }
 
@@ -116,11 +116,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "MONTO_ASEG_AFP")
     @Basic
-    BigDecimal getMontoAsegAfp() {
+    public BigDecimal getMontoAsegAfp() {
         return montoAsegAfp;
     }
 
-    void setMontoAsegAfp(BigDecimal montoAsegAfp) {
+    public void setMontoAsegAfp(BigDecimal montoAsegAfp) {
         this.montoAsegAfp = montoAsegAfp;
     }
 
@@ -128,11 +128,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "HABER_BASICO")
     @Basic
-    BigDecimal getHaberBasico() {
+    public BigDecimal getHaberBasico() {
         return haberBasico;
     }
 
-    void setHaberBasico(BigDecimal haberBasico) {
+    public void setHaberBasico(BigDecimal haberBasico) {
         this.haberBasico = haberBasico;
     }
 
@@ -140,11 +140,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "BONO_ANTIGUEDAD")
     @Basic
-    BigDecimal getBonoAntiguedad() {
+    public BigDecimal getBonoAntiguedad() {
         return bonoAntiguedad;
     }
 
-    void setBonoAntiguedad(BigDecimal bonoAntiguedad) {
+    public void setBonoAntiguedad(BigDecimal bonoAntiguedad) {
         this.bonoAntiguedad = bonoAntiguedad;
     }
 
@@ -152,11 +152,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "BONO_PRODUCCION")
     @Basic
-    BigDecimal getBonoProduccion() {
+    public BigDecimal getBonoProduccion() {
         return bonoProduccion;
     }
 
-    void setBonoProduccion(BigDecimal bonoProduccion) {
+    public void setBonoProduccion(BigDecimal bonoProduccion) {
         this.bonoProduccion = bonoProduccion;
     }
 
@@ -164,11 +164,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "SUBSIDIO_FRONTERA")
     @Basic
-    BigDecimal getSubsidioFrontera() {
+    public BigDecimal getSubsidioFrontera() {
         return subsidioFrontera;
     }
 
-    void setSubsidioFrontera(BigDecimal subsidioFrontera) {
+    public void setSubsidioFrontera(BigDecimal subsidioFrontera) {
         this.subsidioFrontera = subsidioFrontera;
     }
 
@@ -176,11 +176,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "LABOR_EXTRA")
     @Basic
-    BigDecimal getLaborExtra() {
+    public BigDecimal getLaborExtra() {
         return laborExtra;
     }
 
-    void setLaborExtra(BigDecimal laborExtra) {
+    public void setLaborExtra(BigDecimal laborExtra) {
         this.laborExtra = laborExtra;
     }
 
@@ -188,11 +188,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "OTROS_BONOS")
     @Basic
-    BigDecimal getOtrosBonos() {
+    public BigDecimal getOtrosBonos() {
         return otrosBonos;
     }
 
-    void setOtrosBonos(BigDecimal otrosBonos) {
+    public void setOtrosBonos(BigDecimal otrosBonos) {
         this.otrosBonos = otrosBonos;
     }
 
@@ -200,11 +200,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "APORTE_AFP")
     @Basic
-    BigDecimal getAporteAfp() {
+    public BigDecimal getAporteAfp() {
         return aporteAfp;
     }
 
-    void setAporteAfp(BigDecimal aporteAfp) {
+    public void setAporteAfp(BigDecimal aporteAfp) {
         this.aporteAfp = aporteAfp;
     }
 
@@ -212,11 +212,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "RCIVA")
     @Basic
-    BigDecimal getRciva() {
+    public BigDecimal getRciva() {
         return rciva;
     }
 
-    void setRciva(BigDecimal rciva) {
+    public void setRciva(BigDecimal rciva) {
         this.rciva = rciva;
     }
 
@@ -224,11 +224,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "OTROS_DESCUENTOS")
     @Basic
-    BigDecimal getOtrosDescuentos() {
+    public BigDecimal getOtrosDescuentos() {
         return otrosDescuentos;
     }
 
-    void setOtrosDescuentos(BigDecimal otrosDescuentos) {
+    public void setOtrosDescuentos(BigDecimal otrosDescuentos) {
         this.otrosDescuentos = otrosDescuentos;
     }
 
@@ -236,11 +236,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_M")
     @Basic
-    Integer getNroM() {
+    public Integer getNroM() {
         return nroM;
     }
 
-    void setNroM(Integer nroM) {
+    public void setNroM(Integer nroM) {
         this.nroM = nroM;
     }
 
@@ -248,11 +248,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_H")
     @Basic
-    Integer getNroH() {
+    public Integer getNroH() {
         return nroH;
     }
 
-    void setNroH(Integer nroH) {
+    public void setNroH(Integer nroH) {
         this.nroH = nroH;
     }
 
@@ -260,11 +260,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_JUBILADOS_M")
     @Basic
-    Integer getNroJubiladosM() {
+    public Integer getNroJubiladosM() {
         return nroJubiladosM;
     }
 
-    void setNroJubiladosM(Integer nroJubiladosM) {
+    public void setNroJubiladosM(Integer nroJubiladosM) {
         this.nroJubiladosM = nroJubiladosM;
     }
 
@@ -272,11 +272,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_JUBILADOS_H")
     @Basic
-    Integer getNroJubiladosH() {
+    public Integer getNroJubiladosH() {
         return nroJubiladosH;
     }
 
-    void setNroJubiladosH(Integer nroJubiladosH) {
+    public void setNroJubiladosH(Integer nroJubiladosH) {
         this.nroJubiladosH = nroJubiladosH;
     }
 
@@ -284,11 +284,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_EXTRANJEROS_M")
     @Basic
-    Integer getNroExtranjerosM() {
+    public Integer getNroExtranjerosM() {
         return nroExtranjerosM;
     }
 
-    void setNroExtranjerosM(Integer nroExtranjerosM) {
+    public void setNroExtranjerosM(Integer nroExtranjerosM) {
         this.nroExtranjerosM = nroExtranjerosM;
     }
 
@@ -296,11 +296,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_EXTRANJEROS_H")
     @Basic
-    Integer getNroExtranjerosH() {
+    public Integer getNroExtranjerosH() {
         return nroExtranjerosH;
     }
 
-    void setNroExtranjerosH(Integer nroExtranjerosH) {
+    public void setNroExtranjerosH(Integer nroExtranjerosH) {
         this.nroExtranjerosH = nroExtranjerosH;
     }
 
@@ -308,11 +308,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_DISCAPACIDAD_M")
     @Basic
-    Integer getNroDiscapacidadM() {
+    public Integer getNroDiscapacidadM() {
         return nroDiscapacidadM;
     }
 
-    void setNroDiscapacidadM(Integer nroDiscapacidadM) {
+    public void setNroDiscapacidadM(Integer nroDiscapacidadM) {
         this.nroDiscapacidadM = nroDiscapacidadM;
     }
 
@@ -320,11 +320,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_DISCAPACIDAD_H")
     @Basic
-    Integer getNroDiscapacidadH() {
+    public Integer getNroDiscapacidadH() {
         return nroDiscapacidadH;
     }
 
-    void setNroDiscapacidadH(Integer nroDiscapacidadH) {
+    public void setNroDiscapacidadH(Integer nroDiscapacidadH) {
         this.nroDiscapacidadH = nroDiscapacidadH;
     }
 
@@ -332,11 +332,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_CONTRATADOS_M")
     @Basic
-    Integer getNroContratadosM() {
+    public Integer getNroContratadosM() {
         return nroContratadosM;
     }
 
-    void setNroContratadosM(Integer nroContratadosM) {
+    public void setNroContratadosM(Integer nroContratadosM) {
         this.nroContratadosM = nroContratadosM;
     }
 
@@ -344,11 +344,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_CONTRATADOS_H")
     @Basic
-    Integer getNroContratadosH() {
+    public Integer getNroContratadosH() {
         return nroContratadosH;
     }
 
-    void setNroContratadosH(Integer nroContratadosH) {
+    public void setNroContratadosH(Integer nroContratadosH) {
         this.nroContratadosH = nroContratadosH;
     }
 
@@ -356,11 +356,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_RETIRADOS_M")
     @Basic
-    Integer getNroRetiradosM() {
+    public Integer getNroRetiradosM() {
         return nroRetiradosM;
     }
 
-    void setNroRetiradosM(Integer nroRetiradosM) {
+    public void setNroRetiradosM(Integer nroRetiradosM) {
         this.nroRetiradosM = nroRetiradosM;
     }
 
@@ -368,11 +368,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_RETIRADOS_H")
     @Basic
-    Integer getNroRetiradosH() {
+    public Integer getNroRetiradosH() {
         return nroRetiradosH;
     }
 
-    void setNroRetiradosH(Integer nroRetiradosH) {
+    public void setNroRetiradosH(Integer nroRetiradosH) {
         this.nroRetiradosH = nroRetiradosH;
     }
 
@@ -380,11 +380,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_ACCIDENTES")
     @Basic
-    Integer getNroAccidentes() {
+    public Integer getNroAccidentes() {
         return nroAccidentes;
     }
 
-    void setNroAccidentes(Integer nroAccidentes) {
+    public void setNroAccidentes(Integer nroAccidentes) {
         this.nroAccidentes = nroAccidentes;
     }
 
@@ -392,11 +392,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_MUERTES")
     @Basic
-    Integer getNroMuertes() {
+    public Integer getNroMuertes() {
         return nroMuertes;
     }
 
-    void setNroMuertes(Integer nroMuertes) {
+    public void setNroMuertes(Integer nroMuertes) {
         this.nroMuertes = nroMuertes;
     }
 
@@ -404,11 +404,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NRO_ENFERMEDADES")
     @Basic
-    Integer getNroEnfermedades() {
+    public Integer getNroEnfermedades() {
         return nroEnfermedades;
     }
 
-    void setNroEnfermedades(Integer nroEnfermedades) {
+    public void setNroEnfermedades(Integer nroEnfermedades) {
         this.nroEnfermedades = nroEnfermedades;
     }
 
@@ -416,11 +416,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "ID_ENTIDAD_BANCO")
     @Basic
-    Integer getIdEntidadBanco() {
+    public Integer getIdEntidadBanco() {
         return idEntidadBanco;
     }
 
-    void setIdEntidadBanco(Integer idEntidadBanco) {
+    public void setIdEntidadBanco(Integer idEntidadBanco) {
         this.idEntidadBanco = idEntidadBanco;
     }
 
@@ -428,11 +428,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "FECHA_OPERACION")
     @Basic
-    Timestamp getFechaOperacion() {
+    public Timestamp getFechaOperacion() {
         return fechaOperacion;
     }
 
-    void setFechaOperacion(Timestamp fechaOperacion) {
+    public void setFechaOperacion(Timestamp fechaOperacion) {
         this.fechaOperacion = fechaOperacion;
     }
 
@@ -440,11 +440,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "MONTO_OPERACION")
     @Basic
-    BigDecimal getMontoOperacion() {
+    public BigDecimal getMontoOperacion() {
         return montoOperacion;
     }
 
-    void setMontoOperacion(BigDecimal montoOperacion) {
+    public void setMontoOperacion(BigDecimal montoOperacion) {
         this.montoOperacion = montoOperacion;
     }
 
@@ -452,11 +452,11 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "NUM_OPERACION")
     @Basic
-    String getNumOperacion() {
+    public String getNumOperacion() {
         return numOperacion;
     }
 
-    void setNumOperacion(String numOperacion) {
+    public void setNumOperacion(String numOperacion) {
         this.numOperacion = numOperacion;
     }
 
