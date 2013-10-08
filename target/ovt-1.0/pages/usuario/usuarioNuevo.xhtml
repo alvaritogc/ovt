@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: renato
+  Date: 03-10-13
+  Time: 06:02 PM
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+    <title>Simple JSF Facelets page</title>
+</h:head>
+
+<h:body>
+    Place your content here '#{definitionService.size}'   .....
+
+    <h:form>
+        <h:inputText value="#{loginBean.username}"></h:inputText>
+        <h:inputText value="#{loginBean.password}"></h:inputText>
+        <h:commandButton action="#{loginBean.login}" value="hacer"/>
+    </h:form>
+</h:body>
+
+</html>

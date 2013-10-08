@@ -27,6 +27,8 @@
         <class>bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.UsrUsuarioRecursoEntity</class>
         <class>bo.gob.mintrabajo.ovt.entities.UsrUsuarioRolEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.VperPersonaEntity</class>
 
         <properties>
             <property name="openjpa.ConnectionURL" value="jdbc:oracle:thin:@192.168.50.7:1521:DESA"/>
@@ -35,4 +37,5 @@
             <property name="openjpa.ConnectionPassword" value="ovt"/>
         </properties>
     </persistence-unit>
+    <persistence-unit name="persistenceUnit"/>
 </persistence>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             version="2.0">
+    <persistence-unit name="ovt" transaction-type="RESOURCE_LOCAL">
+        <class>bo.gob.mintrabajo.ovt.entities.DocBinarioEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocDefinicionEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocEstadoEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocLogEstadoEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocLogImpresionEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocNumeracionEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocTransicionEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParDocumentoEstadoEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParDominioEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParEntidadEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParLocalidadEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParObligacionEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParObligacionCalendarioEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.PerPersonaEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.PerUnidadEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.PerUsuarioEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.PerUsuarioUnidadEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrModuloEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrRecursoEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrRolEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrRolRecursoEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrUsuarioRecursoEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrUsuarioRolEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity</class>
+        <class>bo.gob.mintrabajo.ovt.entities.VperPersonaEntity</class>
+
+        <properties>
+            <property name="openjpa.ConnectionURL" value="jdbc:oracle:thin:@192.168.50.7:1521:DESA"/>
+            <property name="openjpa.ConnectionDriverName" value="oracle.jdbc.OracleDriver"/>
+            <property name="openjpa.ConnectionUserName" value="ovt"/>
+            <property name="openjpa.ConnectionPassword" value="ovt"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="persistenceUnit"/>
+</persistence>
