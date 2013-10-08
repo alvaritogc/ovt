@@ -1,32 +1,27 @@
 package bo.gob.mintrabajo.ovt.bean.Planillas;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-import javax.faces.bean.ManagedProperty;
-
 import bo.gob.mintrabajo.ovt.api.*;
-import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
-import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
-import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
-import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
-import java.math.BigDecimal;
-
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
-
+import bo.gob.mintrabajo.ovt.entities.*;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
-
-import java.io.ByteArrayInputStream;
-import java.sql.*;
-import java.sql.Date;
-import java.util.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import java.util.Random;
 
 @ManagedBean
 @ViewScoped
@@ -51,12 +46,15 @@ public class PresentacionPlanillasBean {
 
     @ManagedProperty(value = "#{definicionService}")
     private IDefinicionService iDefinicionService;
-    //
+
+    @ManagedProperty(value = "#{binService}")
+    private IBinarioService iBinarioService;
+
+    //variables
     private String textoBenvenida;
-    //
     private PerPersonaEntity persona;
-    //
     private DocDocumentoEntity documento;
+    private String periodo;
 
     @PostConstruct
     public void ini() {
@@ -91,6 +89,20 @@ public class PresentacionPlanillasBean {
         logger.info("7");
         Random r= new Random(1000);
 
+        documento = idDocumentoService.guardar(documento);
+        logger.info("7");
+
+        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
+        docPlanillaEntity.setPeriodo(periodo);
+        docPlanillaEntity.setTipoPlanilla("Planilla Trimestral");
+        docPlanillaEntity.setIdEntidadSalud(1);
+        docPlanillaEntity.setIdEntidadBanco(2);
+        docPlanillaEntity.setFechaOperacion(new Timestamp(new java.util.Date().getTime()));
+        docPlanillaEntity.setMontoOperacion(BigDecimal.ONE);
+        docPlanillaEntity.setNumOperacion("OPE 1000");
+
+
+
         UploadedFile file = event.getFile();
         try {
             DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -100,7 +112,7 @@ public class PresentacionPlanillasBean {
             Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.50.7:1521:DESA", "ovt", "ovt");
             con.setAutoCommit(false);
             PreparedStatement ps = con.prepareStatement("insert into DOC_BINARIO values(?,?,?,?,?,?,?)");
-            ps.setInt(1, r.nextInt());
+            ps.setInt(1, (iBinarioService.contar().intValue())+1);
 
             ps.setInt(2, documento.getIdDocumento());
             ps.setString(3, file.getContentType());
@@ -187,5 +199,21 @@ public class PresentacionPlanillasBean {
 
     public void setIdDocumentoService(IDocumentoService idDocumentoService) {
         this.idDocumentoService = idDocumentoService;
+    }
+
+    public IBinarioService getiBinarioService() {
+        return iBinarioService;
+    }
+
+    public void setiBinarioService(IBinarioService iBinarioService) {
+        this.iBinarioService = iBinarioService;
+    }
+
+    public String getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(String periodo) {
+        this.periodo = periodo;
     }
 }
