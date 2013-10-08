@@ -25,14 +25,14 @@ import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @ViewScoped
-public class BienvenidaBean {
+public class EmpleadorBean {
     //
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private int idUsuario;
     private String idPersona;
     private String idEmpleador;
     private String idUnidad;
-    private static final Logger logger = LoggerFactory.getLogger(BienvenidaBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmpleadorBean.class);
     //
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
@@ -43,56 +43,28 @@ public class BienvenidaBean {
     @ManagedProperty(value = "#{documentoService}")
     private IDocumentoService iDocumentoService;
     //
-    private String textoBenvenida;
     //
     private PerPersonaEntity persona;
-    private List<PerUnidadEntity> listaUnidades;
-    //
-    private List<DocDocumentoEntity> listaDocumentos;
+    private List<PerPersonaEntity> listaPersonas;
+    private PerPersonaEntity personaABM;
 
     @PostConstruct
     public void ini() {
-        logger.info("BienvenidaBean.init()");
+        logger.info("EmpleadorBean.init()");
         idUsuario = (Integer) session.getAttribute("idUsuario");
         BigDecimal bi = BigDecimal.valueOf(idUsuario);
         logger.info("Buscando usuario" + bi);
-        UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
-        logger.info("usuario ok");
-        logger.info("buscando persona");
-        idPersona=(String) session.getAttribute("idEmpleador");
-        persona=iPersonaService.buscarPorId(idPersona);
-        logger.info("persona ok");
-//        try{
-//            idPersona=(String) session.getAttribute("idEmpleador");
-//            persona=iPersonaService.buscarPorId(idPersona);
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//            idPersona=null;
-//            idPersona=(String) session.getAttribute("idEmpleador");
-//            persona=iPersonaService.buscarPorId(usuario.getIdPersona());
-//        }
-        //persona=iPersonaService.buscarPorId(usuario.getIdPersona());
-        logger.info("persona ok");
         cargar();
     }
 
     public void cargar() {
-        textoBenvenida="Bienvenido  OVT";
-        listaUnidades=iUnidadService.listarPorPersona(persona.getIdPersona());
-        cargarDocumentos();
+//        listaPersonas=iPersonaService.getAllPersonas();
+        listaPersonas=new ArrayList<PerPersonaEntity>();
     }
-    public void cargarDocumentos(){
-        try{
-            listaDocumentos=iDocumentoService.listarPorPersona(persona.getIdPersona());
-            if(listaDocumentos==null){
-            listaDocumentos=new ArrayList<DocDocumentoEntity>();
-        }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            listaDocumentos=new ArrayList<DocDocumentoEntity>();
-        }
+    
+    public String seleccionarEmpleador(){
+        session.setAttribute("idEmpleador", personaABM.getIdPersona());
+        return "irBienvenida";
     }
 
     public IUsuarioService getiUsuarioService() {
@@ -101,15 +73,7 @@ public class BienvenidaBean {
 
     public void setiUsuarioService(IUsuarioService iUsuarioService) {
         this.iUsuarioService = iUsuarioService;
-    }
-
-    public String getTextoBenvenida() {
-        return textoBenvenida;
-    }
-
-    public void setTextoBenvenida(String textoBenvenida) {
-        this.textoBenvenida = textoBenvenida;
-    }
+    }   
 
     public IPersonaService getiPersonaService() {
         return iPersonaService;
@@ -135,14 +99,6 @@ public class BienvenidaBean {
         this.iUnidadService = iUnidadService;
     }
 
-    public List<PerUnidadEntity> getListaUnidades() {
-        return listaUnidades;
-    }
-
-    public void setListaUnidades(List<PerUnidadEntity> listaUnidades) {
-        this.listaUnidades = listaUnidades;
-    }
-
     public IDocumentoService getiDocumentoService() {
         return iDocumentoService;
     }
@@ -151,11 +107,19 @@ public class BienvenidaBean {
         this.iDocumentoService = iDocumentoService;
     }
 
-    public List<DocDocumentoEntity> getListaDocumentos() {
-        return listaDocumentos;
+    public List<PerPersonaEntity> getListaPersonas() {
+        return listaPersonas;
     }
 
-    public void setListaDocumentos(List<DocDocumentoEntity> listaDocumentos) {
-        this.listaDocumentos = listaDocumentos;
+    public void setListaPersonas(List<PerPersonaEntity> listaPersonas) {
+        this.listaPersonas = listaPersonas;
+    }
+
+    public PerPersonaEntity getPersonaABM() {
+        return personaABM;
+    }
+
+    public void setPersonaABM(PerPersonaEntity personaABM) {
+        this.personaABM = personaABM;
     }
 }

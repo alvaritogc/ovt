@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 @RequestScoped
 public class TemplateInicioBean implements Serializable {
     //
+
     private HttpSession session;
     private int idUsuario;
     private static final Logger logger = LoggerFactory.getLogger(TemplateInicioBean.class);
@@ -66,10 +67,10 @@ public class TemplateInicioBean implements Serializable {
         //
         idUsuario = 0;
         listaRecursos = new ArrayList<UsrRecursoEntity>();
-        nombreDeUsuario="";
-        nombreDeUnidad="";
+        nombreDeUsuario = "";
+        nombreDeUnidad = "";
         //
-        fecha=new Date();
+        fecha = new Date();
         //
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -77,7 +78,7 @@ public class TemplateInicioBean implements Serializable {
             BigDecimal bi = BigDecimal.valueOf(idUsuario);
             logger.info("Buscando usuario" + bi);
             UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
-            nombreDeUsuario=usuario.getUsuario();
+            nombreDeUsuario = usuario.getUsuario();
             PerPersonaEntity persona;
             logger.info("usuario ok");
             cargar();
@@ -88,7 +89,7 @@ public class TemplateInicioBean implements Serializable {
             item.setIcon("ui-icon-search");
             item.setCommand("#{templateInicioBean.logout}");
             model.addElement(item);
-            nombreDeUsuario="Invitado";
+            nombreDeUsuario = "Invitado";
         }
 
     }
@@ -110,7 +111,7 @@ public class TemplateInicioBean implements Serializable {
     }
 
     public void crearMenuRecurso() {
-        
+
         for (UsrRecursoEntity recurso : listaRecursos) {
             if (recurso.getIdRecursoPadre() == null) {
                 DefaultSubMenu subMenu = crearMenuHijos(recurso);
@@ -169,7 +170,7 @@ public class TemplateInicioBean implements Serializable {
         }
         return "";
     }
-    
+
     public String login() {
         logger.info("login()");
         try {
@@ -178,8 +179,20 @@ public class TemplateInicioBean implements Serializable {
             logger.info("usuario aceptado");
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             session.setAttribute("idUsuario", idUsuario);
+            //
             ini();
-            return "login";
+            //
+            BigDecimal bi = BigDecimal.valueOf(idUsuario);
+            UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
+            session.setAttribute("idPersona", usuario.getIdPersona());
+            if (usuario.getEsInterno() == BigInteger.ONE) {
+                session.setAttribute("idEmpleador", null);
+                return "irEmpleadorBusqueda";
+            } else {
+                session.setAttribute("idEmpleador", usuario.getIdPersona());
+                return "irBienvenida";
+            }
+            //return "login";
         } catch (RuntimeException e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(e.getMessage(), "Hello "));
@@ -190,14 +203,26 @@ public class TemplateInicioBean implements Serializable {
         password = "";
         return "";
     }
-    
-    public String irInicioPublico(){
-        return "irInicioPublico";
+
+    public String irInicioPublico() {
+        //si no existe la session
+        return "irInicio";
     }
-    public String irInicioPrivado(){
-        return "irInicioPrivado";
+
+    public String irInicioPrivado() {
+        //si existe la session
+        BigDecimal bi = BigDecimal.valueOf(idUsuario);
+        UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
+        session.setAttribute("idPersona", usuario.getIdPersona());
+        if (usuario.getEsInterno() == BigInteger.ONE) {
+            session.setAttribute("idEmpleador", null);
+            return "irEmpleadorBusqueda";
+        } else {
+            session.setAttribute("idEmpleador", usuario.getIdPersona());
+            return "irBienvenida";
+        }
+
     }
-    
 
     public MenuModel getModel() {
         return model;

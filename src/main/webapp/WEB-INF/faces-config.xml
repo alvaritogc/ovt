@@ -11,35 +11,23 @@
     </application>
     
     <!-- INDEX -->
-    <navigation-rule>
-        <from-view-id>/index.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>loggin</from-outcome>
-            <to-view-id>/pages/inicio.xhtml</to-view-id>
-            <redirect include-view-params="false">
-            </redirect>
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/pages/inicio.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>login</from-outcome>
-            <to-view-id>/pages/bienvenida.xhtml</to-view-id>
-            <redirect include-view-params="false">
-            </redirect>
-        </navigation-case>
-    </navigation-rule>
     
     <navigation-rule>
         <navigation-case>
-            <from-outcome>irInicioPublico</from-outcome>
+            <from-outcome>irInicio</from-outcome>
             <to-view-id>/pages/inicio.xhtml</to-view-id>
             <redirect include-view-params="false">
             </redirect>
         </navigation-case>
         <navigation-case>
-            <from-outcome>irInicioPrivado</from-outcome>
+            <from-outcome>irBienvenida</from-outcome>
             <to-view-id>/pages/bienvenida.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>irEmpleadorBusqueda</from-outcome>
+            <to-view-id>/pages/empleadorBusqueda.xhtml</to-view-id>
             <redirect include-view-params="false">
             </redirect>
         </navigation-case>
