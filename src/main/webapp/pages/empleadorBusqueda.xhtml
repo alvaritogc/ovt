@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <h:form>
+
+                <p:panel header="Empleador">  
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Tipo identificacion: "/>
+                        <p:inputText value=""/>
+                        <p:outputLabel value="Nro identificacion: "/>
+                        <p:inputText value=""/>
+                        <p:outputLabel value="Nombre razon social: "/>
+                        <p:inputText value=""/>
+                    </h:panelGrid>
+                </p:panel>
+                <p:dataTable value="#{empleadorBean.listaPersonas}" var="o">
+                    <p:column headerText="Tipo identifiacion">
+                        <h:outputLabel value="#{o.tipoIdentificacion}"/>
+                    </p:column>
+                    <p:column headerText="Nro identificacion">
+                        <h:outputLabel value="#{o.nroIdentificacion}"/>
+                    </p:column>
+                    <p:column headerText="Nombre razon social ">
+                        <h:outputLabel value="#{o.nombreRazonSocial} #{o.apellidoPaterno} #{o.apellidoMaterno}"/>
+                    </p:column>
+                    <p:column headerText="Acciones">  
+                        <p:commandButton action="#{empleadorBean.seleccionarEmpleador}">  
+                            <f:setPropertyActionListener value="#{o}" target="#{empleadorBean.personaABM}" />  
+                        </p:commandButton>  
+                    </p:column>  
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
