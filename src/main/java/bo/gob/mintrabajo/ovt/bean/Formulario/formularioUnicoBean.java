@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.bean.Formulario;
 
 import bo.gob.mintrabajo.ovt.api.IEntidadService;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
+import bo.gob.mintrabajo.ovt.api.IPlanillaService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
 import bo.gob.mintrabajo.ovt.entities.ParEntidadEntity;
@@ -44,6 +45,9 @@ public class formularioUnicoBean {
     @ManagedProperty(value = "#{entidadService}")
     private IEntidadService iEntidadService;
 
+    @ManagedProperty(value = "#{planillaService}")
+    private IPlanillaService iPlanillaService;
+
     private PerPersonaEntity perPersonaEntity;
     private DocPlanillaEntity docPlanillaEntity;
 
@@ -59,12 +63,24 @@ public class formularioUnicoBean {
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
     public List<ParEntidadEntity> obtenerEntidad(){
-
-        List<ParEntidadEntity> tmpLista = iEntidadService.getEntidadLista();
+        List<ParEntidadEntity> tmpLista;
+        try{
+            tmpLista = iEntidadService.getEntidadLista();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
         return tmpLista;
     }
 
-
+    public void guardarPlanilla(){
+        System.out.println("Ingresando a guardar Planilla ");
+        try{
+            iPlanillaService.guardar(docPlanillaEntity);
+        }catch (Exception e){
+           e.printStackTrace();
+        }
+    }
 
 
     //** Getters and Setters **//
@@ -106,5 +122,13 @@ public class formularioUnicoBean {
 
     public void setiEntidadService(IEntidadService iEntidadService) {
         this.iEntidadService = iEntidadService;
+    }
+
+    public IPlanillaService getiPlanillaService() {
+        return iPlanillaService;
+    }
+
+    public void setiPlanillaService(IPlanillaService iPlanillaService) {
+        this.iPlanillaService = iPlanillaService;
     }
 }

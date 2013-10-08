@@ -1,5 +1,7 @@
 package bo.gob.mintrabajo.ovt.api;
 
+import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
+
 /**
  * Created with IntelliJ IDEA.
  * User: gmercado
@@ -8,4 +10,5 @@ package bo.gob.mintrabajo.ovt.api;
  * To change this template use File | Settings | File Templates.
  */
 public interface IPlanillaService {
+    public void guardar(DocPlanillaEntity objeto);
 }
