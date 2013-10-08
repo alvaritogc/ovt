@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/resources/META-INF/persistence.xml" afterPath="$PROJECT_DIR$/src/test/resources/META-INF/persistence.xml" />
-    </list>
+    <list default="true" id="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" name="Default" comment="" />
     <ignored path="ovt.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381236981136" ignored="false" />
