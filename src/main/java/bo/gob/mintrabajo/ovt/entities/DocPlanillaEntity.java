@@ -24,7 +24,7 @@ public class DocPlanillaEntity {
         return idPlanilla;
     }
 
-    void setIdPlanilla(Integer idPlanilla) {
+    public void setIdPlanilla(Integer idPlanilla) {
         this.idPlanilla = idPlanilla;
     }
 
@@ -36,7 +36,7 @@ public class DocPlanillaEntity {
         return idDocumento;
     }
 
-    void setIdDocumento(Integer idDocumento) {
+    public void setIdDocumento(Integer idDocumento) {
         this.idDocumento = idDocumento;
     }
 
@@ -48,7 +48,7 @@ public class DocPlanillaEntity {
         return periodo;
     }
 
-    void setPeriodo(String periodo) {
+    public void setPeriodo(String periodo) {
         this.periodo = periodo;
     }
 
@@ -60,7 +60,7 @@ public class DocPlanillaEntity {
         return tipoPlanilla;
     }
 
-    void setTipoPlanilla(String tipoPlanilla) {
+    public void setTipoPlanilla(String tipoPlanilla) {
         this.tipoPlanilla = tipoPlanilla;
     }
 
@@ -72,7 +72,7 @@ public class DocPlanillaEntity {
         return nroAsegCaja;
     }
 
-    void setNroAsegCaja(Integer nroAsegCaja) {
+    public void setNroAsegCaja(Integer nroAsegCaja) {
         this.nroAsegCaja = nroAsegCaja;
     }
 
@@ -84,7 +84,7 @@ public class DocPlanillaEntity {
         return montoAsegCaja;
     }
 
-    void setMontoAsegCaja(BigDecimal montoAsegCaja) {
+    public void setMontoAsegCaja(BigDecimal montoAsegCaja) {
         this.montoAsegCaja = montoAsegCaja;
     }
 
@@ -96,7 +96,7 @@ public class DocPlanillaEntity {
         return idEntidadSalud;
     }
 
-    void setIdEntidadSalud(Integer idEntidadSalud) {
+    public void setIdEntidadSalud(Integer idEntidadSalud) {
         this.idEntidadSalud = idEntidadSalud;
     }
 
@@ -108,7 +108,7 @@ public class DocPlanillaEntity {
         return nroAsegAfp;
     }
 
-    void setNroAsegAfp(Integer nroAsegAfp) {
+    public void setNroAsegAfp(Integer nroAsegAfp) {
         this.nroAsegAfp = nroAsegAfp;
     }
 
@@ -120,7 +120,7 @@ public class DocPlanillaEntity {
         return montoAsegAfp;
     }
 
-    void setMontoAsegAfp(BigDecimal montoAsegAfp) {
+    public void setMontoAsegAfp(BigDecimal montoAsegAfp) {
         this.montoAsegAfp = montoAsegAfp;
     }
 
@@ -132,7 +132,7 @@ public class DocPlanillaEntity {
         return haberBasico;
     }
 
-    void setHaberBasico(BigDecimal haberBasico) {
+    public void setHaberBasico(BigDecimal haberBasico) {
         this.haberBasico = haberBasico;
     }
 
@@ -144,7 +144,7 @@ public class DocPlanillaEntity {
         return bonoAntiguedad;
     }
 
-    void setBonoAntiguedad(BigDecimal bonoAntiguedad) {
+    public void setBonoAntiguedad(BigDecimal bonoAntiguedad) {
         this.bonoAntiguedad = bonoAntiguedad;
     }
 
@@ -156,7 +156,7 @@ public class DocPlanillaEntity {
         return bonoProduccion;
     }
 
-    void setBonoProduccion(BigDecimal bonoProduccion) {
+    public void setBonoProduccion(BigDecimal bonoProduccion) {
         this.bonoProduccion = bonoProduccion;
     }
 
@@ -168,7 +168,7 @@ public class DocPlanillaEntity {
         return subsidioFrontera;
     }
 
-    void setSubsidioFrontera(BigDecimal subsidioFrontera) {
+    public void setSubsidioFrontera(BigDecimal subsidioFrontera) {
         this.subsidioFrontera = subsidioFrontera;
     }
 
@@ -180,7 +180,7 @@ public class DocPlanillaEntity {
         return laborExtra;
     }
 
-    void setLaborExtra(BigDecimal laborExtra) {
+    public void setLaborExtra(BigDecimal laborExtra) {
         this.laborExtra = laborExtra;
     }
 
@@ -192,7 +192,7 @@ public class DocPlanillaEntity {
         return otrosBonos;
     }
 
-    void setOtrosBonos(BigDecimal otrosBonos) {
+    public void setOtrosBonos(BigDecimal otrosBonos) {
         this.otrosBonos = otrosBonos;
     }
 
@@ -204,7 +204,7 @@ public class DocPlanillaEntity {
         return aporteAfp;
     }
 
-    void setAporteAfp(BigDecimal aporteAfp) {
+    public void setAporteAfp(BigDecimal aporteAfp) {
         this.aporteAfp = aporteAfp;
     }
 
@@ -216,7 +216,7 @@ public class DocPlanillaEntity {
         return rciva;
     }
 
-    void setRciva(BigDecimal rciva) {
+    public void setRciva(BigDecimal rciva) {
         this.rciva = rciva;
     }
 
@@ -228,7 +228,7 @@ public class DocPlanillaEntity {
         return otrosDescuentos;
     }
 
-    void setOtrosDescuentos(BigDecimal otrosDescuentos) {
+    public void setOtrosDescuentos(BigDecimal otrosDescuentos) {
         this.otrosDescuentos = otrosDescuentos;
     }
 
@@ -240,7 +240,7 @@ public class DocPlanillaEntity {
         return nroM;
     }
 
-    void setNroM(Integer nroM) {
+    public void setNroM(Integer nroM) {
         this.nroM = nroM;
     }
 
@@ -252,7 +252,7 @@ public class DocPlanillaEntity {
         return nroH;
     }
 
-    void setNroH(Integer nroH) {
+    public void setNroH(Integer nroH) {
         this.nroH = nroH;
     }
 
@@ -264,7 +264,7 @@ public class DocPlanillaEntity {
         return nroJubiladosM;
     }
 
-    void setNroJubiladosM(Integer nroJubiladosM) {
+    public void setNroJubiladosM(Integer nroJubiladosM) {
         this.nroJubiladosM = nroJubiladosM;
     }
 
@@ -276,7 +276,7 @@ public class DocPlanillaEntity {
         return nroJubiladosH;
     }
 
-    void setNroJubiladosH(Integer nroJubiladosH) {
+    public void setNroJubiladosH(Integer nroJubiladosH) {
         this.nroJubiladosH = nroJubiladosH;
     }
 
@@ -288,7 +288,7 @@ public class DocPlanillaEntity {
         return nroExtranjerosM;
     }
 
-    void setNroExtranjerosM(Integer nroExtranjerosM) {
+    public void setNroExtranjerosM(Integer nroExtranjerosM) {
         this.nroExtranjerosM = nroExtranjerosM;
     }
 
@@ -300,7 +300,7 @@ public class DocPlanillaEntity {
         return nroExtranjerosH;
     }
 
-    void setNroExtranjerosH(Integer nroExtranjerosH) {
+    public void setNroExtranjerosH(Integer nroExtranjerosH) {
         this.nroExtranjerosH = nroExtranjerosH;
     }
 
@@ -312,7 +312,7 @@ public class DocPlanillaEntity {
         return nroDiscapacidadM;
     }
 
-    void setNroDiscapacidadM(Integer nroDiscapacidadM) {
+    public void setNroDiscapacidadM(Integer nroDiscapacidadM) {
         this.nroDiscapacidadM = nroDiscapacidadM;
     }
 
@@ -324,7 +324,7 @@ public class DocPlanillaEntity {
         return nroDiscapacidadH;
     }
 
-    void setNroDiscapacidadH(Integer nroDiscapacidadH) {
+    public void setNroDiscapacidadH(Integer nroDiscapacidadH) {
         this.nroDiscapacidadH = nroDiscapacidadH;
     }
 
@@ -336,7 +336,7 @@ public class DocPlanillaEntity {
         return nroContratadosM;
     }
 
-    void setNroContratadosM(Integer nroContratadosM) {
+    public void setNroContratadosM(Integer nroContratadosM) {
         this.nroContratadosM = nroContratadosM;
     }
 
@@ -348,7 +348,7 @@ public class DocPlanillaEntity {
         return nroContratadosH;
     }
 
-    void setNroContratadosH(Integer nroContratadosH) {
+    public void setNroContratadosH(Integer nroContratadosH) {
         this.nroContratadosH = nroContratadosH;
     }
 
@@ -360,7 +360,7 @@ public class DocPlanillaEntity {
         return nroRetiradosM;
     }
 
-    void setNroRetiradosM(Integer nroRetiradosM) {
+    public void setNroRetiradosM(Integer nroRetiradosM) {
         this.nroRetiradosM = nroRetiradosM;
     }
 
@@ -372,7 +372,7 @@ public class DocPlanillaEntity {
         return nroRetiradosH;
     }
 
-    void setNroRetiradosH(Integer nroRetiradosH) {
+    public void setNroRetiradosH(Integer nroRetiradosH) {
         this.nroRetiradosH = nroRetiradosH;
     }
 
@@ -384,7 +384,7 @@ public class DocPlanillaEntity {
         return nroAccidentes;
     }
 
-    void setNroAccidentes(Integer nroAccidentes) {
+    public void setNroAccidentes(Integer nroAccidentes) {
         this.nroAccidentes = nroAccidentes;
     }
 
@@ -396,7 +396,7 @@ public class DocPlanillaEntity {
         return nroMuertes;
     }
 
-    void setNroMuertes(Integer nroMuertes) {
+    public void setNroMuertes(Integer nroMuertes) {
         this.nroMuertes = nroMuertes;
     }
 
@@ -408,7 +408,7 @@ public class DocPlanillaEntity {
         return nroEnfermedades;
     }
 
-    void setNroEnfermedades(Integer nroEnfermedades) {
+    public void setNroEnfermedades(Integer nroEnfermedades) {
         this.nroEnfermedades = nroEnfermedades;
     }
 
@@ -420,7 +420,7 @@ public class DocPlanillaEntity {
         return idEntidadBanco;
     }
 
-    void setIdEntidadBanco(Integer idEntidadBanco) {
+    public void setIdEntidadBanco(Integer idEntidadBanco) {
         this.idEntidadBanco = idEntidadBanco;
     }
 
@@ -432,7 +432,7 @@ public class DocPlanillaEntity {
         return fechaOperacion;
     }
 
-    void setFechaOperacion(Timestamp fechaOperacion) {
+    public void setFechaOperacion(Timestamp fechaOperacion) {
         this.fechaOperacion = fechaOperacion;
     }
 
@@ -444,7 +444,7 @@ public class DocPlanillaEntity {
         return montoOperacion;
     }
 
-    void setMontoOperacion(BigDecimal montoOperacion) {
+    public void setMontoOperacion(BigDecimal montoOperacion) {
         this.montoOperacion = montoOperacion;
     }
 
@@ -456,7 +456,7 @@ public class DocPlanillaEntity {
         return numOperacion;
     }
 
-    void setNumOperacion(String numOperacion) {
+    public void setNumOperacion(String numOperacion) {
         this.numOperacion = numOperacion;
     }
 
