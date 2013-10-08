@@ -2,16 +2,80 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/ovt_war.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/ovt_war_exploded.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__asm_asm_3_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_14_0_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_jolbox_bonecp_0_8_0_rc1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_oracle_ojdbc6_11_2_0_3.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_faces_jsf_api_2_2_3.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_faces_jsf_impl_2_0_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_typesafe_config_1_0_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_1_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_pool_commons_pool_1_5_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_inject_javax_inject_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_10.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_16.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__name_marcelomorales_siqisiqi_siqisiqi_bonecp_0_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__name_marcelomorales_siqisiqi_siqisiqi_configuration_0_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__name_marcelomorales_siqisiqi_siqisiqi_openjpa_0_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_serp_serp_1_14_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_derby_derby_10_9_1_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_geronimo_specs_geronimo_ejb_3_0_spec_1_0_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_geronimo_specs_geronimo_jms_1_1_spec_1_1_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_geronimo_specs_geronimo_jpa_2_0_spec_1_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_geronimo_specs_geronimo_jta_1_1_spec_1_1_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_openjpa_openjpa_jdbc_2_2_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_openjpa_openjpa_kernel_2_2_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_openjpa_openjpa_lib_2_2_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_openjpa_openjpa_persistence_2_2_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_openjpa_openjpa_persistence_jdbc_2_2_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjrt_1_7_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_primefaces_primefaces_4_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_sonatype_plexus_plexus_cipher_1_7.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_commons_1_5_2_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_jpa_1_3_4_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_3_2_4_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_3_2_4_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_3_2_4_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_3_2_4_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_3_2_4_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_3_2_4_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_orm_3_2_4_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_3_2_4_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_web_3_2_4_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/pages/formularioUnico.xhtml" afterPath="$PROJECT_DIR$/src/main/webapp/pages/formularioUnico.xhtml" />
     </list>
     <ignored path="ovt.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381236981136" ignored="false" />
+    <file path="/Dummy.txt" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381251385751" ignored="false" />
     <file path="/UsuarioService.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381175585669" ignored="false" />
     <file path="/UsersService.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381152212648" ignored="false" />
     <file path="/AuthenticationRealm.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1380913915651" ignored="false" />
     <file path="/shiro.ini" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1380914099884" ignored="false" />
-    <file path="/formularioUnico.xhtml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381246591174" ignored="false" />
+    <file path="/formularioUnico.xhtml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381259506181" ignored="false" />
     <file path="/templateInicio.xhtml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381178924919" ignored="false" />
     <file path="/a.dummy" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381176336010" ignored="false" />
     <file path="/docs.css" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381166853781" ignored="false" />
@@ -19,13 +83,10 @@
     <file path="/ovt.conf" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381176359138" ignored="false" />
     <file path="/UsuarioBean.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381176806480" ignored="false" />
     <file path="/LoginBean.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381177143908" ignored="false" />
-    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/api/Users.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189323063" ignored="false" />
     <file path="$PROJECT_DIR$/src/main/webapp/pages/usuario/usuarioNuevo.xhtml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381183474974" ignored="false" />
-    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/bean/UsuarioBean.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189323064" ignored="false" />
     <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/repositories/UserRepository.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381183474974" ignored="false" />
     <file path="$PROJECT_DIR$/src/main/webapp/pages/bienvenida.xhtml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381183474975" ignored="false" />
-    <file path="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189323063" ignored="false" />
-    <file path="$PROJECT_DIR$/src/main/webapp/WEB-INF/faces-config.xml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189323063" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257091159" ignored="false" />
     <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/auth/AuthenticationRealm.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381183474974" ignored="false" />
     <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/repositories/UsuarioRecursoRepository.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381183474974" ignored="false" />
     <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/repositories/RolRecursoRepository.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381183474974" ignored="false" />
@@ -40,14 +101,47 @@
     <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/repositories/RecursoRepository.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381183474975" ignored="false" />
     <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/repositories/DocumentoEstadoRepository.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189323064" ignored="false" />
     <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/repositories/DocumentoRepository.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189323064" ignored="false" />
-    <file path="/pom.xml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381188983093" ignored="false" />
-    <file path="$PROJECT_DIR$/src/main/java/login/BienvenidaBean.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189323063" ignored="false" />
-    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocDocumentoEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189323063" ignored="false" />
-    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/ParDocumentoEstadoEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189323063" ignored="false" />
-    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrUsuarioEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189323064" ignored="false" />
+    <file path="/pom.xml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257004754" ignored="false" />
     <file path="/TemplateInicioBean.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189105587" ignored="false" />
-    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrRecursoEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381189323063" ignored="false" />
-    <file path="/fragment.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381249287884" ignored="false" />
+    <file path="/fragment.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381251316527" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/webapp/WEB-INF/faces-config.xml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257091159" ignored="false" />
+    <file path="/formularioUnicoBean.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381259164225" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/VperPersonaEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090876" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/PerUsuarioUnidadEntityPK.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257091158" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/PerUsuarioUnidadEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257091159" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocTransicionEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/PerUnidadEntityPK.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocDocumentoEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/ParDocumentoEstadoEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257091159" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/PerUnidadEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/PerUsuarioEntityPK.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/PerUsuarioEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrRecursoEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/ParObligacionEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocEstadoEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrRolEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrUsuarioEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/test/resources/META-INF/persistence.xml" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257091159" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocBinarioEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090876" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocLogImpresionEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090876" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/ParLocalidadEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090876" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrUsuarioRolEntityPK.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocDefinicionEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrUsuarioRolEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocDefinicionEntityPK.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/ParEntidadEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocNumeracionEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrRolRecursoEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/ParDominioEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/ParDominioEntityPK.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocNumeracionEntityPK.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrRolRecursoEntityPK.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrModuloEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocLogEstadoEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocTransicionEntityPK.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257090877" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrUsuarioRecursoEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257091159" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/ParObligacionCalendarioEntity.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257091159" ignored="false" />
+    <file path="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/UsrUsuarioRecursoEntityPK.java" changelist="f0f53572-d9a0-4dc2-96e5-f8f32c0b4362" time="1381257091159" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,102 +202,75 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="formularioUnico.xhtml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="formularioUnico.xhtml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/formularioUnico.xhtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="313" column="66" selection-start="12777" selection-end="12777" vertical-scroll-proportion="0.6635514">
+            <state line="168" column="105" selection-start="6254" selection-end="6254" vertical-scroll-proportion="-19.0">
               <folding>
-                <marker date="1381250672043" expanded="true" signature="2030:2056" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="2467:2493" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="2593:2619" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="2691:2732" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="3286:3312" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="3614:3640" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="3712:3753" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="4008:4034" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="4148:4174" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="4285:4311" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="4408:4434" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="4600:4626" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="4748:4774" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="4871:4897" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="4999:5025" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="5157:5183" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="5288:5314" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="5416:5442" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="5539:5565" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="5637:5678" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="5991:6017" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="6147:6173" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="6314:6340" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="6452:6478" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="6629:6655" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="6969:7010" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="7120:7161" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="7403:7429" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="7534:7560" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="7665:7691" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="7798:7824" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="7931:7957" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="8055:8081" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="8180:8206" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="8583:8608" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="8653:8678" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="8723:8748" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="9141:9166" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="9211:9236" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="9281:9306" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="9413:9438" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="9483:9508" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="9553:9578" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="9690:9715" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="9760:9785" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="9830:9855" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="9978:10003" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="10048:10073" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="10118:10143" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="10264:10289" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="10334:10359" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="10404:10429" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="10552:10593" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="10914:10939" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="11059:11084" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="11201:11226" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="11321:11362" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="11619:11645" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="11784:11810" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="11954:11980" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="12595:12621" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="12725:12751" placeholder="{...}" />
-                <marker date="1381250672043" expanded="true" signature="12955:12981" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="2030:2056" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="2467:2493" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="2593:2619" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="2691:2732" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="3286:3312" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="3614:3640" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="3712:3753" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="4057:4083" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="4270:4296" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="4480:4506" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="4603:4629" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="4795:4821" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="4943:4969" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="5066:5092" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="5194:5220" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="5352:5378" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="5483:5509" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="5611:5637" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="5734:5760" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="5832:5873" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="6227:6253" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="6383:6409" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="6550:6576" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="6688:6714" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="6865:6891" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="7205:7246" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="7356:7397" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="7639:7665" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="7770:7796" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="7901:7927" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="8034:8060" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="8167:8193" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="8291:8317" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="8416:8442" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="8819:8844" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="8889:8914" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="8959:8984" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="9377:9402" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="9447:9472" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="9517:9542" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="9649:9674" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="9719:9744" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="9789:9814" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="9926:9951" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="9996:10021" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="10066:10091" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="10214:10239" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="10284:10309" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="10354:10379" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="10500:10525" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="10570:10595" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="10640:10665" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="10788:10829" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="11150:11175" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="11295:11320" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="11437:11462" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="11557:11598" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="11855:11881" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="12020:12046" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="12190:12216" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="12831:12857" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="12961:12987" placeholder="{...}" />
+                <marker date="1381259658967" expanded="true" signature="13191:13217" placeholder="{...}" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UsersService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/services/UsersService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="77" selection-start="982" selection-end="982" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VperPersonaEntity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/VperPersonaEntity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="60" selection-start="430" selection-end="430" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DocPlanillaEntity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocPlanillaEntity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="28" selection-start="496" selection-end="496" vertical-scroll-proportion="0.0">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -211,30 +278,49 @@
       <file leaf-file-name="presentacionPlanillas.xhtml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/planillas/presentacionPlanillas.xhtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="80" selection-start="1964" selection-end="1964" vertical-scroll-proportion="-4.1666665">
+            <state line="64" column="89" selection-start="4195" selection-end="4195" vertical-scroll-proportion="-13.541667">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="templateInicio.xhtml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/template/templateInicio.xhtml">
+      <file leaf-file-name="PresentacionPlanillasBean.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/bean/Planillas/PresentacionPlanillasBean.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="128" selection-start="1540" selection-end="1597" vertical-scroll-proportion="-17.5">
+            <state line="46" column="89" selection-start="1550" selection-end="1550" vertical-scroll-proportion="0.0">
               <folding>
-                <marker date="1381188517004" expanded="true" signature="3595:3606" placeholder="{...}" />
-                <marker date="1381188517004" expanded="true" signature="3825:3836" placeholder="{...}" />
-                <marker date="1381188517004" expanded="true" signature="4452:4481" placeholder="{...}" />
-                <marker date="1381188517004" expanded="true" signature="4834:4863" placeholder="{...}" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TemplateInicioBean.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/login/TemplateInicioBean.java">
+      <file leaf-file-name="formularioUnicoBean.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/bean/Formulario/formularioUnicoBean.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="176" column="92" selection-start="6543" selection-end="6543" vertical-scroll-proportion="0.0">
+            <state line="26" column="36" selection-start="807" selection-end="807" vertical-scroll-proportion="0.5244755">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PerPersonaEntity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/PerPersonaEntity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="55" column="28" selection-start="1392" selection-end="1392" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DocPlanillaEntity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocPlanillaEntity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="68" selection-start="467" selection-end="467" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -260,7 +346,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/auth/AuthenticationRealm.java" />
         <option value="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/services/UsersService.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/pages/formularios/formularioUnico.xhtml" />
         <option value="$PROJECT_DIR$/src/main/webapp/assets/css/bootstrap.css" />
@@ -271,10 +356,11 @@
         <option value="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/bean/UsuarioBean.java" />
         <option value="$PROJECT_DIR$/src/main/java/login/LoginBean.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/pages/template/templateInicio.xhtml" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/login/TemplateInicioBean.java" />
         <option value="$PROJECT_DIR$/src/test/resources/META-INF/persistence.xml" />
         <option value="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/VperPersonaEntity.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/bean/Formulario/formularioUnicoBean.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/pages/formularioUnico.xhtml" />
       </list>
     </option>
@@ -320,6 +406,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -392,6 +479,10 @@
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="login" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -449,9 +540,102 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ovt" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ovt" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ovt" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bean" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ovt" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ovt" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ovt" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bean" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Formulario" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ovt" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ovt" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ovt" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -471,9 +655,9 @@
     <property name="restartRequiresConfirmation" value="true" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -527,19 +711,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -566,6 +737,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -604,12 +788,6 @@
       <patterns />
       <method />
     </configuration>
-    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
-      <option name="VM_PARAMETERS" value="" />
-      <option name="USER_CFG_CLASS" />
-      <option name="CONTEXT_PROVIDER" />
-      <method />
-    </configuration>
     <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
       <deployment />
       <server-settings />
@@ -619,6 +797,12 @@
       <predefined_log_file id="Tomcat Host Manager" enabled="false" />
       <predefined_log_file id="Tomcat Localhost Access" enabled="false" />
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method />
+    </configuration>
+    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+      <option name="CONTEXT_PROVIDER" />
       <method />
     </configuration>
     <configuration default="false" name="jetty" type="MavenRunConfiguration" factoryName="Maven">
@@ -687,18 +871,18 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="48" y="-11" width="1313" height="780" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905295" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25890738" sideWeight="0.5216693" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32744783" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25890738" sideWeight="0.5216693" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.54253614" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905295" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25890738" sideWeight="0.5216693" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -706,10 +890,10 @@
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25890738" sideWeight="0.5216693" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24940617" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25890738" sideWeight="0.47672552" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25890738" sideWeight="0.67255217" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -784,169 +968,191 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/assets/img/bootstrap-mdo-sfmoma-01.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/assets/img/bootstrap-mdo-sfmoma-02.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/assets/img/bootstrap-mdo-sfmoma-03.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/assets/img/bs-docs-bootstrap-features.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/assets/img/glyphicons-halflings.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/assets/img/glyphicons-halflings-white.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/assets/img/grid-baseline-20px.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/assets/img/less-logo-large.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/api/IBinarioService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="17" selection-start="152" selection-end="152" vertical-scroll-proportion="0.20979021">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/login/TemplateInicioBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="176" column="92" selection-start="6543" selection-end="6543" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="38" column="25" selection-start="1396" selection-end="1396" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/template/templateInicio.xhtml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/bean/UsuarioBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="128" selection-start="1540" selection-end="1597" vertical-scroll-proportion="-17.5">
-          <folding>
-            <marker date="1381188517004" expanded="true" signature="3595:3606" placeholder="{...}" />
-            <marker date="1381188517004" expanded="true" signature="3825:3836" placeholder="{...}" />
-            <marker date="1381188517004" expanded="true" signature="4452:4481" placeholder="{...}" />
-            <marker date="1381188517004" expanded="true" signature="4834:4863" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/planillas/presentacionPlanillas.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="80" selection-start="1964" selection-end="1964" vertical-scroll-proportion="-4.1666665">
+        <state line="32" column="30" selection-start="1089" selection-end="1089" vertical-scroll-proportion="0.3409091">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/services/UsersService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="77" selection-start="982" selection-end="982" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocPlanillaEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="28" selection-start="496" selection-end="496" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/resources/META-INF/persistence.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="8" selection-start="2106" selection-end="2106" vertical-scroll-proportion="0.0">
+        <state line="34" column="77" selection-start="982" selection-end="982" vertical-scroll-proportion="-0.3374126">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/VperPersonaEntity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="60" selection-start="430" selection-end="430" vertical-scroll-proportion="0.0">
+        <state line="33" column="58" selection-start="852" selection-end="852" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/planillas/presentacionPlanillas.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="89" selection-start="4195" selection-end="4195" vertical-scroll-proportion="-13.541667">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/services/PersonaService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="88" column="28" selection-start="2128" selection-end="2128" vertical-scroll-proportion="2.0454545">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/api/IPersonaService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="28" selection-start="558" selection-end="558" vertical-scroll-proportion="0.37815127">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/ovt.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="63" column="45" selection-start="1936" selection-end="1936" vertical-scroll-proportion="0.5462185">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/template/templateInicio.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="128" selection-start="1540" selection-end="1597" vertical-scroll-proportion="0.0">
+          <folding>
+            <marker date="1381188517004" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1381188517004" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1381188517004" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1381188517004" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/bean/Planillas/PresentacionPlanillasBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="89" selection-start="1550" selection-end="1550" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/formularioUnico.xhtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="313" column="66" selection-start="12777" selection-end="12777" vertical-scroll-proportion="0.6635514">
+        <state line="168" column="105" selection-start="6254" selection-end="6254" vertical-scroll-proportion="-19.0">
           <folding>
-            <marker date="1381250672043" expanded="true" signature="2030:2056" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="2467:2493" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="2593:2619" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="2691:2732" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="3286:3312" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="3614:3640" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="3712:3753" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="4008:4034" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="4148:4174" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="4285:4311" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="4408:4434" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="4600:4626" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="4748:4774" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="4871:4897" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="4999:5025" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="5157:5183" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="5288:5314" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="5416:5442" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="5539:5565" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="5637:5678" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="5991:6017" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="6147:6173" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="6314:6340" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="6452:6478" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="6629:6655" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="6969:7010" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="7120:7161" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="7403:7429" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="7534:7560" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="7665:7691" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="7798:7824" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="7931:7957" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="8055:8081" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="8180:8206" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="8583:8608" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="8653:8678" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="8723:8748" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="9141:9166" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="9211:9236" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="9281:9306" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="9413:9438" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="9483:9508" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="9553:9578" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="9690:9715" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="9760:9785" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="9830:9855" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="9978:10003" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="10048:10073" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="10118:10143" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="10264:10289" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="10334:10359" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="10404:10429" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="10552:10593" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="10914:10939" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="11059:11084" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="11201:11226" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="11321:11362" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="11619:11645" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="11784:11810" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="11954:11980" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="12595:12621" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="12725:12751" placeholder="{...}" />
-            <marker date="1381250672043" expanded="true" signature="12955:12981" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="2030:2056" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="2467:2493" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="2593:2619" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="2691:2732" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="3286:3312" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="3614:3640" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="3712:3753" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="4057:4083" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="4270:4296" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="4480:4506" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="4603:4629" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="4795:4821" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="4943:4969" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="5066:5092" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="5194:5220" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="5352:5378" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="5483:5509" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="5611:5637" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="5734:5760" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="5832:5873" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="6227:6253" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="6383:6409" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="6550:6576" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="6688:6714" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="6865:6891" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="7205:7246" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="7356:7397" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="7639:7665" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="7770:7796" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="7901:7927" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="8034:8060" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="8167:8193" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="8291:8317" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="8416:8442" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="8819:8844" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="8889:8914" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="8959:8984" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="9377:9402" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="9447:9472" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="9517:9542" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="9649:9674" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="9719:9744" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="9789:9814" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="9926:9951" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="9996:10021" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="10066:10091" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="10214:10239" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="10284:10309" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="10354:10379" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="10500:10525" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="10570:10595" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="10640:10665" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="10788:10829" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="11150:11175" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="11295:11320" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="11437:11462" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="11557:11598" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="11855:11881" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="12020:12046" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="12190:12216" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="12831:12857" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="12961:12987" placeholder="{...}" />
+            <marker date="1381259658967" expanded="true" signature="13191:13217" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/PerPersonaEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="28" selection-start="1392" selection-end="1392" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/entities/DocPlanillaEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="68" selection-start="467" selection-end="467" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bo/gob/mintrabajo/ovt/bean/Formulario/formularioUnicoBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="36" selection-start="807" selection-end="807" vertical-scroll-proportion="0.5244755">
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
