@@ -51,18 +51,18 @@
             <version>4.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.sun.faces</groupId>
-            <artifactId>jsf-api</artifactId>
-            <version>2.2.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.faces</groupId>
-            <artifactId>jsf-impl</artifactId>
-            <version>2.2.3</version>
-            <scope>provided</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.sun.faces</groupId>-->
+            <!--<artifactId>jsf-api</artifactId>-->
+            <!--<version>2.2.3</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.sun.faces</groupId>-->
+            <!--<artifactId>jsf-impl</artifactId>-->
+            <!--<version>2.2.3</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
 
 
         <!-- LOGGING DEPENDENCIES - LOG4J -->
