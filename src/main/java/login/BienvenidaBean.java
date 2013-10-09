@@ -1,27 +1,21 @@
 package login;
 
+import bo.gob.mintrabajo.ovt.api.*;
+import bo.gob.mintrabajo.ovt.entities.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-
-import bo.gob.mintrabajo.ovt.api.*;
-import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
-import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
-import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
-import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.model.SelectItem;
+
 //
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @ViewScoped
@@ -32,6 +26,8 @@ public class BienvenidaBean {
     private String idPersona;
     private String idEmpleador;
     private String idUnidad;
+
+    private int idDocumento;
     private static final Logger logger = LoggerFactory.getLogger(BienvenidaBean.class);
     //
     @ManagedProperty(value = "#{usuarioService}")
@@ -42,6 +38,8 @@ public class BienvenidaBean {
     private IUnidadService iUnidadService;
     @ManagedProperty(value = "#{documentoService}")
     private IDocumentoService iDocumentoService;
+    @ManagedProperty(value = "#{planillaService}")
+    private IPlanillaService iPlanillaService;
     //
     private String textoBenvenida;
     //
@@ -94,12 +92,33 @@ public class BienvenidaBean {
             listaDocumentos=new ArrayList<DocDocumentoEntity>();
         }
     }
-    
+
+
     public String irRealizarCambioDeEstados(){
         return "irInicio";
     }
-    public String irImprimirDocumento(){
-        return "irInicio";
+    public void irImprimirDocumento(){
+
+
+        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
+        try{
+
+            docPlanillaEntity=  iDocumentoService.retornaPlanilla(idDocumento);
+//            if(docPlanillaEntity==null){
+//                docPlanillaEntity= new DocPlanillaEntity();
+//                docPlanillaEntity.setAporteAfp(BigDecimal.ZERO);
+//                docPlanillaEntity.set
+//            }
+
+
+            iPlanillaService.generaReporte(docPlanillaEntity);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+//        return "irInicio";
     }
 
     public IUsuarioService getiUsuarioService() {
@@ -164,5 +183,21 @@ public class BienvenidaBean {
 
     public void setListaDocumentos(List<DocDocumentoEntity> listaDocumentos) {
         this.listaDocumentos = listaDocumentos;
+    }
+
+    public int getIdDocumento() {
+        return idDocumento;
+    }
+
+    public void setIdDocumento(int idDocumento) {
+        this.idDocumento = idDocumento;
+    }
+
+    public IPlanillaService getiPlanillaService() {
+        return iPlanillaService;
+    }
+
+    public void setiPlanillaService(IPlanillaService iPlanillaService) {
+        this.iPlanillaService = iPlanillaService;
     }
 }

@@ -1,6 +1,8 @@
 package bo.gob.mintrabajo.ovt.api;
 
 import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
+import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -16,4 +18,5 @@ public interface IDocumentoService {
     public DocDocumentoEntity findById(BigDecimal id);
     public DocDocumentoEntity guardar(DocDocumentoEntity documento);
     public List<DocDocumentoEntity> listarPorPersona(String idPersona);
+    public DocPlanillaEntity retornaPlanilla(int idDocumento);
 }

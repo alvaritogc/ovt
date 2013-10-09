@@ -3,8 +3,8 @@ package bo.gob.mintrabajo.ovt.entities;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.sql.Timestamp;
 import javax.persistence.Transient;
+import java.sql.Timestamp;
 
 /**
  * User: Renato Velasquez.
@@ -25,15 +25,15 @@ public class DocDocumentoEntity {
         this.idDocumento = idDocumento;
     }
 
-    private Integer numeroDocumento;
+    private Long numeroDocumento;
 
     @javax.persistence.Column(name = "NUMERO_DOCUMENTO")
     @Basic
-    public Integer getNumeroDocumento() {
+    public Long getNumeroDocumento() {
         return numeroDocumento;
     }
 
-    public void setNumeroDocumento(Integer numeroDocumento) {
+    public void setNumeroDocumento(Long numeroDocumento) {
         this.numeroDocumento = numeroDocumento;
     }
 

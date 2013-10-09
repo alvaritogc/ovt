@@ -2,17 +2,19 @@ package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
 import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
+import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
 import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstadoEntity;
 import bo.gob.mintrabajo.ovt.repositories.DocumentoEstadoRepository;
 import bo.gob.mintrabajo.ovt.repositories.DocumentoRepository;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
+import bo.gob.mintrabajo.ovt.repositories.PlanillaRepository;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 
 /**
  * User: Renato Velasquez
@@ -24,11 +26,13 @@ public class DocumentoService implements IDocumentoService{
 
     private final DocumentoRepository repository;
     private final DocumentoEstadoRepository documentoEstadoRepository;
+    private final PlanillaRepository planillaRepository;
 
     @Inject
-    public DocumentoService(DocumentoRepository repository,DocumentoEstadoRepository documentoEstadoRepository) {
+    public DocumentoService(DocumentoRepository repository,DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository) {
         this.repository = repository;
         this.documentoEstadoRepository=documentoEstadoRepository;
+        this.planillaRepository = planillaRepository;
     }
     
     @Override
@@ -92,10 +96,12 @@ public class DocumentoService implements IDocumentoService{
         //
         documento.setIdDocumento(repository.findAll().size()+1);
         //
-        documento.setCodDocumento("PTR");
+        documento.setCodDocumento("LC1010");
         documento.setVersion(1);
         //documento.setNumeroDocumento(1);
-        documento.setNumeroDocumento(repository.findAll().size()+1);
+
+        documento.setNumeroDocumento(repository.findAll().size()+10101000001L);
+//        documento.setNumeroDocumento(repository.findAll().size()+1);
         Date date= new java.util.Date();
         documento.setFechaDocumento(new Timestamp(date.getTime()));
         //
@@ -112,6 +118,7 @@ public class DocumentoService implements IDocumentoService{
         //
         //System.out.println(""+documento.toString());
         entity = repository.save(documento);
+
         return entity;
     }
     
@@ -129,6 +136,15 @@ public class DocumentoService implements IDocumentoService{
             lista = null;
         }
         return lista;
+    }
+
+    @Override
+    public DocPlanillaEntity retornaPlanilla(int idDocumento){
+
+//        idDocumento = 1;
+
+
+        return planillaRepository.findByAttribute("idDocumento",idDocumento,-1,-1).get(0);
     }
     
 }

@@ -57,7 +57,8 @@
                     <p:column headerText="Acciones">  
                         <p:commandButton action="#{bienvenidaBean.irRealizarCambioDeEstados}" ajax="false" icon="ui-icon-gear" title="Realizar cambio de estados">  
                         </p:commandButton>  
-                        <p:commandButton action="#{bienvenidaBean.irImprimirDocumento}" ajax="false" icon="ui-icon-print" title="Imprimir documento">  
+                        <p:commandButton action="#{bienvenidaBean.irImprimirDocumento}" ajax="false" icon="ui-icon-print" title="Imprimir documento">
+                            <f:setPropertyActionListener value="#{o1.idDocumento}" target="#{bienvenidaBean.idDocumento}" />
                         </p:commandButton>
                     </p:column>  
                 </p:dataTable>
