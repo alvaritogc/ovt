@@ -94,6 +94,13 @@ public class BienvenidaBean {
             listaDocumentos=new ArrayList<DocDocumentoEntity>();
         }
     }
+    
+    public String irRealizarCambioDeEstados(){
+        return "irInicio";
+    }
+    public String irImprimirDocumento(){
+        return "irInicio";
+    }
 
     public IUsuarioService getiUsuarioService() {
         return iUsuarioService;

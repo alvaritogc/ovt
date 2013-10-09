@@ -9,6 +9,7 @@ import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
 import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
 import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.model.SelectItem;
 //
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.FileUploadEvent;
@@ -24,8 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ManagedBean
-@ViewScoped
-public class EmpleadorBean {
+@SessionScoped
+public class EmpleadorBean implements Serializable{
     //
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private int idUsuario;
@@ -47,6 +49,9 @@ public class EmpleadorBean {
     private PerPersonaEntity persona;
     private List<PerPersonaEntity> listaPersonas;
     private PerPersonaEntity personaABM;
+    //
+    private String busquedaNroIdentificacion;
+    private String busquedaNombreRazonSocial;
 
     @PostConstruct
     public void ini() {
@@ -54,12 +59,25 @@ public class EmpleadorBean {
         idUsuario = (Integer) session.getAttribute("idUsuario");
         BigDecimal bi = BigDecimal.valueOf(idUsuario);
         logger.info("Buscando usuario" + bi);
-        cargar();
+        //cargar();
+        limpiar();
+        //listaPersonas=new ArrayList<PerPersonaEntity>();
+        //cargar();
+        
     }
 
     public void cargar() {
-//        listaPersonas=iPersonaService.getAllPersonas();
-        listaPersonas=new ArrayList<PerPersonaEntity>();
+        if(busquedaNroIdentificacion.trim().equals("") && busquedaNombreRazonSocial.trim().equals("")){
+            listaPersonas=new ArrayList<PerPersonaEntity>();
+        }
+        else{
+            listaPersonas=iPersonaService.buscarPorNroNombre(busquedaNroIdentificacion, busquedaNombreRazonSocial);
+        }
+    }
+    public void limpiar(){
+        busquedaNroIdentificacion="";
+        busquedaNombreRazonSocial="";
+        cargar();
     }
     
     public String seleccionarEmpleador(){
@@ -121,5 +139,21 @@ public class EmpleadorBean {
 
     public void setPersonaABM(PerPersonaEntity personaABM) {
         this.personaABM = personaABM;
+    }
+
+    public String getBusquedaNroIdentificacion() {
+        return busquedaNroIdentificacion;
+    }
+
+    public void setBusquedaNroIdentificacion(String busquedaNroIdentificacion) {
+        this.busquedaNroIdentificacion = busquedaNroIdentificacion;
+    }
+
+    public String getBusquedaNombreRazonSocial() {
+        return busquedaNombreRazonSocial;
+    }
+
+    public void setBusquedaNombreRazonSocial(String busquedaNombreRazonSocial) {
+        this.busquedaNombreRazonSocial = busquedaNombreRazonSocial;
     }
 }

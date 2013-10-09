@@ -8,19 +8,21 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../pages/template/templateInicio.xhtml">
         <ui:define name="content">
-            <h:form>
+            <h:form id="idFormEmpleadorBusqueda">
 
-                <p:panel header="Empleador">  
+                <p:panel header="Empleador" id="idPanelBusqueda">  
                     <h:panelGrid columns="2">
-                        <p:outputLabel value="Tipo identificacion: "/>
-                        <p:inputText value=""/>
                         <p:outputLabel value="Nro identificacion: "/>
-                        <p:inputText value=""/>
+                        <p:inputText value="#{empleadorBean.busquedaNroIdentificacion}"/>
                         <p:outputLabel value="Nombre razon social: "/>
-                        <p:inputText value=""/>
+                        <p:inputText value="#{empleadorBean.busquedaNombreRazonSocial}"/>
+                        <h:panelGroup>
+                            <p:commandButton action="#{empleadorBean.cargar}" value="Buscar" update=":idFormEmpleadorBusqueda:idPanelBusqueda, :idFormEmpleadorBusqueda:idDTlistaPersonas"/>
+                            <p:commandButton action="#{empleadorBean.limpiar}" value="Limpiar" update=":idFormEmpleadorBusqueda:idPanelBusqueda, :idFormEmpleadorBusqueda:idDTlistaPersonas"/>
+                        </h:panelGroup>
                     </h:panelGrid>
                 </p:panel>
-                <p:dataTable value="#{empleadorBean.listaPersonas}" var="o">
+                <p:dataTable id="idDTlistaPersonas" value="#{empleadorBean.listaPersonas}" var="o" paginator="true" rows="10">
                     <p:column headerText="Tipo identifiacion">
                         <h:outputLabel value="#{o.tipoIdentificacion}"/>
                     </p:column>
@@ -30,8 +32,11 @@
                     <p:column headerText="Nombre razon social ">
                         <h:outputLabel value="#{o.nombreRazonSocial} #{o.apellidoPaterno} #{o.apellidoMaterno}"/>
                     </p:column>
+                    
+                    
+                    
                     <p:column headerText="Acciones">  
-                        <p:commandButton action="#{empleadorBean.seleccionarEmpleador}">  
+                        <p:commandButton action="#{empleadorBean.seleccionarEmpleador()}" ajax="false" icon="ui-icon-zoomin" title="Ver">  
                             <f:setPropertyActionListener value="#{o}" target="#{empleadorBean.personaABM}" />  
                         </p:commandButton>  
                     </p:column>  
