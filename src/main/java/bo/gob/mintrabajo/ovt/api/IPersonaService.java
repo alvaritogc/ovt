@@ -19,5 +19,6 @@ public interface IPersonaService {
     public boolean delete(PerPersonaEntity persona);
     public PerPersonaEntity findById(BigDecimal id);
     public PerPersonaEntity buscarPorId(String id);
+    public List<PerPersonaEntity> buscarPorNroNombre(String nroIdentificacion, String nombreRazonSocial);
     
 }

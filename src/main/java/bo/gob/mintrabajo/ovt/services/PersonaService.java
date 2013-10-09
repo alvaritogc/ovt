@@ -99,4 +99,24 @@ public class PersonaService implements IPersonaService{
         return perPersonaEntity;
     }
     
+    @Override
+    public List<PerPersonaEntity> buscarPorNroNombre(String nroIdentificacion, String nombreRazonSocial) {
+        List<PerPersonaEntity> allPersonas;
+
+        PerPersonaEntity persona=new PerPersonaEntity();
+        persona.setNroIdentificacion(nroIdentificacion);
+        persona.setNombreRazonSocial(nombreRazonSocial);
+        try {
+            //allPersonas = personaRepository.buscarPorNumeroNombre(nroIdentificacion, nombreRazonSocial);
+            //allPersonas = personaRepository.findByAttribute("nombreRazonSocial", nombreRazonSocial, -1, -1);
+            allPersonas = personaRepository.findByExample(persona, null, null, -1, -1);
+            //allPersonas=personaRepository.findByFullTexts(nombreRazonSocial, null, -1,-1);
+            //allPersonas = personaRepository.buscarPorNumeroNombre(nroIdentificacion, nombreRazonSocial);
+        } catch (Exception e) {
+            e.printStackTrace();
+            allPersonas = null;
+        }
+        return allPersonas;
+    }
+    
 }
