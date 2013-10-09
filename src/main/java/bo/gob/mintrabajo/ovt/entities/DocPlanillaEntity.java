@@ -8,35 +8,35 @@ import java.sql.Timestamp;
 
 /**
  * Created with IntelliJ IDEA.
- * User: gmercado
+ * User: rvelasquez
  * Date: 10/8/13
- * Time: 12:22 PM
+ * Time: 8:16 PM
  * To change this template use File | Settings | File Templates.
  */
 @javax.persistence.Table(name = "DOC_PLANILLA", schema = "OVT", catalog = "")
 @Entity
 public class DocPlanillaEntity {
-    private Integer idPlanilla;
+    private int idPlanilla;
 
     @javax.persistence.Column(name = "ID_PLANILLA")
     @Id
-    public Integer getIdPlanilla() {
+    public int getIdPlanilla() {
         return idPlanilla;
     }
 
-    public void setIdPlanilla(Integer idPlanilla) {
+    public void setIdPlanilla(int idPlanilla) {
         this.idPlanilla = idPlanilla;
     }
 
-    private Integer idDocumento;
+    private int idDocumento;
 
     @javax.persistence.Column(name = "ID_DOCUMENTO")
     @Basic
-    public Integer getIdDocumento() {
+    public int getIdDocumento() {
         return idDocumento;
     }
 
-    public void setIdDocumento(Integer idDocumento) {
+    public void setIdDocumento(int idDocumento) {
         this.idDocumento = idDocumento;
     }
 
@@ -44,7 +44,7 @@ public class DocPlanillaEntity {
 
     @javax.persistence.Column(name = "PERIODO")
     @Basic
-    String getPeriodo() {
+    public String getPeriodo() {
         return periodo;
     }
 
@@ -64,15 +64,15 @@ public class DocPlanillaEntity {
         this.tipoPlanilla = tipoPlanilla;
     }
 
-    private Integer nroAsegCaja;
+    private int nroAsegCaja;
 
     @javax.persistence.Column(name = "NRO_ASEG_CAJA")
     @Basic
-    public Integer getNroAsegCaja() {
+    public int getNroAsegCaja() {
         return nroAsegCaja;
     }
 
-    public void setNroAsegCaja(Integer nroAsegCaja) {
+    public void setNroAsegCaja(int nroAsegCaja) {
         this.nroAsegCaja = nroAsegCaja;
     }
 
@@ -88,27 +88,27 @@ public class DocPlanillaEntity {
         this.montoAsegCaja = montoAsegCaja;
     }
 
-    private Integer idEntidadSalud;
+    private int idEntidadSalud;
 
     @javax.persistence.Column(name = "ID_ENTIDAD_SALUD")
     @Basic
-    public Integer getIdEntidadSalud() {
+    public int getIdEntidadSalud() {
         return idEntidadSalud;
     }
 
-    public void setIdEntidadSalud(Integer idEntidadSalud) {
+    public void setIdEntidadSalud(int idEntidadSalud) {
         this.idEntidadSalud = idEntidadSalud;
     }
 
-    private Integer nroAsegAfp;
+    private int nroAsegAfp;
 
     @javax.persistence.Column(name = "NRO_ASEG_AFP")
     @Basic
-    public Integer getNroAsegAfp() {
+    public int getNroAsegAfp() {
         return nroAsegAfp;
     }
 
-    public void setNroAsegAfp(Integer nroAsegAfp) {
+    public void setNroAsegAfp(int nroAsegAfp) {
         this.nroAsegAfp = nroAsegAfp;
     }
 
@@ -232,195 +232,195 @@ public class DocPlanillaEntity {
         this.otrosDescuentos = otrosDescuentos;
     }
 
-    private Integer nroM;
+    private int nroM;
 
     @javax.persistence.Column(name = "NRO_M")
     @Basic
-    public Integer getNroM() {
+    public int getNroM() {
         return nroM;
     }
 
-    public void setNroM(Integer nroM) {
+    public void setNroM(int nroM) {
         this.nroM = nroM;
     }
 
-    private Integer nroH;
+    private int nroH;
 
     @javax.persistence.Column(name = "NRO_H")
     @Basic
-    public Integer getNroH() {
+    public int getNroH() {
         return nroH;
     }
 
-    public void setNroH(Integer nroH) {
+    public void setNroH(int nroH) {
         this.nroH = nroH;
     }
 
-    private Integer nroJubiladosM;
+    private int nroJubiladosM;
 
     @javax.persistence.Column(name = "NRO_JUBILADOS_M")
     @Basic
-    public Integer getNroJubiladosM() {
+    public int getNroJubiladosM() {
         return nroJubiladosM;
     }
 
-    public void setNroJubiladosM(Integer nroJubiladosM) {
+    public void setNroJubiladosM(int nroJubiladosM) {
         this.nroJubiladosM = nroJubiladosM;
     }
 
-    private Integer nroJubiladosH;
+    private int nroJubiladosH;
 
     @javax.persistence.Column(name = "NRO_JUBILADOS_H")
     @Basic
-    public Integer getNroJubiladosH() {
+    public int getNroJubiladosH() {
         return nroJubiladosH;
     }
 
-    public void setNroJubiladosH(Integer nroJubiladosH) {
+    public void setNroJubiladosH(int nroJubiladosH) {
         this.nroJubiladosH = nroJubiladosH;
     }
 
-    private Integer nroExtranjerosM;
+    private int nroExtranjerosM;
 
     @javax.persistence.Column(name = "NRO_EXTRANJEROS_M")
     @Basic
-    public Integer getNroExtranjerosM() {
+    public int getNroExtranjerosM() {
         return nroExtranjerosM;
     }
 
-    public void setNroExtranjerosM(Integer nroExtranjerosM) {
+    public void setNroExtranjerosM(int nroExtranjerosM) {
         this.nroExtranjerosM = nroExtranjerosM;
     }
 
-    private Integer nroExtranjerosH;
+    private int nroExtranjerosH;
 
     @javax.persistence.Column(name = "NRO_EXTRANJEROS_H")
     @Basic
-    public Integer getNroExtranjerosH() {
+    public int getNroExtranjerosH() {
         return nroExtranjerosH;
     }
 
-    public void setNroExtranjerosH(Integer nroExtranjerosH) {
+    public void setNroExtranjerosH(int nroExtranjerosH) {
         this.nroExtranjerosH = nroExtranjerosH;
     }
 
-    private Integer nroDiscapacidadM;
+    private int nroDiscapacidadM;
 
     @javax.persistence.Column(name = "NRO_DISCAPACIDAD_M")
     @Basic
-    public Integer getNroDiscapacidadM() {
+    public int getNroDiscapacidadM() {
         return nroDiscapacidadM;
     }
 
-    public void setNroDiscapacidadM(Integer nroDiscapacidadM) {
+    public void setNroDiscapacidadM(int nroDiscapacidadM) {
         this.nroDiscapacidadM = nroDiscapacidadM;
     }
 
-    private Integer nroDiscapacidadH;
+    private int nroDiscapacidadH;
 
     @javax.persistence.Column(name = "NRO_DISCAPACIDAD_H")
     @Basic
-    public Integer getNroDiscapacidadH() {
+    public int getNroDiscapacidadH() {
         return nroDiscapacidadH;
     }
 
-    public void setNroDiscapacidadH(Integer nroDiscapacidadH) {
+    public void setNroDiscapacidadH(int nroDiscapacidadH) {
         this.nroDiscapacidadH = nroDiscapacidadH;
     }
 
-    private Integer nroContratadosM;
+    private int nroContratadosM;
 
     @javax.persistence.Column(name = "NRO_CONTRATADOS_M")
     @Basic
-    public Integer getNroContratadosM() {
+    public int getNroContratadosM() {
         return nroContratadosM;
     }
 
-    public void setNroContratadosM(Integer nroContratadosM) {
+    public void setNroContratadosM(int nroContratadosM) {
         this.nroContratadosM = nroContratadosM;
     }
 
-    private Integer nroContratadosH;
+    private int nroContratadosH;
 
     @javax.persistence.Column(name = "NRO_CONTRATADOS_H")
     @Basic
-    public Integer getNroContratadosH() {
+    public int getNroContratadosH() {
         return nroContratadosH;
     }
 
-    public void setNroContratadosH(Integer nroContratadosH) {
+    public void setNroContratadosH(int nroContratadosH) {
         this.nroContratadosH = nroContratadosH;
     }
 
-    private Integer nroRetiradosM;
+    private int nroRetiradosM;
 
     @javax.persistence.Column(name = "NRO_RETIRADOS_M")
     @Basic
-    public Integer getNroRetiradosM() {
+    public int getNroRetiradosM() {
         return nroRetiradosM;
     }
 
-    public void setNroRetiradosM(Integer nroRetiradosM) {
+    public void setNroRetiradosM(int nroRetiradosM) {
         this.nroRetiradosM = nroRetiradosM;
     }
 
-    private Integer nroRetiradosH;
+    private int nroRetiradosH;
 
     @javax.persistence.Column(name = "NRO_RETIRADOS_H")
     @Basic
-    public Integer getNroRetiradosH() {
+    public int getNroRetiradosH() {
         return nroRetiradosH;
     }
 
-    public void setNroRetiradosH(Integer nroRetiradosH) {
+    public void setNroRetiradosH(int nroRetiradosH) {
         this.nroRetiradosH = nroRetiradosH;
     }
 
-    private Integer nroAccidentes;
+    private int nroAccidentes;
 
     @javax.persistence.Column(name = "NRO_ACCIDENTES")
     @Basic
-    public Integer getNroAccidentes() {
+    public int getNroAccidentes() {
         return nroAccidentes;
     }
 
-    public void setNroAccidentes(Integer nroAccidentes) {
+    public void setNroAccidentes(int nroAccidentes) {
         this.nroAccidentes = nroAccidentes;
     }
 
-    private Integer nroMuertes;
+    private int nroMuertes;
 
     @javax.persistence.Column(name = "NRO_MUERTES")
     @Basic
-    public Integer getNroMuertes() {
+    public int getNroMuertes() {
         return nroMuertes;
     }
 
-    public void setNroMuertes(Integer nroMuertes) {
+    public void setNroMuertes(int nroMuertes) {
         this.nroMuertes = nroMuertes;
     }
 
-    private Integer nroEnfermedades;
+    private int nroEnfermedades;
 
     @javax.persistence.Column(name = "NRO_ENFERMEDADES")
     @Basic
-    public Integer getNroEnfermedades() {
+    public int getNroEnfermedades() {
         return nroEnfermedades;
     }
 
-    public void setNroEnfermedades(Integer nroEnfermedades) {
+    public void setNroEnfermedades(int nroEnfermedades) {
         this.nroEnfermedades = nroEnfermedades;
     }
 
-    private Integer idEntidadBanco;
+    private int idEntidadBanco;
 
     @javax.persistence.Column(name = "ID_ENTIDAD_BANCO")
     @Basic
-    public Integer getIdEntidadBanco() {
+    public int getIdEntidadBanco() {
         return idEntidadBanco;
     }
 
-    public void setIdEntidadBanco(Integer idEntidadBanco) {
+    public void setIdEntidadBanco(int idEntidadBanco) {
         this.idEntidadBanco = idEntidadBanco;
     }
 
@@ -467,6 +467,28 @@ public class DocPlanillaEntity {
 
         DocPlanillaEntity that = (DocPlanillaEntity) o;
 
+        if (idDocumento != that.idDocumento) return false;
+        if (idEntidadBanco != that.idEntidadBanco) return false;
+        if (idEntidadSalud != that.idEntidadSalud) return false;
+        if (idPlanilla != that.idPlanilla) return false;
+        if (nroAccidentes != that.nroAccidentes) return false;
+        if (nroAsegAfp != that.nroAsegAfp) return false;
+        if (nroAsegCaja != that.nroAsegCaja) return false;
+        if (nroContratadosH != that.nroContratadosH) return false;
+        if (nroContratadosM != that.nroContratadosM) return false;
+        if (nroDiscapacidadH != that.nroDiscapacidadH) return false;
+        if (nroDiscapacidadM != that.nroDiscapacidadM) return false;
+        if (nroEnfermedades != that.nroEnfermedades) return false;
+        if (nroExtranjerosH != that.nroExtranjerosH) return false;
+        if (nroExtranjerosM != that.nroExtranjerosM) return false;
+        if (nroH != that.nroH) return false;
+        if (nroJubiladosH != that.nroJubiladosH) return false;
+        if (nroJubiladosM != that.nroJubiladosM) return false;
+        if (nroM != that.nroM) return false;
+        if (nroMuertes != that.nroMuertes) return false;
+        if (nroRetiradosH != that.nroRetiradosH) return false;
+        if (nroRetiradosM != that.nroRetiradosM) return false;
+        if (periodo != that.periodo) return false;
         if (aporteAfp != null ? !aporteAfp.equals(that.aporteAfp) : that.aporteAfp != null) return false;
         if (bonoAntiguedad != null ? !bonoAntiguedad.equals(that.bonoAntiguedad) : that.bonoAntiguedad != null)
             return false;
@@ -475,52 +497,16 @@ public class DocPlanillaEntity {
         if (fechaOperacion != null ? !fechaOperacion.equals(that.fechaOperacion) : that.fechaOperacion != null)
             return false;
         if (haberBasico != null ? !haberBasico.equals(that.haberBasico) : that.haberBasico != null) return false;
-        if (idDocumento != null ? !idDocumento.equals(that.idDocumento) : that.idDocumento != null) return false;
-        if (idEntidadBanco != null ? !idEntidadBanco.equals(that.idEntidadBanco) : that.idEntidadBanco != null)
-            return false;
-        if (idEntidadSalud != null ? !idEntidadSalud.equals(that.idEntidadSalud) : that.idEntidadSalud != null)
-            return false;
-        if (idPlanilla != null ? !idPlanilla.equals(that.idPlanilla) : that.idPlanilla != null) return false;
         if (laborExtra != null ? !laborExtra.equals(that.laborExtra) : that.laborExtra != null) return false;
         if (montoAsegAfp != null ? !montoAsegAfp.equals(that.montoAsegAfp) : that.montoAsegAfp != null) return false;
         if (montoAsegCaja != null ? !montoAsegCaja.equals(that.montoAsegCaja) : that.montoAsegCaja != null)
             return false;
         if (montoOperacion != null ? !montoOperacion.equals(that.montoOperacion) : that.montoOperacion != null)
             return false;
-        if (nroAccidentes != null ? !nroAccidentes.equals(that.nroAccidentes) : that.nroAccidentes != null)
-            return false;
-        if (nroAsegAfp != null ? !nroAsegAfp.equals(that.nroAsegAfp) : that.nroAsegAfp != null) return false;
-        if (nroAsegCaja != null ? !nroAsegCaja.equals(that.nroAsegCaja) : that.nroAsegCaja != null) return false;
-        if (nroContratadosH != null ? !nroContratadosH.equals(that.nroContratadosH) : that.nroContratadosH != null)
-            return false;
-        if (nroContratadosM != null ? !nroContratadosM.equals(that.nroContratadosM) : that.nroContratadosM != null)
-            return false;
-        if (nroDiscapacidadH != null ? !nroDiscapacidadH.equals(that.nroDiscapacidadH) : that.nroDiscapacidadH != null)
-            return false;
-        if (nroDiscapacidadM != null ? !nroDiscapacidadM.equals(that.nroDiscapacidadM) : that.nroDiscapacidadM != null)
-            return false;
-        if (nroEnfermedades != null ? !nroEnfermedades.equals(that.nroEnfermedades) : that.nroEnfermedades != null)
-            return false;
-        if (nroExtranjerosH != null ? !nroExtranjerosH.equals(that.nroExtranjerosH) : that.nroExtranjerosH != null)
-            return false;
-        if (nroExtranjerosM != null ? !nroExtranjerosM.equals(that.nroExtranjerosM) : that.nroExtranjerosM != null)
-            return false;
-        if (nroH != null ? !nroH.equals(that.nroH) : that.nroH != null) return false;
-        if (nroJubiladosH != null ? !nroJubiladosH.equals(that.nroJubiladosH) : that.nroJubiladosH != null)
-            return false;
-        if (nroJubiladosM != null ? !nroJubiladosM.equals(that.nroJubiladosM) : that.nroJubiladosM != null)
-            return false;
-        if (nroM != null ? !nroM.equals(that.nroM) : that.nroM != null) return false;
-        if (nroMuertes != null ? !nroMuertes.equals(that.nroMuertes) : that.nroMuertes != null) return false;
-        if (nroRetiradosH != null ? !nroRetiradosH.equals(that.nroRetiradosH) : that.nroRetiradosH != null)
-            return false;
-        if (nroRetiradosM != null ? !nroRetiradosM.equals(that.nroRetiradosM) : that.nroRetiradosM != null)
-            return false;
         if (numOperacion != null ? !numOperacion.equals(that.numOperacion) : that.numOperacion != null) return false;
         if (otrosBonos != null ? !otrosBonos.equals(that.otrosBonos) : that.otrosBonos != null) return false;
         if (otrosDescuentos != null ? !otrosDescuentos.equals(that.otrosDescuentos) : that.otrosDescuentos != null)
             return false;
-        if (periodo != null ? !periodo.equals(that.periodo) : that.periodo != null) return false;
         if (rciva != null ? !rciva.equals(that.rciva) : that.rciva != null) return false;
         if (subsidioFrontera != null ? !subsidioFrontera.equals(that.subsidioFrontera) : that.subsidioFrontera != null)
             return false;
@@ -531,14 +517,14 @@ public class DocPlanillaEntity {
 
     @Override
     public int hashCode() {
-        int result = idPlanilla != null ? idPlanilla.hashCode() : 0;
-        result = 31 * result + (idDocumento != null ? idDocumento.hashCode() : 0);
-        result = 31 * result + (periodo != null ? periodo.hashCode() : 0);
+        int result = idPlanilla;
+        result = 31 * result + idDocumento;
+        result = 31 * result + (periodo != null ? tipoPlanilla.hashCode() : 0);
         result = 31 * result + (tipoPlanilla != null ? tipoPlanilla.hashCode() : 0);
-        result = 31 * result + (nroAsegCaja != null ? nroAsegCaja.hashCode() : 0);
+        result = 31 * result + nroAsegCaja;
         result = 31 * result + (montoAsegCaja != null ? montoAsegCaja.hashCode() : 0);
-        result = 31 * result + (idEntidadSalud != null ? idEntidadSalud.hashCode() : 0);
-        result = 31 * result + (nroAsegAfp != null ? nroAsegAfp.hashCode() : 0);
+        result = 31 * result + idEntidadSalud;
+        result = 31 * result + nroAsegAfp;
         result = 31 * result + (montoAsegAfp != null ? montoAsegAfp.hashCode() : 0);
         result = 31 * result + (haberBasico != null ? haberBasico.hashCode() : 0);
         result = 31 * result + (bonoAntiguedad != null ? bonoAntiguedad.hashCode() : 0);
@@ -549,22 +535,22 @@ public class DocPlanillaEntity {
         result = 31 * result + (aporteAfp != null ? aporteAfp.hashCode() : 0);
         result = 31 * result + (rciva != null ? rciva.hashCode() : 0);
         result = 31 * result + (otrosDescuentos != null ? otrosDescuentos.hashCode() : 0);
-        result = 31 * result + (nroM != null ? nroM.hashCode() : 0);
-        result = 31 * result + (nroH != null ? nroH.hashCode() : 0);
-        result = 31 * result + (nroJubiladosM != null ? nroJubiladosM.hashCode() : 0);
-        result = 31 * result + (nroJubiladosH != null ? nroJubiladosH.hashCode() : 0);
-        result = 31 * result + (nroExtranjerosM != null ? nroExtranjerosM.hashCode() : 0);
-        result = 31 * result + (nroExtranjerosH != null ? nroExtranjerosH.hashCode() : 0);
-        result = 31 * result + (nroDiscapacidadM != null ? nroDiscapacidadM.hashCode() : 0);
-        result = 31 * result + (nroDiscapacidadH != null ? nroDiscapacidadH.hashCode() : 0);
-        result = 31 * result + (nroContratadosM != null ? nroContratadosM.hashCode() : 0);
-        result = 31 * result + (nroContratadosH != null ? nroContratadosH.hashCode() : 0);
-        result = 31 * result + (nroRetiradosM != null ? nroRetiradosM.hashCode() : 0);
-        result = 31 * result + (nroRetiradosH != null ? nroRetiradosH.hashCode() : 0);
-        result = 31 * result + (nroAccidentes != null ? nroAccidentes.hashCode() : 0);
-        result = 31 * result + (nroMuertes != null ? nroMuertes.hashCode() : 0);
-        result = 31 * result + (nroEnfermedades != null ? nroEnfermedades.hashCode() : 0);
-        result = 31 * result + (idEntidadBanco != null ? idEntidadBanco.hashCode() : 0);
+        result = 31 * result + nroM;
+        result = 31 * result + nroH;
+        result = 31 * result + nroJubiladosM;
+        result = 31 * result + nroJubiladosH;
+        result = 31 * result + nroExtranjerosM;
+        result = 31 * result + nroExtranjerosH;
+        result = 31 * result + nroDiscapacidadM;
+        result = 31 * result + nroDiscapacidadH;
+        result = 31 * result + nroContratadosM;
+        result = 31 * result + nroContratadosH;
+        result = 31 * result + nroRetiradosM;
+        result = 31 * result + nroRetiradosH;
+        result = 31 * result + nroAccidentes;
+        result = 31 * result + nroMuertes;
+        result = 31 * result + nroEnfermedades;
+        result = 31 * result + idEntidadBanco;
         result = 31 * result + (fechaOperacion != null ? fechaOperacion.hashCode() : 0);
         result = 31 * result + (montoOperacion != null ? montoOperacion.hashCode() : 0);
         result = 31 * result + (numOperacion != null ? numOperacion.hashCode() : 0);
