@@ -5,7 +5,7 @@
     <groupId>bo.gob.mintrabajo.ovt</groupId>
     <artifactId>ovt</artifactId>
     <version>1.0</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>ovt</name>
     <url>http://maven.apache.org</url>
@@ -14,6 +14,7 @@
         <wicket.version>6.3.0</wicket.version>
         <jetty.version>7.6.3.v20120416</jetty.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
     </properties>
 
     <repositories>

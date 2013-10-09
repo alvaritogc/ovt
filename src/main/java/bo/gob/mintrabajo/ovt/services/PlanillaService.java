@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -29,6 +31,12 @@ public class PlanillaService implements IPlanillaService {
     }
 
     public void guardar(DocPlanillaEntity objeto){
+        
+        objeto.setIdDocumento(1);
+        objeto.setTipoPlanilla("P0");
+        objeto.setIdEntidadBanco(2);
+        objeto.setMontoOperacion(new BigDecimal("1000.51"));
+        objeto.setFechaOperacion(new Timestamp(new Date().getTime()));
         planillaRepository.save(objeto);
     }
 

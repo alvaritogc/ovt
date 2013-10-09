@@ -51,6 +51,8 @@ public class formularioUnicoBean {
 
     private PerPersonaEntity perPersonaEntity;
     private DocPlanillaEntity docPlanillaEntity;
+    private Integer temporal = 0;
+    private boolean temporalBoolean = true;
 
     private PerPersonaEntity persona;
 
@@ -138,4 +140,30 @@ public class formularioUnicoBean {
     public void setiPlanillaService(IPlanillaService iPlanillaService) {
         this.iPlanillaService = iPlanillaService;
     }
+
+    public Integer getTemporal() {
+        return temporal;
+    }
+
+    public void setTemporal(Integer temporal) {
+        this.temporal = temporal;
+    }
+
+    public boolean isTemporalBoolean() {
+        return temporalBoolean;
+    }
+
+    public void setTemporalBoolean(boolean temporalBoolean) {
+        this.temporalBoolean = temporalBoolean;
+    }
+
+    public PerPersonaEntity getPersona() {
+        return persona;
+    }
+
+    public void setPersona(PerPersonaEntity persona) {
+        this.persona = persona;
+    }
+    
+    
 }

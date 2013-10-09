@@ -93,16 +93,14 @@ public class PresentacionPlanillasBean {
         logger.info("7");
 
 
-        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
-        docPlanillaEntity.setPeriodo(periodo);
-        docPlanillaEntity.setTipoPlanilla("Planilla Trimestral");
-        docPlanillaEntity.setIdEntidadSalud(1);
-        docPlanillaEntity.setIdEntidadBanco(2);
-        docPlanillaEntity.setFechaOperacion(new Timestamp(new java.util.Date().getTime()));
-        docPlanillaEntity.setMontoOperacion(BigDecimal.ONE);
-        docPlanillaEntity.setNumOperacion("OPE 1000");
-
-
+//        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
+//        docPlanillaEntity.setPeriodo(periodo);
+//        docPlanillaEntity.setTipoPlanilla("Planilla Trimestral");
+//        docPlanillaEntity.setIdEntidadSalud(1);
+//        docPlanillaEntity.setIdEntidadBanco(2);
+//        docPlanillaEntity.setFechaOperacion(new Timestamp(new java.util.Date().getTime()));
+//        docPlanillaEntity.setMontoOperacion(BigDecimal.ONE);
+//        docPlanillaEntity.setNumOperacion("OPE 1000");
 
         UploadedFile file = event.getFile();
         try {
