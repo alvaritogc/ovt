@@ -160,10 +160,10 @@
                                     <br/>
                                     <!--<p:inputText value="# {formularioUnicoBean.temporal}" style="width: 150px; height: 10px"/>-->
                                     <p:selectOneMenu value="#{formularioUnicoBean.docPlanillaEntity.periodo}" style="width: 190px; height: 20px">
-                                        <f:selectItem itemLabel="2013 T3 - Octubre - Diciembre" itemValue="2013 T3 - Octubre - Diciembre" />
-                                        <f:selectItem itemLabel="2013 T3 - Enero - Marzo" itemValue="2013 T3 - Enero - Marzo" />
-                                        <f:selectItem itemLabel="2013 T3 - Abril - Junio" itemValue="2013 T3 - Abril - Junio" />
-                                        <f:selectItem itemLabel="2013 T3 - Julio - Septiembre" itemValue="2013 T3 - Julio - Septiembre" />                                
+                                        <f:selectItem itemLabel="Octubre - Diciembre" itemValue="2013 T3 - Octubre - Diciembre" />
+                                        <f:selectItem itemLabel="Enero - Marzo" itemValue="2013 T3 - Enero - Marzo" />
+                                        <f:selectItem itemLabel="Abril - Junio" itemValue="2013 T3 - Abril - Junio" />
+                                        <f:selectItem itemLabel="Julio - Septiembre" itemValue="2013 T3 - Julio - Septiembre" />                                
                                     </p:selectOneMenu>
                                 </p:column>
                             </p:row>
@@ -287,7 +287,7 @@
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.otrosBonos}"
                                                      style="width: 100px; height: 10px" required="true"/>
                                         <p:outputLabel value="5.7 Total ganado"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 100px; height: 10px" required="true"/>
+                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 100px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="5.8 Aporte a las AFPs"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.aporteAfp}" style="width: 100px; height: 10px" required="true"/>
                                         <p:outputLabel value="5.9 RC-IVA"/>
@@ -295,9 +295,9 @@
                                         <p:outputLabel value="5.10 Otros descuentos"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.otrosDescuentos}" style="width: 100px; height: 10px" required="true"/>
                                         <p:outputLabel value="5.11 Total Descuentos"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 100px; height: 10px" required="true"/>
+                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 100px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="5.12 Líquido pagable"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 100px; height: 10px" required="true"/>
+                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 100px; height: 10px" disabled="true"/>
                                     </p:panelGrid>
                                 </p:column>
                                 <p:column colspan="8">
@@ -311,7 +311,7 @@
                                                      style="width: 50px; height: 10px" required="true"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroM}"
                                                      style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px"/>
+                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="-"/><p:outputLabel value="-"/><p:outputLabel value="-"/><p:outputLabel value="-"/>
                                         <p:outputLabel value=""/>
                                         <p:outputLabel value="Varones"/>
@@ -322,27 +322,27 @@
                                                      style="width: 50px; height: 10px" required="true"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroJubiladosM}"
                                                      style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px"/>
+                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="6.3 Personas extranjeras"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroExtranjerosH}"
                                                      style="width: 50px; height: 10px" required="true"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroExtranjerosM}"
                                                      style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px"/>
+                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="6.4 Personas con discapacidad"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroDiscapacidadH}"
                                                      style="width: 50px; height: 10px" required="true"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroDiscapacidadM}"
                                                      style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px"/>
+                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="6.5 Personas contratadas en el trimestre"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroContratadosH}" style="width: 50px; height: 10px" required="true"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroContratadosM}" style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" required="true"/>
+                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="6.6 Personas retiradas en el trimestre"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroRetiradosH}" style="width: 50px; height: 10px" required="true"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroRetiradosM}" style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" required="true"/>
+                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
                                     </p:panelGrid>
                                 </p:column>
                             </p:row>
@@ -404,13 +404,13 @@
                                         <p:outputLabel value="Nro DE DOCUMENTO DE IDENTIDAD"/>
                                         <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px"/>
                                         <p:outputLabel value="LUGAR DE PRESENTACIÓN"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px"/>
+                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px" readonly="true"/>
                                     </p:panelGrid>
                                 </p:column>
                                 <p:column colspan="8">
                                     <p:panelGrid columns="2">
                                         <p:outputLabel value="FECHA DE PRESENTACIÓN"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px"/>
+                                        <p:inputText value="#{formularioUnicoBean.fechaTemp}" style="width: 150px; height: 10px" readonly="true" />
                                     </p:panelGrid>
                                 </p:column>
                             </p:row>
@@ -418,21 +418,6 @@
                         </p:panelGrid>
 
                         <!-- Renato Codigo -->
-                        <h:panelGrid columns="2">
-                            <h:outputLabel value="PLANILLA TRIMESTRAL"/>
-                            <h:outputLabel value=""/>
-
-                            <h:outputLabel value="Periodos Pendientes: "/>
-
-                            <p:selectOneMenu value="#{presentacionPlanillasBean.periodo}">
-                                <f:selectItem itemLabel="Enero - Marzo" itemValue="2013 T3 - Enero - Marzo" />
-                                <f:selectItem itemLabel="Abril - Junio" itemValue="2013 T3 - Abril - Junio" />
-                                <f:selectItem itemLabel="Julio - Septiembre" itemValue="2013 T3 - Julio - Septiembre" />
-                                <f:selectItem itemLabel="Octubre - Diciembre" itemValue="2013 T3 - Octubre - Diciembre" />
-                            </p:selectOneMenu>
-                            <h:outputLabel value=""/><h:outputLabel value=""/>
-                        </h:panelGrid>
-
                         <p:fileUpload fileUploadListener="#{presentacionPlanillasBean.guardar}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
                                       invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
                                       mode="advanced" update="messages guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"

@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <h1>Descargas</h1>
+                <h3>Formato de planilla industrial</h3>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p:commandLink value="* LC1010-10 Formato de planilla industrial.xlsx" action="#{descargaPlanilla.descargarPlanillaIndustrial}" ajax="false"/>
+                <br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p:commandLink value="* Instrucción de llenado pdf" action="#{descargaPlanilla.descargarPdfPlanillaIndustrial}" ajax="false"/>
+                <h3>Formato de planilla comercial</h3>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p:commandLink value="* LC1010-20 Formato de planilla comercial.xlsx" action="#{descargaPlanilla.descargarPlanillaComercial}" ajax="false"/>
+                <br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p:commandLink value="* Instrucción de llenado pdf" action="#{descargaPlanilla.descargarPdfPlanillaComercial}" ajax="false"/>
+                <h3>Formato de planilla reducido (para MyPEs)</h3>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p:commandLink value="* LC1010-30 Formato de planilla reducido(MyPEs).xlsx" action="#{descargaPlanilla.descargarPlanillaReducido}" ajax="false"/>
+                <br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p:commandLink value="* Instrucción de llenado pdf" action="#{descargaPlanilla.descargarPdfPlanillaReducido}" ajax="false"/>
+                
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

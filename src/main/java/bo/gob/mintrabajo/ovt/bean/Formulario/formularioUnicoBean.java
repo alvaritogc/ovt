@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -22,6 +21,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 
 /**
  * Created with IntelliJ IDEA. User: gmercado Date: 10/8/13 Time: 2:17 PM To
@@ -48,6 +48,7 @@ public class formularioUnicoBean {
     private Integer temporal = 0;
     private boolean temporalBoolean = true;
     private PerPersonaEntity persona;
+    private Date fechaTemp = new Date();
 
     @PostConstruct
     public void ini() {
@@ -86,6 +87,7 @@ public class formularioUnicoBean {
             docPlanillaEntity.setFechaOperacion(new Timestamp(new Date().getTime()));
             iPlanillaService.guardar(docPlanillaEntity);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
+            docPlanillaEntity = new DocPlanillaEntity();
         } catch (Exception e) {
             e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falla", "No se guardo el formulario"));
@@ -163,5 +165,13 @@ public class formularioUnicoBean {
 
     public void setPersona(PerPersonaEntity persona) {
         this.persona = persona;
+    }
+
+    public Date getFechaTemp() {
+        return fechaTemp;
+    }
+
+    public void setFechaTemp(Date fechaTemp) {
+        this.fechaTemp = fechaTemp;
     }
 }

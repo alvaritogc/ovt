@@ -39,7 +39,8 @@ public class PlanillaService implements IPlanillaService {
     }
 
     @Override
-    public void guardar(DocPlanillaEntity objeto){                
+    public void guardar(DocPlanillaEntity objeto){ 
+        objeto.setIdPlanilla(planillaRepository.findAll().size() + 1);
         planillaRepository.save(objeto);
     }
 
