@@ -2,7 +2,6 @@ package bo.gob.mintrabajo.ovt.api;
 
 
 
-import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
 import bo.gob.mintrabajo.ovt.entities.ParEntidadEntity;
 
 import java.util.List;

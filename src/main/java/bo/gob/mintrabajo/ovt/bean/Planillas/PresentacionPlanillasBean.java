@@ -29,6 +29,7 @@ public class PresentacionPlanillasBean {
 
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private int idUsuario;
+    private String idPersona;
     private static final Logger logger = LoggerFactory.getLogger(PresentacionPlanillasBean.class);
     //
     @ManagedProperty(value = "#{usuarioService}")
@@ -51,8 +52,8 @@ public class PresentacionPlanillasBean {
 
     //variables
     private String textoBenvenida;
-    private PerPersonaEntity persona;
     private DocDocumentoEntity documento;
+    private PerPersonaEntity persona;
     private String periodo;
 
     @PostConstruct
@@ -64,6 +65,10 @@ public class PresentacionPlanillasBean {
         UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
         logger.info("usuario ok");
         persona = iPersonaService.buscarPorId(usuario.getIdPersona());
+        logger.info("persona ok");
+
+        idPersona=(String) session.getAttribute("idEmpleador");
+        persona=iPersonaService.buscarPorId(idPersona);
         logger.info("persona ok");
         cargar();
     }

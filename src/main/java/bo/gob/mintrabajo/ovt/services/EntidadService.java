@@ -1,7 +1,6 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IEntidadService;
-import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
 import bo.gob.mintrabajo.ovt.entities.ParEntidadEntity;
 import bo.gob.mintrabajo.ovt.repositories.EntidadRepository;
 

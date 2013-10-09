@@ -2,6 +2,8 @@ package bo.gob.mintrabajo.ovt.api;
 
 import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
 
+import java.math.BigDecimal;
+
 /**
  * Created with IntelliJ IDEA.
  * User: gmercado
@@ -10,5 +12,7 @@ import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
  * To change this template use File | Settings | File Templates.
  */
 public interface IPlanillaService {
-    public void guardar(DocPlanillaEntity objeto);
+    void guardar(DocPlanillaEntity objeto);
+
+    void generaReporte(BigDecimal idDocPlanillaEntity);
 }

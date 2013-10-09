@@ -34,6 +34,7 @@ public class formularioUnicoBean {
 
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private Integer idUsuario;
+    private String idPersona;
     private static final Logger logger = LoggerFactory.getLogger(formularioUnicoBean.class);
 
     @ManagedProperty(value = "#{usuarioService}")
@@ -51,6 +52,8 @@ public class formularioUnicoBean {
     private PerPersonaEntity perPersonaEntity;
     private DocPlanillaEntity docPlanillaEntity;
 
+    private PerPersonaEntity persona;
+
     @PostConstruct
     public void ini() {
         logger.info("Realizando la carga de Persona ...");
@@ -59,6 +62,10 @@ public class formularioUnicoBean {
         UsrUsuarioEntity usuario = iUsuarioService.findById(temp);
         perPersonaEntity = iPersonaService.buscarPorId(usuario.getIdPersona());
         docPlanillaEntity = new DocPlanillaEntity();
+
+        logger.info("buscando persona");
+        idPersona=(String) session.getAttribute("idEmpleador");
+        persona=iPersonaService.buscarPorId(idPersona);
     }
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
