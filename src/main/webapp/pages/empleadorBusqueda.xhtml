@@ -36,7 +36,7 @@
                     
                     
                     <p:column headerText="Acciones">  
-                        <p:commandButton action="#{empleadorBean.seleccionarEmpleador()}" ajax="false" icon="ui-icon-zoomin" title="Ver">  
+                        <p:commandButton action="#{empleadorBean.seleccionarEmpleador}" ajax="false" icon="ui-icon-zoomin" title="Ver">
                             <f:setPropertyActionListener value="#{o}" target="#{empleadorBean.personaABM}" />  
                         </p:commandButton>  
                     </p:column>  
