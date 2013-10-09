@@ -26,7 +26,6 @@ import java.sql.Timestamp;
 @ViewScoped
 public class PresentacionPlanillasBean {
 
-
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private int idUsuario;
     private String idPersona;
@@ -34,22 +33,16 @@ public class PresentacionPlanillasBean {
     //
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
-
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
-
     @ManagedProperty(value = "#{unidadService}")
     private IUnidadService iUnidadService;
-
     @ManagedProperty(value = "#{documentoService}")
     private IDocumentoService idDocumentoService;
-
     @ManagedProperty(value = "#{definicionService}")
     private IDefinicionService iDefinicionService;
-
     @ManagedProperty(value = "#{binService}")
     private IBinarioService iBinarioService;
-
     //variables
     private String textoBenvenida;
     private DocDocumentoEntity documento;
@@ -67,8 +60,8 @@ public class PresentacionPlanillasBean {
         persona = iPersonaService.buscarPorId(usuario.getIdPersona());
         logger.info("persona ok");
 
-        idPersona=(String) session.getAttribute("idEmpleador");
-        persona=iPersonaService.buscarPorId(idPersona);
+        idPersona = (String) session.getAttribute("idEmpleador");
+        persona = iPersonaService.buscarPorId(idPersona);
         logger.info("persona ok");
         cargar();
     }
@@ -76,6 +69,7 @@ public class PresentacionPlanillasBean {
     public void cargar() {
         documento = new DocDocumentoEntity();
     }
+    private boolean habilita = true;
 
     public void guardar(FileUploadEvent event) {
         System.out.println("entrando a guardarBinario...............................");
@@ -88,10 +82,9 @@ public class PresentacionPlanillasBean {
         logger.info("3");
         documento.setIdUnidad(unidad.getIdUnidad());
         logger.info("4");
-        documento.setRegistroBitacora(""+idUsuario);
+        documento.setRegistroBitacora("" + idUsuario);
         documento = idDocumentoService.guardar(documento);
         logger.info("7");
-
 
 //        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
 //        docPlanillaEntity.setPeriodo(periodo);
@@ -105,18 +98,18 @@ public class PresentacionPlanillasBean {
         UploadedFile file = event.getFile();
         try {
             DiskFileItemFactory factory = new DiskFileItemFactory();
-            ServletFileUpload sfu  = new ServletFileUpload(factory);
+            ServletFileUpload sfu = new ServletFileUpload(factory);
 
             Class.forName("oracle.jdbc.OracleDriver");
             Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.50.7:1521:DESA", "ovt", "ovt");
             con.setAutoCommit(false);
             PreparedStatement ps = con.prepareStatement("insert into DOC_BINARIO values(?,?,?,?,?,?,?)");
-            ps.setInt(1, (iBinarioService.contar().intValue())+1);
+            ps.setInt(1, (iBinarioService.contar().intValue()) + 1);
 
             ps.setInt(2, documento.getIdDocumento());
             ps.setString(3, file.getContentType());
             ps.setBinaryStream(4, new ByteArrayInputStream(file.getContents()), (int) file.getSize());
-            ps.setString(5, file.getFileName()+file.getContentType());
+            ps.setString(5, file.getFileName() + file.getContentType());
             ps.setDate(6, fecha());
             ps.setString(7, "ROE");
 
@@ -124,15 +117,20 @@ public class PresentacionPlanillasBean {
             con.commit();
             con.close();
             System.out.println("archivo añadido exitosamente");
-        }
-        catch(Exception ex) {
+
+            //** Código gary **//
+            //HttpSession idDocumento_session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            session.setAttribute("idDocumento_session", documento.getIdDocumento());
+            habilita = false;
+        } catch (Exception ex) {
+            habilita = true;
             ex.printStackTrace();
             System.out.println("Error --> " + ex.getMessage());
         }
     }
 
-    public java.sql.Date fecha(){
-        java.util.Date fecha= new java.util.Date();
+    public java.sql.Date fecha() {
+        java.util.Date fecha = new java.util.Date();
         return new java.sql.Date(fecha.getTime());
     }
 
@@ -214,5 +212,13 @@ public class PresentacionPlanillasBean {
 
     public void setPeriodo(String periodo) {
         this.periodo = periodo;
+    }
+
+    public boolean isHabilita() {
+        return habilita;
+    }
+
+    public void setHabilita(boolean habilita) {
+        this.habilita = habilita;
     }
 }

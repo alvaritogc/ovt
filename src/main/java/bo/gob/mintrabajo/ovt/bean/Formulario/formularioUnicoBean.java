@@ -18,16 +18,15 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 
 /**
- * Created with IntelliJ IDEA.
- * User: gmercado
- * Date: 10/8/13
- * Time: 2:17 PM
- * To change this template use File | Settings | File Templates.
+ * Created with IntelliJ IDEA. User: gmercado Date: 10/8/13 Time: 2:17 PM To
+ * change this template use File | Settings | File Templates.
  */
-
 @ManagedBean
 @ViewScoped
 public class formularioUnicoBean {
@@ -36,24 +35,18 @@ public class formularioUnicoBean {
     private Integer idUsuario;
     private String idPersona;
     private static final Logger logger = LoggerFactory.getLogger(formularioUnicoBean.class);
-
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
-
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
-
     @ManagedProperty(value = "#{entidadService}")
     private IEntidadService iEntidadService;
-
     @ManagedProperty(value = "#{planillaService}")
     private IPlanillaService iPlanillaService;
-
     private PerPersonaEntity perPersonaEntity;
     private DocPlanillaEntity docPlanillaEntity;
     private Integer temporal = 0;
     private boolean temporalBoolean = true;
-
     private PerPersonaEntity persona;
 
     @PostConstruct
@@ -66,31 +59,38 @@ public class formularioUnicoBean {
         docPlanillaEntity = new DocPlanillaEntity();
 
         logger.info("buscando persona");
-        idPersona=(String) session.getAttribute("idEmpleador");
-        persona=iPersonaService.buscarPorId(idPersona);
+        idPersona = (String) session.getAttribute("idEmpleador");
+        persona = iPersonaService.buscarPorId(idPersona);
     }
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
-    public List<ParEntidadEntity> obtenerEntidad(){
+    public List<ParEntidadEntity> obtenerEntidad() {
         List<ParEntidadEntity> tmpLista;
-        try{
+        try {
             tmpLista = iEntidadService.getEntidadLista();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
         return tmpLista;
     }
 
-    public void guardarPlanilla(){
+    public void guardarPlanilla() {
         System.out.println("Ingresando a guardar Planilla ");
-        try{
+        try {
+            Integer idDocumento_session = (Integer) session.getAttribute("idDocumento_session");
+            docPlanillaEntity.setIdDocumento(idDocumento_session);
+            docPlanillaEntity.setTipoPlanilla("P0");
+            docPlanillaEntity.setIdEntidadBanco(2);
+            docPlanillaEntity.setMontoOperacion(new BigDecimal("1000.51"));
+            docPlanillaEntity.setFechaOperacion(new Timestamp(new Date().getTime()));
             iPlanillaService.guardar(docPlanillaEntity);
-        }catch (Exception e){
-           e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falla", "No se guardo el formulario"));
         }
     }
-
 
     //** Getters and Setters **//
     public IUsuarioService getiUsuarioService() {
@@ -164,6 +164,4 @@ public class formularioUnicoBean {
     public void setPersona(PerPersonaEntity persona) {
         this.persona = persona;
     }
-    
-    
 }

@@ -30,13 +30,8 @@ public class PlanillaService implements IPlanillaService {
         this.planillaRepository = planillaRepository;
     }
 
-    public void guardar(DocPlanillaEntity objeto){
-        
-        objeto.setIdDocumento(1);
-        objeto.setTipoPlanilla("P0");
-        objeto.setIdEntidadBanco(2);
-        objeto.setMontoOperacion(new BigDecimal("1000.51"));
-        objeto.setFechaOperacion(new Timestamp(new Date().getTime()));
+    @Override
+    public void guardar(DocPlanillaEntity objeto){                
         planillaRepository.save(objeto);
     }
 
