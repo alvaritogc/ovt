@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IPlanillaService;
+import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
 import bo.gob.mintrabajo.ovt.repositories.PlanillaRepository;
 
 import javax.ejb.TransactionAttribute;
@@ -22,5 +23,9 @@ public class PlanillaService implements IPlanillaService {
     @Inject
     public PlanillaService(PlanillaRepository planillaRepository) {
         this.planillaRepository = planillaRepository;
+    }
+
+    public void guardar(DocPlanillaEntity objeto){
+        planillaRepository.save(objeto);
     }
 }
