@@ -122,7 +122,7 @@ public class PresentacionPlanillasBean {
 
             //** Código gary **//
             //HttpSession idDocumento_session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            session.setAttribute("idDocumento_session", documento.getIdDocumento());
+            session.setAttribute("documento_session", documento);
             habilita = false;
         } catch (Exception ex) {
             habilita = true;
