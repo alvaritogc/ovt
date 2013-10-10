@@ -1,7 +1,10 @@
 package bo.gob.mintrabajo.ovt.bean.Planillas;
 
 import bo.gob.mintrabajo.ovt.api.*;
-import bo.gob.mintrabajo.ovt.entities.*;
+import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
+import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
+import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.primefaces.event.FileUploadEvent;
@@ -20,7 +23,6 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 
 @ManagedBean
 @ViewScoped
@@ -109,7 +111,7 @@ public class PresentacionPlanillasBean {
             ps.setInt(2, documento.getIdDocumento());
             ps.setString(3, file.getContentType());
             ps.setBinaryStream(4, new ByteArrayInputStream(file.getContents()), (int) file.getSize());
-            ps.setString(5, file.getFileName() + file.getContentType());
+            ps.setString(5, file.getFileName());
             ps.setDate(6, fecha());
             ps.setString(7, "ROE");
 
