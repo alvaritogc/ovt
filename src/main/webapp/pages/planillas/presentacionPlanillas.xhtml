@@ -111,7 +111,7 @@
                                 </p:column>
                                 <p:column colspan="4">
                                     <p:outputLabel value="FORM :"/>
-                                    <p:inputText value="LC1010 Ver. 01" style="width: 150px; height: 10px"/>
+                                    <b><p:outputLabel value="LC1010 Ver. 01" style="font-size: 16px"/></b>
                                 </p:column>
                             </p:row>
 
@@ -125,9 +125,12 @@
                                     <p:outputLabel value="1.3 Nro de orden que rectifica"/>
                                 </p:column>
                                 <p:column colspan="4">
-                                    <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px"/><br/>
-                                    <p:selectBooleanCheckbox value="#{formularioUnicoBean.temporalBoolean}"/><br/><br/>
-                                    <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px"/>
+                                    <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px" disabled="true" /><br/>
+                                    <p:selectBooleanCheckbox value="#{formularioUnicoBean.esRectificatorio}">
+                                        <p:ajax update="rectificatorio" event="change" />
+                                    </p:selectBooleanCheckbox>
+                                    <br/><br/>
+                                    <p:inputText id="rectificatorio" value="#{formularioUnicoBean.temporal}" disabled="#{!formularioUnicoBean.esRectificatorio}" style="width: 150px; height: 10px"/>
                                 </p:column>
                             </p:row>
 
@@ -138,7 +141,7 @@
                             </p:row>
 
                             <p:row>
-                                <p:column colspan="5">
+                                <p:column colspan="4">
                                     <p:outputLabel value="2.1 Total nacional"/>
                                 </p:column>
                                 <p:column colspan="1">
@@ -150,16 +153,14 @@
                                     <p:outputLabel value="2.2 Oficina central o nro de sucursal"/>
                                     <p:outputLabel value="2.3 Mes de presentación"/>
                                 </p:column>
-                                <p:column colspan="5">
-                                    <p:selectOneMenu style="width: 190px; height: 20px">
+                                <p:column colspan="6">
+                                    <p:selectOneMenu style="width: 260px; height: 20px">
                                         <f:selectItem itemValue="ninguno" itemLabel="#{formularioUnicoBean.perPersonaEntity.nombreRazonSocial}"/>
-                                        <f:selectItem itemValue="b" itemLabel="NIT 090998787"/>
-                                        <f:selectItem itemValue="a" itemLabel="NIT 383878787"/>
                                     </p:selectOneMenu>
                                     <br/>
                                     <br/>
                                     <!--<p:inputText value="# {formularioUnicoBean.temporal}" style="width: 150px; height: 10px"/>-->
-                                    <p:selectOneMenu value="#{formularioUnicoBean.docPlanillaEntity.periodo}" style="width: 190px; height: 20px">
+                                    <p:selectOneMenu value="#{formularioUnicoBean.docPlanillaEntity.periodo}" style="width: 260px; height: 20px">
                                         <f:selectItem itemLabel="Octubre - Diciembre" itemValue="2013 T3 - Octubre - Diciembre" />
                                         <f:selectItem itemLabel="Enero - Marzo" itemValue="2013 T3 - Enero - Marzo" />
                                         <f:selectItem itemLabel="Abril - Junio" itemValue="2013 T3 - Abril - Junio" />
@@ -175,8 +176,8 @@
                             </p:row>
 
                             <p:row>
-                                <p:column colspan="4"/>
-                                <p:column colspan="4">
+                                <!--<p:column colspan="4"/>-->
+                                <p:column colspan="6">
                                     <p:outputLabel value="3.1 Nro de empleador MTEPS"/>
                                     <p:inputText value="#{formularioUnicoBean.perPersonaEntity.nroIdentificacion}" style="width: 150px; height: 10px"
                                                  readonly="true"/>
@@ -193,7 +194,7 @@
                                     <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px" readonly="true"/>
                                     <br/>
                                 </p:column>
-                                <p:column colspan="4">
+                                <p:column colspan="5">
                                     <p:outputLabel value="3.2 Nro patronal del seguro social"/>
                                     <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px" readonly="true"/>
                                     <br/>
@@ -206,7 +207,7 @@
                                     <p:outputLabel value="3.11 Teléfono"/>
                                     <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px" readonly="true"/>
                                 </p:column>
-                                <p:column colspan="4">
+                                <p:column colspan="5">
                                     <p:outputLabel value="3.3 Nro de NIT"/>
                                     <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px" readonly="true"/>
                                     <br/>
@@ -228,15 +229,15 @@
                             </p:row>
 
                             <p:row>
-                                <p:column colspan="4"/>
-                                <p:column colspan="4">
+                                <!--<p:column colspan="4"/>-->
+                                <p:column colspan="6">
                                     <p:outputLabel value="4.1 Nro de asegurados al ente gestor de salud a corto plazo"/>
                                     <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroAsegCaja}" style="width: 150px; height: 10px" required="true" converterMessage="valor con 2 decimales"/>
                                     <br/>
                                     <p:outputLabel value="4.4 Nro de afiliados seguro a largo plazo"/>
                                     <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroAsegAfp}" style="width: 150px; height: 10px" required="true"/>
                                 </p:column>
-                                <p:column colspan="4">
+                                <p:column colspan="5">
                                     <p:outputLabel value="4.2 Monto aportado (Bs)"/>
                                     <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.montoAsegCaja}" style="width: 150px; height: 10px" required="true">
                                         <f:convertNumber minFractionDigits="2" />
@@ -247,9 +248,9 @@
                                         <f:convertNumber minFractionDigits="2" />
                                     </p:inputText>
                                 </p:column>
-                                <p:column colspan="4">
+                                <p:column colspan="5">
                                     <p:outputLabel value="4.3 Ente gestores de salud corto plazo"/>
-                                    <p:selectOneMenu value="#{formularioUnicoBean.docPlanillaEntity.idEntidadSalud}" style="width: 150px; height: 20px; font-size: 10px" required="true">
+                                    <p:selectOneMenu value="#{formularioUnicoBean.docPlanillaEntity.idEntidadSalud}" style="width: 260px; height: 20px; font-size: 10px" required="true">
                                         <f:selectItem itemValue="#{1}" itemLabel="Caja Nacional de salud"/>
                                         <!--<f:selectItems value="# {formularioUnicoBean.obtenerEntidad()}" var="entidad"  itemValue="# {entidad.idEntidad}" itemLabel="# {entidad.descripcion}" />-->
                                     </p:selectOneMenu>
@@ -268,81 +269,125 @@
                             <p:row>
                                 <p:column colspan="8">
                                     <p:panelGrid columns="2">
-                                        <p:outputLabel value="5.1 Haber básico"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.haberBasico}"
-                                                     style="width: 100px; height: 10px" required="true"/>
-                                        <p:outputLabel value="5.2 Bono de antigüedad"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.bonoAntiguedad}"
-                                                     style="width: 100px; height: 10px" required="true"/>
-                                        <p:outputLabel value="5.3 Bono de producción"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.bonoProduccion}"
-                                                     style="width: 100px; height: 10px" required="true" />
-                                        <p:outputLabel value="5.4 Subsidio de frontera"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.subsidioFrontera}"
-                                                     style="width: 100px; height: 10px" required="true"/>
-                                        <p:outputLabel value="5.5 Labor extraordinaria"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.laborExtra}"
-                                                     style="width: 100px; height: 10px" required="true"/>
-                                        <p:outputLabel value="5.6 Otros bonos"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.otrosBonos}"
-                                                     style="width: 100px; height: 10px" required="true"/>
+                                        <p:outputLabel for="basico" value="5.1 Haber básico"/>
+                                        <p:inputText id="basico" value="#{formularioUnicoBean.docPlanillaEntity.haberBasico}" style="width: 100px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalGanado" />
+                                        </p:inputText>
+                                        <p:outputLabel for="antiguedad" value="5.2 Bono de antigüedad"/>
+                                        <p:inputText id="antiguedad" value="#{formularioUnicoBean.docPlanillaEntity.bonoAntiguedad}" style="width: 100px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalGanado" />
+                                        </p:inputText>
+                                        <p:outputLabel for="produccion" value="5.3 Bono de producción"/>
+                                        <p:inputText id="produccion" value="#{formularioUnicoBean.docPlanillaEntity.bonoProduccion}" style="width: 100px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalGanado" />
+                                        </p:inputText>
+                                        <p:outputLabel for="frontera" value="5.4 Subsidio de frontera"/>
+                                        <p:inputText id="frontera" value="#{formularioUnicoBean.docPlanillaEntity.subsidioFrontera}" style="width: 100px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalGanado" />
+                                        </p:inputText>
+                                        <p:outputLabel for="extraordinario" value="5.5 Labor extraordinaria"/>
+                                        <p:inputText id="extraordinario" value="#{formularioUnicoBean.docPlanillaEntity.laborExtra}" style="width: 100px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalGanado" />
+                                        </p:inputText>
+                                        <p:outputLabel for="bono" value="5.6 Otros bonos"/>
+                                        <p:inputText id="bono" value="#{formularioUnicoBean.docPlanillaEntity.otrosBonos}" style="width: 100px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalGanado" />
+                                        </p:inputText>
                                         <p:outputLabel value="5.7 Total ganado"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 100px; height: 10px" disabled="true"/>
-                                        <p:outputLabel value="5.8 Aporte a las AFPs"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.aporteAfp}" style="width: 100px; height: 10px" required="true"/>
-                                        <p:outputLabel value="5.9 RC-IVA"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.rciva}" style="width: 100px; height: 10px" required="true"/>
-                                        <p:outputLabel value="5.10 Otros descuentos"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.otrosDescuentos}" style="width: 100px; height: 10px" required="true"/>
+                                        <h:outputText id="totalGanado" value="#{(formularioUnicoBean.docPlanillaEntity.haberBasico +
+                                        formularioUnicoBean.docPlanillaEntity.bonoAntiguedad + formularioUnicoBean.docPlanillaEntity.bonoProduccion +
+                                        formularioUnicoBean.docPlanillaEntity.subsidioFrontera + formularioUnicoBean.docPlanillaEntity.laborExtra +
+                                        formularioUnicoBean.docPlanillaEntity.otrosBonos)}" />
+                                        <p:outputLabel for="afp" value="5.8 Aporte a las AFPs"/>
+                                        <p:inputText id="afp" value="#{formularioUnicoBean.docPlanillaEntity.aporteAfp}" style="width: 100px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalDescuento" />
+                                            <p:ajax event="keyup" update="pagable" />
+                                        </p:inputText>
+                                        <p:outputLabel for="iva" value="5.9 RC-IVA"/>
+                                        <p:inputText id="iva" value="#{formularioUnicoBean.docPlanillaEntity.rciva}" style="width: 100px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalDescuento" />
+                                            <p:ajax event="keyup" update="pagable" />
+                                        </p:inputText>
+                                        <p:outputLabel for="descuento" value="5.10 Otros descuentos"/>
+                                        <p:inputText id="descuento" value="#{formularioUnicoBean.docPlanillaEntity.otrosDescuentos}" style="width: 100px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalDescuento" />
+                                            <p:ajax event="keyup" update="pagable" />
+                                        </p:inputText>
                                         <p:outputLabel value="5.11 Total Descuentos"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 100px; height: 10px" disabled="true"/>
+                                        <h:outputText id="totalDescuento" value="#{(formularioUnicoBean.docPlanillaEntity.aporteAfp +
+                                        formularioUnicoBean.docPlanillaEntity.rciva + formularioUnicoBean.docPlanillaEntity.otrosDescuentos)}" style="width: 100px; height: 10px"/>
                                         <p:outputLabel value="5.12 Líquido pagable"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 100px; height: 10px" disabled="true"/>
+                                        <h:outputText id="pagable" value="#{(formularioUnicoBean.docPlanillaEntity.haberBasico +
+                                        formularioUnicoBean.docPlanillaEntity.bonoAntiguedad + formularioUnicoBean.docPlanillaEntity.bonoProduccion +
+                                        formularioUnicoBean.docPlanillaEntity.subsidioFrontera + formularioUnicoBean.docPlanillaEntity.laborExtra +
+                                        formularioUnicoBean.docPlanillaEntity.otrosBonos) - (formularioUnicoBean.docPlanillaEntity.aporteAfp +
+                                        formularioUnicoBean.docPlanillaEntity.rciva + formularioUnicoBean.docPlanillaEntity.otrosDescuentos)}" style="width: 100px; height: 10px"/>
                                     </p:panelGrid>
                                 </p:column>
                                 <p:column colspan="8">
                                     <p:panelGrid columns="4">
                                         <p:outputLabel value=""/>
-                                        <p:outputLabel value="Varones"/>
-                                        <p:outputLabel value="Mujeres"/>
+                                        <p:outputLabel for="varon1" value="Varones"/>
+                                        <p:outputLabel for="mujer1" value="Mujeres"/>
                                         <p:outputLabel value="Total"/>
                                         <p:outputLabel value="6.1 Total trabajadores"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroH}"
-                                                     style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroM}"
-                                                     style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
+                                        <p:inputText id="varon1" value="#{formularioUnicoBean.docPlanillaEntity.nroH}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalTrabajadores" />
+                                        </p:inputText>
+                                        <p:inputText id="mujer1" value="#{formularioUnicoBean.docPlanillaEntity.nroM}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalTrabajadores" />
+                                        </p:inputText>
+                                        <h:outputText id="totalTrabajadores" value="#{(formularioUnicoBean.docPlanillaEntity.nroH + formularioUnicoBean.docPlanillaEntity.nroM)}" style="width: 50px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="-"/><p:outputLabel value="-"/><p:outputLabel value="-"/><p:outputLabel value="-"/>
                                         <p:outputLabel value=""/>
-                                        <p:outputLabel value="Varones"/>
-                                        <p:outputLabel value="Mujeres"/>
+                                        <p:outputLabel for="varon2" value="Varones"/>
+                                        <p:outputLabel for="mujer2" value="Mujeres"/>
                                         <p:outputLabel value="Total"/>
                                         <p:outputLabel value="6.2 Personas jubiladas"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroJubiladosH}"
-                                                     style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroJubiladosM}"
-                                                     style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
+                                        <p:inputText id="varon2" value="#{formularioUnicoBean.docPlanillaEntity.nroJubiladosH}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalJubilados" />
+                                        </p:inputText>
+                                        <p:inputText id="mujer2" value="#{formularioUnicoBean.docPlanillaEntity.nroJubiladosM}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalJubilados" />
+                                        </p:inputText>
+                                        <h:outputText id="totalJubilados" value="#{(formularioUnicoBean.docPlanillaEntity.nroJubiladosH + formularioUnicoBean.docPlanillaEntity.nroJubiladosM)}"
+                                                      style="width: 50px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="6.3 Personas extranjeras"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroExtranjerosH}"
-                                                     style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroExtranjerosM}"
-                                                     style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
+                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroExtranjerosH}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalExtrangeros" />
+                                        </p:inputText>
+                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroExtranjerosM}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalExtrangeros" />
+                                        </p:inputText>
+                                        <h:outputText id="totalExtrangeros" value="#{(formularioUnicoBean.docPlanillaEntity.nroExtranjerosH + formularioUnicoBean.docPlanillaEntity.nroExtranjerosM)}"
+                                                      style="width: 50px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="6.4 Personas con discapacidad"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroDiscapacidadH}"
-                                                     style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroDiscapacidadM}"
-                                                     style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
+                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroDiscapacidadH}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalDicapacitados" />
+                                        </p:inputText>
+                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroDiscapacidadM}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalDicapacitados" />
+                                        </p:inputText>
+                                        <h:outputText id="totalDicapacitados" value="#{(formularioUnicoBean.docPlanillaEntity.nroDiscapacidadM + formularioUnicoBean.docPlanillaEntity.nroDiscapacidadH)}"
+                                                      style="width: 50px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="6.5 Personas contratadas en el trimestre"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroContratadosH}" style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroContratadosM}" style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
+                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroContratadosH}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalContratados" />
+                                        </p:inputText>
+                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroContratadosM}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalContratados" />
+                                        </p:inputText>
+                                        <h:outputText id="totalContratados" value="#{(formularioUnicoBean.docPlanillaEntity.nroContratadosM + formularioUnicoBean.docPlanillaEntity.nroContratadosH)}"
+                                                      style="width: 50px; height: 10px" disabled="true"/>
                                         <p:outputLabel value="6.6 Personas retiradas en el trimestre"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroRetiradosH}" style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroRetiradosM}" style="width: 50px; height: 10px" required="true"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 50px; height: 10px" disabled="true"/>
+                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroRetiradosH}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalRetirados" />
+                                        </p:inputText>
+                                        <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroRetiradosM}" style="width: 50px; height: 10px" required="true">
+                                            <p:ajax event="keyup" update="totalRetirados" />
+                                        </p:inputText>
+                                        <h:outputText id="totalRetirados" value="#{(formularioUnicoBean.docPlanillaEntity.nroRetiradosH + formularioUnicoBean.docPlanillaEntity.nroRetiradosM)}"
+                                                     style="width: 50px; height: 10px" disabled="true"/>
                                     </p:panelGrid>
                                 </p:column>
                             </p:row>
@@ -374,18 +419,16 @@
                             </p:row>
 
                             <p:row>
-                                <p:column colspan="4"/>
-                                <p:column colspan="4">
+                                <!--<p:column colspan="4"/>-->
+                                <p:column colspan="6">
                                     <p:outputLabel value="8.1 Nro de comprobante de depósito"/>
                                     <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.numOperacion}" style="width: 150px; height: 10px" required="true"/>
                                 </p:column>
-                                <p:column colspan="4">
+                                <p:column colspan="5">
                                     <p:outputLabel value="8.2 Fecha de depósito"/>
-                                    <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px">                                
-
-                                    </p:inputText>
+                                    <p:calendar value="#{formularioUnicoBean.fechaOperacionAux}" id="popupButtonCal" style="width: 100px; height: 10px" required="true" />
                                 </p:column>
-                                <p:column colspan="4">
+                                <p:column colspan="5">
                                     <p:outputLabel value="8.3 Monto de depósito (Bs)"/>
                                     <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.montoOperacion}" style="width: 150px; height: 10px"/>
                                 </p:column>
@@ -404,13 +447,15 @@
                                         <p:outputLabel value="Nro DE DOCUMENTO DE IDENTIDAD"/>
                                         <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px"/>
                                         <p:outputLabel value="LUGAR DE PRESENTACIÓN"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px" readonly="true"/>
+                                        <h:outputText value="Oficina Virtual" style="width: 150px; height: 10px" readonly="true"/>
                                     </p:panelGrid>
                                 </p:column>
                                 <p:column colspan="8">
                                     <p:panelGrid columns="2">
                                         <p:outputLabel value="FECHA DE PRESENTACIÓN"/>
-                                        <p:inputText value="#{formularioUnicoBean.fechaTemp}" style="width: 150px; height: 10px" readonly="true" />
+                                        <p:inputText value="#{formularioUnicoBean.fechaTemp}" style="width: 150px; height: 10px" readonly="true">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </p:inputText>
                                     </p:panelGrid>
                                 </p:column>
                             </p:row>

@@ -4,10 +4,7 @@ import bo.gob.mintrabajo.ovt.api.IEntidadService;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IPlanillaService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
-import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
-import bo.gob.mintrabajo.ovt.entities.ParEntidadEntity;
-import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
-import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
+import bo.gob.mintrabajo.ovt.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -42,11 +40,15 @@ public class formularioUnicoBean {
     @ManagedProperty(value = "#{entidadService}")
     private IEntidadService iEntidadService;
     @ManagedProperty(value = "#{planillaService}")
+
     private IPlanillaService iPlanillaService;
     private PerPersonaEntity perPersonaEntity;
     private DocPlanillaEntity docPlanillaEntity;
+    private boolean esRectificatorio=false;
+    private Date fechaOperacionAux;
+
     private Integer temporal = 0;
-    private boolean temporalBoolean = true;
+    private boolean temporalBoolean;
     private PerPersonaEntity persona;
     private Date fechaTemp = new Date();
 
@@ -79,12 +81,11 @@ public class formularioUnicoBean {
     public void guardarPlanilla() {
         System.out.println("Ingresando a guardar Planilla ");
         try {
-            Integer idDocumento_session = (Integer) session.getAttribute("idDocumento_session");
-            docPlanillaEntity.setIdDocumento(idDocumento_session);
-            docPlanillaEntity.setTipoPlanilla("P0");
+            DocDocumentoEntity documento_session = (DocDocumentoEntity) session.getAttribute("documento_session");
+            docPlanillaEntity.setIdDocumento(documento_session.getIdDocumento());
+            docPlanillaEntity.setTipoPlanilla("DDJJ");
             docPlanillaEntity.setIdEntidadBanco(2);
-            docPlanillaEntity.setMontoOperacion(new BigDecimal("1000.51"));
-            docPlanillaEntity.setFechaOperacion(new Timestamp(new Date().getTime()));
+            docPlanillaEntity.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
             iPlanillaService.guardar(docPlanillaEntity);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
             docPlanillaEntity = new DocPlanillaEntity();
@@ -173,5 +174,21 @@ public class formularioUnicoBean {
 
     public void setFechaTemp(Date fechaTemp) {
         this.fechaTemp = fechaTemp;
+    }
+
+    public boolean isEsRectificatorio() {
+        return esRectificatorio;
+    }
+
+    public void setEsRectificatorio(boolean esRectificatorio) {
+        this.esRectificatorio = esRectificatorio;
+    }
+
+    public Date getFechaOperacionAux() {
+        return fechaOperacionAux;
+    }
+
+    public void setFechaOperacionAux(Date fechaOperacionAux) {
+        this.fechaOperacionAux = fechaOperacionAux;
     }
 }
