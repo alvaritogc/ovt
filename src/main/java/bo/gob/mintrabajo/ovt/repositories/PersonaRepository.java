@@ -19,7 +19,7 @@ public interface PersonaRepository extends OpenJpaRepository<PerPersonaEntity, B
             + " from PerPersonaEntity per"
             + " where "
             + " per.nroIdentificacion like  :nroIdentificacion "
-            + " or per.nombreRazonSocial like  :nombreRazonSocial "
+            + " or per.nombreRazonSocial like  %:nombreRazonSocial% "
             )
     List<PerPersonaEntity> buscarPorNumeroNombre(@Param("nroIdentificacion") String nroIdentificacion,@Param("nombreRazonSocial") String nombreRazonSocial);
     
