@@ -14,25 +14,9 @@
                     <p:outputLabel value="#{bienvenidaBean.persona.tipoIdentificacion}: " style="size: 20px;"/>
                     <p:outputLabel value="#{bienvenidaBean.persona.nroIdentificacion}" />
                 </p:panelGrid>
-                <p:dataTable id="idListaUnidades" value="#{bienvenidaBean.listaUnidades}" var="o"  >
-                    <p:column headerText="Nombre comercial" >
-                        <h:outputText value="#{o.nombreComercial}"/>  
-                    </p:column>
-                    <p:column headerText="Fecha nacimiento" >
-                        <h:outputText value="#{o.fechaNacimiento}" >
-                            <f:convertDateTime type="Date" pattern="dd/MM/yyyy" />
-                        </h:outputText>  
-                    </p:column>
-                    <p:column headerText="Nro. caja Salud" >
-                        <h:outputText value="#{o.nroCajaSalud}" />  
-                    </p:column>
-                    <p:column headerText="Observaciones" >
-                        <h:outputText value="#{o.observaciones}" />  
-                    </p:column>
-                    <p:column headerText="Actividad declarada" >
-                        <h:outputText value="#{o.actividadDeclarada}" />  
-                    </p:column>
-                </p:dataTable>
+                <p:dataList value="#{bienvenidaBean.listaUnidades}" var="unidad" itemType="disc">  
+                    #{unidad.nombreComercial} , #{unidad.nroCajaSalud}
+                </p:dataList> 
                 <br/>
                 <h3>Documentos</h3>
 
