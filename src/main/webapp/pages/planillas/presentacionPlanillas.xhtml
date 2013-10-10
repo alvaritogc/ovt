@@ -125,7 +125,7 @@
                                     <p:outputLabel value="1.3 Nro de orden que rectifica"/>
                                 </p:column>
                                 <p:column colspan="4">
-                                    <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px" disabled="true" /><br/>
+                                    <p:inputText value="#{formularioUnicoBean.numeroOrden}" style="width: 150px; height: 10px" disabled="true" /><br/>
                                     <p:selectBooleanCheckbox value="#{formularioUnicoBean.esRectificatorio}">
                                         <p:ajax update="rectificatorio" event="change" />
                                     </p:selectBooleanCheckbox>
@@ -161,10 +161,7 @@
                                     <br/>
                                     <!--<p:inputText value="# {formularioUnicoBean.temporal}" style="width: 150px; height: 10px"/>-->
                                     <p:selectOneMenu value="#{formularioUnicoBean.docPlanillaEntity.periodo}" style="width: 260px; height: 20px">
-                                        <f:selectItem itemLabel="Octubre - Diciembre" itemValue="2013 T3 - Octubre - Diciembre" />
-                                        <f:selectItem itemLabel="Enero - Marzo" itemValue="2013 T3 - Enero - Marzo" />
-                                        <f:selectItem itemLabel="Abril - Junio" itemValue="2013 T3 - Abril - Junio" />
-                                        <f:selectItem itemLabel="Julio - Septiembre" itemValue="2013 T3 - Julio - Septiembre" />                                
+                                        <f:selectItems value="#{formularioUnicoBean.parObligacionCalendarioLista}" var="it" itemLabel="#{it.gestion}" itemValue="#{it.gestion}" />
                                     </p:selectOneMenu>
                                 </p:column>
                             </p:row>

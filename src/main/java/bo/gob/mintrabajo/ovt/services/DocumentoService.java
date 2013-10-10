@@ -109,11 +109,11 @@ public class DocumentoService implements IDocumentoService{
         //
         //
         
-        Long a=actualizarNumeroDeOrden("LC1010", 1);
-        
+        //Long a=actualizarNumeroDeOrden("LC1010", 1);
+        documento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1));
         //
         //
-        documento.setNumeroDocumento(repository.findAll().size()+10101000001L);
+        //documento.setNumeroDocumento(repository.findAll().size()+10101000001L);
         //
 //        documento.setNumeroDocumento(repository.findAll().size()+1);
         Date date= new java.util.Date();
@@ -121,7 +121,7 @@ public class DocumentoService implements IDocumentoService{
         //
         documento.setIdDocumentoRef(null);
         //
-        documento.setCodEstado("000");
+        documento.setCodEstado("110");
         documento.setFechaReferenca(null);
         documento.setTipoMedioRegistro("OFVIR");
         documento.setFechaBitacora(new Timestamp(date.getTime()));

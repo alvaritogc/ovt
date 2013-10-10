@@ -1,9 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean.Formulario;
 
-import bo.gob.mintrabajo.ovt.api.IEntidadService;
-import bo.gob.mintrabajo.ovt.api.IPersonaService;
-import bo.gob.mintrabajo.ovt.api.IPlanillaService;
-import bo.gob.mintrabajo.ovt.api.IUsuarioService;
+import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -40,12 +38,16 @@ public class formularioUnicoBean {
     @ManagedProperty(value = "#{entidadService}")
     private IEntidadService iEntidadService;
     @ManagedProperty(value = "#{planillaService}")
-
     private IPlanillaService iPlanillaService;
+    @ManagedProperty(value = "#{obligacionCalendarioService}")
+    private IObligacionCalendarioService iObligacionCalendarioService;
+
+    private List<ParObligacionCalendarioEntity> parObligacionCalendarioLista;
     private PerPersonaEntity perPersonaEntity;
     private DocPlanillaEntity docPlanillaEntity;
     private boolean esRectificatorio=false;
     private Date fechaOperacionAux;
+    private Long numeroOrden;
 
     private Integer temporal = 0;
     private boolean temporalBoolean;
@@ -64,7 +66,14 @@ public class formularioUnicoBean {
         logger.info("buscando persona");
         idPersona = (String) session.getAttribute("idEmpleador");
         persona = iPersonaService.buscarPorId(idPersona);
+        obtenerPeriodoLista();
     }
+
+    public void obtenerPeriodoLista(){
+        parObligacionCalendarioLista = new ArrayList<ParObligacionCalendarioEntity>();
+        parObligacionCalendarioLista = iObligacionCalendarioService.obtenerObligacionCalendario();
+    }
+
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
     public List<ParEntidadEntity> obtenerEntidad() {
@@ -82,6 +91,7 @@ public class formularioUnicoBean {
         System.out.println("Ingresando a guardar Planilla ");
         try {
             DocDocumentoEntity documento_session = (DocDocumentoEntity) session.getAttribute("documento_session");
+            numeroOrden = documento_session.getNumeroDocumento();
             docPlanillaEntity.setIdDocumento(documento_session.getIdDocumento());
             docPlanillaEntity.setTipoPlanilla("DDJJ");
             docPlanillaEntity.setIdEntidadBanco(2);
@@ -190,5 +200,29 @@ public class formularioUnicoBean {
 
     public void setFechaOperacionAux(Date fechaOperacionAux) {
         this.fechaOperacionAux = fechaOperacionAux;
+    }
+
+    public IObligacionCalendarioService getiObligacionCalendarioService() {
+        return iObligacionCalendarioService;
+    }
+
+    public void setiObligacionCalendarioService(IObligacionCalendarioService iObligacionCalendarioService) {
+        this.iObligacionCalendarioService = iObligacionCalendarioService;
+    }
+
+    public List<ParObligacionCalendarioEntity> getParObligacionCalendarioLista() {
+        return parObligacionCalendarioLista;
+    }
+
+    public void setParObligacionCalendarioLista(List<ParObligacionCalendarioEntity> parObligacionCalendarioLista) {
+        this.parObligacionCalendarioLista = parObligacionCalendarioLista;
+    }
+
+    public Long getNumeroOrden() {
+        return numeroOrden;
+    }
+
+    public void setNumeroOrden(Long numeroOrden) {
+        this.numeroOrden = numeroOrden;
     }
 }
