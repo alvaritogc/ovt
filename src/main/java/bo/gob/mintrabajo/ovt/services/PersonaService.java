@@ -109,9 +109,9 @@ public class PersonaService implements IPersonaService{
         try {
             //allPersonas = personaRepository.buscarPorNumeroNombre(nroIdentificacion, nombreRazonSocial);
             //allPersonas = personaRepository.findByAttribute("nombreRazonSocial", nombreRazonSocial, -1, -1);
-            allPersonas = personaRepository.findByExample(persona, null, null, -1, -1);
+            //allPersonas = personaRepository.findByExample(persona, null, null, -1, -1);
             //allPersonas=personaRepository.findByFullTexts(nombreRazonSocial, null, -1,-1);
-            //allPersonas = personaRepository.buscarPorNumeroNombre(nroIdentificacion, nombreRazonSocial);
+            allPersonas = personaRepository.buscarPorNumeroNombre(nroIdentificacion, nombreRazonSocial);
         } catch (Exception e) {
             e.printStackTrace();
             allPersonas = null;
