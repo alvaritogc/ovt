@@ -19,4 +19,5 @@ public interface IDocumentoService {
     public DocDocumentoEntity guardar(DocDocumentoEntity documento);
     public List<DocDocumentoEntity> listarPorPersona(String idPersona);
     public DocPlanillaEntity retornaPlanilla(int idDocumento);
+    public int obtenerNumeroDeOrden(String codDocumento,Integer version );
 }

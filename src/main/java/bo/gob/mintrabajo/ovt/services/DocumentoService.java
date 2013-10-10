@@ -147,4 +147,9 @@ public class DocumentoService implements IDocumentoService{
         return planillaRepository.findByAttribute("idDocumento",idDocumento,-1,-1).get(0);
     }
     
+    public int obtenerNumeroDeOrden(String codDocumento,Integer version ){
+        
+        return 0;
+    }
+    
 }
