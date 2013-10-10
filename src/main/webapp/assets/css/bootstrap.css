@@ -1062,9 +1062,9 @@ input,
 button,
 select,
 textarea {
-  font-size: 14px;
+  font-size: 10px;
   font-weight: normal;
-  line-height: 20px;
+  line-height: 10px;
 }
 
 input,
@@ -6173,4 +6173,7 @@ a.badge:focus {
 
 .affix {
   position: fixed;
+}
+.ui-widget-header .ui-inputfield, .ui-widget-content .ui-inputfield .derecha{
+    text-align: right;
 }
