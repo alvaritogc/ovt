@@ -2,11 +2,13 @@ package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
 import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
+import bo.gob.mintrabajo.ovt.entities.DocNumeracionEntity;
 import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
 import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstadoEntity;
 import bo.gob.mintrabajo.ovt.repositories.DocumentoEstadoRepository;
 import bo.gob.mintrabajo.ovt.repositories.DocumentoRepository;
 import bo.gob.mintrabajo.ovt.repositories.PlanillaRepository;
+import bo.gob.mintrabajo.ovt.repositories.NumeracionRepository;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -14,6 +16,7 @@ import javax.inject.Named;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 
 /**
@@ -27,12 +30,14 @@ public class DocumentoService implements IDocumentoService{
     private final DocumentoRepository repository;
     private final DocumentoEstadoRepository documentoEstadoRepository;
     private final PlanillaRepository planillaRepository;
+    private final NumeracionRepository numeracionRepository;
 
     @Inject
-    public DocumentoService(DocumentoRepository repository,DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository) {
+    public DocumentoService(DocumentoRepository repository,DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository,NumeracionRepository numeracionRepository) {
         this.repository = repository;
         this.documentoEstadoRepository=documentoEstadoRepository;
         this.planillaRepository = planillaRepository;
+        this.numeracionRepository=numeracionRepository;
     }
     
     @Override
@@ -99,8 +104,17 @@ public class DocumentoService implements IDocumentoService{
         documento.setCodDocumento("LC1010");
         documento.setVersion(1);
         //documento.setNumeroDocumento(1);
-
+        //
+        //
+        //
+        //
+        
+        Long a=actualizarNumeroDeOrden("LC1010", 1);
+        
+        //
+        //
         documento.setNumeroDocumento(repository.findAll().size()+10101000001L);
+        //
 //        documento.setNumeroDocumento(repository.findAll().size()+1);
         Date date= new java.util.Date();
         documento.setFechaDocumento(new Timestamp(date.getTime()));
@@ -147,9 +161,64 @@ public class DocumentoService implements IDocumentoService{
         return planillaRepository.findByAttribute("idDocumento",idDocumento,-1,-1).get(0);
     }
     
-    public int obtenerNumeroDeOrden(String codDocumento,Integer version ){
-        
-        return 0;
+    @Override
+    public Long actualizarNumeroDeOrden(String codDocumento, Integer version) {
+        DocNumeracionEntity numeracionBusqueda = new DocNumeracionEntity();
+        numeracionBusqueda.setCodDocumento(codDocumento);
+        numeracionBusqueda.setVersion(version);
+        DocNumeracionEntity numeracion;
+        try {
+            numeracion = numeracionRepository.findByExample(numeracionBusqueda, null, null, -1, -1).get(0);
+        } catch (Exception e) {
+            throw new RuntimeException("DocNumeracionEntity no encontrado");
+        }
+        String codNumeroS =numeracion.getCodDocumento();
+        String codNumero = "";
+        for (int i = 2; i < codNumeroS.length(); i++) {
+            codNumero = codNumero + codNumeroS.charAt(i);
+        }
+        //System.out.println("codNumero: " + codNumero);
+        Long numero=new Long(numeracion.getUltimoNumero()+1);
+        //
+        Formatter fmt = new Formatter();
+        fmt.format("%07d", numero);
+        String numeroFormato = fmt.toString();
+        //
+        String numeroSinVerificacion = "" + codNumero + numeroFormato;
+        String numeroVerificacion = "";
+        int contador = 2;
+        for (int i = 0; i < numeroSinVerificacion.length(); i++) {
+            numeroVerificacion = "" + contador + numeroVerificacion;
+            contador++;
+            if (contador > 7) {
+                contador = 2;
+            }
+        }
+        //
+        Long sumatoria = new Long(0);
+        //
+        System.out.println("numeroSinVerificacion:"+numeroSinVerificacion);
+        System.out.println("numeroVerificacion   :"+numeroVerificacion);
+        for (int i = 0; i < numeroSinVerificacion.length(); i++) {
+            //System.out.println("i " + i + ": " + numeroSinVerificacion.charAt(i));
+            Long multiplicacion = (new Long("" + numeroSinVerificacion.charAt(i))) * (new Long("" + numeroVerificacion.charAt(i)));
+            //System.out.println("Multi: " + numeroSinVerificacion.charAt(i) + "*" + numeroVerificacion.charAt(i));
+            sumatoria = sumatoria + multiplicacion;
+            //System.out.println("sumatoria " + i + ": " + sumatoria);
+        }
+        Long modulo = sumatoria % 11;
+        //System.out.println("modulo:" + modulo);
+        Long verificacion = 11 - modulo;
+        //System.out.println("verificacion:" + verificacion);
+        //
+        //System.out.println("===============4");
+        numeracion.setUltimoNumero(numeracion.getUltimoNumero()+1);
+        //numeracionBusqueda.set
+        numeracionRepository.save(numeracion);
+        //
+        Long nuevoNumero = new Long("" + codNumero + numeroFormato + verificacion);
+        //System.out.println("===============5");
+        return nuevoNumero;
     }
     
 }
