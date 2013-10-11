@@ -30,13 +30,6 @@ public class EntidadService implements IEntidadService {
 
     @Override
     public List<ParEntidadEntity> getEntidadLista(){
-        List<ParEntidadEntity> tmpLista;
-        try {
-            tmpLista = entidadRepository.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            tmpLista = null;
-        }
-        return tmpLista;
+            return entidadRepository.findByAttribute("codigo","CNS", -1, -1);
     }
 }

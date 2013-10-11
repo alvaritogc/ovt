@@ -49,7 +49,7 @@ public class formularioUnicoBean implements Serializable{
     private Date fechaOperacionAux;
     private Long numeroOrden;
 
-    private Integer temporal = 0;
+    private String temporal;
     private boolean temporalBoolean;
     private PerPersonaEntity persona;
     private Date fechaTemp = new Date();
@@ -151,11 +151,11 @@ public class formularioUnicoBean implements Serializable{
         this.iPlanillaService = iPlanillaService;
     }
 
-    public Integer getTemporal() {
+    public String getTemporal() {
         return temporal;
     }
 
-    public void setTemporal(Integer temporal) {
+    public void setTemporal(String temporal) {
         this.temporal = temporal;
     }
 
