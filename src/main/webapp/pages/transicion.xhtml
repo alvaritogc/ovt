@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <center>
+                <p:panelGrid style="width: 800px">
+                    <p:row>
+                        <p:column  style="background-color: #1A4498; color: #FFFFFF" >
+                            <p:outputLabel value="CAMBIO DE ESTADO" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            <h:form >
+
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" >
+
+                    <h:outputText value="#{transicionBean.descripCodIncial.descripcion}"  style="font-size: 20px"/>
+                    <p:selectOneRadio id="grid" value="#{transicionBean.estadoNuevo}" layout="grid" columns="1">
+                        <f:selectItems value="#{transicionBean.lista}"/>
+                    </p:selectOneRadio>
+
+                </h:panelGrid>
+                <h:commandButton value="Aceptar" action="#{transicionBean.guardaCambioEstado}" disabled="#{transicionBean.tamaño==0}"/>
+                <h:commandButton value="Cancelar" action="#{transicionBean.irBienvenida}"/>
+
+            </h:form>
+            </center>
+        </ui:define>
+    </ui:composition>
+</html>

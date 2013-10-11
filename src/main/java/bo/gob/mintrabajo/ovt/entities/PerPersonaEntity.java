@@ -121,6 +121,18 @@ public class PerPersonaEntity {
         this.registroBitacora = registroBitacora;
     }
 
+    private String codLocalidad;
+
+    @javax.persistence.Column(name = "COD_LOCALIDAD")
+    @Basic
+    public String getCodLocalidad() {
+        return codLocalidad;
+    }
+
+    public void setCodLocalidad(String codLocalidad) {
+        this.codLocalidad = codLocalidad;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

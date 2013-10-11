@@ -1,7 +1,10 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IPlanillaService;
+import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
 import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
+import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
+import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
 import bo.gob.mintrabajo.ovt.repositories.PlanillaRepository;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
@@ -16,9 +19,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,14 +40,36 @@ public class PlanillaService implements IPlanillaService {
     }
 
     @Override
-    public void guardar(DocPlanillaEntity objeto){ 
+    public void guardar(DocPlanillaEntity objeto){
         objeto.setIdPlanilla(planillaRepository.findAll().size() + 1);
         planillaRepository.save(objeto);
     }
 
-    public void generaReporte(DocPlanillaEntity docPlanillaEntity){
+    public void generaReporte(DocPlanillaEntity docPlanillaEntity, PerPersonaEntity persona , DocDocumentoEntity docDocumentoEntity, PerUnidadEntity perUnidadEntity){
         map.clear();
+
+        map.put("nroOrden", docDocumentoEntity.getNumeroDocumento());
+        map.put("rectificatoria", " ");
+        map.put("nroRectificatoria", " ");
+        map.put("totalNacional", "X");
+        map.put("oficinaCentral", perUnidadEntity.getNombreComercial());
         map.put("mesPresentacion", docPlanillaEntity.getPeriodo());
+
+
+        map.put("empleadorMTEPS", perUnidadEntity.getNroReferencial());
+        map.put("razonSocial", persona.getNombreRazonSocial());
+        map.put("departamento", " ");
+        map.put("direccion", " ");
+        map.put("telefono", " ");
+        map.put("patronalSS", perUnidadEntity.getNroCajaSalud());
+        map.put("ciudadLocalidad", " ");
+        map.put("fax", " ");
+        map.put("nit", persona.getNroIdentificacion());
+        map.put("actividadEconomica", " ");
+        map.put("zona", " ");
+        map.put("numero", " ");
+        map.put("correoElectronico", " ");
+
         map.put("nroAsegurados", docPlanillaEntity.getNroAsegCaja());
         map.put("montoAportadoAsegurados",docPlanillaEntity.getMontoAsegCaja());
         map.put("gestorSalud",docPlanillaEntity.getIdEntidadSalud()); //----------------
@@ -76,12 +99,23 @@ public class PlanillaService implements IPlanillaService {
         map.put("totalAccidentes",docPlanillaEntity.getNroAccidentes());
         map.put("accidentesMuerte",docPlanillaEntity.getNroMuertes());
         map.put("enfermedadesTrabajos",docPlanillaEntity.getNroEnfermedades());
-        map.put("email",docPlanillaEntity.getIdEntidadBanco()); //----------------
+        map.put("email",docPlanillaEntity.getIdEntidadBanco()); //----------------;
+
+
         map.put("diaDeposito",docPlanillaEntity.getFechaOperacion().getDay());
         map.put("mesDeposito",docPlanillaEntity.getFechaOperacion().getMonth());
         map.put("anioDeposito",docPlanillaEntity.getFechaOperacion().getYear());
+
+
+
+
+        map.put("diaFechaPresentacion",docDocumentoEntity.getFechaDocumento().getDay());
+        map.put("mesFechaPresentacion",docDocumentoEntity.getFechaDocumento().getMonth());
+        map.put("anioFechaPresentacion", docDocumentoEntity.getFechaDocumento().getYear());
+
         map.put("montoDeposito",docPlanillaEntity.getMontoOperacion());
         map.put("nroComprobante",docPlanillaEntity.getNumOperacion());
+        map.put("nombreEmpleador"," ");
         ServletContext servletContext = (ServletContext) FacesContext
                 .getCurrentInstance().getExternalContext().getContext();
         String pathReport = (String) servletContext.getRealPath("/");

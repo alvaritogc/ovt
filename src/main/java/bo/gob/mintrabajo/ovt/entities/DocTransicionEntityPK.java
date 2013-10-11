@@ -5,49 +5,58 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
- * User: Renato Velasquez.
- * Date: 06-10-13
+ * Created with IntelliJ IDEA.
+ * User: rvelasquez
+ * Date: 10/10/13
+ * Time: 2:43 PM
+ * To change this template use File | Settings | File Templates.
  */
 public class DocTransicionEntityPK implements Serializable {
     private String codDocumento;
-    private Integer version;private String codEstadoInicial;
-    private String codEstadoFinal;
 
     @Id
     @Column(name = "COD_DOCUMENTO")
-    public String getCodDocumento() {
+    String getCodDocumento() {
         return codDocumento;
     }
 
-    @Id
-    @Column(name = "VERSION")
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setCodDocumento(String codDocumento) {
+    void setCodDocumento(String codDocumento) {
         this.codDocumento = codDocumento;
     }
 
-    public void setVersion(Integer version) {
-        this.version = version;
-        }
+    private Integer version;
 
     @Id
-@Column(name = "COD_ESTADO_INICIAL")
-public String getCodEstadoInicial() {
-    return codEstadoInicial;
-}
+    @Column(name = "VERSION")
+    Integer getVersion() {
+        return version;
+    }
 
-    public void setCodEstadoInicial(String codEstadoInicial) {
+    void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    private String codEstadoInicial;
+
+    @Id
+    @Column(name = "COD_ESTADO_INICIAL")
+    String getCodEstadoInicial() {
+        return codEstadoInicial;
+    }
+
+    void setCodEstadoInicial(String codEstadoInicial) {
         this.codEstadoInicial = codEstadoInicial;
     }
-@Id@Column(name = "COD_ESTADO_FINAL")
-public String getCodEstadoFinal() {
-    return codEstadoFinal;
-}
 
-    public void setCodEstadoFinal(String codEstadoFinal) {
+    private String codEstadoFinal;
+
+    @Id
+    @Column(name = "COD_ESTADO_FINAL")
+    String getCodEstadoFinal() {
+        return codEstadoFinal;
+    }
+
+    void setCodEstadoFinal(String codEstadoFinal) {
         this.codEstadoFinal = codEstadoFinal;
     }
 
@@ -75,4 +84,5 @@ public String getCodEstadoFinal() {
         result = 31 * result + (codEstadoInicial != null ? codEstadoInicial.hashCode() : 0);
         result = 31 * result + (codEstadoFinal != null ? codEstadoFinal.hashCode() : 0);
         return result;
-}}
+    }
+}

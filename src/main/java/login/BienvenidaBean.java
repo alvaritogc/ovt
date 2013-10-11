@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-//
+
 
 @ManagedBean
 @ViewScoped
@@ -24,12 +24,9 @@ public class BienvenidaBean {
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private int idUsuario;
     private String idPersona;
-    private String idEmpleador;
-    private String idUnidad;
-
-    private int idDocumento;
+    private DocDocumentoEntity docDocumentoEntity;
     private static final Logger logger = LoggerFactory.getLogger(BienvenidaBean.class);
-    //
+
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
     @ManagedProperty(value = "#{personaService}")
@@ -95,30 +92,24 @@ public class BienvenidaBean {
 
 
     public String irRealizarCambioDeEstados(){
-        return "irInicio";
+        session.setAttribute("idDocumento", docDocumentoEntity.getIdDocumento());
+        session.setAttribute("codEstadoInicial", docDocumentoEntity.getCodEstado());
+        session.setAttribute("codDocumento", docDocumentoEntity.getCodDocumento());
+        session.setAttribute("version", docDocumentoEntity.getVersion());
+        return "irCambioEstado";
     }
+
     public void irImprimirDocumento(){
-
-
+        PerUnidadEntity perUnidadEntity = new PerUnidadEntity();
         DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
         try{
-
-            docPlanillaEntity=  iDocumentoService.retornaPlanilla(idDocumento);
-//            if(docPlanillaEntity==null){
-//                docPlanillaEntity= new DocPlanillaEntity();
-//                docPlanillaEntity.setAporteAfp(BigDecimal.ZERO);
-//                docPlanillaEntity.set
-//            }
-
-
-            iPlanillaService.generaReporte(docPlanillaEntity);
+            docPlanillaEntity=  iDocumentoService.retornaPlanilla(docDocumentoEntity.getIdDocumento());
+            perUnidadEntity=  iDocumentoService.retornaUnidad(idPersona);
+            iPlanillaService.generaReporte(docPlanillaEntity, persona, docDocumentoEntity, perUnidadEntity);
         }
         catch(Exception e){
             e.printStackTrace();
         }
-
-
-//        return "irInicio";
     }
 
     public IUsuarioService getiUsuarioService() {
@@ -185,19 +176,19 @@ public class BienvenidaBean {
         this.listaDocumentos = listaDocumentos;
     }
 
-    public int getIdDocumento() {
-        return idDocumento;
-    }
-
-    public void setIdDocumento(int idDocumento) {
-        this.idDocumento = idDocumento;
-    }
-
     public IPlanillaService getiPlanillaService() {
         return iPlanillaService;
     }
 
     public void setiPlanillaService(IPlanillaService iPlanillaService) {
         this.iPlanillaService = iPlanillaService;
+    }
+
+    public DocDocumentoEntity getDocDocumentoEntity() {
+        return docDocumentoEntity;
+    }
+
+    public void setDocDocumentoEntity(DocDocumentoEntity docDocumentoEntity) {
+        this.docDocumentoEntity = docDocumentoEntity;
     }
 }

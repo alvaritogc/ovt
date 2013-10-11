@@ -37,6 +37,12 @@
             <redirect include-view-params="false">
             </redirect>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>irCambioEstado</from-outcome>
+            <to-view-id>/pages/transicion.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
+        </navigation-case>
     </navigation-rule>
 
 </faces-config>

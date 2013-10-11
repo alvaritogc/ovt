@@ -5,9 +5,11 @@ import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
 import bo.gob.mintrabajo.ovt.entities.DocNumeracionEntity;
 import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
 import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstadoEntity;
+import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
 import bo.gob.mintrabajo.ovt.repositories.DocumentoEstadoRepository;
 import bo.gob.mintrabajo.ovt.repositories.DocumentoRepository;
 import bo.gob.mintrabajo.ovt.repositories.PlanillaRepository;
+import bo.gob.mintrabajo.ovt.repositories.UnidadRepository;
 import bo.gob.mintrabajo.ovt.repositories.NumeracionRepository;
 
 import javax.ejb.TransactionAttribute;
@@ -30,16 +32,18 @@ public class DocumentoService implements IDocumentoService{
     private final DocumentoRepository repository;
     private final DocumentoEstadoRepository documentoEstadoRepository;
     private final PlanillaRepository planillaRepository;
+    private final UnidadRepository unidadRepository;
     private final NumeracionRepository numeracionRepository;
 
     @Inject
-    public DocumentoService(DocumentoRepository repository,DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository,NumeracionRepository numeracionRepository) {
+    public DocumentoService(DocumentoRepository repository,DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository,NumeracionRepository numeracionRepository,UnidadRepository unidadRepository) {
         this.repository = repository;
-        this.documentoEstadoRepository=documentoEstadoRepository;
+        this.documentoEstadoRepository = documentoEstadoRepository;
         this.planillaRepository = planillaRepository;
+        this.unidadRepository = unidadRepository;
         this.numeracionRepository=numeracionRepository;
     }
-    
+
     @Override
     public List<DocDocumentoEntity> getAllDocumentos() {
         List<DocDocumentoEntity> lista;
@@ -126,7 +130,7 @@ public class DocumentoService implements IDocumentoService{
         documento.setTipoMedioRegistro("OFVIR");
         documento.setFechaBitacora(new Timestamp(date.getTime()));
         //
-        documento.setIdEstadoDocumento("1");
+//        documento.setIdEstadoDocumento("1");
         //
         DocDocumentoEntity entity;
         //
@@ -159,6 +163,14 @@ public class DocumentoService implements IDocumentoService{
 
 
         return planillaRepository.findByAttribute("idDocumento",idDocumento,-1,-1).get(0);
+    }
+    @Override
+    public PerUnidadEntity retornaUnidad(String idPersona){
+
+//        idDocumento = 1;
+
+
+        return unidadRepository.findByAttribute("idPersona",idPersona,-1,-1).get(0);
     }
     
     @Override
