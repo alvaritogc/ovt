@@ -85,8 +85,8 @@
                         <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado}" style="width: 100%"
                                          rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}"/>
                         <h:panelGrid columns="1" rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}">
-                            <p:outputLabel value="Usuario #{templateInicioBean.nombreDeUsuario}"/>
-
+                            <p:outputLabel value="Usuario: #{templateInicioBean.nombreDeUsuario}"/>
+                            <p:outputLabel value="Empleador: #{templateInicioBean.nombreDeUnidad}"/>
                         </h:panelGrid>
                     </h:form>
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}">

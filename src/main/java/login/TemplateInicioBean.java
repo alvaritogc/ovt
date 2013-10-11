@@ -1,5 +1,6 @@
 package login;
 
+import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IRecursoService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
@@ -40,12 +41,16 @@ public class TemplateInicioBean implements Serializable {
 
     private HttpSession session;
     private int idUsuario;
+    private String idPersona;
+    private String idEmpleador;
     private static final Logger logger = LoggerFactory.getLogger(TemplateInicioBean.class);
     //
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
     @ManagedProperty(value = "#{recursoService}")
     private IRecursoService iRecursoService;
+    @ManagedProperty(value = "#{personaService}")
+    private IPersonaService iPersonaService;
     //
     private String nombreDeUsuario;
     private String nombreDeUnidad;
@@ -80,6 +85,14 @@ public class TemplateInicioBean implements Serializable {
             UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
             nombreDeUsuario = usuario.getUsuario();
             PerPersonaEntity persona;
+            idPersona=null;
+            idEmpleador=(String)session.getAttribute("idEmpleador");
+            if(idEmpleador!=null){
+                nombreDeUnidad=iPersonaService.buscarPorId(idEmpleador).getNombreRazonSocial();
+            }
+            else{
+                nombreDeUnidad="N/A";
+            }
             logger.info("usuario ok");
             cargar();
         } catch (Exception e) {
@@ -294,5 +307,13 @@ public class TemplateInicioBean implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public IPersonaService getiPersonaService() {
+        return iPersonaService;
+    }
+
+    public void setiPersonaService(IPersonaService iPersonaService) {
+        this.iPersonaService = iPersonaService;
     }
 }
