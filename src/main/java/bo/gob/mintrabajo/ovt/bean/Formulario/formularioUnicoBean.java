@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.bean.Formulario;
 
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +44,7 @@ public class formularioUnicoBean {
     private IObligacionCalendarioService iObligacionCalendarioService;
 
     private List<ParObligacionCalendarioEntity> parObligacionCalendarioLista;
+    private List<ParEntidadEntity> parEntidadEntityLista;
     private PerPersonaEntity perPersonaEntity;
     private DocPlanillaEntity docPlanillaEntity;
     private boolean esRectificatorio=false;
@@ -67,6 +69,7 @@ public class formularioUnicoBean {
         idPersona = (String) session.getAttribute("idEmpleador");
         persona = iPersonaService.buscarPorId(idPersona);
         obtenerPeriodoLista();
+        obtenerEntidad();
     }
 
     public void obtenerPeriodoLista(){
@@ -76,22 +79,14 @@ public class formularioUnicoBean {
 
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
-    public List<ParEntidadEntity> obtenerEntidad() {
-        List<ParEntidadEntity> tmpLista;
-        try {
-            tmpLista = iEntidadService.getEntidadLista();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return tmpLista;
+    public void obtenerEntidad() {
+            parEntidadEntityLista = iEntidadService.getEntidadLista();
     }
 
-    public void guardarPlanilla() {
+    public String guardarPlanilla() {
         System.out.println("Ingresando a guardar Planilla ");
         try {
             DocDocumentoEntity documento_session = (DocDocumentoEntity) session.getAttribute("documento_session");
-            numeroOrden = documento_session.getNumeroDocumento();
             docPlanillaEntity.setIdDocumento(documento_session.getIdDocumento());
             docPlanillaEntity.setTipoPlanilla("DDJJ");
             docPlanillaEntity.setIdEntidadBanco(2);
@@ -99,9 +94,11 @@ public class formularioUnicoBean {
             iPlanillaService.guardar(docPlanillaEntity);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
             docPlanillaEntity = new DocPlanillaEntity();
+            return "irListadoBienvenida";
         } catch (Exception e) {
             e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falla", "No se guardo el formulario"));
+            return null;
         }
     }
 
@@ -224,5 +221,13 @@ public class formularioUnicoBean {
 
     public void setNumeroOrden(Long numeroOrden) {
         this.numeroOrden = numeroOrden;
+    }
+
+    public List<ParEntidadEntity> getParEntidadEntityLista() {
+        return parEntidadEntityLista;
+    }
+
+    public void setParEntidadEntityLista(List<ParEntidadEntity> parEntidadEntityLista) {
+        this.parEntidadEntityLista = parEntidadEntityLista;
     }
 }
