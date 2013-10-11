@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.bean.Formulario;
 
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import java.io.Serializable;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ import javax.faces.application.FacesMessage;
  */
 @ManagedBean
 @ViewScoped
-public class formularioUnicoBean {
+public class formularioUnicoBean implements Serializable{
 
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private Integer idUsuario;
@@ -58,16 +59,18 @@ public class formularioUnicoBean {
 
     @PostConstruct
     public void ini() {
+        idPersona = (String) session.getAttribute("idEmpleador");
+        logger.info("buscando persona:"+idPersona);
+        persona = iPersonaService.buscarPorId(idPersona);
+        //
         logger.info("Realizando la carga de Persona ...");
         idUsuario = (Integer) session.getAttribute("idUsuario");
         BigDecimal temp = BigDecimal.valueOf(idUsuario);
         UsrUsuarioEntity usuario = iUsuarioService.findById(temp);
-        perPersonaEntity = iPersonaService.buscarPorId(usuario.getIdPersona());
+        perPersonaEntity = iPersonaService.buscarPorId(idPersona);
         docPlanillaEntity = new DocPlanillaEntity();
 
-        logger.info("buscando persona");
-        idPersona = (String) session.getAttribute("idEmpleador");
-        persona = iPersonaService.buscarPorId(idPersona);
+        
         obtenerPeriodoLista();
         obtenerEntidad();
     }

@@ -1,10 +1,15 @@
 package bo.gob.mintrabajo.ovt.repositories;
 
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendarioEntity;
+import bo.gob.mintrabajo.ovt.entities.UsrRecursoEntity;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.List;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,4 +20,12 @@ import java.math.BigDecimal;
  */
 @OpenJpaSettings
 public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObligacionCalendarioEntity, BigDecimal> {
+    
+    @Query(
+            "   select a "
+            + " from ParObligacionCalendarioEntity a"
+            + " where "
+            + " :fecha between a.fechaHasta and a.fechaPlazo "
+            )
+    List<ParObligacionCalendarioEntity> buscarPorFecha(@Param("fecha") Timestamp fechaActual);
 }
