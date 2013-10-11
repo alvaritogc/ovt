@@ -17,7 +17,7 @@ public interface IDocumentoService {
     public DocDocumentoEntity save(DocDocumentoEntity documento);
     public boolean delete(DocDocumentoEntity documento);
     public DocDocumentoEntity findById(BigDecimal id);
-    public DocDocumentoEntity guardar(DocDocumentoEntity documento);
+    public DocDocumentoEntity guardar(DocDocumentoEntity documento, DocPlanillaEntity docPlanillaEntity);
     public List<DocDocumentoEntity> listarPorPersona(String idPersona);
     public DocPlanillaEntity retornaPlanilla(int idDocumento);
     public PerUnidadEntity retornaUnidad(String idPersona);

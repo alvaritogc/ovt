@@ -462,7 +462,7 @@
                         <p:fileUpload fileUploadListener="#{presentacionPlanillasBean.guardar}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
                                       invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
                                       mode="advanced" update="messages guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
-                                      sizeLimit="100000" allowTypes="/(\.|\/)(xls|xlsx|csv|png)$/"/>
+                                      sizeLimit="100000" allowTypes="/(\.|\/)(xls|xlsx|csv|png)$/" rendered="#{presentacionPlanillasBean.habilita}"/>
                         <p:growl id="messages" showDetail="true" autoUpdate="true" />
                         <br/>
                         <div align="CENTER">

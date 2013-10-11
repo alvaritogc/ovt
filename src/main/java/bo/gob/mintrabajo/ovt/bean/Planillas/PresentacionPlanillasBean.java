@@ -1,10 +1,7 @@
 package bo.gob.mintrabajo.ovt.bean.Planillas;
 
 import bo.gob.mintrabajo.ovt.api.*;
-import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
-import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
-import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
-import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
+import bo.gob.mintrabajo.ovt.entities.*;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.primefaces.event.FileUploadEvent;
@@ -23,6 +20,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 
 @ManagedBean
 @ViewScoped
@@ -76,6 +74,18 @@ public class PresentacionPlanillasBean {
     public void guardar(FileUploadEvent event) {
         System.out.println("entrando a guardarBinario...............................");
 
+        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
+        docPlanillaEntity.setPeriodo(periodo);
+//        docPlanillaEntity.setTipoPlanilla("Planilla Trimestral");
+        docPlanillaEntity.setIdEntidadSalud(1);
+        docPlanillaEntity.setIdEntidadBanco(2);
+        docPlanillaEntity.setFechaOperacion(new Timestamp(new java.util.Date().getTime()));
+        docPlanillaEntity.setMontoOperacion(BigDecimal.ONE);
+        docPlanillaEntity.setNumOperacion("OPE 1000");
+
+        docPlanillaEntity.setTipoPlanilla("DDJJ");
+
+
         documento = new DocDocumentoEntity();
         logger.info("1");
         documento.setIdPersona(persona.getIdPersona());
@@ -85,17 +95,10 @@ public class PresentacionPlanillasBean {
         documento.setIdUnidad(unidad.getIdUnidad());
         logger.info("4");
         documento.setRegistroBitacora("" + idUsuario);
-        documento = idDocumentoService.guardar(documento);
+        documento = idDocumentoService.guardar(documento, docPlanillaEntity);
         logger.info("7");
 
-//        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
-//        docPlanillaEntity.setPeriodo(periodo);
-//        docPlanillaEntity.setTipoPlanilla("Planilla Trimestral");
-//        docPlanillaEntity.setIdEntidadSalud(1);
-//        docPlanillaEntity.setIdEntidadBanco(2);
-//        docPlanillaEntity.setFechaOperacion(new Timestamp(new java.util.Date().getTime()));
-//        docPlanillaEntity.setMontoOperacion(BigDecimal.ONE);
-//        docPlanillaEntity.setNumOperacion("OPE 1000");
+
 
         UploadedFile file = event.getFile();
         try {

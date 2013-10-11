@@ -2,24 +2,21 @@ package bo.gob.mintrabajo.ovt.bean.Formulario;
 
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
-import java.io.Serializable;
-import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.faces.application.FacesMessage;
 
 /**
  * Created with IntelliJ IDEA. User: gmercado Date: 10/8/13 Time: 2:17 PM To
@@ -89,12 +86,12 @@ public class formularioUnicoBean implements Serializable{
     public String guardarPlanilla() {
         System.out.println("Ingresando a guardar Planilla ");
         try {
-            DocDocumentoEntity documento_session = (DocDocumentoEntity) session.getAttribute("documento_session");
-            docPlanillaEntity.setIdDocumento(documento_session.getIdDocumento());
-            docPlanillaEntity.setTipoPlanilla("DDJJ");
-            docPlanillaEntity.setIdEntidadBanco(2);
-            docPlanillaEntity.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
-            iPlanillaService.guardar(docPlanillaEntity);
+//            DocDocumentoEntity documento_session = (DocDocumentoEntity) session.getAttribute("documento_session");
+//            docPlanillaEntity.setIdDocumento(documento_session.getIdDocumento());
+//            docPlanillaEntity.setTipoPlanilla("DDJJ");
+//            docPlanillaEntity.setIdEntidadBanco(2);
+//            docPlanillaEntity.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
+//            iPlanillaService.guardar(docPlanillaEntity);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
             docPlanillaEntity = new DocPlanillaEntity();
             return "irListadoBienvenida";
