@@ -126,7 +126,7 @@
                                 <p:column colspan="8">
                                     <p:panelGrid columns="2">
                                         <p:outputLabel value="1.1 Nro de Orden"/>
-                                        <p:inputText value="#{formularioUnicoBean.numeroOrden}" style="width: 150px; height: 10px; text-align: right" disabled="true" />
+                                        <p:inputText value="#{formularioUnicoBean.numeroOrden}" style="width: 150px; height: 10px; text-align: right" disabled="true" onkeyup="" />
                                         <p:outputLabel value="1.2 Rectificatoria"/>
                                         <p:selectBooleanCheckbox value="#{formularioUnicoBean.esRectificatorio}" disabled="true">
                                             <p:ajax update="rectificatorio" event="change" />

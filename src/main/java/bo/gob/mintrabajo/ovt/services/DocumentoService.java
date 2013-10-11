@@ -97,7 +97,7 @@ public class DocumentoService implements IDocumentoService{
     }
     
     @Override
-    public DocDocumentoEntity guardar(DocDocumentoEntity documento, DocPlanillaEntity docPlanillaEntity) {
+    public DocDocumentoEntity guardar(DocDocumentoEntity documento) {
         if(documento==null){
             System.out.println("Error en el documento");
             throw new RuntimeException("Error en el documento");
@@ -136,10 +136,6 @@ public class DocumentoService implements IDocumentoService{
         //
         //System.out.println(""+documento.toString());
         entity = repository.save(documento);
-
-            //TODO renato PLANILLA
-            docPlanillaEntity.setIdDocumento(entity.getIdDocumento());
-            planillaRepository.save(docPlanillaEntity);
 
         return entity;
     }

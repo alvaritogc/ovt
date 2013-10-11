@@ -74,16 +74,16 @@ public class PresentacionPlanillasBean {
     public void guardar(FileUploadEvent event) {
         System.out.println("entrando a guardarBinario...............................");
 
-        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
-        docPlanillaEntity.setPeriodo(periodo);
+//        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
+//        docPlanillaEntity.setPeriodo(periodo);
 //        docPlanillaEntity.setTipoPlanilla("Planilla Trimestral");
-        docPlanillaEntity.setIdEntidadSalud(1);
-        docPlanillaEntity.setIdEntidadBanco(2);
-        docPlanillaEntity.setFechaOperacion(new Timestamp(new java.util.Date().getTime()));
-        docPlanillaEntity.setMontoOperacion(BigDecimal.ONE);
-        docPlanillaEntity.setNumOperacion("OPE 1000");
-
-        docPlanillaEntity.setTipoPlanilla("DDJJ");
+//        docPlanillaEntity.setIdEntidadSalud(1);
+//        docPlanillaEntity.setIdEntidadBanco(2);
+//        docPlanillaEntity.setFechaOperacion(new Timestamp(new java.util.Date().getTime()));
+//        docPlanillaEntity.setMontoOperacion(BigDecimal.ONE);
+//        docPlanillaEntity.setNumOperacion("OPE 1000");
+//
+//        docPlanillaEntity.setTipoPlanilla("DDJJ");
 
 
         documento = new DocDocumentoEntity();
@@ -95,7 +95,7 @@ public class PresentacionPlanillasBean {
         documento.setIdUnidad(unidad.getIdUnidad());
         logger.info("4");
         documento.setRegistroBitacora("" + idUsuario);
-        documento = idDocumentoService.guardar(documento, docPlanillaEntity);
+        documento = idDocumentoService.guardar(documento);
         logger.info("7");
 
 
