@@ -21,7 +21,7 @@ public interface EntidadRepository extends OpenJpaRepository<ParEntidadEntity, B
             "   select a "
                     + " from ParEntidadEntity a"
                     + " where "
-                    + " a.codigo like 'C%' "
+                    + " a.codigo NOT like 'B%' "
     )
     List<ParEntidadEntity> obtenerCaja();
 }
