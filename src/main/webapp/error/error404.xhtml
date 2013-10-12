@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Oficina Virtual de Trámites</title>
+    <link href="#{facesContext.externalContext.requestContextPath}/assets/css/bootstrap.css" rel="stylesheet"/>
+    <link href="#{facesContext.externalContext.requestContextPath}/assets/css/bootstrap-responsive.css"
+          rel="stylesheet"/>
+    <link href="#{facesContext.externalContext.requestContextPath}/assets/css/docs.css" rel="stylesheet"/>
+    <link href="#{facesContext.externalContext.requestContextPath}/assets/js/google-code-prettify/prettify.css"
+          rel="stylesheet"/>
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+          href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-144-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114"
+          href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-114-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="72x72"
+          href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-72-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed"
+          href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-57-precomposed.png"/>
+    <link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/assets/ico/favicon.png"/>
+</h:head>
+<h:body>
+    <header class="jumbotron subhead" id="overview">
+        <div class="container">
+            <h1>Oficina Virtual de Trámites </h1>
+
+            <p class="lead">Ministerio de Trabajo, Empleo y Previsión Social.</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <h:form>
+            <p style="font-size: 20px; font-family: cursive; color: #da4f49"> </p>
+            <p style="font-size: 20px; font-family: cursive; color: #da4f49">No se encontró el recurso </p>
+            <p:commandButton action="/pages/inicio.xhtml?faces-redirect=true&amp;includeViewParams=false" value="Inicio"
+                             immediate="true"/>
+        </h:form>
+    </div>
+</h:body>
+</html>

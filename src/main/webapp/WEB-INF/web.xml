@@ -29,6 +29,26 @@
     <!--<param-value>auto|native|commons</param-value>-->
     <!--</context-param>-->
 
+    <error-page>
+        <error-code>400</error-code>
+        <location>/faces/error/error400.xhtml</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/faces/error/error404.xhtml</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/faces/error/error500.xhtml</location>
+    </error-page>
+
+    <error-page>
+        <error-code>503</error-code>
+        <location>/faces/error/error503.xhtml</location>
+    </error-page>
+
     <filter>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
