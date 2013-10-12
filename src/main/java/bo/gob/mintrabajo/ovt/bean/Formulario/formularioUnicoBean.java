@@ -89,6 +89,7 @@ public class formularioUnicoBean implements Serializable{
         try {
             DocDocumentoEntity documento_session = (DocDocumentoEntity) session.getAttribute("documento_session");
             docPlanillaEntity.setIdDocumento(documento_session.getIdDocumento());
+            docPlanillaEntity.setIdEntidadBanco(2);
             docPlanillaEntity.setTipoPlanilla("DDJJ");
             docPlanillaEntity.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
             iPlanillaService.guardar(docPlanillaEntity);

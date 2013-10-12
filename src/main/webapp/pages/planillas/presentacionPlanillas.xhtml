@@ -442,7 +442,7 @@
                         <br/>
                         <div align="CENTER">
                             <!--<p:commandButton value="Guardar" ajax="false" disabled="# {presentacionPlanillasBean.habilita}" update="messages" />-->
-                            <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada" action="#{formularioUnicoBean.guardarPlanilla}" update="formularioFrm messages">
+                            <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada" action="#{formularioUnicoBean.guardarPlanilla}" update="formularioFrm messages" disabled="#{presentacionPlanillasBean.habilita}">
                                 <p:confirm header="Declaración jurada" message="Si continua, procederá a realizar una declaración jurada. Asegurese que los datos esten correctamente llenados. Deséa continuar?" icon="ui-icon-alert" />
                             </p:commandButton>
                         </div>
