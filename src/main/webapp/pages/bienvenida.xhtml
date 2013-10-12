@@ -32,8 +32,8 @@
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Estado">
-                    <h:outputText value="#{o1.documentoEstadoDescripcion}"/>
+                <p:column headerText="Estado" style="background-color: #{o1.documentoEstado.metadata};">
+                    <h:outputText value="#{o1.documentoEstado.descripcion}"/>
                 </p:column>
                 <p:column headerText="Medio de registro">
                     <h:outputText value="#{o1.tipoMedioRegistro}"/>

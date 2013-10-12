@@ -99,4 +99,17 @@ public class ParDocumentoEstadoEntity {
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;
     }
+    
+    
+    private String metadata;
+
+    @javax.persistence.Column(name = "METADATA")
+    @Basic
+        public String getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(String metadata) {
+        this.metadata = metadata;
+    }
 }

@@ -230,4 +230,15 @@ public class DocDocumentoEntity {
     public void setDocumentoEstadoDescripcion(String documentoEstadoDescripcion) {
         this.documentoEstadoDescripcion = documentoEstadoDescripcion;
     }
+    
+    private ParDocumentoEstadoEntity documentoEstado;
+    
+    @Transient
+    public ParDocumentoEstadoEntity getDocumentoEstado() {
+        return documentoEstado;
+    }
+
+    public void setDocumentoEstado(ParDocumentoEstadoEntity documentoEstado) {
+        this.documentoEstado = documentoEstado;
+    }
 }

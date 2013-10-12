@@ -147,6 +147,7 @@ public class DocumentoService implements IDocumentoService{
             lista = repository.findByAttribute("idPersona", idPersona, -1, -1);
             for(DocDocumentoEntity documento:lista){
                 ParDocumentoEstadoEntity documentoEstado=documentoEstadoRepository.findByAttribute("codEstado", documento.getCodEstado(), -1, -1).get(0);
+                documento.setDocumentoEstado(documentoEstado);
                 documento.setDocumentoEstadoDescripcion(documentoEstado.getDescripcion());
             }
         } catch (Exception e) {
