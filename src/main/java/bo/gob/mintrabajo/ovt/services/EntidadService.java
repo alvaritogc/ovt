@@ -30,6 +30,7 @@ public class EntidadService implements IEntidadService {
 
     @Override
     public List<ParEntidadEntity> getEntidadLista(){
-            return entidadRepository.findByAttribute("codigo","CNS", -1, -1);
+            //return entidadRepository.findByAttribute("codigo","CNS", -1, -1);
+        return entidadRepository.obtenerCaja();
     }
 }
