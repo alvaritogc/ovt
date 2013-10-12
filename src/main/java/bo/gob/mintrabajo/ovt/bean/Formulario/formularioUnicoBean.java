@@ -3,6 +3,8 @@ package bo.gob.mintrabajo.ovt.bean.Formulario;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import bo.gob.mintrabajo.ovt.envano.DobleTrabajoConexion;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,13 +31,19 @@ import java.util.List;
 public class formularioUnicoBean implements Serializable{
 
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    private static final Logger logger = LoggerFactory.getLogger(formularioUnicoBean.class);
     private Integer idUsuario;
     private String idPersona;
-    private static final Logger logger = LoggerFactory.getLogger(formularioUnicoBean.class);
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
+    @ManagedProperty(value = "#{unidadService}")
+    private IUnidadService iUnidadService;
+    @ManagedProperty(value = "#{documentoService}")
+    private IDocumentoService idDocumentoService;
+    @ManagedProperty(value = "#{binService}")
+    private IBinarioService iBinarioService;
     @ManagedProperty(value = "#{entidadService}")
     private IEntidadService iEntidadService;
     @ManagedProperty(value = "#{planillaService}")
@@ -57,6 +65,14 @@ public class formularioUnicoBean implements Serializable{
     private PerPersonaEntity persona;
     private Date fechaTemp = new Date();
 
+    private String textoBenvenida;
+    private DocDocumentoEntity documento;
+    private String periodo;
+    private DocBinarioEntity binario;
+    private boolean habilita = true;
+    private List<DocBinarioEntity> listaBinarios;
+    private UsrUsuarioEntity usuario;
+
     @PostConstruct
     public void ini() {
         idPersona = (String) session.getAttribute("idEmpleador");
@@ -66,15 +82,85 @@ public class formularioUnicoBean implements Serializable{
         logger.info("Realizando la carga de Persona ...");
         idUsuario = (Integer) session.getAttribute("idUsuario");
         BigDecimal temp = BigDecimal.valueOf(idUsuario);
-        UsrUsuarioEntity usuario = iUsuarioService.findById(temp);
+        usuario = iUsuarioService.findById(temp);
         perPersonaEntity = iPersonaService.buscarPorId(idPersona);
         docPlanillaEntity = new DocPlanillaEntity();
-
-        
         obtenerPeriodoLista();
         obtenerEntidad();
         //** Obtenemos de la Vista a la persona **//
         vperPersonaEntity = DobleTrabajoConexion.obtenerPersona(perPersonaEntity.getIdPersona());
+        binario= new DocBinarioEntity();
+        listaBinarios = new ArrayList<DocBinarioEntity>();
+        idPersona = (String) session.getAttribute("idEmpleador");
+        persona = iPersonaService.buscarPorId(idPersona);
+        logger.info("persona ok");
+        cargar();
+    }
+
+    public void cargar() {
+        generaDocumento();
+    }
+
+    public void generaDocumento(){
+        logger.info("generaDocumento()");
+        documento = new DocDocumentoEntity();
+        documento.setIdPersona(persona.getIdPersona());
+        documento.setIdUnidad((iUnidadService.listarPorPersona(persona.getIdPersona()).get(0)).getIdUnidad());
+        documento.setCodDocumento("LC1010");
+        documento.setVersion(1);
+        documento.setNumeroDocumento(100000L);
+        documento.setFechaDocumento(new Timestamp(new Date().getTime()));
+        //codEstado clave foranea de DocEstadoEntity
+        documento.setCodEstado("000");
+        documento.setFechaReferenca(new Timestamp(new Date().getTime()));
+        documento.setTipoMedioRegistro("DDJJ");
+        documento.setFechaBitacora(new Timestamp(new Date().getTime()));
+        documento.setRegistroBitacora(usuario.getUsuario());
+        System.out.println(documento);
+    }
+
+    public void generaPlanilla(){
+        logger.info("generaPlanilla()");
+        docPlanillaEntity.setIdEntidadBanco(2);
+        docPlanillaEntity.setTipoPlanilla("DDJJ");
+        docPlanillaEntity.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
+    }
+
+    public void upload(FileUploadEvent evento){
+        logger.info("upload(FileUploadEvent evento)");
+        UploadedFile file = evento.getFile();
+        try{
+            binario = new DocBinarioEntity();
+            binario.setTipoDocumento(file.getFileName());
+            binario.setMetadata(file.getContentType());
+            binario.setFechaBitacora(new Timestamp(new Date().getTime()));
+            binario.setRegistroBitacora("OVT");
+            binario.setIdBinario(10);
+            binario.setBinario(file.getContents());
+            listaBinarios.add(binario);
+            if(listaBinarios.size()==3)
+                habilita=false;
+        }catch (Exception e){
+            habilita=true;
+            e.printStackTrace();
+        }
+    }
+
+    public String guardaDocumentoBinarioPlanilla(){
+        try{
+            logger.info("Guardando documento, binario y planilla");
+            logger.info(documento.toString());
+            logger.info(listaBinarios.toString());
+            logger.info(docPlanillaEntity.toString());
+            generaPlanilla();
+            idDocumentoService.guardaDocumentoBinarioPlanilla(documento, listaBinarios, docPlanillaEntity);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
+            return "irListadoBienvenida";
+        }catch (Exception e){
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+            return null;
+        }
     }
 
     public void obtenerPeriodoLista(){
@@ -86,25 +172,6 @@ public class formularioUnicoBean implements Serializable{
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
     public void obtenerEntidad() {
             parEntidadEntityLista = iEntidadService.getEntidadLista();
-    }
-
-    public String guardarPlanilla() {
-        System.out.println("Ingresando a guardar Planilla ");
-        try {
-            DocDocumentoEntity documento_session = (DocDocumentoEntity) session.getAttribute("documento_session");
-            docPlanillaEntity.setIdDocumento(documento_session.getIdDocumento());
-            docPlanillaEntity.setIdEntidadBanco(2);
-            docPlanillaEntity.setTipoPlanilla("DDJJ");
-            docPlanillaEntity.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
-            iPlanillaService.guardar(docPlanillaEntity);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Guardado correctamente",""));
-            docPlanillaEntity = new DocPlanillaEntity();
-            return "irListadoBienvenida";
-        } catch (Exception e) {
-            e.printStackTrace();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
-            return null;
-        }
     }
 
     //** Getters and Setters **//
@@ -242,5 +309,85 @@ public class formularioUnicoBean implements Serializable{
 
     public void setVperPersonaEntity(VperPersonaEntity vperPersonaEntity) {
         this.vperPersonaEntity = vperPersonaEntity;
+    }
+
+    public IUnidadService getiUnidadService() {
+        return iUnidadService;
+    }
+
+    public void setiUnidadService(IUnidadService iUnidadService) {
+        this.iUnidadService = iUnidadService;
+    }
+
+    public IDocumentoService getIdDocumentoService() {
+        return idDocumentoService;
+    }
+
+    public void setIdDocumentoService(IDocumentoService idDocumentoService) {
+        this.idDocumentoService = idDocumentoService;
+    }
+
+    public IBinarioService getiBinarioService() {
+        return iBinarioService;
+    }
+
+    public void setiBinarioService(IBinarioService iBinarioService) {
+        this.iBinarioService = iBinarioService;
+    }
+
+    public String getTextoBenvenida() {
+        return textoBenvenida;
+    }
+
+    public void setTextoBenvenida(String textoBenvenida) {
+        this.textoBenvenida = textoBenvenida;
+    }
+
+    public DocDocumentoEntity getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(DocDocumentoEntity documento) {
+        this.documento = documento;
+    }
+
+    public String getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(String periodo) {
+        this.periodo = periodo;
+    }
+
+    public DocBinarioEntity getBinario() {
+        return binario;
+    }
+
+    public void setBinario(DocBinarioEntity binario) {
+        this.binario = binario;
+    }
+
+    public boolean isHabilita() {
+        return habilita;
+    }
+
+    public void setHabilita(boolean habilita) {
+        this.habilita = habilita;
+    }
+
+    public List<DocBinarioEntity> getListaBinarios() {
+        return listaBinarios;
+    }
+
+    public void setListaBinarios(List<DocBinarioEntity> listaBinarios) {
+        this.listaBinarios = listaBinarios;
+    }
+
+    public UsrUsuarioEntity getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsrUsuarioEntity usuario) {
+        this.usuario = usuario;
     }
 }

@@ -556,4 +556,47 @@ public class DocPlanillaEntity {
         result = 31 * result + (numOperacion != null ? numOperacion.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "DocPlanillaEntity{" +
+                "idPlanilla=" + idPlanilla +
+                ", idDocumento=" + idDocumento +
+                ", periodo='" + periodo + '\'' +
+                ", tipoPlanilla='" + tipoPlanilla + '\'' +
+                ", nroAsegCaja=" + nroAsegCaja +
+                ", montoAsegCaja=" + montoAsegCaja +
+                ", idEntidadSalud=" + idEntidadSalud +
+                ", nroAsegAfp=" + nroAsegAfp +
+                ", montoAsegAfp=" + montoAsegAfp +
+                ", haberBasico=" + haberBasico +
+                ", bonoAntiguedad=" + bonoAntiguedad +
+                ", bonoProduccion=" + bonoProduccion +
+                ", subsidioFrontera=" + subsidioFrontera +
+                ", laborExtra=" + laborExtra +
+                ", otrosBonos=" + otrosBonos +
+                ", aporteAfp=" + aporteAfp +
+                ", rciva=" + rciva +
+                ", otrosDescuentos=" + otrosDescuentos +
+                ", nroM=" + nroM +
+                ", nroH=" + nroH +
+                ", nroJubiladosM=" + nroJubiladosM +
+                ", nroJubiladosH=" + nroJubiladosH +
+                ", nroExtranjerosM=" + nroExtranjerosM +
+                ", nroExtranjerosH=" + nroExtranjerosH +
+                ", nroDiscapacidadM=" + nroDiscapacidadM +
+                ", nroDiscapacidadH=" + nroDiscapacidadH +
+                ", nroContratadosM=" + nroContratadosM +
+                ", nroContratadosH=" + nroContratadosH +
+                ", nroRetiradosM=" + nroRetiradosM +
+                ", nroRetiradosH=" + nroRetiradosH +
+                ", nroAccidentes=" + nroAccidentes +
+                ", nroMuertes=" + nroMuertes +
+                ", nroEnfermedades=" + nroEnfermedades +
+                ", idEntidadBanco=" + idEntidadBanco +
+                ", fechaOperacion=" + fechaOperacion +
+                ", montoOperacion=" + montoOperacion +
+                ", numOperacion='" + numOperacion + '\'' +
+                '}';
+    }
 }

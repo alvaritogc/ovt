@@ -2,8 +2,6 @@ package bo.gob.mintrabajo.ovt.bean.Planillas;
 
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -15,12 +13,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @ManagedBean
 @ViewScoped
@@ -43,19 +40,34 @@ public class PresentacionPlanillasBean {
     private IDefinicionService iDefinicionService;
     @ManagedProperty(value = "#{binService}")
     private IBinarioService iBinarioService;
+
+    @ManagedProperty(value = "#{logImpresionService}")
+    private ILogImpresionService iLogImpresionService;
     //variables
     private String textoBenvenida;
     private DocDocumentoEntity documento;
     private PerPersonaEntity persona;
     private String periodo;
+    private DocBinarioEntity binario;
+    private DocPlanillaEntity planilla;
+    private boolean habilita = true;
+    private List<DocBinarioEntity> listaBinarios;
+    private UsrUsuarioEntity usuario;
 
     @PostConstruct
     public void ini() {
+
+
+
+        binario= new DocBinarioEntity();
+        planilla= new DocPlanillaEntity();
+        listaBinarios = new ArrayList<DocBinarioEntity>();
         logger.info("BienvenidaBean.init()");
         idUsuario = (Integer) session.getAttribute("idUsuario");
         BigDecimal bi = BigDecimal.valueOf(idUsuario);
         logger.info("Buscando usuario" + bi);
-        UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
+        usuario= new UsrUsuarioEntity();
+        usuario = iUsuarioService.findById(bi);
         logger.info("usuario ok");
         persona = iPersonaService.buscarPorId(usuario.getIdPersona());
         logger.info("persona ok");
@@ -67,76 +79,77 @@ public class PresentacionPlanillasBean {
     }
 
     public void cargar() {
-        documento = new DocDocumentoEntity();
+        generaDocumento();
     }
-    private boolean habilita = true;
 
-    public void guardar(FileUploadEvent event) {
-        System.out.println("entrando a guardarBinario...............................");
-
-//        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
-//        docPlanillaEntity.setPeriodo(periodo);
-//        docPlanillaEntity.setTipoPlanilla("Planilla Trimestral");
-//        docPlanillaEntity.setIdEntidadSalud(1);
-//        docPlanillaEntity.setIdEntidadBanco(2);
-//        docPlanillaEntity.setFechaOperacion(new Timestamp(new java.util.Date().getTime()));
-//        docPlanillaEntity.setMontoOperacion(BigDecimal.ONE);
-//        docPlanillaEntity.setNumOperacion("OPE 1000");
-//
-//        docPlanillaEntity.setTipoPlanilla("DDJJ");
-
-
+    public void generaDocumento(){
+        logger.info("generaDocumento()");
         documento = new DocDocumentoEntity();
-        logger.info("1");
         documento.setIdPersona(persona.getIdPersona());
-        logger.info("2");
-        PerUnidadEntity unidad = iUnidadService.listarPorPersona(persona.getIdPersona()).get(0);
-        logger.info("3");
-        documento.setIdUnidad(unidad.getIdUnidad());
-        logger.info("4");
-        documento.setRegistroBitacora("" + idUsuario);
-        documento = idDocumentoService.guardar(documento);
-        logger.info("7");
+        documento.setIdUnidad((iUnidadService.listarPorPersona(persona.getIdPersona()).get(0)).getIdUnidad());
+        documento.setCodDocumento("LC1010");
+        documento.setVersion(1);
+        documento.setNumeroDocumento(100000L);
+        documento.setFechaDocumento(new Timestamp(new Date().getTime()));
+        //codEstado clave foranea de DocEstadoEntity
+        documento.setCodEstado("000");
+        documento.setFechaReferenca(new Timestamp(new Date().getTime()));
+        documento.setTipoMedioRegistro("DDJJ");
+        documento.setFechaBitacora(new Timestamp(new Date().getTime()));
+        documento.setRegistroBitacora(usuario.getUsuario());
+        System.out.println(documento);
+    }
 
+    public void generaPlanilla(){
+        logger.info("generaPlanilla()");
+        planilla.setTipoPlanilla("DDJJ");
+        planilla.setFechaOperacion(new Timestamp(new Date().getTime()));
+//        planilla.setPeriodo();
+    }
 
-
-        UploadedFile file = event.getFile();
-        try {
-            DiskFileItemFactory factory = new DiskFileItemFactory();
-            ServletFileUpload sfu = new ServletFileUpload(factory);
-
-            Class.forName("oracle.jdbc.OracleDriver");
-            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.50.7:1521:DESA", "ovt", "ovt");
-            con.setAutoCommit(false);
-            PreparedStatement ps = con.prepareStatement("insert into DOC_BINARIO values(?,?,?,?,?,?,?)");
-            ps.setInt(1, (iBinarioService.contar().intValue()) + 1);
-
-            ps.setInt(2, documento.getIdDocumento());
-            ps.setString(3, file.getContentType());
-            ps.setBinaryStream(4, new ByteArrayInputStream(file.getContents()), (int) file.getSize());
-            ps.setString(5, file.getFileName());
-            ps.setDate(6, fecha());
-            ps.setString(7, "ROE");
-
-            ps.executeUpdate();
-            con.commit();
-            con.close();
-            System.out.println("archivo añadido exitosamente");
-
-            //** Código gary **//
-            //HttpSession idDocumento_session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            session.setAttribute("documento_session", documento);
-            habilita = false;
-        } catch (Exception ex) {
-            habilita = true;
-            ex.printStackTrace();
-            System.out.println("Error --> " + ex.getMessage());
+    public void upload(FileUploadEvent evento){
+        logger.info("upload(FileUploadEvent evento)");
+        UploadedFile file = evento.getFile();
+        try{
+            binario = new DocBinarioEntity();
+            binario.setTipoDocumento(file.getFileName());
+            binario.setMetadata(file.getContentType());
+            binario.setFechaBitacora(new Timestamp(new Date().getTime()));
+            binario.setRegistroBitacora("OVT");
+            binario.setIdBinario(10);
+            binario.setBinario(file.getContents());
+            listaBinarios.add(binario);
+            if(listaBinarios.size()==3)
+                habilita=false;
+        }catch (Exception e){
+            habilita=true;
+            e.printStackTrace();
         }
     }
 
-    public java.sql.Date fecha() {
-        java.util.Date fecha = new java.util.Date();
-        return new java.sql.Date(fecha.getTime());
+    public void guardaDocumentoBinarioPlanilla(){
+        List<DocLogImpresionEntity> l= new ArrayList<DocLogImpresionEntity>();
+
+        for(int i=1;i<=3;i++){
+            DocLogImpresionEntity impresion = new DocLogImpresionEntity();
+            impresion.setRegistroBitacora("Registro"+i);
+            impresion.setIdDocumento(1);
+            impresion.setFechaBitacora(new Timestamp(new Date().getTime()));
+            l.add(impresion);
+
+        }
+        iLogImpresionService.guarda(l);
+//        try{
+//            logger.info("Guardando documento, binario y planilla");
+//            logger.info(documento.toString());
+//            logger.info(listaBinarios.toString());
+//            logger.info(planilla.toString());
+//            generaPlanilla();
+//            idDocumentoService.guardaDocumentoBinarioPlanilla(documento, listaBinarios, planilla);
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
     }
 
     public IUsuarioService getiUsuarioService() {
@@ -225,5 +238,13 @@ public class PresentacionPlanillasBean {
 
     public void setHabilita(boolean habilita) {
         this.habilita = habilita;
+    }
+
+    public ILogImpresionService getiLogImpresionService() {
+        return iLogImpresionService;
+    }
+
+    public void setiLogImpresionService(ILogImpresionService iLogImpresionService) {
+        this.iLogImpresionService = iLogImpresionService;
     }
 }

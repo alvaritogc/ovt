@@ -241,4 +241,24 @@ public class DocDocumentoEntity {
     public void setDocumentoEstado(ParDocumentoEstadoEntity documentoEstado) {
         this.documentoEstado = documentoEstado;
     }
+
+    @Override
+    public String toString() {
+        return "DocDocumentoEntity{" +
+                "idDocumento=" + idDocumento +
+                ", idPersona='" + idPersona + '\'' +
+                ", idUnidad=" + idUnidad +
+                ", codDocumento='" + codDocumento + '\'' +
+                ", version=" + version +
+                ", numeroDocumento=" + numeroDocumento +
+                ", fechaDocumento=" + fechaDocumento +
+                ", idDocumentoRef=" + idDocumentoRef +
+                ", codEstado='" + codEstado + '\'' +
+                ", fechaReferenca=" + fechaReferenca +
+                ", tipoMedioRegistro='" + tipoMedioRegistro + '\'' +
+                ", fechaBitacora=" + fechaBitacora +
+                ", registroBitacora='" + registroBitacora + '\'' +
+                ", documentoEstadoDescripcion='" + documentoEstadoDescripcion + '\'' +
+                '}';
+    }
 }

@@ -48,6 +48,18 @@ public class DocLogImpresionEntity {
         this.registroBitacora = registroBitacora;
     }
 
+    private Integer idDocumento;
+
+    @javax.persistence.Column(name = "ID_DOCUMENTO")
+    @Basic
+    public Integer getIdDocumento() {
+        return idDocumento;
+    }
+
+    public void setIdDocumento(Integer idDocumento) {
+        this.idDocumento = idDocumento;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

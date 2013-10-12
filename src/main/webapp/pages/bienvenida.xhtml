@@ -10,6 +10,7 @@
     <ui:define name="content">
         <h:form>
             <h1>#{bienvenidaBean.persona.nombreRazonSocial}</h1>
+            <h:commandButton value="boton" action="#{presentacionPlanillasBean.guardaDocumentoBinarioPlanilla}"/>
             <p:panelGrid columns="2" style="border-style: hidden;">
                 <p:outputLabel value="#{bienvenidaBean.persona.tipoIdentificacion}: " style="size: 20px;"/>
                 <p:outputLabel value="#{bienvenidaBean.persona.nroIdentificacion}" />

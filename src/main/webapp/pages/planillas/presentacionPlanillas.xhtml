@@ -438,15 +438,23 @@
                         </p:panelGrid>
 
                         <!-- Renato Codigo -->
-                        <p:fileUpload fileUploadListener="#{presentacionPlanillasBean.guardar}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
+                        <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
                                       invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
                                       mode="advanced" update="messages guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
-                                      sizeLimit="100000" allowTypes="/(\.|\/)(xls|xlsx|csv|png)$/" rendered="#{presentacionPlanillasBean.habilita}"/>
+                                      sizeLimit="100000" allowTypes="/(\.|\/)(xls|xlsx|csv|png)$/" rendered="#{formularioUnicoBean.habilita}"/>
+                        <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
+                                      invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
+                                      mode="advanced" update="messages guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
+                                      sizeLimit="100000" allowTypes="/(\.|\/)(xls|xlsx|csv|png)$/" rendered="#{formularioUnicoBean.habilita}"/>
+                        <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
+                                      invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
+                                      mode="advanced" update="messages guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
+                                      sizeLimit="100000" allowTypes="/(\.|\/)(xls|xlsx|csv|png)$/" rendered="#{formularioUnicoBean.habilita}"/>
                         <p:growl id="messages" showDetail="false" autoUpdate="false" />
                         <br/>
                         <div align="CENTER">
-                            <!--<p:commandButton value="Guardar" ajax="false" disabled="# {presentacionPlanillasBean.habilita}" update="messages" />-->
-                            <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada" action="#{formularioUnicoBean.guardarPlanilla}" update="formularioFrm messages" disabled="#{presentacionPlanillasBean.habilita}">
+                            <!--<p:commandButton value="Guardar" ajax="false" disabled="# {formularioUnicoBean.habilita}" update="messages" />-->
+                            <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada" action="#{formularioUnicoBean.guardaDocumentoBinarioPlanilla}" update="formularioFrm messages" disabled="#{formularioUnicoBean.habilita}">
                                 <p:confirm header="Declaración jurada" message="Si continua, procederá a realizar una declaración jurada. Asegurese que los datos esten correctamente llenados. Deséa continuar?" icon="ui-icon-alert" />
                             </p:commandButton>
                         </div>

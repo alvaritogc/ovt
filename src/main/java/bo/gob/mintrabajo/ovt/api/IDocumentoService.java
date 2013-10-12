@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.api;
 
+import bo.gob.mintrabajo.ovt.entities.DocBinarioEntity;
 import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
 import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
 import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
@@ -22,4 +23,5 @@ public interface IDocumentoService {
     public DocPlanillaEntity retornaPlanilla(int idDocumento);
     public PerUnidadEntity retornaUnidad(String idPersona);
     public Long actualizarNumeroDeOrden(String codDocumento, Integer version);
+    public void guardaDocumentoBinarioPlanilla(DocDocumentoEntity docDocumentoEntity, List<DocBinarioEntity> listaBinarios, DocPlanillaEntity docPlanillaEntity);
 }

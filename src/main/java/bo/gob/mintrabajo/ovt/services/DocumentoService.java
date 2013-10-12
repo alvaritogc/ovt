@@ -1,16 +1,8 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
-import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
-import bo.gob.mintrabajo.ovt.entities.DocNumeracionEntity;
-import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
-import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstadoEntity;
-import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
-import bo.gob.mintrabajo.ovt.repositories.DocumentoEstadoRepository;
-import bo.gob.mintrabajo.ovt.repositories.DocumentoRepository;
-import bo.gob.mintrabajo.ovt.repositories.PlanillaRepository;
-import bo.gob.mintrabajo.ovt.repositories.UnidadRepository;
-import bo.gob.mintrabajo.ovt.repositories.NumeracionRepository;
+import bo.gob.mintrabajo.ovt.entities.*;
+import bo.gob.mintrabajo.ovt.repositories.*;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -32,16 +24,18 @@ public class DocumentoService implements IDocumentoService{
     private final DocumentoRepository repository;
     private final DocumentoEstadoRepository documentoEstadoRepository;
     private final PlanillaRepository planillaRepository;
+    private final BinarioRepository binarioRepository;
     private final UnidadRepository unidadRepository;
     private final NumeracionRepository numeracionRepository;
 
     @Inject
-    public DocumentoService(DocumentoRepository repository,DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository,NumeracionRepository numeracionRepository,UnidadRepository unidadRepository) {
+    public DocumentoService(DocumentoRepository repository, DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository, BinarioRepository binarioRepository, UnidadRepository unidadRepository, NumeracionRepository numeracionRepository) {
         this.repository = repository;
         this.documentoEstadoRepository = documentoEstadoRepository;
         this.planillaRepository = planillaRepository;
+        this.binarioRepository = binarioRepository;
         this.unidadRepository = unidadRepository;
-        this.numeracionRepository=numeracionRepository;
+        this.numeracionRepository = numeracionRepository;
     }
 
     @Override
@@ -233,5 +227,18 @@ public class DocumentoService implements IDocumentoService{
         //System.out.println("===============5");
         return nuevoNumero;
     }
-    
+
+    public void guardaDocumentoBinarioPlanilla(DocDocumentoEntity docDocumentoEntity, List<DocBinarioEntity> listaBinarios, DocPlanillaEntity docPlanillaEntity){
+        docDocumentoEntity.setIdDocumento(repository.findAll().size()+1);
+        docDocumentoEntity=repository.save(docDocumentoEntity);
+        int a= 1;
+        for(DocBinarioEntity elementoBinario:listaBinarios){
+            elementoBinario.setIdDocumento(docDocumentoEntity.getIdDocumento());
+            elementoBinario.setIdBinario(a++);
+            binarioRepository.save(elementoBinario);
+        }
+        docPlanillaEntity.setIdDocumento(docDocumentoEntity.getIdDocumento());
+        docPlanillaEntity.setIdPlanilla(planillaRepository.findAll().size()+1);
+        planillaRepository.save(docPlanillaEntity);
+    }
 }

@@ -1,10 +1,7 @@
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import java.sql.Blob;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -13,7 +10,8 @@ import java.sql.Timestamp;
  */
 @javax.persistence.Table(name = "DOC_BINARIO", schema = "OVT", catalog = "")
 @Entity
-public class DocBinarioEntity {
+public class DocBinarioEntity implements Serializable {
+
     private Integer idBinario;
 
     @javax.persistence.Column(name = "ID_BINARIO")
@@ -38,16 +36,16 @@ public class DocBinarioEntity {
         this.tipoDocumento = tipoDocumento;
     }
 
-    private Blob binario;
+    private byte[] binario;
 
     @javax.persistence.Column(name = "BINARIO")
     @Lob
     @Basic
-    public Blob getBinario() {
+    public byte[] getBinario() {
         return binario;
     }
 
-    public void setBinario(Blob binario) {
+    public void setBinario(byte[] binario) {
         this.binario = binario;
     }
 
@@ -86,6 +84,23 @@ public class DocBinarioEntity {
     public void setRegistroBitacora(String registroBitacora) {
         this.registroBitacora = registroBitacora;
     }
+
+    private Integer idDocumento;
+
+    @javax.persistence.Column(name = "ID_DOCUMENTO")
+    @Basic
+    public Integer getIdDocumento() {
+        return idDocumento;
+    }
+
+    public void setIdDocumento(Integer idDocumento) {
+        this.idDocumento = idDocumento;
+    }
+
+
+
+
+
 
     @Override
     public boolean equals(Object o) {
