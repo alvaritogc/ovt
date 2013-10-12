@@ -87,18 +87,17 @@ public class formularioUnicoBean implements Serializable{
     public String guardarPlanilla() {
         System.out.println("Ingresando a guardar Planilla ");
         try {
-//            DocDocumentoEntity documento_session = (DocDocumentoEntity) session.getAttribute("documento_session");
-//            docPlanillaEntity.setIdDocumento(documento_session.getIdDocumento());
-//            docPlanillaEntity.setTipoPlanilla("DDJJ");
-//            docPlanillaEntity.setIdEntidadBanco(2);
-//            docPlanillaEntity.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
-//            iPlanillaService.guardar(docPlanillaEntity);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
+            DocDocumentoEntity documento_session = (DocDocumentoEntity) session.getAttribute("documento_session");
+            docPlanillaEntity.setIdDocumento(documento_session.getIdDocumento());
+            docPlanillaEntity.setTipoPlanilla("DDJJ");
+            docPlanillaEntity.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
+            iPlanillaService.guardar(docPlanillaEntity);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Guardado correctamente",""));
             docPlanillaEntity = new DocPlanillaEntity();
             return "irListadoBienvenida";
         } catch (Exception e) {
             e.printStackTrace();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falla", "No se guardo el formulario"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
             return null;
         }
     }

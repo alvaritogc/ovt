@@ -9,7 +9,7 @@
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Facelets Template</title>
+        <title>Oficina Virtual de Trámites</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta name="description" content=""/>
         <meta name="author" content=""/>
@@ -65,8 +65,8 @@
 ================================================== -->
         <header class="jumbotron subhead" id="overview">
             <div class="container">
-                <h1>Oficina Virtual Laboral </h1>
-                <p class="lead">Ministerio de trabajo, empleo y previsión social.</p>
+                <h1>Oficina Virtual de Trámites</h1>
+                <p class="lead">Ministerio de Trabajo, Empleo y Previsión Social.</p>
             </div>
         </header>
 
@@ -93,11 +93,11 @@
                         <p:panel  >
                             <h2 class="form-signin-heading">Conéctate</h2>
                             <div class="input-prepend"><span class="add-on"><i class="icon-white icon-user"></i></span>
-                                <h:inputText value="#{templateInicioBean.username}" style="width: 104px; font-size: 10px" />
+                                <h:inputText value="#{templateInicioBean.username}" style="width: 104px; font-size: 10px" required="true" requiredMessage="Debe ingresar el usuario" />
                             </div>
                             <div class="input-prepend"><span class="add-on"><i class="icon-white icon-lock"></i>
                                 </span>
-                                <h:inputSecret value="#{templateInicioBean.password}" required="true" requiredMessage="Debe completar el campo Password" style="width: 104px; font-size: 10px" />
+                                <h:inputSecret value="#{templateInicioBean.password}" required="true" requiredMessage="Debe ingresar el Password" style="width: 104px; font-size: 10px" />
                             </div>
                             <!--<p:captcha label="Captcha" publicKey="6LerTMYSAAAAAGUfbsXu2tf-H8flrPVM1fDUecvi" language="es"-->
                                        <!--validatorMessage="Texto no coincide, intente de nuevo." requiredMessage="Ingrese 2 palabras" />-->
@@ -107,10 +107,10 @@
                     </h:form>
 
                     <h:form>
-                        <p:panel  header="Servicios publicos">
+                        <p:panel  header="Servicios públicos">
                             <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/informacion.xhtml"> Pasos trámite planilla  trimestral</a>
                             <br/><br/>
-                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/descargarPlanilla.xhtml"> Descarga de formulario de planilla trimestral </a>
+                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/descargarPlanilla.xhtml"> Descarga de formatos de planillas </a>
                         </p:panel>
                         <br/>
                     </h:form>

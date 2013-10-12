@@ -7,7 +7,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Simple JSF Facelets page</title>
+        <title>Oficina Virtual de Trámites</title>
         <link href="#{facesContext.externalContext.requestContextPath}/assets/css/bootstrap.css" rel="stylesheet"/>
         <link href="#{facesContext.externalContext.requestContextPath}/assets/css/bootstrap-responsive.css" rel="stylesheet"/>
         <link href="#{facesContext.externalContext.requestContextPath}/assets/css/docs.css" rel="stylesheet"/>
@@ -21,8 +21,8 @@
     <h:body>
         <header class="jumbotron subhead" id="overview">
             <div class="container">
-                <h1>Oficina Virtual Laboral </h1>
-                <p class="lead">Ministerio de trabajo, empleo y previsión social.</p>
+                <h1>Oficina Virtual de Trámites </h1>
+                <p class="lead">Ministerio de Trabajo, Empleo y Previsión Social.</p>
             </div>
         </header>
 
@@ -154,7 +154,7 @@
                                 </p:column>
                                 <p:column colspan="5">
                                     <p:outputLabel value="2.2 Oficina central o nro de sucursal"/>
-                                    <p:outputLabel value="2.3 Mes de presentación"/>
+                                    <p:outputLabel value="2.3 Trimestre de presentación"/>
                                 </p:column>
                                 <p:column colspan="6">
                                     <p:selectOneMenu style="width: 260px; height: 20px">
@@ -441,11 +441,19 @@
                         <p:growl id="messages" showDetail="false" autoUpdate="false" />
                         <br/>
                         <div align="CENTER">
-                            <p:commandButton id="guardarPlanillaBtn" value="Guardar" action="#{formularioUnicoBean.guardarPlanilla}" ajax="false" disabled="#{presentacionPlanillasBean.habilita}" update="messages" />
+                            <!--<p:commandButton value="Guardar" ajax="false" disabled="# {presentacionPlanillasBean.habilita}" update="messages" />-->
+                            <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada" action="#{formularioUnicoBean.guardarPlanilla}" update="formularioFrm messages">
+                                <p:confirm header="Declaración jurada" message="Si continua, procederá a realizar una declaración jurada. Asegurese que los datos esten correctamente llenados. Deséa continuar?" icon="ui-icon-alert" />
+                            </p:commandButton>
                         </div>
 
+                        <p:confirmDialog id="confirmarDeclaracion" global="true" showEffect="fade" hideEffect="explode">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                        </p:confirmDialog>
+
                         <!--<p:confirmDialog global="true" showEffect="fade" hideEffect="explode" widgetVar="confirmarDlg" message="¿Esta seguro de registrar esta planilla?">-->
-                            <!--<p:commandButton value="Si" action="# {formularioUnicoBean.guardarPlanilla}" oncomplete="confirmarDlg.hide()" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>-->
+                            <!--<p:commandButton id="guardarPlanillaBtn" value="Si" action="# {formularioUnicoBean.guardarPlanilla}" oncomplete="confirmarDlg.hide()" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>-->
                             <!--<p:commandButton value="No" onclick="confirmarDlg.hide();" styleClass="ui-confirmdialog-no" icon="ui-icon-close" immediate="true"/>-->
                         <!--</p:confirmDialog>-->
                     </h:form>

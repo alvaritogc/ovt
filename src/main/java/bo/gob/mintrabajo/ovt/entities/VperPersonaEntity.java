@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.entities;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
