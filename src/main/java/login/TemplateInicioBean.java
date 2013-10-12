@@ -99,7 +99,7 @@ public class TemplateInicioBean implements Serializable {
 //            e.printStackTrace();
             model = new DefaultMenuModel();
             DefaultMenuItem item = new DefaultMenuItem("Salir");
-            item.setIcon("ui-icon-search");
+            item.setIcon("ui-icon-arrowthickstop-1-e");
             item.setCommand("#{templateInicioBean.logout}");
             model.addElement(item);
             nombreDeUsuario = "Invitado";
@@ -118,7 +118,7 @@ public class TemplateInicioBean implements Serializable {
         }
         crearMenuRecurso();
         DefaultMenuItem item = new DefaultMenuItem("Salir");
-        item.setIcon("ui-icon-search");
+        item.setIcon("ui-icon-arrowthickstop-1-e");
         item.setCommand("#{templateInicioBean.logout}");
         model.addElement(item);
     }
