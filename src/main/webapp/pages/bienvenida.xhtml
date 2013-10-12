@@ -20,7 +20,7 @@
             <br/>
             <h3>Documentos</h3>
 
-            <p:dataTable id="idListaDocumentos" value="#{bienvenidaBean.listaDocumentos}" var="o1">
+            <p:dataTable id="idListaDocumentos" value="#{bienvenidaBean.listaDocumentos}" var="o1" paginator="true" rows="10">
                 <p:column headerText="Código">
                     <h:outputText value="#{o1.codDocumento}"/>
                 </p:column>
