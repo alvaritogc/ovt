@@ -177,29 +177,29 @@
                                 <p:column colspan="16">
                                 <p:panelGrid columns="6">
                                     <p:outputLabel value="3.1 Nro de empleador MTEPS:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.perPersonaEntity.nroIdentificacion}"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.nroOtro}"/>
                                     <p:outputLabel value="3.2 Nro patronal del seguro social:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.temporal}"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.nroCajaSalud}"/>
                                     <p:outputLabel value="3.3 Nro de NIT:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.temporal}"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.nroIdentificacion}"/>
                                     <p:outputLabel value="3.4 Nombre o razón social:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.perPersonaEntity.nombreRazonSocial}"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.nombreRazonSocial}"/>
                                     <p:outputLabel value="3.5 Actividad Económica principal:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.temporal}"/>
-                                    <p:outputLabel value="3.6 Depto:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.temporal}"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.actividadDeclarada}"/>
+                                    <p:outputLabel value="3.6 Departamento:" style="font-weight:bold"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.dirDepartamento}"/>
                                     <p:outputLabel value="3.7 Ciudad o localidad:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.temporal}"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.localidad}"/>
                                     <p:outputLabel value="3.8 Zona:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.temporal}"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.dirZona}"/>
                                     <p:outputLabel value="3.9 Dirección:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.temporal}"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.dirDireccion}"/>
                                     <p:outputLabel value="3.10 Nro:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.temporal}"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.dirNroDireccion}"/>
                                     <p:outputLabel value="3.11 Teléfono:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.temporal}"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.telefono}"/>
                                     <p:outputLabel value="3.12 Fax:" style="font-weight:bold"/>
-                                    <h:outputText value="#{formularioUnicoBean.temporal}"/>
+                                    <h:outputText value="#{formularioUnicoBean.vperPersonaEntity.fax}"/>
                                 </p:panelGrid>
                                 </p:column>
                             </p:row>
@@ -415,8 +415,12 @@
                             <p:row>
                                 <p:column colspan="10">
                                     <p:panelGrid columns="2">
-                                        <p:outputLabel value="Nro de Documento de Identidad" style="font-weight: bold"/>
-                                        <p:inputText value="#{formularioUnicoBean.temporal}" style="width: 150px; height: 10px; text-align: right"/>
+                                        <p:outputLabel value="Nombre de empleador y/o representante legal" style="font-weight: bold"/>
+                                        <p:outputLabel value="#{formularioUnicoBean.vperPersonaEntity.rlNombre}" rendered="#{empty formularioUnicoBean.vperPersonaEntity.rlNombre}" />
+                                        <p:outputLabel value="#{formularioUnicoBean.vperPersonaEntity.nombreRazonSocial}" rendered="#{!empty formularioUnicoBean.vperPersonaEntity.rlNombre}" />
+                                        <p:outputLabel value="Nro de documento de identidad" style="font-weight: bold"/>
+                                        <p:inputText value="#{formularioUnicoBean.vperPersonaEntity.rlNroIdentidad}" style="width: 150px; height: 10px; text-align: right" readonly="true" rendered="#{empty formularioUnicoBean.vperPersonaEntity.rlNombre}"/>
+                                        <p:inputText value="#{formularioUnicoBean.vperPersonaEntity.nroIdentificacion}" style="width: 150px; height: 10px; text-align: right" readonly="true" rendered="#{!empty formularioUnicoBean.vperPersonaEntity.rlNombre}"/>
                                         <p:outputLabel value="Lugar de Presentación" style="font-weight: bold"/>
                                         <h:outputText value="Oficina Virtual" style="width: 150px; height: 10px" readonly="true"/>
                                     </p:panelGrid>

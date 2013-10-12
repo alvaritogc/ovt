@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.bean.Formulario;
 
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import bo.gob.mintrabajo.ovt.envano.DobleTrabajoConexion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +46,7 @@ public class formularioUnicoBean implements Serializable{
     private List<ParObligacionCalendarioEntity> parObligacionCalendarioLista;
     private List<ParEntidadEntity> parEntidadEntityLista;
     private PerPersonaEntity perPersonaEntity;
+    private VperPersonaEntity vperPersonaEntity;
     private DocPlanillaEntity docPlanillaEntity;
     private boolean esRectificatorio=false;
     private Date fechaOperacionAux;
@@ -71,6 +73,8 @@ public class formularioUnicoBean implements Serializable{
         
         obtenerPeriodoLista();
         obtenerEntidad();
+        //** Obtenemos de la Vista a la persona **//
+        vperPersonaEntity = DobleTrabajoConexion.obtenerPersona(perPersonaEntity.getIdPersona());
     }
 
     public void obtenerPeriodoLista(){
@@ -230,5 +234,13 @@ public class formularioUnicoBean implements Serializable{
 
     public void setParEntidadEntityLista(List<ParEntidadEntity> parEntidadEntityLista) {
         this.parEntidadEntityLista = parEntidadEntityLista;
+    }
+
+    public VperPersonaEntity getVperPersonaEntity() {
+        return vperPersonaEntity;
+    }
+
+    public void setVperPersonaEntity(VperPersonaEntity vperPersonaEntity) {
+        this.vperPersonaEntity = vperPersonaEntity;
     }
 }
