@@ -10,15 +10,16 @@
             <center>
                 <p:panelGrid style="width: 100%">
                     <p:row>
-                        <p:column  style="background-color: #1A4498; color: #FFFFFF" >
+                        <p:column  style="background-color: #0069B1; color: #FFFFFF" >
                             <p:outputLabel value="CAMBIO DE ESTADO" />
                         </p:column>
                     </p:row>
                 </p:panelGrid>
                 <h:form >
-
+                    <br/>
+                    <br/>
                     <p:panelGrid columns="2">
-
+                        
                         <h:outputText value="#{transicionBean.descripCodIncial.descripcion} "  style="font-size: 20px"/>
                         <p:selectOneRadio id="grid" value="#{transicionBean.estadoNuevo}" 
                                           layout="grid" 
@@ -29,14 +30,15 @@
                         </p:selectOneRadio>
 
                     </p:panelGrid>
+                    <br/>
                     <h:panelGrid columns="1" rendered="#{transicionBean.esUsuarioInterno}">
                         <h:panelGrid columns="2">
-                            <h:commandButton value="Aceptar" action="#{transicionBean.guardaCambioEstado}" disabled="#{transicionBean.tamaño==0}"/>
-                            <h:commandButton value="Cancelar" action="#{transicionBean.irBienvenida}"/>
+                            <p:commandButton value="Aceptar" action="#{transicionBean.guardaCambioEstado}" disabled="#{transicionBean.tamaño==0}" ajax="false"/>
+                            <p:commandButton value="Cancelar" action="#{transicionBean.irBienvenida}" ajax="false"/>
                         </h:panelGrid>
                     </h:panelGrid>
                     <h:panelGrid columns="1" rendered="#{!transicionBean.esUsuarioInterno}">
-                        <h:commandButton value="Volver" action="#{transicionBean.irBienvenida}"/>
+                        <p:commandButton value="Volver" action="#{transicionBean.irBienvenida}" ajax="false"/>
                     </h:panelGrid>
 
 
