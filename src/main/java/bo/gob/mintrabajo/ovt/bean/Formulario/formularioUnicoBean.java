@@ -89,6 +89,19 @@ public class formularioUnicoBean implements Serializable{
         usuario = iUsuarioService.findById(temp);
         perPersonaEntity = iPersonaService.buscarPorId(idPersona);
         docPlanillaEntity = new DocPlanillaEntity();
+        
+        docPlanillaEntity.setHaberBasico(BigDecimal.ZERO);
+        docPlanillaEntity.setBonoAntiguedad(BigDecimal.ZERO);
+        docPlanillaEntity.setBonoProduccion(BigDecimal.ZERO);
+        docPlanillaEntity.setSubsidioFrontera(BigDecimal.ZERO);
+        docPlanillaEntity.setLaborExtra(BigDecimal.ZERO);
+        docPlanillaEntity.setOtrosBonos(BigDecimal.ZERO);
+        docPlanillaEntity.setRciva(BigDecimal.ZERO);
+        docPlanillaEntity.setAporteAfp(BigDecimal.ZERO);
+        docPlanillaEntity.setOtrosDescuentos(BigDecimal.ZERO);
+        docPlanillaEntity.setMontoAsegCaja(BigDecimal.ZERO);
+        docPlanillaEntity.setMontoAsegAfp(BigDecimal.ZERO);
+        
         obtenerPeriodoLista();
         obtenerEntidad();
         //** Obtenemos de la Vista a la persona **//
