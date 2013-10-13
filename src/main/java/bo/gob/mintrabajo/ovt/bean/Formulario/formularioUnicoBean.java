@@ -50,6 +50,8 @@ public class formularioUnicoBean implements Serializable{
     private IPlanillaService iPlanillaService;
     @ManagedProperty(value = "#{obligacionCalendarioService}")
     private IObligacionCalendarioService iObligacionCalendarioService;
+    @ManagedProperty(value = "#{documentoService}")
+    private IDocumentoService iDocumentoService;
 
     private List<ParObligacionCalendarioEntity> parObligacionCalendarioLista;
     private List<ParEntidadEntity> parEntidadEntityLista;
@@ -72,6 +74,8 @@ public class formularioUnicoBean implements Serializable{
     private boolean habilita = true;
     private List<DocBinarioEntity> listaBinarios;
     private UsrUsuarioEntity usuario;
+    //
+    private boolean estaDeclarado;
 
     @PostConstruct
     public void ini() {
@@ -99,6 +103,28 @@ public class formularioUnicoBean implements Serializable{
 
     public void cargar() {
         generaDocumento();
+        verEstadoPlanilla();
+    }
+    public void verEstadoPlanilla(){
+        List<DocDocumentoEntity> listaDocumentos;
+         try{
+            listaDocumentos=iDocumentoService.listarPorPersona(idPersona);
+            if(listaDocumentos==null){
+            listaDocumentos=new ArrayList<DocDocumentoEntity>();
+        }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            listaDocumentos=new ArrayList<DocDocumentoEntity>();
+        }
+        estaDeclarado=false;
+        for(DocDocumentoEntity documento:listaDocumentos){
+            if(documento.getDocumentoEstado().getDescripcion().toLowerCase().equals("declarado")
+                    || documento.getDocumentoEstado().getDescripcion().toLowerCase().equals("observado")
+                    || documento.getDocumentoEstado().getDescripcion().toLowerCase().equals("finalizado")){
+                estaDeclarado=true;
+            }
+        }
     }
 
     public void generaDocumento(){
@@ -161,6 +187,10 @@ public class formularioUnicoBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
             return null;
         }
+    }
+    
+    public String irBienvenida(){
+        return "irBienvenida";
     }
 
     public void obtenerPeriodoLista(){
@@ -389,5 +419,21 @@ public class formularioUnicoBean implements Serializable{
 
     public void setUsuario(UsrUsuarioEntity usuario) {
         this.usuario = usuario;
+    }
+
+    public IDocumentoService getiDocumentoService() {
+        return iDocumentoService;
+    }
+
+    public void setiDocumentoService(IDocumentoService iDocumentoService) {
+        this.iDocumentoService = iDocumentoService;
+    }
+
+    public boolean isEstaDeclarado() {
+        return estaDeclarado;
+    }
+
+    public void setEstaDeclarado(boolean estaDeclarado) {
+        this.estaDeclarado = estaDeclarado;
     }
 }

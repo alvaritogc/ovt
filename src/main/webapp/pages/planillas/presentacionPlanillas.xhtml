@@ -80,7 +80,13 @@
 
 
                     <h:form id="formularioFrm" enctype="multipart/form-data">
-
+                        <h:panelGroup rendered="#{formularioUnicoBean.estaDeclarado}">
+                            <h1>Usted ya realizo la declaracion jurada en este trimestre</h1>
+                            <p:commandButton  ajax="false" value="Ir a inicio" action="#{formularioUnicoBean.irBienvenida}"/>
+                            <p:outputLabel value="#{formularioUnicoBean.estaDeclarado}"/>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{!formularioUnicoBean.estaDeclarado}">
+                            <p:outputLabel value="#{formularioUnicoBean.estaDeclarado}"/>
                         <p:panelGrid>
                             <f:facet name="header">
                                 <p:row>
@@ -485,6 +491,7 @@
                             <!--<p:commandButton id="guardarPlanillaBtn" value="Si" action="# {formularioUnicoBean.guardarPlanilla}" oncomplete="confirmarDlg.hide()" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>-->
                             <!--<p:commandButton value="No" onclick="confirmarDlg.hide();" styleClass="ui-confirmdialog-no" icon="ui-icon-close" immediate="true"/>-->
                         <!--</p:confirmDialog>-->
+                        </h:panelGroup>
                     </h:form>
 
 
