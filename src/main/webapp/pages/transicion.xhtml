@@ -8,27 +8,39 @@
     <ui:composition template="../pages/template/templateInicio.xhtml">
         <ui:define name="content">
             <center>
-                <p:panelGrid style="width: 800px">
+                <p:panelGrid style="width: 100%">
                     <p:row>
                         <p:column  style="background-color: #1A4498; color: #FFFFFF" >
                             <p:outputLabel value="CAMBIO DE ESTADO" />
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-            <h:form >
+                <h:form >
 
-                <p:panelGrid columns="2">
+                    <p:panelGrid columns="2">
 
-                    <h:outputText value="#{transicionBean.descripCodIncial.descripcion}"  style="font-size: 20px"/>
-                    <p:selectOneRadio id="grid" value="#{transicionBean.estadoNuevo}" layout="grid" columns="1">
-                        <f:selectItems value="#{transicionBean.lista}"/>
-                    </p:selectOneRadio>
+                        <h:outputText value="#{transicionBean.descripCodIncial.descripcion} "  style="font-size: 20px"/>
+                        <p:selectOneRadio id="grid" value="#{transicionBean.estadoNuevo}" 
+                                          layout="grid" 
+                                          columns="1" 
+                                          style="color: #000000; font-weight: bold;"
+                                          >
+                            <f:selectItems value="#{transicionBean.lista}"/>
+                        </p:selectOneRadio>
 
-                </p:panelGrid>
-                <h:commandButton value="Aceptar" action="#{transicionBean.guardaCambioEstado}" disabled="#{transicionBean.tamaño==0}"/>
-                <h:commandButton value="Cancelar" action="#{transicionBean.irBienvenida}"/>
+                    </p:panelGrid>
+                    <h:panelGrid columns="1" rendered="#{transicionBean.esUsuarioInterno}">
+                        <h:panelGrid columns="2">
+                            <h:commandButton value="Aceptar" action="#{transicionBean.guardaCambioEstado}" disabled="#{transicionBean.tamaño==0}"/>
+                            <h:commandButton value="Cancelar" action="#{transicionBean.irBienvenida}"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" rendered="#{!transicionBean.esUsuarioInterno}">
+                        <h:commandButton value="Volver" action="#{transicionBean.irBienvenida}"/>
+                    </h:panelGrid>
 
-            </h:form>
+
+                </h:form>
             </center>
         </ui:define>
     </ui:composition>
