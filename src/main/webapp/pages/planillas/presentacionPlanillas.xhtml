@@ -39,11 +39,12 @@
                             <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado}" style="width: 100%"
                                          rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}"/>
                             <br/>
-                            <p:outputLabel value="Usuario: #{templateInicioBean.nombreDeUsuario}"/>
-                            <h:panelGrid columns="2">
+                            <p:outputLabel value="Usuario: "/>
+                            <p:outputLabel value="#{templateInicioBean.nombreDeUsuario}" style="color: #0069B1;"/>
+                            <br/>
                             <p:outputLabel value="Empleador:" />
-                            <p:outputLabel value="#{templateInicioBean.nombreDeUnidad}" style="color: #FC0000;"/>
-                            </h:panelGrid>
+                            <p:outputLabel value="#{templateInicioBean.nombreDeUnidad}" style="color: #0069B1;"/>
+                            
                         </h:panelGrid>
                     </h:form>
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}">
