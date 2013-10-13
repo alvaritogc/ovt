@@ -35,11 +35,15 @@
                     <h:form>
                         <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPublico}" style="width: 100%"
                                          rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}"/>
-                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado}" style="width: 100%"
-                                         rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}"/>
                         <h:panelGrid columns="1" rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}">
+                            <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado}" style="width: 100%"
+                                         rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}"/>
+                            <br/>
                             <p:outputLabel value="Usuario: #{templateInicioBean.nombreDeUsuario}"/>
-                            <p:outputLabel value="Empleador: #{templateInicioBean.nombreDeUnidad}"/>
+                            <h:panelGrid columns="2">
+                            <p:outputLabel value="Empleador:" />
+                            <p:outputLabel value="#{templateInicioBean.nombreDeUnidad}" style="color: #FC0000;"/>
+                            </h:panelGrid>
                         </h:panelGrid>
                     </h:form>
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}">

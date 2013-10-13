@@ -24,6 +24,9 @@ import java.util.List;
 @ManagedBean
 @ViewScoped
 public class TransicionBean {
+    private int idUsuario;
+    private String idPersona;
+    private String idEmpleador;
 
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private static final Logger logger = LoggerFactory.getLogger(TransicionBean.class);
@@ -51,6 +54,7 @@ public class TransicionBean {
     private DocDocumentoEntity docDocumentoEntity= new DocDocumentoEntity();
     private String estadoNuevo;
     private int tamaño;
+    private boolean esUsuarioInterno;
 
     @PostConstruct
     public void ini() {
@@ -78,7 +82,18 @@ public class TransicionBean {
 
 
         listaTransicion= new ArrayList<DocTransicionEntity>();
+        
+        //idUsuario=(Integer)session.getAttribute("idUsuario");
+        idPersona=(String)session.getAttribute("idPersona");
+        idEmpleador=(String)session.getAttribute("idEmpleador");
+        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador)){
+            esUsuarioInterno=false;
+        }
+        else{
+            esUsuarioInterno=true;
+        }
         cargar();
+        
     }
 
     public void cargar() {
@@ -194,5 +209,13 @@ public class TransicionBean {
 
     public void setiDocumentoService(IDocumentoService iDocumentoService) {
         this.iDocumentoService = iDocumentoService;
+    }
+
+    public boolean isEsUsuarioInterno() {
+        return esUsuarioInterno;
+    }
+
+    public void setEsUsuarioInterno(boolean esUsuarioInterno) {
+        this.esUsuarioInterno = esUsuarioInterno;
     }
 }

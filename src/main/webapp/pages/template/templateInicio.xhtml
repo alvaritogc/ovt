@@ -82,11 +82,16 @@
                     <h:form>
                         <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPublico}" style="width: 100%"
                                          rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}"/>
-                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado}" style="width: 100%"
-                                         rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}"/>
                         <h:panelGrid columns="1" rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}">
-                            <p:outputLabel value="Usuario: #{templateInicioBean.nombreDeUsuario}"/>
-                            <p:outputLabel value="Empleador: #{templateInicioBean.nombreDeUnidad}"/>
+                            <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado}" style="width: 100%"
+                                         rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}"/>
+                            <br/>
+                            <p:outputLabel value="Usuario: "/>
+                            <p:outputLabel value="#{templateInicioBean.nombreDeUsuario}" style="color: #0069B1;"/>
+                            <br/>
+                            <p:outputLabel value="Empleador:" />
+                            <p:outputLabel value="#{templateInicioBean.nombreDeUnidad}" style="color: #0069B1;"/>
+                            
                         </h:panelGrid>
                     </h:form>
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}">
@@ -136,27 +141,5 @@
 
             </div>
         </footer>
-
-        <!-- Le javascript
-    ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/jquery.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-transition.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-alert.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-modal.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-dropdown.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-scrollspy.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-tab.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-tooltip.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-popover.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-button.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-collapse.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-carousel.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-typeahead.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/bootstrap-affix.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/holder/holder.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/google-code-prettify/prettify.js"></script>
-        <script src="#{facesContext.externalContext.requestContextPath}/assets/js/application.js"></script>
     </h:body>
 </html>
