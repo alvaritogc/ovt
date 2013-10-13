@@ -57,8 +57,6 @@ public class PresentacionPlanillasBean {
     @PostConstruct
     public void ini() {
 
-
-
         binario= new DocBinarioEntity();
         planilla= new DocPlanillaEntity();
         listaBinarios = new ArrayList<DocBinarioEntity>();
@@ -92,7 +90,7 @@ public class PresentacionPlanillasBean {
         documento.setNumeroDocumento(100000L);
         documento.setFechaDocumento(new Timestamp(new Date().getTime()));
         //codEstado clave foranea de DocEstadoEntity
-        documento.setCodEstado("000");
+        documento.setCodEstado("110");
         documento.setFechaReferenca(new Timestamp(new Date().getTime()));
         documento.setTipoMedioRegistro("DDJJ");
         documento.setFechaBitacora(new Timestamp(new Date().getTime()));

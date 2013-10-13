@@ -111,7 +111,7 @@ public class formularioUnicoBean implements Serializable{
         documento.setNumeroDocumento(100000L);
         documento.setFechaDocumento(new Timestamp(new Date().getTime()));
         //codEstado clave foranea de DocEstadoEntity
-        documento.setCodEstado("000");
+        documento.setCodEstado("110");
         documento.setFechaReferenca(new Timestamp(new Date().getTime()));
         documento.setTipoMedioRegistro("DDJJ");
         documento.setFechaBitacora(new Timestamp(new Date().getTime()));
@@ -134,7 +134,7 @@ public class formularioUnicoBean implements Serializable{
             binario.setTipoDocumento(file.getFileName());
             binario.setMetadata(file.getContentType());
             binario.setFechaBitacora(new Timestamp(new Date().getTime()));
-            binario.setRegistroBitacora("OVT");
+            binario.setRegistroBitacora(usuario.getUsuario());
             binario.setIdBinario(10);
             binario.setBinario(file.getContents());
             listaBinarios.add(binario);

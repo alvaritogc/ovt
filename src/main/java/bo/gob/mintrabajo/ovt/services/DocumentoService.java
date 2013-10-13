@@ -230,6 +230,7 @@ public class DocumentoService implements IDocumentoService{
 
     public void guardaDocumentoBinarioPlanilla(DocDocumentoEntity docDocumentoEntity, List<DocBinarioEntity> listaBinarios, DocPlanillaEntity docPlanillaEntity){
         docDocumentoEntity.setIdDocumento(repository.findAll().size()+1);
+        docDocumentoEntity.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1));
         docDocumentoEntity=repository.save(docDocumentoEntity);
         int a= 1;
         for(DocBinarioEntity elementoBinario:listaBinarios){

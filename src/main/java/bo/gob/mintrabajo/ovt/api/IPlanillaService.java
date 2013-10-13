@@ -1,9 +1,6 @@
 package bo.gob.mintrabajo.ovt.api;
 
-import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
-import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
-import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
-import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
+import bo.gob.mintrabajo.ovt.entities.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,5 +12,5 @@ import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
 public interface IPlanillaService {
     void guardar(DocPlanillaEntity objeto);
 
-    void generaReporte(DocPlanillaEntity docPlanillaEntity, PerPersonaEntity persona , DocDocumentoEntity docDocumentoEntity, PerUnidadEntity perUnidadEntity);
+    void generaReporte(DocPlanillaEntity docPlanillaEntity, PerPersonaEntity persona , DocDocumentoEntity docDocumentoEntity, PerUnidadEntity perUnidadEntity, VperPersonaEntity vperPersonaEntity);
 }

@@ -2,6 +2,7 @@ package login;
 
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import bo.gob.mintrabajo.ovt.envano.DobleTrabajoConexion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +48,7 @@ public class BienvenidaBean {
     private List<PerUnidadEntity> listaUnidades;
     //
     private List<DocDocumentoEntity> listaDocumentos;
+    private VperPersonaEntity vperPersonaEntity;
 
     @PostConstruct
     public void ini() {
@@ -59,6 +61,7 @@ public class BienvenidaBean {
         logger.info("buscando persona");
         idPersona=(String) session.getAttribute("idEmpleador");
         persona=iPersonaService.buscarPorId(idPersona);
+        vperPersonaEntity = DobleTrabajoConexion.obtenerPersona(idPersona);
         logger.info("persona ok");
 //        try{
 //            idPersona=(String) session.getAttribute("idEmpleador");
@@ -108,7 +111,7 @@ public class BienvenidaBean {
         try{
             docPlanillaEntity=  iDocumentoService.retornaPlanilla(docDocumentoEntity.getIdDocumento());
             perUnidadEntity=  iDocumentoService.retornaUnidad(idPersona);
-            iPlanillaService.generaReporte(docPlanillaEntity, persona, docDocumentoEntity, perUnidadEntity);
+            iPlanillaService.generaReporte(docPlanillaEntity, persona, docDocumentoEntity, perUnidadEntity, vperPersonaEntity);
         }
         catch(Exception e){
             e.printStackTrace();

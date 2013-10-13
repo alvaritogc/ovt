@@ -24,7 +24,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="" />
         <datasource-mapping>
-          <factory-entry name="ovt" />
+          <factory-entry name="ovt" value="09304398-f5d9-4263-b5d5-85a672aa92f6" />
           <factory-entry name="persistence" />
           <factory-entry name="persistenceUnit" />
         </datasource-mapping>

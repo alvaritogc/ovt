@@ -1,17 +1,22 @@
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
 import java.sql.Timestamp;
 
 /**
- * User: Renato Velasquez.
- * Date: 06-10-13
+ * Created with IntelliJ IDEA.
+ * User: rvelasquez
+ * Date: 10/12/13
+ * Time: 7:06 PM
+ * To change this template use File | Settings | File Templates.
  */
+@javax.persistence.IdClass(bo.gob.mintrabajo.ovt.entities.DocBinarioEntityPK.class)
 @javax.persistence.Table(name = "DOC_BINARIO", schema = "OVT", catalog = "")
 @Entity
-public class DocBinarioEntity implements Serializable {
-
+public class DocBinarioEntity {
     private Integer idBinario;
 
     @javax.persistence.Column(name = "ID_BINARIO")
@@ -22,6 +27,18 @@ public class DocBinarioEntity implements Serializable {
 
     public void setIdBinario(Integer idBinario) {
         this.idBinario = idBinario;
+    }
+
+    private Integer idDocumento;
+
+    @javax.persistence.Column(name = "ID_DOCUMENTO")
+    @Id
+    public Integer getIdDocumento() {
+        return idDocumento;
+    }
+
+    public void setIdDocumento(Integer idDocumento) {
+        this.idDocumento = idDocumento;
     }
 
     private String tipoDocumento;
@@ -85,23 +102,6 @@ public class DocBinarioEntity implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    private Integer idDocumento;
-
-    @javax.persistence.Column(name = "ID_DOCUMENTO")
-    @Basic
-    public Integer getIdDocumento() {
-        return idDocumento;
-    }
-
-    public void setIdDocumento(Integer idDocumento) {
-        this.idDocumento = idDocumento;
-    }
-
-
-
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -113,6 +113,7 @@ public class DocBinarioEntity implements Serializable {
         if (fechaBitacora != null ? !fechaBitacora.equals(that.fechaBitacora) : that.fechaBitacora != null)
             return false;
         if (idBinario != null ? !idBinario.equals(that.idBinario) : that.idBinario != null) return false;
+        if (idDocumento != null ? !idDocumento.equals(that.idDocumento) : that.idDocumento != null) return false;
         if (metadata != null ? !metadata.equals(that.metadata) : that.metadata != null) return false;
         if (registroBitacora != null ? !registroBitacora.equals(that.registroBitacora) : that.registroBitacora != null)
             return false;
@@ -125,6 +126,7 @@ public class DocBinarioEntity implements Serializable {
     @Override
     public int hashCode() {
         int result = idBinario != null ? idBinario.hashCode() : 0;
+        result = 31 * result + (idDocumento != null ? idDocumento.hashCode() : 0);
         result = 31 * result + (tipoDocumento != null ? tipoDocumento.hashCode() : 0);
         result = 31 * result + (binario != null ? binario.hashCode() : 0);
         result = 31 * result + (metadata != null ? metadata.hashCode() : 0);

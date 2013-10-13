@@ -438,19 +438,31 @@
                         </p:panelGrid>
 
                         <!-- Renato Codigo -->
-                        <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
-                                      invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
-                                      mode="advanced" update="messages guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
-                                      sizeLimit="100000" allowTypes="/(\.|\/)(xls|xlsx|csv|png)$/" rendered="#{formularioUnicoBean.habilita}"/>
-                        <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
-                                      invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
-                                      mode="advanced" update="messages guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
-                                      sizeLimit="100000" allowTypes="/(\.|\/)(xls|xlsx|csv|png)$/" rendered="#{formularioUnicoBean.habilita}"/>
-                        <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
-                                      invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
-                                      mode="advanced" update="messages guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
-                                      sizeLimit="100000" allowTypes="/(\.|\/)(xls|xlsx|csv|png)$/" rendered="#{formularioUnicoBean.habilita}"/>
-                        <p:growl id="messages" showDetail="false" autoUpdate="false" />
+                            <center>
+                            <h:panelGrid columns="3" style="text-align: right"  rendered="#{formularioUnicoBean.habilita}">
+                            <h:outputText style="font-weight: bold;text-align: center" value="JULIO"/>
+                            <h:outputText style="font-weight: bold" value=""/>
+
+                            <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
+                                          invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
+                                          mode="advanced" update="guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
+                                          sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv)$/" rendered="#{formularioUnicoBean.habilita}"/>
+                                <h:outputText value="AGOSTO" style="font-weight: bold"/>
+                                <h:outputText value="" style="font-weight: bold"/>
+                                <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
+                                          invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
+                                          mode="advanced" update="guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
+                                          sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv)$/" rendered="#{formularioUnicoBean.habilita}"/>
+                                <h:outputText value="SEPTIEMBRE" style="font-weight: bold"/>
+                                <h:outputText value="" style="font-weight: bold"/>
+                                <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
+                                          invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
+                                          mode="advanced" update="guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
+                                          sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv)$/" rendered="#{formularioUnicoBean.habilita}"/>
+
+                            </h:panelGrid> </center>
+                        <p:growl id="messages" showDetail="true" autoUpdate="true"/>
+
                         <br/>
                         <div align="CENTER">
                             <!--<p:commandButton value="Guardar" ajax="false" disabled="# {formularioUnicoBean.habilita}" update="messages" />-->
