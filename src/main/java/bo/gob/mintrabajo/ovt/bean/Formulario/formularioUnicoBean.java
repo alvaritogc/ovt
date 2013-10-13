@@ -189,8 +189,15 @@ public class formularioUnicoBean implements Serializable{
         }
     }
     
-    public String irBienvenida(){
-        return "irBienvenida";
+    public String irInicio(){
+        idPersona=(String)session.getAttribute("idPersona");
+        String idEmpleador=(String)session.getAttribute("idEmpleador");
+        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador)){
+            return "irBienvenida";
+        }
+        else{
+            return "irEmpleadorBusqueda";
+        }
     }
 
     public void obtenerPeriodoLista(){

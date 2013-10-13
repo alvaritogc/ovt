@@ -82,7 +82,7 @@
                     <h:form id="formularioFrm" enctype="multipart/form-data">
                         <h:panelGroup rendered="#{formularioUnicoBean.estaDeclarado}">
                             <h1>Usted ya realizo la declaracion jurada en este trimestre</h1>
-                            <p:commandButton  ajax="false" value="Ir a inicio" action="#{formularioUnicoBean.irBienvenida}"/>
+                            <p:commandButton  ajax="false" value="Ir a inicio" action="#{formularioUnicoBean.irInicio}"/>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{!formularioUnicoBean.estaDeclarado}">
                             <p:panelGrid>
