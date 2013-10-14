@@ -14,5 +14,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface IEntidadService {
-    public List<ParEntidadEntity> getEntidadLista();
+    List<ParEntidadEntity> getEntidadLista();
+
 }

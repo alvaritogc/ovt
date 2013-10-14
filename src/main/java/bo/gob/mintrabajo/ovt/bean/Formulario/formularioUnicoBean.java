@@ -74,6 +74,8 @@ public class formularioUnicoBean implements Serializable{
     private boolean habilita = true;
     private List<DocBinarioEntity> listaBinarios;
     private UsrUsuarioEntity usuario;
+    private UploadedFile file;
+    private String nombres[]= new String[3];
     //
     private boolean estaDeclarado;
 
@@ -89,7 +91,6 @@ public class formularioUnicoBean implements Serializable{
         usuario = iUsuarioService.findById(temp);
         perPersonaEntity = iPersonaService.buscarPorId(idPersona);
         docPlanillaEntity = new DocPlanillaEntity();
-        
         docPlanillaEntity.setHaberBasico(BigDecimal.ZERO);
         docPlanillaEntity.setBonoAntiguedad(BigDecimal.ZERO);
         docPlanillaEntity.setBonoProduccion(BigDecimal.ZERO);
@@ -155,7 +156,6 @@ public class formularioUnicoBean implements Serializable{
         documento.setTipoMedioRegistro("DDJJ");
         documento.setFechaBitacora(new Timestamp(new Date().getTime()));
         documento.setRegistroBitacora(usuario.getUsuario());
-        System.out.println(documento);
     }
 
     public void generaPlanilla(){
@@ -167,16 +167,17 @@ public class formularioUnicoBean implements Serializable{
 
     public void upload(FileUploadEvent evento){
         logger.info("upload(FileUploadEvent evento)");
-        UploadedFile file = evento.getFile();
+        file = evento.getFile();
+        nombres[listaBinarios.size()]= file.getFileName();
         try{
             binario = new DocBinarioEntity();
             binario.setTipoDocumento(file.getFileName());
             binario.setMetadata(file.getContentType());
             binario.setFechaBitacora(new Timestamp(new Date().getTime()));
             binario.setRegistroBitacora(usuario.getUsuario());
-            binario.setIdBinario(10);
             binario.setBinario(file.getContents());
             listaBinarios.add(binario);
+
             if(listaBinarios.size()==3)
                 habilita=false;
         }catch (Exception e){
@@ -455,5 +456,21 @@ public class formularioUnicoBean implements Serializable{
 
     public void setEstaDeclarado(boolean estaDeclarado) {
         this.estaDeclarado = estaDeclarado;
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
+    public String[] getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String[] nombres) {
+        this.nombres = nombres;
     }
 }

@@ -2,6 +2,8 @@ package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IPlanillaService;
 import bo.gob.mintrabajo.ovt.entities.*;
+import bo.gob.mintrabajo.ovt.repositories.BinarioRepository;
+import bo.gob.mintrabajo.ovt.repositories.EntidadRepository;
 import bo.gob.mintrabajo.ovt.repositories.PlanillaRepository;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
@@ -16,24 +18,27 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
  * User: gmercado
  * Date: 10/8/13
- * Time: 3:55 PM
- * To change this template use File | Settings | File Templates.
  */
 @Named("planillaService")
 @TransactionAttribute
 public class PlanillaService implements IPlanillaService {
+
     private final PlanillaRepository planillaRepository;
+    private final EntidadRepository entidadRepository;
+    private final BinarioRepository binarioRepository;
     private HashMap<String,Object> map = new HashMap<String,Object>();
 
     @Inject
-    public PlanillaService(PlanillaRepository planillaRepository) {
+    public PlanillaService(PlanillaRepository planillaRepository, EntidadRepository entidadRepository, BinarioRepository binarioRepository) {
         this.planillaRepository = planillaRepository;
+        this.entidadRepository = entidadRepository;
+        this.binarioRepository = binarioRepository;
     }
 
     @Override
@@ -43,75 +48,30 @@ public class PlanillaService implements IPlanillaService {
     }
 
     public void generaReporte(DocPlanillaEntity docPlanillaEntity, PerPersonaEntity persona , DocDocumentoEntity docDocumentoEntity, PerUnidadEntity perUnidadEntity, VperPersonaEntity vperPersonaEntity){
-        String parametro ="";
-        map.clear();
 
+        map.clear();
         map.put("nroOrden", docDocumentoEntity.getNumeroDocumento());
         map.put("rectificatoria", " ");
         map.put("nroRectificatoria", " ");
         map.put("totalNacional", "X");
-        map.put("oficinaCentral", perUnidadEntity.getNombreComercial());
+        map.put("oficinaCentral", perUnidadEntity.getIdUnidad());
         map.put("mesPresentacion", docPlanillaEntity.getPeriodo());
-
-
         map.put("empleadorMTEPS", perUnidadEntity.getNroReferencial());
         map.put("razonSocial", persona.getNombreRazonSocial());
-
-        parametro= vperPersonaEntity.getDirDepartamento();
-        if(parametro==null)
-            parametro=" ";
-        map.put("departamento", parametro);
-
-        parametro= vperPersonaEntity.getDirDireccion();
-        if(parametro==null)
-            parametro=" ";
-        map.put("direccion", parametro);
-
-        parametro= vperPersonaEntity.getTelefono();
-        if(parametro==null)
-            parametro=" ";
-        map.put("telefono", parametro);
-
+        map.put("departamento", vperPersonaEntity.getDirDepartamento());
+        map.put("direccion", vperPersonaEntity.getDirDireccion());
+        map.put("telefono", vperPersonaEntity.getTelefono());
         map.put("patronalSS", perUnidadEntity.getNroCajaSalud());
-
-        parametro= vperPersonaEntity.getLocalidad();
-        if(parametro==null)
-            parametro=" ";
-        map.put("ciudadLocalidad", parametro);
-
-        parametro= vperPersonaEntity.getFax();
-        if(parametro==null)
-            parametro=" ";
-        map.put("fax", parametro);
-
-        parametro= vperPersonaEntity.getNroIdentificacion() +"";
-        if(parametro==null)
-            parametro=" ";
-        map.put("nit", parametro);
-
-        parametro= vperPersonaEntity.getActividadDeclarada();
-        if(parametro==null)
-            parametro=" ";
-        map.put("actividadEconomica", parametro);
-
-        parametro= vperPersonaEntity.getDirZona();
-        if(parametro==null)
-            parametro=" ";
-        map.put("zona", parametro);
-
-        parametro= vperPersonaEntity.getDirNroDireccion();
-        if(parametro==null)
-            parametro=" ";
-        map.put("numero", parametro);
-
-        parametro= vperPersonaEntity.getEmail();
-        if(parametro==null)
-            parametro=" ";
-        map.put("correoElectronico", parametro);
-
+        map.put("ciudadLocalidad", vperPersonaEntity.getLocalidad());
+        map.put("fax", vperPersonaEntity.getFax());
+        map.put("nit", vperPersonaEntity.getNroIdentificacion() +"");
+        map.put("actividadEconomica", vperPersonaEntity.getActividadDeclarada());
+        map.put("zona", vperPersonaEntity.getDirZona());
+        map.put("numero", vperPersonaEntity.getDirNroDireccion());
+        map.put("correoElectronico", vperPersonaEntity.getEmail());
         map.put("nroAsegurados", docPlanillaEntity.getNroAsegCaja());
         map.put("montoAportadoAsegurados",docPlanillaEntity.getMontoAsegCaja());
-        map.put("gestorSalud",docPlanillaEntity.getIdEntidadSalud()); //----------------
+        map.put("gestorSalud", entidadRepository.findOne(BigDecimal.valueOf(docPlanillaEntity.getIdEntidadSalud())).getDescripcion());
         map.put("nroAfiliados",docPlanillaEntity.getNroAsegAfp());
         map.put("montoAportadoAfiliados",docPlanillaEntity.getMontoAsegAfp());
         map.put("haberBasico",docPlanillaEntity.getHaberBasico());
@@ -139,43 +99,34 @@ public class PlanillaService implements IPlanillaService {
         map.put("accidentesMuerte",docPlanillaEntity.getNroMuertes());
         map.put("enfermedadesTrabajos",docPlanillaEntity.getNroEnfermedades());
         map.put("email",docPlanillaEntity.getIdEntidadBanco()); //----------------;
-
         Calendar cal = Calendar.getInstance();
         cal.setTime(docPlanillaEntity.getFechaOperacion());
-
-        map.put("diaDeposito",cal.get(Calendar.DAY_OF_MONTH));
+        map.put("diaDeposito", cal.get(Calendar.DAY_OF_MONTH));
         cal.add(Calendar.MONTH, 1);
-        map.put("mesDeposito",cal.get(Calendar.MONTH));
-        map.put("anioDeposito",cal.get(Calendar.YEAR));
-
+        map.put("mesDeposito", cal.get(Calendar.MONTH));
+        map.put("anioDeposito", cal.get(Calendar.YEAR));
         cal = Calendar.getInstance();
         cal.setTime(docDocumentoEntity.getFechaDocumento());
-
-        map.put("diaFechaPresentacion",cal.get(Calendar.DAY_OF_MONTH));
+        map.put("diaFechaPresentacion", cal.get(Calendar.DAY_OF_MONTH));
         cal.add(Calendar.MONTH, 1);
-        map.put("mesFechaPresentacion",cal.get(Calendar.MONTH));
+        map.put("mesFechaPresentacion", cal.get(Calendar.MONTH));
         map.put("anioFechaPresentacion", cal.get(Calendar.YEAR));
-
-        map.put("montoDeposito",docPlanillaEntity.getMontoOperacion());
+        map.put("montoDeposito", docPlanillaEntity.getMontoOperacion());
         map.put("nroComprobante",docPlanillaEntity.getNumOperacion());
-
-        parametro= vperPersonaEntity.getRlNombre();
-        if(parametro==null)
-            parametro=" ";
-        map.put("nombreEmpleador", parametro);
-
-        parametro= vperPersonaEntity.getRlNroIdentidad();
-        if(parametro==null)
-            parametro=" ";
-        map.put("nroDocumento", parametro);
+        map.put("nombreEmpleador", vperPersonaEntity.getRlNombre());
+        map.put("nroDocumento", vperPersonaEntity.getRlNroIdentidad());
         map.put("lugarPresentacion", "Oficina Virtual");
+        List<DocBinarioEntity> lista = new ArrayList<DocBinarioEntity>();
+        lista= binarioRepository.findByAttribute("idDocumento", docDocumentoEntity.getIdDocumento(), -1,-1);
+        map.put("archivo1", lista.get(0).getTipoDocumento());
+        map.put("archivo2", lista.get(1).getTipoDocumento());
+        map.put("archivo3", lista.get(2).getTipoDocumento());
 
-        ServletContext servletContext = (ServletContext) FacesContext
-                .getCurrentInstance().getExternalContext().getContext();
+
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String pathReport = (String) servletContext.getRealPath("/");
         map.put("escudoBolivia", pathReport+"/pages/reportes/escudo.jpg");
         map.put("logo",pathReport+"/pages/reportes/logoMIN.jpg");
-
         try {
             generateReport();
         } catch (Exception e) {

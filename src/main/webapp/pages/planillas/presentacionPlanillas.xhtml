@@ -494,30 +494,33 @@
                             </p:panelGrid>
 
                             <!-- Renato Codigo -->
-                            <center>
-                                <h:panelGrid columns="3" style="text-align: right"  rendered="#{formularioUnicoBean.habilita}">
-                                    <h:outputText style="font-weight: bold;text-align: center" value="JULIO"/>
-                                    <h:outputText style="font-weight: bold" value=""/>
+                            <h:panelGrid columns="2" style="text-align: left">
+                                <h:outputText style="font-weight: bold;text-align: center" value="JULIO" rendered="#{formularioUnicoBean.habilita}"/>  &nbsp;
+                                <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
+                                              invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..." style="width: 500px"
+                                              mode="advanced" update="idArchivo1,guardarPlanillaBtn" fileLimit="1" label="Seleccione" invalidSizeMessage="Archivo demasiado grande."
+                                              sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv|XLS|XLSX|CSV)$/" rendered="#{formularioUnicoBean.habilita}"/>
+                                <h:outputText id="idArchivo1" value="#{formularioUnicoBean.nombres[0]}"  style="font-weight: bold;text-align: center"/>
 
-                                    <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
-                                                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
-                                                  mode="advanced" update="guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
-                                                  sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv)$/" rendered="#{formularioUnicoBean.habilita}"/>
-                                    <h:outputText value="AGOSTO" style="font-weight: bold"/>
-                                    <h:outputText value="" style="font-weight: bold"/>
-                                    <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
-                                                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
-                                                  mode="advanced" update="guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
-                                                  sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv)$/" rendered="#{formularioUnicoBean.habilita}"/>
-                                    <h:outputText value="SEPTIEMBRE" style="font-weight: bold"/>
-                                    <h:outputText value="" style="font-weight: bold"/>
-                                    <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
-                                                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y csv." style="width: 500px"
-                                                  mode="advanced" update="guardarPlanillaBtn" auto="false" fileLimit="1" label="Seleccione"
-                                                  sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv)$/" rendered="#{formularioUnicoBean.habilita}"/>
+                                <h:outputText value="AGOSTO" style="font-weight: bold" rendered="#{formularioUnicoBean.habilita}"/> &nbsp;
 
-                                </h:panelGrid> </center>
-                            <p:growl id="messages" showDetail="true" autoUpdate="true"/>
+                                <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
+                                              invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..." style="width: 500px"
+                                              mode="advanced" update="idArchivo2,guardarPlanillaBtn" fileLimit="1" label="Seleccione" invalidSizeMessage="Archivo demasiado grande."
+                                              sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv|XLS|XLSX|CSV)$/" rendered="#{formularioUnicoBean.habilita}"/>
+                                <h:outputText id="idArchivo2" value="#{formularioUnicoBean.nombres[1]}" style="font-weight: bold;text-align: center"/>
+
+                                <h:outputText value="SEPTIEMBRE" style="font-weight: bold" rendered="#{formularioUnicoBean.habilita}"/>   &nbsp;
+
+                                <p:fileUpload fileUploadListener="#{formularioUnicoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar" fileLimitMessage="Sólo se puede elegir un archivo."
+                                              invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..." style="width: 500px"
+                                              mode="advanced" update="idArchivo3,guardarPlanillaBtn" fileLimit="1" label="Seleccione" invalidSizeMessage="Archivo demasiado grande."
+                                              sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv|XLS|XLSX|CSV)$/" rendered="#{formularioUnicoBean.habilita}"/>
+                                <h:outputText id="idArchivo3" value="#{formularioUnicoBean.nombres[2]}" style="font-weight: bold;text-align: center"/>
+                                <p:growl id="messages" showDetail="true"/>
+                            </h:panelGrid>
+
+
 
                             <br/>
                             <div align="CENTER">
@@ -538,13 +541,8 @@
                             <!--</p:confirmDialog>-->
                         </h:panelGroup>
                     </h:form>
-
-
                 </div>
             </div>
-
         </div>
-
     </h:body>
-
 </html>
