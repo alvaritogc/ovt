@@ -35,7 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ManagedBean(name = "templateInicioBean")
-@RequestScoped
+@ViewScoped
 public class TemplateInicioBean implements Serializable {
     //
 
