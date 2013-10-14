@@ -59,6 +59,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.primefaces.extensions</groupId>
+            <artifactId>primefaces-extensions</artifactId>
+            <version>0.6.3</version>
+        </dependency>
+
         <!--<dependency>-->
             <!--<groupId>com.sun.faces</groupId>-->
             <!--<artifactId>jsf-impl</artifactId>-->
