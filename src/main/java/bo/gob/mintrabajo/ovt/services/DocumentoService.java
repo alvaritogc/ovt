@@ -184,7 +184,6 @@ public class DocumentoService implements IDocumentoService{
         for (int i = 2; i < codNumeroS.length(); i++) {
             codNumero = codNumero + codNumeroS.charAt(i);
         }
-        //System.out.println("codNumero: " + codNumero);
         Long numero=new Long(numeracion.getUltimoNumero()+1);
         //
         Formatter fmt = new Formatter();
@@ -204,27 +203,19 @@ public class DocumentoService implements IDocumentoService{
         //
         Long sumatoria = new Long(0);
         //
-        System.out.println("numeroSinVerificacion:"+numeroSinVerificacion);
-        System.out.println("numeroVerificacion   :"+numeroVerificacion);
         for (int i = 0; i < numeroSinVerificacion.length(); i++) {
-            //System.out.println("i " + i + ": " + numeroSinVerificacion.charAt(i));
             Long multiplicacion = (new Long("" + numeroSinVerificacion.charAt(i))) * (new Long("" + numeroVerificacion.charAt(i)));
-            //System.out.println("Multi: " + numeroSinVerificacion.charAt(i) + "*" + numeroVerificacion.charAt(i));
             sumatoria = sumatoria + multiplicacion;
-            //System.out.println("sumatoria " + i + ": " + sumatoria);
         }
         Long modulo = sumatoria % 11;
-        //System.out.println("modulo:" + modulo);
         Long verificacion = 11 - modulo;
-        //System.out.println("verificacion:" + verificacion);
         //
-        //System.out.println("===============4");
         numeracion.setUltimoNumero(numeracion.getUltimoNumero()+1);
-        //numeracionBusqueda.set
         numeracionRepository.save(numeracion);
         //
-        Long nuevoNumero = new Long("" + codNumero + numeroFormato + verificacion);
-        //System.out.println("===============5");
+        Formatter fmtVerificacion = new Formatter();
+        fmtVerificacion.format("%02d", verificacion);
+        Long nuevoNumero = new Long("" + codNumero + numeroFormato + fmtVerificacion.toString());
         return nuevoNumero;
     }
 
