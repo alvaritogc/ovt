@@ -1,4 +1,4 @@
-package login;
+package bo.gob.mintrabajo.ovt.bean;
 
 import bo.gob.mintrabajo.ovt.api.IDocumentoEstado;
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
