@@ -225,10 +225,10 @@ public class DocumentoService implements IDocumentoService{
         docDocumentoEntity.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumentoEntity.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1));
         docDocumentoEntity=repository.save(docDocumentoEntity);
-        int a= 1;
+        int idBinario= 1;
         for(DocBinarioEntity elementoBinario:listaBinarios){
             elementoBinario.setIdDocumento(docDocumentoEntity.getIdDocumento());
-            elementoBinario.setIdBinario(a++);
+            elementoBinario.setIdBinario(idBinario++);
             binarioRepository.save(elementoBinario);
         }
         docPlanillaEntity.setIdDocumento(docDocumentoEntity.getIdDocumento());

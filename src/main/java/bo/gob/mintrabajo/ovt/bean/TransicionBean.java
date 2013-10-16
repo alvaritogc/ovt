@@ -42,7 +42,7 @@ public class TransicionBean {
     private String codEstadoInicial;
     private String codDocumento;
     private int version;
-    private int idDocumento;
+    private Long idDocumento;
     private List<DocTransicionEntity> listaTransicion;
     private List<ParDocumentoEstadoEntity> listaParDocumentoEstado;
 
@@ -59,7 +59,7 @@ public class TransicionBean {
     @PostConstruct
     public void ini() {
         parDocumentoEstadoEntity = new ParDocumentoEstadoEntity();
-        idDocumento = (Integer) session.getAttribute("idDocumento");
+        idDocumento = (Long) session.getAttribute("idDocumento");
 
         BigDecimal bi = BigDecimal.valueOf(idDocumento);
         docDocumentoEntity=iDocumentoService.findById(bi);
@@ -138,11 +138,11 @@ public class TransicionBean {
         this.codEstadoInicial = codEstadoInicial;
     }
 
-    public int getIdDocumento() {
+    public Long getIdDocumento() {
         return idDocumento;
     }
 
-    public void setIdDocumento(int idDocumento) {
+    public void setIdDocumento(Long idDocumento) {
         this.idDocumento = idDocumento;
     }
 
