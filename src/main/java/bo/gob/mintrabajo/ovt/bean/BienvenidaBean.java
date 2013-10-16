@@ -28,6 +28,7 @@ public class BienvenidaBean {
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private int idUsuario;
     private String idPersona;
+    private String idEmpleador;
     private DocDocumentoEntity docDocumentoEntity;
     private static final Logger logger = LoggerFactory.getLogger(BienvenidaBean.class);
 
@@ -49,6 +50,8 @@ public class BienvenidaBean {
     //
     private List<DocDocumentoEntity> listaDocumentos;
     private VperPersonaEntity vperPersonaEntity;
+    //
+    private boolean esFuncionario;
 
     @PostConstruct
     public void ini() {
@@ -75,6 +78,14 @@ public class BienvenidaBean {
 //        }
         //persona=iPersonaService.buscarPorId(usuario.getIdPersona());
         logger.info("persona ok");
+        idEmpleador=(String) session.getAttribute("idPersona");
+        if(idEmpleador!=null && idPersona!=null && idPersona.equals(idEmpleador)){
+            esFuncionario=false;
+        }
+        else
+        {
+            esFuncionario=true;
+        }
         cargar();
     }
 
@@ -201,5 +212,13 @@ public class BienvenidaBean {
 
     public void setDocDocumentoEntity(DocDocumentoEntity docDocumentoEntity) {
         this.docDocumentoEntity = docDocumentoEntity;
+    }
+
+    public boolean isEsFuncionario() {
+        return esFuncionario;
+    }
+
+    public void setEsFuncionario(boolean esFuncionario) {
+        this.esFuncionario = esFuncionario;
     }
 }
