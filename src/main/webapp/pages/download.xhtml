@@ -19,13 +19,13 @@
                         </h:outputText>
                     </p:column>
                     <p:column headerText="Acciones">
-                        <p:commandButton id="downloadLink" value="Descargar" action="#{downloadBean.download}" ajax="false" icon="ui-icon-upload">
+                        <p:commandButton id="downloadLink" value="Descargar" action="#{downloadBean.download}" ajax="false" icon="ui-icon-arrowthickstop-1-s">
                             <f:setPropertyActionListener value="#{elemBinario}" target="#{downloadBean.docBinarioEntity}" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
                 <br/>
-                <p:commandButton action="#{downloadBean.volver}" ajax="false" value="VOLVER"/>
+                <p:commandButton action="#{downloadBean.volver}" ajax="false" value="Volver"/>
             </h:form>
         </ui:define>
     </ui:composition>
