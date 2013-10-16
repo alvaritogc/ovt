@@ -154,5 +154,14 @@ public class PlanillaService implements IPlanillaService {
         servletOutputStream.flush();
         servletOutputStream.close();
     }
+    
+    @Override
+    public DocPlanillaEntity obtenerPorDocumento(Long idDocumento){
+        List<DocPlanillaEntity> list=planillaRepository.findByAttribute("idDocumento", idDocumento, -1, -1);
+        if(list==null || list.size()==0){
+            throw new RuntimeException("No se encontro el documento");
+        }
+        return list.get(0);
+    }
 }
 

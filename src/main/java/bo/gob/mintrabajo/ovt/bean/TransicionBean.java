@@ -2,8 +2,10 @@ package bo.gob.mintrabajo.ovt.bean;
 
 import bo.gob.mintrabajo.ovt.api.IDocumentoEstado;
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
+import bo.gob.mintrabajo.ovt.api.IPlanillaService;
 import bo.gob.mintrabajo.ovt.api.ITransicionService;
 import bo.gob.mintrabajo.ovt.entities.DocDocumentoEntity;
+import bo.gob.mintrabajo.ovt.entities.DocPlanillaEntity;
 import bo.gob.mintrabajo.ovt.entities.DocTransicionEntity;
 import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstadoEntity;
 import org.slf4j.Logger;
@@ -20,41 +22,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 //
-
 @ManagedBean
 @ViewScoped
 public class TransicionBean {
+
     private int idUsuario;
     private String idPersona;
     private String idEmpleador;
-
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private static final Logger logger = LoggerFactory.getLogger(TransicionBean.class);
-
     @ManagedProperty(value = "#{transicionService}")
     private ITransicionService iTransicionService;
     @ManagedProperty(value = "#{documentoEstadoService}")
     private IDocumentoEstado iDocumentoEstado;
     @ManagedProperty(value = "#{documentoService}")
     private IDocumentoService iDocumentoService;
-
-
+    @ManagedProperty(value = "#{planillaService}")
+    private IPlanillaService iPlanillaService;
+    //
     private String codEstadoInicial;
     private String codDocumento;
     private int version;
     private Long idDocumento;
     private List<DocTransicionEntity> listaTransicion;
     private List<ParDocumentoEstadoEntity> listaParDocumentoEstado;
-
     private ParDocumentoEstadoEntity parDocumentoEstadoEntity;
     private List<String> lista = new ArrayList<String>();
     private DocTransicionEntity docTransicionEntity;
     private DocTransicionEntity trans = new DocTransicionEntity();
     private ParDocumentoEstadoEntity descripCodIncial;
-    private DocDocumentoEntity docDocumentoEntity= new DocDocumentoEntity();
+    private DocDocumentoEntity docDocumentoEntity = new DocDocumentoEntity();
     private String estadoNuevo;
     private int tamaño;
     private boolean esUsuarioInterno;
+    private DocPlanillaEntity planilla;
 
     @PostConstruct
     public void ini() {
@@ -62,13 +63,13 @@ public class TransicionBean {
         idDocumento = (Long) session.getAttribute("idDocumento");
 
         BigDecimal bi = BigDecimal.valueOf(idDocumento);
-        docDocumentoEntity=iDocumentoService.findById(bi);
-        codEstadoInicial=(String) session.getAttribute("codEstadoInicial");
-        codDocumento=(String) session.getAttribute("codDocumento");
-        version=(Integer) session.getAttribute("version");
-        descripCodIncial= iDocumentoEstado.retornaDocEstado(codEstadoInicial);
+        docDocumentoEntity = iDocumentoService.findById(bi);
+        codEstadoInicial = (String) session.getAttribute("codEstadoInicial");
+        codDocumento = (String) session.getAttribute("codDocumento");
+        version = (Integer) session.getAttribute("version");
+        descripCodIncial = iDocumentoEstado.retornaDocEstado(codEstadoInicial);
 
-
+        planilla = iPlanillaService.obtenerPorDocumento(docDocumentoEntity.getIdDocumento());
         System.out.println(codDocumento);
         System.out.println(version);
         System.out.println(codEstadoInicial);
@@ -81,26 +82,25 @@ public class TransicionBean {
 
 
 
-        listaTransicion= new ArrayList<DocTransicionEntity>();
-        
+        listaTransicion = new ArrayList<DocTransicionEntity>();
+
         //idUsuario=(Integer)session.getAttribute("idUsuario");
-        idPersona=(String)session.getAttribute("idPersona");
-        idEmpleador=(String)session.getAttribute("idEmpleador");
-        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador)){
-            esUsuarioInterno=false;
-        }
-        else{
-            esUsuarioInterno=true;
+        idPersona = (String) session.getAttribute("idPersona");
+        idEmpleador = (String) session.getAttribute("idEmpleador");
+        if (idPersona != null && idEmpleador != null && idPersona.equals(idEmpleador)) {
+            esUsuarioInterno = false;
+        } else {
+            esUsuarioInterno = true;
         }
         cargar();
-        
+
     }
 
     public void cargar() {
-        listaTransicion=iTransicionService.listarTransicionesSiguientes(trans);
+        listaTransicion = iTransicionService.listarTransicionesSiguientes(trans);
         lista.clear();
 
-        for(DocTransicionEntity valor: listaTransicion){
+        for (DocTransicionEntity valor : listaTransicion) {
             parDocumentoEstadoEntity = new ParDocumentoEstadoEntity();
             parDocumentoEstadoEntity = iDocumentoEstado.retornaDocEstado(valor.getCodEstadoFinal());
             lista.add(parDocumentoEstadoEntity.getDescripcion());
@@ -109,7 +109,7 @@ public class TransicionBean {
 
     }
 
-    public String guardaCambioEstado(){
+    public String guardaCambioEstado() {
         docDocumentoEntity.setCodEstado(iDocumentoEstado.retornaCodEstado(estadoNuevo).getCodEstado());
         iDocumentoService.save(docDocumentoEntity);
         tamaño = lista.size();
@@ -125,7 +125,7 @@ public class TransicionBean {
         this.tamaño = tamaño;
     }
 
-    public String irBienvenida(){
+    public String irBienvenida() {
         tamaño = lista.size();
         return "irBienvenida";
     }
@@ -153,7 +153,6 @@ public class TransicionBean {
     public void setiTransicionService(ITransicionService iTransicionService) {
         this.iTransicionService = iTransicionService;
     }
-
 
     public DocTransicionEntity getDocTransicionEntity() {
         return docTransicionEntity;
@@ -217,5 +216,21 @@ public class TransicionBean {
 
     public void setEsUsuarioInterno(boolean esUsuarioInterno) {
         this.esUsuarioInterno = esUsuarioInterno;
+    }
+
+    public DocPlanillaEntity getPlanilla() {
+        return planilla;
+    }
+
+    public void setPlanilla(DocPlanillaEntity planilla) {
+        this.planilla = planilla;
+    }
+
+    public IPlanillaService getiPlanillaService() {
+        return iPlanillaService;
+    }
+
+    public void setiPlanillaService(IPlanillaService iPlanillaService) {
+        this.iPlanillaService = iPlanillaService;
     }
 }

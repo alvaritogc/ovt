@@ -13,4 +13,6 @@ public interface IPlanillaService {
     void guardar(DocPlanillaEntity objeto);
 
     void generaReporte(DocPlanillaEntity docPlanillaEntity, PerPersonaEntity persona , DocDocumentoEntity docDocumentoEntity, PerUnidadEntity perUnidadEntity, VperPersonaEntity vperPersonaEntity);
+    
+    DocPlanillaEntity obtenerPorDocumento(Long idDocumento);
 }
