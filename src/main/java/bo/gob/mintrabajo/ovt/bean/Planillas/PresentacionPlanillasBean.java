@@ -131,7 +131,7 @@ public class PresentacionPlanillasBean {
         for(int i=1;i<=3;i++){
             DocLogImpresionEntity impresion = new DocLogImpresionEntity();
             impresion.setRegistroBitacora("Registro"+i);
-            impresion.setIdDocumento(1);
+            impresion.setIdDocumento(1L);
             impresion.setFechaBitacora(new Timestamp(new Date().getTime()));
             l.add(impresion);
 

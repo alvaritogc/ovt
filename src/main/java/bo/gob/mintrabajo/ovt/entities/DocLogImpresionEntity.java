@@ -12,15 +12,15 @@ import java.sql.Timestamp;
 @javax.persistence.Table(name = "DOC_LOG_IMPRESION", schema = "OVT", catalog = "")
 @Entity
 public class DocLogImpresionEntity {
-    private Integer idDoclogimpresion;
+    private Long idDoclogimpresion;
 
     @javax.persistence.Column(name = "ID_DOCLOGIMPRESION")
     @Id
-    public Integer getIdDoclogimpresion() {
+    public Long getIdDoclogimpresion() {
         return idDoclogimpresion;
     }
 
-    public void setIdDoclogimpresion(Integer idDoclogimpresion) {
+    public void setIdDoclogimpresion(Long idDoclogimpresion) {
         this.idDoclogimpresion = idDoclogimpresion;
     }
 
@@ -48,15 +48,15 @@ public class DocLogImpresionEntity {
         this.registroBitacora = registroBitacora;
     }
 
-    private Integer idDocumento;
+    private Long idDocumento;
 
     @javax.persistence.Column(name = "ID_DOCUMENTO")
     @Basic
-    public Integer getIdDocumento() {
+    public Long getIdDocumento() {
         return idDocumento;
     }
 
-    public void setIdDocumento(Integer idDocumento) {
+    public void setIdDocumento(Long idDocumento) {
         this.idDocumento = idDocumento;
     }
 

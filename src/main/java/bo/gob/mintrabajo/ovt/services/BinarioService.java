@@ -2,7 +2,9 @@ package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IBinarioService;
 import bo.gob.mintrabajo.ovt.entities.DocBinarioEntity;
+import bo.gob.mintrabajo.ovt.entities.DocLogImpresionEntity;
 import bo.gob.mintrabajo.ovt.repositories.BinarioRepository;
+import bo.gob.mintrabajo.ovt.repositories.LogImpresionRepository;
 
 import javax.ejb.TransactionAttribute;
 import javax.faces.context.ExternalContext;
@@ -22,10 +24,12 @@ import java.util.List;
 public class BinarioService implements IBinarioService{
 
     private final BinarioRepository binarioRepository;
+    private final LogImpresionRepository logImpresionRepository;
 
     @Inject
-    public BinarioService(BinarioRepository binarioRepository) {
+    public BinarioService(BinarioRepository binarioRepository, LogImpresionRepository logImpresionRepository) {
         this.binarioRepository = binarioRepository;
+        this.logImpresionRepository = logImpresionRepository;
     }
 
     @Override
@@ -49,7 +53,7 @@ public class BinarioService implements IBinarioService{
     }
 
     @Override
-    public void download(DocBinarioEntity docBinarioEntity){
+    public void download(DocBinarioEntity docBinarioEntity, DocLogImpresionEntity docLogImpresionEntity){
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ExternalContext externalContext = facesContext.getExternalContext();
@@ -68,6 +72,8 @@ public class BinarioService implements IBinarioService{
             output.write(docBinarioEntity.getBinario());
             output.close();
             facesContext.responseComplete();
+            logImpresionRepository.save(docLogImpresionEntity);
+
             } catch (Exception e) {
                 System.out.println("El archivo no se descargo correctamente.");
                 e.printStackTrace();
