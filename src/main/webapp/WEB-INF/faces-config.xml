@@ -47,6 +47,12 @@
             <redirect include-view-params="false">
             </redirect>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>irDownload</from-outcome>
+            <to-view-id>/pages/download.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
+        </navigation-case>
     </navigation-rule>
 
 </faces-config>

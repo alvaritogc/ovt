@@ -1,0 +1,49 @@
+* Requisitos
+1. GIT
+2. Java 7
+3. Maven
+4. Internet
+5. clonarse e instalarse https://github.com/marcelomorales-name/siqisiqi
+6. Si usan eclipse, el plugin de maven de SONATYPE. Intellij y
+   Netbeans ya tienen soporte para maven.
+7. BAJAR DOCUMENTACIÓN DE TODOS LOS COMPONENTES Y SOURCES DE TODOS
+   LOS COMPONENTES
+8. EL driver de Oracle instalado en su repo de maven local.
+* Entities
+1. Generados a partir de base de datos generalmente
+2. Deben ir en un sub-paquete llamado 'entities'
+3. Pueden tener dependencias (utilizar) objetos que están en otros
+   paquetes 'entities' o en paquetes 'model'
+4. No deben contener código de negocio.
+5. Es permitido utilizar 'new'
+
+* Repositories
+1. Todos deben ser Interfaces
+2. Deben estar en un sub-paquete llamado 'repositories'
+3. Deben estar anotados con @OpenJpaSettings
+4. Siguen la lógica encontrada en Spring JPA Data Repositories
+5. Deben extender la Intefaz 'OpenJpaRepository'
+6. Deben parametrizarse con un Entity del mismo super-paquete.
+7. No deben implementarse salvo casos muy particulares
+8. NO es permitido utilizar 'new'
+9. Las declaraciones de métodos deben seguir la siguiente lista de
+   particularidades
+** Particularidades de los métodos de los repositories
+1. Intentar utilizar los métodos ya definidos
+2. Si no se puede, intentar utilizar el nombre de método adecuado
+3. Intentar implementar utilizando criteria query
+4. Si aún así no se puede, anotar pasando un EJBQL usando @Query
+5. Manual en http://docs.spring.io/spring-data/jpa/docs/1.4.1.RELEASE/reference/html
+
+* Services
+1. No pueden tener información propia o almacenar información en atributos.
+2. Estar siempre consciente que éstos demarcan la transacción.
+3. Para realizar trabajo, deben inyectarse repositories, otros
+   servicios, o componentes conocidos.
+4. La inyección debe hacerse mediante constructor.
+5. Ese constructor debe anotarse con @Inject
+6. La clase debe anotarse con @Named y con @TransactionAttribute
+7. Opcionalmente, puede cambiarse la propagación de cada método con
+   @TransactionAttribute
+8. Deben implmementar una interfaz que debe ir en el sub-paquete 'api'
+9. NO es permitido utilizar 'new'

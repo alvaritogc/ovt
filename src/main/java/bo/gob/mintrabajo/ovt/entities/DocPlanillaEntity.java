@@ -28,15 +28,15 @@ public class DocPlanillaEntity {
         this.idPlanilla = idPlanilla;
     }
 
-    private int idDocumento;
+    private Long idDocumento;
 
     @javax.persistence.Column(name = "ID_DOCUMENTO")
     @Basic
-    public int getIdDocumento() {
+    public Long getIdDocumento() {
         return idDocumento;
     }
 
-    public void setIdDocumento(int idDocumento) {
+    public void setIdDocumento(Long idDocumento) {
         this.idDocumento = idDocumento;
     }
 
@@ -467,7 +467,6 @@ public class DocPlanillaEntity {
 
         DocPlanillaEntity that = (DocPlanillaEntity) o;
 
-        if (idDocumento != that.idDocumento) return false;
         if (idEntidadBanco != that.idEntidadBanco) return false;
         if (idEntidadSalud != that.idEntidadSalud) return false;
         if (idPlanilla != that.idPlanilla) return false;
@@ -488,7 +487,6 @@ public class DocPlanillaEntity {
         if (nroMuertes != that.nroMuertes) return false;
         if (nroRetiradosH != that.nroRetiradosH) return false;
         if (nroRetiradosM != that.nroRetiradosM) return false;
-        if (periodo != that.periodo) return false;
         if (aporteAfp != null ? !aporteAfp.equals(that.aporteAfp) : that.aporteAfp != null) return false;
         if (bonoAntiguedad != null ? !bonoAntiguedad.equals(that.bonoAntiguedad) : that.bonoAntiguedad != null)
             return false;
@@ -497,6 +495,7 @@ public class DocPlanillaEntity {
         if (fechaOperacion != null ? !fechaOperacion.equals(that.fechaOperacion) : that.fechaOperacion != null)
             return false;
         if (haberBasico != null ? !haberBasico.equals(that.haberBasico) : that.haberBasico != null) return false;
+        if (idDocumento != null ? !idDocumento.equals(that.idDocumento) : that.idDocumento != null) return false;
         if (laborExtra != null ? !laborExtra.equals(that.laborExtra) : that.laborExtra != null) return false;
         if (montoAsegAfp != null ? !montoAsegAfp.equals(that.montoAsegAfp) : that.montoAsegAfp != null) return false;
         if (montoAsegCaja != null ? !montoAsegCaja.equals(that.montoAsegCaja) : that.montoAsegCaja != null)
@@ -507,6 +506,7 @@ public class DocPlanillaEntity {
         if (otrosBonos != null ? !otrosBonos.equals(that.otrosBonos) : that.otrosBonos != null) return false;
         if (otrosDescuentos != null ? !otrosDescuentos.equals(that.otrosDescuentos) : that.otrosDescuentos != null)
             return false;
+        if (periodo != null ? !periodo.equals(that.periodo) : that.periodo != null) return false;
         if (rciva != null ? !rciva.equals(that.rciva) : that.rciva != null) return false;
         if (subsidioFrontera != null ? !subsidioFrontera.equals(that.subsidioFrontera) : that.subsidioFrontera != null)
             return false;
@@ -518,8 +518,8 @@ public class DocPlanillaEntity {
     @Override
     public int hashCode() {
         int result = idPlanilla;
-        result = 31 * result + idDocumento;
-        result = 31 * result + (periodo != null ? tipoPlanilla.hashCode() : 0);
+        result = 31 * result + (idDocumento != null ? idDocumento.hashCode() : 0);
+        result = 31 * result + (periodo != null ? periodo.hashCode() : 0);
         result = 31 * result + (tipoPlanilla != null ? tipoPlanilla.hashCode() : 0);
         result = 31 * result + nroAsegCaja;
         result = 31 * result + (montoAsegCaja != null ? montoAsegCaja.hashCode() : 0);

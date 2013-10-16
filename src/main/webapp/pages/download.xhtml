@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <h:form>
+
+                <p:dataTable id="idListaDocumentos" value="#{downloadBean.listaBinarios}" var="elemBinario" paginator="true" rows="10">
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{elemBinario.tipoDocumento}"/>
+                    </p:column>
+                    <p:column headerText="Fecha">
+                        <h:outputText value="#{elemBinario.fechaBitacora}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Acciones">
+                        <h:commandLink id="downloadLink" value="Download" action="#{downloadBean.download}" >
+                            <f:setPropertyActionListener value="#{elemBinario}" target="#{downloadBean.docBinarioEntity}" />
+                            <!--<p:fileDownload value="# {downloadBean.file}" />-->
+                        </h:commandLink>
+                    </p:column>
+
+                    <!--<p:column headerText="Acciones">-->
+                        <!--<p:commandLink ajax="false" actionListener="# {downloadBean.downloadAction(elemBinario)}" value="Download">-->
+                            <!--<span class="ui-icon icoFolderGo" style="padding-right: 1.5em;" />-->
+                            <!--<p:fileDownload value="# {downloadBean.file}" />-->
+                        <!--</p:commandLink>-->
+                    <!--</p:column>-->
+                </p:dataTable>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

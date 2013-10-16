@@ -24,15 +24,15 @@ public class DocBinarioEntityPK implements Serializable {
         this.idBinario = idBinario;
     }
 
-    private Integer idDocumento;
+    private Long idDocumento;
 
     @Id
     @Column(name = "ID_DOCUMENTO")
-    Integer getIdDocumento() {
+    Long getIdDocumento() {
         return idDocumento;
     }
 
-    void setIdDocumento(Integer idDocumento) {
+    void setIdDocumento(Long idDocumento) {
         this.idDocumento = idDocumento;
     }
 

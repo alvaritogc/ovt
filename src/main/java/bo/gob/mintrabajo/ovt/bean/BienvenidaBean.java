@@ -118,6 +118,11 @@ public class BienvenidaBean {
         }
     }
 
+    public String download(){
+        session.setAttribute("idDocumento", docDocumentoEntity.getIdDocumento());
+        return "irDownload";
+    }
+
     public IUsuarioService getiUsuarioService() {
         return iUsuarioService;
     }

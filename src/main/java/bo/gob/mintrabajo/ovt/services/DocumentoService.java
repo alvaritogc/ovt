@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
+import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.*;
 import bo.gob.mintrabajo.ovt.repositories.*;
 
@@ -8,8 +9,6 @@ import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
 
@@ -27,15 +26,17 @@ public class DocumentoService implements IDocumentoService{
     private final BinarioRepository binarioRepository;
     private final UnidadRepository unidadRepository;
     private final NumeracionRepository numeracionRepository;
+    private final IUtilsService utils;
 
     @Inject
-    public DocumentoService(DocumentoRepository repository, DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository, BinarioRepository binarioRepository, UnidadRepository unidadRepository, NumeracionRepository numeracionRepository) {
+    public DocumentoService(DocumentoRepository repository, DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository, BinarioRepository binarioRepository, UnidadRepository unidadRepository, NumeracionRepository numeracionRepository, IUtilsService utils) {
         this.repository = repository;
         this.documentoEstadoRepository = documentoEstadoRepository;
         this.planillaRepository = planillaRepository;
         this.binarioRepository = binarioRepository;
         this.unidadRepository = unidadRepository;
         this.numeracionRepository = numeracionRepository;
+        this.utils = utils;
     }
 
     @Override
@@ -92,46 +93,47 @@ public class DocumentoService implements IDocumentoService{
     
     @Override
     public DocDocumentoEntity guardar(DocDocumentoEntity documento) {
-        if(documento==null){
-            System.out.println("Error en el documento");
-            throw new RuntimeException("Error en el documento");
-        }
-        //
-        documento.setIdDocumento(repository.findAll().size()+1);
-        //
-        documento.setCodDocumento("LC1010");
-        documento.setVersion(1);
-        //documento.setNumeroDocumento(1);
-        //
-        //
-        //
-        //
-        
-        //Long a=actualizarNumeroDeOrden("LC1010", 1);
-        documento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1));
-        //
-        //
-        //documento.setNumeroDocumento(repository.findAll().size()+10101000001L);
-        //
-//        documento.setNumeroDocumento(repository.findAll().size()+1);
-        Date date= new java.util.Date();
-        documento.setFechaDocumento(new Timestamp(date.getTime()));
-        //
-        documento.setIdDocumentoRef(null);
-        //
-        documento.setCodEstado("110");
-        documento.setFechaReferenca(null);
-        documento.setTipoMedioRegistro("OFVIR");
-        documento.setFechaBitacora(new Timestamp(date.getTime()));
-        //
-//        documento.setIdEstadoDocumento("1");
-        //
-        DocDocumentoEntity entity;
-        //
-        //System.out.println(""+documento.toString());
-        entity = repository.save(documento);
-
-        return entity;
+//        if(documento==null){
+//            System.out.println("Error en el documento");
+//            throw new RuntimeException("Error en el documento");
+//        }
+//        //
+//        documento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+//        //
+//        documento.setCodDocumento("LC1010");
+//        documento.setVersion(1);
+//        //documento.setNumeroDocumento(1);
+//        //
+//        //
+//        //
+//        //
+//
+//        //Long a=actualizarNumeroDeOrden("LC1010", 1);
+//        documento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1));
+//        //
+//        //
+//        //documento.setNumeroDocumento(repository.findAll().size()+10101000001L);
+//        //
+////        documento.setNumeroDocumento(repository.findAll().size()+1);
+//        Date date= new java.util.Date();
+//        documento.setFechaDocumento(new Timestamp(date.getTime()));
+//        //
+//        documento.setIdDocumentoRef(null);
+//        //
+//        documento.setCodEstado("110");
+//        documento.setFechaReferenca(null);
+//        documento.setTipoMedioRegistro("OFVIR");
+//        documento.setFechaBitacora(new Timestamp(date.getTime()));
+//        //
+////        documento.setIdEstadoDocumento("1");
+//        //
+//        DocDocumentoEntity entity;
+//        //
+//        //System.out.println(""+documento.toString());
+//        entity = repository.save(documento);
+//
+//        return entity;
+        return null;
     }
     
     @Override
@@ -152,7 +154,7 @@ public class DocumentoService implements IDocumentoService{
     }
 
     @Override
-    public DocPlanillaEntity retornaPlanilla(int idDocumento){
+    public DocPlanillaEntity retornaPlanilla(Long idDocumento){
 
 //        idDocumento = 1;
 
@@ -220,7 +222,7 @@ public class DocumentoService implements IDocumentoService{
     }
 
     public void guardaDocumentoBinarioPlanilla(DocDocumentoEntity docDocumentoEntity, List<DocBinarioEntity> listaBinarios, DocPlanillaEntity docPlanillaEntity){
-        docDocumentoEntity.setIdDocumento(repository.findAll().size()+1);
+        docDocumentoEntity.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumentoEntity.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1));
         docDocumentoEntity=repository.save(docDocumentoEntity);
         int a= 1;

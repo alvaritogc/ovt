@@ -29,15 +29,15 @@ public class DocBinarioEntity {
         this.idBinario = idBinario;
     }
 
-    private Integer idDocumento;
+    private Long idDocumento;
 
     @javax.persistence.Column(name = "ID_DOCUMENTO")
     @Id
-    public Integer getIdDocumento() {
+    public Long getIdDocumento() {
         return idDocumento;
     }
 
-    public void setIdDocumento(Integer idDocumento) {
+    public void setIdDocumento(Long idDocumento) {
         this.idDocumento = idDocumento;
     }
 

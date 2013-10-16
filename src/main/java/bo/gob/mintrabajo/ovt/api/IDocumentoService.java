@@ -20,7 +20,7 @@ public interface IDocumentoService {
     public DocDocumentoEntity findById(BigDecimal id);
     public DocDocumentoEntity guardar(DocDocumentoEntity documento);
     public List<DocDocumentoEntity> listarPorPersona(String idPersona);
-    public DocPlanillaEntity retornaPlanilla(int idDocumento);
+    public DocPlanillaEntity retornaPlanilla(Long idDocumento);
     public PerUnidadEntity retornaUnidad(String idPersona);
     public Long actualizarNumeroDeOrden(String codDocumento, Integer version);
     public void guardaDocumentoBinarioPlanilla(DocDocumentoEntity docDocumentoEntity, List<DocBinarioEntity> listaBinarios, DocPlanillaEntity docPlanillaEntity);

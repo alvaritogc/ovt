@@ -16,15 +16,15 @@ import java.sql.Timestamp;
 @javax.persistence.Table(name = "DOC_DOCUMENTO", schema = "OVT", catalog = "")
 @Entity
 public class DocDocumentoEntity {
-    private Integer idDocumento;
+    private Long idDocumento;
 
     @javax.persistence.Column(name = "ID_DOCUMENTO")
     @Id
-    public Integer getIdDocumento() {
+    public Long getIdDocumento() {
         return idDocumento;
     }
 
-    public void setIdDocumento(Integer idDocumento) {
+    public void setIdDocumento(Long idDocumento) {
         this.idDocumento = idDocumento;
     }
 
