@@ -18,20 +18,22 @@
                 </p:panelGrid>
             </center>
             <br/>
-            <h:panelGrid columns="2" >
-                <p:outputLabel value="Nº de comprobante de depósito:" style="text-align: right;font-size: 15px;"/>
-                <p:outputLabel value="#{transicionBean.planilla.numOperacion}"  style="margin-left: 10px;font-size: 15px;"/>
-                <p:outputLabel value="Fecha de depósito:" style="text-align: right;font-size: 15px;"/>
+            <h:panelGrid columns="6"  style="border: 1px solid black; height: 50px;width:100%;">
+                <p:outputLabel value="Nº de comprobante de depósito:" style="text-align: right;"/>
+                <p:outputLabel value="#{transicionBean.planilla.numOperacion}"  style="border: 1px solid black;width: 80px;text-align: left;padding: 3px;"/>
                 
-                <p:outputLabel value="#{transicionBean.planilla.fechaOperacion}" style="margin-left: 10px;font-size: 15px;">
+                <p:outputLabel value="Fecha de depósito:" style="text-align: right;margin-left: 25px;"/>
+                <p:outputLabel value="#{transicionBean.planilla.fechaOperacion}" style="border: 1px solid black;width: 50px;text-align: left;padding: 3px;">
                     <f:convertDateTime pattern="dd/MM/yy" />
                 </p:outputLabel>
-                <p:outputLabel value="Monto de depósito:" style="text-align: right;font-size: 15px;"/>
-                <p:outputLabel value="#{transicionBean.planilla.montoOperacion}" style="margin-left: 10px;font-size: 15px;">
+                
+                <p:outputLabel value="Monto de depósito:" style="text-align: right;margin-left: 25px;"/>
+                <p:outputLabel value="#{transicionBean.planilla.montoOperacion}" style="border: 1px solid black;width: 50px;text-align: right;padding: 3px;">
                     <f:convertNumber groupingUsed="true" minFractionDigits="2" />
                 </p:outputLabel>
 
             </h:panelGrid>
+            <br/>
             <!--style="border: 1px solid black"-->
             <center>
                 <h:form >
