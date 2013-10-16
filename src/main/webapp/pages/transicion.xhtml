@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
     <ui:composition template="../pages/template/templateInicio.xhtml">
         <ui:define name="content">
             <center>
@@ -15,11 +16,27 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
+            </center>
+            <br/>
+            <h:panelGrid columns="2" >
+                <p:outputLabel value="Nº de comprobante de depósito:" style="text-align: right;font-size: 15px;"/>
+                <p:outputLabel value="#{transicionBean.planilla.numOperacion}"  style="margin-left: 10px;font-size: 15px;"/>
+                <p:outputLabel value="Fecha de depósito:" style="text-align: right;font-size: 15px;"/>
+                
+                <p:outputLabel value="#{transicionBean.planilla.fechaOperacion}" style="margin-left: 10px;font-size: 15px;">
+                    <f:convertDateTime pattern="dd/MM/yy" />
+                </p:outputLabel>
+                <p:outputLabel value="Monto de depósito:" style="text-align: right;font-size: 15px;"/>
+                <p:outputLabel value="#{transicionBean.planilla.montoOperacion}" style="margin-left: 10px;font-size: 15px;">
+                    <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                </p:outputLabel>
+
+            </h:panelGrid>
+            <!--style="border: 1px solid black"-->
+            <center>
                 <h:form >
-                    <br/>
-                    <br/>
-                    <p:panelGrid columns="2">
-                        
+                    <p:panelGrid columns="2" >
+
                         <h:outputText value="#{transicionBean.descripCodIncial.descripcion} "  style="font-size: 20px"/>
                         <p:selectOneRadio id="grid" value="#{transicionBean.estadoNuevo}" 
                                           layout="grid" 
@@ -40,6 +57,8 @@
                     <h:panelGrid columns="1" rendered="#{!transicionBean.esUsuarioInterno}">
                         <p:commandButton value="Volver" action="#{transicionBean.irBienvenida}" ajax="false"/>
                     </h:panelGrid>
+                    <br/>
+                    <br/>
 
 
                 </h:form>
