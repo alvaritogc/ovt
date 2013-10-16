@@ -10,11 +10,8 @@ import javax.inject.Named;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
  * User: rvelasquez
  * Date: 10/12/13
- * Time: 3:03 PM
- * To change this template use File | Settings | File Templates.
  */
 @Named("logImpresionService")
 @TransactionAttribute
@@ -28,7 +25,7 @@ public class LogImpresionService implements ILogImpresionService {
 
     @Override
     public void guarda(List<DocLogImpresionEntity> lista){
-        int a=2000;
+        Long a=2000L;
         for (DocLogImpresionEntity docLogImpresionEntity:lista){
              docLogImpresionEntity.setIdDoclogimpresion(a++);
             logImpresionRepository.save(docLogImpresionEntity);

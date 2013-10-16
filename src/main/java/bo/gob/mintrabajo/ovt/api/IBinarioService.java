@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.api;
 
 import bo.gob.mintrabajo.ovt.entities.DocBinarioEntity;
+import bo.gob.mintrabajo.ovt.entities.DocLogImpresionEntity;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface IBinarioService {
 
     DocBinarioEntity obtienePorIdDocumentoIdBinario(int idDocumento, int idBinario);
 
-    void download(DocBinarioEntity docBinarioEntity);
+    void download(DocBinarioEntity docBinarioEntity, DocLogImpresionEntity docLogImpresionEntity);
 }

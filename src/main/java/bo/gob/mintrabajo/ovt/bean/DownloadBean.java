@@ -1,8 +1,9 @@
 package bo.gob.mintrabajo.ovt.bean;
 
-import bo.gob.mintrabajo.ovt.api.IBinarioService;
-import bo.gob.mintrabajo.ovt.api.IDocumentoService;
+import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.DocBinarioEntity;
+import bo.gob.mintrabajo.ovt.entities.DocLogImpresionEntity;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
 import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 //
@@ -27,23 +31,27 @@ public class DownloadBean {
 
     @ManagedProperty(value = "#{documentoService}")
     private IDocumentoService iDocumentoService;
-
     @ManagedProperty(value = "#{binService}")
     private IBinarioService iBinarioService;
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioService;
+    @ManagedProperty(value = "#{utilsService}")
+    private IUtilsService iUtilsService;
 
+    private Integer idUsuario;
     private Long idDocumento;
-//    private DocDocumentoEntity docDocumentoEntity;
     private List<DocBinarioEntity> listaBinarios;
     private DocBinarioEntity docBinarioEntity;
     private StreamedContent file;
+    UsrUsuarioEntity usuario;
 
     @PostConstruct
     public void ini() {
-//        docDocumentoEntity= new DocDocumentoEntity();
         docBinarioEntity= new DocBinarioEntity();
         listaBinarios= new ArrayList<DocBinarioEntity>();
         idDocumento = (Long) session.getAttribute("idDocumento");
-//        docDocumentoEntity=iDocumentoService.findById(BigDecimal.valueOf(idDocumento));
+        idUsuario = (Integer) session.getAttribute("idUsuario");
+        usuario = iUsuarioService.findById(BigDecimal.valueOf(idUsuario));
         cargar();
     }
 
@@ -53,10 +61,16 @@ public class DownloadBean {
     }
 
     public void download(){
-        if(docBinarioEntity==null)
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "No se encuentra el archivo correspondiente"));
+        DocLogImpresionEntity docLogImpresionEntity= new DocLogImpresionEntity();
+        if(docBinarioEntity!=null)     {
+            docLogImpresionEntity.setIdDocumento(docBinarioEntity.getIdDocumento());
+            docLogImpresionEntity.setFechaBitacora(new Timestamp(new Date().getTime()));
+            docLogImpresionEntity.setRegistroBitacora(usuario.getUsuario());
+            docLogImpresionEntity.setIdDoclogimpresion(iUtilsService.valorSecuencia("DOC_LOG_IMPRESION_SEC"));
+            iBinarioService.download(docBinarioEntity, docLogImpresionEntity);
+        }
         else
-            iBinarioService.download(docBinarioEntity);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "No se encuentra el archivo correspondiente"));
     }
 
     public String volver(){
@@ -101,5 +115,21 @@ public class DownloadBean {
 
     public void setDocBinarioEntity(DocBinarioEntity docBinarioEntity) {
         this.docBinarioEntity = docBinarioEntity;
+    }
+
+    public IUtilsService getiUtilsService() {
+        return iUtilsService;
+    }
+
+    public void setiUtilsService(IUtilsService iUtilsService) {
+        this.iUtilsService = iUtilsService;
+    }
+
+    public IUsuarioService getiUsuarioService() {
+        return iUsuarioService;
+    }
+
+    public void setiUsuarioService(IUsuarioService iUsuarioService) {
+        this.iUsuarioService = iUsuarioService;
     }
 }
