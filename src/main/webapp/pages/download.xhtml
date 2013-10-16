@@ -19,20 +19,13 @@
                         </h:outputText>
                     </p:column>
                     <p:column headerText="Acciones">
-                        <h:commandLink id="downloadLink" value="Download" action="#{downloadBean.download}" >
+                        <p:commandButton id="downloadLink" value="Descargar" action="#{downloadBean.download}" ajax="false" icon="ui-icon-upload">
                             <f:setPropertyActionListener value="#{elemBinario}" target="#{downloadBean.docBinarioEntity}" />
-                            <!--<p:fileDownload value="# {downloadBean.file}" />-->
-                        </h:commandLink>
+                        </p:commandButton>
                     </p:column>
-
-                    <!--<p:column headerText="Acciones">-->
-                        <!--<p:commandLink ajax="false" actionListener="# {downloadBean.downloadAction(elemBinario)}" value="Download">-->
-                            <!--<span class="ui-icon icoFolderGo" style="padding-right: 1.5em;" />-->
-                            <!--<p:fileDownload value="# {downloadBean.file}" />-->
-                        <!--</p:commandLink>-->
-                    <!--</p:column>-->
                 </p:dataTable>
-
+                <br/>
+                <p:commandButton action="#{downloadBean.volver}" ajax="false" value="VOLVER"/>
             </h:form>
         </ui:define>
     </ui:composition>
