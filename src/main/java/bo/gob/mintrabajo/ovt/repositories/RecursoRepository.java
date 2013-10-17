@@ -45,6 +45,7 @@ public interface RecursoRepository extends OpenJpaRepository<UsrRecursoEntity, B
 //            //+ "     where usRec.idUsuario = :idUsuario"
 //            //+ " )"
 //            )
+
     @Query(
             "   select rec "
             + " from UsrRecursoEntity rec"
@@ -62,7 +63,7 @@ public interface RecursoRepository extends OpenJpaRepository<UsrRecursoEntity, B
             + " and rec.idRecurso NOT IN ("
             + "     select usRec.idRecurso"
             + "     from UsrUsuarioRecursoEntity usRec"
-            + "     where usRec.idUsuario = :idUsuario"
+            + "     where usRec.idUsuario =: idUsuario"
             + " )"
             )
     List<UsrRecursoEntity> buscarPorUsuario(@Param("idUsuario") BigDecimal idUsuario);

@@ -148,7 +148,7 @@ public class UsrRecursoEntity {
         this.idModulo = idModulo;
     }
 
-    @Column(name = "ID RECURSO_PADRE")
+    @Column(name = "ID_RECURSO_PADRE")
     @Basic
     public Integer getIdRecursoPadre() {
         return idRecursoPadre;
