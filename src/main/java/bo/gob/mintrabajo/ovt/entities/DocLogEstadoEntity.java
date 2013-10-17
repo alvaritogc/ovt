@@ -12,27 +12,27 @@ import java.sql.Timestamp;
 @javax.persistence.Table(name = "DOC_LOG_ESTADO", schema = "OVT", catalog = "")
 @Entity
 public class DocLogEstadoEntity {
-    private Integer idLogestado;
+    private Long idLogestado;
 
     @javax.persistence.Column(name = "ID_LOGESTADO")
     @Id
-    public Integer getIdLogestado() {
+    public Long getIdLogestado() {
         return idLogestado;
     }
 
-    public void setIdLogestado(Integer idLogestado) {
+    public void setIdLogestado(Long idLogestado) {
         this.idLogestado = idLogestado;
     }
 
-    private Integer idDocumento;
+    private Long idDocumento;
 
     @javax.persistence.Column(name = "ID_DOCUMENTO")
     @Basic
-    public Integer getIdDocumento() {
+    public Long getIdDocumento() {
         return idDocumento;
     }
 
-    public void setIdDocumento(Integer idDocumento) {
+    public void setIdDocumento(Long idDocumento) {
         this.idDocumento = idDocumento;
     }
 
@@ -115,4 +115,11 @@ public class DocLogEstadoEntity {
         result = 31 * result + (registroBitacora != null ? registroBitacora.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "DocLogEstadoEntity{" + "idLogestado=" + idLogestado + ", idDocumento=" + idDocumento + ", codEstadoInicial=" + codEstadoInicial + ", codEstadoFinal=" + codEstadoFinal + ", fechaBitacora=" + fechaBitacora + ", registroBitacora=" + registroBitacora + '}';
+    }
+    
+    
 }

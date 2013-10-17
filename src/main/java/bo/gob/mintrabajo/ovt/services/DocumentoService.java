@@ -9,6 +9,8 @@ import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
 
@@ -26,10 +28,11 @@ public class DocumentoService implements IDocumentoService{
     private final BinarioRepository binarioRepository;
     private final UnidadRepository unidadRepository;
     private final NumeracionRepository numeracionRepository;
+    private final LogEstadoRepository logEstadoRepository;
     private final IUtilsService utils;
 
     @Inject
-    public DocumentoService(DocumentoRepository repository, DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository, BinarioRepository binarioRepository, UnidadRepository unidadRepository, NumeracionRepository numeracionRepository, IUtilsService utils) {
+    public DocumentoService(DocumentoRepository repository, DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository, BinarioRepository binarioRepository, UnidadRepository unidadRepository, NumeracionRepository numeracionRepository, IUtilsService utils,LogEstadoRepository logEstadoRepository) {
         this.repository = repository;
         this.documentoEstadoRepository = documentoEstadoRepository;
         this.planillaRepository = planillaRepository;
@@ -37,6 +40,7 @@ public class DocumentoService implements IDocumentoService{
         this.unidadRepository = unidadRepository;
         this.numeracionRepository = numeracionRepository;
         this.utils = utils;
+        this.logEstadoRepository=logEstadoRepository;
     }
 
     @Override
@@ -234,5 +238,24 @@ public class DocumentoService implements IDocumentoService{
         docPlanillaEntity.setIdDocumento(docDocumentoEntity.getIdDocumento());
         docPlanillaEntity.setIdPlanilla(planillaRepository.findAll().size()+1);
         planillaRepository.save(docPlanillaEntity);
+    }
+    
+    @Override
+    public DocDocumentoEntity guardarCambioEstado(DocDocumentoEntity documento, String codEstadoNuevo,String idUsuario) {
+        //
+        DocLogEstadoEntity logEstado=new DocLogEstadoEntity();
+        logEstado.setIdDocumento(documento.getIdDocumento());
+        logEstado.setCodEstadoFinal(codEstadoNuevo);
+        logEstado.setCodEstadoInicial(documento.getCodEstado());
+        logEstado.setRegistroBitacora(idUsuario);
+        Date date=new Date();
+        logEstado.setFechaBitacora(new Timestamp(date.getTime()));
+        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
+        logEstadoRepository.save(logEstado);
+        //
+        documento.setCodEstado(codEstadoNuevo);
+        DocDocumentoEntity entity;
+        entity = repository.save(documento);
+        return entity;
     }
 }

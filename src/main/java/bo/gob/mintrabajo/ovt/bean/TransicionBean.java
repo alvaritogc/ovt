@@ -110,8 +110,9 @@ public class TransicionBean {
     }
 
     public String guardaCambioEstado() {
-        docDocumentoEntity.setCodEstado(iDocumentoEstado.retornaCodEstado(estadoNuevo).getCodEstado());
-        iDocumentoService.save(docDocumentoEntity);
+        //docDocumentoEntity.setCodEstado(iDocumentoEstado.retornaCodEstado(estadoNuevo).getCodEstado());
+        //iDocumentoService.save(docDocumentoEntity);
+        iDocumentoService.guardarCambioEstado(docDocumentoEntity, iDocumentoEstado.retornaCodEstado(estadoNuevo).getCodEstado(), idPersona);
         tamaño = lista.size();
 
         return "irBienvenida";
