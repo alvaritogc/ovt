@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface IObligacionCalendarioService {
     public List<ParObligacionCalendarioEntity> obtenerObligacionCalendario();
+    public String obtenerGestionActual();
 }

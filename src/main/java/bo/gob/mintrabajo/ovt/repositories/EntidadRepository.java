@@ -4,6 +4,7 @@ import bo.gob.mintrabajo.ovt.entities.ParEntidadEntity;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,4 +25,12 @@ public interface EntidadRepository extends OpenJpaRepository<ParEntidadEntity, B
                     + " a.codigo NOT like 'B%' "
     )
     List<ParEntidadEntity> obtenerCaja();
+
+    @Query(
+            "   select a.idEntidad "
+                    + " from ParEntidadEntity a"
+                    + " where "
+                    + " a.codigo = :codigo "
+    )
+    Integer obtenerEntidadPorCodigo(@Param("codigo") String codigo);
 }

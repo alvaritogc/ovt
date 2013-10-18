@@ -236,7 +236,16 @@ public class DocumentoService implements IDocumentoService{
             binarioRepository.save(elementoBinario);
         }
         docPlanillaEntity.setIdDocumento(docDocumentoEntity.getIdDocumento());
-        docPlanillaEntity.setIdPlanilla(planillaRepository.findAll().size()+1);
+        docPlanillaEntity.setIdPlanilla(utils.planillaSecuencia("DOC_PLANILLA_SEC"));
+        planillaRepository.save(docPlanillaEntity);
+    }
+
+    public void guardaDocumentoPlanilla(DocDocumentoEntity docDocumentoEntity, DocPlanillaEntity docPlanillaEntity){
+        docDocumentoEntity.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+        docDocumentoEntity.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1));
+        docDocumentoEntity=repository.save(docDocumentoEntity);
+        docPlanillaEntity.setIdDocumento(docDocumentoEntity.getIdDocumento());
+        docPlanillaEntity.setIdPlanilla(utils.planillaSecuencia("DOC_PLANILLA_SEC")); //planillaRepository.findAll().size()+1
         planillaRepository.save(docPlanillaEntity);
     }
     

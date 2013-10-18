@@ -202,6 +202,26 @@ public class formularioUnicoBean implements Serializable{
             return null;
         }
     }
+
+    public String guardaDocumentoPlanilla(){
+        try{
+            logger.info("Guardando documento y planilla");
+            logger.info(documento.toString());
+            logger.info(listaBinarios.toString());
+            logger.info(docPlanillaEntity.toString());
+            generaPlanilla();
+            docPlanillaEntity.setPeriodo(iObligacionCalendarioService.obtenerGestionActual());
+            docPlanillaEntity.setIdEntidadBanco(iEntidadService.obtenerIdPorCodigo());
+            docPlanillaEntity.setIdEntidadSalud(docPlanillaEntity.getIdEntidadBanco());
+            idDocumentoService.guardaDocumentoPlanilla(documento, docPlanillaEntity);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
+            return "irListadoBienvenida";
+        }catch (Exception e){
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+            return null;
+        }
+    }
     
     public String irInicio(){
         idPersona=(String)session.getAttribute("idPersona");

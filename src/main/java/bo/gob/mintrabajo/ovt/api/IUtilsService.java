@@ -6,4 +6,5 @@ package bo.gob.mintrabajo.ovt.api;
  */
 public interface IUtilsService {
     Long valorSecuencia (String nombreSecuencia);
+    Integer planillaSecuencia(String nombreSecuencia);
 }

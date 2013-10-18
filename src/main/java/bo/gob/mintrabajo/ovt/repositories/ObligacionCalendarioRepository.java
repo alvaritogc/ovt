@@ -28,4 +28,12 @@ public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObl
             + " :fecha between a.fechaHasta and a.fechaPlazo "
             )
     List<ParObligacionCalendarioEntity> buscarPorFecha(@Param("fecha") Timestamp fechaActual);
+
+    @Query(
+            "   select a.gestion "
+                    + " from ParObligacionCalendarioEntity a"
+                    + " where "
+                    + " :fecha between a.fechaHasta and a.fechaPlazo "
+    )
+    String buscarGestionActual(@Param("fecha") Timestamp fechaActual);
 }

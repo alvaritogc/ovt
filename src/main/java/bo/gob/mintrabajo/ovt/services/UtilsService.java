@@ -29,4 +29,11 @@ public class UtilsService implements IUtilsService {
         rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
         return rtn.longValue();
     }
+
+    @Override
+    public Integer planillaSecuencia (String nombreSecuencia){
+        BigDecimal rtn;
+        rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
+        return rtn.intValue();
+    }
 }

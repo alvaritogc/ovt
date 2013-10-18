@@ -34,4 +34,8 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         List<ParObligacionCalendarioEntity> tmpLista = obligacionCalendarioRepository.buscarPorFecha(new Timestamp(date.getTime()));
         return tmpLista;
     }
+
+    public String obtenerGestionActual(){
+        return obligacionCalendarioRepository.buscarGestionActual(new Timestamp(new Date().getTime()));
+    }
 }

@@ -15,5 +15,5 @@ import java.util.List;
  */
 public interface IEntidadService {
     List<ParEntidadEntity> getEntidadLista();
-
+    Integer obtenerIdPorCodigo();
 }
