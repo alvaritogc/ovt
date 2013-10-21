@@ -94,20 +94,30 @@
                             
                         </h:panelGrid>
                     </h:form>
+                    <p:growl id="grwLogin" showDetail="false" life="6000" globalOnly="true"  sticky="false"/>
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}">
                         <p:panel  >
                             <h2 class="form-signin-heading">Conéctate</h2>
                             <div class="input-prepend"><span class="add-on"><i class="icon-white icon-user"></i></span>
-                                <h:inputText value="#{templateInicioBean.username}" style="width: 104px; font-size: 10px" required="true" requiredMessage="Debe ingresar el usuario" />
+                                <h:inputText id="userName" value="#{templateInicioBean.username}" required="true" style="width: 104px; font-size: 10px"
+                                             requiredMessage=" * Debe ingresar el usuario" />
+
                             </div>
+                            <h:message for="userName" style="color:red;font-family: Arial; font-size: 10px"/>
                             <div class="input-prepend"><span class="add-on"><i class="icon-white icon-lock"></i>
                                 </span>
-                                <h:inputSecret value="#{templateInicioBean.password}" required="true" requiredMessage="Debe ingresar el Password" style="width: 104px; font-size: 10px" />
+                                <h:inputSecret id="password" value="#{templateInicioBean.password}" required="true" requiredMessage=" * Debe ingresar el Password" style="width: 104px; font-size: 10px" />
                             </div>
+                            <h:message for="password"   style="color:red;font-family: Arial; font-size: 10px"/>
                             <!--<p:captcha label="Captcha" publicKey="6LerTMYSAAAAAGUfbsXu2tf-H8flrPVM1fDUecvi" language="es"-->
                                        <!--validatorMessage="Texto no coincide, intente de nuevo." requiredMessage="Ingrese 2 palabras" />-->
-                            <p:commandButton styleClass="btn btn-large btn-primary" value="Entrar" action="#{templateInicioBean.login}" ajax="false" update="@all" />      <div class="teclado"></div>
-                            <p:messages id="messages" />
+                            <p:commandButton styleClass="btn btn-large btn-primary" value="Entrar"
+                                             action="#{templateInicioBean.login}"
+                                             ajax="false"
+                                             update=":grwLogin" />
+                            <div class="teclado"></div>
+                             <!-- Se comento esta linea, por que se cambio la validacion.-->
+                             <!--  <p:messages id="messages" /> -->
                         </p:panel>
                     </h:form>
 

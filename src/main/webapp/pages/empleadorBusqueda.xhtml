@@ -8,6 +8,14 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../pages/template/templateInicio.xhtml">
         <ui:define name="content">
+
+            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                      draggable="false" closable="false">
+                <p:graphicImage value="../images/ajax-loader.gif" />
+            </p:dialog>
+
             <h:form id="idFormEmpleadorBusqueda">
 
                 <p:panel header="Empleador" id="idPanelBusqueda">  
@@ -22,11 +30,11 @@
                         </h:panelGroup>
                     </h:panelGrid>
                 </p:panel>
-                <p:dataTable id="idDTlistaPersonas" value="#{empleadorBean.listaPersonas}" var="o" paginator="true" rows="10">
+                <p:dataTable id="idDTlistaPersonas" sortMode="multiple" value="#{empleadorBean.listaPersonas}" var="o" paginator="true" rows="10" emptyMessage="No se encontraron resultados">
                     <p:column headerText="Tipo identifiacion">
                         <h:outputLabel value="#{o.tipoIdentificacion}"/>
                     </p:column>
-                    <p:column headerText="Nro identificacion">
+                    <p:column  sortBy="nroIdentificacion" headerText="Nro. identificacion">
                         <h:outputLabel value="#{o.nroIdentificacion}"/>
                     </p:column>
                     <p:column headerText="Nombre razon social ">
@@ -35,8 +43,9 @@
                     
                     
                     
-                    <p:column headerText="Acciones">  
-                        <p:commandButton action="#{empleadorBean.seleccionarEmpleador}" ajax="false" icon="ui-icon-zoomin" title="Ver">
+                    <p:column headerText="Acciones">
+
+                        <p:commandButton action="#{empleadorBean.seleccionarEmpleador}"  update="@all"  ajax="true" icon="ui-icon-zoomin" title="Ver">
                             <f:setPropertyActionListener value="#{o}" target="#{empleadorBean.personaABM}" />  
                         </p:commandButton>  
                     </p:column>  

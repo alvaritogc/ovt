@@ -7,7 +7,8 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../pages/template/templateInicio.xhtml">
     <ui:define name="content">
-        <h:form>
+
+        <h:form >
             <h1>#{bienvenidaBean.persona.nombreRazonSocial}</h1>
             <p:panelGrid columns="2" style="border-style: hidden;">
                 <p:outputLabel value="#{bienvenidaBean.persona.tipoIdentificacion}: " style="size: 20px;"/>
@@ -23,7 +24,7 @@
             <br/>
             <h3>Documentos</h3>
 
-            <p:dataTable id="idListaDocumentos" value="#{bienvenidaBean.listaDocumentos}" var="o1" paginator="true" rows="10">
+            <p:dataTable id="idListaDocumentos" value="#{bienvenidaBean.listaDocumentos}" var="o1" paginator="true" rows="10" emptyMessage="No se encontraron resultados" >
                 <p:column headerText="Código">
                     <h:outputText value="#{o1.codDocumento}"/>
                 </p:column>
@@ -45,9 +46,19 @@
                     <p:commandButton action="#{bienvenidaBean.irRealizarCambioDeEstados}" ajax="false" icon="ui-icon-gear" title="Realizar cambio de estados">
                         <f:setPropertyActionListener value="#{o1}" target="#{bienvenidaBean.docDocumentoEntity}" />
                     </p:commandButton>
-                    <p:commandButton action="#{bienvenidaBean.irImprimirDocumento}" ajax="false" icon="ui-icon-print" title="Imprimir documento">
+
+                    <h:commandLink target="_blank" action="#{bienvenidaBean.irImprimirDocumento}" title="Imprimir documento">
+                        <f:setPropertyActionListener value="#{o1}" target="#{bienvenidaBean.docDocumentoEntity}" />
+                            <h:graphicImage styleClass="ui-icon ui-icon-print" value="/images/imprimir.png" />
+                    </h:commandLink>
+                    <p:button target="_blank" outcome="#{bienvenidaBean.irImprimirDocumento}"    title="Imprimir documento2" id="ui-icon-print">
+                        <f:setPropertyActionListener value="#{o1}" target="#{bienvenidaBean.docDocumentoEntity}" />
+                    </p:button>
+
+                    <p:commandButton  action="#{bienvenidaBean.irImprimirDocumento}"  icon="ui-icon-print" title="Imprimir documento"  process="@this" >
                         <f:setPropertyActionListener value="#{o1}" target="#{bienvenidaBean.docDocumentoEntity}" />
                     </p:commandButton>
+
                     <p:commandButton action="#{bienvenidaBean.download}" 
                                      ajax="false" 
                                      rendered="#{bienvenidaBean.esFuncionario}"

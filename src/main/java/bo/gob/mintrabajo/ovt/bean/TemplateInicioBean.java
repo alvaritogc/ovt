@@ -186,6 +186,18 @@ public class TemplateInicioBean implements Serializable {
 
     public String login() {
         logger.info("login()");
+
+ /*       System.out.println("======>>>> INGRESANDO AL LOGIN");
+        System.out.println("======>>>> INGRESANDO AL LOGIN");
+        System.out.println("======>>>> INGRESANDO AL LOGIN");
+        FacesContext context2 = FacesContext.getCurrentInstance();
+        FacesMessage fm=new FacesMessage("ERROR MENSAJE DE ERROR");
+        fm.setSeverity(FacesMessage.SEVERITY_ERROR);
+        context2.addMessage(null, fm);
+        return null;*/
+
+
+
         try {
             logger.info("iUsuarioService.login(" + username + "," + password + ")");
             int idUsuario = iUsuarioService.login(username, password);
@@ -195,6 +207,8 @@ public class TemplateInicioBean implements Serializable {
             //
             ini();
             //
+
+
             BigDecimal bi = BigDecimal.valueOf(idUsuario);
             UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
             session.setAttribute("idPersona", usuario.getIdPersona());
@@ -208,10 +222,10 @@ public class TemplateInicioBean implements Serializable {
             //return "login";
         } catch (RuntimeException e) {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(e.getMessage(), "Hello "));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(), "Hello "));
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(e.getMessage(), "Hello "));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(), "Hello "));
         }
         password = "";
         return "";

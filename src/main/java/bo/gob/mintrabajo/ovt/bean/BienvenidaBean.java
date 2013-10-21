@@ -11,7 +11,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 //import java.util.Collection;
@@ -123,9 +125,52 @@ public class BienvenidaBean {
             docPlanillaEntity=  iDocumentoService.retornaPlanilla(docDocumentoEntity.getIdDocumento());
             perUnidadEntity=  iDocumentoService.retornaUnidad(idPersona);
             iPlanillaService.generaReporte(docPlanillaEntity, persona, docDocumentoEntity, perUnidadEntity, vperPersonaEntity);
+
+            redirecionarReporte ("");
         }
         catch(Exception e){
             e.printStackTrace();
+        }
+    }
+
+
+    private static void redirecionarReporte (String rutaReporte) throws IOException {
+        FacesContext facesContext=FacesContext.getCurrentInstance();
+        HttpServletResponse response=(HttpServletResponse) facesContext.getExternalContext().getResponse();
+
+        File file=new File(rutaReporte);
+        BufferedInputStream input=null;
+        BufferedOutputStream output=null;
+        try{
+
+            input=new BufferedInputStream(new FileInputStream(file),10240);
+            response.reset();
+            response.setHeader("Content-Type", "application/pdf");
+            response.setHeader("Content-Length", String.valueOf(file.length()));
+            output=new BufferedOutputStream(response.getOutputStream(),10240);
+
+            byte[] buffer=new byte[10240];
+            int length;
+
+            while((length=input.read(buffer))>0){
+                output.write(buffer,0,length);
+            }
+            output.flush();
+        }finally{
+            close(output);
+            close(input);
+        }
+
+        facesContext.responseComplete();
+    }
+
+    private static void close(Closeable resource) {
+        if (resource != null) {
+            try {
+                resource.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

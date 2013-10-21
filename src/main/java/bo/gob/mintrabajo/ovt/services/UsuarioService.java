@@ -127,7 +127,7 @@ public class UsuarioService implements IUsuarioService{
         }
         UsrUsuarioEntity usrUsuarioEntity = listaUsuarios.get(0);
         if (!password.equals(usrUsuarioEntity.getClave())) {
-            throw new RuntimeException("Contraseña equivocada");
+            throw new RuntimeException("Contraseña incorrecta");
         }
         /*
         if (usrUsuarioEntity.getFechaInhabilitacion().getTime() < System.currentTimeMillis()) {

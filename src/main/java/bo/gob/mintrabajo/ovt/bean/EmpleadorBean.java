@@ -74,12 +74,13 @@ public class EmpleadorBean implements Serializable{
             listaPersonas=iPersonaService.buscarPorNroNombre(busquedaNroIdentificacion, busquedaNombreRazonSocial);
         }
     }
-    public void limpiar(){
-        busquedaNroIdentificacion="";
-        busquedaNombreRazonSocial="";
+
+    public void limpiar() {
+        busquedaNroIdentificacion = "";
+        busquedaNombreRazonSocial = "";
         cargar();
     }
-    
+
     public String seleccionarEmpleador(){
         session.setAttribute("idEmpleador", personaABM.getIdPersona());
         return "irBienvenida";

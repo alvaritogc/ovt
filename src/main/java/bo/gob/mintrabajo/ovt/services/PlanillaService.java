@@ -16,8 +16,7 @@ import javax.inject.Named;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -118,9 +117,24 @@ public class PlanillaService implements IPlanillaService {
         map.put("lugarPresentacion", "Oficina Virtual");
         List<DocBinarioEntity> lista = new ArrayList<DocBinarioEntity>();
         lista= binarioRepository.findByAttribute("idDocumento", docDocumentoEntity.getIdDocumento(), -1,-1);
-        map.put("archivo1", lista.get(0).getTipoDocumento());
-        map.put("archivo2", lista.get(1).getTipoDocumento());
-        map.put("archivo3", lista.get(2).getTipoDocumento());
+
+        for(int i=0;i<3;i++){
+              int nroArchivo=i+1;
+            System.out.println("=====>>> "+"archivo"+String.valueOf(nroArchivo));
+            map.put("archivo"+String.valueOf(nroArchivo), lista!=null && !lista.isEmpty()?lista.get(nroArchivo-1).getTipoDocumento():"");
+        }
+/*        if (lista!=null && !lista.isEmpty()){
+            //Mostrar el reporte con estos valores con los valores obtenidos.
+            map.put("archivo1", lista.get(0).getTipoDocumento());
+            map.put("archivo2", lista.get(1).getTipoDocumento());
+            map.put("archivo3", lista.get(2).getTipoDocumento());
+        }else{
+            //Mostrar el reporte con estos valores en blanco.
+            map.put("archivo1", "");
+            map.put("archivo2", "");
+            map.put("archivo3", "");
+        }*/
+
 
 
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
@@ -153,8 +167,51 @@ public class PlanillaService implements IPlanillaService {
         //terminando el proceso
         servletOutputStream.flush();
         servletOutputStream.close();
+
+        facesContext.responseComplete();
     }
-    
+
+
+    private static void redirecionarReporte (String rutaReporte) throws IOException {
+        FacesContext facesContext=FacesContext.getCurrentInstance();
+        HttpServletResponse response=(HttpServletResponse) facesContext.getExternalContext().getResponse();
+
+        File file=new File(rutaReporte);
+        BufferedInputStream input=null;
+        BufferedOutputStream output=null;
+        try{
+
+            input=new BufferedInputStream(new FileInputStream(file),10240);
+            response.reset();
+            response.setHeader("Content-Type", "application/pdf");
+            response.setHeader("Content-Length", String.valueOf(file.length()));
+            output=new BufferedOutputStream(response.getOutputStream(),10240);
+
+            byte[] buffer=new byte[10240];
+            int length;
+
+            while((length=input.read(buffer))>0){
+                output.write(buffer,0,length);
+            }
+            output.flush();
+        }finally{
+            close(output);
+            close(input);
+        }
+
+        facesContext.responseComplete();
+    }
+
+    private static void close(Closeable resource) {
+        if (resource != null) {
+            try {
+                resource.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public DocPlanillaEntity obtenerPorDocumento(Long idDocumento){
         List<DocPlanillaEntity> list=planillaRepository.findByAttribute("idDocumento", idDocumento, -1, -1);
