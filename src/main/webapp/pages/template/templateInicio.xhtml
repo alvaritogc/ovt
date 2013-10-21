@@ -49,9 +49,9 @@
                 border-style: none;
             }
 
-            .ui-widget-content {
-                border: none;
-            }
+            /*.ui-widget-content {*/
+                /*border: none;*/
+            /*}*/
 
         </style>
     </h:head>
@@ -84,53 +84,43 @@
                                          rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}"/>
                         <h:panelGrid columns="1" rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}" style="width: 100%">
                             <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado}" style="width: 100%"
-                                             rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}"/>
+                                         rendered="#{!(templateInicioBean.idUsuario eq 0 ? true  : false)}"/>
                             <br/>
                             <p:outputLabel value="Usuario: "/>
                             <p:outputLabel value="#{templateInicioBean.nombreDeUsuario}" style="color: #0069B1;"/>
                             <br/>
                             <p:outputLabel value="Empleador:" />
                             <p:outputLabel value="#{templateInicioBean.nombreDeUnidad}" style="color: #0069B1;"/>
-
+                            
                         </h:panelGrid>
                     </h:form>
+                    <p:growl id="grwLogin" showDetail="false" life="6000" globalOnly="true"  sticky="false"/>
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario eq 0 ? true  : false}">
                         <p:panel  >
                             <h2 class="form-signin-heading">Conéctate</h2>
                             <div class="input-prepend"><span class="add-on"><i class="icon-white icon-user"></i></span>
-                                <h:inputText id="itUsername" value="#{templateInicioBean.username}" style="width: 104px; font-size: 10px" required="true" requiredMessage="Debe ingresar el usuario" />
-                                <p:watermark for="itUsername" value="NIT-NRO REGISTRO" />
+                                <h:inputText id="userName" value="#{templateInicioBean.username}" required="true" style="width: 104px; font-size: 10px"
+                                             requiredMessage=" * Debe ingresar el usuario" />
+
                             </div>
+                            <h:message for="userName" style="color:red;font-family: Arial; font-size: 10px"/>
                             <div class="input-prepend"><span class="add-on"><i class="icon-white icon-lock"></i>
                                 </span>
-                                <h:inputSecret id="idPassword" value="#{templateInicioBean.password}" required="true" requiredMessage="Debe ingresar el Password" style="width: 104px; font-size: 10px" />
-                                <p:watermark for="idPassword" value="NRO-SEGURO-SOCIAL" />
+                                <h:inputSecret id="password" value="#{templateInicioBean.password}" required="true" requiredMessage=" * Debe ingresar el Password" style="width: 104px; font-size: 10px" />
                             </div>
+                            <h:message for="password"   style="color:red;font-family: Arial; font-size: 10px"/>
                             <!--<p:captcha label="Captcha" publicKey="6LerTMYSAAAAAGUfbsXu2tf-H8flrPVM1fDUecvi" language="es"-->
-                            <!--validatorMessage="Texto no coincide, intente de nuevo." requiredMessage="Ingrese 2 palabras" />-->
-                            <p:commandButton styleClass="btn btn-large btn-primary" value="Entrar" action="#{templateInicioBean.login}" ajax="false" update="@all" />      <div class="teclado"></div>
-                            <p:commandLink value="Ayuda" onclick="PF('dlg1').show();"/>
-                            
-                            <p:messages id="messages" />
+                                       <!--validatorMessage="Texto no coincide, intente de nuevo." requiredMessage="Ingrese 2 palabras" />-->
+                            <p:commandButton styleClass="btn btn-large btn-primary" value="Entrar"
+                                             action="#{templateInicioBean.login}"
+                                             ajax="false"
+                                             update=":grwLogin" />
+                            <div class="teclado"></div>
+                             <!-- Se comento esta linea, por que se cambio la validacion.-->
+                             <!--  <p:messages id="messages" /> -->
                         </p:panel>
-
                     </h:form>
-                    
-                    <p:dialog id="basicDialog" header="Acceso al Sistema" widgetVar="dlg1" width="700" height="450" resizable="false">  
-                        <p>Los datos que necesita para acceder al sistema son la información de su ROE (Registro Obligatorio de Empleadores) esta información le fue asignada a tiempo de realizar su registro, para darle algunas pautas, si no cambio los datos, los pueden ser los siguientes: </p>
-                        <br/>
-                       <center>
-                        <p:graphicImage url="./images/image001.png" width="600" height="300"/>
-                        </center>
-                        <br/>
-                        <p>En caso de no poder acceder, por favor comunicarse via
-correo electrónico a <a href="mailto:iflores@mintrabajo.gob.bo">iflores@mintrabajo.gob.bo</a>, indicando su nombre
-completoo razon social, nit y numero de ROE con el que \E9sta inscrito o v\EDa
-tel\E9fonica a las l\EDneas departamentales.</p>
-                        <p><span style="color:red;">Nota </span>.- La respuesta via correo electronico puede tardar en
-ser respondida, tome sus re<a name="_GoBack"></a>caudos correspondientes.</p>
 
-                    </p:dialog>  
                     <h:form>
                         <p:panel  header="Servicios públicos">
                             <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/informacion.xhtml"> Pasos trámite planilla  trimestral</a>

@@ -61,7 +61,7 @@ public class UsersService implements Users {
         UsrUsuarioEntity usrUsuarioEntity = username.get(0);
 
         if (!password.equals(usrUsuarioEntity.getClave())) {
-            throw new RuntimeException("Password equivocado");
+            throw new RuntimeException("Password incorrecto");
         }
 
         if (usrUsuarioEntity.getFechaInhabilitacion().getTime() < System.currentTimeMillis()) {
@@ -73,7 +73,6 @@ public class UsersService implements Users {
 
     @Override
     public void saveUser(UsrUsuarioEntity user) {
-
         repository.save(user);
     }
 }

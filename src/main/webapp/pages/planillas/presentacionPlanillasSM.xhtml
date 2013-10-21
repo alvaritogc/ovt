@@ -77,10 +77,10 @@
     </h:form>
 
     <h:form>
-        <p:panel header="Servicios publicos">
-            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/informacion.xhtml"> Pasos trámite planilla trimestral</a>
-            <br/>
-            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/formularioUnico.xhtml"> Formulario Único </a>
+        <p:panel  header="Servicios públicos">
+            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/informacion.xhtml"> Pasos trámite planilla  trimestral</a>
+            <br/><br/>
+            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/descargarPlanilla.xhtml"> Descarga de formatos de planillas </a>
         </p:panel>
         <br/>
     </h:form>
@@ -515,7 +515,7 @@
     </p:column>
     <p:column colspan="5">
         <p:outputLabel for="popupButtonCal" value="8.2 Fecha de depósito"/>
-        <p:calendar value="#{formularioUnicoBean.fechaOperacionAux}" id="popupButtonCal" pattern="dd/MM/yyyy"
+        <p:calendar value="#{formularioUnicoBean.fechaOperacionAux}" maxdate="#{formularioUnicoBean.fechaTexto}" id="popupButtonCal" pattern="dd/MM/yyyy"
                     style="width: 100px; height: 10px; text-align: right" required="true"/>
     </p:column>
     <p:column colspan="4">

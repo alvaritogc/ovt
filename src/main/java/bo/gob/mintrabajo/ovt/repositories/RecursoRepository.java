@@ -67,6 +67,7 @@ public interface RecursoRepository extends OpenJpaRepository<UsrRecursoEntity, B
             + " )"
             )
     List<UsrRecursoEntity> buscarPorUsuario(@Param("idUsuario") BigDecimal idUsuario);
-    
+
+
 }
 
