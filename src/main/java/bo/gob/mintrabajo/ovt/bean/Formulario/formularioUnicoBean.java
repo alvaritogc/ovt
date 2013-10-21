@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +63,7 @@ public class formularioUnicoBean implements Serializable{
     private Date fechaOperacionAux;
     private Long numeroOrden;
 
+    private String fechaTexto;
     private String temporal;
     private boolean temporalBoolean;
     private PerPersonaEntity persona;
@@ -102,7 +104,9 @@ public class formularioUnicoBean implements Serializable{
         docPlanillaEntity.setOtrosDescuentos(BigDecimal.ZERO);
         docPlanillaEntity.setMontoAsegCaja(BigDecimal.ZERO);
         docPlanillaEntity.setMontoAsegAfp(BigDecimal.ZERO);
-        
+        //** Controlamos que no puedan acceder a una fecha anterior a la actual  **//
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        fechaTexto = sdf.format(fechaTemp);
         obtenerPeriodoLista();
         obtenerEntidad();
         //** Obtenemos de la Vista a la persona **//
@@ -158,10 +162,10 @@ public class formularioUnicoBean implements Serializable{
         documento.setRegistroBitacora(usuario.getUsuario());
     }
 
-    public void generaPlanilla(){
+    public void generaPlanilla(boolean isSinMovimiento){
         logger.info("generaPlanilla()");
         docPlanillaEntity.setIdEntidadBanco(2);
-        docPlanillaEntity.setTipoPlanilla("DDJJ");
+        docPlanillaEntity.setTipoPlanilla(isSinMovimiento ? "DDJJSM" : "DDJJ");
         docPlanillaEntity.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
     }
 
@@ -192,7 +196,7 @@ public class formularioUnicoBean implements Serializable{
             logger.info(documento.toString());
             logger.info(listaBinarios.toString());
             logger.info(docPlanillaEntity.toString());
-            generaPlanilla();
+            generaPlanilla(false);
             idDocumentoService.guardaDocumentoBinarioPlanilla(documento, listaBinarios, docPlanillaEntity);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
             return "irListadoBienvenida";
@@ -209,10 +213,11 @@ public class formularioUnicoBean implements Serializable{
             logger.info(documento.toString());
             logger.info(listaBinarios.toString());
             logger.info(docPlanillaEntity.toString());
-            generaPlanilla();
+            generaPlanilla(true);
             docPlanillaEntity.setPeriodo(iObligacionCalendarioService.obtenerGestionActual());
             docPlanillaEntity.setIdEntidadBanco(iEntidadService.obtenerIdPorCodigo());
             docPlanillaEntity.setIdEntidadSalud(docPlanillaEntity.getIdEntidadBanco());
+            documento.setTipoMedioRegistro("DDJJSM");
             idDocumentoService.guardaDocumentoPlanilla(documento, docPlanillaEntity);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
             return "irListadoBienvenida";
@@ -294,12 +299,12 @@ public class formularioUnicoBean implements Serializable{
         this.iPlanillaService = iPlanillaService;
     }
 
-    public String getTemporal() {
-        return temporal;
+    public String getFechaTexto() {
+        return fechaTexto;
     }
 
-    public void setTemporal(String temporal) {
-        this.temporal = temporal;
+    public void setFechaTexto(String fechaTexto) {
+        this.fechaTexto = fechaTexto;
     }
 
     public boolean isTemporalBoolean() {
@@ -492,5 +497,13 @@ public class formularioUnicoBean implements Serializable{
 
     public void setNombres(String[] nombres) {
         this.nombres = nombres;
+    }
+
+    public String getTemporal() {
+        return temporal;
+    }
+
+    public void setTemporal(String temporal) {
+        this.temporal = temporal;
     }
 }
