@@ -27,7 +27,7 @@
 
             <h:form id="idFormularioBienvenida">
                 <p:poll interval="1"   id="idPoll"
-                        listener="#{bienvenidaBean.abrirPanel()}" 
+                        listener="#{bienvenidaBean.abrirPanel}"
                         update=":idFormularioBienvenida:idPoll" 
                         stop="#{bienvenidaBean.detenerFacesMessages}"/>  
                 <h1>#{bienvenidaBean.persona.nombreRazonSocial}</h1>
