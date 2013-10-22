@@ -176,7 +176,8 @@ public class TemplateInicioBean implements Serializable {
         // de JSF se debe usar la ruta completa 
         try {
             //ctx.redirect(ctxPath + "/faces/index.xhtml");
-            ctx.redirect(ctxPath + "/faces/pages/inicio.xhtml");
+            //ctx.redirect(ctxPath + "/faces/pages/inicio.xhtml");
+            ctx.redirect(ctxPath + "/");
         } catch (IOException e) {
             System.out.println("Error en cerrar sesion");
             e.printStackTrace();

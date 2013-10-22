@@ -223,12 +223,12 @@
                                     <p:column colspan="6">
                                         <p:outputLabel for="cortoPlazo" value="4.1 Nro de asegurados al ente gestor de salud a corto plazo"/>
                                         <p:inputText id="cortoPlazo" value="#{formularioUnicoBean.docPlanillaEntity.nroAsegCaja}" style="width: 150px; height: 10px; text-align: right" required="true" converterMessage="valor con 2 decimales" maxlength="6">
-                                            <pe:keyFilter regEx="/[\d\-\.]/" />
+                                            <pe:keyFilter regEx="/[\d\-]/" />
                                         </p:inputText>
                                         <br/>
                                         <p:outputLabel for="largoPlazo" value="4.4 Nro de afiliados seguro a largo plazo"/>
                                         <p:inputText id="largoPlazo" value="#{formularioUnicoBean.docPlanillaEntity.nroAsegAfp}" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="6">
-                                            <pe:keyFilter regEx="/[\d\-\.]/" />
+                                            <pe:keyFilter regEx="/[\d\-]/" />
                                         </p:inputText>
                                     </p:column>
                                     <p:column colspan="5">
@@ -445,12 +445,12 @@
                                     <p:column colspan="7">
                                         <p:outputLabel value="8.1 Nro de comprobante de depósito"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.numOperacion}" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="20">
-                                            <pe:keyFilter regEx="/[\d\-\.]/" />
+                                            <pe:keyFilter regEx="/[\d\-]/" />
                                         </p:inputText>
                                     </p:column>
                                     <p:column colspan="5">
                                         <p:outputLabel value="8.2 Fecha de depósito"/>
-                                        <p:calendar value="#{formularioUnicoBean.fechaOperacionAux}" mindate="#{formularioUnicoBean.fechaTexto}" id="popupButtonCal" pattern="dd/MM/yyyy" style="width: 100px; height: 10px; text-align: right" required="true" />
+                                        <p:calendar value="#{formularioUnicoBean.fechaOperacionAux}" maxdate="#{formularioUnicoBean.fechaTexto}" id="popupButtonCal" pattern="dd/MM/yyyy" style="width: 100px; height: 10px; text-align: right" required="true" />
                                     </p:column>
                                     <p:column colspan="4">
                                         <p:outputLabel value="8.3 Monto de depósito (Bs)"/>

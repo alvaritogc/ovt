@@ -49,20 +49,13 @@
 
                     <h:commandLink target="_blank" action="#{bienvenidaBean.irImprimirDocumento}" title="Imprimir documento">
                         <f:setPropertyActionListener value="#{o1}" target="#{bienvenidaBean.docDocumentoEntity}" />
-                            <h:graphicImage styleClass="ui-icon ui-icon-print" value="/images/imprimir.png" />
+                            <h:graphicImage  style="float: left;width:25px;height: 23px;padding-right: 3px; " value="/images/imprimir.png" />
                     </h:commandLink>
-                    <p:button target="_blank" outcome="#{bienvenidaBean.irImprimirDocumento}"    title="Imprimir documento2" id="ui-icon-print">
-                        <f:setPropertyActionListener value="#{o1}" target="#{bienvenidaBean.docDocumentoEntity}" />
-                    </p:button>
 
-                    <p:commandButton  action="#{bienvenidaBean.irImprimirDocumento}"  icon="ui-icon-print" title="Imprimir documento"  process="@this" >
-                        <f:setPropertyActionListener value="#{o1}" target="#{bienvenidaBean.docDocumentoEntity}" />
-                    </p:commandButton>
-
-                    <p:commandButton action="#{bienvenidaBean.download}" 
-                                     ajax="false" 
+                    <p:commandButton action="#{bienvenidaBean.download}"
+                                     ajax="false"
                                      rendered="#{bienvenidaBean.esFuncionario}"
-                                     icon="ui-icon-arrowthickstop-1-s" 
+                                     icon="ui-icon-arrowthickstop-1-s"
                                      title="Descarga documentos" >
                         <f:setPropertyActionListener value="#{o1}" target="#{bienvenidaBean.docDocumentoEntity}" />
                     </p:commandButton>
