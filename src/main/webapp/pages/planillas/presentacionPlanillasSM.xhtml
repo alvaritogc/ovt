@@ -523,7 +523,7 @@
         <p:inputText id="mdeposito" value="#{formularioUnicoBean.docPlanillaEntity.montoOperacion}"  required="true"
                      style="width: 150px; height: 10px; text-align: right" maxlength="10">
             <f:convertNumber minFractionDigits="2"/>
-            <pe:keyFilter regEx="/[\d\-\.]/"/>
+            <pe:keyFilter regEx="/[\d\-\,]/"/>
         </p:inputText>
     </p:column>
 </p:row>
