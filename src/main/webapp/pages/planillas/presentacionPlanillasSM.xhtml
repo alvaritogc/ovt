@@ -510,7 +510,7 @@
         <p:outputLabel for="deposito" value="8.1 Nro de comprobante de depósito"/>
         <p:inputText id="deposito" value="#{formularioUnicoBean.docPlanillaEntity.numOperacion}"
                      style="width: 150px; height: 10px; text-align: right" required="true" maxlength="20">
-            <pe:keyFilter regEx="/[\d\-\.]/"/>
+            <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
     </p:column>
     <p:column colspan="5">
