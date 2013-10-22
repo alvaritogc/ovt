@@ -75,7 +75,7 @@
                 <div class="span9">
                     <h:form id="idBarraDeMenu" rendered="#{templateInicioBean.idUsuario eq 0 ? false:  true}">
                         <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
-                        </p:menubar> 
+                        </p:menubar>
                     </h:form>
 
 
@@ -220,36 +220,41 @@
                                 </p:row>
 
                                 <p:row>
-                                    <p:column colspan="6">
+                                    <p:column colspan="16">
+                                   <p:panelGrid columns="3">
+                                    <p:column>
                                         <p:outputLabel for="cortoPlazo" value="4.1 Nro de asegurados al ente gestor de salud a corto plazo"/>
                                         <p:inputText id="cortoPlazo" value="#{formularioUnicoBean.docPlanillaEntity.nroAsegCaja}" style="width: 150px; height: 10px; text-align: right" required="true" converterMessage="valor con 2 decimales" maxlength="6">
                                             <pe:keyFilter regEx="/[\d\-]/" />
                                         </p:inputText>
-                                        <br/>
-                                        <p:outputLabel for="largoPlazo" value="4.4 Nro de afiliados seguro a largo plazo"/>
-                                        <p:inputText id="largoPlazo" value="#{formularioUnicoBean.docPlanillaEntity.nroAsegAfp}" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="6">
-                                            <pe:keyFilter regEx="/[\d\-]/" />
-                                        </p:inputText>
                                     </p:column>
-                                    <p:column colspan="5">
+                                    <p:column>
                                         <p:outputLabel for="aportado1" value="4.2 Monto aportado (Bs)"/>
                                         <p:inputText id="aportado1" value="#{formularioUnicoBean.docPlanillaEntity.montoAsegCaja}" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                                             <f:convertNumber minFractionDigits="2" />
                                             <pe:keyFilter regEx="/[\d\-\,]/" />
                                         </p:inputText>
-                                        <br/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="4.3 Ente gestores de salud corto plazo"/>
+                                        <p:selectOneMenu value="#{formularioUnicoBean.docPlanillaEntity.idEntidadSalud}" style="width: 260px; height: 20px; font-size: 10px" required="true">
+                                            <f:selectItems value="#{formularioUnicoBean.parEntidadEntityLista}" var="entidad"  itemValue="#{entidad.idEntidad}" itemLabel="#{entidad.descripcion}" />
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel for="largoPlazo" value="4.4 Nro de afiliados seguro a largo plazo"/>
+                                        <p:inputText id="largoPlazo" value="#{formularioUnicoBean.docPlanillaEntity.nroAsegAfp}" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="6">
+                                            <pe:keyFilter regEx="/[\d\-]/" />
+                                        </p:inputText>
+                                    </p:column>
+                                    <p:column>
                                         <p:outputLabel for="aportado2" value="4.5 Monto aportado (Bs)"/>
                                         <p:inputText id="aportado2" value="#{formularioUnicoBean.docPlanillaEntity.montoAsegAfp}" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                                             <f:convertNumber minFractionDigits="2" />
                                             <pe:keyFilter regEx="/[\d\-\,]/" />
                                         </p:inputText>
                                     </p:column>
-                                    <p:column colspan="5">
-                                        <p:outputLabel value="4.3 Ente gestores de salud corto plazo"/>
-                                        <p:selectOneMenu value="#{formularioUnicoBean.docPlanillaEntity.idEntidadSalud}" style="width: 260px; height: 20px; font-size: 10px" required="true">
-                                            <!--<f:selectItem itemValue="# {1}" itemLabel="Caja Nacional de salud"/>-->
-                                            <f:selectItems value="#{formularioUnicoBean.parEntidadEntityLista}" var="entidad"  itemValue="#{entidad.idEntidad}" itemLabel="#{entidad.descripcion}" />
-                                        </p:selectOneMenu>
+                                   </p:panelGrid>
                                     </p:column>
                                 </p:row>
 
