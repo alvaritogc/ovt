@@ -124,7 +124,7 @@ public class formularioUnicoBean implements Serializable{
     public void cargar() {
         generaDocumento();
         verEstadoPlanilla();
-        cargarListaPorNumeros();
+        //cargarListaPorNumeros();
     }
 
     public void cargarListaPorNumeros(){
