@@ -25,6 +25,10 @@
 
             </p:dialog>  
 
+                    <h:commandLink target="_blank" action="#{bienvenidaBean.irImprimirDocumento}" title="Imprimir documento">
+                        <f:setPropertyActionListener value="#{o1}" target="#{bienvenidaBean.docDocumentoEntity}" />
+                            <h:graphicImage  style="float: left;width:32px;height: 27px;padding-right: 2px; " value="/images/print-report2.png" />
+                    </h:commandLink>
             <h:form id="idFormularioBienvenida">
                 <p:poll interval="1"   id="idPoll"
                         listener="#{bienvenidaBean.abrirPanel}"

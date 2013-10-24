@@ -14,6 +14,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -56,10 +57,11 @@ public class formularioUnicoBean implements Serializable{
 
     private List<ParObligacionCalendarioEntity> parObligacionCalendarioLista;
     private List<ParEntidadEntity> parEntidadEntityLista;
+    private List<DocDocumentoEntity> docDocumentoEntityList;
     private PerPersonaEntity perPersonaEntity;
     private VperPersonaEntity vperPersonaEntity;
     private DocPlanillaEntity docPlanillaEntity;
-    private boolean esRectificatorio=false;
+    private boolean esRectificatorio;
     private Date fechaOperacionAux;
     private Long numeroOrden;
 
@@ -122,7 +124,17 @@ public class formularioUnicoBean implements Serializable{
     public void cargar() {
         generaDocumento();
         verEstadoPlanilla();
+        cargarListaPorNumeros();
     }
+
+    public void cargarListaPorNumeros(){
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String pathReport = (String) servletContext.getRealPath("/");
+        esRectificatorio=  pathReport.contains("ectificatoria");
+        docDocumentoEntityList= new ArrayList<DocDocumentoEntity>();
+        docDocumentoEntityList= iDocumentoService.listarPorNumero(idPersona);
+    }
+
     public void verEstadoPlanilla(){
         List<DocDocumentoEntity> listaDocumentos;
          try{
@@ -166,6 +178,8 @@ public class formularioUnicoBean implements Serializable{
         logger.info("generaPlanilla()");
         docPlanillaEntity.setIdEntidadBanco(2);
         docPlanillaEntity.setTipoPlanilla(isSinMovimiento ? "DDJJSM" : "DDJJ");
+        if (esRectificatorio)
+            docPlanillaEntity.setTipoPlanilla("DDJJRECT");
         docPlanillaEntity.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
     }
 
@@ -227,6 +241,7 @@ public class formularioUnicoBean implements Serializable{
             return null;
         }
     }
+
     
     public String irInicio(){
         idPersona=(String)session.getAttribute("idPersona");
@@ -505,5 +520,12 @@ public class formularioUnicoBean implements Serializable{
 
     public void setTemporal(String temporal) {
         this.temporal = temporal;
+    }
+    public List<DocDocumentoEntity> getDocDocumentoEntityList() {
+        return docDocumentoEntityList;
+    }
+
+    public void setDocDocumentoEntityList(List<DocDocumentoEntity> docDocumentoEntityList) {
+        this.docDocumentoEntityList = docDocumentoEntityList;
     }
 }
