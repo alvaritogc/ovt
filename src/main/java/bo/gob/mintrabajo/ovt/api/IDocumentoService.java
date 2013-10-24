@@ -26,4 +26,5 @@ public interface IDocumentoService {
     public void guardaDocumentoBinarioPlanilla(DocDocumentoEntity docDocumentoEntity, List<DocBinarioEntity> listaBinarios, DocPlanillaEntity docPlanillaEntity);
     public void guardaDocumentoPlanilla(DocDocumentoEntity docDocumentoEntity, DocPlanillaEntity docPlanillaEntity);
     DocDocumentoEntity guardarCambioEstado(DocDocumentoEntity documento, String codEstadoNuevo,String idUsuario);
+    List<DocDocumentoEntity> listarPorNumero(String idPersona);
 }
