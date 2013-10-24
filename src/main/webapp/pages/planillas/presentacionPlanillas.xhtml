@@ -223,25 +223,25 @@
                                     <p:column colspan="6">
                                         <p:outputLabel for="cortoPlazo" value="4.1 Nro de asegurados al ente gestor de salud a corto plazo"/>
                                         <p:inputText id="cortoPlazo" value="#{formularioUnicoBean.docPlanillaEntity.nroAsegCaja}" style="width: 150px; height: 10px; text-align: right" required="true" converterMessage="valor con 2 decimales" maxlength="6">
-                                            <pe:keyFilter regEx="/[\d\-\.]/" />
+                                            <pe:keyFilter regEx="/[\d\-]/" />
                                         </p:inputText>
                                         <br/>
                                         <p:outputLabel for="largoPlazo" value="4.4 Nro de afiliados seguro a largo plazo"/>
                                         <p:inputText id="largoPlazo" value="#{formularioUnicoBean.docPlanillaEntity.nroAsegAfp}" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="6">
-                                            <pe:keyFilter regEx="/[\d\-\.]/" />
+                                            <pe:keyFilter regEx="/[\d\-]/" />
                                         </p:inputText>
                                     </p:column>
                                     <p:column colspan="5">
                                         <p:outputLabel for="aportado1" value="4.2 Monto aportado (Bs)"/>
                                         <p:inputText id="aportado1" value="#{formularioUnicoBean.docPlanillaEntity.montoAsegCaja}" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                                             <f:convertNumber minFractionDigits="2" />
-                                            <pe:keyFilter regEx="/[\d\-\.]/" />
+                                            <pe:keyFilter regEx="/[\d\-\,]/" />
                                         </p:inputText>
                                         <br/>
                                         <p:outputLabel for="aportado2" value="4.5 Monto aportado (Bs)"/>
                                         <p:inputText id="aportado2" value="#{formularioUnicoBean.docPlanillaEntity.montoAsegAfp}" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                                             <f:convertNumber minFractionDigits="2" />
-                                            <pe:keyFilter regEx="/[\d\-\.]/" />
+                                            <pe:keyFilter regEx="/[\d\-\,]/" />
                                         </p:inputText>
                                     </p:column>
                                     <p:column colspan="5">
@@ -269,37 +269,37 @@
                                             <p:inputText id="basico" value="#{formularioUnicoBean.docPlanillaEntity.haberBasico}" style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
                                                 <f:convertNumber minFractionDigits="2" />
                                                 <p:ajax event="keyup" update="totalGanado"/>
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-\,]/" />
                                             </p:inputText>
                                             <p:outputLabel for="antiguedad" value="5.2 Bono de antigüedad"/>
                                             <p:inputText id="antiguedad" value="#{formularioUnicoBean.docPlanillaEntity.bonoAntiguedad}" style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
                                                 <f:convertNumber minFractionDigits="2" />
                                                 <p:ajax event="keyup" update="totalGanado"/>
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-\,]/" />
                                             </p:inputText>
                                             <p:outputLabel for="produccion" value="5.3 Bono de producción"/>
                                             <p:inputText id="produccion" value="#{formularioUnicoBean.docPlanillaEntity.bonoProduccion}" style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
                                                 <f:convertNumber minFractionDigits="2" />
                                                 <p:ajax event="keyup" update="totalGanado"/>
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-\,]/" />
                                             </p:inputText>
                                             <p:outputLabel for="frontera" value="5.4 Subsidio de frontera"/>
                                             <p:inputText id="frontera" value="#{formularioUnicoBean.docPlanillaEntity.subsidioFrontera}" style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
                                                 <f:convertNumber minFractionDigits="2" />
                                                 <p:ajax event="keyup" update="totalGanado"/>
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-\,]/" />
                                             </p:inputText>
                                             <p:outputLabel for="extraordinario" value="5.5 Labor extraordinaria"/>
                                             <p:inputText id="extraordinario" value="#{formularioUnicoBean.docPlanillaEntity.laborExtra}" style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
                                                 <f:convertNumber minFractionDigits="2" />
                                                 <p:ajax event="keyup" update="totalGanado"/>
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-\,]/" />
                                             </p:inputText>
                                             <p:outputLabel for="bono" value="5.6 Otros bonos"/>
                                             <p:inputText id="bono" value="#{formularioUnicoBean.docPlanillaEntity.otrosBonos}" style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
                                                 <f:convertNumber minFractionDigits="2" />
                                                 <p:ajax event="keyup" update="totalGanado" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-\,]/" />
                                             </p:inputText>
                                             <p:outputLabel value="5.7 Total ganado" style="font-weight: bold"/>
                                             <p:inputText id="totalGanado" value="#{(formularioUnicoBean.docPlanillaEntity.haberBasico +
@@ -311,21 +311,21 @@
                                                 <f:convertNumber minFractionDigits="2" />
                                                 <p:ajax event="keyup" update="totalDescuento" />
                                                 <p:ajax event="keyup" update="pagable" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-\,]/" />
                                             </p:inputText>
                                             <p:outputLabel for="iva" value="5.9 RC-IVA"/>
                                             <p:inputText id="iva" value="#{formularioUnicoBean.docPlanillaEntity.rciva}" style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
                                                 <f:convertNumber minFractionDigits="2" />
                                                 <p:ajax event="keyup" update="totalDescuento" />
                                                 <p:ajax event="keyup" update="pagable" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-\,]/" />
                                             </p:inputText>
                                             <p:outputLabel for="descuento" value="5.10 Otros descuentos"/>
                                             <p:inputText id="descuento" value="#{formularioUnicoBean.docPlanillaEntity.otrosDescuentos}" style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
                                                 <f:convertNumber minFractionDigits="2" />
                                                 <p:ajax event="keyup" update="totalDescuento" />
                                                 <p:ajax event="keyup" update="pagable" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-\,]/" />
                                             </p:inputText>
                                             <p:outputLabel value="5.11 Total Descuentos" style="font-weight:bold" />
                                             <p:inputText id="totalDescuento" value="#{(formularioUnicoBean.docPlanillaEntity.aporteAfp +
@@ -347,11 +347,11 @@
                                             <p:outputLabel value="6.1 Total trabajadores"/>
                                             <p:inputText id="varon1" value="#{formularioUnicoBean.docPlanillaEntity.nroH}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalTrabajadores" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText id="mujer1" value="#{formularioUnicoBean.docPlanillaEntity.nroM}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalTrabajadores" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText id="totalTrabajadores" value="#{(formularioUnicoBean.docPlanillaEntity.nroH + formularioUnicoBean.docPlanillaEntity.nroM)}" disabled="true" style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
                                             <p:outputLabel value="-"/><p:outputLabel value="-"/><p:outputLabel value="-"/><p:outputLabel value="-"/>
@@ -362,55 +362,55 @@
                                             <p:outputLabel value="6.2 Personas jubiladas"/>
                                             <p:inputText id="varon2" value="#{formularioUnicoBean.docPlanillaEntity.nroJubiladosH}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalJubilados" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText id="mujer2" value="#{formularioUnicoBean.docPlanillaEntity.nroJubiladosM}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalJubilados" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText id="totalJubilados" value="#{(formularioUnicoBean.docPlanillaEntity.nroJubiladosH + formularioUnicoBean.docPlanillaEntity.nroJubiladosM)}"
                                                          disabled="true" style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
                                             <p:outputLabel value="6.3 Personas extranjeras"/>
                                             <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroExtranjerosH}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalExtrangeros" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroExtranjerosM}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalExtrangeros" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText id="totalExtrangeros" value="#{(formularioUnicoBean.docPlanillaEntity.nroExtranjerosH + formularioUnicoBean.docPlanillaEntity.nroExtranjerosM)}"
                                                          disabled="true" style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
                                             <p:outputLabel value="6.4 Personas con discapacidad"/>
                                             <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroDiscapacidadH}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalDicapacitados" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroDiscapacidadM}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalDicapacitados" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText id="totalDicapacitados" value="#{(formularioUnicoBean.docPlanillaEntity.nroDiscapacidadM + formularioUnicoBean.docPlanillaEntity.nroDiscapacidadH)}"
                                                          disabled="true" style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
                                             <p:outputLabel value="6.5 Personas contratadas en el trimestre"/>
                                             <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroContratadosH}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalContratados" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroContratadosM}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalContratados" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText id="totalContratados" value="#{(formularioUnicoBean.docPlanillaEntity.nroContratadosM + formularioUnicoBean.docPlanillaEntity.nroContratadosH)}"
                                                          disabled="true" style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
                                             <p:outputLabel value="6.6 Personas retiradas en el trimestre"/>
                                             <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroRetiradosH}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalRetirados" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroRetiradosM}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
                                                 <p:ajax event="keyup" update="totalRetirados" />
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:inputText id="totalRetirados" value="#{(formularioUnicoBean.docPlanillaEntity.nroRetiradosH + formularioUnicoBean.docPlanillaEntity.nroRetiradosM)}"
                                                          disabled="true" style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
@@ -421,15 +421,15 @@
                                         <p:panelGrid columns="2">
                                             <p:outputLabel value="7.1 Nro total de accidentes en el trimestre"/>
                                             <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroAccidentes}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:outputLabel value="7.2 Nro de accidentes en el trimestre con muerte"/>
                                             <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroMuertes}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                             <p:outputLabel value="7.3 Nro de enfermedades de trabajo"/>
                                             <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.nroEnfermedades}" style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
-                                                <pe:keyFilter regEx="/[\d\-\.]/" />
+                                                <pe:keyFilter regEx="/[\d\-]/" />
                                             </p:inputText>
                                         </p:panelGrid>
                                     </p:column>
@@ -445,7 +445,7 @@
                                     <p:column colspan="7">
                                         <p:outputLabel value="8.1 Nro de comprobante de depósito"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.numOperacion}" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="20">
-                                            <pe:keyFilter regEx="/[\d\-\.]/" />
+                                            <pe:keyFilter regEx="/[\d\-]/" />
                                         </p:inputText>
                                     </p:column>
                                     <p:column colspan="5">
@@ -456,7 +456,7 @@
                                         <p:outputLabel value="8.3 Monto de depósito (Bs)"/>
                                         <p:inputText value="#{formularioUnicoBean.docPlanillaEntity.montoOperacion}" style="width: 150px; height: 10px; text-align: right" maxlength="10">
                                             <f:convertNumber minFractionDigits="2" />
-                                            <pe:keyFilter regEx="/[\d\-\.]/" />
+                                            <pe:keyFilter regEx="/[\d\-\,]/" />
                                         </p:inputText>
                                     </p:column>
                                 </p:row>

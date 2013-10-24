@@ -267,4 +267,8 @@ public class DocumentoService implements IDocumentoService{
         entity = repository.save(documento);
         return entity;
     }
+
+    public List<DocDocumentoEntity> listarPorNumero(String idPersona){
+        return repository.findByAttribute("idPersona", idPersona, -1,-1);
+    }
 }

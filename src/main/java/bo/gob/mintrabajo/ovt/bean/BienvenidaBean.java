@@ -20,6 +20,8 @@ import java.util.ArrayList;
 //import java.util.Collection;
 
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import org.primefaces.context.RequestContext;
 
 
 
@@ -54,6 +56,8 @@ public class BienvenidaBean {
     private VperPersonaEntity vperPersonaEntity;
     //
     private boolean esFuncionario;
+    //
+    private boolean detenerFacesMessages;
 
     @PostConstruct
     public void ini() {
@@ -89,6 +93,15 @@ public class BienvenidaBean {
             esFuncionario=true;
         }
         cargar();
+        detenerFacesMessages=false;
+    }
+    
+    public void abrirPanel(){
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("dlgMensaje.show()");
+        //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity.");  
+        //RequestContext.getCurrentInstance().showMessageInDialog(message);
+        detenerFacesMessages=true;
     }
 
     public void cargar() {
@@ -265,5 +278,13 @@ public class BienvenidaBean {
 
     public void setEsFuncionario(boolean esFuncionario) {
         this.esFuncionario = esFuncionario;
+    }
+
+    public boolean isDetenerFacesMessages() {
+        return detenerFacesMessages;
+    }
+
+    public void setDetenerFacesMessages(boolean detenerFacesMessages) {
+        this.detenerFacesMessages = detenerFacesMessages;
     }
 }
