@@ -1,7 +1,8 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IUnidadService;
-import bo.gob.mintrabajo.ovt.entities.PerUnidadEntity;
+import bo.gob.mintrabajo.ovt.entities.PerUnidad;
+import bo.gob.mintrabajo.ovt.entities.PerUnidadPK;
 import bo.gob.mintrabajo.ovt.repositories.UnidadRepository;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -25,70 +26,38 @@ public class UnidadService implements IUnidadService{
         this.unidadRepository = unidadRepository;
     }
     
-    @Override
-    public List<PerUnidadEntity> getAllUnidades() {
-        List<PerUnidadEntity> allUnidades;
-
-        try {
-            allUnidades = unidadRepository.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            allUnidades = null;
-        }
+//    @Override
+    public List<PerUnidad> getAllUnidades() {
+        List<PerUnidad> allUnidades;
+        allUnidades = unidadRepository.findAll();
         return allUnidades;
     }
     
-    @Override
-    public PerUnidadEntity save(PerUnidadEntity unidad) {
-        PerUnidadEntity perUnidadEntity;
-
-        try {
-            perUnidadEntity = unidadRepository.save(unidad);
-        } catch (Exception e) {
-            e.printStackTrace();
-            perUnidadEntity = null;
-        }
-
+//    @Override
+    public PerUnidad save(PerUnidad unidad) {
+        PerUnidad perUnidadEntity;
+        perUnidadEntity = unidadRepository.save(unidad);
         return perUnidadEntity;
     }
 
-    @Override
-    public boolean delete(PerUnidadEntity unidad) {
+//    @Override
+    public boolean delete(PerUnidad unidad) {
         boolean deleted = false;
-
-        try {
-            unidadRepository.delete(unidad);
-            deleted = true;
-        } catch (Exception e) {
-            deleted=false;
-            e.printStackTrace();
-        }
+        unidadRepository.delete(unidad);
         return deleted;
     }
 
-    @Override
-    public PerUnidadEntity findById(BigDecimal id) {
-        PerUnidadEntity perUnidadEntity;
-
-        try {
-            perUnidadEntity = unidadRepository.findOne(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            perUnidadEntity = null;
-        }
-
+//    @Override
+    public PerUnidad findById(PerUnidadPK id) {
+        PerUnidad perUnidadEntity;
+        perUnidadEntity = unidadRepository.findOne(id);
         return perUnidadEntity;
     }
     
-    @Override
-    public List<PerUnidadEntity> listarPorPersona( String idPersona){
-        List<PerUnidadEntity> lista;
-        try {
-            lista = unidadRepository.findByAttribute("idPersona", idPersona, -1, -1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            lista = null;
-        }
+//    @Override
+    public List<PerUnidad> listarPorPersona( String idPersona){
+        List<PerUnidad> lista;
+        lista = unidadRepository.findByAttribute("idPersona", idPersona, -1, -1);
         return lista;
     }
     

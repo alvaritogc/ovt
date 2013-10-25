@@ -1,10 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bo.gob.mintrabajo.ovt.api;
 
-import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.sql.DataSource;
@@ -14,9 +10,7 @@ import javax.sql.DataSource;
  * @author pc01
  */
 public interface IUsuarioService {
-    public List<UsrUsuarioEntity> getAllUsuarios();
-    public UsrUsuarioEntity save(UsrUsuarioEntity usuario);
-    public boolean delete(UsrUsuarioEntity usuario);
-    public UsrUsuarioEntity findById(BigDecimal id);
-    public int login(String username, String password);
+    public Long login(String username, String password);
+    public List<UsrUsuario> getAllUsuarios();
+    public UsrUsuario findById(Long id);
 }

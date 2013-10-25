@@ -1,7 +1,8 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IRolRecursoService;
-import bo.gob.mintrabajo.ovt.entities.UsrRolRecursoEntity;
+import bo.gob.mintrabajo.ovt.entities.UsrRolRecurso;
+import bo.gob.mintrabajo.ovt.entities.UsrRolRecursoPK;
 import bo.gob.mintrabajo.ovt.repositories.RolRecursoRepository;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -17,18 +18,18 @@ import java.util.List;
  */
 @Named("rolRecursoService")
 @TransactionAttribute
-public class RolRecursoService implements IRolRecursoService{
-    
+public class RolRecursoService implements IRolRecursoService {
+
     private final RolRecursoRepository rolRecursoRepository;
 
     @Inject
     public RolRecursoService(RolRecursoRepository rolRecursoRepository) {
         this.rolRecursoRepository = rolRecursoRepository;
     }
-    
-    @Override
-    public List<UsrRolRecursoEntity> getAllRecursos() {
-        List<UsrRolRecursoEntity> lista;
+
+    //@Override
+    public List<UsrRolRecurso> getAllRecursos() {
+        List<UsrRolRecurso> lista;
 
         try {
             lista = rolRecursoRepository.findAll();
@@ -38,48 +39,26 @@ public class RolRecursoService implements IRolRecursoService{
         }
         return lista;
     }
-    
-    @Override
-    public UsrRolRecursoEntity save(UsrRolRecursoEntity rolRecurso) {
-        
-        UsrRolRecursoEntity entity;
 
-        try {
-            entity = rolRecursoRepository.save(rolRecurso);
-        } catch (Exception e) {
-            e.printStackTrace();
-            entity = null;
-        }
-
+//    @Override
+    public UsrRolRecurso save(UsrRolRecurso rolRecurso) {
+        UsrRolRecurso entity;
+        entity = rolRecursoRepository.save(rolRecurso);
         return entity;
     }
 
-    @Override
-    public boolean delete(UsrRolRecursoEntity rolRecurso) {
+//    @Override
+    public boolean delete(UsrRolRecurso rolRecurso) {
         boolean deleted = false;
-
-        try {
-            rolRecursoRepository.delete(rolRecurso);
-            deleted = true;
-        } catch (Exception e) {
-            deleted=false;
-            e.printStackTrace();
-        }
+        rolRecursoRepository.delete(rolRecurso);
+        deleted = true;
         return deleted;
     }
 
-    @Override
-    public UsrRolRecursoEntity findById(BigDecimal id) {
-        UsrRolRecursoEntity entity;
-
-        try {
-            entity = rolRecursoRepository.findOne(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            entity = null;
-        }
-
+//    @Override
+    public UsrRolRecurso findById(UsrRolRecursoPK id) {
+        UsrRolRecurso entity;
+        entity = rolRecursoRepository.findOne(id);
         return entity;
     }
-    
 }

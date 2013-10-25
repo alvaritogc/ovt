@@ -1,9 +1,7 @@
-
 package bo.gob.mintrabajo.ovt.services;
 
-
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
-import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
+import bo.gob.mintrabajo.ovt.entities.PerPersona;
 import bo.gob.mintrabajo.ovt.repositories.PersonaRepository;
 import com.google.common.base.Strings;
 
@@ -24,17 +22,11 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
-/**
- * User: gveramendi
- * Date: 9/23/13
- * Time: 6:38 PM
- */
-
 @Named("personaService")
 @TransactionAttribute
-public class PersonaService implements IPersonaService{
+public class PersonaService implements IPersonaService {
+
     private final PersonaRepository personaRepository;
-    
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -42,110 +34,56 @@ public class PersonaService implements IPersonaService{
     public PersonaService(PersonaRepository personaRepository) {
         this.personaRepository = personaRepository;
     }
-    
-    @Override
-    public List<PerPersonaEntity> getAllPersonas() {
-        List<PerPersonaEntity> allPersonas;
 
-        try {
-            allPersonas = personaRepository.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            allPersonas = null;
-        }
+//    @Override
+    public List<PerPersona> getAllPersonas() {
+        List<PerPersona> allPersonas;
+        allPersonas = personaRepository.findAll();
         return allPersonas;
     }
 
-    @Override
-    public PerPersonaEntity save(PerPersonaEntity persona) {
-        PerPersonaEntity perPersonaEntity;
-
-        try {
-            perPersonaEntity = personaRepository.save(persona);
-        } catch (Exception e) {
-            e.printStackTrace();
-            perPersonaEntity = null;
-        }
-
+////    @Override
+    public PerPersona save(PerPersona persona) {
+        PerPersona perPersonaEntity;
+        perPersonaEntity = personaRepository.save(persona);
         return perPersonaEntity;
     }
 
-    @Override
-    public boolean delete(PerPersonaEntity persona) {
+//    @Override
+    public boolean delete(PerPersona persona) {
         boolean deleted = false;
-
-        try {
-            personaRepository.delete(persona);
-            deleted = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        personaRepository.delete(persona);
         return deleted;
     }
 
     @Override
-    public PerPersonaEntity findById(BigDecimal id) {
-        PerPersonaEntity perPersonaEntity;
-
-        try {
-            perPersonaEntity = personaRepository.findOne(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            perPersonaEntity = null;
-        }
-
+    public PerPersona findById(String id) {
+        PerPersona perPersonaEntity;
+        perPersonaEntity = personaRepository.findOne(id);
         return perPersonaEntity;
     }
-    
-    @Override
-    public PerPersonaEntity buscarPorId(String id) {
-        PerPersonaEntity perPersonaEntity;
-        
-        try {
-            perPersonaEntity = personaRepository.findByAttribute("idPersona", id, -1, -1).get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            perPersonaEntity = null;
-        }
 
+    public PerPersona buscarPorId(String id) {
+        PerPersona perPersonaEntity;
+        perPersonaEntity = personaRepository.findByAttribute("idPersona", id, -1, -1).get(0);
         return perPersonaEntity;
     }
-    
-    //@Override
-    public List<PerPersonaEntity> buscarPorNroNombre1(String nroIdentificacion, String nombreRazonSocial) {
-        List<PerPersonaEntity> allPersonas;
 
-        PerPersonaEntity persona=new PerPersonaEntity();
-        persona.setNroIdentificacion(nroIdentificacion);
-        persona.setNombreRazonSocial(nombreRazonSocial);
-        try {
-            //allPersonas = personaRepository.buscarPorNumeroNombre(nroIdentificacion, nombreRazonSocial);
-            //allPersonas = personaRepository.findByAttribute("nombreRazonSocial", nombreRazonSocial, -1, -1);
-            //allPersonas = personaRepository.findByExample(persona, null, null, -1, -1);
-            //allPersonas=personaRepository.findByFullTexts(nombreRazonSocial, null, -1,-1);
-            allPersonas = personaRepository.buscarPorNumeroNombre(nroIdentificacion, nombreRazonSocial);
-        } catch (Exception e) {
-            e.printStackTrace();
-            allPersonas = null;
-        }
-        return allPersonas;
-    }
     
-     public List<PerPersonaEntity> buscarPorNroNombre(final String nroIdentificacion, final String nombreRazonSocial) {
+
+    public List<PerPersona> buscarPorNroNombre(final String nroIdentificacion, final String nombreRazonSocial) {
         if (Strings.isNullOrEmpty(nroIdentificacion) && Strings.isNullOrEmpty(nombreRazonSocial)) {
             return Collections.emptyList();
         }
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<PerPersonaEntity> criteriaQuery = criteriaBuilder.createQuery(PerPersonaEntity.class);
-        Root<PerPersonaEntity> from = criteriaQuery.from(PerPersonaEntity.class);
+        CriteriaQuery<PerPersona> criteriaQuery = criteriaBuilder.createQuery(PerPersona.class);
+        Root<PerPersona> from = criteriaQuery.from(PerPersona.class);
 
-        Specification<PerPersonaEntity> specification = new Specification<PerPersonaEntity>() {
-
+        Specification<PerPersona> specification = new Specification<PerPersona>() {
             @Override
-            public Predicate toPredicate(Root<PerPersonaEntity> perPersonaEntityRoot, CriteriaQuery<?> criteriaQuery,
-                                         CriteriaBuilder criteriaBuilder) {
+            public Predicate toPredicate(Root<PerPersona> perPersonaEntityRoot, CriteriaQuery<?> criteriaQuery,
+                    CriteriaBuilder criteriaBuilder) {
 
 
                 List<Predicate> pr = new LinkedList<Predicate>();
@@ -172,5 +110,4 @@ public class PersonaService implements IPersonaService{
 
         // TODO: esto deberia funcionar... return personaRepository.findAll(specification);
     }
-    
 }

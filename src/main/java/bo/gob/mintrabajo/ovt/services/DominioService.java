@@ -2,7 +2,8 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IDominioService;
-import bo.gob.mintrabajo.ovt.entities.ParDominioEntity;
+import bo.gob.mintrabajo.ovt.entities.ParDominio;
+import bo.gob.mintrabajo.ovt.entities.ParDominioPK;
 import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
 
 import javax.ejb.TransactionAttribute;
@@ -27,60 +28,46 @@ public class DominioService implements IDominioService{
         this.dominioRepository = dominioRepository;
     }
 
-    @Override
-    public List<ParDominioEntity> getAllDominios() {
-        List<ParDominioEntity> allModulos;
-
-        try {
-            allModulos = dominioRepository.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            allModulos = null;
-        }
+//    @Override
+    public List<ParDominio> getAllDominios() {
+        List<ParDominio> allModulos;
+        allModulos = dominioRepository.findAll();
         return allModulos;
     }
 
     @Override
-    public ParDominioEntity save(ParDominioEntity dominio) {
-        ParDominioEntity parDominioEntity;
-
-        try {
-            parDominioEntity = dominioRepository.save(dominio);
-        } catch (Exception e) {
-            e.printStackTrace();
-            parDominioEntity = null;
-        }
-
-        return parDominioEntity;
+    public ParDominio save(ParDominio dominio) {
+        System.out.println("========================================");
+        System.out.println("========================================");
+        System.out.println("=========CREANDO LLAVE COMPUESTA========");
+        System.out.println("========================================");
+        System.out.println("========================================");
+        //
+        ParDominioPK parDominioPK=new ParDominioPK();
+        parDominioPK.setIdDominio("");
+        parDominioPK.setValor("");
+        dominio.setParDominioPK(parDominioPK);
+        //
+        dominio.setFechaBitacora(new Date());
+        dominio.setRegistroBitacora("ROE");
+        System.out.println("==============GUARDANDO================");
+        System.out.println("========================================");
+        ParDominio parDominio = dominioRepository.save(dominio);
+        return parDominio;
     }
 
-    @Override
-    public boolean delete(ParDominioEntity dominio) {
+//    @Override
+    public boolean delete(ParDominio dominio) {
         boolean deleted = false;
-
-        try {
-            dominioRepository.delete(dominio);
-            deleted = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            deleted=false;
-        }
-
+        dominioRepository.delete(dominio);
         return deleted;
     }
 
-    @Override
-    public ParDominioEntity findById(BigDecimal id) {
-        ParDominioEntity parDominioEntity;
-
-        try {
-            parDominioEntity = dominioRepository.findOne(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            parDominioEntity = null;
-        }
-
-        return parDominioEntity;
+//    @Override
+    public ParDominio findById(ParDominioPK id) {
+        ParDominio parDominio;
+        parDominio = dominioRepository.findOne(id);
+        return parDominio;
     }
     
 }

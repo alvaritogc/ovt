@@ -43,232 +43,39 @@ public class DocumentoService implements IDocumentoService{
         this.logEstadoRepository=logEstadoRepository;
     }
 
-    @Override
-    public List<DocDocumentoEntity> getAllDocumentos() {
-        List<DocDocumentoEntity> lista;
-
-        try {
-            lista = repository.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            lista = null;
-        }
+//    @Override
+    public List<DocDocumento> getAllDocumentos() {
+        List<DocDocumento> lista;
+        lista = repository.findAll();
         return lista;
     }
     
-    @Override
-    public DocDocumentoEntity save(DocDocumentoEntity documento) {
-        DocDocumentoEntity entity;
-        try {
-            entity = repository.save(documento);
-        } catch (Exception e) {
-            e.printStackTrace();
-            entity = null;
-        }
-        return entity;
-    }
-
-    @Override
-    public boolean delete(DocDocumentoEntity documento) {
-        boolean deleted = false;
-        try {
-            repository.delete(documento);
-            deleted = true;
-        } catch (Exception e) {
-            deleted=false;
-            e.printStackTrace();
-        }
-        return deleted;
-    }
-
-    @Override
-    public DocDocumentoEntity findById(BigDecimal id) {
-        DocDocumentoEntity entity;
-
-        try {
-            entity = repository.findOne(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            entity = null;
-        }
-
-        return entity;
-    }
-    
-    @Override
-    public DocDocumentoEntity guardar(DocDocumentoEntity documento) {
-//        if(documento==null){
-//            System.out.println("Error en el documento");
-//            throw new RuntimeException("Error en el documento");
-//        }
-//        //
-//        documento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
-//        //
-//        documento.setCodDocumento("LC1010");
-//        documento.setVersion(1);
-//        //documento.setNumeroDocumento(1);
-//        //
-//        //
-//        //
-//        //
-//
-//        //Long a=actualizarNumeroDeOrden("LC1010", 1);
-//        documento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1));
-//        //
-//        //
-//        //documento.setNumeroDocumento(repository.findAll().size()+10101000001L);
-//        //
-////        documento.setNumeroDocumento(repository.findAll().size()+1);
-//        Date date= new java.util.Date();
-//        documento.setFechaDocumento(new Timestamp(date.getTime()));
-//        //
-//        documento.setIdDocumentoRef(null);
-//        //
-//        documento.setCodEstado("110");
-//        documento.setFechaReferenca(null);
-//        documento.setTipoMedioRegistro("OFVIR");
-//        documento.setFechaBitacora(new Timestamp(date.getTime()));
-//        //
-////        documento.setIdEstadoDocumento("1");
-//        //
-//        DocDocumentoEntity entity;
-//        //
-//        //System.out.println(""+documento.toString());
-//        entity = repository.save(documento);
-//
-//        return entity;
-        return null;
-    }
-    
-    @Override
-    public List<DocDocumentoEntity> listarPorPersona(String idPersona) {
-        List<DocDocumentoEntity> lista;
-        try {
-            lista = repository.findByAttribute("idPersona", idPersona, -1, -1);
-            for(DocDocumentoEntity documento:lista){
-                ParDocumentoEstadoEntity documentoEstado=documentoEstadoRepository.findByAttribute("codEstado", documento.getCodEstado(), -1, -1).get(0);
-                documento.setDocumentoEstado(documentoEstado);
-                documento.setDocumentoEstadoDescripcion(documentoEstado.getDescripcion());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            lista = null;
-        }
-        return lista;
-    }
-
-    @Override
-    public DocPlanillaEntity retornaPlanilla(Long idDocumento){
-
-//        idDocumento = 1;
-
-
-        return planillaRepository.findByAttribute("idDocumento",idDocumento,-1,-1).get(0);
-    }
-    @Override
-    public PerUnidadEntity retornaUnidad(String idPersona){
-
-//        idDocumento = 1;
-
-
-        return unidadRepository.findByAttribute("idPersona",idPersona,-1,-1).get(0);
-    }
-    
-    @Override
-    public Long actualizarNumeroDeOrden(String codDocumento, Integer version) {
-        DocNumeracionEntity numeracionBusqueda = new DocNumeracionEntity();
-        numeracionBusqueda.setCodDocumento(codDocumento);
-        numeracionBusqueda.setVersion(version);
-        DocNumeracionEntity numeracion;
-        try {
-            numeracion = numeracionRepository.findByExample(numeracionBusqueda, null, null, -1, -1).get(0);
-        } catch (Exception e) {
-            throw new RuntimeException("DocNumeracionEntity no encontrado");
-        }
-        String codNumeroS =numeracion.getCodDocumento();
-        String codNumero = "";
-        for (int i = 2; i < codNumeroS.length(); i++) {
-            codNumero = codNumero + codNumeroS.charAt(i);
-        }
-        Long numero=new Long(numeracion.getUltimoNumero()+1);
-        //
-        Formatter fmt = new Formatter();
-        fmt.format("%07d", numero);
-        String numeroFormato = fmt.toString();
-        //
-        String numeroSinVerificacion = "" + codNumero + numeroFormato;
-        String numeroVerificacion = "";
-        int contador = 2;
-        for (int i = 0; i < numeroSinVerificacion.length(); i++) {
-            numeroVerificacion = "" + contador + numeroVerificacion;
-            contador++;
-            if (contador > 7) {
-                contador = 2;
-            }
-        }
-        //
-        Long sumatoria = new Long(0);
-        //
-        for (int i = 0; i < numeroSinVerificacion.length(); i++) {
-            Long multiplicacion = (new Long("" + numeroSinVerificacion.charAt(i))) * (new Long("" + numeroVerificacion.charAt(i)));
-            sumatoria = sumatoria + multiplicacion;
-        }
-        Long modulo = sumatoria % 11;
-        Long verificacion = 11 - modulo;
-        //
-        numeracion.setUltimoNumero(numeracion.getUltimoNumero()+1);
-        numeracionRepository.save(numeracion);
-        //
-        Formatter fmtVerificacion = new Formatter();
-        fmtVerificacion.format("%02d", verificacion);
-        Long nuevoNumero = new Long("" + codNumero + numeroFormato + fmtVerificacion.toString());
-        return nuevoNumero;
-    }
-
-    public void guardaDocumentoBinarioPlanilla(DocDocumentoEntity docDocumentoEntity, List<DocBinarioEntity> listaBinarios, DocPlanillaEntity docPlanillaEntity){
-        docDocumentoEntity.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
-        docDocumentoEntity.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1));
-        docDocumentoEntity=repository.save(docDocumentoEntity);
-        int idBinario= 1;
-        for(DocBinarioEntity elementoBinario:listaBinarios){
-            elementoBinario.setIdDocumento(docDocumentoEntity.getIdDocumento());
-            elementoBinario.setIdBinario(idBinario++);
-            binarioRepository.save(elementoBinario);
-        }
-        docPlanillaEntity.setIdDocumento(docDocumentoEntity.getIdDocumento());
-        docPlanillaEntity.setIdPlanilla(utils.planillaSecuencia("DOC_PLANILLA_SEC"));
-        planillaRepository.save(docPlanillaEntity);
-    }
-
-    public void guardaDocumentoPlanilla(DocDocumentoEntity docDocumentoEntity, DocPlanillaEntity docPlanillaEntity){
-        docDocumentoEntity.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
-        docDocumentoEntity.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1));
-        docDocumentoEntity=repository.save(docDocumentoEntity);
-        docPlanillaEntity.setIdDocumento(docDocumentoEntity.getIdDocumento());
-        docPlanillaEntity.setIdPlanilla(utils.planillaSecuencia("DOC_PLANILLA_SEC")); //planillaRepository.findAll().size()+1
-        planillaRepository.save(docPlanillaEntity);
-    }
-    
-    @Override
-    public DocDocumentoEntity guardarCambioEstado(DocDocumentoEntity documento, String codEstadoNuevo,String idUsuario) {
-        //
-        DocLogEstadoEntity logEstado=new DocLogEstadoEntity();
-        logEstado.setIdDocumento(documento.getIdDocumento());
-        logEstado.setCodEstadoFinal(codEstadoNuevo);
-        logEstado.setCodEstadoInicial(documento.getCodEstado());
-        logEstado.setRegistroBitacora(idUsuario);
-        Date date=new Date();
-        logEstado.setFechaBitacora(new Timestamp(date.getTime()));
-        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
-        logEstadoRepository.save(logEstado);
-        //
-        documento.setCodEstado(codEstadoNuevo);
-        DocDocumentoEntity entity;
+//    @Override
+    public DocDocumento save(DocDocumento documento) {
+        DocDocumento entity;
         entity = repository.save(documento);
         return entity;
     }
 
-    public List<DocDocumentoEntity> listarPorNumero(String idPersona){
-        return repository.findByAttribute("idPersona", idPersona, -1,-1);
+//    @Override
+    public boolean delete(DocDocumento documento) {
+        boolean deleted = false;
+        repository.delete(documento);
+        return deleted;
     }
+
+//    @Override
+    public DocDocumento findById(Long id) {
+        DocDocumento entity;
+        entity = repository.findOne(id);
+        return entity;
+    }
+    
+//    @Override
+    public List<DocDocumento> listarPorPersona(String idPersona) {
+        List<DocDocumento> lista;
+        lista = repository.findByAttribute("idPersona", idPersona, -1, -1);
+        return lista;
+    }
+    
 }

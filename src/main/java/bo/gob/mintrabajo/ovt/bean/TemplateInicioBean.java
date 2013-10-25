@@ -3,44 +3,35 @@ package bo.gob.mintrabajo.ovt.bean;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IRecursoService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
-import bo.gob.mintrabajo.ovt.entities.PerPersonaEntity;
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-import bo.gob.mintrabajo.ovt.entities.UsrRecursoEntity;
-import bo.gob.mintrabajo.ovt.entities.UsrUsuarioEntity;
-import java.io.IOException;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
+import bo.gob.mintrabajo.ovt.entities.PerPersona;
+import bo.gob.mintrabajo.ovt.entities.UsrRecurso;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
-import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @ManagedBean(name = "templateInicioBean")
 @ViewScoped
 public class TemplateInicioBean implements Serializable {
     //
-
     private HttpSession session;
-    private int idUsuario;
+    private Long idUsuario;
     private String idPersona;
     private String idEmpleador;
     private static final Logger logger = LoggerFactory.getLogger(TemplateInicioBean.class);
@@ -52,16 +43,16 @@ public class TemplateInicioBean implements Serializable {
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
     //
-    private String nombreDeUsuario;
-    private String nombreDeUnidad;
+    private UsrUsuario usuario;
+    private PerPersona persona;
+    private PerPersona empleador;
     //
-    private List<UsrRecursoEntity> listaRecursos;
+    //
+    private List<UsrRecurso> listaRecursos;
     private MenuModel model;
     //
     private String username;
     private String password;
-    //
-    private Date fecha;
 
     @PostConstruct
     public void ini() {
@@ -70,28 +61,27 @@ public class TemplateInicioBean implements Serializable {
         username = "";
         password = "";
         //
-        idUsuario = 0;
-        listaRecursos = new ArrayList<UsrRecursoEntity>();
-        nombreDeUsuario = "";
-        nombreDeUnidad = "";
-        //
-        fecha = new Date();
+        idUsuario = null;
+        idPersona = null;
+        idEmpleador = null;
+        listaRecursos = new ArrayList<UsrRecurso>();
+        usuario=null;
+        persona=null;
+        empleador=null;
         //
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            idUsuario = (Integer) session.getAttribute("idUsuario");
-            BigDecimal bi = BigDecimal.valueOf(idUsuario);
-            logger.info("Buscando usuario" + bi);
-            UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
-            nombreDeUsuario = usuario.getUsuario();
-            PerPersonaEntity persona;
-            idPersona=null;
+            idUsuario = (Long) session.getAttribute("idUsuario");
+            //
+            logger.info("Buscando usuario" + idUsuario);
+            usuario = iUsuarioService.findById(idUsuario);
+            //
+            idPersona=(String) session.getAttribute("idPersona");
+            persona=iPersonaService.findById(idPersona);
+            
             idEmpleador=(String)session.getAttribute("idEmpleador");
             if(idEmpleador!=null){
-                nombreDeUnidad=iPersonaService.buscarPorId(idEmpleador).getNombreRazonSocial();
-            }
-            else{
-                nombreDeUnidad="N/A";
+                empleador=iPersonaService.findById(idEmpleador);
             }
             logger.info("usuario ok");
             cargar();
@@ -102,7 +92,6 @@ public class TemplateInicioBean implements Serializable {
             item.setIcon("ui-icon-arrowthickstop-1-e");
             item.setCommand("#{templateInicioBean.logout}");
             model.addElement(item);
-            nombreDeUsuario = "Invitado";
         }
 
     }
@@ -110,57 +99,57 @@ public class TemplateInicioBean implements Serializable {
     public void cargar() {
         logger.info("cargar");
         model = new DefaultMenuModel();
-        try {
-            BigDecimal bi = BigDecimal.valueOf(idUsuario);
-            listaRecursos = iRecursoService.buscarPorUsuario(bi);
-            logger.info("" + listaRecursos.size());
-        } catch (Exception e) {
-        }
-        crearMenuRecurso();
+//        try {
+//            BigDecimal bi = BigDecimal.valueOf(idUsuario);
+//            listaRecursos = iRecursoService.buscarPorUsuario(bi);
+//            logger.info("" + listaRecursos.size());
+//        } catch (Exception e) {
+//        }
+//        crearMenuRecurso();
         DefaultMenuItem item = new DefaultMenuItem("Salir");
         item.setIcon("ui-icon-arrowthickstop-1-e");
         item.setCommand("#{templateInicioBean.logout}");
         model.addElement(item);
     }
 
-    public void crearMenuRecurso() {
+//    public void crearMenuRecurso() {
+//
+//        for (UsrRecursoEntity recurso : listaRecursos) {
+//            if (recurso.getIdRecursoPadre() == null) {
+//                DefaultSubMenu subMenu = crearMenuHijos(recurso);
+//                model.addElement(subMenu);
+//            }
+//        }
+//    }
 
-        for (UsrRecursoEntity recurso : listaRecursos) {
-            if (recurso.getIdRecursoPadre() == null) {
-                DefaultSubMenu subMenu = crearMenuHijos(recurso);
-                model.addElement(subMenu);
-            }
-        }
-    }
-
-    public DefaultSubMenu crearMenuHijos(UsrRecursoEntity recurso) {
-        logger.info("crearMenuHijos()");
-        DefaultSubMenu subMenu = new DefaultSubMenu(recurso.getEtiqueta());
-        for (UsrRecursoEntity recursoHijo : listaRecursos) {
-            if (recursoHijo.getIdRecursoPadre() != null && recursoHijo.getIdRecursoPadre().equals(recurso.getIdRecurso())) {
-                if (tieneHijos(recursoHijo)) {
-                    DefaultSubMenu subMenuHijo = crearMenuHijos(recursoHijo);
-                    subMenu.addElement(subMenuHijo);
-                } else {
-                    DefaultMenuItem item = new DefaultMenuItem(recursoHijo.getEtiqueta());
-                    item.setUrl("/faces" + recursoHijo.getEjecutable());
-                    subMenu.addElement(item);
-                }
-            }
-        }
-        return subMenu;
-    }
-
-    public boolean tieneHijos(UsrRecursoEntity recurso) {
-        for (UsrRecursoEntity recursoHijo : listaRecursos) {
-            if (recurso.getIdRecurso() != recursoHijo.getIdRecurso()) {
-                if (recursoHijo.getIdRecursoPadre() != null && recursoHijo.getIdRecursoPadre().equals(recurso.getIdRecurso())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//    public DefaultSubMenu crearMenuHijos(UsrRecursoEntity recurso) {
+//        logger.info("crearMenuHijos()");
+//        DefaultSubMenu subMenu = new DefaultSubMenu(recurso.getEtiqueta());
+//        for (UsrRecursoEntity recursoHijo : listaRecursos) {
+//            if (recursoHijo.getIdRecursoPadre() != null && recursoHijo.getIdRecursoPadre().equals(recurso.getIdRecurso())) {
+//                if (tieneHijos(recursoHijo)) {
+//                    DefaultSubMenu subMenuHijo = crearMenuHijos(recursoHijo);
+//                    subMenu.addElement(subMenuHijo);
+//                } else {
+//                    DefaultMenuItem item = new DefaultMenuItem(recursoHijo.getEtiqueta());
+//                    item.setUrl("/faces" + recursoHijo.getEjecutable());
+//                    subMenu.addElement(item);
+//                }
+//            }
+//        }
+//        return subMenu;
+//    }
+//
+//    public boolean tieneHijos(UsrRecursoEntity recurso) {
+//        for (UsrRecursoEntity recursoHijo : listaRecursos) {
+//            if (recurso.getIdRecurso() != recursoHijo.getIdRecurso()) {
+//                if (recursoHijo.getIdRecursoPadre() != null && recursoHijo.getIdRecursoPadre().equals(recurso.getIdRecurso())) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     public String logout() {
         logger.info("logout()");
@@ -187,40 +176,26 @@ public class TemplateInicioBean implements Serializable {
 
     public String login() {
         logger.info("login()");
-
- /*       System.out.println("======>>>> INGRESANDO AL LOGIN");
-        System.out.println("======>>>> INGRESANDO AL LOGIN");
-        System.out.println("======>>>> INGRESANDO AL LOGIN");
-        FacesContext context2 = FacesContext.getCurrentInstance();
-        FacesMessage fm=new FacesMessage("ERROR MENSAJE DE ERROR");
-        fm.setSeverity(FacesMessage.SEVERITY_ERROR);
-        context2.addMessage(null, fm);
-        return null;*/
-
-
-
         try {
             logger.info("iUsuarioService.login(" + username + "," + password + ")");
-            int idUsuario = iUsuarioService.login(username, password);
+            Long idUsuario = iUsuarioService.login(username, password);
             logger.info("usuario aceptado");
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             session.setAttribute("idUsuario", idUsuario);
-            //
-            ini();
-            //
-
-
-            BigDecimal bi = BigDecimal.valueOf(idUsuario);
-            UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
-            session.setAttribute("idPersona", usuario.getIdPersona());
-            if (usuario.getEsInterno() == BigInteger.ONE) {
+            UsrUsuario usuario=iUsuarioService.findById(idUsuario);
+            session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
+            if(usuario.getEsInterno()==1)
+            {
                 session.setAttribute("idEmpleador", null);
+                ini();
                 return "irEmpleadorBusqueda";
-            } else {
-                session.setAttribute("idEmpleador", usuario.getIdPersona());
+            }
+            else{
+                session.setAttribute("idEmpleador", usuario.getIdPersona().getIdPersona());
+                ini();
                 return "irBienvenida";
             }
-            //return "login";
+            //
         } catch (RuntimeException e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(), "Hello "));
@@ -232,24 +207,19 @@ public class TemplateInicioBean implements Serializable {
         return "";
     }
 
-    public String irInicioPublico() {
+     public String irInicioPublico() {
         //si no existe la session
         return "irInicio";
     }
 
     public String irInicioPrivado() {
-        //si existe la session
-        BigDecimal bi = BigDecimal.valueOf(idUsuario);
-        UsrUsuarioEntity usuario = iUsuarioService.findById(bi);
-        session.setAttribute("idPersona", usuario.getIdPersona());
-        if (usuario.getEsInterno() == BigInteger.ONE) {
-            session.setAttribute("idEmpleador", null);
-            return "irEmpleadorBusqueda";
-        } else {
-            session.setAttribute("idEmpleador", usuario.getIdPersona());
+        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador))
+        {
             return "irBienvenida";
         }
-
+        else{
+            return "irEmpleadorBusqueda";
+        }
     }
 
     public MenuModel getModel() {
@@ -276,14 +246,6 @@ public class TemplateInicioBean implements Serializable {
         this.iRecursoService = iRecursoService;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -300,35 +262,43 @@ public class TemplateInicioBean implements Serializable {
         this.password = password;
     }
 
-    public String getNombreDeUsuario() {
-        return nombreDeUsuario;
-    }
-
-    public void setNombreDeUsuario(String nombreDeUsuario) {
-        this.nombreDeUsuario = nombreDeUsuario;
-    }
-
-    public String getNombreDeUnidad() {
-        return nombreDeUnidad;
-    }
-
-    public void setNombreDeUnidad(String nombreDeUnidad) {
-        this.nombreDeUnidad = nombreDeUnidad;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
     public IPersonaService getiPersonaService() {
         return iPersonaService;
     }
 
     public void setiPersonaService(IPersonaService iPersonaService) {
         this.iPersonaService = iPersonaService;
+    }
+
+    public UsrUsuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsrUsuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public PerPersona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(PerPersona persona) {
+        this.persona = persona;
+    }
+
+    public PerPersona getEmpleador() {
+        return empleador;
+    }
+
+    public void setEmpleador(PerPersona empleador) {
+        this.empleador = empleador;
+    }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

@@ -1,7 +1,8 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IUsuarioRecursoService;
-import bo.gob.mintrabajo.ovt.entities.UsrUsuarioRecursoEntity;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuarioRecurso;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuarioRecursoPK;
 import bo.gob.mintrabajo.ovt.repositories.UsuarioRecursoRepository;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -25,9 +26,9 @@ public class UsuarioRecursoService implements IUsuarioRecursoService{
         this.usuarioRecursoRepository = usuarioRecursoRepository;
     }
     
-    @Override
-    public List<UsrUsuarioRecursoEntity> getAllUsuarios() {
-        List<UsrUsuarioRecursoEntity> lista;
+//    @Override
+    public List<UsrUsuarioRecurso> getAllUsuarios() {
+        List<UsrUsuarioRecurso> lista;
 
         try {
             lista = usuarioRecursoRepository.findAll();
@@ -38,9 +39,9 @@ public class UsuarioRecursoService implements IUsuarioRecursoService{
         return lista;
     }
     
-    @Override
-    public UsrUsuarioRecursoEntity save(UsrUsuarioRecursoEntity usuarioRecurso) {
-        UsrUsuarioRecursoEntity entity;
+//    @Override
+    public UsrUsuarioRecurso save(UsrUsuarioRecurso usuarioRecurso) {
+        UsrUsuarioRecurso entity;
 
         try {
             entity = usuarioRecursoRepository.save(usuarioRecurso);
@@ -52,8 +53,8 @@ public class UsuarioRecursoService implements IUsuarioRecursoService{
         return entity;
     }
 
-    @Override
-    public boolean delete(UsrUsuarioRecursoEntity usuarioRecurso) {
+//    @Override
+    public boolean delete(UsrUsuarioRecurso usuarioRecurso) {
         boolean deleted = false;
 
         try {
@@ -66,17 +67,10 @@ public class UsuarioRecursoService implements IUsuarioRecursoService{
         return deleted;
     }
 
-    @Override
-    public UsrUsuarioRecursoEntity findById(BigDecimal id) {
-        UsrUsuarioRecursoEntity entity;
-
-        try {
-            entity = usuarioRecursoRepository.findOne(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            entity = null;
-        }
-
+//    @Override
+    public UsrUsuarioRecurso findById(UsrUsuarioRecursoPK id) {
+        UsrUsuarioRecurso entity;
+        entity = usuarioRecursoRepository.findOne(id);
         return entity;
     }
 }

@@ -1,7 +1,7 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
-import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendarioEntity;
+import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 import bo.gob.mintrabajo.ovt.repositories.ObligacionCalendarioRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 
@@ -28,14 +28,4 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         this.obligacionCalendarioRepository = obligacionCalendarioRepository;
     }
 
-    public List<ParObligacionCalendarioEntity> obtenerObligacionCalendario() {
-        //List<ParObligacionCalendarioEntity> tmpLista = obligacionCalendarioRepository.findAll();
-        Date date=new Date();
-        List<ParObligacionCalendarioEntity> tmpLista = obligacionCalendarioRepository.buscarPorFecha(new Timestamp(date.getTime()));
-        return tmpLista;
-    }
-
-    public String obtenerGestionActual(){
-        return obligacionCalendarioRepository.buscarGestionActual(new Timestamp(new Date().getTime()));
-    }
 }

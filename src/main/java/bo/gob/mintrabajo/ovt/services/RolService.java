@@ -5,7 +5,7 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IRolService;
-import bo.gob.mintrabajo.ovt.entities.UsrRolEntity;
+import bo.gob.mintrabajo.ovt.entities.UsrRol;
 import bo.gob.mintrabajo.ovt.repositories.RolRepository;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -29,9 +29,9 @@ public class RolService implements IRolService{
         this.rolRepository = rolRepository;
     }
     
-    @Override
-    public List<UsrRolEntity> getAllRoles() {
-        List<UsrRolEntity> allRoles;
+//    @Override
+    public List<UsrRol> getAllRoles() {
+        List<UsrRol> allRoles;
 
         try {
             allRoles = rolRepository.findAll();
@@ -42,45 +42,24 @@ public class RolService implements IRolService{
         return allRoles;
     }
     
-    @Override
-    public UsrRolEntity save(UsrRolEntity rol) {
-        UsrRolEntity usrRolEntity;
-
-        try {
-            usrRolEntity = rolRepository.save(rol);
-        } catch (Exception e) {
-            e.printStackTrace();
-            usrRolEntity = null;
-        }
-
+//    @Override
+    public UsrRol save(UsrRol rol) {
+        UsrRol usrRolEntity;
+        usrRolEntity = rolRepository.save(rol);
         return usrRolEntity;
     }
 
-    @Override
-    public boolean delete(UsrRolEntity rol) {
+//    @Override
+    public boolean delete(UsrRol rol) {
         boolean deleted = false;
-
-        try {
-            rolRepository.delete(rol);
-            deleted = true;
-        } catch (Exception e) {
-            deleted=false;
-            e.printStackTrace();
-        }
+        rolRepository.delete(rol);
         return deleted;
     }
 
-    @Override
-    public UsrRolEntity findById(BigDecimal id) {
-        UsrRolEntity usrRolEntity;
-
-        try {
-            usrRolEntity = rolRepository.findOne(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            usrRolEntity = null;
-        }
-
+//    @Override
+    public UsrRol findById(Long id) {
+        UsrRol usrRolEntity;
+        usrRolEntity = rolRepository.findOne(id);
         return usrRolEntity;
     }
     

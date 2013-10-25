@@ -1,8 +1,8 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IBinarioService;
-import bo.gob.mintrabajo.ovt.entities.DocBinarioEntity;
-import bo.gob.mintrabajo.ovt.entities.DocLogImpresionEntity;
+import bo.gob.mintrabajo.ovt.entities.DocBinario;
+import bo.gob.mintrabajo.ovt.entities.DocLogImpresion;
 import bo.gob.mintrabajo.ovt.repositories.BinarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.LogImpresionRepository;
 
@@ -32,28 +32,19 @@ public class BinarioService implements IBinarioService{
         this.logImpresionRepository = logImpresionRepository;
     }
 
-    @Override
-    public DocBinarioEntity guardarBinario(DocBinarioEntity docBinariosEntity){
+//    @Override
+    public DocBinario guardarBinario(DocBinario docBinariosEntity){
         return binarioRepository.save(docBinariosEntity);
     }
 
-    @Override
+//    @Override
     public Long contar(){
         return binarioRepository.count();
     }
 
-    @Override
-    public List<DocBinarioEntity> listaBinariosPorDocumento(Long idDocumento){
-        return binarioRepository.findByIdDocumento(idDocumento);
-    }
 
-    @Override
-    public DocBinarioEntity obtienePorIdDocumentoIdBinario(int idDocumento, int idBinario){
-        return binarioRepository.findByIdDocumentoAndIdBinario(idDocumento, idBinario);
-    }
-
-    @Override
-    public void download(DocBinarioEntity docBinarioEntity, DocLogImpresionEntity docLogImpresionEntity){
+//    @Override
+    public void download(DocBinario docBinarioEntity, DocLogImpresion docLogImpresionEntity){
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ExternalContext externalContext = facesContext.getExternalContext();

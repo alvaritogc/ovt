@@ -84,12 +84,12 @@
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
     <!-- Para JETTY -->
-    <!--welcome-file-list>
-        <welcome-file>faces/pages/inicio.jsf</welcome-file>
-    </welcome-file-list-->
-    <!-- Para JBOSS -->
     <welcome-file-list>
-        <welcome-file>faces/pages/inicio.xhtml</welcome-file>
+        <welcome-file>faces/pages/inicio.jsf</welcome-file>
     </welcome-file-list>
+    <!-- Para JBOSS -->
+    <!--<welcome-file-list>-->
+        <!--<welcome-file>faces/pages/inicio.xhtml</welcome-file>-->
+    <!--</welcome-file-list>-->
 
 </web-app>
