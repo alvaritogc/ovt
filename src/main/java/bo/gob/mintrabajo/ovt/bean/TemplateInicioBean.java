@@ -193,7 +193,7 @@ public class TemplateInicioBean implements Serializable {
             else{
                 session.setAttribute("idEmpleador", usuario.getIdPersona().getIdPersona());
                 ini();
-                return "irBienvenida";
+                return "irEscritorio";
             }
             //
         } catch (RuntimeException e) {
@@ -215,7 +215,7 @@ public class TemplateInicioBean implements Serializable {
     public String irInicioPrivado() {
         if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador))
         {
-            return "irBienvenida";
+            return "irEscritorio";
         }
         else{
             return "irEmpleadorBusqueda";

@@ -71,10 +71,10 @@ public class DocumentoService implements IDocumentoService{
         return entity;
     }
     
-//    @Override
+    @Override
     public List<DocDocumento> listarPorPersona(String idPersona) {
         List<DocDocumento> lista;
-        lista = repository.findByAttribute("idPersona", idPersona, -1, -1);
+        lista = repository.buscarPorPersona(idPersona);
         return lista;
     }
     

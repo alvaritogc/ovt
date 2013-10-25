@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <p:dialog id="basicDialogMessage" header="Información" widgetVar="dlgMensaje" 
+                      width="500" 
+                      resizable="false"
+                      style="background-color: #F6CECE;">  
+                <h1>Recuerde</h1>
+                <li>
+                    <ul><p style="font-size: 15px;">Antes de realizar su declaración jurada, debe bajar la nueva plantilla en formato Excel de: Servicios públicos > Descarga de formatos de planillas, situado en la parte izquierda.
+                        </p></ul>
+                    </li>
+                    <li>
+                    <ul><p style="font-size: 15px;">
+                            La DDJJ sin movimiento solo requiere el depósito bancario.
+                        </p></ul>
+                </li>
+
+
+            </p:dialog>  
+
+            <h:form id="idFormularioBienvenida">
+                <p:poll interval="1"   id="idPoll"
+                        listener="#{escritorioBean.abrirPanel}"
+                        update=":idFormularioBienvenida:idPoll" 
+                        stop="#{escritorioBean.detenerFacesMessages}"/>  
+                <h1>#{escritorioBean.empleador.nombreRazonSocial}</h1>
+                <p:panelGrid columns="2" style="border-style: hidden;">
+                    <p:outputLabel value="#{escritorioBean.empleador.tipoIdentificacion}: " style="size: 20px;"/>
+                    <p:outputLabel value="#{escritorioBean.empleador.nroIdentificacion}" />
+                </p:panelGrid>
+                <p:dataList value="#{escritorioBean.listaUnidades}" var="unidad" itemType="disc">
+                    #{unidad.nombreComercial} , #{unidad.nroCajaSalud}
+                </p:dataList>
+                <div style="font-size: 15px">
+                    <p>La presentación vía internet de las planillas trimestrales correspondientes al 3er trimestre de 2013 solo es hasta el 31 de octubre del presente, pasada esta fecha la presentación deberá ser de manera tradicional.</p>
+                    <p>Los empleadores de <u>La Paz</u>, <u>Cochabamba</u>, <u>Santa Cruz</u> y sus respectivas regionales deberán de manera obligatoria hacerse presentes en la oficina central de su departamento para presentar la boleta de depósito y la declaración jurada con el plazo de 1 mes a partir de realizado el deposito.</p>
+                </div>
+                <br/>
+                <h3>Documentos</h3>
+
+                <p:dataTable id="idListaDocumentos" value="#{escritorioBean.listaDocumentos}" var="o1" paginator="true" rows="10" emptyMessage="No se encontraron resultados" >
+                    <p:column headerText="Código">
+                        <h:outputText value="#{o1.codDocumento}"/>
+                    </p:column>
+                    <p:column headerText="Número">
+                        <h:outputText value="#{o1.numeroDocumento}"/>
+                    </p:column>
+                    <p:column headerText="Fecha">
+                        <h:outputText value="#{o1.fechaDocumento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Estado" >
+                        <h:outputText value="#{o1.documentoEstado.descripcion}" style="color: #{o1.documentoEstado.metadata}; font-weight: bold"/>
+                    </p:column>
+                    <p:column headerText="Medio de registro">
+                        <h:outputText value="#{o1.tipoMedioRegistro}"/>
+                    </p:column>
+                    <p:column headerText="Acciones">
+                        <p:commandButton action="#{escritorioBean.irRealizarCambioDeEstados}" ajax="false" icon="ui-icon-gear" title="Realizar cambio de estados">
+                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumentoEntity}" />
+                        </p:commandButton>
+
+                        <h:commandLink target="_blank" action="#{escritorioBean.irImprimirDocumento}" title="Imprimir documento">
+                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumentoEntity}" />
+                            <h:graphicImage  style="float: left;width:25px;height: 23px;padding-right: 3px; " value="/images/imprimir.png" />
+                        </h:commandLink>
+
+                        <p:commandButton action="#{escritorioBean.download}"
+                                         ajax="false"
+                                         rendered="#{escritorioBean.esFuncionario}"
+                                         icon="ui-icon-arrowthickstop-1-s"
+                                         title="Descarga documentos" >
+                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumentoEntity}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

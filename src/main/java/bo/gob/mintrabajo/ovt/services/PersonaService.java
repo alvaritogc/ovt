@@ -71,6 +71,7 @@ public class PersonaService implements IPersonaService {
 
     
 
+    @Override
     public List<PerPersona> buscarPorNroNombre(final String nroIdentificacion, final String nombreRazonSocial) {
         if (Strings.isNullOrEmpty(nroIdentificacion) && Strings.isNullOrEmpty(nombreRazonSocial)) {
             return Collections.emptyList();

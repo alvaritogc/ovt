@@ -54,10 +54,10 @@ public class UnidadService implements IUnidadService{
         return perUnidadEntity;
     }
     
-//    @Override
-    public List<PerUnidad> listarPorPersona( String idPersona){
+    @Override
+    public List<PerUnidad> buscarPorPersona( String idPersona){
         List<PerUnidad> lista;
-        lista = unidadRepository.findByAttribute("idPersona", idPersona, -1, -1);
+        lista = unidadRepository.buscarPorPersona(idPersona);
         return lista;
     }
     
