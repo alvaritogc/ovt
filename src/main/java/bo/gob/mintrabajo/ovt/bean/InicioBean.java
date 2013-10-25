@@ -33,6 +33,7 @@ public class InicioBean {
     private IDominioService iDominioService;
     @ManagedProperty(value = "#{moduloService}")
     private IModuloService iModuloService;
+    //lv
 
     @PostConstruct
     public void ini() {
