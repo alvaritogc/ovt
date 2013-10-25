@@ -49,6 +49,7 @@ public class EscritorioBean {
     //
     private String textoBenvenida;
     //
+    private UsrUsuario usuario;
     private PerPersona empleador;
     private PerPersona persona;
     private List<PerUnidad> listaUnidades;
@@ -68,13 +69,13 @@ public class EscritorioBean {
         System.out.println("idPersona: "+idPersona);
         System.out.println("idEmpleador: "+idEmpleador);
         //
+        usuario=iUsuarioService.findById(idUsuario);
         persona=iPersonaService.findById(idPersona);
         empleador=iPersonaService.findById(idEmpleador);
-        if(idEmpleador!=null && idPersona!=null && idPersona.equals(idEmpleador)){
+        if(usuario.getEsInterno()==1){
             esFuncionario=false;
         }
-        else
-        {
+        else{
             esFuncionario=true;
         }
         cargar();
@@ -91,13 +92,13 @@ public class EscritorioBean {
 
     public void cargar() {
         textoBenvenida="Bienvenido  OVT";
-        listaUnidades=iUnidadService.buscarPorPersona(persona.getIdPersona());
+        listaUnidades=iUnidadService.buscarPorPersona(idEmpleador);
         cargarDocumentos();
     }
     
     public void cargarDocumentos(){
         try{
-            listaDocumentos=iDocumentoService.listarPorPersona(persona.getIdPersona());
+            listaDocumentos=iDocumentoService.listarPorPersona(idEmpleador);
             if(listaDocumentos==null){
             listaDocumentos=new ArrayList<DocDocumento>();
         }
@@ -106,6 +107,11 @@ public class EscritorioBean {
             e.printStackTrace();
             listaDocumentos=new ArrayList<DocDocumento>();
         }
+    }
+    
+     public String download(){
+        session.setAttribute("idDocumento", docDocumentoEntity.getIdDocumento());
+        return "irDownload";
     }
 
 
@@ -117,7 +123,7 @@ public class EscritorioBean {
         return "irCambioEstado";
     }
 
-//    public void irImprimirDocumento(){
+    public void irImprimirDocumento(){
 //        PerUnidad perUnidadEntity = new PerUnidad();
 //        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
 //        try{
@@ -130,7 +136,7 @@ public class EscritorioBean {
 //        catch(Exception e){
 //            e.printStackTrace();
 //        }
-//    }
+    }
 
 
 //    private static void redirecionarReporte (String rutaReporte) throws IOException {
@@ -250,11 +256,11 @@ public class EscritorioBean {
         this.iPlanillaService = iPlanillaService;
     }
 
-    public DocDocumento getDocDocumento() {
+    public DocDocumento getDocDocumentoEntity() {
         return docDocumentoEntity;
     }
 
-    public void setDocDocumento(DocDocumento docDocumentoEntity) {
+    public void setDocDocumentoEntity(DocDocumento docDocumentoEntity) {
         this.docDocumentoEntity = docDocumentoEntity;
     }
 
