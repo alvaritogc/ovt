@@ -85,7 +85,7 @@
     </servlet-mapping>
     <!-- Para JETTY -->
     <welcome-file-list>
-        <welcome-file>faces/pages/inicio.jsf</welcome-file>
+        <welcome-file>pages/inicio.jsf</welcome-file>
     </welcome-file-list>
     <!-- Para JBOSS -->
     <!--<welcome-file-list>-->
