@@ -31,6 +31,7 @@ import org.primefaces.model.menu.DefaultSubMenu;
 @ViewScoped
 public class TemplateInicioBean implements Serializable {
     //
+
     private HttpSession session;
     private Long idUsuario;
     private String idPersona;
@@ -66,23 +67,23 @@ public class TemplateInicioBean implements Serializable {
         idPersona = null;
         idEmpleador = null;
         listaRecursos = new ArrayList<UsrRecurso>();
-        usuario=null;
-        persona=null;
-        empleador=null;
+        usuario = null;
+        persona = null;
+        empleador = null;
         //
         try {
-            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
             idUsuario = (Long) session.getAttribute("idUsuario");
             //
             logger.info("Buscando usuario" + idUsuario);
             usuario = iUsuarioService.findById(idUsuario);
             //
-            idPersona=(String) session.getAttribute("idPersona");
-            persona=iPersonaService.findById(idPersona);
-            
-            idEmpleador=(String)session.getAttribute("idEmpleador");
-            if(idEmpleador!=null){
-                empleador=iPersonaService.findById(idEmpleador);
+            idPersona = (String) session.getAttribute("idPersona");
+            persona = iPersonaService.findById(idPersona);
+
+            idEmpleador = (String) session.getAttribute("idEmpleador");
+            if (idEmpleador != null) {
+                empleador = iPersonaService.findById(idEmpleador);
             }
             logger.info("usuario ok");
             cargar();
@@ -135,7 +136,7 @@ public class TemplateInicioBean implements Serializable {
                     subMenu.addElement(item);
                 }
             }
-            
+
         }
         return subMenu;
     }
@@ -182,15 +183,13 @@ public class TemplateInicioBean implements Serializable {
             logger.info("usuario aceptado");
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             session.setAttribute("idUsuario", idUsuario);
-            UsrUsuario usuario=iUsuarioService.findById(idUsuario);
+            UsrUsuario usuario = iUsuarioService.findById(idUsuario);
             session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
-            if(usuario.getEsInterno()==1)
-            {
+            if (usuario.getEsInterno() == 1) {
                 session.setAttribute("idEmpleador", null);
                 ini();
                 return "irEmpleadorBusqueda";
-            }
-            else{
+            } else {
                 session.setAttribute("idEmpleador", usuario.getIdPersona().getIdPersona());
                 ini();
                 return "irEscritorio";
@@ -198,28 +197,30 @@ public class TemplateInicioBean implements Serializable {
             //
         } catch (RuntimeException e) {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(), "Hello "));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(), "Hello "));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
         }
         password = "";
         return "";
     }
 
-     public String irInicioPublico() {
-        //si no existe la session
+    public String irInicio() {
+        try {
+            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            idUsuario = (Long) session.getAttribute("idUsuario");
+            usuario = iUsuarioService.findById(idUsuario);
+            if(usuario.getEsInterno()==1){
+                return "irEmpleadorBusqueda";
+            }
+            else{
+                return "irEscritorio";
+            }
+        } catch (Exception e) {
+            System.out.println("No se encontro la session");
+        }
         return "irInicio";
-    }
-
-    public String irInicioPrivado() {
-        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador))
-        {
-            return "irEscritorio";
-        }
-        else{
-            return "irEmpleadorBusqueda";
-        }
     }
 
     public MenuModel getModel() {
