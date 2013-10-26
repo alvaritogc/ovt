@@ -56,7 +56,7 @@ public class EscritorioBean {
     private List<DocDocumento> listaDocumentos;
 //    private VperPersonaEntity vperPersonaEntity;
     //
-    private boolean esFuncionario;
+    private boolean esInterno;
     //
     private boolean detenerFacesMessages;
 
@@ -73,10 +73,10 @@ public class EscritorioBean {
         persona=iPersonaService.findById(idPersona);
         empleador=iPersonaService.findById(idEmpleador);
         if(usuario.getEsInterno()==1){
-            esFuncionario=false;
+            esInterno=true;
         }
         else{
-            esFuncionario=true;
+            esInterno=false;
         }
         cargar();
         detenerFacesMessages=false;
@@ -264,14 +264,6 @@ public class EscritorioBean {
         this.docDocumentoEntity = docDocumentoEntity;
     }
 
-    public boolean isEsFuncionario() {
-        return esFuncionario;
-    }
-
-    public void setEsFuncionario(boolean esFuncionario) {
-        this.esFuncionario = esFuncionario;
-    }
-
     public boolean isDetenerFacesMessages() {
         return detenerFacesMessages;
     }
@@ -286,5 +278,13 @@ public class EscritorioBean {
 
     public void setEmpleador(PerPersona empleador) {
         this.empleador = empleador;
+    }
+
+    public boolean isEsInterno() {
+        return esInterno;
+    }
+
+    public void setEsInterno(boolean esInterno) {
+        this.esInterno = esInterno;
     }
 }

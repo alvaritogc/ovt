@@ -13,6 +13,8 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
     @Query(
             "   select doc "
             + " from DocDocumento doc"
+            + " join fetch doc.codEstado"
+            + " join fetch doc.docDefinicion"
             + " where "
             + " doc.idPersona.idPersona=:idPersona"
             )
