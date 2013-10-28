@@ -79,14 +79,10 @@
             ================================================== -->
             <div class="row">
                 <div class="span3 bs-docs-sidebar">
-                    <h:form>
-                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPublico}" style="width: 100%"
-                                         rendered="#{templateInicioBean.idUsuario == null}"/>
-                        <h:panelGrid columns="1" rendered="#{!(templateInicioBean.idUsuario == null)}" style="width: 100%">
-                            <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado}" style="width: 100%"/>
-                        </h:panelGrid>
-                    </h:form>
                     <p:growl id="grwLogin" showDetail="false" life="6000" globalOnly="true"  sticky="false"/>
+                    <h:form>
+                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicio}" style="width: 100%"/>
+                    </h:form>
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario ==null}">
                         <p:panel  >
                             <h2 class="form-signin-heading">Conéctate</h2>
