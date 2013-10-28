@@ -6,22 +6,10 @@
 
 package bo.gob.mintrabajo.ovt.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
@@ -30,7 +18,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "PER_UNIDAD")
 @NamedQueries({
-    @NamedQuery(name = "PerUnidad.findAll", query = "SELECT p FROM PerUnidad p")})
+        @NamedQuery(name = "PerUnidad.findAll", query = "SELECT p FROM PerUnidad p")})
 public class PerUnidad implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -68,6 +56,8 @@ public class PerUnidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "NRO_REFERENCIAL")
     private String nroReferencial;
+    @Column(name = "TIPO_UNIDAD")
+    private String tipoUnidad;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -214,6 +204,14 @@ public class PerUnidad implements Serializable {
         this.nroReferencial = nroReferencial;
     }
 
+    public String getTipoUnidad() {
+        return tipoUnidad;
+    }
+
+    public void setTipoUnidad(String tipoUnidad) {
+        this.tipoUnidad = tipoUnidad;
+    }
+
     public Date getFechaBitacora() {
         return fechaBitacora;
     }
@@ -286,5 +284,5 @@ public class PerUnidad implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.PerUnidad[ perUnidadPK=" + perUnidadPK + " ]";
     }
-    
+
 }
