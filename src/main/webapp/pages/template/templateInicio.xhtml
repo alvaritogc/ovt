@@ -114,7 +114,13 @@
                             <!--  <p:messages id="messages" /> -->
                             <p:commandLink value="Ayuda" onclick="PF('dlg1').show();" style="color:red;"/>
                         </p:panel>
+                        <!--<br/><br/> DESCOMENTAR CUANDO LA FUNCIONALIDAD DE CONFIRMACION EMAIL ESTE COMPLETO -->
+                        <!--<p:panel header="No estoy registrado">-->
+                             <!--<p:commandLink value="Registrarse gratis" onclick="registroDlg.show();" style="color:#00079C;" />-->
+                        <!--</p:panel>-->
                     </h:form>
+
+                    <!-- Dialogos -->
                     <p:dialog id="basicDialog" header="Acceso al Sistema" widgetVar="dlg1" width="700" height="470" resizable="false">  
                         <p style="font-size: 12px;">Los datos que necesita para acceder al sistema son la información de su ROE (Registro Obligatorio de Empleadores) esta información le fue asignada a tiempo de realizar su registro, para darle algunas pautas, si no cambio los datos, los pueden ser los siguientes: </p>
                         <br/>
@@ -128,8 +134,22 @@
                             telefónica a las líneas departamentales.</p>
                         <p style="font-size: 12px;"><span style="color:red;">Nota </span>.- La respuesta via correo electronico puede tardar en
                             ser respondida, tome sus re<a name="_GoBack"></a>caudos correspondientes.</p>
-
-                    </p:dialog>  
+                    </p:dialog>
+                    <!-- Dialogo para el registro de usuarios -->
+                    <p:dialog header="Registro de usuario" widgetVar="registroDlg" modal="true">
+                        <h:form id="registroFrm">
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="Nombre de login :" />
+                                <p:inputText value="#{templateInicioBean.nombreLogin}" />
+                                <p:outputLabel value="Email :" />
+                                <p:inputText value="#{templateInicioBean.email}" />
+                                <p:outputLabel value="Password :" />
+                                <p:inputText value="#{templateInicioBean.password}" />
+                            </p:panelGrid>
+                            <p:commandButton value="Enviar" action="#{templateInicioBean.enviaConfirmacion}" />
+                            <p:commandButton value="Cancelar" onclick="registroDlg.hide();" />
+                        </h:form>
+                    </p:dialog>
 
                     <h:form>
                         <p:panel  header="Servicios públicos">

@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean;
 
+import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IRecursoService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
@@ -54,6 +55,10 @@ public class TemplateInicioBean implements Serializable {
     //
     private String username;
     private String password;
+
+    // ** Variables utilizadas para el registro de un nuevo usuario ** //
+    private String nombreLogin;
+    private String email;
 
     @PostConstruct
     public void ini() {
@@ -222,6 +227,13 @@ public class TemplateInicioBean implements Serializable {
         }
     }
 
+    // **** Se debe enviar al email que ingreso el usuario **** //
+    public void enviaConfirmacion(){
+        logger.info("Ingresando a la clase " + getClass().getSimpleName() + " enviaConfirmacion() ");
+        ServicioEnvioEmail see = new ServicioEnvioEmail();
+        see.envioEmail(email);
+    }
+
     public MenuModel getModel() {
         return model;
     }
@@ -300,5 +312,21 @@ public class TemplateInicioBean implements Serializable {
 
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public String getNombreLogin() {
+        return nombreLogin;
+    }
+
+    public void setNombreLogin(String nombreLogin) {
+        this.nombreLogin = nombreLogin;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
