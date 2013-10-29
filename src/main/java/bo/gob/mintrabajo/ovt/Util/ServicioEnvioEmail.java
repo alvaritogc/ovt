@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.Util;
 
+import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,12 +27,13 @@ public class ServicioEnvioEmail {
     private String port = "";
     private String subject = "";
     private String cuerpoMensaje = "";
+    private String urlRedireccion = "";
 
     private static final Logger logger = LoggerFactory.getLogger(ServicioEnvioEmail.class);
 
-    public void envioEmail(String emailRegistrado) {
+    public void envioEmail(TemplateInicioBean bean) {
 
-        cargar(emailRegistrado);
+        cargar(bean);
         try {
             Properties props = new Properties();
             props.put("mail.smtp.socketFactory.port", port);
@@ -79,16 +81,25 @@ public class ServicioEnvioEmail {
         }
     }
 
-    public void cargar(String email) {
-        // ** Se debe obtener los datos de un archivo property o de las paramétricas ** //
+    public void cargar(TemplateInicioBean bean) {
+        // ** Se debe obtener todos estos Datos de un archivo property o de las paramétricas ** //TODO
         from = "gmercado@mc4.com.bo";
         subject = "Confirmación de registro de la oficina virtual";
-        cuerpoMensaje = "Para completar su registro dirijase al siguiente Link https://localhost:8080/faces/pages/confirmacion.xhtml";
+        urlRedireccion = "https://localhost:8080/faces/pages/registroConfirmacion.xhtml?user=#user&password=#password";
+
+        String usuario = Util.crypt(bean.getEmail());
+        String usuPassword = Util.crypt(bean.getPassword());
+        urlRedireccion = urlRedireccion.replaceAll("#user",usuario).replaceAll("#password",usuPassword);
+
+        cuerpoMensaje = "Para completar su registro dirijase al siguiente Link :" + urlRedireccion;
         password = "G4rym3rc4d0";
         host = "mc4.com.bo";
         port = "25";
 
-        getTo().add(email);
+        String dusuario = Util.decrypt(usuario);
+        String dusuPasword = Util.decrypt(usuPassword);
+
+        getTo().add(bean.getEmail());
     }
 
     public ArrayList<String> getTo() {
