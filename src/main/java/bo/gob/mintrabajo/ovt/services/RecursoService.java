@@ -49,11 +49,8 @@ public class RecursoService implements IRecursoService {
         return usrRecursoEntity;
     }
 
-//    @Override
+    @Override
     public List<UsrRecurso> buscarPorUsuario(Long idUsuario) {
-        List<UsrRecurso> allRecursos;
-        //allRecursos = recursoRepository.buscarPorUsuario(idUsuario);
-        allRecursos=new ArrayList<UsrRecurso>();
-        return allRecursos;
+        return recursoRepository.buscarPorUsuario(idUsuario);
     }
 }

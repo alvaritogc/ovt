@@ -79,14 +79,10 @@
             ================================================== -->
             <div class="row">
                 <div class="span3 bs-docs-sidebar">
-                    <h:form>
-                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPublico}" style="width: 100%"
-                                         rendered="#{templateInicioBean.idUsuario == null}"/>
-                        <h:panelGrid columns="1" rendered="#{!(templateInicioBean.idUsuario == null)}" style="width: 100%">
-                            <p:commandButton value="Inicio" action="#{templateInicioBean.irInicioPrivado}" style="width: 100%"/>
-                        </h:panelGrid>
-                    </h:form>
                     <p:growl id="grwLogin" showDetail="false" life="6000" globalOnly="true"  sticky="false"/>
+                    <h:form>
+                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicio}" style="width: 100%"/>
+                    </h:form>
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario ==null}">
                         <p:panel  >
                             <h2 class="form-signin-heading">Conéctate</h2>
@@ -114,28 +110,37 @@
                             <!--  <p:messages id="messages" /> -->
                             <p:commandLink value="Ayuda" onclick="PF('dlg1').show();" style="color:red;"/>
                         </p:panel>
+                        <br/><br/>
+                        <p:panel header="No estoy registrado">
+                             <p:commandLink value="Registrarse gratis" onclick="registroDlg.show();" style="color:#00079C;" />
+                        </p:panel>
                     </h:form>
-                    <p:dialog id="basicDialog" header="Acceso al Sistema" widgetVar="dlg1" width="700" height="470" resizable="false">  
-                        <p style="font-size: 12px;">Los datos que necesita para acceder al sistema son la información de su ROE (Registro Obligatorio de Empleadores) esta información le fue asignada a tiempo de realizar su registro, para darle algunas pautas, si no cambio los datos, los pueden ser los siguientes: </p>
-                        <br/>
-                        <center>
-                            <p:graphicImage url="./images/image001.png" width="600" height="300"/>
-                        </center>
-                        <br/>
-                        <p style="font-size: 12px;">En caso de no poder acceder, por favor comunicarse via
-                            correo electrónico a <a style="color: blue;" href="mailto:iflores@mintrabajo.gob.bo">iflores@mintrabajo.gob.bo</a>, indicando su nombre
-                            completo razon social, nit y número de ROE con el que está inscrito o vía
-                            telefónica a las líneas departamentales.</p>
-                        <p style="font-size: 12px;"><span style="color:red;">Nota </span>.- La respuesta via correo electronico puede tardar en
-                            ser respondida, tome sus re<a name="_GoBack"></a>caudos correspondientes.</p>
 
-                    </p:dialog>  
+                    <!-- Dialogos -->
+                    <p:dialog id="basicDialog" header="Acceso al Sistema" widgetVar="dlg1" width="700" height="470" resizable="false">  
+                        <ui:include src="/mensajes/informacion.xhtml"/>
+                    </p:dialog>
+                    <!-- Dialogo para el registro de usuarios -->
+                    <p:dialog header="Registro de usuario" widgetVar="registroDlg" modal="true">
+                        <h:form id="registroFrm">
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="Nombre de login :" />
+                                <p:inputText value="#{templateInicioBean.nombreLogin}" />
+                                <p:outputLabel value="Email :" />
+                                <p:inputText value="#{templateInicioBean.email}" />
+                                <p:outputLabel value="Password :" />
+                                <p:inputText value="#{templateInicioBean.password}" />
+                            </p:panelGrid>
+                            <p:commandButton value="Enviar" action="#{templateInicioBean.enviaConfirmacion}" />
+                            <p:commandButton value="Cancelar" onclick="registroDlg.hide();" />
+                        </h:form>
+                    </p:dialog>
 
                     <h:form>
                         <p:panel  header="Servicios públicos">
-                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/informacion.xhtml"> Pasos trámite planilla  trimestral</a>
+                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/publico/informacion.xhtml"> Pasos trámite planilla  trimestral</a>
                             <br/><br/>
-                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/descargarPlanilla.xhtml"> Descarga de formatos de planillas </a>
+                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/publico/descargarPlanilla.xhtml"> Descarga de formatos de planillas </a>
                         </p:panel>
                         <br/>
                     </h:form>

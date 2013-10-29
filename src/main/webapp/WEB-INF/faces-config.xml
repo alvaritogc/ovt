@@ -24,8 +24,8 @@
             </redirect>
         </navigation-case>
         <navigation-case>
-            <from-outcome>irBienvenida</from-outcome>
-            <to-view-id>/pages/bienvenida.xhtml</to-view-id>
+            <from-outcome>irEscritorio</from-outcome>
+            <to-view-id>/pages/escritorio.xhtml</to-view-id>
             <redirect include-view-params="false">
             </redirect>
         </navigation-case>

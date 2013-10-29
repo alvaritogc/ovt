@@ -260,6 +260,19 @@
             <version>2.6.12</version>
         </dependency>
 
+        <!-- Pluggin para envio de email -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>base64</groupId>
+            <artifactId>Base64</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean;
 
+import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IRecursoService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
@@ -25,11 +26,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.primefaces.model.menu.DefaultSubMenu;
 
 @ManagedBean(name = "templateInicioBean")
 @ViewScoped
 public class TemplateInicioBean implements Serializable {
     //
+
     private HttpSession session;
     private Long idUsuario;
     private String idPersona;
@@ -54,6 +57,10 @@ public class TemplateInicioBean implements Serializable {
     private String username;
     private String password;
 
+    // ** Variables utilizadas para el registro de un nuevo usuario ** //
+    private String nombreLogin;
+    private String email;
+
     @PostConstruct
     public void ini() {
         logger.info("TemplateInicioBean.init()");
@@ -65,23 +72,23 @@ public class TemplateInicioBean implements Serializable {
         idPersona = null;
         idEmpleador = null;
         listaRecursos = new ArrayList<UsrRecurso>();
-        usuario=null;
-        persona=null;
-        empleador=null;
+        usuario = null;
+        persona = null;
+        empleador = null;
         //
         try {
-            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
             idUsuario = (Long) session.getAttribute("idUsuario");
             //
             logger.info("Buscando usuario" + idUsuario);
             usuario = iUsuarioService.findById(idUsuario);
             //
-            idPersona=(String) session.getAttribute("idPersona");
-            persona=iPersonaService.findById(idPersona);
-            
-            idEmpleador=(String)session.getAttribute("idEmpleador");
-            if(idEmpleador!=null){
-                empleador=iPersonaService.findById(idEmpleador);
+            idPersona = (String) session.getAttribute("idPersona");
+            persona = iPersonaService.findById(idPersona);
+
+            idEmpleador = (String) session.getAttribute("idEmpleador");
+            if (idEmpleador != null) {
+                empleador = iPersonaService.findById(idEmpleador);
             }
             logger.info("usuario ok");
             cargar();
@@ -97,59 +104,58 @@ public class TemplateInicioBean implements Serializable {
     }
 
     public void cargar() {
-        logger.info("cargar");
+        System.out.println("cargar()");
         model = new DefaultMenuModel();
-//        try {
-//            BigDecimal bi = BigDecimal.valueOf(idUsuario);
-//            listaRecursos = iRecursoService.buscarPorUsuario(bi);
-//            logger.info("" + listaRecursos.size());
-//        } catch (Exception e) {
-//        }
-//        crearMenuRecurso();
+        try {
+            listaRecursos = iRecursoService.buscarPorUsuario(idUsuario);
+            logger.info("nro recursos del usuario:" + listaRecursos.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        crearMenuRecurso();
         DefaultMenuItem item = new DefaultMenuItem("Salir");
         item.setIcon("ui-icon-arrowthickstop-1-e");
         item.setCommand("#{templateInicioBean.logout}");
         model.addElement(item);
     }
 
-//    public void crearMenuRecurso() {
-//
-//        for (UsrRecursoEntity recurso : listaRecursos) {
-//            if (recurso.getIdRecursoPadre() == null) {
-//                DefaultSubMenu subMenu = crearMenuHijos(recurso);
-//                model.addElement(subMenu);
-//            }
-//        }
-//    }
+    public void crearMenuRecurso() {
+        for (UsrRecurso recurso : listaRecursos) {
+            if (recurso.getIdRecursoPadre() == null) {
+                DefaultSubMenu subMenu = crearMenuHijos(recurso);
+                model.addElement(subMenu);
+            }
+        }
+    }
 
-//    public DefaultSubMenu crearMenuHijos(UsrRecursoEntity recurso) {
-//        logger.info("crearMenuHijos()");
-//        DefaultSubMenu subMenu = new DefaultSubMenu(recurso.getEtiqueta());
-//        for (UsrRecursoEntity recursoHijo : listaRecursos) {
-//            if (recursoHijo.getIdRecursoPadre() != null && recursoHijo.getIdRecursoPadre().equals(recurso.getIdRecurso())) {
-//                if (tieneHijos(recursoHijo)) {
-//                    DefaultSubMenu subMenuHijo = crearMenuHijos(recursoHijo);
-//                    subMenu.addElement(subMenuHijo);
-//                } else {
-//                    DefaultMenuItem item = new DefaultMenuItem(recursoHijo.getEtiqueta());
-//                    item.setUrl("/faces" + recursoHijo.getEjecutable());
-//                    subMenu.addElement(item);
-//                }
-//            }
-//        }
-//        return subMenu;
-//    }
-//
-//    public boolean tieneHijos(UsrRecursoEntity recurso) {
-//        for (UsrRecursoEntity recursoHijo : listaRecursos) {
-//            if (recurso.getIdRecurso() != recursoHijo.getIdRecurso()) {
-//                if (recursoHijo.getIdRecursoPadre() != null && recursoHijo.getIdRecursoPadre().equals(recurso.getIdRecurso())) {
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
+    public DefaultSubMenu crearMenuHijos(UsrRecurso recurso) {
+        DefaultSubMenu subMenu = new DefaultSubMenu(recurso.getEtiqueta());
+        for (UsrRecurso recursoHijo : listaRecursos) {
+            if (recursoHijo.getIdRecursoPadre() != null && recursoHijo.getIdRecursoPadre().getIdRecurso().equals(recurso.getIdRecurso())) {
+                if (tieneHijos(recursoHijo)) {
+                    DefaultSubMenu subMenuHijo = crearMenuHijos(recursoHijo);
+                    subMenu.addElement(subMenuHijo);
+                } else {
+                    DefaultMenuItem item = new DefaultMenuItem(recursoHijo.getEtiqueta());
+                    item.setUrl("/faces" + recursoHijo.getEjecutable());
+                    subMenu.addElement(item);
+                }
+            }
+
+        }
+        return subMenu;
+    }
+
+    public boolean tieneHijos(UsrRecurso recurso) {
+        for (UsrRecurso recursoHijo : listaRecursos) {
+            if (recurso.getIdRecurso() != recursoHijo.getIdRecurso()) {
+                if (recursoHijo.getIdRecursoPadre() != null && recursoHijo.getIdRecursoPadre().getIdRecurso().equals(recurso.getIdRecurso())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public String logout() {
         logger.info("logout()");
@@ -182,44 +188,51 @@ public class TemplateInicioBean implements Serializable {
             logger.info("usuario aceptado");
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             session.setAttribute("idUsuario", idUsuario);
-            UsrUsuario usuario=iUsuarioService.findById(idUsuario);
+            UsrUsuario usuario = iUsuarioService.findById(idUsuario);
             session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
-            if(usuario.getEsInterno()==1)
-            {
+            if (usuario.getEsInterno() == 1) {
                 session.setAttribute("idEmpleador", null);
                 ini();
                 return "irEmpleadorBusqueda";
-            }
-            else{
+            } else {
                 session.setAttribute("idEmpleador", usuario.getIdPersona().getIdPersona());
                 ini();
-                return "irBienvenida";
+                return "irEscritorio";
             }
             //
         } catch (RuntimeException e) {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(), "Hello "));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
         } catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(), "Hello "));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
         }
         password = "";
         return "";
     }
 
-     public String irInicioPublico() {
-        //si no existe la session
+    public String irInicio() {
+        try {
+            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            idUsuario = (Long) session.getAttribute("idUsuario");
+            usuario = iUsuarioService.findById(idUsuario);
+            if(usuario.getEsInterno()==1){
+                return "irEmpleadorBusqueda";
+            }
+            else{
+                return "irEscritorio";
+            }
+        } catch (Exception e) {
+            System.out.println("No se encontro la session");
+        }
         return "irInicio";
     }
 
-    public String irInicioPrivado() {
-        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador))
-        {
-            return "irBienvenida";
-        }
-        else{
-            return "irEmpleadorBusqueda";
-        }
+    // **** Se debe enviar al email que ingreso el usuario **** //
+    public void enviaConfirmacion(){
+        logger.info("Ingresando a la clase " + getClass().getSimpleName() + " enviaConfirmacion() ");
+        ServicioEnvioEmail see = new ServicioEnvioEmail();
+        see.envioEmail(this);
     }
 
     public MenuModel getModel() {
@@ -300,5 +313,21 @@ public class TemplateInicioBean implements Serializable {
 
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public String getNombreLogin() {
+        return nombreLogin;
+    }
+
+    public void setNombreLogin(String nombreLogin) {
+        this.nombreLogin = nombreLogin;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

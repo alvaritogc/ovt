@@ -13,6 +13,27 @@ import org.springframework.data.repository.query.Param;
 
 @OpenJpaSettings
 public interface RecursoRepository extends OpenJpaRepository<UsrRecurso, Long>{
+     @Query(
+            "   select rec "
+            + " from UsrRecurso rec"
+            + " where "
+            + " rec.idRecurso IN ("
+            + "     select rolRec.usrRolRecursoPK.idRecurso "
+            + "     from UsrRolRecurso rolRec "
+            + "     where "
+            + "     rolRec.usrRolRecursoPK.idRol IN ("
+            + "         select usRol.usrUsuarioRolPK.idRol"
+            + "         from UsrUsuarioRol usRol"
+            + "         where usRol.usrUsuarioRolPK.idUsuario = :idUsuario"
+            + "     )"
+            + " )"
+            + " and rec.idRecurso NOT IN ("
+            + "     select usRec.usrUsuarioRecursoPK.idRecurso"
+            + "     from UsrUsuarioRecurso usRec"
+            + "     where usRec.usrUsuarioRecursoPK.idUsuario =: idUsuario"
+            + " )"
+            )
+    List<UsrRecurso> buscarPorUsuario(@Param("idUsuario") Long idUsuario);
 
 }
 

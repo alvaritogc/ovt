@@ -26,7 +26,7 @@ public class InicioBean {
     private static final Logger logger = LoggerFactory.getLogger(InicioBean.class);
     //
     private List<UsrUsuario> listaUsuarios;
-    //
+    
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
     @ManagedProperty(value = "#{dominioService}")
