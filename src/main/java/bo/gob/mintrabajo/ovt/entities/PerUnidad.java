@@ -1,15 +1,38 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 rvelasquez.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -18,7 +41,7 @@ import java.util.List;
 @Entity
 @Table(name = "PER_UNIDAD")
 @NamedQueries({
-        @NamedQuery(name = "PerUnidad.findAll", query = "SELECT p FROM PerUnidad p")})
+    @NamedQuery(name = "PerUnidad.findAll", query = "SELECT p FROM PerUnidad p")})
 public class PerUnidad implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -53,7 +76,6 @@ public class PerUnidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "ESTADO_UNIDAD")
     private String estadoUnidad;
-    @Basic(optional = false)
     @Column(name = "NRO_REFERENCIAL")
     private String nroReferencial;
     @Column(name = "TIPO_UNIDAD")
@@ -65,14 +87,14 @@ public class PerUnidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<PerUsuarioUnidad> perUsuarioUnidadList;
     @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerPersona perPersona;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
-    @OneToMany(mappedBy = "perUnidad")
+    @OneToMany(mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<ParEntidad> parEntidadList;
 
     public PerUnidad() {
@@ -82,7 +104,7 @@ public class PerUnidad implements Serializable {
         this.perUnidadPK = perUnidadPK;
     }
 
-    public PerUnidad(PerUnidadPK perUnidadPK, String nombreComercial, Date fechaNacimiento, String observaciones, String tipoSociedad, String tipoEmpresa, String actividadDeclarada, String estadoUnidad, String nroReferencial, Date fechaBitacora, String registroBitacora) {
+    public PerUnidad(PerUnidadPK perUnidadPK, String nombreComercial, Date fechaNacimiento, String observaciones, String tipoSociedad, String tipoEmpresa, String actividadDeclarada, String estadoUnidad, Date fechaBitacora, String registroBitacora) {
         this.perUnidadPK = perUnidadPK;
         this.nombreComercial = nombreComercial;
         this.fechaNacimiento = fechaNacimiento;
@@ -91,7 +113,6 @@ public class PerUnidad implements Serializable {
         this.tipoEmpresa = tipoEmpresa;
         this.actividadDeclarada = actividadDeclarada;
         this.estadoUnidad = estadoUnidad;
-        this.nroReferencial = nroReferencial;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
@@ -284,5 +305,5 @@ public class PerUnidad implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.PerUnidad[ perUnidadPK=" + perUnidadPK + " ]";
     }
-
+    
 }
