@@ -16,26 +16,26 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 //import java.util.Collection;
 //import java.util.Collection;
 
 import java.util.List;
 import javax.faces.application.FacesMessage;
+import javax.servlet.ServletContext;
 import org.primefaces.context.RequestContext;
-
-
 
 @ManagedBean
 @ViewScoped
 public class EscritorioBean {
     //
+
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private Long idUsuario;
     private String idPersona;
     private String idEmpleador;
     private DocDocumento docDocumentoEntity;
     private static final Logger logger = LoggerFactory.getLogger(EscritorioBean.class);
-
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
     @ManagedProperty(value = "#{personaService}")
@@ -46,6 +46,8 @@ public class EscritorioBean {
     private IDocumentoService iDocumentoService;
     @ManagedProperty(value = "#{planillaService}")
     private IPlanillaService iPlanillaService;
+    @ManagedProperty(value = "#{mensajeAppService}")
+    private IMensajeAppService iMensajeAppService;
     //
     private String textoBenvenida;
     //
@@ -58,64 +60,72 @@ public class EscritorioBean {
     //
     private boolean esInterno;
     //
+    private boolean mostrarFacesMessages;
     private boolean detenerFacesMessages;
+    private String rutaContenidoFacesMessages;
 
     @PostConstruct
     public void ini() {
         logger.info("BienvenidaBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
-        idPersona=(String) session.getAttribute("idPersona");
-        idEmpleador=(String) session.getAttribute("idEmpleador");
-        System.out.println("idPersona: "+idPersona);
-        System.out.println("idEmpleador: "+idEmpleador);
+        idPersona = (String) session.getAttribute("idPersona");
+        idEmpleador = (String) session.getAttribute("idEmpleador");
+        System.out.println("idPersona: " + idPersona);
+        System.out.println("idEmpleador: " + idEmpleador);
         //
-        usuario=iUsuarioService.findById(idUsuario);
-        persona=iPersonaService.findById(idPersona);
-        empleador=iPersonaService.findById(idEmpleador);
-        if(usuario.getEsInterno()==1){
-            esInterno=true;
-        }
-        else{
-            esInterno=false;
+        usuario = iUsuarioService.findById(idUsuario);
+        persona = iPersonaService.findById(idPersona);
+        empleador = iPersonaService.findById(idEmpleador);
+        if (usuario.getEsInterno() == 1) {
+            esInterno = true;
+        } else {
+            esInterno = false;
         }
         cargar();
-        detenerFacesMessages=false;
+        detenerFacesMessages = false;
+        try{
+            ParMensajeApp mensaje = iMensajeAppService.buscarPorRecurso("Presentacion DDJJ");
+            rutaContenidoFacesMessages="file://"+mensaje.getReferencia();
+            mostrarFacesMessages=true;
+        }catch(Exception e){
+            System.out.println("Error al encontrar el recurso");
+            rutaContenidoFacesMessages="/pages/util/default.xhtml";
+            mostrarFacesMessages=false;
+        }
     }
-    
-    public void abrirPanel(){
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("dlgMensaje.show()");
-        //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity.");  
-        //RequestContext.getCurrentInstance().showMessageInDialog(message);
-        detenerFacesMessages=true;
+
+    public void abrirPanel() {
+        if(mostrarFacesMessages){
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dlgMensaje.show()");
+        }
+        detenerFacesMessages = true;
     }
 
     public void cargar() {
-        textoBenvenida="Bienvenido  OVT";
-        listaUnidades=iUnidadService.buscarPorPersona(idEmpleador);
+        textoBenvenida = "Bienvenido  OVT";
+        listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
         cargarDocumentos();
     }
-    
-    public void cargarDocumentos(){
-        try{
-            listaDocumentos=iDocumentoService.listarPorPersona(idEmpleador);
-            if(listaDocumentos==null){
-            listaDocumentos=new ArrayList<DocDocumento>();
-        }
-        }
-        catch(Exception e){
+
+    public void cargarDocumentos() {
+        try {
+            listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
+            if (listaDocumentos == null) {
+                listaDocumentos = new ArrayList<DocDocumento>();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-            listaDocumentos=new ArrayList<DocDocumento>();
+            listaDocumentos = new ArrayList<DocDocumento>();
         }
     }
-    
-     public String download(){
+
+    public String download() {
         session.setAttribute("idDocumento", docDocumentoEntity.getIdDocumento());
         return "irDownload";
     }
 
-
-    public String irRealizarCambioDeEstados(){
+    public String irRealizarCambioDeEstados() {
 //        session.setAttribute("idDocumento", docDocumentoEntity.getIdDocumento());
 //        session.setAttribute("codEstadoInicial", docDocumentoEntity.getCodEstado());
 //        session.setAttribute("codDocumento", docDocumentoEntity.getCodDocumento());
@@ -123,7 +133,7 @@ public class EscritorioBean {
         return "irCambioEstado";
     }
 
-    public void irImprimirDocumento(){
+    public void irImprimirDocumento() {
 //        PerUnidad perUnidadEntity = new PerUnidad();
 //        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
 //        try{
@@ -137,7 +147,6 @@ public class EscritorioBean {
 //            e.printStackTrace();
 //        }
     }
-
 
 //    private static void redirecionarReporte (String rutaReporte) throws IOException {
 //        FacesContext facesContext=FacesContext.getCurrentInstance();
@@ -168,7 +177,6 @@ public class EscritorioBean {
 //
 //        facesContext.responseComplete();
 //    }
-
 //    private static void close(Closeable resource) {
 //        if (resource != null) {
 //            try {
@@ -183,7 +191,6 @@ public class EscritorioBean {
 //        session.setAttribute("idDocumento", docDocumentoEntity.getIdDocumento());
 //        return "irDownload";
 //    }
-
     public IUsuarioService getiUsuarioService() {
         return iUsuarioService;
     }
@@ -286,5 +293,21 @@ public class EscritorioBean {
 
     public void setEsInterno(boolean esInterno) {
         this.esInterno = esInterno;
+    }
+
+    public IMensajeAppService getiMensajeAppService() {
+        return iMensajeAppService;
+    }
+
+    public void setiMensajeAppService(IMensajeAppService iMensajeAppService) {
+        this.iMensajeAppService = iMensajeAppService;
+    }
+
+    public String getRutaContenidoFacesMessages() {
+        return rutaContenidoFacesMessages;
+    }
+
+    public void setRutaContenidoFacesMessages(String rutaContenidoFacesMessages) {
+        this.rutaContenidoFacesMessages = rutaContenidoFacesMessages;
     }
 }

@@ -7,29 +7,16 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../pages/template/templateInicio.xhtml">
         <ui:define name="content">
-            <p:dialog id="basicDialogMessage" header="Información" widgetVar="dlgMensaje" 
-                      width="500" 
-                      resizable="false"
-                      style="background-color: #F6CECE;">  
-                <h1>Recuerde</h1>
-                <li>
-                    <ul><p style="font-size: 15px;">Antes de realizar su declaración jurada, debe bajar la nueva plantilla en formato Excel de: Servicios públicos > Descarga de formatos de planillas, situado en la parte izquierda.
-                        </p></ul>
-                    </li>
-                    <li>
-                    <ul><p style="font-size: 15px;">
-                            La DDJJ sin movimiento solo requiere el depósito bancario.
-                        </p></ul>
-                </li>
-
-
+            <p:dialog id="basicDialogMessage" header="Información" widgetVar="dlgMensaje" resizable="false">  
+                <ui:include src="#{escritorioBean.rutaContenidoFacesMessages}"/>
             </p:dialog>  
 
-            <h:form id="idFormularioBienvenida">
+            <h:form id="idEscritorio">
                 <p:poll interval="1"   id="idPoll"
                         listener="#{escritorioBean.abrirPanel}"
-                        update=":idFormularioBienvenida:idPoll" 
-                        stop="#{escritorioBean.detenerFacesMessages}"/>  
+                        update=":idEscritorio:idPoll" 
+                        stop="#{escritorioBean.detenerFacesMessages}"/>
+                
                 <h1>#{escritorioBean.empleador.nombreRazonSocial}</h1>
                 <p:panelGrid columns="2" style="border-style: hidden;">
                     <p:outputLabel value="#{escritorioBean.empleador.tipoIdentificacion}: " style="size: 20px;"/>
