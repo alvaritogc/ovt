@@ -19,28 +19,28 @@ import javax.persistence.Embeddable;
 public class PerUsuarioUnidadPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID_USUARIO")
-    private long idUsuario;
+    private Long idUsuario;
     @Basic(optional = false)
     @Column(name = "ID_PERSONA")
     private String idPersona;
     @Basic(optional = false)
     @Column(name = "ID_UNIDAD")
-    private long idUnidad;
+    private Long idUnidad;
 
     public PerUsuarioUnidadPK() {
     }
 
-    public PerUsuarioUnidadPK(long idUsuario, String idPersona, long idUnidad) {
+    public PerUsuarioUnidadPK(Long idUsuario, String idPersona, Long idUnidad) {
         this.idUsuario = idUsuario;
         this.idPersona = idPersona;
         this.idUnidad = idUnidad;
     }
 
-    public long getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(long idUsuario) {
+    public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -52,20 +52,20 @@ public class PerUsuarioUnidadPK implements Serializable {
         this.idPersona = idPersona;
     }
 
-    public long getIdUnidad() {
+    public Long getIdUnidad() {
         return idUnidad;
     }
 
-    public void setIdUnidad(long idUnidad) {
+    public void setIdUnidad(Long idUnidad) {
         this.idUnidad = idUnidad;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) idUsuario;
+       // hash += (int) idUsuario;
         hash += (idPersona != null ? idPersona.hashCode() : 0);
-        hash += (int) idUnidad;
+        //hash += (int) idUnidad;
         return hash;
     }
 

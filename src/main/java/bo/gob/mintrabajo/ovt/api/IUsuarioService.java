@@ -13,4 +13,5 @@ public interface IUsuarioService {
     public Long login(String username, String password);
     public List<UsrUsuario> getAllUsuarios();
     public UsrUsuario findById(Long id);
+    public Long obtenerSecuencia(String nombreSecuencia);
 }

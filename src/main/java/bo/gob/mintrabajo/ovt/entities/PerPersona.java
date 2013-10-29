@@ -9,19 +9,7 @@ package bo.gob.mintrabajo.ovt.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  *
@@ -52,7 +40,7 @@ public class PerPersona implements Serializable {
     private String apellidoMaterno;
     @Basic(optional = false)
     @Column(name = "ES_NATURAL")
-    private short esNatural;
+    private boolean esNatural;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -60,11 +48,11 @@ public class PerPersona implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona",fetch = FetchType.LAZY)
     private List<UsrUsuario> usrUsuarioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perPersona")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perPersona",fetch = FetchType.LAZY)
     private List<PerUnidad> perUnidadList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona",fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
     @JoinColumn(name = "COD_LOCALIDAD", referencedColumnName = "COD_LOCALIDAD")
     @ManyToOne(optional = false)
@@ -77,7 +65,7 @@ public class PerPersona implements Serializable {
         this.idPersona = idPersona;
     }
 
-    public PerPersona(String idPersona, String tipoIdentificacion, String nroIdentificacion, String nombreRazonSocial, short esNatural, Date fechaBitacora, String registroBitacora) {
+    public PerPersona(String idPersona, String tipoIdentificacion, String nroIdentificacion, String nombreRazonSocial, boolean esNatural, Date fechaBitacora, String registroBitacora) {
         this.idPersona = idPersona;
         this.tipoIdentificacion = tipoIdentificacion;
         this.nroIdentificacion = nroIdentificacion;
@@ -135,11 +123,11 @@ public class PerPersona implements Serializable {
         this.apellidoMaterno = apellidoMaterno;
     }
 
-    public short getEsNatural() {
+    public boolean isEsNatural() {
         return esNatural;
     }
 
-    public void setEsNatural(short esNatural) {
+    public void setEsNatural(boolean esNatural) {
         this.esNatural = esNatural;
     }
 

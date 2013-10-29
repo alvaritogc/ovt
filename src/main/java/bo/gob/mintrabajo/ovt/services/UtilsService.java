@@ -36,4 +36,6 @@ public class UtilsService implements IUtilsService {
         rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
         return rtn.intValue();
     }
+
+
 }

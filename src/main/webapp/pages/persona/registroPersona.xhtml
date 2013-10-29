@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../template/templateInicio.xhtml">
+    <ui:define name="content">
+
+        <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                  draggable="false" closable="false">
+            <p:graphicImage value="../../images/ajax-loader.gif" />
+        </p:dialog>
+
+        <h:form id="frmBucarPersona">
+
+       <h:panelGrid columns="1" id="pnlGridPrincipal">
+
+        <p:panel id="pnlUnidad" header="DATOS DE UNIDAD">
+            <h:panelGrid columns="1">
+            <h:panelGrid columns="4" cellpadding="2">
+                <h:outputText value="Tipo de empresa:"/>
+                <p:selectOneMenu id="slcOneMenuTipoEmpresa" value="#{personaBean.unidad.tipoEmpresa}" >
+                    <f:selectItem itemLabel="Publica" itemValue="1" />
+                    <f:selectItem itemLabel="Privada." itemValue="2"/>
+                    <f:selectItem itemLabel="Mixtas" itemValue="3"/>
+                    <f:selectItem itemLabel="Unipersonal" itemValue="4"/>
+                    <f:selectItem itemLabel="Cooperativa" itemValue="5"/>
+                </p:selectOneMenu>
+                <h:outputText value="Tipo de sociedad:"/>
+                <p:selectOneMenu id="slcOneMenuTipoSociedad" value="#{personaBean.unidad.tipoSociedad}" >
+                    <f:selectItem itemLabel="Sociedad anonima (S.A.)" itemValue="1" />
+                    <f:selectItem itemLabel="Sociedad de responsabilidad limitada (S.R.L.)" itemValue="2"/>
+                    <f:selectItem itemLabel="Sociedad colectiva" itemValue="3"/>
+                    <f:selectItem itemLabel="Sociedad civil" itemValue="4"/>
+                    <f:selectItem itemLabel="Sociedad en comandita" itemValue="5"/>
+                    <f:selectItem itemLabel="Uniones de empresas" itemValue="6"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+
+            <h:panelGrid columns="2" cellpadding="2">
+                <h:outputText value="Nombre comercial:"/>
+                <p:inputText id="inputTxtNombreComercial" value="#{personaBean.unidad.nombreComercial}"
+                             style="width: 525px;"/>
+                <h:outputText value="Fecha de nacimiento:"/>
+                <p:calendar id="calendar" value="#{personaBean.unidad.fechaNacimiento}"
+                            effect="slideDown"
+                            style="width:200px !important;"/>
+
+            </h:panelGrid>
+
+            <h:panelGrid columns="4" cellpadding="2">
+                <h:outputText value="Nro. de fundempresa:"/>
+                <p:inputText id="inputTxtNroFundempresa" value="#{personaBean.unidad.nroFundaempresa}"/>
+                <h:outputText value="Nro. AFP:"/>
+                <p:inputText id="inputTxtNroAFP" value="#{personaBean.unidad.nroAfp}"/>
+                <h:outputText value="Nro. de Caja de salud:"/>
+                <p:inputText id="inputTxtNroCajaSalud" value="#{personaBean.unidad.nroCajaSalud}"/>
+                <h:outputText value="Nro. referencial:"/>
+                <p:inputText id="inputTxtNroReferencial" value="#{personaBean.unidad.nroReferencial}"/>
+                <h:outputText value="Nro. otro:"/>
+                <p:inputText id="inputTxtNroOtro" value="#{personaBean.unidad.nroOtro}"/>
+            </h:panelGrid>
+
+            <h:panelGrid id="pnlGridUnidad" columns="2" cellpadding="2">
+
+                <h:outputText value="Actividad declarada:"/>
+                <p:inputTextarea id="txtAreaActividadDeclarada" value="#{personaBean.unidad.actividadDeclarada}"
+                                 rows="5"
+                                 cols="50" autoResize="false"
+                                 style="width: 550px;"/>
+                <h:outputText value="Observaciones:"/>
+                <p:inputTextarea id="txtAreaObservacion" value="#{personaBean.unidad.observaciones}"
+                                 rows="5"
+                                 cols="50"
+                                 autoResize="false"
+                                 style="width: 550px;"/>
+            </h:panelGrid>
+
+            </h:panelGrid>
+        </p:panel>
+
+           <h:panelGrid columns="2" id="pnlGridDoble">
+               <p:panel id="fieldBuscarPersona" header="DATOS DE PERSONA" style="height: 270px;width: 400px;" >
+                   <h:panelGrid id="pnlGridBuscarPersona" columns="2">
+                       <h:outputText value="Es natural:"/>
+                       <p:selectBooleanCheckbox id="checkEsNatural" value="#{personaBean.persona.esNatural}">
+                           <p:ajax   listener="#{personaBean.cambiarNatural}" update="@all" />
+                       </p:selectBooleanCheckbox>
+
+                       <h:outputText value="Nombre o Razon social:"/>
+                       <p:inputText id="inputTxtNombre" value="#{personaBean.persona.nombreRazonSocial}"
+                                    required="true"
+                                    requiredMessage="El campo Nombre o Razon social es obligatorio"/>
+
+                       <h:outputText value="Apellido paterno:" rendered="#{personaBean.esNatural}"/>
+                       <p:inputText id="inputTxtPaterno" value="#{personaBean.persona.apellidoPaterno}"
+                                    immediate="true"
+                                    tabindex="2"
+                                    rendered="#{personaBean.esNatural}"/>
+
+                       <h:outputText value="Apellido materno:" rendered="#{personaBean.esNatural}"/>
+                       <p:inputText id="inputTxtMaterno" value="#{personaBean.persona.apellidoPaterno}"
+                                    tabindex="3"
+                                    rendered="#{personaBean.esNatural}"/>
+
+                       <h:outputText value="Tipo de identificacion:"/>
+                       <p:selectOneMenu id="slcOneMenuTipoIdentificacion" value="#{personaBean.persona.tipoIdentificacion}"
+                                        tabindex="4">
+                           <f:selectItem itemLabel="Carnet de identidad" itemValue="CI" />
+                           <f:selectItem itemLabel="Pasaporte" itemValue="PASAPORTE"/>
+                           <f:selectItem itemLabel="NIT" itemValue="NIT"/>
+                           <f:selectItem itemLabel="Otro" itemValue="OTRO"/>
+                       </p:selectOneMenu>
+                       <h:outputText value="Localidad:"/>
+                       <p:selectOneMenu id="slcOneMenuLocalidad" value="#{personaBean.idLocalidad}"
+                                        tabindex="4">
+                           <f:selectItem itemLabel="---Seleccione---" itemValue="0L" />
+                           <f:selectItems value="#{personaBean.listaLocalidad}" />
+                       </p:selectOneMenu>
+                       <h:outputText value="Nro. de identificacion:"/>
+                       <p:inputText id="inputTxtNroIdentificacion" value="#{personaBean.persona.nroIdentificacion}"
+                                    tabindex="5"
+                                    required="true"
+                                    requiredMessage="El campo Nro. de identificacion es obligatorio"/>
+                   </h:panelGrid>
+               </p:panel>
+
+
+               <p:panel id="pnlUsario" header="DATOS DE USUARIO DEL SISTEMA" style="height: 270px">
+                   <h:panelGrid id="pnlGridUsuario" columns="2">
+
+                       <h:outputText value="Usuario:"/>
+                       <p:inputText id="inputTxtUsuario" value="#{personaBean.usuario.usuario}"
+                                    required="true"
+                                    requiredMessage="El campo Usuario es obligatorio"
+                               >
+
+                       </p:inputText>
+
+                       <h:outputText value="Clave:" />
+                       <p:password id="inputTxtClave" value="#{personaBean.usuario.clave}"
+                                   feedback="true"
+                                   tabindex="2"
+                                   required="true"
+                                   requiredMessage="EL campo clave es obligatorio"/>
+                   </h:panelGrid>
+               </p:panel>
+           </h:panelGrid>
+
+       </h:panelGrid>
+            <br/>
+            <p:commandButton value="Guardar"
+                             action="#{personaBean.registrar}"
+                    />
+        </h:form>
+
+         <p:dialog id="dlg" header="Confirmacion" widgetVar="dlg" resizable="false"
+                position="300,400" modal="true" dynamic="true">
+             <h:form id="frmDlg">
+             <h:panelGrid columns="1">
+                <h:outputText value="Se registraron los datos exitosamente. Revise su correo electronico."/>
+                <p:commandButton value="Aceptar" action="#{personaBean.volverLogin}"/>
+             </h:panelGrid>
+             </h:form>
+         </p:dialog>
+
+
+
+    </ui:define>
+</ui:composition>
+</html>
