@@ -94,6 +94,8 @@ public class DocDocumento implements Serializable {
         @JoinColumn(name = "VERSION", referencedColumnName = "VERSION")})
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DocDefinicion docDefinicion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
+    private List<DocLogEstado> docLogEstadoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDocumento", fetch = FetchType.LAZY)
     private List<DocBinario> docBinarioList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
@@ -225,6 +227,14 @@ public class DocDocumento implements Serializable {
 
     public void setDocDefinicion(DocDefinicion docDefinicion) {
         this.docDefinicion = docDefinicion;
+    }
+
+    public List<DocLogEstado> getDocLogEstadoList() {
+        return docLogEstadoList;
+    }
+
+    public void setDocLogEstadoList(List<DocLogEstado> docLogEstadoList) {
+        this.docLogEstadoList = docLogEstadoList;
     }
 
     public List<DocBinario> getDocBinarioList() {

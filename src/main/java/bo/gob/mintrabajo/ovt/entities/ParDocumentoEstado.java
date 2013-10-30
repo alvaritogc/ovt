@@ -63,6 +63,10 @@ public class ParDocumentoEstado implements Serializable {
     private String registroBitacora;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstado", fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstadoFinal", fetch = FetchType.LAZY)
+    private List<DocLogEstado> docLogEstadoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstadoInicial", fetch = FetchType.LAZY)
+    private List<DocLogEstado> docLogEstadoList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parDocumentoEstado", fetch = FetchType.LAZY)
     private List<DocTransicion> docTransicionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parDocumentoEstado1", fetch = FetchType.LAZY)
@@ -137,6 +141,22 @@ public class ParDocumentoEstado implements Serializable {
 
     public void setDocDocumentoList(List<DocDocumento> docDocumentoList) {
         this.docDocumentoList = docDocumentoList;
+    }
+
+    public List<DocLogEstado> getDocLogEstadoList() {
+        return docLogEstadoList;
+    }
+
+    public void setDocLogEstadoList(List<DocLogEstado> docLogEstadoList) {
+        this.docLogEstadoList = docLogEstadoList;
+    }
+
+    public List<DocLogEstado> getDocLogEstadoList1() {
+        return docLogEstadoList1;
+    }
+
+    public void setDocLogEstadoList1(List<DocLogEstado> docLogEstadoList1) {
+        this.docLogEstadoList1 = docLogEstadoList1;
     }
 
     public List<DocTransicion> getDocTransicionList() {
