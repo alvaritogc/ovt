@@ -232,7 +232,7 @@ public class TemplateInicioBean implements Serializable {
     public void enviaConfirmacion(){
         logger.info("Ingresando a la clase " + getClass().getSimpleName() + " enviaConfirmacion() ");
         ServicioEnvioEmail see = new ServicioEnvioEmail();
-        see.envioEmail(email);
+        see.envioEmail(this);
     }
 
     public MenuModel getModel() {

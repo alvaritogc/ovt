@@ -7,6 +7,8 @@ import bo.gob.mintrabajo.ovt.repositories.UsuarioRepository;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -23,7 +25,10 @@ import org.slf4j.LoggerFactory;
 public class UsuarioService implements IUsuarioService{
     private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
     private final UsuarioRepository usuarioRepository;
-        
+
+    @PersistenceContext(unitName = "entityManagerFactory")
+    private EntityManager entityManager;
+
     @Inject
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
@@ -60,5 +65,12 @@ public class UsuarioService implements IUsuarioService{
     @Override
     public UsrUsuario findById(Long id) {
         return usuarioRepository.findOne(id);
+    }
+
+    @Override
+    public Long obtenerSecuencia(String nombreSecuencia){
+        BigDecimal rtn;
+        rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
+        return rtn.longValue();
     }
 }

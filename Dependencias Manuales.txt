@@ -1,0 +1,2 @@
+mvn install:install-file -DgroupId=base64 -DartifactId=Base64 -Dversion=1.0 -Dpackaging=jar -Dfile=LIB/Base64.jar
+

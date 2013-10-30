@@ -110,18 +110,19 @@
                             <!--  <p:messages id="messages" /> -->
                             <p:commandLink value="Ayuda" onclick="PF('dlg1').show();" style="color:red;"/>
                         </p:panel>
-                        <!--<br/><br/> DESCOMENTAR CUANDO LA FUNCIONALIDAD DE CONFIRMACION EMAIL ESTE COMPLETO -->
-                        <!--<p:panel header="No estoy registrado">-->
-                             <!--<p:commandLink value="Registrarse gratis" onclick="registroDlg.show();" style="color:#00079C;" />-->
-                        <!--</p:panel>-->
+                        <br/><br/>
+                        <p:panel header="No estoy registrado">
+                             <p:commandLink value="Registrarse gratis" onclick="registroDlg.show();" style="color:#00079C;" />
+                        </p:panel>
                     </h:form>
 
                     <!-- Dialogos -->
                     <p:dialog id="basicDialog" header="Acceso al Sistema" widgetVar="dlg1" width="700" height="470" resizable="false">  
+<<<<<<< HEAD
                         <p style="font-size: 12px;">Los datos que necesita para acceder al sistema son la información de su ROE (Registro Obligatorio de Empleadores) esta información le fue asignada a tiempo de realizar su registro, para darle algunas pautas, si no cambio los datos, los pueden ser los siguientes: </p>
                         <br/>
                         <center>
-                            <p:graphicImage url="./images/image001.png" width="600" height="300"/>
+                          <!--  <p:graphicImage url="./images/image001.png" width="600" height="300"/>-->
                         </center>
                         <br/>
                         <p style="font-size: 12px;">En caso de no poder acceder, por favor comunicarse via
@@ -130,6 +131,10 @@
                             telefónica a las líneas departamentales.</p>
                         <p style="font-size: 12px;"><span style="color:red;">Nota </span>.- La respuesta via correo electronico puede tardar en
                             ser respondida, tome sus re<a name="_GoBack"></a>caudos correspondientes.</p>
+
+                    </p:dialog>  
+=======
+                        <ui:include src="/mensajes/informacion.xhtml"/>
                     </p:dialog>
                     <!-- Dialogo para el registro de usuarios -->
                     <p:dialog header="Registro de usuario" widgetVar="registroDlg" modal="true">
@@ -146,6 +151,7 @@
                             <p:commandButton value="Cancelar" onclick="registroDlg.hide();" />
                         </h:form>
                     </p:dialog>
+>>>>>>> 56feaaaf8d0ec677983c3a3fc6519950531e59c9
 
                     <h:form>
                         <p:panel  header="Servicios públicos">

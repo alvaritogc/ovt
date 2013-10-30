@@ -44,6 +44,8 @@ public class EmpleadorBean implements Serializable{
     private IUnidadService iUnidadService;
     @ManagedProperty(value = "#{documentoService}")
     private IDocumentoService iDocumentoService;
+
+
     //
     //
     private PerPersona persona;
@@ -58,6 +60,11 @@ public class EmpleadorBean implements Serializable{
         logger.info("EmpleadorBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         limpiar();
+/*        System.out.println("=============================>>>>>");
+        System.out.println("=============================>>>>>");
+        System.out.println("=============================>>>>>");
+        List<PerPersona>listaPersona=iPersonaService.buscarPorNroNombre("1579592010","SUSANA HEREDIA PRADO");
+        System.out.println("=============================>>>>> RESULTADO "+listaPersona.size());*/
     }    
 
     public void limpiar() {
@@ -71,7 +78,8 @@ public class EmpleadorBean implements Serializable{
             listaPersonas=new ArrayList<PerPersona>();
         }
         else{
-            listaPersonas=iPersonaService.buscarPorNroNombre(busquedaNroIdentificacion, busquedaNombreRazonSocial);
+           // listaPersonas=iPersonaService.buscarPorNroNombre(busquedaNroIdentificacion, busquedaNombreRazonSocial);
+
         }
     }
 

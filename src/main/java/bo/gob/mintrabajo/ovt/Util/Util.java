@@ -13,6 +13,17 @@ import org.slf4j.LoggerFactory;
  */
 public class Util {
 
-    private static final Logger logger = LoggerFactory.getLogger(Util.class);
+    //private static final Logger logger = LoggerFactory.getLogger(Util.class);
+
+    // **** Encriptado y Decriptado BASE 64 **** //
+    public static String crypt(String text) {
+        Crypt crypt = new Crypt();
+        return crypt.crypt(text);
+    }
+
+    public static String decrypt(String text) {
+        Crypt crypt = new Crypt();
+        return crypt.decrypt(text);
+    }
 
 }
