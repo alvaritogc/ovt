@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 rvelasquez.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package bo.gob.mintrabajo.ovt.entities;
@@ -13,6 +23,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -68,18 +79,20 @@ public class UsrRecurso implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrRecurso")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrRecurso", fetch = FetchType.LAZY)
     private List<UsrRolRecurso> usrRolRecursoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrRecurso")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrRecurso", fetch = FetchType.LAZY)
     private List<UsrUsuarioRecurso> usrUsuarioRecursoList;
-    @OneToMany(mappedBy = "idRecursoPadre")
+    @OneToMany(mappedBy = "idRecursoPadre", fetch = FetchType.LAZY)
     private List<UsrRecurso> usrRecursoList;
     @JoinColumn(name = "ID_RECURSO_PADRE", referencedColumnName = "ID_RECURSO")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private UsrRecurso idRecursoPadre;
     @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private UsrModulo idModulo;
+    @OneToMany(mappedBy = "idRecurso", fetch = FetchType.LAZY)
+    private List<ParMensajeApp> parMensajeAppList;
 
     public UsrRecurso() {
     }
@@ -228,6 +241,14 @@ public class UsrRecurso implements Serializable {
 
     public void setIdModulo(UsrModulo idModulo) {
         this.idModulo = idModulo;
+    }
+
+    public List<ParMensajeApp> getParMensajeAppList() {
+        return parMensajeAppList;
+    }
+
+    public void setParMensajeAppList(List<ParMensajeApp> parMensajeAppList) {
+        this.parMensajeAppList = parMensajeAppList;
     }
 
     @Override

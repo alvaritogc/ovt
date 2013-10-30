@@ -1,19 +1,29 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 rvelasquez.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -30,45 +40,35 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "DocLogEstado.findAll", query = "SELECT d FROM DocLogEstado d")})
 public class DocLogEstado implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "ID_LOGESTADO")
-    private Long idLogestado;
-    @Basic(optional = false)
+    private BigDecimal idLogestado;
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaBitacora;
-    @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @JoinColumn(name = "COD_ESTADO_FINAL", referencedColumnName = "COD_ESTADO")
-    @ManyToOne(optional = false)
-    private ParDocumentoEstado codEstadoFinal;
-    @JoinColumn(name = "COD_ESTADO_INICIAL", referencedColumnName = "COD_ESTADO")
-    @ManyToOne(optional = false)
-    private ParDocumentoEstado codEstadoInicial;
-    @JoinColumn(name = "ID_DOCUMENTO", referencedColumnName = "ID_DOCUMENTO")
-    @ManyToOne(optional = false)
-    private DocDocumento idDocumento;
+    @Column(name = "ID_DOCUMENTO")
+    private BigInteger idDocumento;
+    @Column(name = "COD_ESTADO_FINAL")
+    private String codEstadoFinal;
+    @Column(name = "COD_ESTADO_INICIAL")
+    private String codEstadoInicial;
 
     public DocLogEstado() {
     }
 
-    public DocLogEstado(Long idLogestado) {
+    public DocLogEstado(BigDecimal idLogestado) {
         this.idLogestado = idLogestado;
     }
 
-    public DocLogEstado(Long idLogestado, Date fechaBitacora, String registroBitacora) {
-        this.idLogestado = idLogestado;
-        this.fechaBitacora = fechaBitacora;
-        this.registroBitacora = registroBitacora;
-    }
-
-    public Long getIdLogestado() {
+    public BigDecimal getIdLogestado() {
         return idLogestado;
     }
 
-    public void setIdLogestado(Long idLogestado) {
+    public void setIdLogestado(BigDecimal idLogestado) {
         this.idLogestado = idLogestado;
     }
 
@@ -88,28 +88,28 @@ public class DocLogEstado implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public ParDocumentoEstado getCodEstadoFinal() {
-        return codEstadoFinal;
-    }
-
-    public void setCodEstadoFinal(ParDocumentoEstado codEstadoFinal) {
-        this.codEstadoFinal = codEstadoFinal;
-    }
-
-    public ParDocumentoEstado getCodEstadoInicial() {
-        return codEstadoInicial;
-    }
-
-    public void setCodEstadoInicial(ParDocumentoEstado codEstadoInicial) {
-        this.codEstadoInicial = codEstadoInicial;
-    }
-
-    public DocDocumento getIdDocumento() {
+    public BigInteger getIdDocumento() {
         return idDocumento;
     }
 
-    public void setIdDocumento(DocDocumento idDocumento) {
+    public void setIdDocumento(BigInteger idDocumento) {
         this.idDocumento = idDocumento;
+    }
+
+    public String getCodEstadoFinal() {
+        return codEstadoFinal;
+    }
+
+    public void setCodEstadoFinal(String codEstadoFinal) {
+        this.codEstadoFinal = codEstadoFinal;
+    }
+
+    public String getCodEstadoInicial() {
+        return codEstadoInicial;
+    }
+
+    public void setCodEstadoInicial(String codEstadoInicial) {
+        this.codEstadoInicial = codEstadoInicial;
     }
 
     @Override

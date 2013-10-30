@@ -48,14 +48,14 @@ public class PerPersona implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona", fetch = FetchType.LAZY)
     private List<UsrUsuario> usrUsuarioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perPersona",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perPersona", fetch = FetchType.LAZY)
     private List<PerUnidad> perUnidadList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona", fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
     @JoinColumn(name = "COD_LOCALIDAD", referencedColumnName = "COD_LOCALIDAD")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParLocalidad codLocalidad;
 
     public PerPersona() {

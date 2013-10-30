@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 rvelasquez.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package bo.gob.mintrabajo.ovt.entities;
@@ -14,6 +24,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -60,34 +71,32 @@ public class DocDocumento implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
     private List<DocLogImpresion> docLogImpresionList;
     @JoinColumns({
         @JoinColumn(name = "ID_UNIDAD", referencedColumnName = "ID_UNIDAD"),
         @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerUnidad perUnidad;
     @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerPersona idPersona;
     @JoinColumn(name = "COD_ESTADO", referencedColumnName = "COD_ESTADO")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParDocumentoEstado codEstado;
-    @OneToMany(mappedBy = "idDocumentoRef")
+    @OneToMany(mappedBy = "idDocumentoRef", fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
     @JoinColumn(name = "ID_DOCUMENTO_REF", referencedColumnName = "ID_DOCUMENTO")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private DocDocumento idDocumentoRef;
     @JoinColumns({
         @JoinColumn(name = "COD_DOCUMENTO", referencedColumnName = "COD_DOCUMENTO"),
         @JoinColumn(name = "VERSION", referencedColumnName = "VERSION")})
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DocDefinicion docDefinicion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento")
-    private List<DocLogEstado> docLogEstadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDocumento")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDocumento", fetch = FetchType.LAZY)
     private List<DocBinario> docBinarioList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idDocumento")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
     private DocPlanilla docPlanilla;
 
     public DocDocumento() {
@@ -216,14 +225,6 @@ public class DocDocumento implements Serializable {
 
     public void setDocDefinicion(DocDefinicion docDefinicion) {
         this.docDefinicion = docDefinicion;
-    }
-
-    public List<DocLogEstado> getDocLogEstadoList() {
-        return docLogEstadoList;
-    }
-
-    public void setDocLogEstadoList(List<DocLogEstado> docLogEstadoList) {
-        this.docLogEstadoList = docLogEstadoList;
     }
 
     public List<DocBinario> getDocBinarioList() {

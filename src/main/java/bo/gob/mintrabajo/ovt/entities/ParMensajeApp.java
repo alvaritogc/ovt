@@ -20,9 +20,9 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -36,16 +36,25 @@ import javax.persistence.TemporalType;
  * @author rvelasquez
  */
 @Entity
-@Table(name = "USR_ROL_RECURSO")
+@Table(name = "PAR_MENSAJE_APP")
 @NamedQueries({
-    @NamedQuery(name = "UsrRolRecurso.findAll", query = "SELECT u FROM UsrRolRecurso u")})
-public class UsrRolRecurso implements Serializable {
+    @NamedQuery(name = "ParMensajeApp.findAll", query = "SELECT p FROM ParMensajeApp p")})
+public class ParMensajeApp implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected UsrRolRecursoPK usrRolRecursoPK;
+    @Id
     @Basic(optional = false)
-    @Column(name = "WX")
-    private String wx;
+    @Column(name = "ID_MENSAJE_APP")
+    private Long idMensajeApp;
+    @Column(name = "MENSAJE")
+    private String mensaje;
+    @Column(name = "REFERENCIA")
+    private String referencia;
+    @Column(name = "FECHA_DESDE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaDesde;
+    @Column(name = "FECHA_HASTA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaHasta;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -53,45 +62,61 @@ public class UsrRolRecurso implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private UsrRol usrRol;
-    @JoinColumn(name = "ID_RECURSO", referencedColumnName = "ID_RECURSO", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private UsrRecurso usrRecurso;
+    @JoinColumn(name = "ID_RECURSO", referencedColumnName = "ID_RECURSO")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UsrRecurso idRecurso;
 
-    public UsrRolRecurso() {
+    public ParMensajeApp() {
     }
 
-    public UsrRolRecurso(UsrRolRecursoPK usrRolRecursoPK) {
-        this.usrRolRecursoPK = usrRolRecursoPK;
+    public ParMensajeApp(Long idMensajeApp) {
+        this.idMensajeApp = idMensajeApp;
     }
 
-    public UsrRolRecurso(UsrRolRecursoPK usrRolRecursoPK, String wx, Date fechaBitacora, String registroBitacora) {
-        this.usrRolRecursoPK = usrRolRecursoPK;
-        this.wx = wx;
+    public ParMensajeApp(Long idMensajeApp, Date fechaBitacora, String registroBitacora) {
+        this.idMensajeApp = idMensajeApp;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
 
-    public UsrRolRecurso(long idRol, long idRecurso) {
-        this.usrRolRecursoPK = new UsrRolRecursoPK(idRol, idRecurso);
+    public Long getIdMensajeApp() {
+        return idMensajeApp;
     }
 
-    public UsrRolRecursoPK getUsrRolRecursoPK() {
-        return usrRolRecursoPK;
+    public void setIdMensajeApp(Long idMensajeApp) {
+        this.idMensajeApp = idMensajeApp;
     }
 
-    public void setUsrRolRecursoPK(UsrRolRecursoPK usrRolRecursoPK) {
-        this.usrRolRecursoPK = usrRolRecursoPK;
+    public String getMensaje() {
+        return mensaje;
     }
 
-    public String getWx() {
-        return wx;
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 
-    public void setWx(String wx) {
-        this.wx = wx;
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
+
+    public Date getFechaDesde() {
+        return fechaDesde;
+    }
+
+    public void setFechaDesde(Date fechaDesde) {
+        this.fechaDesde = fechaDesde;
+    }
+
+    public Date getFechaHasta() {
+        return fechaHasta;
+    }
+
+    public void setFechaHasta(Date fechaHasta) {
+        this.fechaHasta = fechaHasta;
     }
 
     public Date getFechaBitacora() {
@@ -110,37 +135,29 @@ public class UsrRolRecurso implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public UsrRol getUsrRol() {
-        return usrRol;
+    public UsrRecurso getIdRecurso() {
+        return idRecurso;
     }
 
-    public void setUsrRol(UsrRol usrRol) {
-        this.usrRol = usrRol;
-    }
-
-    public UsrRecurso getUsrRecurso() {
-        return usrRecurso;
-    }
-
-    public void setUsrRecurso(UsrRecurso usrRecurso) {
-        this.usrRecurso = usrRecurso;
+    public void setIdRecurso(UsrRecurso idRecurso) {
+        this.idRecurso = idRecurso;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (usrRolRecursoPK != null ? usrRolRecursoPK.hashCode() : 0);
+        hash += (idMensajeApp != null ? idMensajeApp.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UsrRolRecurso)) {
+        if (!(object instanceof ParMensajeApp)) {
             return false;
         }
-        UsrRolRecurso other = (UsrRolRecurso) object;
-        if ((this.usrRolRecursoPK == null && other.usrRolRecursoPK != null) || (this.usrRolRecursoPK != null && !this.usrRolRecursoPK.equals(other.usrRolRecursoPK))) {
+        ParMensajeApp other = (ParMensajeApp) object;
+        if ((this.idMensajeApp == null && other.idMensajeApp != null) || (this.idMensajeApp != null && !this.idMensajeApp.equals(other.idMensajeApp))) {
             return false;
         }
         return true;
@@ -148,7 +165,7 @@ public class UsrRolRecurso implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.UsrRolRecurso[ usrRolRecursoPK=" + usrRolRecursoPK + " ]";
+        return "bo.gob.mintrabajo.ovt.entities.ParMensajeApp[ idMensajeApp=" + idMensajeApp + " ]";
     }
     
 }
