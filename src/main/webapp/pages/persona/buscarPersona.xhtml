@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../../pages/template/templateInicio.xhtml">
+    <ui:define name="content">
+        <h:form>
+            <p:panel id="pnldBuscarPersona" >
+                <f:facet name="header">
+                    Busqueda de personas
+                </f:facet>
+                <h:panelGrid id="pnlGridBuscarPersona" columns="2" cellpadding="4">
+                    <h:outputText value="Nombre:"/>
+                    <p:inputText id="inputTxtNombre" value="#{personaBuscarBean.persona.nombreRazonSocial}"/>
+                    <h:outputText value="Tipo de identificacion:"/>
+                    <p:selectOneMenu id="slcOneMenuTipoIdentificacion" value="#{personaBuscarBean.persona.tipoIdentificacion}" >
+                        <f:selectItem itemLabel="Carnet de identidad" itemValue="1" />
+                        <f:selectItem itemLabel="Pasaporte" itemValue="2"/>
+                        <f:selectItem itemLabel="Otro" itemValue="3"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+            </p:panel>
+            <br/>
+            <p:commandButton value="Buscar" action="#{personaBuscarBean.cargar}" update="dtTblUnidad,pnldBuscarPersona" ajax="false"/>
+            <p:commandButton value="Limpiar" action="#{personaBuscarBean.limpiar}" update="dtTblUnidad,pnldBuscarPersona" ajax="false"/>
+        </h:form>
+
+        <p:dataTable id="dtTblUnidad" value="#{personaBuscarBean.listaPersona}"
+                     var="persona"
+                     emptyMessage="No se encontraron resultados"
+                     paginator="true"
+                     rows="10"
+                     paginatorPosition="bottom"
+                     paginatorAlwaysVisible="false">
+            <f:facet name="header">
+                Lista de personas
+            </f:facet>
+            <p:column headerText="Nombre o Razon social">
+                      <h:outputText value="#{persona.nombreRazonSocial}"/>
+            </p:column>
+            <p:column headerText="Apellidos">
+                <h:outputText value="#{persona.apellidoPaterno} #{persona.apellidoMaterno}"/>
+            </p:column>
+            <p:column headerText="Tipo de identificacion">
+                <h:outputText value="#{persona.tipoIdentificacion}"/>
+            </p:column>
+            <p:column headerText="Nro. de identificacion">
+                <h:outputText value="#{persona.nroIdentificacion}"/>
+            </p:column>
+            <p:column headerText="Localidad">
+                <h:outputText value="#{persona.codLocalidad.tipoLocalidad}"/>
+            </p:column>
+            <p:column headerText="Acciones">
+                <p:commandButton   update="@all"  ajax="true" icon="ui-icon-zoomin" title="Registrar unidad">
+                    <f:setPropertyActionListener value="#{persona}" target="#{personaBuscarBean.persona}" />
+                </p:commandButton>
+            </p:column>
+
+        </p:dataTable>
+
+        <br/>
+        <h:form>
+            <p:commandButton value="Nuevo" action="#{personaBuscarBean.nuevo}"/>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+</html>

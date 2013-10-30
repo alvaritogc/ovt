@@ -19,7 +19,9 @@ package bo.gob.mintrabajo.ovt.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,6 +30,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -148,6 +151,8 @@ public class DocPlanilla implements Serializable {
     @Basic(optional = false)
     @Column(name = "NUM_OPERACION")
     private String numOperacion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlanilla", fetch = FetchType.LAZY)
+    private List<DocPlanillaDetalle> docPlanillaDetalleList;
     @JoinColumn(name = "ID_ENTIDAD_BANCO", referencedColumnName = "ID_ENTIDAD")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParEntidad idEntidadBanco;
@@ -472,6 +477,14 @@ public class DocPlanilla implements Serializable {
 
     public void setNumOperacion(String numOperacion) {
         this.numOperacion = numOperacion;
+    }
+
+    public List<DocPlanillaDetalle> getDocPlanillaDetalleList() {
+        return docPlanillaDetalleList;
+    }
+
+    public void setDocPlanillaDetalleList(List<DocPlanillaDetalle> docPlanillaDetalleList) {
+        this.docPlanillaDetalleList = docPlanillaDetalleList;
     }
 
     public ParEntidad getIdEntidadBanco() {

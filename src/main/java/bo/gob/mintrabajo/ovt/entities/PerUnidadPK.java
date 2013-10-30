@@ -32,12 +32,12 @@ public class PerUnidadPK implements Serializable {
     private String idPersona;
     @Basic(optional = false)
     @Column(name = "ID_UNIDAD")
-    private long idUnidad;
+    private Long idUnidad;
 
     public PerUnidadPK() {
     }
 
-    public PerUnidadPK(String idPersona, long idUnidad) {
+    public PerUnidadPK(String idPersona, Long idUnidad) {
         this.idPersona = idPersona;
         this.idUnidad = idUnidad;
     }
@@ -50,11 +50,11 @@ public class PerUnidadPK implements Serializable {
         this.idPersona = idPersona;
     }
 
-    public long getIdUnidad() {
+    public Long getIdUnidad() {
         return idUnidad;
     }
 
-    public void setIdUnidad(long idUnidad) {
+    public void setIdUnidad(Long idUnidad) {
         this.idUnidad = idUnidad;
     }
 
@@ -62,7 +62,7 @@ public class PerUnidadPK implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (idPersona != null ? idPersona.hashCode() : 0);
-        hash += (int) idUnidad;
+       // hash +=  idUnidad.intValue();
         return hash;
     }
 

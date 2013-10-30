@@ -7,6 +7,8 @@ import bo.gob.mintrabajo.ovt.repositories.UnidadRepository;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -21,6 +23,8 @@ import java.util.List;
 public class UnidadService implements IUnidadService{
     private final UnidadRepository unidadRepository;
 
+    @PersistenceContext(unitName = "entityManagerFactory")
+    private EntityManager entityManager;
     @Inject
     public UnidadService(UnidadRepository unidadRepository) {
         this.unidadRepository = unidadRepository;
@@ -33,7 +37,7 @@ public class UnidadService implements IUnidadService{
         return allUnidades;
     }
     
-//    @Override
+   @Override
     public PerUnidad save(PerUnidad unidad) {
         PerUnidad perUnidadEntity;
         perUnidadEntity = unidadRepository.save(unidad);
@@ -60,5 +64,11 @@ public class UnidadService implements IUnidadService{
         lista = unidadRepository.buscarPorPersona(idPersona);
         return lista;
     }
-    
+
+    @Override
+    public Long obtenerSecuencia(String nombreSecuencia){
+        BigDecimal rtn;
+        rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
+        return rtn.longValue();
+    }
 }

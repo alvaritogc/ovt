@@ -1,17 +1,7 @@
 /*
- * Copyright 2013 rvelasquez.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
 package bo.gob.mintrabajo.ovt.entities;
@@ -19,20 +9,7 @@ package bo.gob.mintrabajo.ovt.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  *
@@ -63,7 +40,7 @@ public class PerPersona implements Serializable {
     private String apellidoMaterno;
     @Basic(optional = false)
     @Column(name = "ES_NATURAL")
-    private short esNatural;
+    private boolean esNatural;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -88,7 +65,7 @@ public class PerPersona implements Serializable {
         this.idPersona = idPersona;
     }
 
-    public PerPersona(String idPersona, String tipoIdentificacion, String nroIdentificacion, String nombreRazonSocial, short esNatural, Date fechaBitacora, String registroBitacora) {
+    public PerPersona(String idPersona, String tipoIdentificacion, String nroIdentificacion, String nombreRazonSocial, boolean esNatural, Date fechaBitacora, String registroBitacora) {
         this.idPersona = idPersona;
         this.tipoIdentificacion = tipoIdentificacion;
         this.nroIdentificacion = nroIdentificacion;
@@ -146,11 +123,11 @@ public class PerPersona implements Serializable {
         this.apellidoMaterno = apellidoMaterno;
     }
 
-    public short getEsNatural() {
+    public boolean isEsNatural() {
         return esNatural;
     }
 
-    public void setEsNatural(short esNatural) {
+    public void setEsNatural(boolean esNatural) {
         this.esNatural = esNatural;
     }
 

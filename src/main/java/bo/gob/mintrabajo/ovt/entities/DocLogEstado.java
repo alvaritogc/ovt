@@ -17,13 +17,14 @@
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -40,35 +41,45 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "DocLogEstado.findAll", query = "SELECT d FROM DocLogEstado d")})
 public class DocLogEstado implements Serializable {
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "ID_LOGESTADO")
-    private BigDecimal idLogestado;
+    private Long idLogestado;
+    @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaBitacora;
+    @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @Column(name = "ID_DOCUMENTO")
-    private BigInteger idDocumento;
-    @Column(name = "COD_ESTADO_FINAL")
-    private String codEstadoFinal;
-    @Column(name = "COD_ESTADO_INICIAL")
-    private String codEstadoInicial;
+    @JoinColumn(name = "COD_ESTADO_FINAL", referencedColumnName = "COD_ESTADO")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ParDocumentoEstado codEstadoFinal;
+    @JoinColumn(name = "COD_ESTADO_INICIAL", referencedColumnName = "COD_ESTADO")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ParDocumentoEstado codEstadoInicial;
+    @JoinColumn(name = "ID_DOCUMENTO", referencedColumnName = "ID_DOCUMENTO")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private DocDocumento idDocumento;
 
     public DocLogEstado() {
     }
 
-    public DocLogEstado(BigDecimal idLogestado) {
+    public DocLogEstado(Long idLogestado) {
         this.idLogestado = idLogestado;
     }
 
-    public BigDecimal getIdLogestado() {
+    public DocLogEstado(Long idLogestado, Date fechaBitacora, String registroBitacora) {
+        this.idLogestado = idLogestado;
+        this.fechaBitacora = fechaBitacora;
+        this.registroBitacora = registroBitacora;
+    }
+
+    public Long getIdLogestado() {
         return idLogestado;
     }
 
-    public void setIdLogestado(BigDecimal idLogestado) {
+    public void setIdLogestado(Long idLogestado) {
         this.idLogestado = idLogestado;
     }
 
@@ -88,28 +99,28 @@ public class DocLogEstado implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public BigInteger getIdDocumento() {
-        return idDocumento;
-    }
-
-    public void setIdDocumento(BigInteger idDocumento) {
-        this.idDocumento = idDocumento;
-    }
-
-    public String getCodEstadoFinal() {
+    public ParDocumentoEstado getCodEstadoFinal() {
         return codEstadoFinal;
     }
 
-    public void setCodEstadoFinal(String codEstadoFinal) {
+    public void setCodEstadoFinal(ParDocumentoEstado codEstadoFinal) {
         this.codEstadoFinal = codEstadoFinal;
     }
 
-    public String getCodEstadoInicial() {
+    public ParDocumentoEstado getCodEstadoInicial() {
         return codEstadoInicial;
     }
 
-    public void setCodEstadoInicial(String codEstadoInicial) {
+    public void setCodEstadoInicial(ParDocumentoEstado codEstadoInicial) {
         this.codEstadoInicial = codEstadoInicial;
+    }
+
+    public DocDocumento getIdDocumento() {
+        return idDocumento;
+    }
+
+    public void setIdDocumento(DocDocumento idDocumento) {
+        this.idDocumento = idDocumento;
     }
 
     @Override
