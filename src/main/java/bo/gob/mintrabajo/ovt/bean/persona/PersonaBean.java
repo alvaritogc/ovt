@@ -110,7 +110,7 @@ public class PersonaBean implements Serializable{
     }
 
     public void cambiarNatural(){
-      esNatural=persona.isEsNatural()?true:false;
+      esNatural=persona.getEsNatural()?true:false;
     }
 
     public void cargar(){
