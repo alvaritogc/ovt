@@ -27,10 +27,11 @@ public class PersonaConfirmacionBean {
     public PersonaConfirmacionBean(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         Map params = ec.getRequestParameterMap();
-        System.out.println("Reciviendo Pass ------------------- " + Util.decrypt((String) params.get("codeUnic")));
         passwordParameter = Util.decrypt((String) params.get("codeUnic"));
+        setLoginParameter((String) params.get("codeNam"));
+        setPasswordParameter(passwordParameter);
 
-        System.out.println(" Password ---- " + passwordParameter );
+        System.out.println(" Password ---- " + passwordParameter + " -------------- login " + (String) params.get("codeNam"));
     }
 
     public void confirmaRegistro(){

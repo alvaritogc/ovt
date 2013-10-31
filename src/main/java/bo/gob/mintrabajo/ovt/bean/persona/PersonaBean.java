@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +35,7 @@ import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_IDENTIFICACION;
  */
 @ManagedBean(name = "personaBean")
 @ViewScoped
-public class PersonaBean implements Serializable{
+public class PersonaBean extends Thread implements Serializable{
 
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
@@ -178,6 +179,7 @@ public class PersonaBean implements Serializable{
             context.execute("dlg.show()");
             ServicioEnvioEmail see = new ServicioEnvioEmail();
             see.envioEmail(this);
+            iniciarHilo(); // Se lanza el hilo para que empiece el timer valido para confirmar su registro
         } else {
             context.execute("dlg.hide()");
         }
@@ -196,6 +198,53 @@ public class PersonaBean implements Serializable{
     public String volverLogin()throws IOException {
         return "irInicio";
     }
+
+    public PersonaBean(){
+
+    }
+
+    // *** Hilo para el control de tiempo ***//
+    int nroThread;
+    int contThread = 0;
+    ConcurrentLinkedQueue<PerUnidad> perUnidadListado;
+
+    public PersonaBean(int nroThread) {
+        this.nroThread = nroThread;
+    }
+
+    public void iniciarHilo() {
+        contThread = contThread + 1;
+        PersonaBean hilo = new PersonaBean(contThread);
+        hilo.start();
+    }
+
+    @Override
+    public void run() {
+
+        while (true) {
+            if(perUnidadListado.size() < 1){
+                try {
+                    System.out.println("SE espera 6 segundos .................................. ");
+                    Thread.sleep(6000);
+
+                    perUnidadListado.remove(perUnidadListado.poll());
+                    System.out.println("Aca implementar el cambio de estado en per_unidad");
+
+
+                } catch (InterruptedException ex) {
+                    System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
+                }
+            } else {
+                contThread = 0;
+                break;
+            }
+
+
+
+        }
+    }
+
+
 
     /*
       ******************************************
