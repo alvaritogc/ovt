@@ -9,8 +9,11 @@ import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 /**
@@ -22,6 +25,9 @@ import java.util.List;
 public class DominioService implements IDominioService{
     
     private final DominioRepository dominioRepository;
+
+    @PersistenceContext(unitName = "entityManagerFactory")
+    private EntityManager entityManager;
 
     @Inject
     public DominioService(DominioRepository dominioRepository) {
@@ -69,5 +75,16 @@ public class DominioService implements IDominioService{
         parDominio = dominioRepository.findOne(id);
         return parDominio;
     }
-    
+
+   @Override
+    public  List<ParDominio> obtenerItemsDominio(String dominio){
+        try {
+            List<ParDominio> dominios=new ArrayList<ParDominio>();
+            dominios=dominioRepository.obtenerDominioPorNombre(dominio);
+            return dominios;
+        }catch (Exception ex){
+           ex.printStackTrace();
+            return  null;
+        }
+    }
 }

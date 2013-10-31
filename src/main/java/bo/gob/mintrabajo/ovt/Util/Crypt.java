@@ -1,6 +1,6 @@
 package bo.gob.mintrabajo.ovt.Util;
 
-import base64.Base64;
+//import base64.Base64;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
@@ -18,11 +18,11 @@ import javax.crypto.spec.SecretKeySpec;
 public class Crypt {
 
     private SecureRandom secureRandom;
-    private Base64 base64;
+    //private Base64 base64;
 
     public Crypt() {
         secureRandom = new SecureRandom();
-        base64 = new Base64();
+        //base64 = new Base64();
     }
 
     /**
@@ -34,7 +34,8 @@ public class Crypt {
     public String getRandomString(int bits) {
         byte[] key = new byte[bits];
         secureRandom.nextBytes(key);
-        return new Base64(true).encodeAsString(key);
+        return "";
+        //return new Base64(true).encodeAsString(key);
     }
 
     /**
@@ -47,16 +48,18 @@ public class Crypt {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             String key = getRandomString(16);
-            SecretKeySpec secretKeySpec = new SecretKeySpec(base64.decode(key), "AES");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-            String ciphered = base64.encodeAsString(cipher.doFinal(textPlain.getBytes("UTF-8")));
+            //SecretKeySpec secretKeySpec = new SecretKeySpec(base64.decode(key), "AES");
+            //cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+           // String ciphered = base64.encodeAsString(cipher.doFinal(textPlain.getBytes("UTF-8")));
             //TODO: enhaced this
-            return key + ciphered;
+            //return key + ciphered;
+            return "";
         } catch (GeneralSecurityException gse) {
             throw new RuntimeException(gse);
-        } catch (UnsupportedEncodingException uee) {
-            throw new RuntimeException(uee);
         }
+/*        catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException(uee);
+        }*/
     }
 
     /**
@@ -73,18 +76,20 @@ public class Crypt {
             if (cipheredInBase64.length() > 22) {
                 String key = cipheredInBase64.substring(0, 22);
                 String text = cipheredInBase64.substring(22);
-                SecretKeySpec secretKeySpec = new SecretKeySpec(base64.decode(key), "AES");
-                cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
-                byte[] decode = base64.decode(text);
-                byte[] ciphered = cipher.doFinal(decode);
-                return new String(ciphered, "UTF-8");
+                //SecretKeySpec secretKeySpec = new SecretKeySpec(base64.decode(key), "AES");
+                //cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+              //  byte[] decode = base64.decode(text);
+               // byte[] ciphered = cipher.doFinal(decode);
+               // return new String(ciphered, "UTF-8");
+                return "";
             } else {
                 return cipheredInBase64;
             }
         } catch (GeneralSecurityException gse) {
             throw new RuntimeException(gse);
-        } catch (UnsupportedEncodingException uee) {
-            throw new RuntimeException(uee);
         }
+       /* catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException(uee);
+        }*/
     }
 }

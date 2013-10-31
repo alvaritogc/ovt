@@ -4,7 +4,16 @@ import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.ParDominioPK;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @OpenJpaSettings
 public interface DominioRepository extends OpenJpaRepository<ParDominio, ParDominioPK>{
+
+    @Query("select p from ParDominio p where p.parDominioPK.idDominio = :dominio order by p.descripcion")
+    List<ParDominio>obtenerDominioPorNombre(@Param("dominio") String dominio);
+
 }

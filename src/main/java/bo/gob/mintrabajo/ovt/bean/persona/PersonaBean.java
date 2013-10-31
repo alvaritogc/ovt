@@ -20,6 +20,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_EMPRESA;
+import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_SOCIEDAD;
+import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_IDENTIFICACION;
+
 /**
  * Created with IntelliJ IDEA.
  * User: aquiroz
@@ -46,6 +50,11 @@ public class PersonaBean implements Serializable{
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
 
+
+    @ManagedProperty(value="#{dominioService}")
+    private IDominioService iDominioService;
+
+
     private PerPersona persona=new PerPersona();
     private List<PerPersona>listaPersona=new ArrayList<PerPersona>();
 
@@ -59,17 +68,14 @@ public class PersonaBean implements Serializable{
 
     private boolean esNatural=false;
 
-    public boolean isMostrar() {
-        return mostrar;
-    }
-
-    public void setMostrar(boolean mostrar) {
-        this.mostrar = mostrar;
-    }
-
     private boolean mostrar=false;
 
     private ExternalContext externalContext= FacesContext.getCurrentInstance().getExternalContext();
+
+    List<SelectItem>listaTipoEmpresa;
+    List<SelectItem>listaTipoSociedad;
+    List<SelectItem>listaTipoIdentificacion;
+
     @PostConstruct
     public void ini(){
        persona=new PerPersona();
@@ -80,12 +86,36 @@ public class PersonaBean implements Serializable{
         cargar();
     }
 
+    /*
+     **
+     * Este metodo se utliza para cargar las listas
+     * del tipo SelectItem(para el componente <p:selectOneMenu>).
+     *@Param lista .- Es la variable que se utiliza para llenar los valores de dominio
+     *@Param dominio .- Representa un dominio de la tabla PAR_DOMINIO. Estos valores
+     *                  estan parametrizados en la clase Dominios.java
+     */
+    public List<SelectItem> cargarListas(List<SelectItem>lista,String dominio){
+        lista=new ArrayList<SelectItem>();
+        try{
+            List<ParDominio>valoresDominio=iDominioService.obtenerItemsDominio(dominio);
+            for(ParDominio d:valoresDominio){
+                lista.add(new SelectItem(d.getParDominioPK().getValor(),d.getDescripcion()));
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return lista;
+    }
+
     public void cambiarNatural(){
       esNatural=persona.isEsNatural()?true:false;
     }
 
     public void cargar(){
      cargarLocalidad();
+     listaTipoEmpresa=cargarListas(listaTipoEmpresa,DOM_TIPOS_EMPRESA);
+     listaTipoSociedad=cargarListas(listaTipoEmpresa,DOM_TIPOS_SOCIEDAD);
+     listaTipoIdentificacion=cargarListas(listaTipoEmpresa,DOM_TIPOS_IDENTIFICACION);
     }
 
     public void cargarLocalidad(){
@@ -110,6 +140,7 @@ public class PersonaBean implements Serializable{
       persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
       persona.setFechaBitacora(new Date());
       persona.setRegistroBitacora(REGISTRO_BITACORA);
+      persona.setEsNatural(esNatural);
 
       unidad.setRegistroBitacora(REGISTRO_BITACORA);
       unidad.setFechaBitacora(new Date());
@@ -128,15 +159,12 @@ public class PersonaBean implements Serializable{
         usuario.setIdPersona(persona);
         usuario.setTipoAutenticacion("LOCAL");
         usuario.setEsInterno((short)0);
-     mostrar= iPersonaService.registrar(persona,unidad,usuario);
-        RequestContext context = RequestContext.getCurrentInstance();
 
+        mostrar= iPersonaService.registrar(persona,unidad,usuario);
         if(mostrar)
-            context.execute("dlg.show()");
-           // RequestContext.getCurrentInstance().execute("dlg.open()");
+            RequestContext.getCurrentInstance().execute("dlg.show()");
         else
-            context.execute("dlg.hide()");
-            //RequestContext.getCurrentInstance().execute("dlg.hide()");
+            RequestContext.getCurrentInstance().execute("dlg.hide()");
     }
 
     public boolean validarEmail(String email){
@@ -160,6 +188,45 @@ public class PersonaBean implements Serializable{
       * ****************************************
      */
 
+    public List<SelectItem> getListaTipoIdentificacion() {
+        return listaTipoIdentificacion;
+    }
+
+    public void setListaTipoIdentificacion(List<SelectItem> listaTipoIdentificacion) {
+        this.listaTipoIdentificacion = listaTipoIdentificacion;
+    }
+
+    public IDominioService getiDominioService() {
+        return iDominioService;
+    }
+
+    public void setiDominioService(IDominioService iDominioService) {
+        this.iDominioService = iDominioService;
+    }
+
+    public List<SelectItem> getListaTipoEmpresa() {
+        return listaTipoEmpresa;
+    }
+
+    public void setListaTipoEmpresa(List<SelectItem> listaTipoEmpresa) {
+        this.listaTipoEmpresa = listaTipoEmpresa;
+    }
+
+    public List<SelectItem> getListaTipoSociedad() {
+        return listaTipoSociedad;
+    }
+
+    public void setListaTipoSociedad(List<SelectItem> listaTipoSociedad) {
+        this.listaTipoSociedad = listaTipoSociedad;
+    }
+
+    public boolean isMostrar() {
+        return mostrar;
+    }
+
+    public void setMostrar(boolean mostrar) {
+        this.mostrar = mostrar;
+    }
 
     public IUsuarioService getiUsuarioService() {
         return iUsuarioService;
