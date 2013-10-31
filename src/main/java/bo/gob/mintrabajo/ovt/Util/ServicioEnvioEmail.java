@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.Util;
 
 import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
+import bo.gob.mintrabajo.ovt.bean.persona.PersonaBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,7 @@ public class ServicioEnvioEmail {
 
     private static final Logger logger = LoggerFactory.getLogger(ServicioEnvioEmail.class);
 
-    public void envioEmail(TemplateInicioBean bean) {
+    public void envioEmail(PersonaBean bean) {
 
         cargar(bean);
         try {
@@ -81,25 +82,22 @@ public class ServicioEnvioEmail {
         }
     }
 
-    public void cargar(TemplateInicioBean bean) {
+    public void cargar(PersonaBean bean) {
         // ** Se debe obtener todos estos Datos de un archivo property o de las paramétricas ** //TODO
         from = "gmercado@mc4.com.bo";
         subject = "Confirmación de registro de la oficina virtual";
-        urlRedireccion = "https://localhost:8080/faces/pages/registroConfirmacion.xhtml?user=#user&password=#password";
+        urlRedireccion = "http://localhost:8080/faces/pages/persona";
 
-        String usuario = Util.crypt(bean.getEmail());
-        String usuPassword = Util.crypt(bean.getPassword());
-        urlRedireccion = urlRedireccion.replaceAll("#user",usuario).replaceAll("#password",usuPassword);
+        urlRedireccion = urlRedireccion.concat("/registroConfirmacion.xhtml?codeUnic=#codeUnic");
+        String usuPassword = Util.crypt(bean.getUsuario().getClave());
+        urlRedireccion = urlRedireccion.replaceAll("#codeUnic",usuPassword);
 
         cuerpoMensaje = "Para completar su registro dirijase al siguiente Link :" + urlRedireccion;
         password = "G4rym3rc4d0";
         host = "mc4.com.bo";
         port = "25";
 
-        String dusuario = Util.decrypt(usuario);
-        String dusuPasword = Util.decrypt(usuPassword);
-
-        getTo().add(bean.getEmail());
+        getTo().add(bean.getUsuario().getUsuario());
     }
 
     public ArrayList<String> getTo() {

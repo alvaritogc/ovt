@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean.persona;
 
+import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import org.primefaces.context.RequestContext;
@@ -72,12 +73,16 @@ public class PersonaBean implements Serializable{
     private ExternalContext externalContext= FacesContext.getCurrentInstance().getExternalContext();
     @PostConstruct
     public void ini(){
+        try{
        persona=new PerPersona();
        listaPersona=new ArrayList<PerPersona>();
         unidad=new PerUnidad();
         listaUnidad=new ArrayList<PerUnidad>();
         usuario=new UsrUsuario();
         cargar();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void cambiarNatural(){
@@ -104,7 +109,7 @@ public class PersonaBean implements Serializable{
 
     public void registrar(){
       final String  REGISTRO_BITACORA="ROE";
-
+        System.out.println("INGRESANDO ................................ ");
       Long seq= iLocalidadService.localidadSecuencia("PER_PERSONA_SEC");
       persona.setIdPersona(seq.toString());
       persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
@@ -130,13 +135,14 @@ public class PersonaBean implements Serializable{
         usuario.setEsInterno((short)0);
      mostrar= iPersonaService.registrar(persona,unidad,usuario);
         RequestContext context = RequestContext.getCurrentInstance();
-
-        if(mostrar)
+        System.out.println("mostrar ---------------------------------- " + mostrar);
+        if (mostrar) {
             context.execute("dlg.show()");
-           // RequestContext.getCurrentInstance().execute("dlg.open()");
-        else
+            ServicioEnvioEmail see = new ServicioEnvioEmail();
+            see.envioEmail(this);
+        } else {
             context.execute("dlg.hide()");
-            //RequestContext.getCurrentInstance().execute("dlg.hide()");
+        }
     }
 
     public boolean validarEmail(String email){
