@@ -5,9 +5,9 @@ import bo.gob.mintrabajo.ovt.bean.persona.PersonaBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*import javax.mail.*;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;*/
+import javax.mail.internet.MimeMessage;
 
 import java.util.ArrayList;
 import java.util.Properties;
@@ -35,7 +35,7 @@ public class ServicioEnvioEmail {
     public void envioEmail(PersonaBean bean) {
 
         cargar(bean);
-       // try {
+        try {
             Properties props = new Properties();
             props.put("mail.smtp.socketFactory.port", port);
             props.setProperty("mail.smtp.host", host);
@@ -51,7 +51,7 @@ public class ServicioEnvioEmail {
             props.put("mail.smtp.time", "11000");
             props.put("mail.debug", "true");
 
- /*           Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+            Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(from, password);
                 }
@@ -79,7 +79,7 @@ public class ServicioEnvioEmail {
             logger.info("No se encontró el servidor para envio de mensaje " + nspe.getMessage());
         } catch (MessagingException me) {
             logger.info("Error al envia el mensaje " + me.getMessage());
-        }*/
+        }
     }
 
     public void cargar(PersonaBean bean) {
@@ -102,9 +102,5 @@ public class ServicioEnvioEmail {
 
     public ArrayList<String> getTo() {
         return to;
-    }
-
-    public void setTo(ArrayList<String> to) {
-        this.to = to;
     }
 }

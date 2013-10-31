@@ -69,14 +69,6 @@ public class PersonaBean implements Serializable{
 
     private boolean esNatural=false;
 
-    public boolean isMostrar() {
-        return mostrar;
-    }
-
-    public void setMostrar(boolean mostrar) {
-        this.mostrar = mostrar;
-    }
-
     private boolean mostrar=false;
 
     private ExternalContext externalContext= FacesContext.getCurrentInstance().getExternalContext();
