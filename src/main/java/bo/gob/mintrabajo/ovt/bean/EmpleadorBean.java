@@ -78,8 +78,7 @@ public class EmpleadorBean implements Serializable{
             listaPersonas=new ArrayList<PerPersona>();
         }
         else{
-           // listaPersonas=iPersonaService.buscarPorNroNombre(busquedaNroIdentificacion, busquedaNombreRazonSocial);
-
+           listaPersonas=iPersonaService.buscarPorNroNombre(busquedaNroIdentificacion, busquedaNombreRazonSocial);
         }
     }
 

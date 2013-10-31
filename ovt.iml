@@ -25,9 +25,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: javax.mail:mail:1.4.3" level="project" />
-    <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
-    <orderEntry type="library" name="Maven: base64:Base64:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.primefaces:primefaces:4.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.sun.faces:jsf-api:2.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.primefaces.extensions:primefaces-extensions:0.6.3" level="project" />
@@ -121,8 +118,13 @@
     <orderEntry type="library" name="Maven: org.jfree:jcommon:1.0.17" level="project" />
     <orderEntry type="library" name="Maven: com.itextpdf:itextpdf:5.4.0" level="project" />
     <orderEntry type="library" name="Maven: com.itextpdf.tool:xmlworker:1.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.poi:poi:3.9" level="project" />
-    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.5" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml:3.7" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.poi:poi:3.7" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml-schemas:3.7" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:1.0" level="project" />
+    <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.jexcelapi:jxl:2.6.12" level="project" />
     <orderEntry type="library" name="Maven: net.sf.opencsv:opencsv:1.8" level="project" />
     <orderEntry type="library" name="Maven: javax.mail:mail:1.4.3" level="project" />
