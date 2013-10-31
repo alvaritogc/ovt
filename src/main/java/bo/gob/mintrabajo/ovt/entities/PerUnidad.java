@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 rvelasquez.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package bo.gob.mintrabajo.ovt.entities;
@@ -66,9 +76,10 @@ public class PerUnidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "ESTADO_UNIDAD")
     private String estadoUnidad;
-    @Basic(optional = false)
     @Column(name = "NRO_REFERENCIAL")
     private String nroReferencial;
+    @Column(name = "TIPO_UNIDAD")
+    private String tipoUnidad;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -76,14 +87,14 @@ public class PerUnidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<PerUsuarioUnidad> perUsuarioUnidadList;
     @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", insertable = false, updatable = false)
-    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerPersona perPersona;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
-    @OneToMany(mappedBy = "perUnidad")
+    @OneToMany(mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<ParEntidad> parEntidadList;
 
     public PerUnidad() {
@@ -93,7 +104,7 @@ public class PerUnidad implements Serializable {
         this.perUnidadPK = perUnidadPK;
     }
 
-    public PerUnidad(PerUnidadPK perUnidadPK, String nombreComercial, Date fechaNacimiento, String observaciones, String tipoSociedad, String tipoEmpresa, String actividadDeclarada, String estadoUnidad, String nroReferencial, Date fechaBitacora, String registroBitacora) {
+    public PerUnidad(PerUnidadPK perUnidadPK, String nombreComercial, Date fechaNacimiento, String observaciones, String tipoSociedad, String tipoEmpresa, String actividadDeclarada, String estadoUnidad, Date fechaBitacora, String registroBitacora) {
         this.perUnidadPK = perUnidadPK;
         this.nombreComercial = nombreComercial;
         this.fechaNacimiento = fechaNacimiento;
@@ -102,7 +113,6 @@ public class PerUnidad implements Serializable {
         this.tipoEmpresa = tipoEmpresa;
         this.actividadDeclarada = actividadDeclarada;
         this.estadoUnidad = estadoUnidad;
-        this.nroReferencial = nroReferencial;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
@@ -213,6 +223,14 @@ public class PerUnidad implements Serializable {
 
     public void setNroReferencial(String nroReferencial) {
         this.nroReferencial = nroReferencial;
+    }
+
+    public String getTipoUnidad() {
+        return tipoUnidad;
+    }
+
+    public void setTipoUnidad(String tipoUnidad) {
+        this.tipoUnidad = tipoUnidad;
     }
 
     public Date getFechaBitacora() {

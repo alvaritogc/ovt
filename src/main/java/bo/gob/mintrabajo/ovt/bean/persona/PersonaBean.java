@@ -6,6 +6,7 @@ import bo.gob.mintrabajo.ovt.entities.*;
 import org.primefaces.context.RequestContext;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -109,7 +110,7 @@ public class PersonaBean implements Serializable{
     }
 
     public void cambiarNatural(){
-      esNatural=persona.isEsNatural()?true:false;
+      esNatural=persona.getEsNatural()?true:false;
     }
 
     public void cargar(){
@@ -135,9 +136,118 @@ public class PersonaBean implements Serializable{
 
     public void registrar(){
 
-        if(persona.getNombreRazonSocial()!=null && !persona.getNombreRazonSocial().equals("")){
-
+        if(unidad.getTipoEmpresa()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de empresa es obligatorio."));
+            ini();
+            return ;
         }
+
+        if(unidad.getTipoSociedad()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de sociedad es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(unidad.getNombreComercial()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre comercial es obligatorio."));
+            ini();
+            return ;
+        }
+
+
+        if(unidad.getFechaNacimiento()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Fecha actividad es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(unidad.getNroFundaempresa()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de fundempresa es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(unidad.getNroAfp()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. AFP es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(unidad.getNroCajaSalud()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de Caja de salud es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(unidad.getActividadDeclarada()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Actividad declarada es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(unidad.getObservaciones()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Observaciones es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(persona.getNombreRazonSocial()==null){
+          FacesContext.getCurrentInstance().addMessage(null,
+                  new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre o Razon social es obligatorio."));
+            ini();
+            return ;
+        }
+        if(persona.getTipoIdentificacion()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de identificacion es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(idLocalidad==null && idLocalidad.equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Localidad es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(persona.getNroIdentificacion()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de identificacion es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(usuario.getUsuario()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Usuario es obligatorio."));
+            ini();
+            return ;
+        }else{
+            if(!validarEmail(usuario.getUsuario())){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL formato de email es incorrecto."));
+                ini();
+                return ;
+            }
+        }
+
+        if(usuario.getClave()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Clave es obligatorio."));
+            ini();
+            return ;
+        }
+
 
       final String  REGISTRO_BITACORA="ROE";
         System.out.println("INGRESANDO ................................ ");
