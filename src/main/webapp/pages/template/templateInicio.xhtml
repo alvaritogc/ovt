@@ -133,22 +133,7 @@
                             ser respondida, tome sus re<a name="_GoBack"></a>caudos correspondientes.</p>
 
                     </p:dialog>  
-
-                        <ui:include src="/mensajes/informacion.xhtml"/>
-                    <!--</p:dialog>-->
-                    <!-- Dialogo para el registro de usuarios -->
-                    <p:dialog header="Registro de usuario" widgetVar="registroDlg" modal="true">
-                        <h:form id="registroFrm">
-                            <p:panelGrid columns="2">
-                                <p:outputLabel value="Nombre de login :" />
-                                <p:outputLabel value="Password :" />
-                                <p:inputText value="#{templateInicioBean.password}" />
-                            </p:panelGrid>
-                            <p:commandButton value="Enviar" action="#{templateInicioBean.enviaConfirmacion}" />
-                            <p:commandButton value="Cancelar" onclick="registroDlg.hide();" />
-                        </h:form>
-                    </p:dialog>
-
+                         <ui:include src="/mensajes/informacion.xhtml"/>
                     <h:form>
                         <p:panel  header="Servicios públicos">
                             <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/publico/informacion.xhtml"> Pasos trámite planilla  trimestral</a>
