@@ -112,7 +112,7 @@
                         </p:panel>
                         <br/><br/>
                         <p:panel header="No estoy registrado">
-                             <p:commandLink value="Registrarse gratis" onclick="registroDlg.show();" style="color:#00079C;" />
+                             <p:commandLink value="Registrarse gratis" action="#{templateInicioBean.irRegistro}" style="color:#00079C;" />
                         </p:panel>
                     </h:form>
 
@@ -135,7 +135,7 @@
                     </p:dialog>  
 
                         <ui:include src="/mensajes/informacion.xhtml"/>
-
+                    </p:dialog>
                     <!-- Dialogo para el registro de usuarios -->
                     <p:dialog header="Registro de usuario" widgetVar="registroDlg" modal="true">
                         <h:form id="registroFrm">
@@ -151,7 +151,7 @@
                             <p:commandButton value="Cancelar" onclick="registroDlg.hide();" />
                         </h:form>
                     </p:dialog>
-
+>>>>>>> 56feaaaf8d0ec677983c3a3fc6519950531e59c9
 
                     <h:form>
                         <p:panel  header="Servicios públicos">

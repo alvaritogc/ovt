@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean.persona;
 
+import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import org.primefaces.context.RequestContext;
@@ -68,6 +69,14 @@ public class PersonaBean implements Serializable{
 
     private boolean esNatural=false;
 
+    public boolean isMostrar() {
+        return mostrar;
+    }
+
+    public void setMostrar(boolean mostrar) {
+        this.mostrar = mostrar;
+    }
+
     private boolean mostrar=false;
 
     private ExternalContext externalContext= FacesContext.getCurrentInstance().getExternalContext();
@@ -134,7 +143,7 @@ public class PersonaBean implements Serializable{
 
     public void registrar(){
       final String  REGISTRO_BITACORA="ROE";
-
+        System.out.println("INGRESANDO ................................ ");
       Long seq= iLocalidadService.localidadSecuencia("PER_PERSONA_SEC");
       persona.setIdPersona(seq.toString());
       persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
@@ -165,6 +174,16 @@ public class PersonaBean implements Serializable{
             RequestContext.getCurrentInstance().execute("dlg.show()");
         else
             RequestContext.getCurrentInstance().execute("dlg.hide()");
+     mostrar= iPersonaService.registrar(persona,unidad,usuario);
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("mostrar ---------------------------------- " + mostrar);
+        if (mostrar) {
+            context.execute("dlg.show()");
+            ServicioEnvioEmail see = new ServicioEnvioEmail();
+            see.envioEmail(this);
+        } else {
+            context.execute("dlg.hide()");
+        }
     }
 
     public boolean validarEmail(String email){
