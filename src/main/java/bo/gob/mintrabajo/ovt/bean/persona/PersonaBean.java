@@ -134,6 +134,11 @@ public class PersonaBean implements Serializable{
     }
 
     public void registrar(){
+
+        if(persona.getNombreRazonSocial()!=null && !persona.getNombreRazonSocial().equals("")){
+
+        }
+
       final String  REGISTRO_BITACORA="ROE";
         System.out.println("INGRESANDO ................................ ");
       Long seq= iLocalidadService.localidadSecuencia("PER_PERSONA_SEC");
@@ -229,14 +234,6 @@ public class PersonaBean implements Serializable{
 
     public void setListaTipoSociedad(List<SelectItem> listaTipoSociedad) {
         this.listaTipoSociedad = listaTipoSociedad;
-    }
-
-    public boolean isMostrar() {
-        return mostrar;
-    }
-
-    public void setMostrar(boolean mostrar) {
-        this.mostrar = mostrar;
     }
 
     public IUsuarioService getiUsuarioService() {

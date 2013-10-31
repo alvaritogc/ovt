@@ -10,6 +10,7 @@ import bo.gob.mintrabajo.ovt.repositories.UsuarioUnidadRepository;
 import com.google.common.base.Strings;
 
 import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.math.BigDecimal;
@@ -24,7 +25,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 @Named("personaService")
-//@TransactionAttribute
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class PersonaService implements IPersonaService {
 
     private final PersonaRepository personaRepository;
