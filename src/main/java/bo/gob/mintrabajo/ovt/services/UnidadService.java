@@ -71,4 +71,16 @@ public class UnidadService implements IUnidadService{
         rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
         return rtn.longValue();
     }
+
+    @Override
+    public List<PerUnidad> listarPorPersona(String idPersona){
+        List<PerUnidad> lista;
+        try {
+            lista = unidadRepository.findByAttribute("idPersona", idPersona, -1, -1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
+    }
 }

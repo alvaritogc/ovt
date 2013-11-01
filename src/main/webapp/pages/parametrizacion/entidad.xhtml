@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <br/>
+                <h1>Entidades</h1>
+            <br/>
+            <!--  Formulario de busqueda-->
+            <br />
+            <p:commandButton value="Nuevo" onclick="dlgFormEntidad.show();" update=":formEntidad"/>
+            <br />
+            <!--  Listado de entidades en tabla-->
+            <br/>
+            <p:dataTable id="dataTableEntidad" var="parEntidad" value="#{entidadBean.listaEntidad}" 
+                         paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="top"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados">
+                <f:facet name="header">  
+                    Entidades Encontradas
+                </f:facet>  
+
+                <p:column sortBy="descripcion" headerText="Descripción" >   
+                    <h:outputText value="#{parEntidad.descripcion}" />  
+                </p:column>  
+
+                <p:column sortBy="codigo" headerText="Codigo">    
+                    <h:outputText value="#{parEntidad.codigo}" />  
+                </p:column>  
+
+<!--                <p:column>  
+                    <f:facet name="header">  
+                        <h:outputText value="Unidad" />  
+                    </f:facet>  
+                    <h:outputText value="{entidad.perUnidad.nombreComercial}" />  
+                </p:column> 
+                <p:column>  
+                    <f:facet name="header">  
+                        <h:outputText value="Persona" />  
+                    </f:facet>  
+                    <h:outputText value="{entidad.perUnidad.perPersona.nombreRazonSocial} 
+                                  {entidad.perUnidad.perPersona.apellidoPaterno}" />  
+                </p:column>-->
+                <p:column sortBy="tipoEntidad" headerText="Tipo de entidad">  
+                    <h:outputText value="#{parEntidad.tipoEntidad}" />  
+                </p:column>
+                <p:column headerText="Acciones">
+                    
+                    <h:form>      
+                        <p:commandLink value="Modificar" oncomplete="dlgFormEntidad.show();" style="margin-right:20px;" update=":formEntidad">  
+                            <f:setPropertyActionListener target="#{entidadBean.entidad}" value="#{parEntidad}" />
+                            <f:setPropertyActionListener target="#{entidadBean.evento}" value="true" />
+                        </p:commandLink>
+                        
+                        <p:commandLink value="Eliminar" style="margin-right:20px;" onclick="confirmation.show()">   
+                            <f:setPropertyActionListener target="#{entidadBean.entidad}" value="#{parEntidad}" />
+                        </p:commandLink>
+
+                    </h:form>
+                </p:column>  
+            </p:dataTable>
+            
+            <p:growl id="messages" showDetail="true" /> 
+             <p:confirmDialog message="Esta seguro de eliminar este registro?"  
+                showEffect="fade" hideEffect="explode"  
+                header="Confirmacion" severity="alert" widgetVar="confirmation">  
+                 <p:commandButton value="Si" update=":messages :dataTableEntidad" oncomplete="confirmation.hide()" actionListener="#{entidadBean.confirmaEliminar}" />  
+                 <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+            </p:confirmDialog>
+                
+             <!--            Formulario de registro y edicion-->   
+            <p:dialog id="basicDialogMessage" header="Entidad" widgetVar="dlgFormEntidad" 
+                      width="500" 
+                      resizable="false"
+                      modal="true" >  
+                <h:form id="formEntidad">                    
+                <h:panelGrid columns="2" cellpadding="5">  
+                    <h:outputLabel for="descripcion" value="Descripción:" style="font-weight:bold"/>  
+                    <p:inputText id="descripcion" value="#{entidadBean.entidad.descripcion}" />  
+                    
+                    <h:outputLabel for="codigo" value="Codigo:" style="font-weight:bold"/>  
+                    <p:inputText id="codigo" value="#{entidadBean.entidad.codigo}" />
+                                        
+                    <h:outputLabel for="tipoEntidad" value="Tipo entidad:" style="font-weight:bold"/>  
+                    <p:inputText id="tipoEntidad" value="#{entidadBean.entidad.tipoEntidad}" />
+
+                    <p:commandButton value="Guardar" actionListener="#{entidadBean.guardarModificar}" update="formEntidad :dataTableEntidad" onclick="dlgFormEntidad.hide();"/>
+                    <p:commandButton value="Canselar" actionListener="#{entidadBean.cargar}" onclick="dlgFormEntidad.hide();" />
+                    
+                    <!--                     <h:outputLabel for="unidad" value="Unidad:" style="font-weight:bold"/>  
+                     <p:selectOneMenu id="unidad" value="">  
+                        <f:selectItem itemLabel="Seleccione unidad" itemValue="" />  
+                        <f:selectItems value="" />   
+                    </p:selectOneMenu>
+                    
+                    <h:outputLabel for="persona" value="Persona:" style="font-weight:bold"/>  
+                    <p:selectOneMenu id="persona" value="">  
+                        <f:selectItem itemLabel="Seleccione persona" itemValue="" />  
+                        <f:selectItems value="" />   
+                    </p:selectOneMenu>-->
+                </h:panelGrid>  
+            </h:form> 
+            </p:dialog>
+
+
+        </ui:define>
+    </ui:composition>
+</html>

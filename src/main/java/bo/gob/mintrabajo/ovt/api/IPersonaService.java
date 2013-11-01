@@ -15,4 +15,5 @@ public interface IPersonaService {
     public PerPersona save(PerPersona persona);
     public Long obtenerSecuencia(String nombreSecuencia);
     public  boolean registrar(PerPersona persona,PerUnidad unidad,UsrUsuario usuario);
+    public PerPersona buscarPorId(String id);
 }

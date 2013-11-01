@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Formatter;
@@ -77,7 +78,29 @@ public class DocumentoService implements IDocumentoService{
         lista = repository.buscarPorPersona(idPersona);
         return lista;
     }
-    
+
+    public List<DocDocumento> listarPorNumero(String idPersona){
+        return repository.findByAttribute("idPersona", idPersona, -1,-1);
+    }
+
+    public void guardaDocumentoBinarioPlanilla(DocDocumento docDocumento, List<DocBinario> listaBinarios, DocPlanilla docPlanilla){
+        docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1)); *************************************** REVISAR !!!!!
+        docDocumento.setNumeroDocumento(new BigInteger("11111")); //****************************************************
+        docDocumento=repository.save(docDocumento);
+        int idBinario= 1;
+        for(DocBinario elementoBinario:listaBinarios){
+            DocBinarioPK docBinarioPK = new DocBinarioPK();
+            docBinarioPK.setIdDocumento(docDocumento.getIdDocumento());
+            docBinarioPK.setIdBinario(idBinario++);
+            binarioRepository.save(elementoBinario);
+        }
+        docPlanilla.setIdDocumento(docDocumento);
+        docPlanilla.setIdPlanilla(new Long(utils.planillaSecuencia("DOC_PLANILLA_SEC")));
+        planillaRepository.save(docPlanilla);
+    }
+
+
 //    public DocDocumento guardarCambioEstado(DocDocumento documento, ParDocumentoEstado codEstadoFinal,String idUsuario) {
 //        //
 //        DocLogEstado logEstado=new DocLogEstado();

@@ -91,19 +91,18 @@ public class PersonaService implements IPersonaService {
           return personaRepository.findAll(new PageRequest(1, 200)).getContent();
       }
 
+
     @Override
-    @TransactionAttribute
     public List<PerPersona> buscarPorNroNombre(final String nroIdentificacion, final String nombreRazonSocial) {
-   //public Map<String,PerPersona> buscarPorNroNombre(final String nroIdentificacion, final String nombreRazonSocial) {
         if (Strings.isNullOrEmpty(nroIdentificacion) && Strings.isNullOrEmpty(nombreRazonSocial)) {
-            //return Collections.emptyList();
+            return Collections.emptyList();
         }
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PerPersona> criteriaQuery = criteriaBuilder.createQuery(PerPersona.class);
         Root<PerPersona> from = criteriaQuery.from(PerPersona.class);
 
-/*        Specification<PerPersona> specification = new Specification<PerPersona>() {
+        Specification<PerPersona> specification = new Specification<PerPersona>() {
             @Override
             public Predicate toPredicate(Root<PerPersona> perPersonaEntityRoot, CriteriaQuery<?> criteriaQuery,
                     CriteriaBuilder criteriaBuilder) {
@@ -128,19 +127,8 @@ public class PersonaService implements IPersonaService {
             }
         };
 
-        criteriaQuery.where(specification.toPredicate(from, criteriaQuery, criteriaBuilder));*/
-        List<PerPersona>lista=new ArrayList<PerPersona>();
-        lista  =entityManager.createQuery(criteriaQuery).getResultList();
-        System.out.println("=============================>>>>>");
-        System.out.println("=============================>>>>>");
-        System.out.println("=============================>>>>> lista "+String.valueOf(lista.size()));
-        System.out.println("=============================>>>>>NOMBRE: "+lista.get(0).getNombreRazonSocial()+"PATERNO: "+lista.get(0).getApellidoPaterno()+"MATERNO "+lista.get(0).getApellidoMaterno());
-        Map<String,PerPersona>mapa=new HashMap<String, PerPersona>();
-/*       for (PerPersona p:lista){
-           mapa.put(p.getIdPersona(),p);
-       }
-          return mapa;*/
-        return lista;
+        criteriaQuery.where(specification.toPredicate(from, criteriaQuery, criteriaBuilder));
+        return entityManager.createQuery(criteriaQuery).getResultList();
 
         // TODO: esto deberia funcionar... return personaRepository.findAll(specification);
     }

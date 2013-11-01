@@ -14,11 +14,13 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +35,9 @@ import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
  */
 @ManagedBean(name = "personaBean")
 @ViewScoped
-public class PersonaBean implements Serializable{
+public class PersonaBean extends Thread implements Serializable{
+
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
@@ -261,7 +265,7 @@ public class PersonaBean implements Serializable{
       perUnidadPK.setIdPersona(persona.getIdPersona());
       perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
       unidad.setPerUnidadPK(perUnidadPK);
-
+      //session.setAttribute("PerUnidad", unidad);
       usuario.setIdUsuario(iUsuarioService.obtenerSecuencia("USR_USUARIO_SEC"));
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
       usuario.setEsDelegado((short)0);
@@ -283,24 +287,74 @@ public class PersonaBean implements Serializable{
             context.execute("dlg.show()");
             ServicioEnvioEmail see = new ServicioEnvioEmail();
             see.envioEmail(this);
+            iniciarHilo(); // Se lanza el hilo para que empiece el timer valido para confirmar su registro
         } else {
             context.execute("dlg.hide()");
         }
     }
 
     public boolean validarEmail(String email){
-        Pattern patron = Pattern.compile("^[\\w-\\.]+\\@[\\w\\.-]+\\.[a-z]{2,4}$");
-        Matcher encajador = patron.matcher(email);
-        if (encajador.matches()) {
-            return true;
-        } else {
-            return false;
-        }
+//        Pattern patron = Pattern.compile("^[\\w-\\.]+\\@[\\w\\.-]+\\.[a-z]{2,4}$");
+//        Matcher encajador = patron.matcher(email);
+//        if (encajador.matches()) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return false;
     }
 
     public String volverLogin()throws IOException {
         return "irInicio";
     }
+
+    public PersonaBean(){
+
+    }
+
+    // *** Hilo para el control de tiempo ***//
+    int nroThread;
+    int contThread = 0;
+
+    public PersonaBean(int nroThread) {
+        this.nroThread = nroThread;
+    }
+
+    public void iniciarHilo() {
+        contThread = contThread + 1;
+        PersonaBean hilo = new PersonaBean(contThread);
+        hilo.start();
+    }
+
+    @Override
+    public void run() {
+        PerUnidad PER_UNIDAD = (PerUnidad) session.getAttribute("PerUnidad");
+
+        System.out.println("------------------------ " + PER_UNIDAD.getTipoUnidad());
+        System.out.println("------------------------ " + PER_UNIDAD.getPerUnidadPK().getIdPersona());
+        System.out.println("------------------------ " + PER_UNIDAD.getPerUnidadPK().getIdUnidad());
+        System.out.println("------------------------ " + PER_UNIDAD.getNombreComercial());
+        System.out.println("------------------------ " + PER_UNIDAD.getNroFundaempresa());
+
+        while (true) {
+            if(PER_UNIDAD.getPerUnidadPK().getIdPersona() != null){
+                try {
+                    System.out.println("SE espera 6 segundos .................................. ");
+                    Thread.sleep(6000);
+
+                    System.out.println("Aca implementar el cambio de estado en per_unidad");
+
+                } catch (InterruptedException ex) {
+                    System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
+                }
+            } else {
+                contThread = 0;
+                break;
+            }
+        }
+    }
+
+
 
     /*
       ******************************************
