@@ -5,13 +5,7 @@ import bo.gob.mintrabajo.ovt.entities.PerPersona;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 
-import java.math.BigDecimal;
-import java.util.List;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 
 @OpenJpaSettings
 public interface PersonaRepository extends OpenJpaRepository<PerPersona, String>{
-    
 }

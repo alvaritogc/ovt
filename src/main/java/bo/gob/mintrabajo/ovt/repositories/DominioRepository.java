@@ -16,4 +16,7 @@ public interface DominioRepository extends OpenJpaRepository<ParDominio, ParDomi
     @Query("select p from ParDominio p where p.parDominioPK.idDominio = :dominio order by p.descripcion")
     List<ParDominio>obtenerDominioPorNombre(@Param("dominio") String dominio);
 
+    @Query("select p from ParDominio p where p.parDominioPK.idDominio = :dominio and p.parDominioPK.valor = :valor")
+    ParDominio obtenerDominioPorNombreYValor(@Param("dominio")String dominio,@Param("valor")String valor);
+
 }

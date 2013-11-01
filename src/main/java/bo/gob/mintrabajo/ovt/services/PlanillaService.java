@@ -10,18 +10,19 @@ import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Named("planillaService")
-@TransactionAttribute
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class PlanillaService implements IPlanillaService {
 
     private final PlanillaRepository planillaRepository;
@@ -105,13 +106,18 @@ public class PlanillaService implements IPlanillaService {
         }
     }
 
-//    @Override
-    public DocPlanilla obtenerPorDocumento(Long idDocumento){
-        List<DocPlanilla> list=planillaRepository.findByAttribute("idDocumento", idDocumento, -1, -1);
+    @Override
+    public DocPlanilla buscarPorDocumento(Long idDocumento){
+        List<DocPlanilla> list=planillaRepository.buscarPorDocumento(idDocumento);
         if(list==null || list.size()==0){
             throw new RuntimeException("No se encontro el documento");
         }
         return list.get(0);
+    }
+
+
+    public DocPlanilla findById(Long id){
+        return planillaRepository.findOne(id);
     }
 }
 

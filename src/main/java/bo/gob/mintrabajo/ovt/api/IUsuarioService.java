@@ -14,4 +14,7 @@ public interface IUsuarioService {
     public List<UsrUsuario> getAllUsuarios();
     public UsrUsuario findById(Long id);
     public Long obtenerSecuencia(String nombreSecuencia);
+    public UsrUsuario save(UsrUsuario usrUsuario);
+    public UsrUsuario obtenerUsuarioPorNombreUsuario(String email);
+
 }

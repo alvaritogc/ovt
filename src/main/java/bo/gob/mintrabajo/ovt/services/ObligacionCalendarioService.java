@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA. User: gmercado Date: 10/10/13 Time: 5:56 PM To
@@ -61,6 +62,13 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
             deleted=false;
         }
         return deleted;
+    }
+
+    public List<ParObligacionCalendario> obtenerObligacionCalendario() {
+        Date date=new Date();
+        long oneday = TimeUnit.DAYS.toMillis(1);
+        List<ParObligacionCalendario> tmpLista = obligacionCalendarioRepository.buscarPorFecha(new Timestamp(date.getTime() - oneday));
+        return tmpLista;
     }
 
 }

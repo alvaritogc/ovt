@@ -120,7 +120,7 @@ public class DocPlanillaDetalle implements Serializable {
     @Column(name = "LIQUIDO_PAGABLE")
     private String liquidoPagable;
     @JoinColumn(name = "ID_PLANILLA", referencedColumnName = "ID_PLANILLA")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private DocPlanilla idPlanilla;
 
     public DocPlanillaDetalle() {

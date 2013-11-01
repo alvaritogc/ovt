@@ -16,7 +16,7 @@
                         listener="#{escritorioBean.abrirPanel}"
                         update=":idEscritorio:idPoll" 
                         stop="#{escritorioBean.detenerFacesMessages}"/>
-                
+
                 <h1>#{escritorioBean.empleador.nombreRazonSocial}</h1>
                 <p:panelGrid columns="2" style="border-style: hidden;">
                     <p:outputLabel value="#{escritorioBean.empleador.tipoIdentificacion}: " style="size: 20px;"/>
@@ -53,24 +53,64 @@
                         <h:outputText value="#{o1.tipoMedioRegistro}"/>
                     </p:column>
                     <p:column headerText="Acciones">
-                        <p:commandButton action="#{escritorioBean.irRealizarCambioDeEstados}" ajax="false" icon="ui-icon-gear" title="Realizar cambio de estados">
-                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumentoEntity}" />
-                        </p:commandButton>
+                        <p:commandButton update=":idEscritorio:cambioEstadoDlg" 
+                                         action="#{escritorioBean.cargarCambioDeEstados}"
+                                         oncomplete="PF('cambioEstadoDialog').show()" icon="ui-icon-gear" title="Cambio de estados">  
+                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
+                        </p:commandButton> 
 
-                        <h:commandLink target="_blank" action="#{escritorioBean.irImprimirDocumento}" title="Imprimir documento">
-                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumentoEntity}" />
-                            <h:graphicImage  style="float: left;width:25px;height: 23px;padding-right: 3px; " value="/images/imprimir.png" />
-                        </h:commandLink>
+                        <p:commandButton icon="ui-icon-print" action="#{escritorioBean.irImprimirDocumento}" title="Imprimir documento" ajax="false">
+                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
+                        </p:commandButton>
 
                         <p:commandButton action="#{escritorioBean.download}"
                                          ajax="false"
                                          rendered="#{escritorioBean.esInterno}"
                                          icon="ui-icon-arrowthickstop-1-s"
                                          title="Descarga documentos" >
-                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumentoEntity}" />
+                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
                         </p:commandButton>
+                         
                     </p:column>
                 </p:dataTable>
+                <p:dialog header="Car Detail" widgetVar="cambioEstadoDialog" resizable="false" id="cambioEstadoDlg"  
+                          showEffect="fade" hideEffect="explode" modal="true">  
+                    <h:panelGrid columns="6"  style="border: 1px solid black; height: 50px;width:100%;">
+                        <p:outputLabel value="Nº de comprobante de depósito:" style="text-align: right;"/>
+                        <p:outputLabel value="#{escritorioBean.docPlanilla.numOperacion}"  style="border: 1px solid black;width: 80px;text-align: left;padding: 3px;"/>
+
+                        <p:outputLabel value="Fecha de depósito:" style="text-align: right;margin-left: 25px;"/>
+                        <p:outputLabel value="#{escritorioBean.docPlanilla.fechaOperacion}" style="border: 1px solid black;width: 50px;text-align: left;padding: 3px;">
+                            <f:convertDateTime pattern="dd/MM/yy" />
+                        </p:outputLabel>
+
+                        <p:outputLabel value="Monto de depósito:" style="text-align: right;margin-left: 25px;"/>
+                        <p:outputLabel value="#{escritorioBean.docPlanilla.montoOperacion}" style="border: 1px solid black;width: 50px;text-align: right;padding: 3px;">
+                            <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                        </p:outputLabel>
+
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" >
+
+                        <h:outputText value="#{escritorioBean.docDocumento.codEstado.descripcion} "  style="font-size: 20px"/>
+                        <p:selectOneRadio id="grid" value="#{escritorioBean.codEstadoFinal}" 
+                                          layout="grid" 
+                                          columns="1" 
+                                          style="color: #000000; font-weight: bold;"
+                                          >
+                            <f:selectItems value="#{escritorioBean.listaDocumentoEstado}" 
+                                           var="docEst" 
+                                           itemLabel="#{docEst.descripcion}" 
+                                           itemValue="#{docEst.codEstado}"/>
+                            <p:selectOneButton value="123"/>
+                        </p:selectOneRadio>
+
+                    </h:panelGrid>
+                    <p:commandButton value="Realizar cambio de estado" 
+                                     update="idEscritorio"
+                                     rendered="#{escritorioBean.esInterno}"
+                                     action="#{escritorioBean.realizarCambioDeEstados}"/>
+                </p:dialog>  
 
             </h:form>
         </ui:define>

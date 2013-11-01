@@ -4,14 +4,13 @@ import bo.gob.mintrabajo.ovt.api.IUnidadService;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import bo.gob.mintrabajo.ovt.entities.PerUnidadPK;
 import bo.gob.mintrabajo.ovt.repositories.UnidadRepository;
+
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,45 +29,57 @@ public class UnidadService implements IUnidadService{
         this.unidadRepository = unidadRepository;
     }
     
-//    @Override
+
     public List<PerUnidad> getAllUnidades() {
         List<PerUnidad> allUnidades;
         allUnidades = unidadRepository.findAll();
         return allUnidades;
     }
     
-   @Override
+   
     public PerUnidad save(PerUnidad unidad) {
         PerUnidad perUnidadEntity;
         perUnidadEntity = unidadRepository.save(unidad);
         return perUnidadEntity;
     }
 
-//    @Override
     public boolean delete(PerUnidad unidad) {
         boolean deleted = false;
         unidadRepository.delete(unidad);
         return deleted;
     }
 
-//    @Override
     public PerUnidad findById(PerUnidadPK id) {
         PerUnidad perUnidadEntity;
         perUnidadEntity = unidadRepository.findOne(id);
         return perUnidadEntity;
     }
     
-    @Override
+    
     public List<PerUnidad> buscarPorPersona( String idPersona){
         List<PerUnidad> lista;
         lista = unidadRepository.buscarPorPersona(idPersona);
         return lista;
     }
-
-    @Override
+    
     public Long obtenerSecuencia(String nombreSecuencia){
         BigDecimal rtn;
         rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
         return rtn.longValue();
+    }
+    
+    public List<PerUnidad> listarPorPersona(String idPersona){
+        List<PerUnidad> lista;
+        try {
+            lista = unidadRepository.findByAttribute("idPersona", idPersona, -1, -1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
+    }
+
+    public PerUnidad obtienePorId(PerUnidadPK perUnidadPK){
+        return unidadRepository.findByPK(perUnidadPK);
     }
 }

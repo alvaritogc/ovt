@@ -14,6 +14,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,9 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_EMPRESA;
-import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_SOCIEDAD;
-import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_IDENTIFICACION;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,6 +36,8 @@ import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_IDENTIFICACION;
 @ManagedBean(name = "personaBean")
 @ViewScoped
 public class PersonaBean extends Thread implements Serializable{
+
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
@@ -255,34 +256,41 @@ public class PersonaBean extends Thread implements Serializable{
       Long seq= iLocalidadService.localidadSecuencia("PER_PERSONA_SEC");
       persona.setIdPersona(seq.toString());
       persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
-      persona.setFechaBitacora(new Date());
       persona.setRegistroBitacora(REGISTRO_BITACORA);
       persona.setEsNatural(esNatural);
+      session.setAttribute("PerPersona", persona);
 
       unidad.setRegistroBitacora(REGISTRO_BITACORA);
-      unidad.setFechaBitacora(new Date());
-      unidad.setEstadoUnidad("1");
-      unidad.setPerPersona(persona);
+      unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
       PerUnidadPK perUnidadPK=new PerUnidadPK();
       perUnidadPK.setIdPersona(persona.getIdPersona());
       perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
       unidad.setPerUnidadPK(perUnidadPK);
+      session.setAttribute("PerUnidad", unidad);
 
       usuario.setIdUsuario(iUsuarioService.obtenerSecuencia("USR_USUARIO_SEC"));
-        usuario.setFechaBitacora(new Date());
-        usuario.setRegistroBitacora(REGISTRO_BITACORA);
-        usuario.setEsDelegado((short)0);
-        usuario.setEstadoUsuario("A");
-        usuario.setIdPersona(persona);
-        usuario.setTipoAutenticacion("LOCAL");
-        usuario.setEsInterno((short)0);
+      usuario.setRegistroBitacora(REGISTRO_BITACORA);
+      usuario.setEsDelegado((short)0);
+      ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO);
+      usuario.setEstadoUsuario(d.getParDominioPK().getValor());
+        //usuario.setIdPersona(persona);
+      usuario.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION, PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
+      usuario.setEsInterno((short) 0);
+      usuario.setFechaBitacora(new Date());
+      usuario.setRegistroBitacora(REGISTRO_BITACORA);
+      usuario.setEsDelegado((short)0);
+      usuario.setEstadoUsuario("A");
+      usuario.setIdPersona(persona);
+      usuario.setTipoAutenticacion("LOCAL");
+      usuario.setEsInterno((short)0);
+      session.setAttribute("PerUsuario", usuario);
 
         mostrar= iPersonaService.registrar(persona,unidad,usuario);
         if(mostrar)
             RequestContext.getCurrentInstance().execute("dlg.show()");
         else
             RequestContext.getCurrentInstance().execute("dlg.hide()");
-     mostrar= iPersonaService.registrar(persona,unidad,usuario);
+        mostrar= iPersonaService.registrar(persona,unidad,usuario);
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("mostrar ---------------------------------- " + mostrar);
         if (mostrar) {
@@ -316,7 +324,6 @@ public class PersonaBean extends Thread implements Serializable{
     // *** Hilo para el control de tiempo ***//
     int nroThread;
     int contThread = 0;
-    ConcurrentLinkedQueue<PerUnidad> perUnidadListado;
 
     public PersonaBean(int nroThread) {
         this.nroThread = nroThread;
@@ -330,27 +337,26 @@ public class PersonaBean extends Thread implements Serializable{
 
     @Override
     public void run() {
+        PerUnidad PER_UNIDAD = (PerUnidad) session.getAttribute("PerUnidad");
+        PerPersona PER_PERSONA = (PerPersona) session.getAttribute("PerPersona");
+        UsrUsuario PER_USUARIO = (UsrUsuario) session.getAttribute("PerUsuario");
 
         while (true) {
-            if(perUnidadListado.size() < 1){
-                try {
-                    System.out.println("SE espera 6 segundos .................................. ");
-                    Thread.sleep(6000);
+            //if(PER_UNIDAD.getPerUnidadPK().getIdPersona() != null){
+            try {
+                Thread.sleep(6000);
 
-                    perUnidadListado.remove(perUnidadListado.poll());
-                    System.out.println("Aca implementar el cambio de estado en per_unidad");
+                System.out.println("Implementar si no confirma su registro ELIMINAR TODO DEL USUARIO");
+                iPersonaService.eliminarRegistro(PER_PERSONA, PER_UNIDAD, PER_USUARIO);
 
-
-                } catch (InterruptedException ex) {
-                    System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
-                }
-            } else {
-                contThread = 0;
-                break;
+                PER_UNIDAD = new PerUnidad();
+            } catch (InterruptedException ex) {
+                System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
             }
-
-
-
+            //} else {
+            //    contThread = 0;
+            //    break;
+            //}
         }
     }
 

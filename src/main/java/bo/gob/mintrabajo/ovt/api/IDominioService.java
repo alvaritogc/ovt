@@ -9,6 +9,5 @@ import java.util.List;
 public interface IDominioService {
     public ParDominio save(ParDominio dominio);
     public List<ParDominio> obtenerItemsDominio(String dominio);
-    
-    
+    public ParDominio obtenerDominioPorNombreYValor(String dominio,String valor);
 }
