@@ -122,5 +122,21 @@ public class DocumentoService implements IDocumentoService{
 //        logEstadoRepository.save(logEstado);
 //        return repository.save(documento);
 //    }
+    
+     @Override
+    public DocDocumento guardarCambioEstado(DocDocumento documento, ParDocumentoEstado codEstadoFinal,String idUsuario) {
+//        DocLogEstado logEstado=new DocLogEstado();
+//        logEstado.setIdDocumento(documento);
+//        logEstado.setCodEstadoFinal(codEstadoFinal);
+//        logEstado.setCodEstadoInicial(documento.getCodEstado());
+//        logEstado.setRegistroBitacora(idUsuario);
+//        Date date=new Date();
+//        logEstado.setFechaBitacora(new Timestamp(date.getTime()));
+//        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
+//        logEstadoRepository.save(logEstado);
+        //
+        documento.setCodEstado(codEstadoFinal);
+        return repository.save(documento);
+    }
 
 }
