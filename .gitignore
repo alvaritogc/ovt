@@ -14,7 +14,6 @@ migration/migration-phase4.json.sql
 .idea
 out
 .fuse*
-ovt.iml
 
 # Eclipse
 .classpath

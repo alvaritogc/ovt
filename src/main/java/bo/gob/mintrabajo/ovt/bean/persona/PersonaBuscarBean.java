@@ -90,8 +90,9 @@ public class PersonaBuscarBean implements Serializable{
         //
        // logger.info("Buscando usuario" + idUsuario);
        // UsrUsuario usuario = iUsuarioService.findById(idUsuario);
-
-        listaPersona=  iPersonaService.buscarPorNroNombre("","");
+        System.out.println("=====================>>>> BUSCAR");
+        listaPersona=iPersonaService.findAll();
+       // listaPersona=  iPersonaService.buscarPorNroNombre("","");
 
 
 

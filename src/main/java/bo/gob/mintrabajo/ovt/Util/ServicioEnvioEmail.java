@@ -87,10 +87,11 @@ public class ServicioEnvioEmail {
         from = "gmercado@mc4.com.bo";
         subject = "Confirmación de registro de la oficina virtual";
         urlRedireccion = "http://localhost:8080/faces/pages/persona";
+        urlRedireccion = urlRedireccion.concat("/registroConfirmacion.xhtml?codeUnic=#codeUnic&codeNam=#codeNam");
 
-        urlRedireccion = urlRedireccion.concat("/registroConfirmacion.xhtml?codeUnic=#codeUnic");
         String usuPassword = Util.crypt(bean.getUsuario().getClave());
-        urlRedireccion = urlRedireccion.replaceAll("#codeUnic",usuPassword);
+        urlRedireccion = urlRedireccion.replace("#codeNam", bean.getUsuario().getUsuario());
+        urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
 
         cuerpoMensaje = "Para completar su registro dirijase al siguiente Link :" + urlRedireccion;
         password = "G4rym3rc4d0";

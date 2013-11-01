@@ -10,6 +10,13 @@ import org.springframework.data.repository.query.Param;
 
 @OpenJpaSettings
 public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObligacionCalendario, Long> {
-    
+
+    @Query(
+            "   select a "
+                    + " from ParObligacionCalendario a"
+                    + " where "
+                    + " :fecha between a.fechaHasta and a.fechaPlazo "
+    )
+    List<ParObligacionCalendario> buscarPorFecha(@Param("fecha") Timestamp fechaActual);
   
 }

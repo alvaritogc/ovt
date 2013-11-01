@@ -8,4 +8,5 @@ public interface IUnidadService {
     List<PerUnidad> buscarPorPersona(String idPersona);
     public Long obtenerSecuencia(String nombreSecuencia);
     public PerUnidad save(PerUnidad unidad);
+    public List<PerUnidad> listarPorPersona(String idPersona);
 }
