@@ -139,7 +139,7 @@ public class DocumentoService implements IDocumentoService{
 //        logEstadoRepository.save(logEstado);
         //
         documento.setCodEstado(codEstadoFinal);
-        return repository.save(documento);
+        return documentoRepository.save(documento);
     }
 
     public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios){
