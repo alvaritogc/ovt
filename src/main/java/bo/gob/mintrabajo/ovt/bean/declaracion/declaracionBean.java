@@ -155,13 +155,13 @@ public class declaracionBean implements Serializable {
             listaDocumentos=new ArrayList<DocDocumento>();
         }
         estaDeclarado=false;
-//        for(DocDocumento documento:listaDocumentos){
-//            if(documento.getDocumentoEstado().getDescripcion().toLowerCase().equals("declarado")
-//                    || documento.getDocumentoEstado().getDescripcion().toLowerCase().equals("observado")
-//                    || documento.getDocumentoEstado().getDescripcion().toLowerCase().equals("finalizado")){
-//                estaDeclarado=true;
-//            }
-//        }
+        for(DocDocumento documento:listaDocumentos){
+            if(documento.getCodEstado().getDescripcion().toLowerCase().equals("declarado")
+                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("observado")
+                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")){
+                estaDeclarado=true;
+            }
+        }
     }
 
     public void generaDocumento(){
@@ -211,14 +211,14 @@ public class declaracionBean implements Serializable {
         }
     }
 
-    public String guardaDocumentoBinarioPlanilla(){
+    public String guardaDocumentoPlanillaBinario(){
         try{
             logger.info("Guardando documento, binario y planilla");
             logger.info(documento.toString());
             logger.info(listaBinarios.toString());
             logger.info(docPlanilla.toString());
             generaPlanilla(false);
-            idDocumentoService.guardaDocumentoBinarioPlanilla(documento, listaBinarios, docPlanilla);
+            idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
             return "irListadoBienvenida";
         }catch (Exception e){

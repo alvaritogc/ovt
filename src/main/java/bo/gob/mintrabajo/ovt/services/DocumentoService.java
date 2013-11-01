@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 /**
@@ -129,31 +130,33 @@ public class DocumentoService implements IDocumentoService{
     public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios){
         //guarda documento
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
-//        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1));
+        docDocumento.setNumeroDocumento(BigInteger.ZERO);
+//        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento=documentoRepository.save(docDocumento);
 
         //guarda planilla
         docPlanilla.setIdDocumento(docDocumento);
         docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
-        docPlanilla =planillaRepository.save(docPlanilla);
+        docPlanilla=planillaRepository.save(docPlanilla);
 
         //validaBinarios
-
+        if(!valida(docPlanilla, listaBinarios))
+            return;
         //guarda binarios
         int idBinario= 1;
         for(DocBinario elementoBinario:listaBinarios){
             elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
             binarioRepository.save(elementoBinario);
         }
-        valida(docPlanilla, listaBinarios);
     }
 
-    public void valida(DocPlanilla docPlanilla, List<DocBinario> listaBinarios){
+    public boolean valida(DocPlanilla docPlanilla, List<DocBinario> listaBinarios){
         List<String> errores = new ArrayList<String>();
         String errorFilas = "";
         String errorCampos = "";
         String mensaje;
         List <DocPlanillaDetalle>docPlanillaDetalleList = new ArrayList<DocPlanillaDetalle>();
+        boolean verifica =false;
         try {
 //            FileInputStream file = new FileInputStream(new File("/home/rvelasquez/Desktop/planillaComercialPrueba.xls");
 //        csvReader = new CsvReader(new InputStreamReader(file.getInputstream(), "UTF-8"), ';');
@@ -338,12 +341,62 @@ public class DocumentoService implements IDocumentoService{
                 else{
                     for(DocPlanillaDetalle docPlanillaDetalle:docPlanillaDetalleList)
                         planillaDetalleRepository.save(docPlanillaDetalle);
+                    verifica =true;
                 }
 
             }
         } catch (Exception e){
             e.printStackTrace();
         }
+        return verifica;
     }
 
+    public BigInteger actualizarNumeroDeOrden(String codDocumento, short version) {
+        DocNumeracion numeracionBusqueda = new DocNumeracion(new DocNumeracionPK(codDocumento, version));
+//        numeracionBusqueda.setCodDocumento(codDocumento);
+//        numeracionBusqueda.setVersion(version);
+        DocNumeracion numeracion;
+        try {
+            numeracion = numeracionRepository.findByExample(numeracionBusqueda, null, null, -1, -1).get(0);
+        } catch (Exception e) {
+            throw new RuntimeException("DocNumeracionEntity no encontrado");
+        }
+        String codNumeroS =numeracion.getDocNumeracionPK().getCodDocumento();
+        String codNumero = "";
+        for (int i = 2; i < codNumeroS.length(); i++) {
+            codNumero = codNumero + codNumeroS.charAt(i);
+        }
+        Long numero=new Long(numeracion.getUltimoNumero()+1);
+        //
+        Formatter fmt = new Formatter();
+        fmt.format("%07d", numero);
+        String numeroFormato = fmt.toString();
+        //
+        String numeroSinVerificacion = "" + codNumero + numeroFormato;
+        String numeroVerificacion = "";
+        int contador = 2;
+        for (int i = 0; i < numeroSinVerificacion.length(); i++) {
+            numeroVerificacion = "" + contador + numeroVerificacion;
+            contador++;
+            if (contador > 7) {
+                contador = 2;
+            }
+        }
+        //
+        Long sumatoria = new Long(0);
+        //
+        for (int i = 0; i < numeroSinVerificacion.length(); i++) {
+            Long multiplicacion = (new Long("" + numeroSinVerificacion.charAt(i))) * (new Long("" + numeroVerificacion.charAt(i)));
+            sumatoria = sumatoria + multiplicacion;
+        }
+        Long modulo = sumatoria % 11;
+        Long verificacion = 11 - modulo;
+        //
+        numeracion.setUltimoNumero(numeracion.getUltimoNumero()+1);
+        numeracionRepository.save(numeracion);
+        //
+        Formatter fmtVerificacion = new Formatter();
+        fmtVerificacion.format("%02d", verificacion);
+        return (new BigInteger("" + codNumero + numeroFormato + fmtVerificacion.toString()));
+    }
 }
