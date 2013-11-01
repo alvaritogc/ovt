@@ -24,9 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_EMPRESA;
-import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_SOCIEDAD;
-import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_IDENTIFICACION;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -258,15 +256,12 @@ public class PersonaBean extends Thread implements Serializable{
       Long seq= iLocalidadService.localidadSecuencia("PER_PERSONA_SEC");
       persona.setIdPersona(seq.toString());
       persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
-      persona.setFechaBitacora(new Date());
       persona.setRegistroBitacora(REGISTRO_BITACORA);
       persona.setEsNatural(esNatural);
       session.setAttribute("PerPersona", persona);
 
       unidad.setRegistroBitacora(REGISTRO_BITACORA);
-      unidad.setFechaBitacora(new Date());
-      unidad.setEstadoUnidad("1");
-      unidad.setPerPersona(persona);
+      unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
       PerUnidadPK perUnidadPK=new PerUnidadPK();
       perUnidadPK.setIdPersona(persona.getIdPersona());
       perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
@@ -274,6 +269,13 @@ public class PersonaBean extends Thread implements Serializable{
       session.setAttribute("PerUnidad", unidad);
 
       usuario.setIdUsuario(iUsuarioService.obtenerSecuencia("USR_USUARIO_SEC"));
+      usuario.setRegistroBitacora(REGISTRO_BITACORA);
+      usuario.setEsDelegado((short)0);
+      ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO);
+      usuario.setEstadoUsuario(d.getParDominioPK().getValor());
+        //usuario.setIdPersona(persona);
+      usuario.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION, PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
+      usuario.setEsInterno((short) 0);
       usuario.setFechaBitacora(new Date());
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
       usuario.setEsDelegado((short)0);

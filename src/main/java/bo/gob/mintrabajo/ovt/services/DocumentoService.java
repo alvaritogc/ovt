@@ -44,34 +44,34 @@ public class DocumentoService implements IDocumentoService{
         this.logEstadoRepository=logEstadoRepository;
     }
 
-//    @Override
+    //    @Override
     public List<DocDocumento> getAllDocumentos() {
         List<DocDocumento> lista;
         lista = repository.findAll();
         return lista;
     }
-    
-//    @Override
+
+    //    @Override
     public DocDocumento save(DocDocumento documento) {
         DocDocumento entity;
         entity = repository.save(documento);
         return entity;
     }
 
-//    @Override
+    //    @Override
     public boolean delete(DocDocumento documento) {
         boolean deleted = false;
         repository.delete(documento);
         return deleted;
     }
 
-//    @Override
+    //    @Override
     public DocDocumento findById(Long id) {
         DocDocumento entity;
         entity = repository.findOne(id);
         return entity;
     }
-    
+
     @Override
     public List<DocDocumento> listarPorPersona(String idPersona) {
         List<DocDocumento> lista;
@@ -116,11 +116,11 @@ public class DocumentoService implements IDocumentoService{
 //        documento.setCodEstado(codEstadoFinal);
 //        return repository.save(documento);
 //    }
-    
+
 //    public DocDocumento guardarCambioEstado(DocDocumento documento, DocLogEstado logEstado) {
 //        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
 //        logEstadoRepository.save(logEstado);
 //        return repository.save(documento);
 //    }
-    
+
 }

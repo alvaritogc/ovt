@@ -22,6 +22,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 
 @Named("personaService")
@@ -86,7 +88,7 @@ public class PersonaService implements IPersonaService {
 
     @Override
       public  List<PerPersona> findAll(){
-          return personaRepository.findAll();
+          return personaRepository.findAll(new PageRequest(1, 200)).getContent();
       }
 
 
@@ -144,17 +146,22 @@ public class PersonaService implements IPersonaService {
         try{
             final String  REGISTRO_BITACORA="ROE";
             System.out.println("======>>> GUARDADO PERSONA <<<===== ");
-            personaRepository.save(persona);
+            persona.setFechaBitacora(new Date());
+            persona=personaRepository.save(persona);
             System.out.println("======>>> GUARDADO PERSONA  OK<<<===== ");
 
             System.out.println("======================================= ");
             System.out.println("======>>> GUARDADO UNIDAD <<<===== ");
-            unidadRepository.save(unidad);
+            unidad.setFechaBitacora(new Date());
+            unidad.setPerPersona(persona);
+            unidad=unidadRepository.save(unidad);
             System.out.println("======>>> GUARDADO UNIDAD OK <<<===== ");
 
             System.out.println("======================================= ");
             System.out.println("======>>> GUARDADO USUARIO <<<===== ");
-            usuarioRepository.save(usuario);
+            usuario.setFechaBitacora(new Date());
+            usuario.setIdPersona(persona);
+            usuario=usuarioRepository.save(usuario);
             System.out.println("======>>> GUARDADO USUARIO OK <<<===== ");
 
             System.out.println("======================================= ");

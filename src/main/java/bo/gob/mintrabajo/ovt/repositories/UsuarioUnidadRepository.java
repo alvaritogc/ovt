@@ -15,5 +15,6 @@ import java.util.List;
 @OpenJpaSettings
 public interface UsuarioUnidadRepository extends OpenJpaRepository<PerUsuarioUnidad, PerUsuarioUnidadPK>{
 
+
     
 }

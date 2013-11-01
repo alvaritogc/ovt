@@ -80,4 +80,9 @@ public class UsuarioService implements IUsuarioService{
 
         return usr;
     }
+
+    public UsrUsuario obtenerUsuarioPorNombreUsuario(String email){
+
+       return usuarioRepository.findByUsuario(email);
+    }
 }
