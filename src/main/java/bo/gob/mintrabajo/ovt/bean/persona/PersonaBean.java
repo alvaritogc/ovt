@@ -261,6 +261,7 @@ public class PersonaBean extends Thread implements Serializable{
       persona.setFechaBitacora(new Date());
       persona.setRegistroBitacora(REGISTRO_BITACORA);
       persona.setEsNatural(esNatural);
+      session.setAttribute("PerPersona", persona);
 
       unidad.setRegistroBitacora(REGISTRO_BITACORA);
       unidad.setFechaBitacora(new Date());
@@ -270,22 +271,24 @@ public class PersonaBean extends Thread implements Serializable{
       perUnidadPK.setIdPersona(persona.getIdPersona());
       perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
       unidad.setPerUnidadPK(perUnidadPK);
-      //session.setAttribute("PerUnidad", unidad);
+      session.setAttribute("PerUnidad", unidad);
+
       usuario.setIdUsuario(iUsuarioService.obtenerSecuencia("USR_USUARIO_SEC"));
-        usuario.setFechaBitacora(new Date());
-        usuario.setRegistroBitacora(REGISTRO_BITACORA);
-        usuario.setEsDelegado((short)0);
-        usuario.setEstadoUsuario("A");
-        usuario.setIdPersona(persona);
-        usuario.setTipoAutenticacion("LOCAL");
-        usuario.setEsInterno((short)0);
+      usuario.setFechaBitacora(new Date());
+      usuario.setRegistroBitacora(REGISTRO_BITACORA);
+      usuario.setEsDelegado((short)0);
+      usuario.setEstadoUsuario("A");
+      usuario.setIdPersona(persona);
+      usuario.setTipoAutenticacion("LOCAL");
+      usuario.setEsInterno((short)0);
+      session.setAttribute("PerUsuario", usuario);
 
         mostrar= iPersonaService.registrar(persona,unidad,usuario);
         if(mostrar)
             RequestContext.getCurrentInstance().execute("dlg.show()");
         else
             RequestContext.getCurrentInstance().execute("dlg.hide()");
-     mostrar= iPersonaService.registrar(persona,unidad,usuario);
+        mostrar= iPersonaService.registrar(persona,unidad,usuario);
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("mostrar ---------------------------------- " + mostrar);
         if (mostrar) {
@@ -299,14 +302,13 @@ public class PersonaBean extends Thread implements Serializable{
     }
 
     public boolean validarEmail(String email){
-//        Pattern patron = Pattern.compile("^[\\w-\\.]+\\@[\\w\\.-]+\\.[a-z]{2,4}$");
-//        Matcher encajador = patron.matcher(email);
-//        if (encajador.matches()) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-        return false;
+        Pattern patron = Pattern.compile("^[\\w-\\.]+\\@[\\w\\.-]+\\.[a-z]{2,4}$");
+        Matcher encajador = patron.matcher(email);
+        if (encajador.matches()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public String volverLogin()throws IOException {
@@ -334,28 +336,25 @@ public class PersonaBean extends Thread implements Serializable{
     @Override
     public void run() {
         PerUnidad PER_UNIDAD = (PerUnidad) session.getAttribute("PerUnidad");
-
-        System.out.println("------------------------ " + PER_UNIDAD.getTipoUnidad());
-        System.out.println("------------------------ " + PER_UNIDAD.getPerUnidadPK().getIdPersona());
-        System.out.println("------------------------ " + PER_UNIDAD.getPerUnidadPK().getIdUnidad());
-        System.out.println("------------------------ " + PER_UNIDAD.getNombreComercial());
-        System.out.println("------------------------ " + PER_UNIDAD.getNroFundaempresa());
+        PerPersona PER_PERSONA = (PerPersona) session.getAttribute("PerPersona");
+        UsrUsuario PER_USUARIO = (UsrUsuario) session.getAttribute("PerUsuario");
 
         while (true) {
-            if(PER_UNIDAD.getPerUnidadPK().getIdPersona() != null){
-                try {
-                    System.out.println("SE espera 6 segundos .................................. ");
-                    Thread.sleep(6000);
+            //if(PER_UNIDAD.getPerUnidadPK().getIdPersona() != null){
+            try {
+                Thread.sleep(6000);
 
-                    System.out.println("Aca implementar el cambio de estado en per_unidad");
+                System.out.println("Implementar si no confirma su registro ELIMINAR TODO DEL USUARIO");
+                iPersonaService.eliminarRegistro(PER_PERSONA, PER_UNIDAD, PER_USUARIO);
 
-                } catch (InterruptedException ex) {
-                    System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
-                }
-            } else {
-                contThread = 0;
-                break;
+                PER_UNIDAD = new PerUnidad();
+            } catch (InterruptedException ex) {
+                System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
             }
+            //} else {
+            //    contThread = 0;
+            //    break;
+            //}
         }
     }
 

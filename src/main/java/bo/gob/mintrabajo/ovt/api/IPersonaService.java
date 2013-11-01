@@ -16,4 +16,5 @@ public interface IPersonaService {
     public Long obtenerSecuencia(String nombreSecuencia);
     public  boolean registrar(PerPersona persona,PerUnidad unidad,UsrUsuario usuario);
     public PerPersona buscarPorId(String id);
+    public boolean eliminarRegistro(PerPersona persona, PerUnidad unidad, UsrUsuario usuario);
 }

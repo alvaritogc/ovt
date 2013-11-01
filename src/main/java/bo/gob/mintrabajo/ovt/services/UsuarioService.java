@@ -73,4 +73,11 @@ public class UsuarioService implements IUsuarioService{
         rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
         return rtn.longValue();
     }
+
+    @Override
+    public UsrUsuario save(UsrUsuario usrUsuario){
+        UsrUsuario usr = usuarioRepository.save(usrUsuario);
+
+        return usr;
+    }
 }

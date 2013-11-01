@@ -25,7 +25,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 @Named("personaService")
-@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+@TransactionAttribute
 public class PersonaService implements IPersonaService {
 
     private final PersonaRepository personaRepository;
@@ -177,7 +177,17 @@ public class PersonaService implements IPersonaService {
             ex.printStackTrace();
             return false;
         }
-
-
     }
+
+    public boolean eliminarRegistro(PerPersona persona, PerUnidad unidad, UsrUsuario usuario) {
+        try {
+            usuarioRepository.delete(usuario);
+            unidadRepository.delete(unidad);
+            personaRepository.delete(persona);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return true;
+    }
+
 }
