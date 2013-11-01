@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 
 /**
  * User: LHVD
@@ -53,18 +55,12 @@ public class EntidadBean implements Serializable{
 
     @PostConstruct
     public void ini() {
-//        idUsuario = (Integer) session.getAttribute("idUsuario");
-//        System.out.println("======>iduser" + idUsuario);
         listaEntidad =new ArrayList<ParEntidad>();
         listaEntidad= iEntidadService.listaEntidad();
-//        for (ParEntidad parEntidad : listaEntidad) {
-//            System.out.println("===>" + parEntidad);
-//        }
     }
     
     public void confirmaEliminar(){  
         try {
-            System.out.println("======>eliminando ");
             if(iEntidadService.deleteEntidad(entidad)){
                 listaEntidad= iEntidadService.listaEntidad();
                 entidad=new ParEntidad();
@@ -75,6 +71,12 @@ public class EntidadBean implements Serializable{
     } 
     
     public void guardarModificar(){
+        RequestContext context = RequestContext.getCurrentInstance();
+        if(entidad.getDescripcion().isEmpty()){ return;}
+        if(entidad.getCodigo().isEmpty()){return;}
+        if(entidad.getTipoEntidad().isEmpty()){return;}
+        context.execute("dlgFormEntidad.hide();");
+        
         final String  REGISTRO_BITACORA="OVT";
         //final String  REGISTRO_BITACORA=idUsuario.toString();
         Date fechaBitacora = new Date();
@@ -86,11 +88,11 @@ public class EntidadBean implements Serializable{
             entidad.setFechaBitacora(fechaBitacora);
             entidad.setRegistroBitacora(REGISTRO_BITACORA);
             ParEntidad pe = iEntidadService.saveEntidad(entidad);
-            listaEntidad.remove(entidad);
-            listaEntidad.add(pe);
-           //if(evento==false){
-                //listaEntidad= iEntidadService.listaEntidad();
-            //}
+            //listaEntidad.remove(entidad);
+            //listaEntidad.add(pe);
+           if(evento==false){
+                listaEntidad= iEntidadService.listaEntidad();
+            }
             entidad=new ParEntidad();
             evento=false;
         } catch (Exception e) {

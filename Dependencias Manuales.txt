@@ -1,2 +1,4 @@
 mvn install:install-file -DgroupId=base64 -DartifactId=Base64 -Dversion=1.0 -Dpackaging=jar -Dfile=LIB/Base64.jar
-
+mvn install:install-file -DgroupId=name.marcelomorales.siqisiqi -DartifactId=siqisiqi-configuration -Dversion=0.2 -Dpackaging=jar -Dfile=LIB/siqisiqi-configuration-0.3-SNAPSHOT.jar
+mvn install:install-file -DgroupId=name.marcelomorales.siqisiqi -DartifactId=siqisiqi-bonecp -Dversion=0.2 -Dpackaging=jar -Dfile=LIB/siqisiqi-bonecp-0.3-SNAPSHOT.jar 
+mvn install:install-file -DgroupId=name.marcelomorales.siqisiqi -DartifactId=siqisiqi-openjpa -Dversion=0.2 -Dpackaging=jar -Dfile=LIB/openjpa-2.2.2.jar
