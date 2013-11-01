@@ -23,6 +23,10 @@ public class UtilsService implements IUtilsService {
         this.dummy = dummy;
     }
 
+//    @Inject
+//    public UtilsService(){
+//    }
+
     @Override
     public Long valorSecuencia (String nombreSecuencia){
         BigDecimal rtn;

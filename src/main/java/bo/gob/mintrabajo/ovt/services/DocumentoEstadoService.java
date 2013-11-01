@@ -1,6 +1,6 @@
 package bo.gob.mintrabajo.ovt.services;
 
-import bo.gob.mintrabajo.ovt.api.IDocumentoEstado;
+import bo.gob.mintrabajo.ovt.api.IDocumentoEstadoService;
 import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstado;
 import bo.gob.mintrabajo.ovt.repositories.DocumentoEstadoRepository;
 
@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 @Named("documentoEstadoService")
 @TransactionAttribute
-public class DocumentoEstadoService implements IDocumentoEstado{
+public class DocumentoEstadoService implements IDocumentoEstadoService {
 
     private final DocumentoEstadoRepository documentoEstadoRepository;
 
@@ -19,11 +19,7 @@ public class DocumentoEstadoService implements IDocumentoEstado{
         this.documentoEstadoRepository = documentoEstadoRepository;
     }
 
-    public ParDocumentoEstado retornaDocEstado(String codEstado){
-        return documentoEstadoRepository.findByAttribute("codEstado", codEstado, -1, -1).get(0);
-    }
-
-    public ParDocumentoEstado retornaCodEstado(String descripcion){
-        return documentoEstadoRepository.findByAttribute("descripcion", descripcion, -1, -1).get(0);
+    public ParDocumentoEstado buscarPorId(String id){
+        return documentoEstadoRepository.findOne(id);
     }
 }
