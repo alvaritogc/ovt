@@ -11,11 +11,9 @@
         <h:form id="confirmaRegistroFrm">
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             <h:panelGrid columns="2">
-                <p:outputLabel value="Login"/>
-                <h:inputSecret value="#{personaConfirmacionBean.loginParameter}" disabled="true"/>
-                <p:outputLabel value="Ingresar Password"/>
-                <h:inputSecret value="#{personaConfirmacionBean.passwordParameter}" disabled="true"/>
-                <p:outputLabel value="Confirmar Password"/>
+                <p:outputLabel value="Login :"/>
+                <h:inputText value="#{personaConfirmacionBean.loginParameter}" readonly="true"/>
+                <p:outputLabel value="Confirmar Password :"/>
                 <h:inputSecret value="#{personaConfirmacionBean.passwordConfirm}"/>
             </h:panelGrid>
             <p:commandButton value="Confirmar" action="#{personaConfirmacionBean.confirmaRegistro}" />

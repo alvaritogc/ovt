@@ -14,6 +14,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ import static  bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_IDENTIFICACION;
 @ManagedBean(name = "personaBean")
 @ViewScoped
 public class PersonaBean extends Thread implements Serializable{
+
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
@@ -267,7 +270,7 @@ public class PersonaBean extends Thread implements Serializable{
       perUnidadPK.setIdPersona(persona.getIdPersona());
       perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
       unidad.setPerUnidadPK(perUnidadPK);
-
+      //session.setAttribute("PerUnidad", unidad);
       usuario.setIdUsuario(iUsuarioService.obtenerSecuencia("USR_USUARIO_SEC"));
         usuario.setFechaBitacora(new Date());
         usuario.setRegistroBitacora(REGISTRO_BITACORA);
@@ -296,13 +299,14 @@ public class PersonaBean extends Thread implements Serializable{
     }
 
     public boolean validarEmail(String email){
-        Pattern patron = Pattern.compile("^[\\w-\\.]+\\@[\\w\\.-]+\\.[a-z]{2,4}$");
-        Matcher encajador = patron.matcher(email);
-        if (encajador.matches()) {
-            return true;
-        } else {
-            return false;
-        }
+//        Pattern patron = Pattern.compile("^[\\w-\\.]+\\@[\\w\\.-]+\\.[a-z]{2,4}$");
+//        Matcher encajador = patron.matcher(email);
+//        if (encajador.matches()) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return false;
     }
 
     public String volverLogin()throws IOException {
@@ -316,7 +320,6 @@ public class PersonaBean extends Thread implements Serializable{
     // *** Hilo para el control de tiempo ***//
     int nroThread;
     int contThread = 0;
-    ConcurrentLinkedQueue<PerUnidad> perUnidadListado;
 
     public PersonaBean(int nroThread) {
         this.nroThread = nroThread;
@@ -330,16 +333,21 @@ public class PersonaBean extends Thread implements Serializable{
 
     @Override
     public void run() {
+        PerUnidad PER_UNIDAD = (PerUnidad) session.getAttribute("PerUnidad");
+
+        System.out.println("------------------------ " + PER_UNIDAD.getTipoUnidad());
+        System.out.println("------------------------ " + PER_UNIDAD.getPerUnidadPK().getIdPersona());
+        System.out.println("------------------------ " + PER_UNIDAD.getPerUnidadPK().getIdUnidad());
+        System.out.println("------------------------ " + PER_UNIDAD.getNombreComercial());
+        System.out.println("------------------------ " + PER_UNIDAD.getNroFundaempresa());
 
         while (true) {
-            if(perUnidadListado.size() < 1){
+            if(PER_UNIDAD.getPerUnidadPK().getIdPersona() != null){
                 try {
                     System.out.println("SE espera 6 segundos .................................. ");
                     Thread.sleep(6000);
 
-                    perUnidadListado.remove(perUnidadListado.poll());
                     System.out.println("Aca implementar el cambio de estado en per_unidad");
-
 
                 } catch (InterruptedException ex) {
                     System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
@@ -348,9 +356,6 @@ public class PersonaBean extends Thread implements Serializable{
                 contThread = 0;
                 break;
             }
-
-
-
         }
     }
 
