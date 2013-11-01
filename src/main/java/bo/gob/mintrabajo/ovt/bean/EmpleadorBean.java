@@ -1,29 +1,24 @@
 package bo.gob.mintrabajo.ovt.bean;
 
+import bo.gob.mintrabajo.ovt.api.IDocumentoService;
+import bo.gob.mintrabajo.ovt.api.IPersonaService;
+import bo.gob.mintrabajo.ovt.api.IUnidadService;
+import bo.gob.mintrabajo.ovt.api.IUsuarioService;
+import bo.gob.mintrabajo.ovt.entities.PerPersona;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-
-import bo.gob.mintrabajo.ovt.api.*;
-import bo.gob.mintrabajo.ovt.entities.DocDocumento;
-import bo.gob.mintrabajo.ovt.entities.PerPersona;
-import bo.gob.mintrabajo.ovt.entities.PerUnidad;
-import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.model.SelectItem;
-//
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+//
 
 @ManagedBean
 @SessionScoped
@@ -59,6 +54,8 @@ public class EmpleadorBean implements Serializable{
     public void ini() {
         logger.info("EmpleadorBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
+//         List<PerPersona>listPersona =new ArrayList<PerPersona>();
+//                 listPersona = iPersonaService.getAllPersonas();
         limpiar();
 /*        System.out.println("=============================>>>>>");
         System.out.println("=============================>>>>>");

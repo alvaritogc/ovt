@@ -58,6 +58,10 @@ public class declaracionBean implements Serializable {
     private IObligacionCalendarioService iObligacionCalendarioService;
     @ManagedProperty(value = "#{documentoService}")
     private IDocumentoService iDocumentoService;
+    @ManagedProperty(value = "#{definicionService}")
+    private IDefinicionService iDefinicionService;
+    @ManagedProperty(value = "#{documentoEstadoService}")
+    private IDocumentoEstadoService iDocumentoEstadoService;
 
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
     private List<ParEntidad> parEntidadLista;
@@ -89,40 +93,40 @@ public class declaracionBean implements Serializable {
 
     @PostConstruct
     public void ini() {
-//        idPersona = (String) session.getAttribute("idEmpleador");
-//        logger.info("buscando persona:"+idPersona);
-//        persona = iPersonaService.buscarPorId(idPersona);
-//        //
-//        logger.info("Realizando la carga de Persona ...");
-//        idUsuario = (Long) session.getAttribute("idUsuario");
-//        Long temp = Long.valueOf(idUsuario);
-//        usuario = iUsuarioService.findById(idUsuario);
-//        perPersona = iPersonaService.buscarPorId(idPersona);
-//        docPlanilla = new DocPlanilla();
-//        docPlanilla.setHaberBasico(BigDecimal.ZERO);
-//        docPlanilla.setBonoAntiguedad(BigDecimal.ZERO);
-//        docPlanilla.setBonoProduccion(BigDecimal.ZERO);
-//        docPlanilla.setSubsidioFrontera(BigDecimal.ZERO);
-//        docPlanilla.setLaborExtra(BigDecimal.ZERO);
-//        docPlanilla.setOtrosBonos(BigDecimal.ZERO);
-//        docPlanilla.setRciva(BigDecimal.ZERO);
-//        docPlanilla.setAporteAfp(BigDecimal.ZERO);
-//        docPlanilla.setOtrosDescuentos(BigDecimal.ZERO);
-//        docPlanilla.setMontoAsegCaja(BigDecimal.ZERO);
-//        docPlanilla.setMontoAsegAfp(BigDecimal.ZERO);
-//        //** Controlamos que no puedan acceder a una fecha anterior a la actual  **//
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//        fechaTexto = sdf.format(fechaTemp);
-//        obtenerPeriodoLista();
-//        obtenerEntidad();
-//        //** Obtenemos de la Vista a la persona **//
-//        //vperPersona = DobleTrabajoConexion.obtenerPersona(perPersonaEntity.getIdPersona()); esto arreglar y extraer del ENTITYMANAGER
-//        binario= new DocBinario();
-//        listaBinarios = new ArrayList<DocBinario>();
-//        idPersona = (String) session.getAttribute("idEmpleador");
-//        persona = iPersonaService.buscarPorId(idPersona);
-//        logger.info("persona ok");
-//        cargar();
+        idPersona = (String) session.getAttribute("idEmpleador");
+        logger.info("buscando persona:"+idPersona);
+        persona = iPersonaService.buscarPorId(idPersona);
+        //
+        logger.info("Realizando la carga de Persona ...");
+        idUsuario = (Long) session.getAttribute("idUsuario");
+        Long temp = Long.valueOf(idUsuario);
+        usuario = iUsuarioService.findById(idUsuario);
+        perPersona = iPersonaService.buscarPorId(idPersona);
+        docPlanilla = new DocPlanilla();
+        docPlanilla.setHaberBasico(BigDecimal.ZERO);
+        docPlanilla.setBonoAntiguedad(BigDecimal.ZERO);
+        docPlanilla.setBonoProduccion(BigDecimal.ZERO);
+        docPlanilla.setSubsidioFrontera(BigDecimal.ZERO);
+        docPlanilla.setLaborExtra(BigDecimal.ZERO);
+        docPlanilla.setOtrosBonos(BigDecimal.ZERO);
+        docPlanilla.setRciva(BigDecimal.ZERO);
+        docPlanilla.setAporteAfp(BigDecimal.ZERO);
+        docPlanilla.setOtrosDescuentos(BigDecimal.ZERO);
+        docPlanilla.setMontoAsegCaja(BigDecimal.ZERO);
+        docPlanilla.setMontoAsegAfp(BigDecimal.ZERO);
+        //** Controlamos que no puedan acceder a una fecha anterior a la actual  **//
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        fechaTexto = sdf.format(fechaTemp);
+        obtenerPeriodoLista();
+        obtenerEntidad();
+        //** Obtenemos de la Vista a la persona **//
+        //vperPersona = DobleTrabajoConexion.obtenerPersona(perPersonaEntity.getIdPersona()); esto arreglar y extraer del ENTITYMANAGER
+        binario= new DocBinario();
+        listaBinarios = new ArrayList<DocBinario>();
+        idPersona = (String) session.getAttribute("idEmpleador");
+        persona = iPersonaService.buscarPorId(idPersona);
+        logger.info("persona ok");
+        cargar();
     }
 
     public void cargar() {
@@ -164,16 +168,12 @@ public class declaracionBean implements Serializable {
         logger.info("generaDocumento()");
         documento = new DocDocumento();
         documento.setIdPersona(persona);
-        documento.setPerUnidad((iUnidadService.listarPorPersona(persona.getIdPersona()).get(0)));
-//        documento.setCodDocumento("LC1010");       ********************* CodDocumento ????
-//        documento.setVersion(1);                   ********************* Version      ????
+        documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(persona.getIdPersona(), 0L)));
+        documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1010", (short) 1)));
         documento.setNumeroDocumento(new BigInteger("100000"));
-        documento.setFechaDocumento(new Timestamp(new Date().getTime()));
-
-        ParDocumentoEstado parDocumentoEstado = new ParDocumentoEstado(); //*******************************
-        parDocumentoEstado.setCodEstado("110");                           // Obtener por Base de datos !!!
-        documento.setCodEstado(parDocumentoEstado);                       //*******************************
-        documento.setFechaReferenca(new Timestamp(new Date().getTime()));
+        documento.setFechaDocumento(new Date());
+        documento.setCodEstado(iDocumentoEstadoService.buscarPorId("110"));
+        documento.setFechaReferenca(new Date());
         documento.setTipoMedioRegistro("DDJJ");
         documento.setFechaBitacora(new Timestamp(new Date().getTime()));
         documento.setRegistroBitacora(usuario.getUsuario());
@@ -514,8 +514,19 @@ public class declaracionBean implements Serializable {
         this.docDocumentoList = docDocumentoList;
     }
 
+    public IDefinicionService getiDefinicionService() {
+        return iDefinicionService;
+    }
 
+    public void setiDefinicionService(IDefinicionService iDefinicionService) {
+        this.iDefinicionService = iDefinicionService;
+    }
 
+    public IDocumentoEstadoService getiDocumentoEstadoService() {
+        return iDocumentoEstadoService;
+    }
 
-
+    public void setiDocumentoEstadoService(IDocumentoEstadoService iDocumentoEstadoService) {
+        this.iDocumentoEstadoService = iDocumentoEstadoService;
+    }
 }

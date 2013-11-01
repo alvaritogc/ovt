@@ -9,6 +9,6 @@ import java.util.List;
 public interface IDocumentoService {
     List<DocDocumento> listarPorPersona(String idPersona);
     List<DocDocumento> listarPorNumero(String idPersona);
-    public void guardaDocumentoBinarioPlanilla(DocDocumento docDocumento, List<DocBinario> listaBinarios, DocPlanilla docPlanilla);
-
+    void guardaDocumentoBinarioPlanilla(DocDocumento docDocumento, List<DocBinario> listaBinarios, DocPlanilla docPlanilla);
+    void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios);
 }

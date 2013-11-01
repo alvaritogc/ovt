@@ -11,6 +11,7 @@ import bo.gob.mintrabajo.ovt.entities.UsrRecurso;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.primefaces.model.menu.DefaultSubMenu;
 
 @ManagedBean(name = "templateInicioBean")
 @ViewScoped
@@ -160,7 +160,7 @@ public class TemplateInicioBean implements Serializable {
                     subMenu.addElement(subMenuHijo);
                 } else {
                     DefaultMenuItem item = new DefaultMenuItem(recursoHijo.getEtiqueta());
-                    item.setUrl("/faces" + recursoHijo.getEjecutable());
+                    item.setUrl(recursoHijo.getEjecutable());
                     subMenu.addElement(item);
                 }
             }
