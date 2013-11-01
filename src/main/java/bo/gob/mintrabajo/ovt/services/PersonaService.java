@@ -184,4 +184,15 @@ public class PersonaService implements IPersonaService {
             return false;
         }
     }
+
+    public boolean eliminarRegistro(PerPersona persona, PerUnidad unidad, UsrUsuario usuario) {
+        try {
+            usuarioRepository.delete(usuario);
+            unidadRepository.delete(unidad);
+            personaRepository.delete(persona);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return true;
+    }
 }

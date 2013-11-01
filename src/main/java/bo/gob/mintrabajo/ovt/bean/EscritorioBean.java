@@ -29,13 +29,12 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class EscritorioBean {
     //
-
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private Long idUsuario;
     private String idPersona;
-    private String idEmpleador;
-    private DocDocumento docDocumentoEntity;
+    private String idEmpleador;    
     private static final Logger logger = LoggerFactory.getLogger(EscritorioBean.class);
+    //
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
     @ManagedProperty(value = "#{personaService}")
@@ -48,6 +47,8 @@ public class EscritorioBean {
     private IPlanillaService iPlanillaService;
     @ManagedProperty(value = "#{mensajeAppService}")
     private IMensajeAppService iMensajeAppService;
+    @ManagedProperty(value = "#{documentoEstadoService}")
+    private IDocumentoEstadoService iDocumentoEstadoService;
     //
     private String textoBenvenida;
     //
@@ -63,6 +64,12 @@ public class EscritorioBean {
     private boolean mostrarFacesMessages;
     private boolean detenerFacesMessages;
     private String rutaContenidoFacesMessages;
+    //
+    private DocDocumento docDocumento;
+    private DocPlanilla docPlanilla;
+    private ParDocumentoEstado parDocumentoEstado;
+    private List<ParDocumentoEstado> listaDocumentoEstado;
+    private String codEstadoFinal;
 
     @PostConstruct
     public void ini() {
@@ -121,7 +128,7 @@ public class EscritorioBean {
     }
 
     public String download() {
-        session.setAttribute("idDocumento", docDocumentoEntity.getIdDocumento());
+        session.setAttribute("idDocumento", docDocumento.getIdDocumento());
         return "irDownload";
     }
 
@@ -131,6 +138,40 @@ public class EscritorioBean {
 //        session.setAttribute("codDocumento", docDocumentoEntity.getCodDocumento());
 //        session.setAttribute("version", docDocumentoEntity.getVersion());
         return "irCambioEstado";
+    }
+    public void cargarCambioDeEstados(){
+        System.out.println("================================");
+        System.out.println("================================");
+        System.out.println("cargarCambioDeEstados");
+        System.out.println("================================");
+        System.out.println("================================");
+        docPlanilla=iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
+        listaDocumentoEstado=iDocumentoEstadoService.listarSiguientesTransiciones(docDocumento);
+        System.out.println("size: "+listaDocumentoEstado.size());
+        if(!listaDocumentoEstado.isEmpty()){
+            codEstadoFinal=listaDocumentoEstado.get(0).getCodEstado();
+        }
+        else{
+            codEstadoFinal="";
+        }
+    }
+    public String realizarCambioDeEstados(){
+        System.out.println("================================");
+        System.out.println("================================");
+        System.out.println("realizarCambioDeEstados");
+        System.out.println("================================");
+        System.out.println("================================");
+        System.out.println("codEstadoFinal : "+codEstadoFinal);
+        parDocumentoEstado=iDocumentoEstadoService.findById(codEstadoFinal);
+        System.out.println("pardDocEstado"+parDocumentoEstado.toString());
+        //
+        docDocumento=iDocumentoService.guardarCambioEstado(docDocumento, parDocumentoEstado, idPersona);
+        //
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("cambioEstadoDialog.hide()");
+        //
+        cargar();
+        return "";
     }
 
     public void irImprimirDocumento() {
@@ -263,12 +304,12 @@ public class EscritorioBean {
         this.iPlanillaService = iPlanillaService;
     }
 
-    public DocDocumento getDocDocumentoEntity() {
-        return docDocumentoEntity;
+    public DocDocumento getDocDocumento() {
+        return docDocumento;
     }
 
-    public void setDocDocumentoEntity(DocDocumento docDocumentoEntity) {
-        this.docDocumentoEntity = docDocumentoEntity;
+    public void setDocDocumento(DocDocumento docDocumento) {
+        this.docDocumento = docDocumento;
     }
 
     public boolean isDetenerFacesMessages() {
@@ -309,5 +350,37 @@ public class EscritorioBean {
 
     public void setRutaContenidoFacesMessages(String rutaContenidoFacesMessages) {
         this.rutaContenidoFacesMessages = rutaContenidoFacesMessages;
+    }
+
+    public DocPlanilla getDocPlanilla() {
+        return docPlanilla;
+    }
+
+    public void setDocPlanilla(DocPlanilla docPlanilla) {
+        this.docPlanilla = docPlanilla;
+    }
+
+    public IDocumentoEstadoService getiDocumentoEstadoService() {
+        return iDocumentoEstadoService;
+    }
+
+    public void setiDocumentoEstadoService(IDocumentoEstadoService iDocumentoEstadoService) {
+        this.iDocumentoEstadoService = iDocumentoEstadoService;
+    }
+
+    public List<ParDocumentoEstado> getListaDocumentoEstado() {
+        return listaDocumentoEstado;
+    }
+
+    public void setListaDocumentoEstado(List<ParDocumentoEstado> listaDocumentoEstado) {
+        this.listaDocumentoEstado = listaDocumentoEstado;
+    }
+
+    public String getCodEstadoFinal() {
+        return codEstadoFinal;
+    }
+
+    public void setCodEstadoFinal(String codEstadoFinal) {
+        this.codEstadoFinal = codEstadoFinal;
     }
 }

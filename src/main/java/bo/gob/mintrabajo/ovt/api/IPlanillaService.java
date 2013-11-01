@@ -4,4 +4,5 @@ import bo.gob.mintrabajo.ovt.entities.DocPlanilla;
 
 public interface IPlanillaService {
     DocPlanilla findById(Long id);
+    DocPlanilla buscarPorDocumento(Long idDocumento);
 }
