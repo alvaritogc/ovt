@@ -105,9 +105,9 @@ public class PlanillaService implements IPlanillaService {
         }
     }
 
-//    @Override
-    public DocPlanilla obtenerPorDocumento(Long idDocumento){
-        List<DocPlanilla> list=planillaRepository.findByAttribute("idDocumento", idDocumento, -1, -1);
+    @Override
+    public DocPlanilla buscarPorDocumento(Long idDocumento){
+        List<DocPlanilla> list=planillaRepository.buscarPorDocumento(idDocumento);
         if(list==null || list.size()==0){
             throw new RuntimeException("No se encontro el documento");
         }

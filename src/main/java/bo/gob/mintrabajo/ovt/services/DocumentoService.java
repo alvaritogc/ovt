@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
+import javax.ejb.TransactionAttributeType;
 
 /**
  * User: Renato Velasquez
@@ -78,8 +79,8 @@ public class DocumentoService implements IDocumentoService{
         return lista;
     }
     
-//    public DocDocumento guardarCambioEstado(DocDocumento documento, ParDocumentoEstado codEstadoFinal,String idUsuario) {
-//        //
+    @Override
+    public DocDocumento guardarCambioEstado(DocDocumento documento, ParDocumentoEstado codEstadoFinal,String idUsuario) {
 //        DocLogEstado logEstado=new DocLogEstado();
 //        logEstado.setIdDocumento(documento);
 //        logEstado.setCodEstadoFinal(codEstadoFinal);
@@ -89,15 +90,9 @@ public class DocumentoService implements IDocumentoService{
 //        logEstado.setFechaBitacora(new Timestamp(date.getTime()));
 //        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
 //        logEstadoRepository.save(logEstado);
-//        //
-//        documento.setCodEstado(codEstadoFinal);
-//        return repository.save(documento);
-//    }
-    
-//    public DocDocumento guardarCambioEstado(DocDocumento documento, DocLogEstado logEstado) {
-//        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
-//        logEstadoRepository.save(logEstado);
-//        return repository.save(documento);
-//    }
+        //
+        documento.setCodEstado(codEstadoFinal);
+        return repository.save(documento);
+    }
     
 }
