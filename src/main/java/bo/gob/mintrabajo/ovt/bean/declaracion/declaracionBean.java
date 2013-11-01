@@ -241,7 +241,7 @@ public class declaracionBean implements Serializable {
 
     public void obtenerPeriodoLista(){
         parObligacionCalendarioLista = new ArrayList<ParObligacionCalendario>();
-        parObligacionCalendarioLista = iObligacionCalendarioService.obtenerObligacionCalendario();
+        parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendario();
     }
 
 
