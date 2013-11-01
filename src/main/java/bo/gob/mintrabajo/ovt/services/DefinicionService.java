@@ -4,52 +4,56 @@ import bo.gob.mintrabajo.ovt.api.IDefinicionService;
 import bo.gob.mintrabajo.ovt.entities.DocDefinicion;
 import bo.gob.mintrabajo.ovt.entities.DocDefinicionPK;
 import bo.gob.mintrabajo.ovt.repositories.DefinicionRepository;
-import java.math.BigDecimal;
-import java.util.List;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 @Named("definicionService")
 @TransactionAttribute
 public class DefinicionService implements IDefinicionService {
 
-    private final DefinicionRepository repository;
+    private final DefinicionRepository definicionRepository;
 
     @Inject
-    public DefinicionService(DefinicionRepository repository) {
-        this.repository = repository;
+    public DefinicionService(DefinicionRepository definicionRepository) {
+        this.definicionRepository = definicionRepository;
     }
+
+    public DocDefinicion buscaPorId (DocDefinicionPK docDefinicionPK){
+        return definicionRepository.findOne(docDefinicionPK);
+    }
+    
 
 //    @Override
     public DocDefinicion guardarDefincion(DocDefinicion docDefinicion) {
-        return repository.save(docDefinicion);
+        return definicionRepository.save(docDefinicion);
     }
 
 //    @Override
     public long getSize() {
-        return repository.count();
+        return definicionRepository.count();
     }
 
 //    @Override
     public List<DocDefinicion> getAllDefinicion() {
         List<DocDefinicion> lista;
-        lista = repository.findAll();
+        lista = definicionRepository.findAll();
         return lista;
     }
 
 //    @Override
     public DocDefinicion save(DocDefinicion definicion) {
         DocDefinicion entity;
-        entity = repository.save(definicion);
+        entity = definicionRepository.save(definicion);
         return entity;
     }
 
 //    @Override
     public boolean delete(DocDefinicion definicion) {
         boolean deleted = false;
-        repository.delete(definicion);
+        definicionRepository.delete(definicion);
 
         return deleted;
     }

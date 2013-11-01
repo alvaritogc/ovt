@@ -3,5 +3,5 @@ package bo.gob.mintrabajo.ovt.api;
 import bo.gob.mintrabajo.ovt.entities.DocPlanilla;
 
 public interface IPlanillaService {
-    public DocPlanilla buscarPorDocumento(Long idDocumento);
+    DocPlanilla findById(Long id);
 }

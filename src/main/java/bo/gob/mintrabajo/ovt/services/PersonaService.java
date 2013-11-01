@@ -1,30 +1,29 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
-import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.*;
 import bo.gob.mintrabajo.ovt.repositories.PersonaRepository;
 import bo.gob.mintrabajo.ovt.repositories.UnidadRepository;
 import bo.gob.mintrabajo.ovt.repositories.UsuarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.UsuarioUnidadRepository;
 import com.google.common.base.Strings;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 
 import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @Named("personaService")
 @TransactionAttribute
@@ -184,7 +183,5 @@ public class PersonaService implements IPersonaService {
             ex.printStackTrace();
             return false;
         }
-
-
     }
 }

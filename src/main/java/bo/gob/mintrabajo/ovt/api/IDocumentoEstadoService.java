@@ -1,12 +1,8 @@
 package bo.gob.mintrabajo.ovt.api;
 
-import bo.gob.mintrabajo.ovt.entities.DocDocumento;
-import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstado;
-import java.util.List;
 
+import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstado;
 
 public interface IDocumentoEstadoService {
-    public List<ParDocumentoEstado> listarSiguientesTransiciones(DocDocumento documento);
-    public ParDocumentoEstado findById(String id);
-
+    ParDocumentoEstado buscarPorId(String id);
 }
