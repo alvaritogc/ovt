@@ -109,6 +109,8 @@
                             <!-- Se comento esta linea, por que se cambio la validacion.-->
                             <!--  <p:messages id="messages" /> -->
                             <p:commandLink value="Ayuda" onclick="PF('dlg1').show();" style="color:red;"/>
+                            <br/>
+                            <p:commandLink value="Olvido su contrasenia?" onclick="PF('dlg2').show();" style="color:red;"/>
                         </p:panel>
                         <br/><br/>
                         <p:panel header="No estoy registrado">
@@ -119,7 +121,32 @@
                     <!-- Dialogos -->
                     <p:dialog id="basicDialog" header="Acceso al Sistema" widgetVar="dlg1" width="700" height="470" resizable="false">  
                         <ui:include src="/mensajes/informacion.xhtml"/>
-                    </p:dialog>  
+                    </p:dialog>
+
+                    <p:dialog id="basicDialog2" header="Recuperar contrasenia" modal="true" widgetVar="dlg2" width="420" height="250" resizable="false">
+                       <!-- <ui:include src="/mensajes/informacion.xhtml"/>-->
+                        <h:form id="frmOlvidoContrasenia">
+                        <p:messages id="abc" showDetail="true" autoUpdate="false" closable="true" globalOnly="true" />
+                        <br/>
+                        <p style="font-size: 12px;">Para recuperar su contrasenia, ingrese su direccion de electronico asociada al Sistema.</p>
+
+                        <p:inputText id="txtOlvidoNIT" value="#{templateInicioBean.nit}"></p:inputText>
+                        <p:watermark for="txtOlvidoNIT" value="Nro de identificacion (NIT)" />
+                        <br/>
+                        <p:inputText id="txtOlvidoEmail" value="#{templateInicioBean.email}"></p:inputText>
+                            <p:watermark for="txtOlvidoEmail" value="Correo electronico" />
+                        <br/>
+                        <p:commandButton value="Enviar"
+                                         action="#{templateInicioBean.olvidoContrasenia}"
+                                         tabindex="2"
+                                         process="@form"
+                                         update="frmOlvidoContrasenia"
+                                        >
+
+                        </p:commandButton>
+
+                        </h:form>
+                    </p:dialog>
 
                     <h:form>
                         <p:panel  header="Servicios públicos">

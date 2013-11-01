@@ -1,10 +1,12 @@
 package bo.gob.mintrabajo.ovt.bean;
 
 import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
+import bo.gob.mintrabajo.ovt.api.IPerUsuarioService;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IRecursoService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.PerPersona;
+import bo.gob.mintrabajo.ovt.entities.PerUsuario;
 import bo.gob.mintrabajo.ovt.entities.UsrRecurso;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import org.primefaces.model.menu.DefaultMenuItem;
@@ -45,6 +47,10 @@ public class TemplateInicioBean implements Serializable {
     private IRecursoService iRecursoService;
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
+
+    @ManagedProperty(value = "#{perUsuarioService}")
+    private IPerUsuarioService iPerUsuarioService;
+
     //
     private UsrUsuario usuario;
     private PerPersona persona;
@@ -56,6 +62,27 @@ public class TemplateInicioBean implements Serializable {
     //
     private String username;
     private String password;
+
+    public String getNit() {
+        return nit;
+    }
+
+    public void setNit(String nit) {
+        this.nit = nit;
+    }
+
+    // Variables que se utilizan cuando el usuario quire recuperar su contrasenia
+    private String nit;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String email;
 
     @PostConstruct
     public void ini() {
@@ -222,6 +249,27 @@ public class TemplateInicioBean implements Serializable {
             System.out.println("No se encontro la session");
         }
         return "irInicio";
+    }
+
+
+    public void olvidoContrasenia(){
+        System.out.println("=============>>>>> OLVIDO SU CONTRASENIA emial:"+email+" NIT "+nit);
+        PerUsuario perUsuario=iPerUsuarioService.obtenerPorNITyEmail(nit,email);
+       if(perUsuario==null)
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "No existe un usuario cuyo Nro. de identificacion (NIT)  y correo electronico sean: "+nit+", "+email));
+           //System.out.println("======>>>>> NO EXISTE USUARIO");
+       else
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", " Verifique su correo electronico"));
+
+    }
+
+
+    public IPerUsuarioService getiPerUsuarioService() {
+        return iPerUsuarioService;
+    }
+
+    public void setiPerUsuarioService(IPerUsuarioService iPerUsuarioService) {
+        this.iPerUsuarioService = iPerUsuarioService;
     }
 
     public String irRegistro(){

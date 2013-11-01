@@ -87,4 +87,14 @@ public class DominioService implements IDominioService{
             return  null;
         }
     }
+
+    @Override
+    public ParDominio obtenerDominioPorNombreYValor(String dominio,String valor){
+        try{
+           return dominioRepository.obtenerDominioPorNombreYValor(dominio,valor);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }
