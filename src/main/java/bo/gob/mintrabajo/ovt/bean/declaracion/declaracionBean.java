@@ -62,6 +62,8 @@ public class declaracionBean implements Serializable {
     private IDefinicionService iDefinicionService;
     @ManagedProperty(value = "#{documentoEstadoService}")
     private IDocumentoEstadoService iDocumentoEstadoService;
+    @ManagedProperty(value = "#{vperPersonaService}")
+    private IVperPersonaService iVperPersonaService;
 
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
     private List<ParEntidad> parEntidadLista;
@@ -120,7 +122,7 @@ public class declaracionBean implements Serializable {
         obtenerPeriodoLista();
         obtenerEntidad();
         //** Obtenemos de la Vista a la persona **//
-        //vperPersona = DobleTrabajoConexion.obtenerPersona(perPersonaEntity.getIdPersona()); esto arreglar y extraer del ENTITYMANAGER
+        vperPersona = iVperPersonaService.cargaVistaPersona(perPersona.getIdPersona());
         binario= new DocBinario();
         listaBinarios = new ArrayList<DocBinario>();
         idPersona = (String) session.getAttribute("idEmpleador");
@@ -528,5 +530,13 @@ public class declaracionBean implements Serializable {
 
     public void setiDocumentoEstadoService(IDocumentoEstadoService iDocumentoEstadoService) {
         this.iDocumentoEstadoService = iDocumentoEstadoService;
+    }
+
+    public IVperPersonaService getiVperPersonaService() {
+        return iVperPersonaService;
+    }
+
+    public void setiVperPersonaService(IVperPersonaService iVperPersonaService) {
+        this.iVperPersonaService = iVperPersonaService;
     }
 }
