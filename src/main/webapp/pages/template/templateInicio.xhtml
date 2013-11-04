@@ -158,6 +158,14 @@
                             <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/publico/descargarPlanilla.xhtml"> Descarga de formatos de planillas </a>
                         </p:panel>
                         <br/>
+                        <p:dataTable var="recursoPublico" value="#{templateInicioBean.listaRecursosContenido}">  
+                            <p:column headerText="Servicios públicos">
+                                <p:commandLink value="#{recursoPublico.etiqueta}" action="#{templateInicioBean.verRecursoContenido}">
+                                    <f:setPropertyActionListener value="#{recursoPublico}" target="#{templateInicioBean.recurso}" />  
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                       
                     </h:form>
                 </div>
                 <div class="span9">
