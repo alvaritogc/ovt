@@ -43,15 +43,6 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "ParLocalidad.findAll", query = "SELECT p FROM ParLocalidad p")})
 public class ParLocalidad implements Serializable {
-    @Column(name = "CODIGO_OTR")
-    private String codigoOtr;
-    @Column(name = "CODIGO_REF")
-    private String codigoRef;
-    @OneToMany(mappedBy = "codLocalidadPadre", fetch = FetchType.LAZY)
-    private List<ParLocalidad> parLocalidadList;
-    @JoinColumn(name = "COD_LOCALIDAD_PADRE", referencedColumnName = "COD_LOCALIDAD")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ParLocalidad codLocalidadPadre;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -63,6 +54,10 @@ public class ParLocalidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "TIPO_LOCALIDAD")
     private String tipoLocalidad;
+    @Column(name = "CODIGO_OTR")
+    private String codigoOtr;
+    @Column(name = "CODIGO_REF")
+    private String codigoRef;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -71,7 +66,14 @@ public class ParLocalidad implements Serializable {
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codLocalidad", fetch = FetchType.LAZY)
+    private List<PerDireccion> perDireccionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codLocalidad", fetch = FetchType.LAZY)
     private List<PerPersona> perPersonaList;
+    @OneToMany(mappedBy = "codLocalidadPadre", fetch = FetchType.LAZY)
+    private List<ParLocalidad> parLocalidadList;
+    @JoinColumn(name = "COD_LOCALIDAD_PADRE", referencedColumnName = "COD_LOCALIDAD")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ParLocalidad codLocalidadPadre;
 
     public ParLocalidad() {
     }
@@ -112,6 +114,22 @@ public class ParLocalidad implements Serializable {
         this.tipoLocalidad = tipoLocalidad;
     }
 
+    public String getCodigoOtr() {
+        return codigoOtr;
+    }
+
+    public void setCodigoOtr(String codigoOtr) {
+        this.codigoOtr = codigoOtr;
+    }
+
+    public String getCodigoRef() {
+        return codigoRef;
+    }
+
+    public void setCodigoRef(String codigoRef) {
+        this.codigoRef = codigoRef;
+    }
+
     public Date getFechaBitacora() {
         return fechaBitacora;
     }
@@ -128,12 +146,36 @@ public class ParLocalidad implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
+    public List<PerDireccion> getPerDireccionList() {
+        return perDireccionList;
+    }
+
+    public void setPerDireccionList(List<PerDireccion> perDireccionList) {
+        this.perDireccionList = perDireccionList;
+    }
+
     public List<PerPersona> getPerPersonaList() {
         return perPersonaList;
     }
 
     public void setPerPersonaList(List<PerPersona> perPersonaList) {
         this.perPersonaList = perPersonaList;
+    }
+
+    public List<ParLocalidad> getParLocalidadList() {
+        return parLocalidadList;
+    }
+
+    public void setParLocalidadList(List<ParLocalidad> parLocalidadList) {
+        this.parLocalidadList = parLocalidadList;
+    }
+
+    public ParLocalidad getCodLocalidadPadre() {
+        return codLocalidadPadre;
+    }
+
+    public void setCodLocalidadPadre(ParLocalidad codLocalidadPadre) {
+        this.codLocalidadPadre = codLocalidadPadre;
     }
 
     @Override
@@ -159,38 +201,6 @@ public class ParLocalidad implements Serializable {
     @Override
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.ParLocalidad[ codLocalidad=" + codLocalidad + " ]";
-    }
-
-    public String getCodigoOtr() {
-        return codigoOtr;
-    }
-
-    public void setCodigoOtr(String codigoOtr) {
-        this.codigoOtr = codigoOtr;
-    }
-
-    public String getCodigoRef() {
-        return codigoRef;
-    }
-
-    public void setCodigoRef(String codigoRef) {
-        this.codigoRef = codigoRef;
-    }
-
-    public List<ParLocalidad> getParLocalidadList() {
-        return parLocalidadList;
-    }
-
-    public void setParLocalidadList(List<ParLocalidad> parLocalidadList) {
-        this.parLocalidadList = parLocalidadList;
-    }
-
-    public ParLocalidad getCodLocalidadPadre() {
-        return codLocalidadPadre;
-    }
-
-    public void setCodLocalidadPadre(ParLocalidad codLocalidadPadre) {
-        this.codLocalidadPadre = codLocalidadPadre;
     }
     
 }

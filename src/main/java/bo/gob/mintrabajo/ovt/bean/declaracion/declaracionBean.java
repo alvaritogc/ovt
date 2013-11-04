@@ -93,6 +93,15 @@ public class declaracionBean implements Serializable {
     private String nombres[]= new String[3];
     //
     private boolean estaDeclarado;
+    private Long idEntidadSalud;
+
+    public Long getIdEntidadSalud() {
+        return idEntidadSalud;
+    }
+
+    public void setIdEntidadSalud(Long idEntidadSalud) {
+        this.idEntidadSalud = idEntidadSalud;
+    }
 
     @PostConstruct
     public void ini() {
@@ -193,12 +202,16 @@ public class declaracionBean implements Serializable {
         documento.setRegistroBitacora(usuario.getUsuario());
     }
 
-    public void generaPlanilla(boolean isSinMovimiento){
+    public void generaPlanilla(){
         logger.info("generaPlanilla()");
         ParEntidad parEntidad = new ParEntidad();  //************************
         parEntidad.setIdEntidad(new Long("2"));    // Obtener por base de datos !!!!
         docPlanilla.setIdEntidadBanco(parEntidad); //************************
-        docPlanilla.setTipoPlanilla(isSinMovimiento ? "DDJJSM" : "DDJJ");
+
+
+        docPlanilla.setTipoPlanilla(parametro == 1 ? "DDJJ" : "");
+        docPlanilla.setTipoPlanilla(parametro == 2 ? "DDJJSM" : "");
+        docPlanilla.setTipoPlanilla(parametro==3? "DDJJRECT" : "");
         if (esRectificatorio)
             docPlanilla.setTipoPlanilla("DDJJRECT");
         docPlanilla.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
@@ -231,7 +244,7 @@ public class declaracionBean implements Serializable {
             logger.info(documento.toString());
             logger.info(listaBinarios.toString());
             logger.info(docPlanilla.toString());
-            generaPlanilla(false);
+            generaPlanilla();
             idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
             return "irListadoBienvenida";
