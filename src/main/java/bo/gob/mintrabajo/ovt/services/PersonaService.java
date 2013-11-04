@@ -187,13 +187,10 @@ public class PersonaService implements IPersonaService {
     }
 
     public boolean eliminarRegistro(PerPersona persona, PerUnidad unidad, UsrUsuario usuario) {
-        try {
+            System.out.println("Eliminando el registro ------------------------------------------");
             usuarioRepository.delete(usuario);
             unidadRepository.delete(unidad);
             personaRepository.delete(persona);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
         return true;
     }
 }

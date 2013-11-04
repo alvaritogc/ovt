@@ -13,7 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -62,12 +62,15 @@ public class declaracionBean implements Serializable {
     private IDefinicionService iDefinicionService;
     @ManagedProperty(value = "#{documentoEstadoService}")
     private IDocumentoEstadoService iDocumentoEstadoService;
+    @ManagedProperty(value = "#{vperPersonaService}")
+    private IVperPersonaService iVperPersonaService;
 
+    private int parametro;
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
     private List<ParEntidad> parEntidadLista;
     private List<DocDocumento> docDocumentoList;
     private PerPersona perPersona;
-    private VperPersona vperPersona;//    arreglar esto para a traves del entityManager
+    private VperPersona vperPersona;
     private DocPlanilla docPlanilla;
     private boolean esRectificatorio;
     private Date fechaOperacionAux;
@@ -93,6 +96,19 @@ public class declaracionBean implements Serializable {
 
     @PostConstruct
     public void ini() {
+        try {
+            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p") == null)
+                parametro = 1;
+            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p") != null|| !((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p").equals(""))
+                parametro = Integer.valueOf(((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p"));
+        }catch (Exception e) {
+            e.printStackTrace();
+            parametro = 1;
+        }
+
+        if (parametro==3)
+            esRectificatorio=true;
+
         idPersona = (String) session.getAttribute("idEmpleador");
         logger.info("buscando persona:"+idPersona);
         persona = iPersonaService.buscarPorId(idPersona);
@@ -120,7 +136,7 @@ public class declaracionBean implements Serializable {
         obtenerPeriodoLista();
         obtenerEntidad();
         //** Obtenemos de la Vista a la persona **//
-        //vperPersona = DobleTrabajoConexion.obtenerPersona(perPersonaEntity.getIdPersona()); esto arreglar y extraer del ENTITYMANAGER
+        vperPersona = iVperPersonaService.cargaVistaPersona(perPersona.getIdPersona());
         binario= new DocBinario();
         listaBinarios = new ArrayList<DocBinario>();
         idPersona = (String) session.getAttribute("idEmpleador");
@@ -132,14 +148,12 @@ public class declaracionBean implements Serializable {
     public void cargar() {
         generaDocumento();
         verEstadoPlanilla();
+        cargarListaPorNumeros();
     }
 
     public void cargarListaPorNumeros(){
-        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        String pathReport = (String) servletContext.getRealPath("/");
-        esRectificatorio=  pathReport.contains("rectificatoria");
         docDocumentoList= new ArrayList<DocDocumento>();
-        docDocumentoList= iDocumentoService.listarPorNumero(idPersona);
+        docDocumentoList= iDocumentoService.listarPorPersona(idPersona);
     }
 
     public void verEstadoPlanilla(){
@@ -528,5 +542,21 @@ public class declaracionBean implements Serializable {
 
     public void setiDocumentoEstadoService(IDocumentoEstadoService iDocumentoEstadoService) {
         this.iDocumentoEstadoService = iDocumentoEstadoService;
+    }
+
+    public IVperPersonaService getiVperPersonaService() {
+        return iVperPersonaService;
+    }
+
+    public void setiVperPersonaService(IVperPersonaService iVperPersonaService) {
+        this.iVperPersonaService = iVperPersonaService;
+    }
+
+    public int getParametro() {
+        return parametro;
+    }
+
+    public void setParametro(int parametro) {
+        this.parametro = parametro;
     }
 }

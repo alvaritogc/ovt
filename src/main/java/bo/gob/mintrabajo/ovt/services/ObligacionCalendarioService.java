@@ -30,9 +30,8 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
     }
 
     public List<ParObligacionCalendario> obtenerObligacionCalendario() {
-        Date date=new Date();
         long oneday = TimeUnit.DAYS.toMillis(1);
-        List<ParObligacionCalendario> tmpLista = obligacionCalendarioRepository.buscarPorFecha(new Timestamp(date.getTime() - oneday));
+        List<ParObligacionCalendario> tmpLista = obligacionCalendarioRepository.buscarPorFecha(new Timestamp(new Date().getTime()));
         return tmpLista;
     }
 
