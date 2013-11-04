@@ -35,9 +35,11 @@ public class OlvidoContraseniaBean implements Serializable {
     //
 
     private HttpSession session;
+
     private String contrasenia;
     private String nuevaContrasenia;
     private String confirmarContrasenia;
+
     private static final Logger logger = LoggerFactory.getLogger(OlvidoContraseniaBean.class);
 
     @ManagedProperty(value = "#{recursoService}")
@@ -68,7 +70,7 @@ public class OlvidoContraseniaBean implements Serializable {
 
     public void cargar() {
         System.out.println("cargar()");
-        model = new DefaultMenuModel();
+/*        model = new DefaultMenuModel();
         try {
             listaRecursos = iRecursoService.buscarPorUsuario(idUsuario);
             logger.info("nro recursos del usuario:" + listaRecursos.size());
@@ -79,7 +81,7 @@ public class OlvidoContraseniaBean implements Serializable {
         DefaultMenuItem item = new DefaultMenuItem("Salir");
         item.setIcon("ui-icon-arrowthickstop-1-e");
         item.setCommand("#{templateInicioBean.logout}");
-        model.addElement(item);
+        model.addElement(item);*/
     }
 
 
@@ -118,7 +120,7 @@ public class OlvidoContraseniaBean implements Serializable {
 
 
     public String irInicio() {
-        try {
+   /*     try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
             idUsuario = (Long) session.getAttribute("idUsuario");
             usuario = iUsuarioService.findById(idUsuario);
@@ -130,14 +132,14 @@ public class OlvidoContraseniaBean implements Serializable {
             }
         } catch (Exception e) {
             System.out.println("No se encontro la session");
-        }
+        }*/
         return "irInicio";
     }
 
 
 
     public void olvidoContrasenia(){
-        System.out.println("=============>>>>> OLVIDO SU CONTRASENIA contrasenia:"+contrasenia+" confirmarContrasenia "+confirmarContrasenia);
+/*        System.out.println("=============>>>>> OLVIDO SU CONTRASENIA contrasenia:"+contrasenia+" confirmarContrasenia "+confirmarContrasenia);
         PerUsuario perUsuario=iPerUsuarioService.obtenerPorNITyEmail(nit,email);
        if(perUsuario==null) {
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "No existe un usuario cuyo Nro. de identificacion (NIT)  y correo electronico sean: "+nit+", "+email));
@@ -145,7 +147,40 @@ public class OlvidoContraseniaBean implements Serializable {
 
            //System.out.println("======>>>>> NO EXISTE USUARIO");
        else
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", " Verifique su correo electronico"));
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", " Verifique su correo electronico"));*/
 
     }
+
+    /*
+    ****************************************
+    *
+    *           GETTER Y SETTER
+    *
+    * **************************************
+     */
+
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
+    }
+
+    public String getNuevaContrasenia() {
+        return nuevaContrasenia;
+    }
+
+    public void setNuevaContrasenia(String nuevaContrasenia) {
+        this.nuevaContrasenia = nuevaContrasenia;
+    }
+
+    public String getConfirmarContrasenia() {
+        return confirmarContrasenia;
+    }
+
+    public void setConfirmarContrasenia(String confirmarContrasenia) {
+        this.confirmarContrasenia = confirmarContrasenia;
+    }
+}
 
