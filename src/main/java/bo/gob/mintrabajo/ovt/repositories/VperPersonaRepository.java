@@ -13,4 +13,5 @@ import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
  */
 @OpenJpaSettings
 public interface VperPersonaRepository extends OpenJpaRepository<VperPersona, String> {
+
 }

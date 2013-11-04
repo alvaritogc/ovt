@@ -69,7 +69,7 @@ public class declaracionBean implements Serializable {
     private List<ParEntidad> parEntidadLista;
     private List<DocDocumento> docDocumentoList;
     private PerPersona perPersona;
-    private VperPersona vperPersona;//    arreglar esto para a traves del entityManager
+    private VperPersona vperPersona;
     private DocPlanilla docPlanilla;
     private boolean esRectificatorio;
     private Date fechaOperacionAux;

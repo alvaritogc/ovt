@@ -43,6 +43,7 @@ public class VperPersonaService implements IVperPersonaService {
             int i = 0;
         VperPersona vperPersona = new VperPersona();
             for(Object[] obj : objeto){
+
                 vperPersona.setIdPersona((String)obj[i++]);
                 vperPersona.setTipoIdentificacion((String) obj[i++]);
                 vperPersona.setNroIdentificacion(new BigInteger(obj[i++].toString()));

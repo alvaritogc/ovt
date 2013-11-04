@@ -28,6 +28,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "VPER_PERSONA")
 public class VperPersona implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
