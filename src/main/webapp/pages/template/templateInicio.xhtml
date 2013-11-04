@@ -110,7 +110,7 @@
                             <!--  <p:messages id="messages" /> -->
                             <p:commandLink value="Ayuda" onclick="PF('dlg1').show();" style="color:red;"/>
                             <br/>
-                            <p:commandLink value="Olvido su contrasenia?" onclick="PF('dlg2').show();" style="color:red;"/>
+                            <p:commandLink value="Olvido su contrasenia?" onclick="PF('dlg2').show();" style="color:red;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
                             <br/>
                             <p:commandLink value="Regístrate a la oficina vitual" action="#{templateInicioBean.irRegistro}" style="color:#00079C;" immediate="true" />
                         </p:panel>
@@ -124,17 +124,21 @@
 
                     <p:dialog id="basicDialog2" header="Recuperar contrasenia" modal="true" widgetVar="dlg2" width="420" height="250" resizable="false">
                        <!-- <ui:include src="/mensajes/informacion.xhtml"/>-->
+
                         <h:form id="frmOlvidoContrasenia">
                         <p:messages id="abc" showDetail="true" autoUpdate="false" closable="true" globalOnly="true" />
                         <br/>
                         <p style="font-size: 12px;">Para recuperar su contrasenia, ingrese su direccion de electronico asociada al Sistema.</p>
 
+                         <h:panelGrid columns="1">
+                        <h:outputText value="Nro de identificacion (NIT):"/>
                         <p:inputText id="txtOlvidoNIT" value="#{templateInicioBean.nit}"></p:inputText>
                         <p:watermark for="txtOlvidoNIT" value="Nro de identificacion (NIT)" />
-                        <br/>
+                        <h:outputText value="Correo electronico:"/>
                         <p:inputText id="txtOlvidoEmail" value="#{templateInicioBean.email}"></p:inputText>
                             <p:watermark for="txtOlvidoEmail" value="Correo electronico" />
-                        <br/>
+                         </h:panelGrid>
+                            <br/>
                         <p:commandButton value="Enviar"
                                          action="#{templateInicioBean.olvidoContrasenia}"
                                          tabindex="2"

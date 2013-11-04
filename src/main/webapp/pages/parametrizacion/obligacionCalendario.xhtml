@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <br/>
+                <h1>Obligacion Calendario</h1>
+            <br/>
+            <!--  Formulario de busqueda-->
+            <br />
+            <p:commandButton value="Nuevo" onclick="dlgFormEntidad.show();" update=""/>
+            <br />
+            <!--  Listado de entidades en tabla-->
+            <br/>
+            <p:dataTable id="dataTableEntidad" var="calendario" value="#{obligacionCalendarioBean.listaObligacionCalendario}" 
+                         paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="top"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados">
+                <f:facet name="header">  
+                    Entidades Encontradas
+                </f:facet>  
+
+                <p:column sortBy="tipoCalendario" headerText="Tipo calendario" >   
+                    <h:outputText value="#{calendario.tipoCalendario}" />  
+                </p:column>  
+
+                <p:column sortBy="gestion" headerText="Gestion">    
+                    <h:outputText value="#{calendario.gestion}" />  
+                </p:column>  
+                
+                <p:column sortBy="fechaDesde" headerText="Fecha desde">  
+                    <h:outputText value="#{calendario.fechaDesde}" />  
+                </p:column>
+                <p:column headerText="Acciones">
+                    
+                    <h:form>      
+                        <p:commandLink value="Modificar" oncomplete="dlgFormEntidad.show();" style="margin-right:20px;" update="">  
+                            <f:setPropertyActionListener target="#{obligacionCalendarioBean.entidad}" value="#{calendario}" />
+                            <f:setPropertyActionListener target="#{obligacionCalendarioBean.evento}" value="true" />
+                        </p:commandLink>
+                        
+                        <p:commandLink value="Eliminar" style="margin-right:20px;" onclick="confirmation.show()">   
+                            <f:setPropertyActionListener target="#{obligacionCalendarioBean.entidad}" value="#{calendario}" />
+                        </p:commandLink>
+
+                    </h:form>
+                </p:column>  
+            </p:dataTable>
+            
+        </ui:define>
+    </ui:composition>
+</html>

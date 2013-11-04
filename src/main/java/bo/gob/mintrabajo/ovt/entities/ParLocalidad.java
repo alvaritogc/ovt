@@ -25,6 +25,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -41,6 +43,15 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "ParLocalidad.findAll", query = "SELECT p FROM ParLocalidad p")})
 public class ParLocalidad implements Serializable {
+    @Column(name = "CODIGO_OTR")
+    private String codigoOtr;
+    @Column(name = "CODIGO_REF")
+    private String codigoRef;
+    @OneToMany(mappedBy = "codLocalidadPadre", fetch = FetchType.LAZY)
+    private List<ParLocalidad> parLocalidadList;
+    @JoinColumn(name = "COD_LOCALIDAD_PADRE", referencedColumnName = "COD_LOCALIDAD")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ParLocalidad codLocalidadPadre;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -148,6 +159,38 @@ public class ParLocalidad implements Serializable {
     @Override
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.ParLocalidad[ codLocalidad=" + codLocalidad + " ]";
+    }
+
+    public String getCodigoOtr() {
+        return codigoOtr;
+    }
+
+    public void setCodigoOtr(String codigoOtr) {
+        this.codigoOtr = codigoOtr;
+    }
+
+    public String getCodigoRef() {
+        return codigoRef;
+    }
+
+    public void setCodigoRef(String codigoRef) {
+        this.codigoRef = codigoRef;
+    }
+
+    public List<ParLocalidad> getParLocalidadList() {
+        return parLocalidadList;
+    }
+
+    public void setParLocalidadList(List<ParLocalidad> parLocalidadList) {
+        this.parLocalidadList = parLocalidadList;
+    }
+
+    public ParLocalidad getCodLocalidadPadre() {
+        return codLocalidadPadre;
+    }
+
+    public void setCodLocalidadPadre(ParLocalidad codLocalidadPadre) {
+        this.codLocalidadPadre = codLocalidadPadre;
     }
     
 }

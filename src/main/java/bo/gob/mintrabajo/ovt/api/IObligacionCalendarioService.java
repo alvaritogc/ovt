@@ -1,9 +1,10 @@
 package bo.gob.mintrabajo.ovt.api;
 
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
-
 import java.util.List;
 
 public interface IObligacionCalendarioService {
-    public List<ParObligacionCalendario> obtenerObligacionCalendario();
+    public List<ParObligacionCalendario> listaObligacionCalendario();
+    public ParObligacionCalendario saveObligacionCalendario(ParObligacionCalendario obligacionCalendario);
+    public boolean deleteObligacionCalendario(ParObligacionCalendario obligacionCalendario);
 }

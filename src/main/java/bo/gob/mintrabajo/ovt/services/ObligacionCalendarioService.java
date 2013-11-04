@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
+import bo.gob.mintrabajo.ovt.entities.ParEntidad;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 import bo.gob.mintrabajo.ovt.repositories.ObligacionCalendarioRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
@@ -27,6 +28,40 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
     @Inject
     public ObligacionCalendarioService(ObligacionCalendarioRepository obligacionCalendarioRepository) {
         this.obligacionCalendarioRepository = obligacionCalendarioRepository;
+    }
+    
+    public List<ParObligacionCalendario> listaObligacionCalendario(){
+        List<ParObligacionCalendario> lista;
+        try {
+            lista = obligacionCalendarioRepository.findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
+    }
+    
+    public ParObligacionCalendario saveObligacionCalendario(ParObligacionCalendario obligacionCalendario){               
+        ParObligacionCalendario parObligacionCalendario;
+        try {
+            parObligacionCalendario = obligacionCalendarioRepository.save(obligacionCalendario);
+        } catch (Exception e) {
+            e.printStackTrace();
+            parObligacionCalendario = null;
+        }
+        return parObligacionCalendario;
+    }
+    
+    public boolean deleteObligacionCalendario(ParObligacionCalendario obligacionCalendario){
+        boolean deleted = false;
+        try {
+            obligacionCalendarioRepository.delete(obligacionCalendario);
+            deleted = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            deleted=false;
+        }
+        return deleted;
     }
 
     public List<ParObligacionCalendario> obtenerObligacionCalendario() {

@@ -2,6 +2,8 @@ package bo.gob.mintrabajo.ovt.Util;
 
 import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
 import bo.gob.mintrabajo.ovt.bean.persona.PersonaBean;
+import bo.gob.mintrabajo.ovt.entities.PerPersona;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,6 +101,78 @@ public class ServicioEnvioEmail {
         port = "25";
 
         getTo().add(bean.getUsuario().getUsuario());
+    }
+
+
+    public void envioEmail2(UsrUsuario usuario) {
+
+        //cargar(bean);
+        olvidarContrasenia(usuario);
+        try {
+            Properties props = new Properties();
+            props.put("mail.smtp.socketFactory.port", port);
+            props.setProperty("mail.smtp.host", host);
+            props.put("mail.smtp.port", port);
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.socketFactory.fallback", "false");
+
+            props.put("mail.smtp.user", from);
+            props.put("mail.smtp.pass", password);
+
+            props.put("mail.smtp.tls.enable", "false");
+            props.put("mail.smtp.tls.required", "false");
+            props.put("mail.smtp.time", "11000");
+            props.put("mail.debug", "true");
+
+            Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(from, password);
+                }
+            });
+
+            logger.info("Autenticando usuario .... ");
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            for (int i = 0; i < getTo().size(); i++) {
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(getTo().get(i)));
+            }
+
+            // *** Esto crea el cuerpo del mensaje *** //
+            message.setSubject(subject);
+            message.setText(cuerpoMensaje.concat("\n\nNotificación mail - Oficina Virtual: ").concat("\n\n\natte. \nAdministración Oficina Virtual"));
+
+            // *** Enviamos el mensaje *** //
+            logger.info("Enviando email .....");
+
+            Transport t = session.getTransport("smtp");
+            t.connect();
+            t.sendMessage(message, message.getAllRecipients());
+            t.close();
+        } catch (NoSuchProviderException nspe) {
+            logger.info("No se encontró el servidor para envio de mensaje " + nspe.getMessage());
+        } catch (MessagingException me) {
+            logger.info("Error al envia el mensaje " + me.getMessage());
+        }
+    }
+
+    public void olvidarContrasenia(UsrUsuario usuario) {
+        // ** Se debe obtener todos estos Datos de un archivo property o de las paramétricas ** //TODO
+        from = "aquiroz@mc4.com.bo";
+        subject = "Olvidar contrasenia";
+        urlRedireccion = "http://localhost:8080/faces/pages/olvidoContrasenia";
+        urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic&codeNam=#codeNam");
+
+        String usuPassword = Util.crypt(usuario.getClave());
+        urlRedireccion = urlRedireccion.replace("#codeNam", usuario.getUsuario());
+        urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
+
+        cuerpoMensaje = "Para completar esta operacion dirijase al siguiente Link :" + urlRedireccion;
+        password = "G4rym3rc4d0";
+        host = "mc4.com.bo";
+        port = "25";
+
+        getTo().add("quirozariel21@gmail.com");
+        //getTo().add(bean.getUsuario().getUsuario());
     }
 
     public ArrayList<String> getTo() {
