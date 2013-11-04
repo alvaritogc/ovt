@@ -261,7 +261,7 @@ public class PersonaBean extends Thread implements Serializable{
       session.setAttribute("PerPersona", persona);
 
       unidad.setRegistroBitacora(REGISTRO_BITACORA);
-      unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
+      unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
       PerUnidadPK perUnidadPK=new PerUnidadPK();
       perUnidadPK.setIdPersona(persona.getIdPersona());
       perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
