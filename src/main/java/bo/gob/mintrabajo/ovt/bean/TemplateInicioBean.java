@@ -1,14 +1,8 @@
 package bo.gob.mintrabajo.ovt.bean;
 
 import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
-import bo.gob.mintrabajo.ovt.api.IPerUsuarioService;
-import bo.gob.mintrabajo.ovt.api.IPersonaService;
-import bo.gob.mintrabajo.ovt.api.IRecursoService;
-import bo.gob.mintrabajo.ovt.api.IUsuarioService;
-import bo.gob.mintrabajo.ovt.entities.PerPersona;
-import bo.gob.mintrabajo.ovt.entities.PerUsuario;
-import bo.gob.mintrabajo.ovt.entities.UsrRecurso;
-import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
+import bo.gob.mintrabajo.ovt.api.*;
+import bo.gob.mintrabajo.ovt.entities.*;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -50,6 +44,9 @@ public class TemplateInicioBean implements Serializable {
 
     @ManagedProperty(value = "#{perUsuarioService}")
     private IPerUsuarioService iPerUsuarioService;
+
+    @ManagedProperty(value="#{usuarioUnidadService}")
+    private IUsuarioUnidadService iUsuarioUnidadService;
 
     //
     private UsrUsuario usuario;
@@ -257,15 +254,15 @@ public class TemplateInicioBean implements Serializable {
 
 
 
-        PerUsuario perUsuario=iPerUsuarioService.obtenerPorNITyEmail(nit,email);
+        PerUsuarioUnidad perUsuarioUnidad=iUsuarioUnidadService.obtenerPorNITyEmail(nit,email);
 
 
-       if(perUsuario==null) {
+       if(perUsuarioUnidad==null) {
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "No existe un usuario cuyo Nro. de identificacion (NIT)  y correo electronico sean: "+nit+", "+email));
        }
        else {
-           PerPersona persona=iPersonaService.findById( perUsuario.getPerUsuarioPK().getIdPersona());
-           UsrUsuario usuario=iUsuarioService.findById(perUsuario.getPerUsuarioPK().getIdUsuario());
+           PerPersona persona=iPersonaService.findById( perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona());
+           UsrUsuario usuario=iUsuarioService.findById(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUsuario());
            //enviarEmail
            ServicioEnvioEmail envioEmail=new ServicioEnvioEmail();
            envioEmail.envioEmail2(usuario);
@@ -278,6 +275,14 @@ public class TemplateInicioBean implements Serializable {
     public void limpiar(){
         nit="";
         email="";
+    }
+
+    public IUsuarioUnidadService getiUsuarioUnidadService() {
+        return iUsuarioUnidadService;
+    }
+
+    public void setiUsuarioUnidadService(IUsuarioUnidadService iUsuarioUnidadService) {
+        this.iUsuarioUnidadService = iUsuarioUnidadService;
     }
 
     public IPerUsuarioService getiPerUsuarioService() {
