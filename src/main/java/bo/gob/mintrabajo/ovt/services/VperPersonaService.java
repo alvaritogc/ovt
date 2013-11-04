@@ -40,10 +40,10 @@ public class VperPersonaService implements IVperPersonaService {
         Query query = entityManager.createNativeQuery("select p.* from " + nombreVista + " p where id_unidad = 0 and id_persona = " + id);
         List<Object[]> objeto = (List<Object[]>) query.getResultList();
 
-            int i = 0;
         VperPersona vperPersona = new VperPersona();
             for(Object[] obj : objeto){
-
+                int i = 0;
+                if (obj != null){
                 vperPersona.setIdPersona((String)obj[i++]);
                 vperPersona.setTipoIdentificacion((String) obj[i++]);
                 vperPersona.setNroIdentificacion(new BigInteger(obj[i++].toString()));
@@ -80,6 +80,7 @@ public class VperPersonaService implements IVperPersonaService {
                 vperPersona.setTelefono((String) obj[i++]);
                 vperPersona.setFax((String) obj[i++]);
                 vperPersona.setEmail((String) obj[i++]);
+                }
             }
 
         return vperPersona;

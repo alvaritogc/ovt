@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+        <br/>
+           <h:form id="formOlvidoContrasenia" class="form-signin" rendered="#{templateInicioBean.idUsuario ==null}">
+
+              <p:panel  >
+                  <h2 class="form-signin-heading" style="text-align: center">Olvido su contrasenia</h2>
+                  <br/>
+                   <center>
+                   <h:panelGrid columns="2" >
+                      <h:outputText value="Contrasenia:"/>
+                      <h:inputText id="contrasenia2" value="#{templateInicioBean.username}" required="true"
+                                   style="width: 200px; font-size: 10px"
+                                   requiredMessage=" * Debe ingresar el usuario" />
+                        <p:watermark for="contrasenia2" value="Contrasenia" />
+                        <h:message for="contrasenia2" style="color:red;font-family: Arial; font-size: 10px"/>
+
+                       <h:outputText value="Nueva contrasenia:"/>
+                    <h:inputText id="contrasenia1" value="#{templateInicioBean.email}" required="true"
+                                 style="width: 200px; font-size: 10px"
+                                 requiredMessage=" * Debe ingresar el usuario" />
+                        <p:watermark for="contrasenia1" value="Nueva contrasenia" />
+                        <h:message for="contrasenia1" style="color:red;font-family: Arial; font-size: 10px"/>
+
+                       <h:outputText value="Confirmar contrasenia:"/>
+                      <h:inputSecret id="password" value="#{templateInicioBean.password}" required="true" requiredMessage=" * Debe ingresar el Password"
+                                     style="width: 200px; font-size: 9px" />
+                      <p:watermark for="password" value="Confirmar contrasenia" />
+                      <h:message for="password"   style="color:red;font-family: Arial; font-size: 10px"/>
+                   </h:panelGrid>
+                   </center>
+                        <!--<p:captcha label="Captcha" publicKey="6LerTMYSAAAAAGUfbsXu2tf-H8flrPVM1fDUecvi" language="es"-->
+                        <!--validatorMessage="Texto no coincide, intente de nuevo." requiredMessage="Ingrese 2 palabras" />-->
+                  <center>
+                  <p:commandButton styleClass="btn btn-large btn-primary" value="Confirmar"
+                                         action="#{templateInicioBean.login}"
+                                         ajax="false"
+                                         update=":grwLogin" />
+                  </center>
+
+
+                    </p:panel>
+                    <br/><br/>
+
+                </h:form>
+                
+
+        </ui:define>
+    </ui:composition>
+</html>

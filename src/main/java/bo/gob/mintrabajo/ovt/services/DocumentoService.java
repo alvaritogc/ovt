@@ -76,15 +76,8 @@ public class DocumentoService implements IDocumentoService{
         return entity;
     }
 
-    @Override
     public List<DocDocumento> listarPorPersona(String idPersona) {
-        List<DocDocumento> lista;
-        lista = documentoRepository.buscarPorPersona(idPersona);
-        return lista;
-    }
-
-    public List<DocDocumento> listarPorNumero(String idPersona){
-        return documentoRepository.findByAttribute("idPersona", idPersona, -1,-1);
+        return documentoRepository.findByIdPersona_IdPersona(idPersona);
     }
 
     public void guardaDocumentoBinarioPlanilla(DocDocumento docDocumento, List<DocBinario> listaBinarios, DocPlanilla docPlanilla){
