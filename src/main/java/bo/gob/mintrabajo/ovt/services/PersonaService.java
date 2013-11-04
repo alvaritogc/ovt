@@ -140,12 +140,13 @@ public class PersonaService implements IPersonaService {
         return rtn.longValue();
     }
 
-
+    @Override
     public  boolean registrar(PerPersona persona,PerUnidad unidad,UsrUsuario usuario){
         try{
             final String  REGISTRO_BITACORA="ROE";
             System.out.println("======>>> GUARDADO PERSONA <<<===== ");
             persona.setFechaBitacora(new Date());
+            //personaRepository.save(persona);
             persona=personaRepository.save(persona);
             System.out.println("======>>> GUARDADO PERSONA  OK<<<===== ");
 
