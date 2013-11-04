@@ -12,7 +12,6 @@ import javax.ejb.TransactionAttributeType;
 
 @Named("entidadService")
 @TransactionAttribute
-//@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class EntidadService implements IEntidadService {
 
     private final EntidadRepository entidadRepository;
@@ -23,7 +22,6 @@ public class EntidadService implements IEntidadService {
     }
     
     @Override
-    //@Transactional
     public List<ParEntidad> listaEntidad(){
         List<ParEntidad> lista;
         try {
@@ -36,7 +34,6 @@ public class EntidadService implements IEntidadService {
     }
     
     @Override
-    //@Transactional(timeout = 100)
     public ParEntidad saveEntidad(ParEntidad entidad){               
         ParEntidad parEntidad;
         try {
@@ -49,7 +46,6 @@ public class EntidadService implements IEntidadService {
     }
     
     @Override
-    //@Transactional
     public boolean deleteEntidad(ParEntidad entidad){
         boolean deleted = false;
         try {

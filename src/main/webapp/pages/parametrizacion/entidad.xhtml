@@ -77,18 +77,20 @@
                       width="500" 
                       resizable="false"
                       modal="true" >  
-                <h:form id="formEntidad">                    
+                
+                <h:form id="formEntidad">    
+                <p:growl id="growl" /> 
                 <h:panelGrid columns="2" cellpadding="5">  
                     <h:outputLabel for="descripcion" value="Descripción:" style="font-weight:bold"/>  
-                    <p:inputText id="descripcion" value="#{entidadBean.entidad.descripcion}" />  
+                    <p:inputText id="descripcion" value="#{entidadBean.entidad.descripcion}" required="true" requiredMessage="Debe ingresar el campo Descripcion" />  
                     
                     <h:outputLabel for="codigo" value="Codigo:" style="font-weight:bold"/>  
-                    <p:inputText id="codigo" value="#{entidadBean.entidad.codigo}" />
-                                        
+                    <p:inputText id="codigo" value="#{entidadBean.entidad.codigo}" required="true" requiredMessage="Debe ingresar el campo Codigo"/>
+                    
                     <h:outputLabel for="tipoEntidad" value="Tipo entidad:" style="font-weight:bold"/>  
-                    <p:inputText id="tipoEntidad" value="#{entidadBean.entidad.tipoEntidad}" />
-
-                    <p:commandButton value="Guardar" actionListener="#{entidadBean.guardarModificar}" update="formEntidad :dataTableEntidad" onclick="dlgFormEntidad.hide();"/>
+                    <p:inputText id="tipoEntidad" value="#{entidadBean.entidad.tipoEntidad}" required="true" requiredMessage="Debe ingresar el campo Tipo de Entidad"/>
+                    
+                    <p:commandButton value="Guardar" actionListener="#{entidadBean.guardarModificar}" update="growl formEntidad :dataTableEntidad"/>
                     <p:commandButton value="Canselar" actionListener="#{entidadBean.cargar}" onclick="dlgFormEntidad.hide();" />
                     
                     <!--                     <h:outputLabel for="unidad" value="Unidad:" style="font-weight:bold"/>  
