@@ -140,12 +140,13 @@ public class PersonaService implements IPersonaService {
         return rtn.longValue();
     }
 
-
+    @Override
     public  boolean registrar(PerPersona persona,PerUnidad unidad,UsrUsuario usuario){
         try{
             final String  REGISTRO_BITACORA="ROE";
             System.out.println("======>>> GUARDADO PERSONA <<<===== ");
             persona.setFechaBitacora(new Date());
+            //personaRepository.save(persona);
             persona=personaRepository.save(persona);
             System.out.println("======>>> GUARDADO PERSONA  OK<<<===== ");
 
@@ -186,13 +187,10 @@ public class PersonaService implements IPersonaService {
     }
 
     public boolean eliminarRegistro(PerPersona persona, PerUnidad unidad, UsrUsuario usuario) {
-        try {
+            System.out.println("Eliminando el registro ------------------------------------------");
             usuarioRepository.delete(usuario);
             unidadRepository.delete(unidad);
             personaRepository.delete(persona);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
         return true;
     }
 }
