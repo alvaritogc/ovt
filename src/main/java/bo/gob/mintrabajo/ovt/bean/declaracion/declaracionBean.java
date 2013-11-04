@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,14 +93,6 @@ public class declaracionBean implements Serializable {
     //
     private boolean estaDeclarado;
     private Long idEntidadSalud;
-
-    public Long getIdEntidadSalud() {
-        return idEntidadSalud;
-    }
-
-    public void setIdEntidadSalud(Long idEntidadSalud) {
-        this.idEntidadSalud = idEntidadSalud;
-    }
 
     @PostConstruct
     public void ini() {
@@ -193,28 +184,33 @@ public class declaracionBean implements Serializable {
         documento.setIdPersona(persona);
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(persona.getIdPersona(), 0L)));
         documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1010", (short) 1)));
-        documento.setNumeroDocumento(new BigInteger("100000"));
         documento.setFechaDocumento(new Date());
         documento.setCodEstado(iDocumentoEstadoService.buscarPorId("110"));
         documento.setFechaReferenca(new Date());
         documento.setTipoMedioRegistro("DDJJ");
-        documento.setFechaBitacora(new Timestamp(new Date().getTime()));
+        documento.setFechaBitacora(new Date());
         documento.setRegistroBitacora(usuario.getUsuario());
     }
 
     public void generaPlanilla(){
         logger.info("generaPlanilla()");
-        ParEntidad parEntidad = new ParEntidad();  //************************
-        parEntidad.setIdEntidad(new Long("2"));    // Obtener por base de datos !!!!
-        docPlanilla.setIdEntidadBanco(parEntidad); //************************
-
-
-        docPlanilla.setTipoPlanilla(parametro == 1 ? "DDJJ" : "");
-        docPlanilla.setTipoPlanilla(parametro == 2 ? "DDJJSM" : "");
-        docPlanilla.setTipoPlanilla(parametro==3? "DDJJRECT" : "");
-        if (esRectificatorio)
-            docPlanilla.setTipoPlanilla("DDJJRECT");
-        docPlanilla.setFechaOperacion(new Timestamp(fechaOperacionAux.getTime()));
+        docPlanilla.setIdEntidadBanco(iEntidadService.buscaPorId(new Long("2")));
+        docPlanilla.setIdEntidadSalud(iEntidadService.buscaPorId(idEntidadSalud));
+        docPlanilla.setFechaOperacion(fechaOperacionAux);
+        switch (parametro){
+            case 1:
+                docPlanilla.setTipoPlanilla("DDJJ");
+                break;
+            case 2:
+                docPlanilla.setTipoPlanilla("DDJJSM");
+                break;
+            case 3:
+                docPlanilla.setTipoPlanilla("DDJJRECT");
+                break;
+            default:
+                docPlanilla.setTipoPlanilla("");
+                break;
+        }
     }
 
     public void upload(FileUploadEvent evento){
@@ -247,7 +243,7 @@ public class declaracionBean implements Serializable {
             generaPlanilla();
             idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
-            return "irListadoBienvenida";
+            return "irEscritorio";
         }catch (Exception e){
             e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
@@ -571,5 +567,13 @@ public class declaracionBean implements Serializable {
 
     public void setParametro(int parametro) {
         this.parametro = parametro;
+    }
+
+    public Long getIdEntidadSalud() {
+        return idEntidadSalud;
+    }
+
+    public void setIdEntidadSalud(Long idEntidadSalud) {
+        this.idEntidadSalud = idEntidadSalud;
     }
 }

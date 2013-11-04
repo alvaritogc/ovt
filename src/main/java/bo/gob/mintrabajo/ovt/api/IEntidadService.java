@@ -7,4 +7,5 @@ public interface IEntidadService {
     public List<ParEntidad> listaEntidad();
     public ParEntidad saveEntidad(ParEntidad entidad);
     public boolean deleteEntidad(ParEntidad entidad);
+    ParEntidad buscaPorId(Long idEntidad);
 }

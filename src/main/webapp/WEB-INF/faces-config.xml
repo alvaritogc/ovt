@@ -20,44 +20,19 @@
         <navigation-case>
             <from-outcome>irInicio</from-outcome>
             <to-view-id>/pages/inicio.xhtml</to-view-id>
-            <redirect include-view-params="false">
-            </redirect>
         </navigation-case>
         <navigation-case>
             <from-outcome>irEscritorio</from-outcome>
             <to-view-id>/pages/escritorio.xhtml</to-view-id>
-            <redirect include-view-params="false">
-            </redirect>
         </navigation-case>
         <navigation-case>
             <from-outcome>irEmpleadorBusqueda</from-outcome>
             <to-view-id>/pages/empleadorBusqueda.xhtml</to-view-id>
-            <redirect include-view-params="false">
-            </redirect>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>irListadoBienvenida</from-outcome>
-            <to-view-id>/pages/bienvenida.xhtml</to-view-id>
-            <redirect include-view-params="false">
-            </redirect>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>irCambioEstado</from-outcome>
-            <to-view-id>/pages/transicion.xhtml</to-view-id>
-            <redirect include-view-params="false">
-            </redirect>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>irDownload</from-outcome>
-            <to-view-id>/pages/download.xhtml</to-view-id>
-            <redirect include-view-params="false">
-            </redirect>
         </navigation-case>
         <navigation-case>
             <from-outcome>irRegistro</from-outcome>
             <to-view-id>/pages/persona/registroPersona.xhtml</to-view-id>
-            <redirect include-view-params="false">
-            </redirect>
+            
         </navigation-case>
     </navigation-rule>
 
