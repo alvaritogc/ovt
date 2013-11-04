@@ -111,11 +111,10 @@
                             <p:commandLink value="Ayuda" onclick="PF('dlg1').show();" style="color:red;"/>
                             <br/>
                             <p:commandLink value="Olvido su contrasenia?" onclick="PF('dlg2').show();" style="color:red;"/>
+                            <br/>
+                            <p:commandLink value="Regístrate a la oficina vitual" action="#{templateInicioBean.irRegistro}" style="color:#00079C;" immediate="true" />
                         </p:panel>
                         <br/><br/>
-                        <p:panel header="No estoy registrado">
-                            <p:commandLink value="Registrarse gratis" action="#{templateInicioBean.irRegistro}" style="color:#00079C;" />
-                        </p:panel>
                     </h:form>
 
                     <!-- Dialogos -->

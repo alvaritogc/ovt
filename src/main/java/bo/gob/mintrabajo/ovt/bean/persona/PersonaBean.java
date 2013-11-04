@@ -297,7 +297,7 @@ public class PersonaBean extends Thread implements Serializable{
             context.execute("dlg.show()");
             ServicioEnvioEmail see = new ServicioEnvioEmail();
             see.envioEmail(this);
-            iniciarHilo(); // Se lanza el hilo para que empiece el timer valido para confirmar su registro
+            //iniciarHilo(); // Se lanza el hilo para que empiece el timer valido para confirmar su registro
         } else {
             context.execute("dlg.hide()");
         }
@@ -317,13 +317,13 @@ public class PersonaBean extends Thread implements Serializable{
         return "irInicio";
     }
 
-    public PersonaBean(){
-
-    }
 
     // *** Hilo para el control de tiempo ***//
     int nroThread;
     int contThread = 0;
+
+    public PersonaBean(){
+    }
 
     public PersonaBean(int nroThread) {
         this.nroThread = nroThread;
@@ -333,15 +333,6 @@ public class PersonaBean extends Thread implements Serializable{
         contThread = contThread + 1;
         PersonaBean hilo = new PersonaBean(contThread);
         hilo.start();
-
-        try{
-
-            iPersonaService.eliminarRegistro(persona, unidad, usuario);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
@@ -350,22 +341,14 @@ public class PersonaBean extends Thread implements Serializable{
         PerPersona PER_PERSONA = (PerPersona) session.getAttribute("PerPersona");
         UsrUsuario PER_USUARIO = (UsrUsuario) session.getAttribute("PerUsuario");
 
-        //while (true) {
-            //if(PER_UNIDAD.getPerUnidadPK().getIdPersona() != null){
-            try {
-                Thread.sleep(10000);
-                System.out.println("Implementar si no confirma su registro ELIMINAR TODO DEL USUARIO");
-                //PER_UNIDAD = new PerUnidad();
-            } catch (InterruptedException ex) {
-                System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
-            }
-            //} else {
-            //    contThread = 0;
-            //    break;
-            //}
-        //}
+        try {
+            Thread.sleep(10000);
+            System.out.println("Implementar si no confirma su registro ELIMINAR TODO DEL USUARIO");
+            iPersonaService.eliminarRegistro(PER_PERSONA, PER_UNIDAD, PER_USUARIO);
+        } catch (InterruptedException ex) {
+            System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
+        }
     }
-
 
 
     /*
