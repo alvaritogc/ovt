@@ -252,15 +252,26 @@ public class TemplateInicioBean implements Serializable {
 
 
     public void olvidoContrasenia(){
-        System.out.println("=============>>>>> OLVIDO SU CONTRASENIA emial:"+email+" NIT "+nit);
+       logger.info("=======>>>> OLVIDO SU CONTRASENIA ");
+        logger.info("==============>>>>  NIT: "+nit+" EMAIL"+" emial");
+
+
+
         PerUsuario perUsuario=iPerUsuarioService.obtenerPorNITyEmail(nit,email);
+
+
        if(perUsuario==null) {
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "No existe un usuario cuyo Nro. de identificacion (NIT)  y correo electronico sean: "+nit+", "+email));
        }
-
-           //System.out.println("======>>>>> NO EXISTE USUARIO");
-       else
+       else {
+           PerPersona persona=iPersonaService.findById( perUsuario.getPerUsuarioPK().getIdPersona());
+           UsrUsuario usuario=iUsuarioService.findById(perUsuario.getPerUsuarioPK().getIdUsuario());
+           //enviarEmail
+           ServicioEnvioEmail envioEmail=new ServicioEnvioEmail();
+           envioEmail.envioEmail2(usuario);
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", " Verifique su correo electronico"));
+       }
+
 
     }
 
