@@ -134,7 +134,7 @@
                                />
 
                        <h:outputText value="Apellido materno:" rendered="#{personaBean.esNatural}"/>
-                       <p:inputText id="inputTxtMaterno" value="#{personaBean.persona.apellidoPaterno}"
+                       <p:inputText id="inputTxtMaterno" value="#{personaBean.persona.apellidoMaterno}"
                                     tabindex="15"
                                     rendered="#{personaBean.esNatural}"/>
 
@@ -173,12 +173,18 @@
                        </p:inputText>
 
 
-                       <h:outputText value="Clave:" />
+                       <h:outputText value="Contrasenia:" />
                        <p:password id="inputTxtClave" value="#{personaBean.usuario.clave}"
                                    feedback="true"
                                    tabindex="20"
                                    required="true"
-                                   requiredMessage="EL campo clave es obligatorio"
+                                   requiredMessage="EL campo Contrasenia es obligatorio"
+                                   autocomplete="off"
+                               />
+                       <h:outputText value="Confirmar contrasenia:" />
+                       <p:password id="inputTxtConfirmar" value="#{personaBean.confirmarContrasenia}"
+                                   feedback="true"
+                                   tabindex="21"
                                    autocomplete="off"
                                />
                    </h:panelGrid>
