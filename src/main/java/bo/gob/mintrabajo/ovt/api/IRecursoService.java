@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface IRecursoService {
     public List<UsrRecurso> buscarPorUsuario(Long idUsuario);
+    public List<UsrRecurso> listarPorTipoRecurso(String tipoRecurso);
 }

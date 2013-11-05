@@ -8,7 +8,6 @@ import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
-import javax.ejb.TransactionAttributeType;
 
 @Named("entidadService")
 @TransactionAttribute
@@ -59,4 +58,7 @@ public class EntidadService implements IEntidadService {
         return deleted;
     }
 
+    public ParEntidad buscaPorId(Long idEntidad){
+         return entidadRepository.findOne(idEntidad);
+    }
 }
