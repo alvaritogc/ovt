@@ -17,5 +17,9 @@ public interface UsuarioUnidadRepository extends OpenJpaRepository<PerUsuarioUni
             " and " +
             "      puu.perUsuarioUnidadPK.idUsuario in (select u.idUsuario from UsrUsuario u where u.usuario = :email)")
     PerUsuarioUnidad obtenerPorNITyEmail(@Param("NIT") String NIT,@Param("email") String email);
+
+    @Query(" delete from PerUsuarioUnidad p " +
+            "where p.perUsuarioUnidadPK.idPersona = :idPersona" )
+    void eliminarUsuarioUnidad(@Param("idPersona") String idPersona);
     
 }

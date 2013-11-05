@@ -1097,10 +1097,10 @@ input[type="tel"],
 input[type="color"],
 .uneditable-input {
   display: inline-block;
-  height: 20px;
-  padding: 4px 6px;
-  margin-bottom: 10px;
-  font-size: 14px;
+  height: 10px;
+  padding: 3px 6px;
+  margin-bottom: 0;
+  font-size: 12px;
   line-height: 10px;
   color: #555555;
   vertical-align: middle;
@@ -1720,9 +1720,9 @@ select:focus:invalid:focus {
 .input-prepend .add-on {
   display: inline-block;
   width: auto;
-  height: 20px;
+  height: 17px;
   min-width: 16px;
-  padding: 4px 5px;
+  padding: 0 5px;
   font-size: 14px;
   font-weight: normal;
   line-height: 20px;
