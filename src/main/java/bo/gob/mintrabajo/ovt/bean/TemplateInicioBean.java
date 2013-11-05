@@ -258,10 +258,7 @@ public class TemplateInicioBean implements Serializable {
        logger.info("=======>>>> OLVIDO SU CONTRASENIA ");
         logger.info("==============>>>>  NIT: "+nit+" EMAIL"+" emial");
 
-
-
         PerUsuarioUnidad perUsuarioUnidad=iUsuarioUnidadService.obtenerPorNITyEmail(nit,email);
-
 
        if(perUsuarioUnidad==null) {
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "No existe un usuario cuyo Nro. de identificacion (NIT)  y correo electronico sean: "+nit+", "+email));
@@ -275,6 +272,7 @@ public class TemplateInicioBean implements Serializable {
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", " Verifique su correo electronico"));
        }
 
+       limpiar();
 
     }
 

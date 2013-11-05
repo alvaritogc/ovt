@@ -160,20 +160,28 @@ public class ServicioEnvioEmail implements Serializable {
     public void olvidarContrasenia(UsrUsuario usuario) {
         // ** Se debe obtener todos estos Datos de un archivo property o de las paramétricas ** //TODO
         from = "aquiroz@mc4.com.bo";
+        //from = "quirozariel21@gmail.com";
         subject = "Olvidar contrasenia";
-        urlRedireccion = "http://localhost:8080/faces/pages/olvidoContrasenia";
-        urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic&codeNam=#codeNam");
-
+        urlRedireccion = "http://localhost:8080/faces/pages";
+        urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic");
+        System.out.println("====>>>>  MANDANDO EMAIL direccion00  "+urlRedireccion);
         String usuPassword = Util.crypt(usuario.getClave());
-        urlRedireccion = urlRedireccion.replace("#codeNam", usuario.getUsuario());
+        System.out.println("====>>>>  MANDANDO EMAIL usuPassword1  "+usuPassword);
+        usuPassword.replace("==","");
+        System.out.println("====>>>>  MANDANDO EMAIL usuPassword2  "+usuPassword);
+        //urlRedireccion = urlRedireccion.replace("#codeNam", usuario.getUsuario());
         urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
 
-        cuerpoMensaje = "Para completar esta operacion dirijase al siguiente Link :" + urlRedireccion;
-        password = "G4rym3rc4d0";
+        cuerpoMensaje = "Para completar esta operacion dirijase al siguiente Link :"+"\n"+urlRedireccion;
+        password = "Ar13lqu1r0z";
         host = "mc4.com.bo";
+      //  host="smtp.gmail.com";
+        //port="587";
         port = "25";
-
-        getTo().add("quirozariel21@gmail.com");
+         System.out.println("====>>>>  MANDANDO EMAIL");
+        System.out.println("====>>>>  MANDANDO EMAIL");
+        System.out.println("====>>>>  MANDANDO EMAIL direccion"+urlRedireccion);
+        getTo().add("aquiroz@mc4.com.bo");
         //getTo().add(bean.getUsuario().getUsuario());
     }
 
