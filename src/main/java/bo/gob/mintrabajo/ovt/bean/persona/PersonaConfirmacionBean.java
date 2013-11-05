@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.bean.persona;
 
 import bo.gob.mintrabajo.ovt.Util.Util;
+import bo.gob.mintrabajo.ovt.api.IParametrizacionService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
@@ -14,7 +15,11 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,9 +35,12 @@ public class PersonaConfirmacionBean {
     private String loginParameter;
     private String passwordParameter;
     private String passwordConfirm;
-    //TemplateInicioBean templateInicioBean;
+
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
+
+    @ManagedProperty(value="#{parametrizacionService}")
+    private IParametrizacionService iParametrizacion;
 
 
     private static final Logger logger = LoggerFactory.getLogger(PersonaConfirmacionBean.class);
@@ -40,32 +48,54 @@ public class PersonaConfirmacionBean {
     public PersonaConfirmacionBean(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         Map params = ec.getRequestParameterMap();
-        passwordParameter = Util.decrypt((String) params.get("codeUnic"));
+        String passwordCode = params.get("codeUnic").toString();
+        String passwordCodeFinal = "";
+        for (int x=0; x < passwordCode.length(); x++) {
+            if (passwordCode.charAt(x) != ' '){
+                passwordCodeFinal += passwordCode.charAt(x);
+            }else{
+                passwordCodeFinal += '+';
+            }
+        }
+        passwordParameter = Util.decrypt(passwordCodeFinal);
         setLoginParameter((String) params.get("codeNam"));
         setPasswordParameter(passwordParameter);
 
-        logger.info(" Password ---- " + passwordParameter + " -------------- login " + (String) params.get("codeNam"));
+        logger.info(" Password ---- " + passwordParameter );
     }
 
     public String confirmaRegistro() {
-        logger.info("login()");
+        logger.info("Ingresando a la clase " + getClass() + " metodo confirmaRegistro()");
         if (passwordParameter.equals(passwordConfirm)) {
             try {
-                logger.info("iUsuarioService.login(" + getLoginParameter() + "," + getPasswordParameter() + ")");
+
                 Long idUsuario = iUsuarioService.login(getLoginParameter(), getPasswordParameter());
                 logger.info("usuario aceptado");
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                 session.setAttribute("idUsuario", idUsuario);
                 UsrUsuario usuario = iUsuarioService.findById(idUsuario);
-                session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
-                if (usuario.getEsInterno() == 1) {
-                    session.setAttribute("idEmpleador", null);
-                    return "irEmpleadorBusqueda";
-                } else {
-                    session.setAttribute("idEmpleador", usuario.getIdPersona().getIdPersona());
-                    return "irEscritorio";
-                }
 
+                long fechaBitacoraLong = usuario.getFechaBitacora().getTime();
+                long fechaActualLong = new Date().getTime();
+                long diferenciaLong = fechaActualLong - fechaBitacoraLong;
+
+                int timer = Integer.parseInt(iParametrizacion.obtenerParametro(ID_PARAMETRO_TIMER, VALOR_TIEMPO_VALIDO).getDescripcion());
+
+                if ((TimeUnit.MINUTES.toMillis(timer) > diferenciaLong)) {
+
+                    session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
+                    if (usuario.getEsInterno() == 1) {
+                        session.setAttribute("idEmpleador", null);
+                        return "irEmpleadorBusqueda";
+                    } else {
+                        session.setAttribute("idEmpleador", usuario.getIdPersona().getIdPersona());
+                        return "irEscritorio";
+                    }
+
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cuidado", "El tiempo para registrarse expiró, intente registrarse de nuevo"));
+                    return null;
+                }
             } catch (RuntimeException e) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Controle que el password ingresado sea el mismo del registro inicial"));
@@ -73,9 +103,20 @@ public class PersonaConfirmacionBean {
             }
 
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El password no es correcto o expiró el tiempo para confirmar la cuenta"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cuidado", "El password no es correcto"));
             return null;
         }
+    }
+
+    public void decryptar(){
+        String temporal;
+        temporal = Util.decrypt("T5ntQkyy68COSFokfMetEgRQj/MUA9/A6mlZ2SJoYR+w==");
+        System.out.println(temporal);
+    }
+
+    public static void main (String arg[]){
+        PersonaConfirmacionBean p = new PersonaConfirmacionBean();
+        p.decryptar();
     }
 
 
@@ -111,5 +152,13 @@ public class PersonaConfirmacionBean {
 
     public void setiUsuarioService(IUsuarioService iUsuarioService) {
         this.iUsuarioService = iUsuarioService;
+    }
+
+    public IParametrizacionService getiParametrizacion() {
+        return iParametrizacion;
+    }
+
+    public void setiParametrizacion(IParametrizacionService iParametrizacion) {
+        this.iParametrizacion = iParametrizacion;
     }
 }

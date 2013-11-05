@@ -15,14 +15,12 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +36,7 @@ import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
  */
 @ManagedBean(name = "personaBean")
 @ViewScoped
-public class PersonaBean extends Thread implements Serializable{
+public class PersonaBean implements Serializable{
 
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 
@@ -274,7 +272,6 @@ public class PersonaBean extends Thread implements Serializable{
       persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
       persona.setRegistroBitacora(REGISTRO_BITACORA);
       persona.setEsNatural(esNatural);
-      session.setAttribute("PerPersona", persona);
 
       unidad.setRegistroBitacora(REGISTRO_BITACORA);
       unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
@@ -282,7 +279,6 @@ public class PersonaBean extends Thread implements Serializable{
       perUnidadPK.setIdPersona(persona.getIdPersona());
       perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
       unidad.setPerUnidadPK(perUnidadPK);
-      session.setAttribute("PerUnidad", unidad);
 
       usuario.setIdUsuario(iUsuarioService.obtenerSecuencia("USR_USUARIO_SEC"));
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
@@ -299,7 +295,6 @@ public class PersonaBean extends Thread implements Serializable{
       usuario.setIdPersona(persona);
       usuario.setTipoAutenticacion("LOCAL");
       usuario.setEsInterno((short)0);
-      session.setAttribute("PerUsuario", usuario);
 
         mostrar= iPersonaService.registrar(persona,unidad,usuario);
         if(mostrar)
@@ -314,7 +309,6 @@ public class PersonaBean extends Thread implements Serializable{
             ServicioEnvioEmail see = new ServicioEnvioEmail();
             cargaParametricasEmail();
             see.envioEmail(this);
-            //iniciarHilo(); // Se lanza el hilo para que empiece el timer valido para confirmar su registro
         } else {
             context.execute("dlg.hide()");
         }
@@ -334,24 +328,6 @@ public class PersonaBean extends Thread implements Serializable{
         return "irInicio";
     }
 
-
-    // *** Hilo para el control de tiempo ***//
-    int nroThread;
-    int contThread = 0;
-
-    public PersonaBean(){
-    }
-
-    public PersonaBean(int nroThread) {
-        this.nroThread = nroThread;
-    }
-
-    public void iniciarHilo() {
-        contThread = contThread + 1;
-        PersonaBean hilo = new PersonaBean(contThread);
-        hilo.start();
-    }
-
     public void cargaParametricasEmail() {
         try {
             from = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_CUENTA_EMAIL).getDescripcion();
@@ -366,23 +342,7 @@ public class PersonaBean extends Thread implements Serializable{
         }
     }
 
-    @Override
-    public void run() {
-        PerUnidad PER_UNIDAD = (PerUnidad) session.getAttribute("PerUnidad");
-        PerPersona PER_PERSONA = (PerPersona) session.getAttribute("PerPersona");
-        UsrUsuario PER_USUARIO = (UsrUsuario) session.getAttribute("PerUsuario");
-
-        try {
-            Thread.sleep(10000);
-            System.out.println("Implementar si no confirma su registro ELIMINAR TODO DEL USUARIO");
-            iPersonaService.eliminarRegistro(PER_PERSONA, PER_UNIDAD, PER_USUARIO);
-        } catch (InterruptedException ex) {
-            System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
-        }
-    }
-
-
-    /*
+     /*
       ******************************************
       *
       *             GETTER Y SETTER
