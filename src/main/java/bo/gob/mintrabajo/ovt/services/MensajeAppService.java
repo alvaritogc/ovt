@@ -35,9 +35,15 @@ public class MensajeAppService implements IMensajeAppService{
     }
     
     
-    //@Override
+    @Override
     public ParMensajeApp findById(Long id) {
         return repository.findOne(id);
+    }
+    
+    @Override
+    public ParMensajeApp BuscarPorId(Long id) {
+        return repository.findByAttribute("idMensajeApp", id, -1, -1).get(0);
+        //return repository.findOne(id);
     }
     
     @Override
@@ -45,6 +51,22 @@ public class MensajeAppService implements IMensajeAppService{
         List<ParMensajeApp> lista=null;
         try{
             lista=repository.buscarPorRecursoFecha(etiqueta,new Date());
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("Error al buscar ParMensajeApp.");
+        }
+        if(lista.size()==0){
+            throw new RuntimeException("Error al encontrar ParMensajeApp");
+        }
+        return lista.get(0);
+    }
+    
+     @Override
+    public ParMensajeApp buscarPorRecurso(Long idRecurso) {
+        List<ParMensajeApp> lista=null;
+        try{
+            lista=repository.buscarPorRecurso(idRecurso);
         }
         catch(Exception e){
             e.printStackTrace();

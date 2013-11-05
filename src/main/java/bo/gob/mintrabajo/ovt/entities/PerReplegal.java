@@ -21,7 +21,11 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -40,88 +44,87 @@ public class PerReplegal implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "ID_PERSONA_OTRA")
-    private Long idPersonaOtra;
+    @Column(name = "ID_REPLEGAL")
+    private Long idReplegal;
     @Basic(optional = false)
-    @Column(name = "ID_UNIDAD")
-    private long idUnidad;
+    @Column(name = "TIPO_IDENTIFICACION")
+    private String tipoIdentificacion;
     @Basic(optional = false)
-    @Column(name = "ID_PERSONA")
-    private String idPersona;
-    @Column(name = "TIPO_DOC_IDENTIDAD")
-    private String tipoDocIdentidad;
-    @Column(name = "NRO_DOC_IDENTIDAD")
-    private String nroDocIdentidad;
+    @Column(name = "NRO_INDENTIFICACION")
+    private String nroIndentificacion;
+    @Basic(optional = false)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Column(name = "APELLIDO_P")
-    private String apellidoP;
-    @Column(name = "APELLIDO_M")
-    private String apellidoM;
+    @Basic(optional = false)
+    @Column(name = "APELLIDO_PATERNO")
+    private String apellidoPaterno;
+    @Column(name = "APELLIDO_MATERNO")
+    private String apellidoMaterno;
     @Column(name = "FECHA_DOCUMENTO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDocumento;
     @Column(name = "NRO_DOCUMENTO")
     private String nroDocumento;
-    @Column(name = "TIPO_PRECEDENCIA")
-    private String tipoPrecedencia;
-    @Column(name = "FECHA_REGISTRO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaRegistro;
+    @Basic(optional = false)
+    @Column(name = "TIPO_PROCEDENCIA")
+    private String tipoProcedencia;
+    @Basic(optional = false)
     @Column(name = "ESTADO_REP_LEGAL")
     private String estadoRepLegal;
+    @Basic(optional = false)
+    @Column(name = "FECHA_BITACORA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaBitacora;
+    @Basic(optional = false)
+    @Column(name = "REGISTRO_BITACORA")
+    private String registroBitacora;
+    @JoinColumns({
+        @JoinColumn(name = "ID_UNIDAD", referencedColumnName = "ID_UNIDAD"),
+        @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private PerUnidad perUnidad;
 
     public PerReplegal() {
     }
 
-    public PerReplegal(Long idPersonaOtra) {
-        this.idPersonaOtra = idPersonaOtra;
+    public PerReplegal(Long idReplegal) {
+        this.idReplegal = idReplegal;
     }
 
-    public PerReplegal(Long idPersonaOtra, long idUnidad, String idPersona) {
-        this.idPersonaOtra = idPersonaOtra;
-        this.idUnidad = idUnidad;
-        this.idPersona = idPersona;
+    public PerReplegal(Long idReplegal, String tipoIdentificacion, String nroIndentificacion, String nombre, String apellidoPaterno, String tipoProcedencia, String estadoRepLegal, Date fechaBitacora, String registroBitacora) {
+        this.idReplegal = idReplegal;
+        this.tipoIdentificacion = tipoIdentificacion;
+        this.nroIndentificacion = nroIndentificacion;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.tipoProcedencia = tipoProcedencia;
+        this.estadoRepLegal = estadoRepLegal;
+        this.fechaBitacora = fechaBitacora;
+        this.registroBitacora = registroBitacora;
     }
 
-    public Long getIdPersonaOtra() {
-        return idPersonaOtra;
+    public Long getIdReplegal() {
+        return idReplegal;
     }
 
-    public void setIdPersonaOtra(Long idPersonaOtra) {
-        this.idPersonaOtra = idPersonaOtra;
+    public void setIdReplegal(Long idReplegal) {
+        this.idReplegal = idReplegal;
     }
 
-    public long getIdUnidad() {
-        return idUnidad;
+    public String getTipoIdentificacion() {
+        return tipoIdentificacion;
     }
 
-    public void setIdUnidad(long idUnidad) {
-        this.idUnidad = idUnidad;
+    public void setTipoIdentificacion(String tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
     }
 
-    public String getIdPersona() {
-        return idPersona;
+    public String getNroIndentificacion() {
+        return nroIndentificacion;
     }
 
-    public void setIdPersona(String idPersona) {
-        this.idPersona = idPersona;
-    }
-
-    public String getTipoDocIdentidad() {
-        return tipoDocIdentidad;
-    }
-
-    public void setTipoDocIdentidad(String tipoDocIdentidad) {
-        this.tipoDocIdentidad = tipoDocIdentidad;
-    }
-
-    public String getNroDocIdentidad() {
-        return nroDocIdentidad;
-    }
-
-    public void setNroDocIdentidad(String nroDocIdentidad) {
-        this.nroDocIdentidad = nroDocIdentidad;
+    public void setNroIndentificacion(String nroIndentificacion) {
+        this.nroIndentificacion = nroIndentificacion;
     }
 
     public String getNombre() {
@@ -132,20 +135,20 @@ public class PerReplegal implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getApellidoP() {
-        return apellidoP;
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
     }
 
-    public void setApellidoP(String apellidoP) {
-        this.apellidoP = apellidoP;
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
     }
 
-    public String getApellidoM() {
-        return apellidoM;
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
     }
 
-    public void setApellidoM(String apellidoM) {
-        this.apellidoM = apellidoM;
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
     }
 
     public Date getFechaDocumento() {
@@ -164,20 +167,12 @@ public class PerReplegal implements Serializable {
         this.nroDocumento = nroDocumento;
     }
 
-    public String getTipoPrecedencia() {
-        return tipoPrecedencia;
+    public String getTipoProcedencia() {
+        return tipoProcedencia;
     }
 
-    public void setTipoPrecedencia(String tipoPrecedencia) {
-        this.tipoPrecedencia = tipoPrecedencia;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
+    public void setTipoProcedencia(String tipoProcedencia) {
+        this.tipoProcedencia = tipoProcedencia;
     }
 
     public String getEstadoRepLegal() {
@@ -188,10 +183,34 @@ public class PerReplegal implements Serializable {
         this.estadoRepLegal = estadoRepLegal;
     }
 
+    public Date getFechaBitacora() {
+        return fechaBitacora;
+    }
+
+    public void setFechaBitacora(Date fechaBitacora) {
+        this.fechaBitacora = fechaBitacora;
+    }
+
+    public String getRegistroBitacora() {
+        return registroBitacora;
+    }
+
+    public void setRegistroBitacora(String registroBitacora) {
+        this.registroBitacora = registroBitacora;
+    }
+
+    public PerUnidad getPerUnidad() {
+        return perUnidad;
+    }
+
+    public void setPerUnidad(PerUnidad perUnidad) {
+        this.perUnidad = perUnidad;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idPersonaOtra != null ? idPersonaOtra.hashCode() : 0);
+        hash += (idReplegal != null ? idReplegal.hashCode() : 0);
         return hash;
     }
 
@@ -202,7 +221,7 @@ public class PerReplegal implements Serializable {
             return false;
         }
         PerReplegal other = (PerReplegal) object;
-        if ((this.idPersonaOtra == null && other.idPersonaOtra != null) || (this.idPersonaOtra != null && !this.idPersonaOtra.equals(other.idPersonaOtra))) {
+        if ((this.idReplegal == null && other.idReplegal != null) || (this.idReplegal != null && !this.idReplegal.equals(other.idReplegal))) {
             return false;
         }
         return true;
@@ -210,7 +229,7 @@ public class PerReplegal implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.PerReplegal[ idPersonaOtra=" + idPersonaOtra + " ]";
+        return "bo.gob.mintrabajo.ovt.entities.PerReplegal[ idReplegal=" + idReplegal + " ]";
     }
     
 }

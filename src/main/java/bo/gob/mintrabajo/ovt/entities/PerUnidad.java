@@ -16,23 +16,10 @@
 
 package bo.gob.mintrabajo.ovt.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
@@ -89,11 +76,17 @@ public class PerUnidad implements Serializable {
     private String registroBitacora;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<PerUsuarioUnidad> perUsuarioUnidadList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
+    private List<PerDireccion> perDireccionList;
     @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerPersona perPersona;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
+    private List<PerReplegal> perReplegalList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
+    private List<PerActividad> perActividadList;
     @OneToMany(mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<ParEntidad> parEntidadList;
 
@@ -257,6 +250,14 @@ public class PerUnidad implements Serializable {
         this.perUsuarioUnidadList = perUsuarioUnidadList;
     }
 
+    public List<PerDireccion> getPerDireccionList() {
+        return perDireccionList;
+    }
+
+    public void setPerDireccionList(List<PerDireccion> perDireccionList) {
+        this.perDireccionList = perDireccionList;
+    }
+
     public PerPersona getPerPersona() {
         return perPersona;
     }
@@ -271,6 +272,22 @@ public class PerUnidad implements Serializable {
 
     public void setDocDocumentoList(List<DocDocumento> docDocumentoList) {
         this.docDocumentoList = docDocumentoList;
+    }
+
+    public List<PerReplegal> getPerReplegalList() {
+        return perReplegalList;
+    }
+
+    public void setPerReplegalList(List<PerReplegal> perReplegalList) {
+        this.perReplegalList = perReplegalList;
+    }
+
+    public List<PerActividad> getPerActividadList() {
+        return perActividadList;
+    }
+
+    public void setPerActividadList(List<PerActividad> perActividadList) {
+        this.perActividadList = perActividadList;
     }
 
     public List<ParEntidad> getParEntidadList() {
