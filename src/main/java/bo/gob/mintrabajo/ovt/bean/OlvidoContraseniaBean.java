@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IPerUsuarioService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
@@ -20,72 +21,96 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+//package bo.gob.mintrabajo.ovt.Util;
 
 @ManagedBean(name = "olvidoContraseniaBean")
 @ViewScoped
 public class OlvidoContraseniaBean implements Serializable {
-    //
+
+    private static final Logger logger = LoggerFactory.getLogger(OlvidoContraseniaBean.class);
 
     private HttpSession session;
+    private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private HttpServletRequest httpServletRequest = ((HttpServletRequest) externalContext.getRequest());
+
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioService;
 
     private String contrasenia;
     private String nuevaContrasenia;
     private String confirmarContrasenia;
 
-    private static final Logger logger = LoggerFactory.getLogger(OlvidoContraseniaBean.class);
+    //private String email=getParam("codeNam");
+    private String email="";
 
 
-
-    private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-    private HttpServletRequest httpServletRequest = ((HttpServletRequest) externalContext.getRequest());
-
-    private String email=getParam("codeNam");
-
-    public IUsuarioService getiUsuarioService() {
-        return iUsuarioService;
-    }
-
-    public void setiUsuarioService(IUsuarioService iUsuarioService) {
-        this.iUsuarioService = iUsuarioService;
-    }
-
-    @ManagedProperty(value = "#{usuarioService}")
-    private IUsuarioService iUsuarioService;
 
     @PostConstruct
     public void ini() {
         logger.info("=====>>>>  OLVIDO CONTRASENIA");
-        logger.info("=====>>>>  PARAMETRO PASADO POR GET "+email);
-        //
+        contrasenia=getParam("codeUnic");
+        logger.info("=====>>>>  PARAMETRO PASADO POR GET "+contrasenia);
+        contrasenia=Util.decrypt(contrasenia);
+        logger.info("=====>>>>  CONTRASENIA DESCENCRIPTADA "+contrasenia);
+    }
 
-        //
-        try {
-            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+    public String verificarContrasenia()throws  IOException{
 
-            cargar();
-        } catch (Exception e) {
-//            e.printStackTrace();
+        System.out.println("====>>>> verificarContrasenia: email:" + email + " contrasenia: " + contrasenia + " nuevaContrasenia " + nuevaContrasenia + " confirmarContrasenia: " + confirmarContrasenia);
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
 
+        if(email==null && email.equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Correo electronico es obligatorio."));
+            ini();
+            return "";
+        }else{
+            if(!validarEmail(email)){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL formato del correo electronico es incorrecto."));
+                ini();
+                return "";
+            }
+        }
+
+        if(contrasenia==null && contrasenia.equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Contrasenia es obligatorio."));
+            ini();
+            return "";
+        }
+
+
+        String mensaje= iUsuarioService.cambiarContrasenia(email,contrasenia,nuevaContrasenia,confirmarContrasenia);
+
+        if(mensaje.equalsIgnoreCase("OK")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,"Exito","Se cambio la contrasenia."));
+            //ini();
+            ctx.redirect(ctxPath + "/faces/pages/inicio.xhtml");
+            return "";
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",mensaje));
+            ini();
+            return "";
         }
 
     }
 
-    public void cargar() {
-        System.out.println("cargar()");
-/*        model = new DefaultMenuModel();
-        try {
-            listaRecursos = iRecursoService.buscarPorUsuario(idUsuario);
-            logger.info("nro recursos del usuario:" + listaRecursos.size());
-        } catch (Exception e) {
-            e.printStackTrace();
+    public boolean validarEmail(String email){
+        Pattern patron = Pattern.compile("^[\\w-\\.]+\\@[\\w\\.-]+\\.[a-z]{2,4}$");
+        Matcher encajador = patron.matcher(email);
+        if (encajador.matches()) {
+            return true;
+        } else {
+            return false;
         }
-        crearMenuRecurso();
-        DefaultMenuItem item = new DefaultMenuItem("Salir");
-        item.setIcon("ui-icon-arrowthickstop-1-e");
-        item.setCommand("#{templateInicioBean.logout}");
-        model.addElement(item);*/
     }
-
 
     /**
      * Obtiene el parametro pasado por GET
@@ -106,46 +131,6 @@ public class OlvidoContraseniaBean implements Serializable {
             return Long.parseLong(name, 10);
         }
         return null;*/
-    }
-
-    public void verificarContrasenia(){
-
-        UsrUsuario usuario= iUsuarioService.findByUsuarioAndClave(email,contrasenia,nuevaContrasenia);
-
-/*         if (nuevaContrasenia.equals(confirmarContrasenia)){
-            //Actualizar la nueva contrasenia
-            // return  true;
-             UsrUsuario usuario= iUsuarioService.findByUsuarioAndClave(email,contrasenia,nuevaContrasenia);
-             if(usuario==null){
-                 FacesContext.getCurrentInstance().addMessage(null,
-                         new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","La contrasenia asociada a su cuenta es incorrecta."));
-                 ini();
-                 return ;
-             }
-
-             if(contrasenia.equals(nuevaContrasenia)){
-                 FacesContext.getCurrentInstance().addMessage(null,
-                         new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El valor de la nueva contrasenia asociada debe ser distinta a la anterior contrasenia."));
-                 ini();
-                 return ;
-             }
-             System.out.println("====>>> ANTIGUA CONTRASENIA "+usuario.getClave());
-              usuario.setClave(nuevaContrasenia);
-             System.out.println("====>>> NUEVA CONTRASENIA "+usuario.getClave());
-             //usuario=iUsuarioService.save(usuario);
-             System.out.println("====>>> NUEVA CONTRASENIA EXITO");
-             FacesContext.getCurrentInstance().addMessage(null,
-                     new FacesMessage(FacesMessage.SEVERITY_INFO,"Exito","Se cambio la contrasenia."));
-             ini();
-             return ;
-
-         }else {
-                FacesContext.getCurrentInstance().addMessage(null,
-                         new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El valor del campo Nueva contrasenia debe ser igual al campo Confirmar contrasenia."));
-                 ini();
-                 return ;
-         }*/
-
     }
 
     public String logout() {
@@ -171,39 +156,6 @@ public class OlvidoContraseniaBean implements Serializable {
     }
 
 
-
-    public String irInicio() {
-   /*     try {
-            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            idUsuario = (Long) session.getAttribute("idUsuario");
-            usuario = iUsuarioService.findById(idUsuario);
-            if(usuario.getEsInterno()==1){
-                return "irEmpleadorBusqueda";
-            }
-            else{
-                return "irEscritorio";
-            }
-        } catch (Exception e) {
-            System.out.println("No se encontro la session");
-        }*/
-        return "irInicio";
-    }
-
-
-
-    public void olvidoContrasenia(){
-/*        System.out.println("=============>>>>> OLVIDO SU CONTRASENIA contrasenia:"+contrasenia+" confirmarContrasenia "+confirmarContrasenia);
-        PerUsuario perUsuario=iPerUsuarioService.obtenerPorNITyEmail(nit,email);
-       if(perUsuario==null) {
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "No existe un usuario cuyo Nro. de identificacion (NIT)  y correo electronico sean: "+nit+", "+email));
-       }
-
-           //System.out.println("======>>>>> NO EXISTE USUARIO");
-       else
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", " Verifique su correo electronico"));*/
-
-    }
-
     /*
     ****************************************
     *
@@ -212,7 +164,21 @@ public class OlvidoContraseniaBean implements Serializable {
     * **************************************
      */
 
+    public IUsuarioService getiUsuarioService() {
+        return iUsuarioService;
+    }
 
+    public void setiUsuarioService(IUsuarioService iUsuarioService) {
+        this.iUsuarioService = iUsuarioService;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getContrasenia() {
         return contrasenia;

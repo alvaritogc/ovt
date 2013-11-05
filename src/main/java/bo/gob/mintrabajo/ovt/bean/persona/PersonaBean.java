@@ -96,6 +96,8 @@ public class PersonaBean extends Thread implements Serializable{
     private String host;
     private String port;
 
+    private String confirmarContrasenia;
+
     @PostConstruct
     public void ini(){
        persona=new PerPersona();
@@ -253,7 +255,7 @@ public class PersonaBean extends Thread implements Serializable{
         }else{
             if(!validarEmail(usuario.getUsuario())){
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL formato de email es incorrecto."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL formato del correo electronico es incorrecto."));
                 ini();
                 return ;
             }
@@ -261,10 +263,17 @@ public class PersonaBean extends Thread implements Serializable{
 
         if(usuario.getClave()==null){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Clave es obligatorio."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Contrasenia es obligatorio."));
             ini();
             return ;
         }
+
+       if(!usuario.getClave().equals(confirmarContrasenia)){
+           FacesContext.getCurrentInstance().addMessage(null,
+                   new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","La valor de la Contrasenia debe ser igual al valor del campo Confirmar contrasenia."));
+           ini();
+           return ;
+       }
 
 
       final String  REGISTRO_BITACORA="ROE";
@@ -388,6 +397,15 @@ public class PersonaBean extends Thread implements Serializable{
       *             GETTER Y SETTER
       * ****************************************
      */
+
+
+    public String getConfirmarContrasenia() {
+        return confirmarContrasenia;
+    }
+
+    public void setConfirmarContrasenia(String confirmarContrasenia) {
+        this.confirmarContrasenia = confirmarContrasenia;
+    }
 
     public List<SelectItem> getListaTipoIdentificacion() {
         return listaTipoIdentificacion;

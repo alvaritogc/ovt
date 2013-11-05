@@ -16,12 +16,14 @@
                   <br/>
                    <center>
                    <h:panelGrid columns="2" >
-                      <h:outputText value="Contrasenia:"/>
-                       <h:inputSecret id="contrasenia2" value="#{olvidoContraseniaBean.contrasenia}" required="true"
-                                   style="width: 200px; font-size: 10px"
-                                   requiredMessage=" * El valor del campo Contrasenia el obligatorio" />
-                        <p:watermark for="contrasenia2" value="Contrasenia" />
-                        <h:message for="contrasenia2" style="color:red;font-family: Arial; font-size: 10px"/>
+
+
+                     <h:outputText value="Correo electronico:"/>
+                     <p:inputText id="contrasenia2" value="#{olvidoContraseniaBean.email}" required="true"
+                                    style="width: 200px; font-size: 10px"
+                                    requiredMessage=" * El valor del campo Correo electronico es obligatorio." />
+                       <p:watermark for="contrasenia2" value="Correo electronico" />
+                       <h:message for="contrasenia2" style="color:red;font-family: Arial; font-size: 10px"/>
 
                        <h:outputText value="Nueva contrasenia:"/>
                        <h:inputSecret id="contrasenia1" value="#{olvidoContraseniaBean.nuevaContrasenia}" required="true"

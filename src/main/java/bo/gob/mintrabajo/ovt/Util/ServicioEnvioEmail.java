@@ -163,10 +163,10 @@ public class ServicioEnvioEmail implements Serializable {
         //from = "quirozariel21@gmail.com";
         subject = "Olvidar contrasenia";
         urlRedireccion = "http://localhost:8080/faces/pages";
-        urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic&codeNam=#codeNam");
+        urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic");
 
         String usuPassword = Util.crypt(usuario.getClave());
-        urlRedireccion = urlRedireccion.replace("#codeNam", usuario.getUsuario());
+        //urlRedireccion = urlRedireccion.replace("#codeNam", usuario.getUsuario());
         urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
 
         cuerpoMensaje = "Para completar esta operacion dirijase al siguiente Link :"+"\n"+urlRedireccion;
