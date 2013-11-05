@@ -85,4 +85,16 @@ public class UsuarioService implements IUsuarioService{
 
        return usuarioRepository.findByUsuario(email);
     }
+
+    @Override
+   public UsrUsuario findByUsuarioAndClave(String email,String clave,String nuevaClave){
+        System.out.println("====>> BUSCANDO USUARIO "+email+"  CLAVE "+clave);
+        UsrUsuario usuario= usuarioRepository.findByUsuarioAndClave(email,clave);
+        if(usuario!=null)  {
+            usuario.setClave(nuevaClave);
+            return usuarioRepository.save(usuario);
+        }
+        else
+            return null;
+   }
 }

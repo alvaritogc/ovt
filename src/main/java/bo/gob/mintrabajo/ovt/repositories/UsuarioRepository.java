@@ -11,4 +11,6 @@ public interface UsuarioRepository extends OpenJpaRepository<UsrUsuario, Long>{
 
     @Query(" select u from UsrUsuario u where lower(u.usuario)  = lower(:email)")
     UsrUsuario findByUsuario(@Param("email")String email);
+
+    UsrUsuario findByUsuarioAndClave(@Param("email")String email,@Param("clave")String clave);
 }

@@ -16,5 +16,6 @@ public interface IUsuarioService {
     public Long obtenerSecuencia(String nombreSecuencia);
     public UsrUsuario save(UsrUsuario usrUsuario);
     public UsrUsuario obtenerUsuarioPorNombreUsuario(String email);
+    public UsrUsuario findByUsuarioAndClave(String email,String clave,String nuevaClave);
 
 }
