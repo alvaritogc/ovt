@@ -80,45 +80,6 @@ public class DocumentoService implements IDocumentoService{
         return documentoRepository.findByIdPersona_IdPersona(idPersona);
     }
 
-    public void guardaDocumentoBinarioPlanilla(DocDocumento docDocumento, List<DocBinario> listaBinarios, DocPlanilla docPlanilla){
-        docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
-        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", 1)); *************************************** REVISAR !!!!!
-        docDocumento.setNumeroDocumento(new BigInteger("11111")); //****************************************************
-        docDocumento=documentoRepository.save(docDocumento);
-        int idBinario= 1;
-        for(DocBinario elementoBinario:listaBinarios){
-            DocBinarioPK docBinarioPK = new DocBinarioPK();
-            docBinarioPK.setIdDocumento(docDocumento.getIdDocumento());
-            docBinarioPK.setIdBinario(idBinario++);
-            binarioRepository.save(elementoBinario);
-        }
-        docPlanilla.setIdDocumento(docDocumento);
-        docPlanilla.setIdPlanilla(new Long(utils.planillaSecuencia("DOC_PLANILLA_SEC")));
-        planillaRepository.save(docPlanilla);
-    }
-
-
-//    public DocDocumento guardarCambioEstado(DocDocumento documento, ParDocumentoEstado codEstadoFinal,String idUsuario) {
-//        //
-//        DocLogEstado logEstado=new DocLogEstado();
-//        logEstado.setIdDocumento(documento);
-//        logEstado.setCodEstadoFinal(codEstadoFinal);
-//        logEstado.setCodEstadoInicial(documento.getCodEstado());
-//        logEstado.setRegistroBitacora(idUsuario);
-//        Date date=new Date();
-//        logEstado.setFechaBitacora(new Timestamp(date.getTime()));
-//        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
-//        logEstadoRepository.save(logEstado);
-//        //
-//        documento.setCodEstado(codEstadoFinal);
-//        return documentoRepository.save(documento);
-//    }
-
-//    public DocDocumento guardarCambioEstado(DocDocumento documento, DocLogEstado logEstado) {
-//        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
-//        logEstadoRepository.save(logEstado);
-//        return documentoRepository.save(documento);
-//    }
     
      @Override
     public DocDocumento guardarCambioEstado(DocDocumento documento, ParDocumentoEstado codEstadoFinal,String idUsuario) {
@@ -139,8 +100,7 @@ public class DocumentoService implements IDocumentoService{
     public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios){
         //guarda documento
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
-        docDocumento.setNumeroDocumento(BigInteger.ZERO);
-//        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento=documentoRepository.save(docDocumento);
 
         //guarda planilla
@@ -149,11 +109,12 @@ public class DocumentoService implements IDocumentoService{
         docPlanilla=planillaRepository.save(docPlanilla);
 
         //validaBinarios
-        if(!valida(docPlanilla, listaBinarios))
-            return;
+//        if(!valida(docPlanilla, listaBinarios))
+//            return;
         //guarda binarios
         int idBinario= 1;
         for(DocBinario elementoBinario:listaBinarios){
+            elementoBinario.setDocDocumento(docDocumento);
             elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
             binarioRepository.save(elementoBinario);
         }

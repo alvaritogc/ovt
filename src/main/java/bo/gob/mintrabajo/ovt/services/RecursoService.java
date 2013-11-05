@@ -53,4 +53,10 @@ public class RecursoService implements IRecursoService {
     public List<UsrRecurso> buscarPorUsuario(Long idUsuario) {
         return recursoRepository.buscarPorUsuario(idUsuario);
     }
+    
+    @Override
+    public List<UsrRecurso> listarPorTipoRecurso(String tipoRecurso) {
+        return recursoRepository.findByAttribute("tipoRecurso", tipoRecurso, -1, -1);
+    }
+    
 }

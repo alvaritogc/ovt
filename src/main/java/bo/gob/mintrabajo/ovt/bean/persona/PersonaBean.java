@@ -4,6 +4,8 @@ import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import org.primefaces.context.RequestContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -25,6 +27,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
+import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -58,6 +61,9 @@ public class PersonaBean extends Thread implements Serializable{
     @ManagedProperty(value="#{dominioService}")
     private IDominioService iDominioService;
 
+    @ManagedProperty(value="#{parametrizacionService}")
+    private IParametrizacionService iParametrizacion;
+
 
     private PerPersona persona=new PerPersona();
     private List<PerPersona>listaPersona=new ArrayList<PerPersona>();
@@ -76,9 +82,19 @@ public class PersonaBean extends Thread implements Serializable{
 
     private ExternalContext externalContext= FacesContext.getCurrentInstance().getExternalContext();
 
+    private static final Logger logger = LoggerFactory.getLogger(PersonaBean.class);
+
     List<SelectItem>listaTipoEmpresa;
     List<SelectItem>listaTipoSociedad;
     List<SelectItem>listaTipoIdentificacion;
+
+    private String from;
+    private String subject;
+    private String urlRedireccion;
+    private String cuerpoMensaje;
+    private String password;
+    private String host;
+    private String port;
 
     @PostConstruct
     public void ini(){
@@ -296,8 +312,9 @@ public class PersonaBean extends Thread implements Serializable{
         if (mostrar) {
             context.execute("dlg.show()");
             ServicioEnvioEmail see = new ServicioEnvioEmail();
+            cargaParametricasEmail();
             see.envioEmail(this);
-            iniciarHilo(); // Se lanza el hilo para que empiece el timer valido para confirmar su registro
+            //iniciarHilo(); // Se lanza el hilo para que empiece el timer valido para confirmar su registro
         } else {
             context.execute("dlg.hide()");
         }
@@ -317,13 +334,13 @@ public class PersonaBean extends Thread implements Serializable{
         return "irInicio";
     }
 
-    public PersonaBean(){
-
-    }
 
     // *** Hilo para el control de tiempo ***//
     int nroThread;
     int contThread = 0;
+
+    public PersonaBean(){
+    }
 
     public PersonaBean(int nroThread) {
         this.nroThread = nroThread;
@@ -333,15 +350,20 @@ public class PersonaBean extends Thread implements Serializable{
         contThread = contThread + 1;
         PersonaBean hilo = new PersonaBean(contThread);
         hilo.start();
+    }
 
-        try{
-
-            iPersonaService.eliminarRegistro(persona, unidad, usuario);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void cargaParametricasEmail() {
+        try {
+            from = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_CUENTA_EMAIL).getDescripcion();
+            subject = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_ASUNTO).getDescripcion();
+            urlRedireccion = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_URL).getDescripcion();
+            cuerpoMensaje = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_MENSAJE).getDescripcion();
+            password = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PASSWORD).getDescripcion();
+            host = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_SERVIDOR).getDescripcion();
+            port = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PUERTO).getDescripcion();
+        } catch (NullPointerException ne) {
+            logger.info("El parámetro no existe en base de datos ...");
         }
-
     }
 
     @Override
@@ -350,22 +372,14 @@ public class PersonaBean extends Thread implements Serializable{
         PerPersona PER_PERSONA = (PerPersona) session.getAttribute("PerPersona");
         UsrUsuario PER_USUARIO = (UsrUsuario) session.getAttribute("PerUsuario");
 
-        //while (true) {
-            //if(PER_UNIDAD.getPerUnidadPK().getIdPersona() != null){
-            try {
-                Thread.sleep(10000);
-                System.out.println("Implementar si no confirma su registro ELIMINAR TODO DEL USUARIO");
-                //PER_UNIDAD = new PerUnidad();
-            } catch (InterruptedException ex) {
-                System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
-            }
-            //} else {
-            //    contThread = 0;
-            //    break;
-            //}
-        //}
+        try {
+            Thread.sleep(10000);
+            System.out.println("Implementar si no confirma su registro ELIMINAR TODO DEL USUARIO");
+            iPersonaService.eliminarRegistro(PER_PERSONA, PER_UNIDAD, PER_USUARIO);
+        } catch (InterruptedException ex) {
+            System.out.println("SALTO EL INTERRUPTOR " + ex.getMessage());
+        }
     }
-
 
 
     /*
@@ -471,6 +485,14 @@ public class PersonaBean extends Thread implements Serializable{
         this.iPersonaService = iPersonaService;
     }
 
+    public IParametrizacionService getiParametrizacion() {
+        return iParametrizacion;
+    }
+
+    public void setiParametrizacion(IParametrizacionService iParametrizacion) {
+        this.iParametrizacion = iParametrizacion;
+    }
+
     public PerPersona getPersona() {
         return persona;
     }
@@ -509,5 +531,61 @@ public class PersonaBean extends Thread implements Serializable{
 
     public void setEsNatural(boolean esNatural) {
         this.esNatural = esNatural;
+    }
+    // ****  Envio de Emails **** //
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getUrlRedireccion() {
+        return urlRedireccion;
+    }
+
+    public void setUrlRedireccion(String urlRedireccion) {
+        this.urlRedireccion = urlRedireccion;
+    }
+
+    public String getCuerpoMensaje() {
+        return cuerpoMensaje;
+    }
+
+    public void setCuerpoMensaje(String cuerpoMensaje) {
+        this.cuerpoMensaje = cuerpoMensaje;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
     }
 }

@@ -47,7 +47,9 @@ public class TemplateInicioBean implements Serializable {
 
     @ManagedProperty(value="#{usuarioUnidadService}")
     private IUsuarioUnidadService iUsuarioUnidadService;
-
+    //
+    @ManagedProperty(value = "#{mensajeAppService}")
+    private IMensajeAppService iMensajeAppService;
     //
     private UsrUsuario usuario;
     private PerPersona persona;
@@ -59,6 +61,9 @@ public class TemplateInicioBean implements Serializable {
     //
     private String username;
     private String password;
+    //
+    private List<UsrRecurso> listaRecursosContenido;
+    private UsrRecurso recurso;
 
     public String getNit() {
         return nit;
@@ -120,6 +125,7 @@ public class TemplateInicioBean implements Serializable {
             item.setCommand("#{templateInicioBean.logout}");
             model.addElement(item);
         }
+        cargarRercursoContenido();
 
     }
 
@@ -276,6 +282,21 @@ public class TemplateInicioBean implements Serializable {
         nit="";
         email="";
     }
+    
+    public void cargarRercursoContenido(){
+        listaRecursosContenido=iRecursoService.listarPorTipoRecurso("CON");
+    }
+    
+    public void verRecursoContenido(){
+        ParMensajeApp parMensajeApp=iMensajeAppService.buscarPorRecurso(recurso.getIdRecurso());
+        FacesContext contex = FacesContext.getCurrentInstance();
+        try {
+            contex.getExternalContext().redirect( "/ovt/faces/pages/publico/informacionPublica.xhtml?p="+parMensajeApp.getIdMensajeApp() );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
 
     public IUsuarioUnidadService getiUsuarioUnidadService() {
         return iUsuarioUnidadService;
@@ -375,5 +396,29 @@ public class TemplateInicioBean implements Serializable {
 
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public List<UsrRecurso> getListaRecursosContenido() {
+        return listaRecursosContenido;
+    }
+
+    public void setListaRecursosContenido(List<UsrRecurso> listaRecursosContenido) {
+        this.listaRecursosContenido = listaRecursosContenido;
+    }
+
+    public UsrRecurso getRecurso() {
+        return recurso;
+    }
+
+    public void setRecurso(UsrRecurso recurso) {
+        this.recurso = recurso;
+    }
+
+    public IMensajeAppService getiMensajeAppService() {
+        return iMensajeAppService;
+    }
+
+    public void setiMensajeAppService(IMensajeAppService iMensajeAppService) {
+        this.iMensajeAppService = iMensajeAppService;
     }
 }

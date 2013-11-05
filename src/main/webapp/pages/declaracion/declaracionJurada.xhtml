@@ -100,9 +100,9 @@
         <p:selectOneMenu style="width: 260px; height: 20px">
             <f:selectItem itemValue="ninguno" itemLabel="#{declaracionBean.perPersona.nombreRazonSocial}"/>
         </p:selectOneMenu>
-        <p:selectOneMenu value="#{declaracionBean.docPlanilla.periodo}" style="width: 260px; height: 20px" disabled="#{declaracionBean.parametro!=3}">
+        <p:selectOneMenu value="#{declaracionBean.docPlanilla.periodo}" style="width: 260px; height: 20px"><!--disabled="# {declaracionBean.parametro!=3}"-->
             <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-            <f:selectItems value="#{declaracionBean.docDocumentoList}" var="it" itemLabel="#{it.numeroDocumento}&nbsp;-&nbsp;#{it.docPlanilla.periodo}" itemValue="#{it.idDocumento}"/>
+            <f:selectItems value="#{declaracionBean.docDocumentoList}" var="it" itemLabel="#{it.numeroDocumento}&nbsp;-&nbsp;#{it.docPlanilla.periodo}" itemValue="#{it.docPlanilla.periodo}"/>
         </p:selectOneMenu>
     </p:column>
 </p:row>
@@ -171,7 +171,7 @@
             </p:column>
             <p:column>
                 <p:outputLabel value="4.3 Ente gestores de salud corto plazo"/>
-                <p:selectOneMenu value="#{declaracionBean.docPlanilla.idEntidadSalud}" disabled="#{declaracionBean.parametro==2}"
+                <p:selectOneMenu value="#{declaracionBean.idEntidadSalud}" disabled="#{declaracionBean.parametro==2}"
                                  style="width: 260px; height: 20px; font-size: 10px" required="true">
                     <f:selectItems value="#{declaracionBean.parEntidadLista}" var="entidad"
                                    itemValue="#{entidad.idEntidad}" itemLabel="#{entidad.descripcion}"/>
@@ -533,7 +533,7 @@
 
 <div align="CENTER">
     <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada"
-                     action="#{declaracionBean.guardaDocumentoBinarioPlanilla}" update="formularioFrm messages"
+                     action="#{declaracionBean.guardaDocumentoPlanillaBinario}" update="formularioFrm messages"
                      disabled="#{declaracionBean.habilita}">
         <p:confirm header="Declaración jurada"
                    message="Si continua, procederá a realizar una declaración jurada. Asegúrese que los datos esten correctamente llenados. Deséa continuar?"

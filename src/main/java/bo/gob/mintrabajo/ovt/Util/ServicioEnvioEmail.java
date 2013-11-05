@@ -1,16 +1,18 @@
 package bo.gob.mintrabajo.ovt.Util;
 
-import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
+import bo.gob.mintrabajo.ovt.api.IParametrizacionService;
 import bo.gob.mintrabajo.ovt.bean.persona.PersonaBean;
-import bo.gob.mintrabajo.ovt.entities.PerPersona;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
+import bo.gob.mintrabajo.ovt.services.ParametrizacionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.faces.bean.ManagedProperty;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -21,7 +23,7 @@ import java.util.Properties;
  * Time: 12:04 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ServicioEnvioEmail {
+public class ServicioEnvioEmail implements Serializable {
 
     private String from = "";
     private String password = "";
@@ -36,7 +38,7 @@ public class ServicioEnvioEmail {
 
     public void envioEmail(PersonaBean bean) {
 
-        cargar(bean);
+        armadoEmail(bean);
         try {
             Properties props = new Properties();
             props.put("mail.smtp.socketFactory.port", port);
@@ -84,21 +86,21 @@ public class ServicioEnvioEmail {
         }
     }
 
-    public void cargar(PersonaBean bean) {
-        // ** Se debe obtener todos estos Datos de un archivo property o de las paramétricas ** //TODO
-        from = "gmercado@mc4.com.bo";
-        subject = "Confirmación de registro de la oficina virtual";
-        urlRedireccion = "http://localhost:8080/faces/pages/persona";
+    public void armadoEmail(PersonaBean bean) {
+
+        from = bean.getFrom();
+        subject = bean.getSubject();
+        urlRedireccion = bean.getUrlRedireccion();
         urlRedireccion = urlRedireccion.concat("/registroConfirmacion.xhtml?codeUnic=#codeUnic&codeNam=#codeNam");
 
         String usuPassword = Util.crypt(bean.getUsuario().getClave());
         urlRedireccion = urlRedireccion.replace("#codeNam", bean.getUsuario().getUsuario());
         urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
 
-        cuerpoMensaje = "Para completar su registro dirijase al siguiente Link :" + urlRedireccion;
-        password = "G4rym3rc4d0";
-        host = "mc4.com.bo";
-        port = "25";
+        cuerpoMensaje = bean.getCuerpoMensaje() + " " + urlRedireccion;
+        password = bean.getPassword();
+        host = bean.getHost();
+        port = bean.getPort();
 
         getTo().add(bean.getUsuario().getUsuario());
     }
