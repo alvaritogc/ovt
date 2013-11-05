@@ -8,6 +8,14 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../pages/template/templateInicio.xhtml">
         <ui:define name="content">
+
+            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                      draggable="false" closable="false">
+                <p:graphicImage value="../../images/ajax-loader.gif" />
+            </p:dialog>
+
         <br/>
            <h:form id="formOlvidoContrasenia" class="form-signin" rendered="#{templateInicioBean.idUsuario ==null}">
                <p:growl showDetail="true" id="growl" />
@@ -22,20 +30,16 @@
                      <p:inputText id="contrasenia2" value="#{olvidoContraseniaBean.email}" required="true"
                                     style="width: 200px; font-size: 10px"
                                     requiredMessage=" * El valor del campo Correo electronico es obligatorio." />
-                       <p:watermark for="contrasenia2" value="Correo electronico" />
-                       <h:message for="contrasenia2" style="color:red;font-family: Arial; font-size: 10px"/>
+
 
                        <h:outputText value="Nueva contrasenia:"/>
                        <h:inputSecret id="contrasenia1" value="#{olvidoContraseniaBean.nuevaContrasenia}" required="true"
                                  style="width: 200px; font-size: 10px"
-                                 requiredMessage=" * El valor del campo NUeva contrasenia es obligatorio" />
-                        <p:watermark for="contrasenia1" value="Nueva contrasenia" />
-                        <h:message for="contrasenia1" style="color:red;font-family: Arial; font-size: 10px"/>
+                                 requiredMessage=" * El valor del campo Nueva contrasenia es obligatorio" />
 
                        <h:outputText value="Confirmar contrasenia:"/>
                       <h:inputSecret id="password" value="#{olvidoContraseniaBean.confirmarContrasenia}"
                                      style="width: 200px; font-size: 9px" />
-                      <p:watermark for="password" value="Confirmar contrasenia" />
 
                    </h:panelGrid>
                    </center>
@@ -44,8 +48,7 @@
                   <center>
                   <p:commandButton styleClass="btn btn-large btn-primary" value="Confirmar"
                                          action="#{olvidoContraseniaBean.verificarContrasenia}"
-                                         ajax="false"
-                                         update=":grwLogin" />
+                                         process="@this" />
                   </center>
 
 

@@ -272,6 +272,7 @@ public class TemplateInicioBean implements Serializable {
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", " Verifique su correo electronico"));
        }
 
+       limpiar();
 
     }
 

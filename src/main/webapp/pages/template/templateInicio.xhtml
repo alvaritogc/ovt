@@ -122,15 +122,21 @@
                         <ui:include src="/mensajes/informacion.xhtml"/>
                     </p:dialog>
 
-                    <p:dialog id="basicDialog2" header="Olvido su contrasenia" modal="true" widgetVar="dlg2" width="420" height="250" resizable="false">
+                    <p:dialog id="basicDialog2" header="Olvido su contrasenia" modal="true" widgetVar="dlg2" width="420" height="280" resizable="false">
                        <!-- <ui:include src="/mensajes/informacion.xhtml"/>-->
 
+                        <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+                        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                                  draggable="false" closable="false">
+                            <p:graphicImage value="../../images/ajax-loader.gif" />
+                        </p:dialog>
                         <h:form id="frmOlvidoContrasenia">
                         <p:messages id="abc" showDetail="true" autoUpdate="false" closable="true" globalOnly="false" />
                         <br/>
-                        <p style="font-size: 12px;">Para recuperar su contrasenia, ingrese su direccion de electronico asociada al Sistema.</p>
+                        <p style="font-size: 12px;">Para recuperar su contrasenia, ingrese su Nro. de identificacion(NIT) y direccion de correo electronico asociada al Sistema.</p>
 
-                         <h:panelGrid columns="1">
+                         <h:panelGrid columns="1" id="pnlGridContrasenia">
                         <h:outputText value="Nro de identificacion (NIT):"/>
                         <p:inputText id="txtOlvidoNIT" value="#{templateInicioBean.nit}"></p:inputText>
                         <p:watermark for="txtOlvidoNIT" value="Nro de identificacion (NIT)" />
@@ -143,7 +149,7 @@
                                          action="#{templateInicioBean.olvidoContrasenia}"
                                          tabindex="2"
                                          process="@form"
-                                         update="frmOlvidoContrasenia"
+                                         update=":frmOlvidoContrasenia"
                                         >
 
                         </p:commandButton>

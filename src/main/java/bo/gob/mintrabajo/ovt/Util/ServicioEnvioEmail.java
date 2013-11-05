@@ -164,8 +164,11 @@ public class ServicioEnvioEmail implements Serializable {
         subject = "Olvidar contrasenia";
         urlRedireccion = "http://localhost:8080/faces/pages";
         urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic");
-
+        System.out.println("====>>>>  MANDANDO EMAIL direccion00  "+urlRedireccion);
         String usuPassword = Util.crypt(usuario.getClave());
+        System.out.println("====>>>>  MANDANDO EMAIL usuPassword1  "+usuPassword);
+        usuPassword.replace("==","");
+        System.out.println("====>>>>  MANDANDO EMAIL usuPassword2  "+usuPassword);
         //urlRedireccion = urlRedireccion.replace("#codeNam", usuario.getUsuario());
         urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
 
@@ -175,7 +178,9 @@ public class ServicioEnvioEmail implements Serializable {
       //  host="smtp.gmail.com";
         //port="587";
         port = "25";
-
+         System.out.println("====>>>>  MANDANDO EMAIL");
+        System.out.println("====>>>>  MANDANDO EMAIL");
+        System.out.println("====>>>>  MANDANDO EMAIL direccion"+urlRedireccion);
         getTo().add("aquiroz@mc4.com.bo");
         //getTo().add(bean.getUsuario().getUsuario());
     }
