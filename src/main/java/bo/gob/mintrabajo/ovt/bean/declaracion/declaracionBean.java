@@ -130,6 +130,7 @@ public class declaracionBean implements Serializable {
         docPlanilla.setOtrosDescuentos(BigDecimal.ZERO);
         docPlanilla.setMontoAsegCaja(BigDecimal.ZERO);
         docPlanilla.setMontoAsegAfp(BigDecimal.ZERO);
+        docPlanilla.setMontoOperacion(BigDecimal.ZERO);
         //** Controlamos que no puedan acceder a una fecha anterior a la actual  **//
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         fechaTexto = sdf.format(fechaTemp);

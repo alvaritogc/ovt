@@ -102,7 +102,7 @@
         </p:selectOneMenu>
         <p:selectOneMenu value="#{declaracionBean.docPlanilla.periodo}" style="width: 260px; height: 20px"><!--disabled="# {declaracionBean.parametro!=3}"-->
             <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-            <f:selectItems value="#{declaracionBean.docDocumentoList}" var="it" itemLabel="#{it.numeroDocumento}&nbsp;-&nbsp;#{it.docPlanilla.periodo}" itemValue="#{it.docPlanilla.periodo}"/>
+            <!--<f:selectItems value="# {declaracionBean.docDocumentoList}" var="it" itemLabel="# {it.numeroDocumento}&nbsp;-&nbsp;# {it.docPlanilla.periodo}" itemValue="# {it.docPlanilla.periodo}"/>-->
         </p:selectOneMenu>
     </p:column>
 </p:row>
@@ -163,11 +163,9 @@
             </p:column>
             <p:column>
                 <p:outputLabel for="aportado1" value="4.2 Monto aportado (Bs)"/>
-                <p:inputText id="aportado1" value="#{declaracionBean.docPlanilla.montoAsegCaja}" disabled="#{declaracionBean.parametro==2}"
-                             style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
-                    <f:convertNumber minFractionDigits="2"/>
-                    <pe:keyFilter regEx="/[\d\-\,]/"/>
-                </p:inputText>
+                <pe:inputNumber id="aportado1" value="#{declaracionBean.docPlanilla.montoAsegCaja}" disabled="#{declaracionBean.parametro==2}"
+                                thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
+                </pe:inputNumber>
             </p:column>
             <p:column>
                 <p:outputLabel value="4.3 Ente gestores de salud corto plazo"/>
@@ -186,11 +184,9 @@
             </p:column>
             <p:column>
                 <p:outputLabel for="aportado2" value="4.5 Monto aportado (Bs)"/>
-                <p:inputText id="aportado2" value="#{declaracionBean.docPlanilla.montoAsegAfp}" disabled="#{declaracionBean.parametro==2}"
-                             style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
-                    <f:convertNumber minFractionDigits="2"/>
-                    <pe:keyFilter regEx="/[\d\-\,]/"/>
-                </p:inputText>
+                <pe:inputNumber id="aportado2" value="#{declaracionBean.docPlanilla.montoAsegAfp}" disabled="#{declaracionBean.parametro==2}"
+                             thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
+                </pe:inputNumber>
             </p:column>
         </p:panelGrid>
     </p:column>
@@ -209,91 +205,73 @@
 <p:column colspan="8" >
     <p:panelGrid columns="2">
         <p:outputLabel for="basico" value="5.1 Haber básico"/>
-        <p:inputText id="basico" value="#{declaracionBean.docPlanilla.haberBasico}" disabled="#{declaracionBean.parametro==2}"
-                     style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-            <f:convertNumber minFractionDigits="2"/>
-            <p:ajax event="keyup" update="totalGanado"/>
-            <pe:keyFilter regEx="/[\d\-\,]/"/>
-        </p:inputText>
+        <pe:inputNumber id="basico" value="#{declaracionBean.docPlanilla.haberBasico}" disabled="#{declaracionBean.parametro==2}"
+                        thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+            <p:ajax event="blur" update="totalGanado"/>
+        </pe:inputNumber>
         <p:outputLabel for="antiguedad" value="5.2 Bono de antigüedad"/>
-        <p:inputText id="antiguedad" value="#{declaracionBean.docPlanilla.bonoAntiguedad}" disabled="#{declaracionBean.parametro==2}"
-                     style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-            <f:convertNumber minFractionDigits="2"/>
-            <p:ajax event="keyup" update="totalGanado"/>
-            <pe:keyFilter regEx="/[\d\-\,]/"/>
-        </p:inputText>
+        <pe:inputNumber id="antiguedad" value="#{declaracionBean.docPlanilla.bonoAntiguedad}" disabled="#{declaracionBean.parametro==2}"
+                        thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+            <p:ajax event="blur" update="totalGanado"/>
+        </pe:inputNumber>
         <p:outputLabel for="produccion" value="5.3 Bono de producción"/>
-        <p:inputText id="produccion" value="#{declaracionBean.docPlanilla.bonoProduccion}" disabled="#{declaracionBean.parametro==2}"
-                     style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-            <f:convertNumber minFractionDigits="2"/>
-            <p:ajax event="keyup" update="totalGanado"/>
-            <pe:keyFilter regEx="/[\d\-\,]/"/>
-        </p:inputText>
+        <pe:inputNumber id="produccion" value="#{declaracionBean.docPlanilla.bonoProduccion}" disabled="#{declaracionBean.parametro==2}"
+                        thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+            <p:ajax event="blur" update="totalGanado"/>
+        </pe:inputNumber>
         <p:outputLabel for="frontera" value="5.4 Subsidio de frontera"/>
-        <p:inputText id="frontera" value="#{declaracionBean.docPlanilla.subsidioFrontera}" disabled="#{declaracionBean.parametro==2}"
-                     style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-            <f:convertNumber minFractionDigits="2"/>
-            <p:ajax event="keyup" update="totalGanado"/>
-            <pe:keyFilter regEx="/[\d\-\,]/"/>
-        </p:inputText>
+        <pe:inputNumber id="frontera" value="#{declaracionBean.docPlanilla.subsidioFrontera}" disabled="#{declaracionBean.parametro==2}"
+                        thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+            <p:ajax event="blur" update="totalGanado"/>
+        </pe:inputNumber>
         <p:outputLabel for="extraordinario" value="5.5 Labor extraordinaria"/>
-        <p:inputText id="extraordinario" value="#{declaracionBean.docPlanilla.laborExtra}" disabled="#{declaracionBean.parametro==2}"
-                     style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-            <f:convertNumber minFractionDigits="2"/>
-            <p:ajax event="keyup" update="totalGanado"/>
-            <pe:keyFilter regEx="/[\d\-\,]/"/>
-        </p:inputText>
+        <pe:inputNumber id="extraordinario" value="#{declaracionBean.docPlanilla.laborExtra}" disabled="#{declaracionBean.parametro==2}"
+                     thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+            <p:ajax event="blur" update="totalGanado"/>
+        </pe:inputNumber>
         <p:outputLabel for="bono" value="5.6 Otros bonos"/>
-        <p:inputText id="bono" value="#{declaracionBean.docPlanilla.otrosBonos}" disabled="#{declaracionBean.parametro==2}"
-                     style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-            <f:convertNumber minFractionDigits="2"/>
-            <p:ajax event="keyup" update="totalGanado"/>
-            <pe:keyFilter regEx="/[\d\-\,]/"/>
-        </p:inputText>
+        <pe:inputNumber id="bono" value="#{declaracionBean.docPlanilla.otrosBonos}" disabled="#{declaracionBean.parametro==2}"
+                        thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+            <p:ajax event="blur" update="totalGanado"/>
+        </pe:inputNumber>
         <p:outputLabel value="5.7 Total ganado" style="font-weight: bold"/>
-        <p:inputText id="totalGanado" value="#{(declaracionBean.docPlanilla.haberBasico +
+        <pe:inputNumber id="totalGanado" value="#{(declaracionBean.docPlanilla.haberBasico +
                                                                                    declaracionBean.docPlanilla.bonoAntiguedad + declaracionBean.docPlanilla.bonoProduccion +
                                                                                    declaracionBean.docPlanilla.subsidioFrontera + declaracionBean.docPlanilla.laborExtra +
                                                                                    declaracionBean.docPlanilla.otrosBonos)}"
                      disabled="true"
-                     style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
+                     thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
         <p:outputLabel for="afp" value="5.8 Aporte a las AFPs"/>
-        <p:inputText id="afp" value="#{declaracionBean.docPlanilla.aporteAfp}" disabled="#{declaracionBean.parametro==2}"
-                     style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-            <f:convertNumber minFractionDigits="2"/>
-            <p:ajax event="keyup" update="totalDescuento"/>
-            <p:ajax event="keyup" update="pagable"/>
-            <pe:keyFilter regEx="/[\d\-\,]/"/>
-        </p:inputText>
+        <pe:inputNumber id="afp" value="#{declaracionBean.docPlanilla.aporteAfp}" disabled="#{declaracionBean.parametro==2}"
+                        thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+            <p:ajax event="blur" update="totalDescuento"/>
+            <p:ajax event="blur" update="pagable"/>
+        </pe:inputNumber>
         <p:outputLabel for="iva" value="5.9 RC-IVA"/>
-        <p:inputText id="iva" value="#{declaracionBean.docPlanilla.rciva}" disabled="#{declaracionBean.parametro==2}"
-                     style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-            <f:convertNumber minFractionDigits="2"/>
-            <p:ajax event="keyup" update="totalDescuento"/>
-            <p:ajax event="keyup" update="pagable"/>
-            <pe:keyFilter regEx="/[\d\-\,]/"/>
-        </p:inputText>
+        <pe:inputNumber id="iva" value="#{declaracionBean.docPlanilla.rciva}" disabled="#{declaracionBean.parametro==2}"
+                        thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+            <p:ajax event="blur" update="totalDescuento"/>
+            <p:ajax event="blur" update="pagable"/>
+        </pe:inputNumber>
         <p:outputLabel for="descuento" value="5.10 Otros descuentos"/>
-        <p:inputText id="descuento" value="#{declaracionBean.docPlanilla.otrosDescuentos}" disabled="#{declaracionBean.parametro==2}"
-                     style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-            <f:convertNumber minFractionDigits="2"/>
-            <p:ajax event="keyup" update="totalDescuento"/>
-            <p:ajax event="keyup" update="pagable"/>
-            <pe:keyFilter regEx="/[\d\-\,]/"/>
-        </p:inputText>
+        <pe:inputNumber id="descuento" value="#{declaracionBean.docPlanilla.otrosDescuentos}" disabled="#{declaracionBean.parametro==2}"
+                        thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+            <p:ajax event="blur" update="totalDescuento"/>
+            <p:ajax event="blur" update="pagable"/>
+        </pe:inputNumber>
         <p:outputLabel value="5.11 Total Descuentos" style="font-weight:bold"/>
-        <p:inputText id="totalDescuento" value="#{(declaracionBean.docPlanilla.aporteAfp +
+        <pe:inputNumber id="totalDescuento" value="#{(declaracionBean.docPlanilla.aporteAfp +
                                                                                       declaracionBean.docPlanilla.rciva + declaracionBean.docPlanilla.otrosDescuentos)}"
                      disabled="true"
-                     style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
+                     thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
         <p:outputLabel value="5.12 Líquido pagable" style="font-weight:bold"/>
-        <p:inputText id="pagable" value="#{(declaracionBean.docPlanilla.haberBasico +
+        <pe:inputNumber id="pagable" value="#{(declaracionBean.docPlanilla.haberBasico +
                                                                                declaracionBean.docPlanilla.bonoAntiguedad + declaracionBean.docPlanilla.bonoProduccion +
                                                                                declaracionBean.docPlanilla.subsidioFrontera + declaracionBean.docPlanilla.laborExtra +
                                                                                declaracionBean.docPlanilla.otrosBonos) - (declaracionBean.docPlanilla.aporteAfp +
                                                                                declaracionBean.docPlanilla.rciva + declaracionBean.docPlanilla.otrosDescuentos)}"
                      disabled="true"
-                     style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
+                     thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
     </p:panelGrid>
 </p:column>
 <p:column colspan="8">
@@ -440,15 +418,13 @@
         <p:outputLabel value="8.2 Fecha de depósito"/>
         <p:calendar value="#{declaracionBean.fechaOperacionAux}" maxdate="#{declaracionBean.fechaTexto}"
                     id="popupButtonCal" pattern="dd/MM/yyyy" style="width: 100px; height: 10px; text-align: right"
-                    required="true"/>
+                    required="true" showOn="button"/>
     </p:column>
     <p:column colspan="4">
         <p:outputLabel value="8.3 Monto de depósito (Bs)"/>
-        <p:inputText value="#{declaracionBean.docPlanilla.montoOperacion}"
-                     style="width: 150px; height: 10px; text-align: right" maxlength="10">
-            <f:convertNumber minFractionDigits="2"/>
-            <pe:keyFilter regEx="/[\d\-\,]/"/>
-        </p:inputText>
+        <pe:inputNumber value="#{declaracionBean.docPlanilla.montoOperacion}"
+                        thousandSeparator="." decimalSeparator=","  style="width: 150px; height: 10px; text-align: right" maxlength="10">
+        </pe:inputNumber>
     </p:column>
 </p:row>
 
