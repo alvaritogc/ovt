@@ -175,14 +175,9 @@ public class ServicioEnvioEmail implements Serializable {
         cuerpoMensaje = "Para completar esta operacion dirijase al siguiente Link :"+"\n"+urlRedireccion;
         password = "Ar13lqu1r0z";
         host = "mc4.com.bo";
-      //  host="smtp.gmail.com";
-        //port="587";
         port = "25";
-         System.out.println("====>>>>  MANDANDO EMAIL");
-        System.out.println("====>>>>  MANDANDO EMAIL");
-        System.out.println("====>>>>  MANDANDO EMAIL direccion"+urlRedireccion);
-        getTo().add("aquiroz@mc4.com.bo");
-        //getTo().add(bean.getUsuario().getUsuario());
+        //getTo().add("aquiroz@mc4.com.bo");
+        getTo().add(usuario.getUsuario());
     }
 
     public ArrayList<String> getTo() {

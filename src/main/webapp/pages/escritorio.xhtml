@@ -73,8 +73,17 @@
                          
                     </p:column>
                 </p:dataTable>
-                <p:dialog header="Car Detail" widgetVar="cambioEstadoDialog" resizable="false" id="cambioEstadoDlg"  
+                <p:dialog header="Cambio de estado" widgetVar="cambioEstadoDialog" resizable="false" id="cambioEstadoDlg"  
                           showEffect="fade" hideEffect="explode" modal="true">  
+                    <center>
+                <p:panelGrid style="width: 100%">
+                    <p:row>
+                        <p:column  style="background-color: #0069B1; color: #FFFFFF" >
+                            <p:outputLabel value="CAMBIO DE ESTADO" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </center>
                     <h:panelGrid columns="6"  style="border: 1px solid black; height: 50px;width:100%;">
                         <p:outputLabel value="Nº de comprobante de depósito:" style="text-align: right;"/>
                         <p:outputLabel value="#{escritorioBean.docPlanilla.numOperacion}"  style="border: 1px solid black;width: 80px;text-align: left;padding: 3px;"/>
@@ -90,7 +99,9 @@
                         </p:outputLabel>
 
                     </h:panelGrid>
-                    <h:panelGrid columns="2" >
+                    <br/>
+                    <center>
+                    <h:panelGrid columns="2">
 
                         <h:outputText value="#{escritorioBean.docDocumento.codEstado.descripcion} "  style="font-size: 20px"/>
                         <p:selectOneRadio id="grid" value="#{escritorioBean.codEstadoFinal}" 
@@ -106,6 +117,8 @@
                         </p:selectOneRadio>
 
                     </h:panelGrid>
+                        </center>
+                    <br/>
                     <p:commandButton value="Realizar cambio de estado" 
                                      update="idEscritorio"
                                      rendered="#{escritorioBean.esInterno}"

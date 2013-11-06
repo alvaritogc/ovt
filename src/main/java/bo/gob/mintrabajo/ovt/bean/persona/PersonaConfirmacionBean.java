@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.bean.persona;
 
 import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IParametrizacionService;
+import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
@@ -41,6 +42,9 @@ public class PersonaConfirmacionBean {
 
     @ManagedProperty(value="#{parametrizacionService}")
     private IParametrizacionService iParametrizacion;
+
+    @ManagedProperty(value = "#{personaService}")
+    private IPersonaService iPersonaService;
 
 
     private static final Logger logger = LoggerFactory.getLogger(PersonaConfirmacionBean.class);
@@ -94,11 +98,14 @@ public class PersonaConfirmacionBean {
 
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cuidado", "El tiempo para registrarse expiró, intente registrarse de nuevo"));
+                    logger.info("Eliminando .... " + idUsuario);
+                    //iPersonaService.eliminarRegistro(usuario.getIdPersona().getIdPersona());
                     return null;
                 }
             } catch (RuntimeException e) {
                 FacesContext context = FacesContext.getCurrentInstance();
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Controle que el password ingresado sea el mismo del registro inicial"));
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Controle que el password ingresado sea el mismo del registro inicial"));
+                e.printStackTrace();
                 return null;
             }
 
@@ -107,18 +114,6 @@ public class PersonaConfirmacionBean {
             return null;
         }
     }
-
-    public void decryptar(){
-        String temporal;
-        temporal = Util.decrypt("T5ntQkyy68COSFokfMetEgRQj/MUA9/A6mlZ2SJoYR+w==");
-        System.out.println(temporal);
-    }
-
-    public static void main (String arg[]){
-        PersonaConfirmacionBean p = new PersonaConfirmacionBean();
-        p.decryptar();
-    }
-
 
     // ***** Getter y Setters *****//
 
@@ -160,5 +155,13 @@ public class PersonaConfirmacionBean {
 
     public void setiParametrizacion(IParametrizacionService iParametrizacion) {
         this.iParametrizacion = iParametrizacion;
+    }
+
+    public IPersonaService getiPersonaService() {
+        return iPersonaService;
+    }
+
+    public void setiPersonaService(IPersonaService iPersonaService) {
+        this.iPersonaService = iPersonaService;
     }
 }

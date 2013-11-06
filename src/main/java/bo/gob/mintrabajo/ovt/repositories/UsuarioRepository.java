@@ -13,4 +13,8 @@ public interface UsuarioRepository extends OpenJpaRepository<UsrUsuario, Long>{
     UsrUsuario findByUsuario(@Param("email")String email);
 
     UsrUsuario findByUsuarioAndClave(@Param("email")String email,@Param("clave")String clave);
+
+    @Query(" delete from UsrUsuario u " +
+            "where u.idPersona = :idPersona" )
+    void eliminarUsuario(@Param("idPersona")String idPersona);
 }
