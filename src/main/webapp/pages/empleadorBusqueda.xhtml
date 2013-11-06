@@ -30,7 +30,9 @@
                         </h:panelGroup>
                     </h:panelGrid>
                 </p:panel>
-                <p:dataTable id="idDTlistaPersonas" sortMode="multiple" value="#{empleadorBean.listaPersonas}" var="o" paginator="true" rows="10" emptyMessage="No se encontraron resultados">
+                <br/>
+                <p:dataTable id="idDTlistaPersonas" sortMode="multiple" value="#{empleadorBean.listaPersonas}" var="o" rows="10" emptyMessage="No se encontraron resultados"
+                             paginatorPosition="bottom" paginator="true">
                     <p:column headerText="Tipo identifiacion">
                         <h:outputLabel value="#{o.tipoIdentificacion}"/>
                     </p:column>
