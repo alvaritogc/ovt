@@ -53,7 +53,6 @@ public class UsuarioService implements IUsuarioService{
         if (!password.equals(usuario.getClave())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
-        System.out.println("estado"+usuario.getEstadoUsuario());
         if(!usuario.getEstadoUsuario().equals("ACTIVO")){
             throw new RuntimeException("El usuario no esta activo");
         }
