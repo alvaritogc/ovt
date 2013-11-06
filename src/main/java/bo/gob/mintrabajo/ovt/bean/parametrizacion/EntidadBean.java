@@ -93,11 +93,17 @@ public class EntidadBean implements Serializable{
            if(evento==false){
                 listaEntidad= iEntidadService.listaEntidad();
             }
-            entidad=new ParEntidad();
-            evento=false;
+//            entidad=new ParEntidad();
+//            evento=false;
+           limpiar();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void limpiar(){
+        entidad=new ParEntidad();
+        evento=false;
     }
     
     //GET and SET

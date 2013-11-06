@@ -9,16 +9,16 @@
     <ui:composition template="../../pages/template/templateInicio.xhtml">
         <ui:define name="content">
             <br/>
-                <h1>Entidades</h1>
+                <h2 class="form-signin-heading">Entidades</h2>
             <br/>
             <!--  Formulario de busqueda-->
             <br />
-            <p:commandButton value="Nuevo" onclick="dlgFormEntidad.show();" update=":formEntidad"/>
+            <p:commandButton value="Nuevo" onclick="dlgFormEntidad.show();" update=":formEntidad" icon="ui-icon-document-b"/>
             <br />
             <!--  Listado de entidades en tabla-->
             <br/>
             <p:dataTable id="dataTableEntidad" var="parEntidad" value="#{entidadBean.listaEntidad}" 
-                         paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="top"
+                         paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="bottom"
                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados">
                 <f:facet name="header">  
                     Entidades Encontradas
@@ -50,16 +50,15 @@
                 </p:column>
                 <p:column headerText="Acciones">
                     
-                    <h:form>      
-                        <p:commandLink value="Modificar" oncomplete="dlgFormEntidad.show();" style="margin-right:20px;" update=":formEntidad">  
+                    <h:form>                             
+                        <p:commandButton icon="ui-icon-pencil" title="Editar" onclick="dlgFormEntidad.show()" update=":formEntidad"> 
                             <f:setPropertyActionListener target="#{entidadBean.entidad}" value="#{parEntidad}" />
                             <f:setPropertyActionListener target="#{entidadBean.evento}" value="true" />
-                        </p:commandLink>
-                        
-                        <p:commandLink value="Eliminar" style="margin-right:20px;" onclick="confirmation.show()">   
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" title="Eliminar" onclick="confirmation.show()"> 
                             <f:setPropertyActionListener target="#{entidadBean.entidad}" value="#{parEntidad}" />
-                        </p:commandLink>
-
+                        </p:commandButton>
+                        
                     </h:form>
                 </p:column>  
             </p:dataTable>
@@ -90,8 +89,8 @@
                     <h:outputLabel for="tipoEntidad" value="Tipo entidad:" style="font-weight:bold"/>  
                     <p:inputText id="tipoEntidad" value="#{entidadBean.entidad.tipoEntidad}" required="true" requiredMessage="Debe ingresar el campo Tipo de Entidad" maxlength="15"/>
                    
-                    <p:commandButton value="Guardar" actionListener="#{entidadBean.guardarModificar}" update=":growl formEntidad :dataTableEntidad"/>
-                    <p:commandButton value="Canselar" actionListener="#{entidadBean.limpiar}" onclick="dlgFormEntidad.hide();" update="formEntidad" />
+                    <p:commandButton value="Guardar" actionListener="#{entidadBean.guardarModificar}" update=":growl formEntidad :dataTableEntidad" icon="ui-icon-disk"/>
+                    <p:commandButton value="Canselar" actionListener="#{entidadBean.limpiar}" onclick="dlgFormEntidad.hide();" update="formEntidad" icon="ui-icon-close"/>
                     
                     <!--                     <h:outputLabel for="unidad" value="Unidad:" style="font-weight:bold"/>  
                      <p:selectOneMenu id="unidad" value="">  

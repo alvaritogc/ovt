@@ -17,14 +17,20 @@
 package bo.gob.mintrabajo.ovt.bean.parametrizacion;
 
 import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
+import bo.gob.mintrabajo.ovt.api.IObligacionService;
+import bo.gob.mintrabajo.ovt.api.IUtilsService;
+import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -35,17 +41,103 @@ import javax.faces.bean.ViewScoped;
 public class obligacionCalendarioBean implements Serializable{
     @ManagedProperty(value = "#{obligacionCalendarioService}")
     private IObligacionCalendarioService iObligacionCalendarioService;
+    @ManagedProperty(value = "#{obligacionService}")
+    private IObligacionService iObligacionService;
+    @ManagedProperty(value = "#{utilsService}")
+    private IUtilsService iUtilsService;
     
     private List<ParObligacionCalendario> listaObligacionCalendario;
+    private ParObligacionCalendario obligacionCalendario= new ParObligacionCalendario();
+    
+    //para el formulario
+    private boolean evento=false;
+    //private List<SelectItem> listaObligacion;
+    private List<ParObligacion> listaObligacion;
+    private ParObligacion obligacion= new ParObligacion();
+    private String codObligacion="";
+    private String codObligacionForm="";
+            
     
     @PostConstruct
     public void ini() {
         listaObligacionCalendario =new ArrayList<ParObligacionCalendario>();
         listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendario();
+        //listaObligacion=cargarListaObligacion(listaObligacion);
+        listaObligacion= new ArrayList<ParObligacion>();
+        listaObligacion= iObligacionService.listaObligacion();
     }
     
+    public List<SelectItem> cargarListaObligacion(List<SelectItem>lista){
+        lista=new ArrayList<SelectItem>();
+        try{
+            List<ParObligacion> obligaciones = iObligacionService.listaObligacion();
+            for(ParObligacion d:obligaciones){
+                lista.add(new SelectItem(d.getCodObligacion(),d.getDescripcion()));
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return lista;
+    }
     
+    public void listarObligacionCalendario(){
+        if(codObligacion.isEmpty() || codObligacion.equals(" ")){
+            listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendario();
+        }else{
+            listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendarioPorObligacion(codObligacion);
+        }
+    }
     
+    public void guardarModificar(){
+        RequestContext context = RequestContext.getCurrentInstance();
+        if(codObligacionForm.isEmpty() || codObligacionForm== null ){ return;}
+        if(obligacionCalendario.getTipoCalendario().isEmpty()){return;}
+        if(obligacionCalendario.getGestion().isEmpty()){return;}
+        if(obligacionCalendario.getFechaDesde().toString().isEmpty()){return;}
+        if(obligacionCalendario.getFechaHasta().toString().isEmpty()){return;}
+        if(obligacionCalendario.getFechaPlazo().toString().isEmpty()){return;}
+        context.execute("dlgFormObligacionCalendario.hide();");
+        
+        ParObligacion parObligacion= new ParObligacion();
+        parObligacion= iObligacionService.obligacionPorCod(codObligacionForm);
+        
+        final String  REGISTRO_BITACORA="OVT";
+        //final String  REGISTRO_BITACORA=idUsuario.toString();
+        Date fechaBitacora = new Date();
+        try {
+            if(obligacionCalendario.getIdObligacionCalendario()==null && evento==false){
+                obligacionCalendario.setIdObligacionCalendario(iUtilsService.valorSecuencia("PAR_ENTIDAD_SEC"));
+            }
+            obligacionCalendario.setCodObligacion(parObligacion);
+            obligacionCalendario.setFechaBitacora(fechaBitacora);
+            obligacionCalendario.setRegistroBitacora(REGISTRO_BITACORA);
+            ParObligacionCalendario ob = iObligacionCalendarioService.saveObligacionCalendario(obligacionCalendario);
+           if(evento==false){
+                listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendario();
+            }
+           limpiar();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void limpiar(){
+        obligacionCalendario=new ParObligacionCalendario();
+        evento=false;
+        codObligacion="";
+        codObligacionForm="";
+    }
+    
+    public void confirmaEliminar(){  
+        try {
+            if(iObligacionCalendarioService.deleteObligacionCalendario(obligacionCalendario)){
+                listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendario();
+                obligacionCalendario=new ParObligacionCalendario();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    } 
 
     /**
      * @return the iObligacionCalendarioService
@@ -73,5 +165,131 @@ public class obligacionCalendarioBean implements Serializable{
      */
     public void setListaObligacionCalendario(List<ParObligacionCalendario> listaObligacionCalendario) {
         this.listaObligacionCalendario = listaObligacionCalendario;
+    }
+
+    /**
+     * @return the obligacionCalendario
+     */
+    public ParObligacionCalendario getObligacionCalendario() {
+        return obligacionCalendario;
+    }
+
+    /**
+     * @param obligacionCalendario the obligacionCalendario to set
+     */
+    public void setObligacionCalendario(ParObligacionCalendario obligacionCalendario) {
+        this.obligacionCalendario = obligacionCalendario;
+    }
+
+    /**
+     * @return the evento
+     */
+    public boolean isEvento() {
+        return evento;
+    }
+
+    /**
+     * @param evento the evento to set
+     */
+    public void setEvento(boolean evento) {
+        this.evento = evento;
+    }
+
+    /**
+     * @return the iUtilsService
+     */
+    public IUtilsService getiUtilsService() {
+        return iUtilsService;
+    }
+
+    /**
+     * @param iUtilsService the iUtilsService to set
+     */
+    public void setiUtilsService(IUtilsService iUtilsService) {
+        this.iUtilsService = iUtilsService;
+    }
+
+    /**
+     * @return the iObligacionService
+     */
+    public IObligacionService getiObligacionService() {
+        return iObligacionService;
+    }
+
+    /**
+     * @param iObligacionService the iObligacionService to set
+     */
+    public void setiObligacionService(IObligacionService iObligacionService) {
+        this.iObligacionService = iObligacionService;
+    }
+//
+//    /**
+//     * @return the listaObligacion
+//     */
+//    public List<SelectItem> getListaObligacion() {
+//        return listaObligacion;
+//    }
+//
+//    /**
+//     * @param listaObligacion the listaObligacion to set
+//     */
+//    public void setListaObligacion(List<SelectItem> listaObligacion) {
+//        this.listaObligacion = listaObligacion;
+//    }
+
+    /**
+     * @return the obligacion
+     */
+    public ParObligacion getObligacion() {
+        return obligacion;
+    }
+
+    /**
+     * @param obligacion the obligacion to set
+     */
+    public void setObligacion(ParObligacion obligacion) {
+        this.obligacion = obligacion;
+    }
+
+    /**
+     * @return the codObligacion
+     */
+    public String getCodObligacion() {
+        return codObligacion;
+    }
+
+    /**
+     * @param codObligacion the codObligacion to set
+     */
+    public void setCodObligacion(String codObligacion) {
+        this.codObligacion = codObligacion;
+    }
+
+    /**
+     * @return the listaObligacion
+     */
+    public List<ParObligacion> getListaObligacion() {
+        return listaObligacion;
+    }
+
+    /**
+     * @param listaObligacion the listaObligacion to set
+     */
+    public void setListaObligacion1(List<ParObligacion> listaObligacion) {
+        this.listaObligacion = listaObligacion;
+    }
+
+    /**
+     * @return the codObligacionForm
+     */
+    public String getCodObligacionForm() {
+        return codObligacionForm;
+    }
+
+    /**
+     * @param codObligacionForm the codObligacionForm to set
+     */
+    public void setCodObligacionForm(String codObligacionForm) {
+        this.codObligacionForm = codObligacionForm;
     }
 }

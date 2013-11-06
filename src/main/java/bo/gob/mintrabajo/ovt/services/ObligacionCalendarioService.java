@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
 import bo.gob.mintrabajo.ovt.entities.ParEntidad;
+import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 import bo.gob.mintrabajo.ovt.repositories.ObligacionCalendarioRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
@@ -30,6 +31,7 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         this.obligacionCalendarioRepository = obligacionCalendarioRepository;
     }
     
+    @Override
     public List<ParObligacionCalendario> listaObligacionCalendario(){
         List<ParObligacionCalendario> lista;
         try {
@@ -41,6 +43,19 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         return lista;
     }
     
+    @Override
+    public List<ParObligacionCalendario> listaObligacionCalendarioPorObligacion(String codObligacion){
+        List<ParObligacionCalendario> lista;
+        try {
+            lista = obligacionCalendarioRepository.findByCodObligacion_CodObligacion(codObligacion);
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
+    }
+    
+    @Override
     public ParObligacionCalendario saveObligacionCalendario(ParObligacionCalendario obligacionCalendario){               
         ParObligacionCalendario parObligacionCalendario;
         try {
@@ -52,6 +67,7 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         return parObligacionCalendario;
     }
     
+    @Override
     public boolean deleteObligacionCalendario(ParObligacionCalendario obligacionCalendario){
         boolean deleted = false;
         try {

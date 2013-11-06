@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2013 lvaldez.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <br/>
+                <h2 class="form-signin-heading">Obligaciones</h2>
+            <br/>
+            <!--  Boton de registro-->
+            <br />
+            <p:commandButton value="Nuevo" onclick="dlgFormObligacion.show();" update=":formObligacion" icon="ui-icon-document-b"/>
+            <br />
+            <!--  Listado de Obligaciones en tabla-->
+            <br/>
+            <p:dataTable id="dataTableObligacion" var="parObligacion" value="#{obligacionBean.listaObligacion}" 
+                         paginator="true" rows="10" sortMode="multiple" widgetVar="obligacionTable" paginatorPosition="bottom"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados">
+                <f:facet name="header">  
+                    Obligaciones Encontradas
+                </f:facet>  
+
+                <p:column sortBy="codigo" headerText="Codigo">    
+                    <h:outputText value="#{parObligacion.codObligacion}" />  
+                </p:column>  
+                
+                <p:column sortBy="descripcion" headerText="Descripción" >   
+                    <h:outputText value="#{parObligacion.descripcion}" />  
+                </p:column>  
+
+                <p:column sortBy="tipoEntidad" headerText="Tipo de entidad">  
+                    <h:outputText value="#{parObligacion.estado}" />  
+                </p:column>
+                <p:column headerText="Acciones">
+                    
+                    <h:form>      
+                        <p:commandButton icon="ui-icon-pencil" title="Editar" onclick="dlgFormObligacion.show()" update=":formObligacion"> 
+                            <f:setPropertyActionListener target="#{obligacionBean.obligacion}" value="#{parObligacion}" />
+                            <f:setPropertyActionListener target="#{obligacionBean.estadoObligacion}" value="#{obligacionBean.obligacion.estado eq 'A'? true : false}" />
+                            <f:setPropertyActionListener target="#{obligacionBean.evento}" value="true" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" title="Eliminar" onclick="confirmation.show()"> 
+                            <f:setPropertyActionListener target="#{obligacionBean.obligacion}" value="#{parObligacion}" />
+                        </p:commandButton>
+
+                    </h:form>
+                </p:column>  
+            </p:dataTable>
+            
+            <p:growl id="messages" showDetail="true" /> 
+             <p:confirmDialog message="Esta seguro de eliminar este registro?"  
+                showEffect="fade" hideEffect="explode"  
+                header="Confirmacion" severity="alert" widgetVar="confirmation">  
+                 <p:commandButton value="Si" update=":messages :dataTableObligacion" oncomplete="confirmation.hide()" actionListener="#{obligacionBean.confirmaEliminar}" />  
+                 <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+            </p:confirmDialog>
+                
+             <!--            Formulario de registro y edicion-->   
+            <p:dialog id="basicDialogMessage" header="Obligacion" widgetVar="dlgFormObligacion" 
+                      width="500" 
+                      resizable="false"
+                      modal="true" >  
+                
+                <p:growl id="growl" />
+                <h:form id="formObligacion">     
+                <h:panelGrid columns="2" cellpadding="5">  
+                    <h:outputLabel for="codigo" value="Codigo de obligacion:" style="font-weight:bold"/>  
+                    <p:inputText id="codigo" value="#{obligacionBean.obligacion.codObligacion}" required="true" requiredMessage="Debe ingresar el codigo de obligacion" maxlength="20" />  
+                    
+                    <h:outputLabel for="descripcion" value="Descripción:" style="font-weight:bold"/>  
+                    <p:inputText id="descripcion" value="#{obligacionBean.obligacion.descripcion}" required="true" requiredMessage="Debe ingresar la descripcion" maxlength="120" />  
+                    
+                    <h:outputLabel for="estado" value="Estado:" style="font-weight:bold"/>  
+                    <p:selectBooleanCheckbox id="estado" value="#{obligacionBean.estadoObligacion}"  />
+                    <p:commandButton value="Guardar" actionListener="#{obligacionBean.guardarModificar}" update=":growl formObligacion :dataTableObligacion" icon="ui-icon-disk"/>
+                    <p:commandButton value="Canselar" actionListener="#{obligacionBean.limpiar}" onclick="dlgFormObligacion.hide();" update="formObligacion" icon="ui-icon-close"/>
+                </h:panelGrid>  
+            </h:form> 
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>

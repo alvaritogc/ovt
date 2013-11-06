@@ -50,6 +50,17 @@ public class ObligacionService implements IObligacionService{
         return lista;
     }
     
+    @Override
+    public ParObligacion obligacionPorCod(String codObligacion){
+        ParObligacion obligacion;
+        try {
+            obligacion = obligacionRepository.findByCodObligacion(codObligacion);
+        } catch (Exception e) {
+            e.printStackTrace();
+            obligacion = null;
+        }
+        return obligacion;
+    }
     
     @Override
     public ParObligacion saveObligacion(ParObligacion obligacion){               
