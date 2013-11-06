@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../template/templateInicio.xhtml">
+    <ui:define name="content">
+
+        <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                  draggable="false" closable="false">
+            <p:graphicImage value="../../images/ajax-loader.gif" />
+        </p:dialog>
+
+
+     <p:tabView id="tabPersonaUnidad">
+
+         <p:tab id="tab1" title="Unidad">
+
+             <p:panel  header="UNIDAD PRINCIPAL">
+
+                 <h:panelGrid  columns="2"  >
+                     <h:panelGrid columns="2">
+                         <h:outputText value="Tipo de empresa:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                         <p:selectOneMenu id="slcOneMenuTipoEmpresa" value="#{personaBean.unidad.tipoEmpresa}"
+                                          tabindex="1"
+                                          style="width: 225px;"
+                                          required="true"
+                                          requiredMessage="El campo Tipo de empresa es obligatorio.">
+                             <f:selectItem itemLabel="---Seleccione una empresa---" itemValue="0" />
+                             <f:selectItems value="#{personaBean.listaTipoEmpresa}" />
+                         </p:selectOneMenu>
+                     </h:panelGrid>
+                     <h:panelGrid columns="2">
+                         <h:outputText value="Tipo de sociedad:"/>
+                         <p:selectOneMenu id="slcOneMenuTipoSociedad" value="#{personaBean.unidad.tipoSociedad}"
+                                          tabindex="2"
+                                          required="true"
+                                          requiredMessage="El campo Tipo de sociedad es obligatorio.">
+                             <f:selectItem itemLabel="---Seleccione una sociedad---" itemValue="0" />
+                             <f:selectItems value="#{personaBean.listaTipoSociedad}" />
+                         </p:selectOneMenu>
+                     </h:panelGrid>
+
+
+                 </h:panelGrid>
+
+                 <h:panelGrid columns="2">
+                     <h:outputText value="Nombre comercial:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                     <p:inputText id="inputTxtNombreComercial" value="#{personaBean.unidad.nombreComercial}"
+                                  style="width: 525px;"
+                                  tabindex="3"
+                                  required="true"
+                                  requiredMessage="El campo Nombre comercial es obligatorio."/>
+                     <h:outputText value="Fecha actividad:&nbsp;&nbsp;&nbsp;"/>
+                     <p:calendar id="fechaActividad" value="#{personaBean.unidad.fechaNacimiento}"
+                                 effect="slideDown" tabindex="4"
+                                 style="width:200px;"
+                                 required="true"
+                                 requiredMessage="El campo Fecha actividad es obligatorio."/>
+                     <h:outputLabel/>
+                     <h:outputLabel/>
+                 </h:panelGrid>
+
+                 <h:panelGrid columns="4" cellpadding="2" columnClasses="colLabel,colInput">
+                     <h:outputText value="Nro. de fundempresa:"/>
+                     <p:inputText id="inputTxtNroFundempresa" value="#{personaBean.unidad.nroFundaempresa}"
+                                  tabindex="5"
+                                  required="true"
+                                  requiredMessage="El campo Nro. de fundempresa es obligatorio."/>
+                     <h:outputText value="Nro. AFP:"/>
+                     <p:inputText id="inputTxtNroAFP" value="#{personaBean.unidad.nroAfp}"
+                                  tabindex="6"
+                                  required="true"
+                                  requiredMessage="El campo Nro. AFP es obligatorio."/>
+                     <h:outputText value="Nro. de Caja de salud:"/>
+                     <p:inputText id="inputTxtNroCajaSalud" value="#{personaBean.unidad.nroCajaSalud}"
+                                  tabindex="7"
+                                  required="true"
+                                  requiredMessage="El campo Nro. de Caja de salud es obligatorio."/>
+                     <h:outputText value="Nro. referencial:"/>
+                     <p:inputText id="inputTxtNroReferencial" value="#{personaBean.unidad.nroReferencial}"
+                                  tabindex="8"/>
+                     <h:outputText value="Nro. otro:"/>
+                     <p:inputText id="inputTxtNroOtro" value="#{personaBean.unidad.nroOtro}"
+                                  tabindex="9"/>
+                     <h:outputLabel/>
+                     <h:outputLabel/>
+                 </h:panelGrid>
+
+                 <h:panelGrid  columns="2" >
+
+                     <h:outputText value="Actividad declarada:&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                     <p:inputTextarea id="txtAreaActividadDeclarada" value="#{personaBean.unidad.actividadDeclarada}"
+                                      rows="5"
+                                      cols="50" autoResize="false"
+                                      style="width: 550px;"
+                                      tabindex="10"
+                                      required="true"
+                                      requiredMessage="El campo Actividad declarada es obligatorio."/>
+                     <h:outputText value="Observaciones:"/>
+                     <p:inputTextarea id="txtAreaObservacion" value="#{personaBean.unidad.observaciones}"
+                                      rows="5"
+                                      cols="50"
+                                      autoResize="false"
+                                      style="width: 550px;"
+                                      tabindex="11"
+                                      required="true"
+                                      requiredMessage="El campo Observaciones es obligatorio."/>
+                 </h:panelGrid>
+
+
+             </p:panel>
+
+
+         </p:tab>
+
+
+         <p:tab id="tab2" title="Actividad economica">
+             <h:panelGrid columns="2">
+                <h:outputText value="Codigo de Actividad economica:"/>
+                <p:selectOneMenu id="slcOneMenuCodActvEconomica" value="#{personaUnidadBean.actividadEconomica.codActividadEconomica}"
+                                tabindex="16">
+                    <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
+                    <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
+                </p:selectOneMenu>
+
+                <h:outputText value="Descripcion:"/>
+                <p:inputTextarea id="txtAreaDescripcionActvEconomica" value="#{personaUnidadBean.actividadEconomica.descripcion}"
+                                rows="5"
+                                cols="50"
+                                autoResize="false"
+                                style="width: 550px;"
+                                tabindex="11"
+                                required="true"
+                                requiredMessage="El campo Descripcion es obligatorio."/>
+
+                <h:outputText value="Codigo de Impuestos:"/>
+                <p:selectOneMenu id="slcOneMenuCodImpuestos" value="#{personaUnidadBean.actividadEconomica.codImpuestos}"
+                              tabindex="16">
+                    <f:selectItem itemLabel="---Seleccione un cod. de impuestos---" itemValue="" />
+                    <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
+                </p:selectOneMenu>
+
+                <h:outputText value="Descripcion del codigo de impuestos:"/>
+                <p:inputTextarea id="txtAreaDescripcionCodImpuestos" value="#{personaUnidadBean.actividadEconomica.descricpionImpuestos}"
+                                  rows="5"
+                                  cols="50"
+                                  autoResize="false"
+                                  style="width: 550px;"
+                                tabindex="11"
+                                required="true"
+                                requiredMessage="El campo Descripcion del codigo de impuestos es obligatorio."/>
+
+             </h:panelGrid>
+         </p:tab>
+
+         <p:tab id="tab3" title="Representante Legal">
+              <h:panelGrid columns="2">
+                  <h:outputText value="Nombre: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                  <p:inputText id="inputTxtNombreRepLegal" value="#{personaUnidadBean.repLegal.nombre}"
+                               style="width: 210px;"
+                               tabindex="3"
+                               required="true"
+                               requiredMessage="El campo Nombre es obligatorio."/>
+
+                  <h:outputText value="Ap. paterno: "/>
+                  <p:inputText id="inputTxtApPaterno" value="#{personaUnidadBean.repLegal.apellidoPaterno}"
+                               style="width: 210px;"
+                               tabindex="3"
+                               required="true"
+                               requiredMessage="El campo Ap. paterno es obligatorio."/>
+
+                  <h:outputText value="Ap. materno: "/>
+                  <p:inputText id="inputTxtApMaterno" value="#{personaUnidadBean.repLegal.apellidoMaterno}"
+                               style="width: 210px;"
+                               tabindex="3"
+                               required="true"
+                               requiredMessage="El campo Ap. materno es obligatorio."/>
+
+                  <h:outputText value="Tipo de identificacion:"/>
+                  <p:selectOneMenu id="slcOneMenuTipoIdentificacion" value="#{personaUnidadBean.repLegal.tipoIdentificacion}"
+                                   tabindex="16">
+                      <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
+                      <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
+                  </p:selectOneMenu>
+
+                  <h:outputText value="Nro. de documento: "/>
+                  <p:inputText id="inputTxtNroDocumento" value="#{personaUnidadBean.repLegal.nroDocumento}"
+                               style="width: 210px;"
+                               tabindex="3"
+                               required="true"
+                               requiredMessage="El campo Ap. materno es obligatorio."/>
+
+                  <h:outputText value="Fecha del documento:&nbsp;&nbsp;&nbsp;"/>
+                  <p:calendar id="calendar" value="#{personaUnidadBean.repLegal.fechaDocumento}"
+                              effect="slideDown" tabindex="4"
+                              style="width:200px;"
+                              required="true"
+                              requiredMessage="El campo Fecha del documento es obligatorio."/>
+
+                  <h:outputText value="Tipo de procedencia:"/>
+                  <p:selectOneMenu id="slcOneMenuTipoProcedencia" value="#{personaUnidadBean.repLegal.tipoProcedencia}"
+                                   tabindex="16">
+                      <f:selectItem itemLabel="---Seleccione una procedencia---" itemValue="" />
+                      <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
+                  </p:selectOneMenu>
+
+              </h:panelGrid>
+         </p:tab>
+
+         <p:tab id="tab4" title="Direccion">
+
+             <h:panelGrid columns="2">
+                   <h:outputText value="Direccion:"/>
+                   <p:inputTextarea id="txtAreaDireccion22" value="#{personaUnidadBean.direccion.direccion}"
+                                    rows="5"
+                                    cols="50"
+                                    autoResize="false"   disabled="true"
+                                    style="width: 550px;"
+                                    tabindex="11"
+                                    required="true"
+                                    requiredMessage="El campo Direccion es obligatorio."/>
+                   <h:outputText value="Tipo de direccion:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                 <h:outputText/>
+               </h:panelGrid>
+
+               <h:panelGrid columns="6">
+                   <h:outputText value="Zona:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                   <h:outputText/>
+
+             <h:outputText value="Piso, Depto u Oficina:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                   <h:outputText/>
+                   <h:outputText value="Cod. localidad:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                   <h:outputText/>
+               </h:panelGrid>
+
+             <h:panelGrid columns="2">
+                 <h:outputText value="Referencia: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                 <p:inputTextarea id="txtAreaReferencia22" value="#{personaUnidadBean.direccion.referencia}"
+                                  rows="5"
+                                  cols="50"
+                                  autoResize="false"  disabled="true"
+                                  style="width: 550px;"
+                                  tabindex="11"
+                                  required="true"
+                                  requiredMessage="El campo Referencia es obligatorio."/>
+             </h:panelGrid>
+
+             <h:panelGrid columns="2">
+                 <h:outputText value="Fax: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                 <h:outputText/>
+             </h:panelGrid>
+
+             <h:panelGrid columns="4">
+                 <h:outputText value="Telefono 1: "/>
+                 <h:outputText/>
+
+                 <h:outputText value="Telefono 2: "/>
+                 <h:outputText/>
+             </h:panelGrid>
+
+             <h:panelGrid columns="4">
+                 <h:outputText value="Celular 1: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                 <h:outputText/>
+
+                 <h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Celular 2: "/>
+                 <h:outputText/>
+             </h:panelGrid>
+
+             <h:panelGrid columns="4">
+                 <h:outputText value="Correo electronico 1:"/>
+                 <h:outputText/>
+
+                 <h:outputText value="Correo electronico 2: "/>
+                 <h:outputText/>
+             </h:panelGrid>
+
+
+         </p:tab>
+
+     </p:tabView>
+
+
+    <h:form id="frmBucarPersona">
+        <p:growl showDetail="true" id="growl" />
+
+           <h:panelGrid columns="2" id="pnlGridDoble" >
+
+           </h:panelGrid>
+
+
+            <br/>
+            <p:commandButton value="Agregar Unidad o Sucursal"
+                             action="#{personaBean.registrar}"
+                             tabindex="21"
+                             process="@form"
+                             update="growl"
+                    />
+        <p:commandButton
+                            value="Actividad declarada"
+                            onclick="PF('dlg').show()">
+                 </p:commandButton>
+
+        <p:commandButton
+                value="Direccion"
+                onclick="PF('dlgDireccion').show()">
+        </p:commandButton>
+
+        <p:commandButton
+                value="Representante legal"
+                onclick="PF('dlgRepLegal').show()">
+        </p:commandButton>
+
+        </h:form>
+
+        <p:dialog id="dialogRepLegal" header="Representante legal" widgetVar="dlgRepLegal" resizable="false">
+
+            <ui:include src="../persona/include/representanteLegal.xhtml"/>
+        </p:dialog>
+
+
+        <p:dialog id="dialogDireccion" header="Direccion" widgetVar="dlgDireccion" resizable="false">
+            <ui:include src="../persona/include/direccion.xhtml"/>
+
+        </p:dialog>
+
+        <p:dialog id="dialog" header="Login" widgetVar="dlg" resizable="false">
+            <ui:include src="../persona/include/actividadDeclarada.xhtml"/>
+        </p:dialog>
+
+        <p:dataGrid id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
+            var="unidad"
+            columns="2"
+            rows="5"  paginatorPosition="bottom"
+            paginator="true" >
+    <p:panel header="#{unidad.nombreComercial}" style="text-align: center">
+        <h:panelGrid  columns="2"  >
+            <h:panelGrid columns="2">
+                <h:outputText value="Tipo de empresa:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                <h:outputText value="#{unidad.tipoEmpresa}"/>
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+                <h:outputText value="Tipo de sociedad:"/>
+                <h:outputText value="#{unidad.tipoSociedad}"/>
+            </h:panelGrid>
+
+
+        </h:panelGrid>
+
+        <h:panelGrid columns="2">
+
+            <h:outputText value="Fecha actividad:&nbsp;&nbsp;&nbsp;"/>
+            <h:outputText value="#{unidad.fechaNacimiento}"/>
+            <h:outputLabel/>
+            <h:outputLabel/>
+        </h:panelGrid>
+
+        <h:panelGrid columns="4" cellpadding="2" columnClasses="colLabel,colInput">
+            <h:outputText value="Nro. de fundempresa:"/>
+            <h:outputText value="#{unidad.nroFundaempresa}"/>
+            <h:outputText value="Nro. AFP:"/>
+            <h:outputText value="#{unidad.nroAfp}"/>
+            <h:outputText value="Nro. de Caja de salud:"/>
+            <h:outputText value="#{unidad.nroCajaSalud}"/>
+            <h:outputText value="Nro. referencial:"/>
+            <h:outputText value="#{unidad.nroReferencial}"/>
+            <h:outputText value="Nro. otro:"/>
+            <h:outputText value="#{unidad.nroOtro}"/>
+            <h:outputLabel/>
+            <h:outputLabel/>
+        </h:panelGrid>
+
+        <h:panelGrid  columns="2" >
+
+            <h:outputText value="Actividad declarada:&nbsp;&nbsp;&nbsp;&nbsp;"/>
+            <p:inputTextarea id="txtAreaActvDeclarada" value="#{personaBean.unidad.actividadDeclarada}"
+                             rows="5"   disabled="true"
+                             cols="50" autoResize="false"
+                             style="width: 550px;"
+                             tabindex="10"
+                             required="true"
+                             requiredMessage="El campo Actividad declarada es obligatorio."/>
+            <h:outputText value="Observaciones:"/>
+            <p:inputTextarea id="txtAreaObsS" value="#{personaBean.unidad.observaciones}"
+                             rows="5"  disabled="true"
+                             cols="50"
+                             autoResize="false"
+                             style="width: 550px;"
+                             tabindex="11"
+                             required="true"
+                             requiredMessage="El campo Observaciones es obligatorio."/>
+        </h:panelGrid>
+
+    </p:panel>
+
+</p:dataGrid>
+
+
+
+    </ui:define>
+</ui:composition>
+</html>

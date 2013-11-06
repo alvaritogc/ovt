@@ -103,18 +103,8 @@ public class PersonaBuscarBean implements Serializable{
         externalContext.redirect("registroPersona.xhtml");
     }
     public void cargar(){
-        System.out.println("======>>> CARGAR: ");
-        System.out.println("======>>> CARGAR: ");
-        System.out.println("======>>> CARGAR: ");
-        Map<String,PerPersona> mapa=new HashMap<String,PerPersona>();
         listaPersona=  iPersonaService. buscarPorNroNombre("1579592010","SUSANA HEREDIA PRADO");
-      //  mapa=  iPersonaService. buscarPorNroNombre("1579592010","SUSANA HEREDIA PRADO");
 
-        System.out.println("======>>> RESULTADO: ");
-        System.out.println("======>>> RESULTADOS: " + String.valueOf(mapa.size()));
-        System.out.println("======>>> RESULTADOS: "+String.valueOf(mapa.size()));
-      //  System.out.println("======>>> RESULTADO: "+String.valueOf(listaPersona.size()));
-        //System.out.println("======>>> RESULTADO: "+String.valueOf(listaPersona.size()));
     }
 
    public void limpiar(){
