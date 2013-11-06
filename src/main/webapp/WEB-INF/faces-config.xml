@@ -20,19 +20,26 @@
         <navigation-case>
             <from-outcome>irInicio</from-outcome>
             <to-view-id>/pages/inicio.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
         </navigation-case>
         <navigation-case>
             <from-outcome>irEscritorio</from-outcome>
             <to-view-id>/pages/escritorio.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
         </navigation-case>
         <navigation-case>
             <from-outcome>irEmpleadorBusqueda</from-outcome>
             <to-view-id>/pages/empleadorBusqueda.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
         </navigation-case>
         <navigation-case>
             <from-outcome>irRegistro</from-outcome>
             <to-view-id>/pages/persona/registroPersona.xhtml</to-view-id>
-            
+            <redirect include-view-params="false">
+            </redirect>
         </navigation-case>
     </navigation-rule>
 
