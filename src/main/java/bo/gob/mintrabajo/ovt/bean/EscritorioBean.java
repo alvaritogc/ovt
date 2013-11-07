@@ -61,10 +61,6 @@ public class EscritorioBean {
     //
     private boolean esInterno;
     //
-    private boolean mostrarFacesMessages;
-    private boolean detenerFacesMessages;
-    private String rutaContenidoFacesMessages;
-    //
     private DocDocumento docDocumento;
     private DocPlanilla docPlanilla;
     private ParDocumentoEstado parDocumentoEstado;
@@ -89,24 +85,6 @@ public class EscritorioBean {
             esInterno = false;
         }
         cargar();
-        detenerFacesMessages = false;
-        try{
-            ParMensajeApp mensaje = iMensajeAppService.buscarPorRecurso("Presentacion DDJJ");
-            rutaContenidoFacesMessages="file://"+mensaje.getReferencia();
-            mostrarFacesMessages=true;
-        }catch(Exception e){
-            System.out.println("Error al encontrar el recurso");
-            rutaContenidoFacesMessages="/pages/util/default.xhtml";
-            mostrarFacesMessages=false;
-        }
-    }
-
-    public void abrirPanel() {
-        if(mostrarFacesMessages){
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("dlgMensaje.show()");
-        }
-        detenerFacesMessages = true;
     }
 
     public void cargar() {
@@ -312,14 +290,6 @@ public class EscritorioBean {
         this.docDocumento = docDocumento;
     }
 
-    public boolean isDetenerFacesMessages() {
-        return detenerFacesMessages;
-    }
-
-    public void setDetenerFacesMessages(boolean detenerFacesMessages) {
-        this.detenerFacesMessages = detenerFacesMessages;
-    }
-
     public PerPersona getEmpleador() {
         return empleador;
     }
@@ -342,14 +312,6 @@ public class EscritorioBean {
 
     public void setiMensajeAppService(IMensajeAppService iMensajeAppService) {
         this.iMensajeAppService = iMensajeAppService;
-    }
-
-    public String getRutaContenidoFacesMessages() {
-        return rutaContenidoFacesMessages;
-    }
-
-    public void setRutaContenidoFacesMessages(String rutaContenidoFacesMessages) {
-        this.rutaContenidoFacesMessages = rutaContenidoFacesMessages;
     }
 
     public DocPlanilla getDocPlanilla() {

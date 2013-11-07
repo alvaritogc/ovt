@@ -7,15 +7,8 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../pages/template/templateInicio.xhtml">
         <ui:define name="content">
-            <p:dialog id="basicDialogMessage" header="Información" widgetVar="dlgMensaje" resizable="false">  
-                <ui:include src="#{escritorioBean.rutaContenidoFacesMessages}"/>
-            </p:dialog>  
 
             <h:form id="idEscritorio">
-                <p:poll interval="1"   id="idPoll"
-                        listener="#{escritorioBean.abrirPanel}"
-                        update=":idEscritorio:idPoll" 
-                        stop="#{escritorioBean.detenerFacesMessages}"/>
 
                 <h1>#{escritorioBean.empleador.nombreRazonSocial}</h1>
                 <p:panelGrid columns="2" style="border-style: hidden;">
