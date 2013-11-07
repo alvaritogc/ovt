@@ -62,10 +62,16 @@ Copyright 2013 lvaldez.
                  <p:commandButton value="Si" update=":messages :dataTableObligacion" oncomplete="confirmation.hide()" actionListener="#{obligacionBean.confirmaEliminar}" />  
                  <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
             </p:confirmDialog>
+             
+            <p:dialog id="modalDialog" header="Atencion" widgetVar="dlgMensaje" width="350" modal="true">  
+                <span class="ui-icon ui-icon-alert"></span>
+                <h:outputText value="El registro esta siendo usado en Obligacion Calendario, por lo que no se puede eliminar." />  
+                <!---->
+            </p:dialog>
                 
              <!--            Formulario de registro y edicion-->   
             <p:dialog id="basicDialogMessage" header="Obligacion" widgetVar="dlgFormObligacion" 
-                      width="500" 
+                      width="500" closable="false"
                       resizable="false"
                       modal="true" >  
                 

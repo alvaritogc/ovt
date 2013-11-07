@@ -73,6 +73,9 @@ public class obligacionBean implements Serializable{
                 limpiar();
             }
         } catch (Exception e) {
+            System.out.println("====> ERROR al eliminar obligacion");
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dlgMensaje.show()");
             e.printStackTrace();
         }
     } 
