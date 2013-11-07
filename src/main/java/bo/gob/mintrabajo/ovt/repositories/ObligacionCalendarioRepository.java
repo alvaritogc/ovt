@@ -22,5 +22,11 @@ public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObl
     List<ParObligacionCalendario> buscarPorFecha(@Param("fecha") Date fechaActual);
     
     List<ParObligacionCalendario> findByCodObligacion_CodObligacion(String codObligacion);
-  
+    @Query(
+            "   select a "
+                    + " from ParObligacionCalendario a"
+                    + " order by a.codObligacion.descripcion asc "
+    )
+    List<ParObligacionCalendario> listaPorOrdenDescripcionDeObligacion();
+
 }

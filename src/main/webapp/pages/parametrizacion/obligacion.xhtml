@@ -73,7 +73,8 @@ Copyright 2013 lvaldez.
                 <h:form id="formObligacion">     
                 <h:panelGrid columns="2" cellpadding="5">  
                     <h:outputLabel for="codigo" value="Codigo de obligacion:" style="font-weight:bold"/>  
-                    <p:inputText id="codigo" value="#{obligacionBean.obligacion.codObligacion}" required="true" requiredMessage="Debe ingresar el codigo de obligacion" maxlength="20" />  
+                    <p:inputText id="codigo" value="#{obligacionBean.obligacion.codObligacion}" required="true" requiredMessage="Debe ingresar el codigo de obligacion" maxlength="20" 
+                                 disabled="#{obligacionBean.evento? true : false}"/>  
                     
                     <h:outputLabel for="descripcion" value="Descripción:" style="font-weight:bold"/>  
                     <p:inputText id="descripcion" value="#{obligacionBean.obligacion.descripcion}" required="true" requiredMessage="Debe ingresar la descripcion" maxlength="120" />  

@@ -20,6 +20,7 @@ import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import java.util.List;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  *
@@ -28,4 +29,10 @@ import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 @OpenJpaSettings
 public interface ObligacionRepository extends OpenJpaRepository<ParObligacion, Long>{
     ParObligacion findByCodObligacion(String codObligacion);
+    @Query(
+            "   select a "
+                    + " from ParObligacion a"
+                    + " order by a.descripcion asc "
+    )
+    List<ParObligacion> listaPorOrdenDescripcionDeObligacion();
 }
