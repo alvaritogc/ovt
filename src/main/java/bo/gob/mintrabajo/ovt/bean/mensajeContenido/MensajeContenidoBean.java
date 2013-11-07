@@ -61,17 +61,17 @@ public class MensajeContenidoBean {
     
     public void cargarParametro(){
         try {
-            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p") == null) {
+            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("rec") == null) {
                 idRecursoString = "1";
                 return;
             }
-            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p") != null) {
-                idRecursoString = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p");
+            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("rec") != null) {
+                idRecursoString = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("rec");
                 return;
             }
         } catch (Exception e) {
             idRecursoString = "1";
-            System.out.println("Error al cargar p: " + e.getMessage());
+            System.out.println("Error al cargar en parametro de la url: " + e.getMessage());
             return;
         }
         
