@@ -85,5 +85,17 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         List<ParObligacionCalendario> tmpLista = obligacionCalendarioRepository.buscarPorFecha(new Timestamp(new Date().getTime()));
         return tmpLista;
     }
+    
+    @Override
+    public List<ParObligacionCalendario> listaObligacionCalendarioOrdenadoPorDescripcionDeObligacion(){
+        List<ParObligacionCalendario> lista;
+        try {
+            lista = obligacionCalendarioRepository.listaPorOrdenDescripcionDeObligacion();
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
+    }
 
 }

@@ -40,8 +40,8 @@ public class EntidadBean implements Serializable{
     @ManagedProperty(value = "#{utilsService}")
     private IUtilsService iUtilsService;
     
-    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-    private Integer idUsuario;
+     private HttpSession session;
+    private Long idUsuario;
     
     private List<ParEntidad> listaEntidad;
     
@@ -55,14 +55,23 @@ public class EntidadBean implements Serializable{
 
     @PostConstruct
     public void ini() {
+        idUsuario = null;
+        try {
+            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            idUsuario = (Long) session.getAttribute("idUsuario");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         listaEntidad =new ArrayList<ParEntidad>();
-        listaEntidad= iEntidadService.listaEntidad();
+        //listaEntidad= iEntidadService.listaEntidad();
+        listaEntidad= iEntidadService.listaEntidadPorOrden();
     }
     
     public void confirmaEliminar(){  
         try {
             if(iEntidadService.deleteEntidad(entidad)){
-                listaEntidad= iEntidadService.listaEntidad();
+                //listaEntidad= iEntidadService.listaEntidad();
+                listaEntidad= iEntidadService.listaEntidadPorOrden();
                 entidad=new ParEntidad();
             }
         } catch (Exception e) {
@@ -77,8 +86,8 @@ public class EntidadBean implements Serializable{
         if(entidad.getTipoEntidad().isEmpty()){return;}
         context.execute("dlgFormEntidad.hide();");
         
-        final String  REGISTRO_BITACORA="OVT";
-        //final String  REGISTRO_BITACORA=idUsuario.toString();
+        //final String  REGISTRO_BITACORA="OVT";
+        final String  REGISTRO_BITACORA=idUsuario.toString();        
         Date fechaBitacora = new Date();
         try {
             if(entidad.getIdEntidad()==null && evento==false){
@@ -88,13 +97,8 @@ public class EntidadBean implements Serializable{
             entidad.setFechaBitacora(fechaBitacora);
             entidad.setRegistroBitacora(REGISTRO_BITACORA);
             ParEntidad pe = iEntidadService.saveEntidad(entidad);
-            //listaEntidad.remove(entidad);
-            //listaEntidad.add(pe);
-           if(evento==false){
-                listaEntidad= iEntidadService.listaEntidad();
-            }
-//            entidad=new ParEntidad();
-//            evento=false;
+                //listaEntidad= iEntidadService.listaEntidad();
+               
            limpiar();
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,6 +106,7 @@ public class EntidadBean implements Serializable{
     }
     
     public void limpiar(){
+        listaEntidad= iEntidadService.listaEntidadPorOrden();
         entidad=new ParEntidad();
         evento=false;
     }

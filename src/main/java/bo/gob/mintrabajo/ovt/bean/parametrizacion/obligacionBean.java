@@ -40,8 +40,8 @@ public class obligacionBean implements Serializable{
     @ManagedProperty(value = "#{obligacionService}")
     private IObligacionService iObligacionService;
     
-    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-    private Integer idUsuario;
+    private HttpSession session;
+    private Long idUsuario;
     
     private List<ParObligacion> listaObligacion;
     
@@ -52,15 +52,24 @@ public class obligacionBean implements Serializable{
      
     @PostConstruct
     public void ini() {
+        idUsuario = null;
+        try {
+            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            idUsuario = (Long) session.getAttribute("idUsuario");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         listaObligacion =new ArrayList<ParObligacion>();
-        listaObligacion= iObligacionService.listaObligacion();
+        //listaObligacion= iObligacionService.listaObligacion();
+        listaObligacion= iObligacionService.listaObligacionPorOrden();
         limpiar();
     }
     
     public void confirmaEliminar(){  
         try {
             if(iObligacionService.deleteObligacion(obligacion)){
-                listaObligacion= iObligacionService.listaObligacion();
+                //listaObligacion= iObligacionService.listaObligacion();
+                listaObligacion= iObligacionService.listaObligacionPorOrden();
                 limpiar();
             }
         } catch (Exception e) {
@@ -74,8 +83,8 @@ public class obligacionBean implements Serializable{
         if(obligacion.getDescripcion().isEmpty()){ return;}
         context.execute("dlgFormObligacion.hide();");
         
-        final String  REGISTRO_BITACORA="OVT";
-        //final String  REGISTRO_BITACORA=idUsuario.toString();
+        //final String  REGISTRO_BITACORA="OVT";
+        final String  REGISTRO_BITACORA=idUsuario.toString();
         Date fechaBitacora = new Date();
         try {
             if(estadoObligacion==true){obligacion.setEstado("A");}
@@ -83,9 +92,7 @@ public class obligacionBean implements Serializable{
             obligacion.setFechaBitacora(fechaBitacora);
             obligacion.setRegistroBitacora(REGISTRO_BITACORA);
             iObligacionService.saveObligacion(obligacion);
-           if(evento==false){
-                listaObligacion= iObligacionService.listaObligacion();
-            }
+                //listaObligacion= iObligacionService.listaObligacion();
            limpiar();
         } catch (Exception e) {
             e.printStackTrace();                    
@@ -93,6 +100,7 @@ public class obligacionBean implements Serializable{
     }
     
     public void limpiar(){
+        listaObligacion= iObligacionService.listaObligacionPorOrden();
         obligacion=new ParObligacion();
         evento=false;
         estadoObligacion=false;

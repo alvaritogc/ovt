@@ -9,4 +9,5 @@ public interface IObligacionCalendarioService {
     public ParObligacionCalendario saveObligacionCalendario(ParObligacionCalendario obligacionCalendario);
     public boolean deleteObligacionCalendario(ParObligacionCalendario obligacionCalendario);
     public List<ParObligacionCalendario> listaObligacionCalendarioPorObligacion(String codObligacion);
+    public List<ParObligacionCalendario> listaObligacionCalendarioOrdenadoPorDescripcionDeObligacion();
 }
