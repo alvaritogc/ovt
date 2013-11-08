@@ -8,112 +8,126 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../../pages/template/templateInicio.xhtml">
         <ui:define name="content">
-            <br/>
-                <h1>Obligacion Calendario</h1>
-            <br/>
-            <!--  Formulario de busqueda-->
-            <h:outputLabel for="obligacion" value="Obligacion:" style="font-weight:bold"/>  
-            <p:selectOneMenu id="obligacion" value="#{obligacionCalendarioBean.codObligacion}">  
-                <f:selectItem itemLabel="---Seleccione obligacion---" itemValue="" />  
-                <f:selectItems value="#{obligacionCalendarioBean.listaObligacion}"/>
-                <p:ajax update="dataTableCalendario"  
-                        listener="#{obligacionCalendarioBean.listarObligacionCalendario}" />
-            </p:selectOneMenu>
-            
-            <br />
-            <!--  Listado de obligacion calendario en tabla-->
-            <br/>
-            <p:dataTable id="dataTableCalendario" var="calendario" value="#{obligacionCalendarioBean.listaObligacionCalendario}" 
-                         paginator="true" rows="10" sortMode="multiple" widgetVar="calendarioTable" paginatorPosition="top"
-                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados">
-                <f:facet name="header">  
-                    Calendario de obligaciones Encontradas
-                </f:facet>  
+            <h:form id="tablaCalendario">
+                <br/>
+                    <h2 class="form-signin-heading">Obligacion Calendario</h2>
+                <br/>
                 
-                <p:column sortBy="codObligacion.descripcion" headerText="Descripcion obligacion" >   
-                    <h:outputText value="#{calendario.codObligacion.descripcion}" />  
-                </p:column>
+                <p:commandButton value="Nuevo" onclick="dlgFormObligacionCalendario.show();" actionListener="#{obligacionCalendarioBean.limpiar}" icon="ui-icon-document-b"/>
+                <br />
+                <br />
+                <!--  Busqueda segun obligacion -->
+                <h:outputLabel for="obligacion" value="Obligacion:" style="font-weight:bold"/>  
+                <p:selectOneMenu id="obligacion" value="#{obligacionCalendarioBean.codObligacion}">  
+                    <f:selectItem itemLabel="---Seleccione obligacion---" itemValue=" " />  
+                    <f:selectItems value="#{obligacionCalendarioBean.listaObligacion}" var="ob" itemLabel="#{ob.descripcion}" itemValue="#{ob.codObligacion}"/>
+                    <p:ajax update="dataTableCalendario"  
+                            listener="#{obligacionCalendarioBean.listarObligacionCalendario}" />
+                </p:selectOneMenu>
+                
+                <br />
+                
+                <!--  Listado de obligacion calendario en tabla-->
+                <br/>
 
-                <p:column sortBy="tipoCalendario" headerText="Tipo calendario" >   
-                    <h:outputText value="#{calendario.tipoCalendario}" />  
-                </p:column>  
+                <p:dataTable id="dataTableCalendario" var="calendario" value="#{obligacionCalendarioBean.listaObligacionCalendario}" 
+                             paginator="true" rows="10" sortMode="multiple" widgetVar="calendarioTable" paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados">
+                    <f:facet name="header">  
+                        Calendario de obligaciones Encontradas
+                    </f:facet>  
 
-                <p:column sortBy="gestion" headerText="Gestion">    
-                    <h:outputText value="#{calendario.gestion}" />  
-                </p:column>  
-                
-                <p:column sortBy="fechaDesde" headerText="Fecha desde">  
-                    <h:outputText value="#{calendario.fechaDesde}" ><f:convertDateTime pattern="d-M-yyyy"/></h:outputText>
-                </p:column>
-                
-                <p:column sortBy="fechaHasta" headerText="Fecha hasta">  
-                    <h:outputText value="#{calendario.fechaHasta}" ><f:convertDateTime pattern="d-M-yyyy"/></h:outputText>
-                </p:column>
-                
-                <p:column sortBy="fechaPlazo" headerText="Fecha plazo">  
-                    <h:outputText value="#{calendario.fechaPlazo}" ><f:convertDateTime pattern="d-M-yyyy"/></h:outputText>  
-                </p:column>
-                
-                <p:column headerText="Acciones">
+                    <p:column sortBy="codObligacion.descripcion" headerText="Descripcion obligacion" >   
+                        <h:outputText value="#{calendario.codObligacion.descripcion}" />  
+                    </p:column>
+
+                    <p:column sortBy="tipoCalendario" headerText="Tipo calendario" >   
+                        <h:outputText value="#{calendario.tipoCalendario}" />  
+                    </p:column>  
+
+                    <p:column sortBy="gestion" headerText="Gestion">    
+                        <h:outputText value="#{calendario.gestion}" />  
+                    </p:column>  
+
+                    <p:column sortBy="fechaDesde" headerText="Fecha desde">  
+                        <h:outputText value="#{calendario.fechaDesde}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+                    </p:column>
+
+                    <p:column sortBy="fechaHasta" headerText="Fecha hasta">  
+                        <h:outputText value="#{calendario.fechaHasta}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+                    </p:column>
+
+                    <p:column sortBy="fechaPlazo" headerText="Fecha plazo">  
+                        <h:outputText value="#{calendario.fechaPlazo}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>  
+                    </p:column>
                     
-                    <h:form>      
-                        <p:commandLink value="Modificar" oncomplete="dlgFormObligacionCalendario.show();" style="margin-right:20px;" update=":formCalendario">  
+                    <p:column headerText="Acciones">
+                    
+                        <p:commandButton icon="ui-icon-pencil" title="Editar" oncomplete="dlgFormObligacionCalendario.show()" update=":basicDialogMessage"> 
                             <f:setPropertyActionListener target="#{obligacionCalendarioBean.obligacionCalendario}" value="#{calendario}" />
+                            <f:setPropertyActionListener target="#{obligacionCalendarioBean.codObligacionForm}" value="#{obligacionCalendarioBean.obligacionCalendario.codObligacion.codObligacion}" />
                             <f:setPropertyActionListener target="#{obligacionCalendarioBean.evento}" value="true" />
-                        </p:commandLink>
-                        
-                        <p:commandLink value="Eliminar" style="margin-right:20px;" onclick="confirmation.show()">   
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" title="Eliminar" onclick="confirmation.show()"> 
                             <f:setPropertyActionListener target="#{obligacionCalendarioBean.obligacionCalendario}" value="#{calendario}" />
-                        </p:commandLink>
+                        </p:commandButton>
+                        
+                    </p:column> 
 
-                    </h:form>
-                </p:column>  
-            </p:dataTable>
-            
-            <br />
-            <p:commandButton value="Nuevo" onclick="dlgFormObligacionCalendario.show();" update=""/>
-            
-            <p:growl id="messages" showDetail="true" /> 
-             <p:confirmDialog message="Esta seguro de eliminar este registro?"  
-                showEffect="fade" hideEffect="explode"  
-                header="Confirmacion" severity="alert" widgetVar="confirmation">  
-                 <p:commandButton value="Si" update=":messages :dataTableCalendario" oncomplete="confirmation.hide()" actionListener="#{obligacionCalendarioBean.confirmaEliminar}" />  
-                 <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
-            </p:confirmDialog>
-            
-             <!--            Formulario de registro y edicion-->   
-            <p:dialog id="basicDialogMessage" header="Obligacion calendario" widgetVar="dlgFormObligacionCalendario" 
-                      width="500" 
-                      resizable="false"
-                      modal="true" >  
+                </p:dataTable>
                 
-                <p:growl id="growl" />
-                <h:form id="formCalendario">     
-                <h:panelGrid columns="2" cellpadding="5">  
-                    
-                    <h:outputLabel for="tipoCalendario" value="Tipo calendario:" style="font-weight:bold"/>  
-                    <p:inputText id="tipoCalendario" value="#{obligacionCalendarioBean.obligacionCalendario.tipoCalendario}" required="true" requiredMessage="Debe ingresar el Tipo de calendario" maxlength="15" />  
-                    
-                    <h:outputLabel for="gestion" value="Gestion:" style="font-weight:bold"/>  
-                    <p:inputText id="gestion" value="#{obligacionCalendarioBean.obligacionCalendario.gestion}" required="true" requiredMessage="Debe ingresar la Gestion" maxlength="20"/>
-                    
-                    <h:outputLabel for="fechaDesde" value="Fecha desde:" style="font-weight:bold"/>  
-                    <p:calendar id="fechaDesde" value="#{obligacionCalendarioBean.obligacionCalendario.fechaDesde}" showOn="button" required="true" requiredMessage="Debe ingresar la Fecha desde" /> 
-                    
-                    <h:outputLabel for="fechaHasta" value="Fecha hasta:" style="font-weight:bold"/>  
-                    <p:calendar id="fechaHasta" value="#{obligacionCalendarioBean.obligacionCalendario.fechaHasta}" showOn="button" required="true" requiredMessage="Debe ingresar la Fecha hasta" /> 
-                    
-                    <h:outputLabel for="fechaPlazo" value="Fecha plazo:" style="font-weight:bold"/>  
-                    <p:calendar id="fechaPlazo" value="#{obligacionCalendarioBean.obligacionCalendario.fechaPlazo}" showOn="button" required="true" requiredMessage="Debe ingresar la Fecha plazo" /> 
-                    
-                    <p:commandButton value="Guardar" actionListener="#{obligacionCalendarioBean.guardarModificar}" update=":growl formCalendario :dataTableCalendario"/>
-                    <p:commandButton value="Canselar" actionListener="#{obligacionCalendarioBean.limpiar}" onclick="dlgFormObligacionCalendario.hide();" update="formCalendario" />
-                    
-                </h:panelGrid>  
-            </h:form> 
-            </p:dialog>
-
+<!--             Mensaje de confirmacion de eliminacion -->
+                <p:growl id="messages" showDetail="true" /> 
+                <p:confirmDialog message="Esta seguro de eliminar este registro?"  
+                   showEffect="fade" hideEffect="explode"  
+                   header="Confirmacion" severity="alert" widgetVar="confirmation">  
+                    <p:commandButton value="Si" update="messages tablaCalendario" oncomplete="confirmation.hide()" actionListener="#{obligacionCalendarioBean.confirmaEliminar}" />  
+                    <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+               </p:confirmDialog>
+                
+            </h:form>
             
+                <!--            Formulario de registro y edicion-->   
+                <p:dialog id="basicDialogMessage" header="Obligacion calendario" widgetVar="dlgFormObligacionCalendario" 
+                          width="400" closable="false" 
+                          resizable="false"
+                          modal="true" >  
+                    <p:growl id="growl" />
+                    <h:form id="formCalendario">
+                    <h:panelGrid columns="2" cellpadding="5">  
+
+                        <h:outputLabel for="obligacionForm" value="Obligacion:" style="font-weight:bold"/>  
+                        <p:selectOneMenu id="obligacionForm" value="#{obligacionCalendarioBean.codObligacionForm}" required="true" requiredMessage="Debe eleccionar una obligacion">  
+                            <f:selectItem itemLabel="---Seleccione obligacion---" itemValue="" />
+                            <f:selectItems value="#{obligacionCalendarioBean.listaObligacion}" var="ob" itemLabel="#{ob.descripcion}" itemValue="#{ob.codObligacion}"/>
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel for="tipoCalendario" value="Tipo calendario:" style="font-weight:bold"/>  
+                        <p:inputText id="tipoCalendario" value="#{obligacionCalendarioBean.obligacionCalendario.tipoCalendario}" required="true" 
+                                     requiredMessage="Debe ingresar el Tipo de calendario" maxlength="15" style="text-transform: uppercase;" />  
+
+                        <h:outputLabel for="gestion" value="Gestion:" style="font-weight:bold"/>  
+                        <p:inputText id="gestion" value="#{obligacionCalendarioBean.obligacionCalendario.gestion}" required="true" 
+                                     requiredMessage="Debe ingresar la Gestion" maxlength="20" style="text-transform: uppercase;"/>
+
+                        <h:outputLabel for="fechaDesde" value="Fecha desde:" style="font-weight:bold"/>  
+                        <p:calendar id="fechaDesde" value="#{obligacionCalendarioBean.obligacionCalendario.fechaDesde}" showOn="button" required="true" 
+                                    requiredMessage="Debe ingresar la Fecha desde" /> 
+
+                        <h:outputLabel for="fechaHasta" value="Fecha hasta:" style="font-weight:bold"/>  
+                        <p:calendar id="fechaHasta" value="#{obligacionCalendarioBean.obligacionCalendario.fechaHasta}" showOn="button" required="true" 
+                                    requiredMessage="Debe ingresar la Fecha hasta" /> 
+
+                        <h:outputLabel for="fechaPlazo" value="Fecha plazo:" style="font-weight:bold"/>  
+                        <p:calendar id="fechaPlazo" value="#{obligacionCalendarioBean.obligacionCalendario.fechaPlazo}" showOn="button" required="true" 
+                                    requiredMessage="Debe ingresar la Fecha plazo" /> 
+
+                        <p:commandButton value="Guardar" actionListener="#{obligacionCalendarioBean.guardarModificar}" update=":growl formCalendario :tablaCalendario" icon="ui-icon-disk"/>
+                        <p:commandButton value="Canselar" actionListener="#{obligacionCalendarioBean.limpiar}" onclick="dlgFormObligacionCalendario.hide();" update="formCalendario" icon="ui-icon-close"/>
+
+                    </h:panelGrid> 
+                    </h:form>
+                </p:dialog>
         </ui:define>
     </ui:composition>
 </html>

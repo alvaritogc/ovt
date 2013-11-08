@@ -113,6 +113,10 @@ public class TemplateInicioBean implements Serializable {
             DefaultMenuItem item = new DefaultMenuItem("Salir");
             item.setIcon("ui-icon-arrowthickstop-1-e");
             item.setCommand("#{templateInicioBean.logout}");
+
+            //reo
+            //TODO controlar DDJJ
+
             model.addElement(item);
         }
         cargarRercursoContenido();

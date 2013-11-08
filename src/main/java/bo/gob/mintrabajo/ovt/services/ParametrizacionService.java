@@ -3,12 +3,15 @@ package bo.gob.mintrabajo.ovt.services;
 import bo.gob.mintrabajo.ovt.api.IParametrizacionService;
 import bo.gob.mintrabajo.ovt.entities.ParParametrizacion;
 import bo.gob.mintrabajo.ovt.repositories.ParametrizacionRepository;
+import com.google.common.base.Strings;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,6 +36,18 @@ public class ParametrizacionService implements IParametrizacionService {
 
     public ParParametrizacion obtenerParametro(String idParametro, String valor){
         return parametrizacionRepository.obtenerParametro(idParametro, valor);
+    }
+
+    public List<ParParametrizacion> obtenerParametroLista(){
+        return parametrizacionRepository.findAll();
+    }
+
+    public ParParametrizacion editarGuardarParametro(ParParametrizacion parParametrizacion){
+        if (Strings.isNullOrEmpty(parParametrizacion.getRegistroBitacora())) {
+            parParametrizacion.setFechaBitacora(new Date());
+            parParametrizacion.setRegistroBitacora("ROE");
+        }
+        return parametrizacionRepository.save(parParametrizacion);
     }
 
 

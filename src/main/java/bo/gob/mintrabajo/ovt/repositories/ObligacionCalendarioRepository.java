@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.repositories;
 
+import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
@@ -19,5 +20,13 @@ public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObl
                     + " :fecha between a.fechaHasta and a.fechaPlazo "
     )
     List<ParObligacionCalendario> buscarPorFecha(@Param("fecha") Date fechaActual);
-  
+    
+    List<ParObligacionCalendario> findByCodObligacion_CodObligacion(String codObligacion);
+    @Query(
+            "   select a "
+                    + " from ParObligacionCalendario a"
+                    + " order by a.codObligacion.descripcion asc "
+    )
+    List<ParObligacionCalendario> listaPorOrdenDescripcionDeObligacion();
+
 }

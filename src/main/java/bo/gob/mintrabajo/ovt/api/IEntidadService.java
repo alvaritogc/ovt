@@ -5,6 +5,7 @@ import java.util.List;
 
 public interface IEntidadService {
     public List<ParEntidad> listaEntidad();
+    public List<ParEntidad> listaEntidadPorOrden();
     public ParEntidad saveEntidad(ParEntidad entidad);
     public boolean deleteEntidad(ParEntidad entidad);
     ParEntidad buscaPorId(Long idEntidad);

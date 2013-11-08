@@ -466,8 +466,10 @@
 
 </p:panelGrid>
 
+<p:messages id="mensajes" showDetail="true" autoUpdate="true" closable="true" />
+
 <!-- Renato Codigo -->
-<h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionBean.parametro==1}">
+<h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionBean.parametro!=2}">
     <h:outputText style="font-weight: bold;text-align: center" value="JULIO"
                   rendered="#{declaracionBean.habilita}"/> &nbsp;
     <p:fileUpload fileUploadListener="#{declaracionBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"

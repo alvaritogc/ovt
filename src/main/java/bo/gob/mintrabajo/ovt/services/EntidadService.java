@@ -33,6 +33,18 @@ public class EntidadService implements IEntidadService {
     }
     
     @Override
+    public List<ParEntidad> listaEntidadPorOrden(){
+        List<ParEntidad> lista;
+        try {
+            lista = entidadRepository.listaPorOrdenDescripcionDeEntidad();
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
+    }
+    
+    @Override
     public ParEntidad saveEntidad(ParEntidad entidad){               
         ParEntidad parEntidad;
         try {

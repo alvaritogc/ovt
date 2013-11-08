@@ -31,7 +31,6 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class InformacionPublicaBean {
     //
-    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private Long idUsuario;
     private String idPersona;
     private String idEmpleador;    
@@ -47,18 +46,7 @@ public class InformacionPublicaBean {
 
     @PostConstruct
     public void ini() {
-        System.out.println("=======================================");
-        System.out.println("=======================================");
-        System.out.println("=======================================");
-        System.out.println("InformacionOvtBean");
-        System.out.println("=======================================");
-        System.out.println("=======================================");
-        try {
-            session.getAttribute("idUsuario");
-        } catch (Exception e) {
-        }
-        idMensaje="1";
-        idMensajeApp=0l;
+        logger.info("InformacionPublicaBean.ini");
         cargarParametros();
         cargar();
     }
@@ -66,7 +54,8 @@ public class InformacionPublicaBean {
     public void cargarParametros(){
         try {
             if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p") == null) {
-                idMensaje = "1";
+                System.out.println("Error al cargar p, no se encuentra el valor p, p=null");
+                idMensaje = "0";
                 return;
             }
 
@@ -75,17 +64,15 @@ public class InformacionPublicaBean {
                 return;
             }
         } catch (Exception e) {
-            idMensaje = "1";
+            idMensaje = "0";
             System.out.println("Error al cargar p: " + e.getMessage());
             return;
         }
     }
     
     public void cargar() {
-        System.out.println("idMensaje: "+idMensaje);
         try {
             idMensajeApp = new Long(idMensaje);
-            System.out.println("idMensajeApp: "+idMensajeApp);
             parMensajeApp = iMensajeAppService.findById(idMensajeApp);
             rutaInformacionOvt = "file://" + parMensajeApp.getReferencia();
         } catch (Exception e) {
