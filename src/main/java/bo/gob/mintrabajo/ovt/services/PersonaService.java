@@ -2,12 +2,11 @@ package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.entities.*;
-import bo.gob.mintrabajo.ovt.repositories.PersonaRepository;
-import bo.gob.mintrabajo.ovt.repositories.UnidadRepository;
-import bo.gob.mintrabajo.ovt.repositories.UsuarioRepository;
-import bo.gob.mintrabajo.ovt.repositories.UsuarioUnidadRepository;
+import bo.gob.mintrabajo.ovt.repositories.*;
 import com.google.common.base.Strings;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.ejb.TransactionAttribute;
@@ -35,13 +34,16 @@ public class PersonaService implements IPersonaService {
     private final UsuarioRepository usuarioRepository;
     //private final IUsuarioService usuarioService;
     private final UsuarioUnidadRepository usuarioUnidadRepository;
+    private final RolRepository rolRepository;
+    private final ModuloRepository moduloRepository;
+    private final UsuarioRolRepository usuarioRolRepository;
 
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
 
     @Inject
-    public PersonaService(PersonaRepository personaRepository,UnidadRepository unidadRepository,UsuarioRepository usuarioRepository,UsuarioUnidadRepository usuarioUnidadRepository) {
+    public PersonaService(PersonaRepository personaRepository,UnidadRepository unidadRepository,UsuarioRepository usuarioRepository,UsuarioUnidadRepository usuarioUnidadRepository,RolRepository rolRepository,ModuloRepository moduloRepository,UsuarioRolRepository usuarioRolRepository) {
     //public PersonaService(PersonaRepository personaRepository,UnidadRepository unidadRepository,UnidadService unidadService,UsuarioRepository usuarioRepository,IUsuarioService usuarioService,UsuarioUnidadRepository usuarioUnidadRepository) {
         this.personaRepository = personaRepository;
         this.unidadRepository=unidadRepository;
@@ -49,6 +51,9 @@ public class PersonaService implements IPersonaService {
         this.usuarioRepository=usuarioRepository;
        // this.usuarioService=usuarioService;
         this.usuarioUnidadRepository=usuarioUnidadRepository;
+        this.rolRepository=rolRepository;
+        this.moduloRepository=moduloRepository;
+        this.usuarioRolRepository=usuarioRolRepository;
     }
 
 //    @Override
@@ -87,8 +92,10 @@ public class PersonaService implements IPersonaService {
 
     @Override
       public  List<PerPersona> findAll(){
-          return personaRepository.findAll(new PageRequest(1, 200)).getContent();
-      }
+
+        Sort sort=new Sort(Sort.Direction.DESC,"idPersona");
+        return personaRepository.findAll(new PageRequest(0,200,sort)).getContent();
+     }
 
 
     @Override
@@ -179,6 +186,26 @@ public class PersonaService implements IPersonaService {
                 usuarioUnidad.setPerUsuarioUnidadPK(perUsuarioUnidadPK);
                 usuarioUnidadRepository.save(usuarioUnidad);
             System.out.println("======>>> GUARDADO USUARIO_UNIDAD OK <<<===== ");
+            System.out.println("======================================= ");
+            System.out.println("======>>> GUARDADO USUARIO_ROL <<<===== ");
+
+            UsrModulo modulo=moduloRepository.findByIdModulo("PER");
+            UsrRol rol=rolRepository.findByIdRol((Long.valueOf("2")));
+
+            UsrUsuarioRol usuarioRol=new UsrUsuarioRol();
+            usuarioRol.setFechaBitacora(new Date());
+            usuarioRol.setRegistroBitacora(REGISTRO_BITACORA);
+            usuarioRol.setIdModulo(modulo);
+            usuarioRol.setUsrRol(rol);
+            usuarioRol.setUsrUsuario(usuario);
+            UsrUsuarioRolPK usrUsuarioRolPK=new UsrUsuarioRolPK();
+            usrUsuarioRolPK.setIdRol(rol.getIdRol());
+            usrUsuarioRolPK.setIdUsuario(usuario.getIdUsuario());
+
+            usuarioRol.setUsrUsuarioRolPK(usrUsuarioRolPK);
+
+            usuarioRolRepository.save(usuarioRol);
+            System.out.println("======>>> GUARDADO USUARIO_ROL OK <<<===== ");
             return true;
         }catch (Exception ex){
             ex.printStackTrace();

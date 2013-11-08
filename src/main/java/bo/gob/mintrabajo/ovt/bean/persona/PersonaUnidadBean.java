@@ -52,6 +52,24 @@ public class PersonaUnidadBean implements Serializable{
     @ManagedProperty(value = "#{unidadService}")
     private IUnidadService iUnidadService;
 
+    public IUnidadService getiUnidadService2() {
+        return iUnidadService2;
+    }
+
+    public void setiUnidadService2(IUnidadService iUnidadService2) {
+        this.iUnidadService2 = iUnidadService2;
+    }
+
+    @ManagedProperty(value = "#{unidadService}")
+    private IUnidadService iUnidadService2;
+
+
+
+    @ManagedProperty(value = "#{unidadService}")
+    private IUnidadService iUnidadServiceModificar;
+
+
+
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
 
@@ -74,7 +92,13 @@ public class PersonaUnidadBean implements Serializable{
 
     private  UsrUsuario usuario;
 
-    private boolean esNatural=false;
+    public boolean isMostrar() {
+        return mostrar;
+    }
+
+    public void setMostrar(boolean mostrar) {
+        this.mostrar = mostrar;
+    }
 
     private boolean mostrar=false;
 
@@ -84,7 +108,7 @@ public class PersonaUnidadBean implements Serializable{
 
     List<SelectItem>listaTipoEmpresa;
     List<SelectItem>listaTipoSociedad;
-    List<SelectItem>listaTipoIdentificacion;
+
 
     private String from;
     private String subject;
@@ -94,7 +118,7 @@ public class PersonaUnidadBean implements Serializable{
     private String host;
     private String port;
 
-    private String confirmarContrasenia;
+
 
     private PerDireccion direccion;
     private List<PerDireccion>listaDireccion;
@@ -105,16 +129,12 @@ public class PersonaUnidadBean implements Serializable{
     private ParActividadEconomica actividadEconomica;
     private List<ParActividadEconomica>listaActividadEconomica;
 
-    public HttpSession getSession() {
-        return session;
-    }
+    private PerUnidad unidadRegistro;
 
-    public void setSession(HttpSession session) {
-        this.session = session;
-    }
-
-
-
+    private String titulo;
+    private String tituloDlgUnidad;
+    private String tituloDialog;
+    private String iconoUnidad;
 
     @PostConstruct
     public void ini(){
@@ -123,7 +143,89 @@ public class PersonaUnidadBean implements Serializable{
         unidad=new PerUnidad();
         listaUnidad=new ArrayList<PerUnidad>();
         usuario=new UsrUsuario();
-       // cargar();
+        actividadEconomica=new ParActividadEconomica();
+        repLegal=new PerReplegal();
+       cargar();
+
+        persona=(PerPersona)session.getAttribute("persona");
+        titulo=persona.getNombreRazonSocial().toUpperCase()+" "+persona.getApellidoPaterno().toUpperCase()+" "+persona.getApellidoMaterno().toUpperCase();
+        unidad=iUnidadService2.buscarPorPersona(persona.getIdPersona()).get(0);
+        listaUnidad=iUnidadService.buscarPorPersona(persona.getIdPersona());
+       // List<PerUnidad>cpyListaUnidad=listaUnidad;
+        System.out.println("=====>>> RESULTADO DE LA BUSQUEDA "+listaUnidad.size());
+       // cpyListaUnidad.remove(0);
+        //Instancia la variable, la cual sirve para registrar una nueva unidad a la persona
+        unidadRegistro=new PerUnidad();
+
+
+    }
+
+    /*
+     *******************************************
+     *          METODOS UNIDAD
+     ******************************************
+     */
+
+    public void nuevo(){
+        unidadRegistro=new PerUnidad();
+    }
+
+    public void procesarUnidad(){
+        System.out.println("=====>>>>INGRESANDO A  GUARDAR UNIDAD");
+        final String  REGISTRO_BITACORA="ROE";
+        unidadRegistro.setPerPersona(persona);
+        unidadRegistro.setRegistroBitacora(REGISTRO_BITACORA);
+        unidadRegistro.setFechaBitacora(new Date());
+        //unidadRegistro.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
+/*        PerUnidadPK perUnidadPK=new PerUnidadPK();
+        perUnidadPK.setIdPersona(persona.getIdPersona());
+        perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
+        unidad.setPerUnidadPK(perUnidadPK);*/
+        unidadRegistro=iUnidadService.save(unidadRegistro,persona);
+        ini();
+        if(unidadRegistro==null){
+            mostrar=true;
+            RequestContext.getCurrentInstance().execute("dlgUnidad.show()");
+        }else {
+            mostrar=false;
+            RequestContext.getCurrentInstance().execute("dlgUnidad.hide()");
+        }
+
+
+        System.out.println("=====>>>> GUARDAR UNIDAD OK");
+    }
+
+    public void modificarUnidad(){
+        System.out.println("=====>>>>INGRESANDO A  GUARDAR UNIDAD");
+        final String  REGISTRO_BITACORA="ROE";
+        //unidadRegistro.setPerPersona(persona);
+       // unidadRegistro.setRegistroBitacora(REGISTRO_BITACORA);
+       // unidadRegistro.setFechaBitacora(new Date());
+        //unidadRegistro.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
+/*        PerUnidadPK perUnidadPK=new PerUnidadPK();
+        perUnidadPK.setIdPersona(persona.getIdPersona());
+        perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
+        unidad.setPerUnidadPK(perUnidadPK);*/
+
+        unidadRegistro=iUnidadServiceModificar.save(unidadRegistro);
+        ini();
+        if(unidadRegistro==null){
+            mostrar=true;
+            RequestContext.getCurrentInstance().execute("dlgUnidad.show()");
+        }else {
+            mostrar=false;
+            RequestContext.getCurrentInstance().execute("dlgUnidad.hide()");
+        }
+
+
+        System.out.println("=====>>>> GUARDAR UNIDAD OK");
+    }
+
+
+    public  void cargar(){
+
+        listaTipoEmpresa=cargarListas(listaTipoEmpresa,DOM_TIPOS_EMPRESA);
+        listaTipoSociedad=cargarListas(listaTipoEmpresa,DOM_TIPOS_SOCIEDAD);
     }
 
     /*
@@ -148,10 +250,6 @@ public class PersonaUnidadBean implements Serializable{
     }
 
 
-
-
-
-
     public void cargaParametricasEmail() {
         try {
             from = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_CUENTA_EMAIL).getDescripcion();
@@ -174,21 +272,6 @@ public class PersonaUnidadBean implements Serializable{
      */
 
 
-    public String getConfirmarContrasenia() {
-        return confirmarContrasenia;
-    }
-
-    public void setConfirmarContrasenia(String confirmarContrasenia) {
-        this.confirmarContrasenia = confirmarContrasenia;
-    }
-
-    public List<SelectItem> getListaTipoIdentificacion() {
-        return listaTipoIdentificacion;
-    }
-
-    public void setListaTipoIdentificacion(List<SelectItem> listaTipoIdentificacion) {
-        this.listaTipoIdentificacion = listaTipoIdentificacion;
-    }
 
     public IDominioService getiDominioService() {
         return iDominioService;
@@ -318,13 +401,7 @@ public class PersonaUnidadBean implements Serializable{
         this.listaUnidad = listaUnidad;
     }
 
-    public boolean isEsNatural() {
-        return esNatural;
-    }
 
-    public void setEsNatural(boolean esNatural) {
-        this.esNatural = esNatural;
-    }
     // ****  Envio de Emails **** //
     public String getFrom() {
         return from;
@@ -382,10 +459,6 @@ public class PersonaUnidadBean implements Serializable{
         this.port = port;
     }
 
-
-
-
-
     public PerDireccion getDireccion() {
         return direccion;
     }
@@ -393,10 +466,6 @@ public class PersonaUnidadBean implements Serializable{
     public void setDireccion(PerDireccion direccion) {
         this.direccion = direccion;
     }
-
-
-
-
 
     public List<PerDireccion> getListaDireccion() {
         return listaDireccion;
@@ -406,8 +475,6 @@ public class PersonaUnidadBean implements Serializable{
         this.listaDireccion = listaDireccion;
     }
 
-
-
     public PerReplegal getRepLegal() {
         return repLegal;
     }
@@ -415,7 +482,6 @@ public class PersonaUnidadBean implements Serializable{
     public void setRepLegal(PerReplegal repLegal) {
         this.repLegal = repLegal;
     }
-
 
     public List<PerReplegal> getListaRepLegal() {
         return listaRepLegal;
@@ -443,7 +509,6 @@ public class PersonaUnidadBean implements Serializable{
         this.listaActividad = listaActividad;
     }
 
-
     public ParActividadEconomica getActividadEconomica() {
         return actividadEconomica;
     }
@@ -461,5 +526,65 @@ public class PersonaUnidadBean implements Serializable{
         this.listaActividadEconomica = listaActividadEconomica;
     }
 
+    public PerUnidad getUnidadRegistro() {
+        return unidadRegistro;
+    }
 
+    public void setUnidadRegistro(PerUnidad unidadRegistro) {
+        this.unidadRegistro = unidadRegistro;
+    }
+
+
+    public HttpSession getSession() {
+        return session;
+    }
+
+    public void setSession(HttpSession session) {
+        this.session = session;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+
+
+    public String getTituloDlgUnidad() {
+        return tituloDlgUnidad;
+    }
+
+    public void setTituloDlgUnidad(String tituloDlgUnidad) {
+        this.tituloDlgUnidad = tituloDlgUnidad;
+    }
+
+
+    public String getTituloDialog() {
+        return tituloDialog;
+    }
+
+    public void setTituloDialog(String tituloDialog) {
+        this.tituloDialog = tituloDialog;
+    }
+
+
+
+    public String getIconoUnidad() {
+        return iconoUnidad;
+    }
+
+    public void setIconoUnidad(String iconoUnidad) {
+        this.iconoUnidad = iconoUnidad;
+    }
+
+    public IUnidadService getiUnidadServiceModificar() {
+        return iUnidadServiceModificar;
+    }
+
+    public void setiUnidadServiceModificar(IUnidadService iUnidadServiceModificar) {
+        this.iUnidadServiceModificar = iUnidadServiceModificar;
+    }
 }
