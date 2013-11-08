@@ -98,6 +98,8 @@ public class obligacionCalendarioBean implements Serializable{
         if(obligacionCalendario.getFechaPlazo().toString().isEmpty()){return;}
         context.execute("dlgFormObligacionCalendario.hide();");
         
+        obligacionCalendario.setTipoCalendario(obligacionCalendario.getTipoCalendario().toUpperCase());
+        obligacionCalendario.setGestion(obligacionCalendario.getGestion().toUpperCase());
         ParObligacion parObligacion= new ParObligacion();
         parObligacion= iObligacionService.obligacionPorCod(codObligacionForm);
         

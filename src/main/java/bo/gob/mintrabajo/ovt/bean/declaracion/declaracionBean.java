@@ -1,7 +1,12 @@
 package bo.gob.mintrabajo.ovt.bean.declaracion;
 
+import bo.gob.mintrabajo.ovt.Util.Dominios;
+import bo.gob.mintrabajo.ovt.Util.UtilityData;
+import bo.gob.mintrabajo.ovt.Util.XlsToCSV;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import com.csvreader.CsvReader;
+import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -15,7 +20,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.Serializable;
+import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -63,6 +68,8 @@ public class declaracionBean implements Serializable {
     private IDocumentoEstadoService iDocumentoEstadoService;
     @ManagedProperty(value = "#{vperPersonaService}")
     private IVperPersonaService iVperPersonaService;
+    @ManagedProperty(value = "#{planillaDetalleService}")
+    private IPlanillaDetalleService iPlanillaDetalleService;
 
     private int parametro;
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
@@ -94,6 +101,7 @@ public class declaracionBean implements Serializable {
     private Long idEntidadSalud;
 
     private Long idRectificatorio;
+    private List<String> errores = new ArrayList<String>();
 
     @PostConstruct
     public void ini() {
@@ -109,7 +117,7 @@ public class declaracionBean implements Serializable {
 
         if (parametro==3)
             esRectificatorio=true;
-        if(parametro!=1)
+        if(parametro==2)
             habilita=false;
 
         idPersona = (String) session.getAttribute("idEmpleador");
@@ -143,8 +151,8 @@ public class declaracionBean implements Serializable {
         vperPersona = iVperPersonaService.cargaVistaPersona(perPersona.getIdPersona());
         binario= new DocBinario();
         listaBinarios = new ArrayList<DocBinario>();
-        idPersona = (String) session.getAttribute("idEmpleador");
-        persona = iPersonaService.buscarPorId(idPersona);
+//        idPersona = (String) session.getAttribute("idEmpleador");
+//        persona = iPersonaService.buscarPorId(idPersona);
         logger.info("persona ok");
         cargar();
     }
@@ -239,23 +247,25 @@ public class declaracionBean implements Serializable {
     }
 
     public String guardaDocumentoPlanillaBinario(){
-        try{
-            logger.info("Guardando documento, binario y planilla");
-            logger.info(documento.toString());
-            logger.info(listaBinarios.toString());
-            logger.info(docPlanilla.toString());
-            generaPlanilla();
-
-//            valida(listaBinarios);
-
-            idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
-            return "irEscritorio";
-        }catch (Exception e){
-            e.printStackTrace();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
-            return null;
+        validaArchivo(listaBinarios);
+        error();
+        if(errores.size()==0){
+            try{
+                logger.info("Guardando documento, binario y planilla");
+                logger.info(documento.toString());
+                logger.info(listaBinarios.toString());
+                logger.info(docPlanilla.toString());
+                generaPlanilla();
+                idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
+                return "irEscritorio";
+            }catch (Exception e){
+                e.printStackTrace();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+                return null;
+            }
         }
+        return null;
     }
 
     public String irInicio(){
@@ -274,263 +284,381 @@ public class declaracionBean implements Serializable {
         parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendario();
     }
 
+    public void error() {
+        if(errores.size()>0){
+            String e="";
+            for(String error:errores)
+                e=e+ error+"\n";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Errores ", e));
+        }
+    }
+
+    public void validaArchivo(List<DocBinario> listaBinarios){
 //    public void validaArchivo(){
-//
-//
-//
-//        try {
-//            for(DocBinario docBinario:listaBinarios){
-//                CsvReader csvReader;
-////                if(!FilenameUtils.getExtension(docBinario.getTipoDocumento()).toUpperCase().equals(Dominios.EXTENSION_CSV)){
-////                    OutputStream output= XlsToCSV.xlsToCsv(new ByteArrayInputStream(docBinario.getBinario()));
-////                    csvReader = new CsvReader(new InputStreamReader(new ByteArrayInputStream(((ByteArrayOutputStream) output).toByteArray())));
-////                }
-////                else
-////                    csvReader = new CsvReader(new InputStreamReader(new ByteArrayInputStream(docBinario.getBinario())));
-//
-//                csvReader= new CsvReader("/home/rvelasquez/Desktop/planillaComercialPrueba.csv");
-//
-//                csvReader.readRecord();
-//                List<String> columnasTitulo =new ArrayList<String>();
-//                for (int i=0;i<csvReader.getColumnCount();i++)
-//                    columnasTitulo.add(csvReader.get(i));
-//
-//
-//
-//
-//
-//
-//                while (csvReader.readRecord()) {
-//
-//                }
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//            }
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//    }
-
-
-
-
-
-
-
-
-
-
-//    public boolean valida(List<DocBinario> listaBinarios){
-//        List<String> errores = new ArrayList<String>();
-//        String errorFilas = "";
-//        String errorCampos = "";
-//        String mensaje;
-//        List <DocPlanillaDetalle>docPlanillaDetalleList = new ArrayList<DocPlanillaDetalle>();
-//        boolean verifica =false;
-//        try {
-//            for(DocBinario docBinario:listaBinarios){
-//                CsvReader csvReader;
-//                if(!FilenameUtils.getExtension(docBinario.getTipoDocumento()).toUpperCase().equals(Dominios.EXTENSION_CSV)){
+        List<DocPlanillaDetalle> docPlanillaDetalles = new ArrayList<DocPlanillaDetalle>();
+        errores = new ArrayList<String>();
+        int valorPlanilla;
+        try {
+            for(DocBinario docBinario:listaBinarios){
+                CsvReader registro;
+                if(!FilenameUtils.getExtension(docBinario.getTipoDocumento()).toUpperCase().equals(Dominios.EXTENSION_CSV)){
 //                    OutputStream output= XlsToCSV.xlsToCsv(new ByteArrayInputStream(docBinario.getBinario()));
-//                    csvReader = new CsvReader(new InputStreamReader(new ByteArrayInputStream(((ByteArrayOutputStream) output).toByteArray())));
-//                }
-//                else
-//                    csvReader = new CsvReader(new InputStreamReader(new ByteArrayInputStream(docBinario.getBinario())));
-//
-//
-//                int fila = 0;
-//                csvReader.readRecord();
-//                while (csvReader.readRecord()) {
-//                    fila++;
-//
-//                    int columnCount = csvReader.getColumnCount();
-//                    if (columnCount != 33) {
-//                        errorFilas = "La fila " + fila + ", tiene " + columnCount + " columnas, esto no es aceptado como un documento válido: o el SEPARADOR = " + csvReader.getDelimiter() + " No es el adecuado ";
-//                        errorFilas = errorFilas + fila + ", ";
-//                        continue;
-//                    }
-//
-//                    DocPlanillaDetalle docPlanillaDetalle = new DocPlanillaDetalle();
-//
-////                    docPlanillaDetalle.setIdPlanilla(docPlanilla);
-////                    docPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
-//
-//
-//                    docPlanillaDetalle.setTipoDocumento(csvReader.get(1));
-//
-//                    if (!UtilityData.isInteger(csvReader.get(2)))
-//                        errorCampos = errorCampos + "Número de documento de identidad no es un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setNumeroDocumento(csvReader.get(2));
-//
-//                    docPlanillaDetalle.setExtencionDocumento(csvReader.get(3));
-//                    docPlanillaDetalle.setAfp(csvReader.get(4));
-//                    docPlanillaDetalle.setNuaCua(csvReader.get(5));
-//                    docPlanillaDetalle.setNombre(csvReader.get(6)+" "+csvReader.get(7)+" "+csvReader.get(8)+" "+csvReader.get(9)+" "+csvReader.get(10));
-//                    docPlanillaDetalle.setNacionalidad(csvReader.get(11));
-//                    docPlanillaDetalle.setFechaNacimiento(csvReader.get(12));
-//                    docPlanillaDetalle.setSexo(csvReader.get(13));
-//                    docPlanillaDetalle.setJubilado(csvReader.get(14));
-//                    docPlanillaDetalle.setClasificacionLaboral(csvReader.get(15));
-//                    docPlanillaDetalle.setCargo(csvReader.get(16));
-//                    docPlanillaDetalle.setFechaIngreso(csvReader.get(17));
-//
-//                    if (!UtilityData.isInteger(csvReader.get(18))&&!csvReader.get(18).equals(""))
-//                        errorCampos = errorCampos + "Horas pagadas (día) debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setHorasPagadasDia(csvReader.get(18));
-//
-//                    if (!UtilityData.isInteger(csvReader.get(19)))
-//                        errorCampos = errorCampos + "Días haber básico debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setDiasHaberBasico(csvReader.get(19));
-//
-//                    if (!UtilityData.isInteger(csvReader.get(20)))
-//                        errorCampos = errorCampos + "Días pagados (mes) debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setDiasPagados(csvReader.get(20));
-//
-//                    if (!UtilityData.isInteger(csvReader.get(21))&&!csvReader.get(21).equals(""))
-//                        errorCampos = errorCampos + "Nº de dominicales debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setDominicalMes(csvReader.get(21));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(22))&&!csvReader.get(22).equals(""))
-//                        errorCampos = errorCampos + "Domingos trabajados debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setDominicalTrabajado(csvReader.get(22));
-//
-//                    if (!UtilityData.isInteger(csvReader.get(23))&&!csvReader.get(23).equals(""))
-//                        errorCampos = errorCampos + "Horas extra debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setHorasExtra(csvReader.get(23));
-//
-//                    if (!UtilityData.isInteger(csvReader.get(24))&&!csvReader.get(24).equals(""))
-//                        errorCampos = errorCampos + "Horas de recargo nocturno debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setHorasNocturno(csvReader.get(24));
-//
-//                    if (!UtilityData.isInteger(csvReader.get(25))&&!csvReader.get(25).equals(""))
-//                        errorCampos = errorCampos + "Horas extra dominicales debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setHorasDominicales(csvReader.get(25));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(26))&&!csvReader.get(26).equals(""))
-//                        errorCampos = errorCampos + "Haber básico debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setHaberBasico(csvReader.get(26));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(27))&&!csvReader.get(27).equals(""))
-//                        errorCampos = errorCampos + "Salario dominical debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setHaberBasico(csvReader.get(27));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(28))&&!csvReader.get(28).equals(""))
-//                        errorCampos = errorCampos + "Monto pagado por domingo trabajado debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setHaberBasico(csvReader.get(28));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(29)))
-//                        errorCampos = errorCampos + "Monto pagado por horas extra debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setMontoHorasExtra(csvReader.get(29));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(30))&&!csvReader.get(30).equals(""))
-//                        errorCampos = errorCampos + "Monto pagado por horas nocturnas debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setHaberBasico(csvReader.get(30));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(31))&&!csvReader.get(31).equals(""))
-//                        errorCampos = errorCampos + "Monto pagado por horas extra dominicales debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setHaberBasico(csvReader.get(31));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(32)))
-//                        errorCampos = errorCampos + "Bono de antigüedad debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setBonoAntiguedad(csvReader.get(32));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(33))&&!csvReader.get(33).equals(""))
-//                        errorCampos = errorCampos + "Bono de producción debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setBonoProduccion(csvReader.get(33));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(34))&&!csvReader.get(34).equals(""))
-//                        errorCampos = errorCampos + "Subsidio de frontera debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setBonoFrontera(csvReader.get(34));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(35)))
-//                        errorCampos = errorCampos + "Otros bonos o pagos debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setBonoOtros(csvReader.get(35));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(36)))
-//                        errorCampos = errorCampos + "Total ganado debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setTotalGanado(csvReader.get(36));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(37)))
-//                        errorCampos = errorCampos + "Aporte a las AFPs debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setDescuentoAfp(csvReader.get(37));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(38)))
-//                        errorCampos = errorCampos + "RC-IVA debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setDescuentoRciva(csvReader.get(38));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(39))&&!csvReader.get(39).equals(""))
-//                        errorCampos = errorCampos + "Otros descuentos debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setDescuentoOtro(csvReader.get(39));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(40)))
-//                        errorCampos = errorCampos + "Total descuentos debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setDescuentosTotal(csvReader.get(40));
-//
-//                    if (!UtilityData.isDecimal(csvReader.get(41)))
-//                        errorCampos = errorCampos + "Líquido pagable debe ser un número válido, ";
-//                    else
-//                        docPlanillaDetalle.setLiquidoPagable(csvReader.get(41));
-//
-//                    docPlanillaDetalleList.add(docPlanillaDetalle);
-//
-//                    if (errorCampos.length() > 0) {
-//                        mensaje = "en la fila " + (fila) + ": " + errorCampos;
-//                        errores.add(mensaje);
-//                        errorCampos = "";
-//                    }
-//                }
-//            }
-//            if (!errorFilas.equals("")) {
-//                mensaje = "Las siguientes filas: " + errorFilas + " no tienen la cantidad de campos requerido";
-//                errores.add(0, mensaje);
-//            }else{
-//                if(errores.size()>0){
-//                    for(String error:errores)
-//                        System.out.println(error);
-//                }
-//
-//            }
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return verifica;
-//    }
+//                    registro = new CsvReader(new InputStreamReader(new ByteArrayInputStream(((ByteArrayOutputStream) output).toByteArray())));
+                    registro =null;
+                }
+                else
+                    registro = new CsvReader(new InputStreamReader(new ByteArrayInputStream(docBinario.getBinario())));
+
+//                registro= new CsvReader("/home/rvelasquez/Desktop/LC1010-10 prueba.csv");
+//                DocBinario docBinario= new DocBinario();
+//                docBinario.setTipoDocumento("dsfgsdf LC1010-10 sdfgsdfgfdsg");
+
+                if(docBinario.getTipoDocumento().toUpperCase().contains("LC1010-10"))
+                    valorPlanilla=1;
+                else{
+                    if(docBinario.getTipoDocumento().toUpperCase().contains("LC1010-20"))
+                        valorPlanilla=2;
+                    else
+                        valorPlanilla=3;
+                }
+
+                registro.readHeaders();
+                int c=0;
+                while (registro.readRecord()){
+                    c++;
+                    int columna=1;
+
+                    DocPlanillaDetalle docPlanillaDetalle = new DocPlanillaDetalle();
+//                    docPlanillaDetalle.setIdPlanilla(docPlanilla);
+//                    docPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
+
+                    //1
+                    docPlanillaDetalle.setTipoDocumento(registro.get(registro.getHeader(columna++)));
+
+                    //2
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                        docPlanillaDetalle.setNumeroDocumento(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//3
+                    docPlanillaDetalle.setExtencionDocumento(registro.get(registro.getHeader(columna++)));
+                    //4
+                    docPlanillaDetalle.setAfp(registro.get(registro.getHeader(columna++)));
+                    //5
+                    docPlanillaDetalle.setNuaCua(registro.get(registro.getHeader(columna++)));
+                    //6.7.8.9.10
+                    docPlanillaDetalle.setNombre(registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++)));
+                    //11
+                    docPlanillaDetalle.setNacionalidad(registro.get(registro.getHeader(columna++)));
+                    //12
+                    docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna++)));
+                    //13
+                    docPlanillaDetalle.setSexo(registro.get(registro.getHeader(columna++)));
+                    //14
+                    docPlanillaDetalle.setJubilado(registro.get(registro.getHeader(columna++)));
+                    //15
+                    docPlanillaDetalle.setClasificacionLaboral(registro.get(registro.getHeader(columna++)));
+                    //16
+                    docPlanillaDetalle.setCargo(registro.get(registro.getHeader(columna++)));
+                    //17
+                    docPlanillaDetalle.setFechaIngreso(registro.get(registro.getHeader(columna++)));
+                    //18
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                        docPlanillaDetalle.setHorasPagadasDia(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//19
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))||registro.get(columna).equals(""))
+                        docPlanillaDetalle.setDiasHaberBasico(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//20
+
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                        docPlanillaDetalle.setDiasPagados(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//21
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        switch (valorPlanilla){
+                            case 1:
+                                docPlanillaDetalle.setDominicalMes(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 2:
+                                docPlanillaDetalle.setHorasExtra(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 3:
+                                docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
+                                break;
+                        }
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//22
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        switch (valorPlanilla){
+                            case 1:
+                                docPlanillaDetalle.setDominicalTrabajado(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 2:
+                                docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 3:
+                                docPlanillaDetalle.setBonoAntiguedad(registro.get(registro.getHeader(columna)));
+                                break;
+                        }
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//23
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        switch (valorPlanilla){
+                            case 1:
+                                docPlanillaDetalle.setHorasExtra(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 2:
+                                docPlanillaDetalle.setMontoHorasExtra(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 3:
+                                docPlanillaDetalle.setBonoOtros(registro.get(registro.getHeader(columna)));
+                                break;
+                        }
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++; //24
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        switch (valorPlanilla){
+                            case 1:
+                                docPlanillaDetalle.setHorasNocturno(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 2:
+                                docPlanillaDetalle.setBonoAntiguedad(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 3:
+                                if(!registro.get(columna).equals(""))
+                                    docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
+                                else
+                                    errores.add(mensajeError(c, registro.getHeader(columna)));
+                                break;
+                        }
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++; //25
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        switch (valorPlanilla){
+                            case 1:
+                                docPlanillaDetalle.setHorasDominicales(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 2:
+                                docPlanillaDetalle.setBonoOtros(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 3:
+                                docPlanillaDetalle.setDescuentoAfp(registro.get(registro.getHeader(columna)));
+                                break;
+                        }
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++; //26
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        switch (valorPlanilla){
+                            case 1:
+                                docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 2:
+                                if(!registro.get(columna).equals(""))
+                                    docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
+                                else
+                                    errores.add(mensajeError(c, registro.getHeader(columna)));
+                                break;
+                            case 3:
+                                docPlanillaDetalle.setDescuentoRciva(registro.get(registro.getHeader(columna)));
+                                break;
+                        }
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++; //27
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        switch (valorPlanilla){
+                            case 1:
+                                docPlanillaDetalle.setHaberDominical(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 2:
+                                docPlanillaDetalle.setDescuentoAfp(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 3:
+                                docPlanillaDetalle.setDescuentoOtro(registro.get(registro.getHeader(columna)));
+                                break;
+                        }
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++; //28
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        switch (valorPlanilla){
+                            case 1:
+                                docPlanillaDetalle.setMontoDominical(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 2:
+                                docPlanillaDetalle.setDescuentoRciva(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 3:
+                                docPlanillaDetalle.setDescuentosTotal(registro.get(registro.getHeader(columna)));
+                                break;
+                        }
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++; //29
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        switch (valorPlanilla){
+                            case 1:
+                                docPlanillaDetalle.setMontoHorasExtra(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 2:
+                                docPlanillaDetalle.setDescuentoOtro(registro.get(registro.getHeader(columna)));
+                                break;
+                            case 3:
+                                if(!registro.get(columna).equals(""))
+                                    docPlanillaDetalle.setLiquidoPagable(registro.get(registro.getHeader(columna)));
+                                else
+                                    errores.add(mensajeError(c, registro.getHeader(columna)));
+                                break;
+                        }
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    if(valorPlanilla!=3){
+                        columna++; //30
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                            switch (valorPlanilla){
+                                case 1:
+                                    docPlanillaDetalle.setMontoHorasNocturno(registro.get(registro.getHeader(columna)));
+                                    break;
+                                case 2:
+                                    docPlanillaDetalle.setDescuentosTotal(registro.get(registro.getHeader(columna)));
+                                    break;
+                            }
+                        }
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                        columna++; //31
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                            switch (valorPlanilla){
+                                case 1:
+                                    docPlanillaDetalle.setMontoHorasDominical(registro.get(registro.getHeader(columna)));
+                                    break;
+                                case 2:
+                                    if(!registro.get(columna).equals(""))
+                                        docPlanillaDetalle.setLiquidoPagable(registro.get(registro.getHeader(columna)));
+                                    else
+                                        errores.add(mensajeError(c, registro.getHeader(columna)));
+                                    break;
+                            }
+                        }
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+                    }
+                    if(valorPlanilla==1){
+                        columna++; //32
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals(""))
+                            docPlanillaDetalle.setBonoAntiguedad(registro.get(registro.getHeader(columna)));
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                        columna++; //33
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals(""))
+                            docPlanillaDetalle.setBonoProduccion(registro.get(registro.getHeader(columna)));
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                        columna++; //34
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals(""))
+                            docPlanillaDetalle.setBonoFrontera(registro.get(registro.getHeader(columna)));
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                        columna++; //35
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals(""))
+                            docPlanillaDetalle.setBonoOtros(registro.get(registro.getHeader(columna)));
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                        columna++; //36
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna))))
+                            docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                        columna++; //37
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals(""))
+                            docPlanillaDetalle.setDescuentoAfp(registro.get(registro.getHeader(columna)));
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                        columna++; //38
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals(""))
+                            docPlanillaDetalle.setDescuentoRciva(registro.get(registro.getHeader(columna)));
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                        columna++; //39
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals(""))
+                            docPlanillaDetalle.setDescuentoOtro(registro.get(registro.getHeader(columna)));
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                        columna++; //40
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals(""))
+                            docPlanillaDetalle.setDescuentosTotal(registro.get(registro.getHeader(columna)));
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                        columna++; //41
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna))))
+                            docPlanillaDetalle.setLiquidoPagable(registro.get(registro.getHeader(columna)));
+                        else
+                            errores.add(mensajeError(c, registro.getHeader(columna)));
+                    }
+                    docPlanillaDetalles.add(docPlanillaDetalle);
+                }
+            }
+            if(errores.size()>0){
+                for (String error:errores)
+                    System.out.println(error);
+            }
+            else{
+                for(DocPlanillaDetalle docPlanillaDetalle:docPlanillaDetalles){
+                    System.out.println(docPlanillaDetalle);
+//                        iPlanillaDetalleService.guardar(docPlanillaDetalle);
+                }
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public String mensajeError(int i, String titulo){
+           return "Error de dato en el registro "+i+", en la columna "+ titulo;
+    }
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
     public void obtenerEntidad() {
@@ -840,5 +968,13 @@ public class declaracionBean implements Serializable {
 
     public void setIdRectificatorio(Long idRectificatorio) {
         this.idRectificatorio = idRectificatorio;
+    }
+
+    public IPlanillaDetalleService getiPlanillaDetalleService() {
+        return iPlanillaDetalleService;
+    }
+
+    public void setiPlanillaDetalleService(IPlanillaDetalleService iPlanillaDetalleService) {
+        this.iPlanillaDetalleService = iPlanillaDetalleService;
     }
 }

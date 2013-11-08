@@ -85,7 +85,8 @@ public class obligacionBean implements Serializable{
         if(obligacion.getCodObligacion().isEmpty()){return;}
         if(obligacion.getDescripcion().isEmpty()){ return;}
         context.execute("dlgFormObligacion.hide();");
-        
+        obligacion.setCodObligacion(obligacion.getCodObligacion().toUpperCase());
+        obligacion.setDescripcion(obligacion.getDescripcion().toUpperCase());
         //final String  REGISTRO_BITACORA="OVT";
         final String  REGISTRO_BITACORA=idUsuario.toString();
         Date fechaBitacora = new Date();

@@ -4,6 +4,7 @@ import bo.gob.mintrabajo.ovt.api.IDocumentoService;
 import bo.gob.mintrabajo.ovt.api.IPlanillaDetalleService;
 import bo.gob.mintrabajo.ovt.api.IPlanillaService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
+import com.csvreader.CsvReader;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -11,6 +12,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
 * User: Renato Velasquez
@@ -52,6 +55,50 @@ public class PlanillaBean {
             System.out.println("Error al cargar a: " + e.getMessage());
             parametro = 1;
             return;
+        }
+    }
+
+    public void validaArchivo(){
+
+
+
+        try {
+//            for(DocBinario docBinario:listaBinarios){
+                CsvReader csvReader;
+//                if(!FilenameUtils.getExtension(docBinario.getTipoDocumento()).toUpperCase().equals(Dominios.EXTENSION_CSV)){
+//                    OutputStream output= XlsToCSV.xlsToCsv(new ByteArrayInputStream(docBinario.getBinario()));
+//                    csvReader = new CsvReader(new InputStreamReader(new ByteArrayInputStream(((ByteArrayOutputStream) output).toByteArray())));
+//                }
+//                else
+//                    csvReader = new CsvReader(new InputStreamReader(new ByteArrayInputStream(docBinario.getBinario())));
+
+                csvReader= new CsvReader("/home/rvelasquez/Desktop/planillaComercialPrueba.csv");
+
+                csvReader.readRecord();
+                List<String> columnasTitulo =new ArrayList<String>();
+                for (int i=0;i<csvReader.getColumnCount();i++)
+                    columnasTitulo.add(csvReader.get(i));
+
+                while (csvReader.readRecord()) {
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

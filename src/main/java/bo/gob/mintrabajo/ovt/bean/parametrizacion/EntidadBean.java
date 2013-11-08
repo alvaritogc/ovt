@@ -86,6 +86,9 @@ public class EntidadBean implements Serializable{
         if(entidad.getTipoEntidad().isEmpty()){return;}
         context.execute("dlgFormEntidad.hide();");
         
+        entidad.setDescripcion(entidad.getDescripcion().toUpperCase());
+        entidad.setCodigo(entidad.getCodigo().toUpperCase());
+        entidad.setTipoEntidad(entidad.getTipoEntidad().toUpperCase());
         //final String  REGISTRO_BITACORA="OVT";
         final String  REGISTRO_BITACORA=idUsuario.toString();        
         Date fechaBitacora = new Date();
