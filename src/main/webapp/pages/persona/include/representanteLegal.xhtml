@@ -5,5 +5,75 @@
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:p="http://primefaces.org/ui">
+ <h:form id="frmRepLegal">
+     <p:panel id="pnlRepLegal">
+
+         <f:facet name="footer">
+
+             <p:commandButton value="#{personaUnidadBean.tituloDialog}"
+                              icon="#{personaUnidadBean.iconoUnidad}"
+                              action="#{personaUnidadBean.procesarUnidad}"
+                              id="cmdButtonRepLegal"
+                     />
+         </f:facet>
+
+
+         <h:panelGrid columns="2">
+             <h:outputText value="Nombre:"/>
+             <p:inputText id="inputTxtNombreRepLegal2" value="#{personaUnidadBean.repLegal.nombre}"
+                          style="width: 210px;text-transform: uppercase;"
+                          tabindex="3"
+                          required="true"
+                          requiredMessage="El campo Nombre es obligatorio."/>
+
+             <h:outputText value="Ap. paterno: "/>
+             <p:inputText id="inputTxtApPaterno2" value="#{personaUnidadBean.repLegal.apellidoPaterno}"
+                          style="width: 210px;text-transform: uppercase;"
+                          tabindex="3"
+                          required="true"
+                          requiredMessage="El campo Ap. paterno es obligatorio."/>
+
+             <h:outputText value="Ap. materno: "/>
+             <p:inputText id="inputTxtApMaterno2" value="#{personaUnidadBean.repLegal.apellidoMaterno}"
+                          style="width: 210px;text-transform: uppercase;"
+                          tabindex="3"
+                          required="true"
+                          requiredMessage="El campo Ap. materno es obligatorio."/>
+
+             <h:outputText value="Tipo de identificacion:"/>
+             <p:selectOneMenu id="slcOneMenuTipoIdentificacion2" value="#{personaUnidadBean.repLegal.tipoIdentificacion}"
+                              tabindex="16">
+                 <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
+                 <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
+             </p:selectOneMenu>
+
+             <h:outputText value="Nro. de documento: "/>
+             <p:inputText id="inputTxtNroDocumento2" value="#{personaUnidadBean.repLegal.nroDocumento}"
+                          style="width: 210px;"
+                          tabindex="3"
+                          required="true"
+                          requiredMessage="El campo Ap. materno es obligatorio."/>
+
+             <h:outputText value="Fecha del documento:"/>
+             <p:calendar id="calendar" value="#{personaUnidadBean.repLegal.fechaDocumento}"
+                         effect="slideDown" tabindex="4"
+                         style="width:200px;"
+                         showOn="button"
+                         navigator="true"
+                         required="true"
+                         requiredMessage="El campo Fecha del documento es obligatorio."/>
+
+             <h:outputText value="Tipo de procedencia:"/>
+             <p:selectOneMenu id="slcOneMenuTipoProcedencia2" value="#{personaUnidadBean.repLegal.tipoProcedencia}"
+                              tabindex="16">
+                 <f:selectItem itemLabel="---Seleccione una procedencia---" itemValue="" />
+                 <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
+             </p:selectOneMenu>
+
+         </h:panelGrid>
+
+     </p:panel>
+ </h:form>
+
 
 </ui:composition>

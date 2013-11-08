@@ -25,6 +25,8 @@ public class Dominios {
     public static final String PAR_ESTADO_USUARIO_INACTIVO="X";
     public static final String PAR_ESTADO_USUARIO_BLOQUEADO="B";
     public static final String PAR_ESTADO__USUARIO_DEPURADO="D";
+    public static final String PAR_ESTADO__USUARIO_PREREGISTRO="P";
+    public static final String PAR_ESTADO__USUARIO_SINCONFIRMAR="S";
 
     public static final String DOM_ESTADO_UNIDAD="EUNIDAD";
     public static final String PAR_ESTADO_UNIDAD_BAJA_DEFINITIVA="0";
