@@ -42,6 +42,18 @@ public class TemplateInicioBean implements Serializable {
     //
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
+
+    public IUsuarioService getiUsuarioCambiarContraseniaService() {
+        return iUsuarioCambiarContraseniaService;
+    }
+
+    public void setiUsuarioCambiarContraseniaService(IUsuarioService iUsuarioCambiarContraseniaService) {
+        this.iUsuarioCambiarContraseniaService = iUsuarioCambiarContraseniaService;
+    }
+
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioCambiarContraseniaService;
+
     @ManagedProperty(value = "#{recursoService}")
     private IRecursoService iRecursoService;
     @ManagedProperty(value = "#{personaService}")
@@ -69,6 +81,9 @@ public class TemplateInicioBean implements Serializable {
     //
     private List<UsrRecurso> listaRecursosContenido;
     private UsrRecurso recurso;
+    //
+    private String nombreDeUsuario;
+    private String nombreDeUnidad;
 
 
 
@@ -109,7 +124,15 @@ public class TemplateInicioBean implements Serializable {
             idEmpleador = (String) session.getAttribute("idEmpleador");
             if (idEmpleador != null) {
                 empleador = iPersonaService.findById(idEmpleador);
+                nombreDeUnidad=empleador.getNombreRazonSocial();
             }
+            else{
+                nombreDeUnidad="N/A";
+            }
+            //
+            nombreDeUsuario=usuario.getUsuario();
+            
+            //
             logger.info("usuario ok");
             cargar();
         } catch (Exception e) {
@@ -280,26 +303,22 @@ public class TemplateInicioBean implements Serializable {
 
     public void cambiarContrasenia(){
         logger.info("=======>>>> CAMBIAR CONTRASENIA ");
-        logger.info("==============>>>>  contrasenia: "+password+" nueva contrasenia"+nuevaContrasenia+" confirmar Contrasenia"+confirmarContrasenia);
+        logger.info("==============>>>>  contrasenia: "+contrasenia+" nueva contrasenia: "+nuevaContrasenia+" confirmar Contrasenia: "+confirmarContrasenia);
         session.setAttribute("idUsuario", idUsuario);
         Long idUsuario=(Long)session.getAttribute("idUsuario");
-        UsrUsuario usuario = iUsuarioService.findById(idUsuario);
 
-        if(usuario.getClave().equals(contrasenia)){
-            //verificar que la nueva contrasenia sea distinta la anterior
-            if(contrasenia.equals(confirmarContrasenia)){
-                //mensaje
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "La nueva contrasenia debe ser distinta a la anterior. "));
-            }else{
-                //actualizar contrasenia
-                usuario.setClave(nuevaContrasenia);
-                iUsuarioService.save(usuario);
-            }
-        }else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "La contrasenia no esta asociada a su cuenta de usuario."));
-        }
+           String mensaeje= iUsuarioService.cambiarContrasenia(idUsuario,contrasenia,nuevaContrasenia,confirmarContrasenia);
+           if(mensaeje.equalsIgnoreCase("OK")){
+               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", "Se cambio la contraseni con exito."));
+               limpiar();
+               logout();
+           }else{
+               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", mensaeje));
+           }
 
-        limpiar();
+
+
+
     }
 
     public void limpiar(){
@@ -486,5 +505,21 @@ public class TemplateInicioBean implements Serializable {
 
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
+    }
+
+    public String getNombreDeUsuario() {
+        return nombreDeUsuario;
+    }
+
+    public void setNombreDeUsuario(String nombreDeUsuario) {
+        this.nombreDeUsuario = nombreDeUsuario;
+    }
+
+    public String getNombreDeUnidad() {
+        return nombreDeUnidad;
+    }
+
+    public void setNombreDeUnidad(String nombreDeUnidad) {
+        this.nombreDeUnidad = nombreDeUnidad;
     }
 }
