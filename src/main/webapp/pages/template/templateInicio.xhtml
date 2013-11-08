@@ -116,8 +116,6 @@
                             <br/>
                             <p:commandLink value="Olvido su contrasenia?" onclick="PF('dlg2').show();" style="color:red;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
                             <br/>
-                            <p:commandLink value="Cambiar contrasenia?" onclick="PF('dlgCambiarContrasenia').show();" style="color:red;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
-                            <br/>
                             <p:commandLink value="Regístrate a la oficina vitual" action="#{templateInicioBean.irRegistro}" style="color:#00079C;" immediate="true" />
                         </p:panel>
                         <br/><br/>
@@ -164,19 +162,18 @@
                     </p:dialog>
 
                     <!-- ***********  DIALOG CAMBIAR CONTRASENIA ************* -->
-                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar contrasenia" modal="true" widgetVar="dlgCambiarContrasenia" width="420" height="280" resizable="false">
+                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar contrasenia" modal="true" widgetVar="dlgCambiarContrasenia" resizable="true">
 
                         <h:form id="frmCambiarContrasenia">
                             <p:messages id="mssgCambiarContrasenia" showDetail="true" autoUpdate="false" closable="true" globalOnly="false" />
                             <br/>
-
-                            <h:panelGrid columns="1" id="pnlGridCambiarContrasenia">
+                            <h:panelGrid columns="2" id="pnlGridCambiarContrasenia">
                                 <h:outputText value="Contrasenia:"/>
-                                <p:inputText id="txtContrasenia" value="#{templateInicioBean.contrasenia}"/>
+                                <p:password id="txtContrasenia" value="#{templateInicioBean.contrasenia}"/>
                                 <h:outputText value="Nueva contrasenia:"/>
-                                <p:inputText id="txtNuevaContrasenia" value="#{templateInicioBean.nuevaContrasenia}"/>
+                                <p:password id="txtNuevaContrasenia" value="#{templateInicioBean.nuevaContrasenia}"/>
                                 <h:outputText value="Confirmar contrasenia:"/>
-                                <p:inputText id="txtConfirmarContrasenia" value="#{templateInicioBean.confirmarContrasenia}"/>
+                                <p:password id="txtConfirmarContrasenia" value="#{templateInicioBean.confirmarContrasenia}"/>
                             </h:panelGrid>
                             <br/>
                             <p:commandButton value="Enviar"
@@ -208,6 +205,16 @@
                         </p:dataTable>
                        
                     </h:form>
+                    <h:form>
+                        <p:panel  header="Administracion de usuario" rendered="#{templateInicioBean.idUsuario!=null}">
+                            <br/>
+                            <p:commandLink value="Cambiar contrasenia?" onclick="PF('dlgCambiarContrasenia').show();" style="color:red;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
+                        </p:panel>
+                        <br/>
+
+
+                    </h:form>
+
                 </div>
                 <div class="span9">
                     <h:form id="idBarraDeMenu" rendered="#{!(templateInicioBean.idUsuario == null)}">

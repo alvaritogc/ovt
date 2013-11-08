@@ -176,7 +176,7 @@ public class PersonaBean implements Serializable{
         }
 
 
-        if(unidad.getFechaNacimiento()==null){
+/*        if(unidad.getFechaNacimiento()==null){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Fecha actividad es obligatorio."));
             ini();
@@ -202,7 +202,7 @@ public class PersonaBean implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de Caja de salud es obligatorio."));
             ini();
             return ;
-        }
+        }*/
 
         if(unidad.getActividadDeclarada()==null){
             FacesContext.getCurrentInstance().addMessage(null,
@@ -211,12 +211,12 @@ public class PersonaBean implements Serializable{
             return ;
         }
 
-        if(unidad.getObservaciones()==null){
+/*        if(unidad.getObservaciones()==null){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Observaciones es obligatorio."));
             ini();
             return ;
-        }
+        }*/
 
         if(persona.getNombreRazonSocial()==null){
           FacesContext.getCurrentInstance().addMessage(null,
@@ -282,6 +282,8 @@ public class PersonaBean implements Serializable{
       persona.setRegistroBitacora(REGISTRO_BITACORA);
       persona.setEsNatural(esNatural);
 
+      unidad.setObservaciones("REGISTRO");
+      unidad.setFechaNacimiento(new Date());
       unidad.setRegistroBitacora(REGISTRO_BITACORA);
       unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
       PerUnidadPK perUnidadPK=new PerUnidadPK();

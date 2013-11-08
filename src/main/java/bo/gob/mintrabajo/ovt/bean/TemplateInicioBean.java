@@ -37,6 +37,18 @@ public class TemplateInicioBean implements Serializable {
     //
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
+
+    public IUsuarioService getiUsuarioCambiarContraseniaService() {
+        return iUsuarioCambiarContraseniaService;
+    }
+
+    public void setiUsuarioCambiarContraseniaService(IUsuarioService iUsuarioCambiarContraseniaService) {
+        this.iUsuarioCambiarContraseniaService = iUsuarioCambiarContraseniaService;
+    }
+
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioCambiarContraseniaService;
+
     @ManagedProperty(value = "#{recursoService}")
     private IRecursoService iRecursoService;
     @ManagedProperty(value = "#{personaService}")
@@ -269,26 +281,22 @@ public class TemplateInicioBean implements Serializable {
 
     public void cambiarContrasenia(){
         logger.info("=======>>>> CAMBIAR CONTRASENIA ");
-        logger.info("==============>>>>  contrasenia: "+password+" nueva contrasenia"+nuevaContrasenia+" confirmar Contrasenia"+confirmarContrasenia);
+        logger.info("==============>>>>  contrasenia: "+contrasenia+" nueva contrasenia: "+nuevaContrasenia+" confirmar Contrasenia: "+confirmarContrasenia);
         session.setAttribute("idUsuario", idUsuario);
         Long idUsuario=(Long)session.getAttribute("idUsuario");
-        UsrUsuario usuario = iUsuarioService.findById(idUsuario);
 
-        if(usuario.getClave().equals(contrasenia)){
-            //verificar que la nueva contrasenia sea distinta la anterior
-            if(contrasenia.equals(confirmarContrasenia)){
-                //mensaje
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "La nueva contrasenia debe ser distinta a la anterior. "));
-            }else{
-                //actualizar contrasenia
-                usuario.setClave(nuevaContrasenia);
-                iUsuarioService.save(usuario);
-            }
-        }else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "La contrasenia no esta asociada a su cuenta de usuario."));
-        }
+           String mensaeje= iUsuarioService.cambiarContrasenia(idUsuario,contrasenia,nuevaContrasenia,confirmarContrasenia);
+           if(mensaeje.equalsIgnoreCase("OK")){
+               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", "Se cambio la contraseni con exito."));
+               limpiar();
+               logout();
+           }else{
+               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", mensaeje));
+           }
 
-        limpiar();
+
+
+
     }
 
     public void limpiar(){
