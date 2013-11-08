@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="./../template/templateInicio.xhtml">
+    <ui:define name="content">
+        <h3>Dominios</h3>
+        <h:form id="dominioFrm">
+            <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+            <p:commandButton value="Nuevo" icon="ui-icon-circle-plus" action="#{dominioBean.inicializaDominio}" oncomplete="dominioNuevo.show();" update=":dominioNuevoFrm" />
+            <br/>
+            <p:dataTable id="dominioTbl" value="#{dominioBean.dominioLista}" var="dom" paginator="true" paginatorPosition="bottom" rows="15">
+                <p:column headerText="Dominio">
+                    <p:outputLabel value="#{dom.parDominioPK.idDominio}" />
+                </p:column>
+                <p:column headerText="Valor">
+                    <p:outputLabel value="#{dom.parDominioPK.valor}" />
+                </p:column>
+                <p:column headerText="Descripción">
+                    <p:outputLabel value="#{dom.descripcion}" />
+                </p:column>
+                <p:column headerText="Observación">
+                    <p:outputLabel value="#{dom.observacion}" />
+                </p:column>
+                <p:column headerText="Módulo">
+                    <p:outputLabel value="#{dom.idModulo.idModulo} - #{dom.idModulo.nombre}" />
+                </p:column>
+                <p:column headerText="Operaciones">
+                    <p:commandLink value="Modificar" oncomplete="dominioEdicion.show();" update=":dominioEdicionFrm" style="color:#0066CC">
+                        <f:setPropertyActionListener value="#{dom}" target="#{dominioBean.dominioSelected}" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+
+        <p:dialog widgetVar="dominioNuevo" modal="true" header="Nuevo dominio">
+        <h:form id="dominioNuevoFrm">
+            <h:panelGrid columns="2">
+                <p:outputLabel for="dominioN" value="Dominio" />
+                <p:inputText id="dominioN" value="#{dominioBean.dominioSelected.parDominioPK.idDominio}" required="true"/>
+                <p:outputLabel for="valorN" value="Valor" />
+                <p:inputText id="valorN" value="#{dominioBean.dominioSelected.parDominioPK.valor}" required="true" />
+                <p:outputLabel for="descripcionN" value="Descripción" />
+                <p:inputText id="descripcionN" value="#{dominioBean.dominioSelected.descripcion}" required="true"/>
+                <p:outputLabel for="observacionN" value="Observación" />
+                <p:inputText id="observacionN" value="#{dominioBean.dominioSelected.observacion}" required="true" />
+                <p:outputLabel for="moduleN" value="Módulo de usuario" />
+                <p:selectOneMenu id="moduleN" value="#{dominioBean.dominioSelected.idModulo}" converter="moduloConverter">
+                    <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="modules" itemLabel="#{modules.idModulo} - #{modules.nombre}" itemValue="#{modules}" />
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <p:commandButton value="Guardar" action="#{dominioBean.guardarDominio}" update=":dominioNuevoFrm :dominioFrm:dominioTbl"/>
+            <p:commandButton value="Cancelar" onclick="dominioNuevo.hide();" immediate="true" />
+        </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dominioEdicion" modal="true" header="Editar dominio">
+        <h:form id="dominioEdicionFrm">
+            <h:panelGrid columns="2">
+                <p:outputLabel for="dominioE" value="Dominio" />
+                <p:inputText id="dominioE" value="#{dominioBean.dominioSelected.parDominioPK.idDominio}" disabled="true"/>
+                <p:outputLabel for="valorE" value="Valor" />
+                <p:inputText id="valorE" value="#{dominioBean.dominioSelected.parDominioPK.valor}" disabled="true" />
+                <p:outputLabel for="descripcionE" value="Descripción" />
+                <p:inputText id="descripcionE" value="#{dominioBean.dominioSelected.descripcion}" required="true"/>
+                <p:outputLabel for="observacionE" value="Observación" />
+                <p:inputText id="observacionE" value="#{dominioBean.dominioSelected.observacion}" required="true" />
+                <p:outputLabel for="moduleE" value="Módulo de usuario" />
+                <p:selectOneMenu id="moduleE" value="#{dominioBean.dominioSelected.idModulo}" converter="moduloConverter">
+                    <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="modules" itemLabel="#{modules.idModulo} - #{modules.nombre}" itemValue="#{modules}" />
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <p:commandButton value="Guardar" action="#{dominioBean.editarDominio}" update=":dominioEdicionFrm :dominioFrm:dominioTbl"/>
+            <p:commandButton value="Cancelar" onclick="dominoEdicion.hide();" immediate="true" />
+        </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>
+</html>
