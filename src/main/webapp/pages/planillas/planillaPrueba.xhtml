@@ -6,10 +6,8 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../../pages/template/templateInicio.xhtml">
     <ui:define name="content">
-        <h:outputLabel value="variale1" rendered="#{planillaBean.parametro==1}"></h:outputLabel>
-        <h:outputLabel value="variale2" rendered="#{planillaBean.parametro==2}"></h:outputLabel>
-        <h:outputLabel value="variale3" rendered="#{planillaBean.parametro==3}"></h:outputLabel>
-        <p:commandButton value="validar XLS" action="#{planillaBean.checkingFile}"></p:commandButton>
+
+        <p:commandButton value="validar XLS" action="#{planillaBean.validaArchivo}"></p:commandButton>
     </ui:define>
 </ui:composition>
 </html>

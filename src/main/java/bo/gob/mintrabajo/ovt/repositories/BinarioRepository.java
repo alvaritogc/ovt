@@ -12,6 +12,4 @@ import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 @OpenJpaSettings
 public interface BinarioRepository extends OpenJpaRepository<DocBinario, DocBinarioPK> {
 
-
-
 }
