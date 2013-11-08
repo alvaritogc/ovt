@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 @OpenJpaSettings
 public interface ModuloRepository extends OpenJpaRepository<UsrModulo, String> {
-    
-   
+
+    UsrModulo findByIdModulo(@Param("idModulo")String idModulo);
 }

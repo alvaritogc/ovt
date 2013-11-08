@@ -65,26 +65,16 @@ public class TemplateInicioBean implements Serializable {
     private List<UsrRecurso> listaRecursosContenido;
     private UsrRecurso recurso;
 
-    public String getNit() {
-        return nit;
-    }
 
-    public void setNit(String nit) {
-        this.nit = nit;
-    }
 
-    // Variables que se utilizan cuando el usuario quire recuperar su contrasenia
+    // Variables que se utilizan cuando el usuario olvido contrasenia
     private String nit;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     private String email;
+
+    //Varibles que se utilizan cuando el usuario quiere cambiar su contrasenia
+    private String contrasenia;
+    private String nuevaContrasenia;
+    private String confirmarContrasenia;
 
     @PostConstruct
     public void ini() {
@@ -259,9 +249,8 @@ public class TemplateInicioBean implements Serializable {
 
 
     public void olvidoContrasenia(){
-       logger.info("=======>>>> OLVIDO SU CONTRASENIA ");
+        logger.info("=======>>>> OLVIDO SU CONTRASENIA ");
         logger.info("==============>>>>  NIT: "+nit+" EMAIL"+" emial");
-
         PerUsuarioUnidad perUsuarioUnidad=iUsuarioUnidadService.obtenerPorNITyEmail(nit,email);
 
        if(perUsuarioUnidad==null) {
@@ -275,14 +264,39 @@ public class TemplateInicioBean implements Serializable {
            envioEmail.envioEmail2(usuario);
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", " Verifique su correo electronico"));
        }
-
        limpiar();
+    }
 
+    public void cambiarContrasenia(){
+        logger.info("=======>>>> CAMBIAR CONTRASENIA ");
+        logger.info("==============>>>>  contrasenia: "+password+" nueva contrasenia"+nuevaContrasenia+" confirmar Contrasenia"+confirmarContrasenia);
+        session.setAttribute("idUsuario", idUsuario);
+        Long idUsuario=(Long)session.getAttribute("idUsuario");
+        UsrUsuario usuario = iUsuarioService.findById(idUsuario);
+
+        if(usuario.getClave().equals(contrasenia)){
+            //verificar que la nueva contrasenia sea distinta la anterior
+            if(contrasenia.equals(confirmarContrasenia)){
+                //mensaje
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "La nueva contrasenia debe ser distinta a la anterior. "));
+            }else{
+                //actualizar contrasenia
+                usuario.setClave(nuevaContrasenia);
+                iUsuarioService.save(usuario);
+            }
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "La contrasenia no esta asociada a su cuenta de usuario."));
+        }
+
+        limpiar();
     }
 
     public void limpiar(){
         nit="";
         email="";
+        password="";
+        nuevaContrasenia="";
+        confirmarContrasenia="";
     }
     
     public void cargarRercursoContenido(){
@@ -422,5 +436,44 @@ public class TemplateInicioBean implements Serializable {
 
     public void setiMensajeAppService(IMensajeAppService iMensajeAppService) {
         this.iMensajeAppService = iMensajeAppService;
+    }
+
+    public String getNuevaContrasenia() {
+        return nuevaContrasenia;
+    }
+
+    public void setNuevaContrasenia(String nuevaContrasenia) {
+        this.nuevaContrasenia = nuevaContrasenia;
+    }
+
+    public String getConfirmarContrasenia() {
+        return confirmarContrasenia;
+    }
+
+    public void setConfirmarContrasenia(String confirmarContrasenia) {
+        this.confirmarContrasenia = confirmarContrasenia;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNit() {
+        return nit;
+    }
+
+    public void setNit(String nit) {
+        this.nit = nit;
+    }
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 }

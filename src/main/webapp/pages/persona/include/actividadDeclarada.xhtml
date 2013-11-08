@@ -5,7 +5,19 @@
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:p="http://primefaces.org/ui">
-    <p:panel header="Actividad declarada">
+
+
+<h:form id="frmActividadDeclarada">
+    <p:panel id="pnlActividadEconomica" >
+        <f:facet name="footer">
+            <p:commandButton value="#{personaUnidadBean.tituloDialog}"
+                             icon="#{personaUnidadBean.iconoUnidad}"
+                             action="#{personaUnidadBean.procesarUnidad}"
+                             id="cmdButtonActividadDeclarada"
+                    />
+        </f:facet>
+
+        <br/>
         <h:panelGrid columns="2">
             <h:outputText value="Codigo de Actividad economica:"/>
             <p:selectOneMenu id="slcOneMenuCodActvEconomica1" value="#{personaUnidadBean.actividadEconomica.codActividadEconomica}"
@@ -19,7 +31,7 @@
                              rows="5"
                              cols="50"
                              autoResize="false"
-                             style="width: 550px;"
+                             style="width: 220px;text-transform: uppercase;"
                              tabindex="11"
                              required="true"
                              requiredMessage="El campo Descripcion es obligatorio."/>
@@ -36,12 +48,12 @@
                              rows="5"
                              cols="50"
                              autoResize="false"
-                             style="width: 550px;"
+                             style="width: 220px;text-transform: uppercase;"
                              tabindex="11"
                              required="true"
                              requiredMessage="El campo Descripcion del codigo de impuestos es obligatorio."/>
 
         </h:panelGrid>
-        <p:commandButton value="Guardar"/>
     </p:panel>
+</h:form>
 </ui:composition>

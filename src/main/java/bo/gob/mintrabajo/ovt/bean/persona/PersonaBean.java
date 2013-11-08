@@ -292,18 +292,18 @@ public class PersonaBean implements Serializable{
       usuario.setIdUsuario(iUsuarioService.obtenerSecuencia("USR_USUARIO_SEC"));
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
       usuario.setEsDelegado((short)0);
-      ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO);
+      usuario.setEsInterno((short) 0);
+      ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO__USUARIO_SINCONFIRMAR);
       usuario.setEstadoUsuario(d.getParDominioPK().getValor());
         //usuario.setIdPersona(persona);
       usuario.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION, PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
-      usuario.setEsInterno((short) 0);
+
       usuario.setFechaBitacora(new Date());
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
-      usuario.setEsDelegado((short)0);
-      usuario.setEstadoUsuario("A");
+
       usuario.setIdPersona(persona);
       usuario.setTipoAutenticacion("LOCAL");
-      usuario.setEsInterno((short)0);
+
 
         mostrar= iPersonaService.registrar(persona,unidad,usuario);
         if(mostrar)
@@ -313,6 +313,7 @@ public class PersonaBean implements Serializable{
         mostrar= iPersonaService.registrar(persona,unidad,usuario);
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("mostrar ---------------------------------- " + mostrar);
+
         if (mostrar) {
             context.execute("dlg.show()");
             ServicioEnvioEmail see = new ServicioEnvioEmail();
