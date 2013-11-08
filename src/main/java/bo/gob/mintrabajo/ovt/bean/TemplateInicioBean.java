@@ -3,6 +3,11 @@ package bo.gob.mintrabajo.ovt.bean;
 import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -182,21 +187,15 @@ public class TemplateInicioBean implements Serializable {
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         // Usar el contexto de JSF para invalidar la sesión,
         // NO EL DE SERVLETS (nada de HttpServletRequest)
-        String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
-        ((HttpSession) ctx.getSession(false)).invalidate();
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        SecurityUtils.getSubject().logout();
 
         // Redirección de nuevo con el contexto de JSF,
         // si se usa una HttpServletResponse fallará.
         // Sin embargo, como ya está fuera del ciclo de vida
         // de JSF se debe usar la ruta completa 
-        try {
-            //ctx.redirect(ctxPath + "/faces/index.xhtml");
-            ctx.redirect(ctxPath + "/faces/pages/inicio.xhtml");
-        } catch (IOException e) {
-            System.out.println("Error en cerrar sesion");
-            e.printStackTrace();
-        }
-        return "";
+        //ctx.redirect(ctxPath + "/faces/index.xhtml");
+        return "irInicio";
     }
 
     public String login() {
@@ -209,23 +208,35 @@ public class TemplateInicioBean implements Serializable {
             session.setAttribute("idUsuario", idUsuario);
             UsrUsuario usuario = iUsuarioService.findById(idUsuario);
             session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
+
             if (usuario.getEsInterno() == 1) {
                 session.setAttribute("idEmpleador", null);
-                ini();
+                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+                Subject subject = SecurityUtils.getSubject();
+                token.setRememberMe(true);
+                subject.login(token);
+                //ini();
+                token.clear();
                 return "irEmpleadorBusqueda";
             } else {
                 session.setAttribute("idEmpleador", usuario.getIdPersona().getIdPersona());
-                ini();
+                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+                Subject subject = SecurityUtils.getSubject();
+                token.setRememberMe(true);
+                subject.login(token);
+                //ini();
+                token.clear();
                 return "irEscritorio";
             }
             //
         } catch (RuntimeException e) {
+            e.printStackTrace();
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
-        } catch (Exception e) {
+        } /**catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
-        }
+        }    */
         password = "";
         return "";
     }
