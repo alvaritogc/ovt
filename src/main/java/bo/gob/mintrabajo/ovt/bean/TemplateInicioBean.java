@@ -64,6 +64,9 @@ public class TemplateInicioBean implements Serializable {
     //
     private List<UsrRecurso> listaRecursosContenido;
     private UsrRecurso recurso;
+    //
+    private String nombreDeUsuario;
+    private String nombreDeUnidad;
 
     public String getNit() {
         return nit;
@@ -114,7 +117,15 @@ public class TemplateInicioBean implements Serializable {
             idEmpleador = (String) session.getAttribute("idEmpleador");
             if (idEmpleador != null) {
                 empleador = iPersonaService.findById(idEmpleador);
+                nombreDeUnidad=empleador.getNombreRazonSocial();
             }
+            else{
+                nombreDeUnidad="N/A";
+            }
+            //
+            nombreDeUsuario=usuario.getUsuario();
+            
+            //
             logger.info("usuario ok");
             cargar();
         } catch (Exception e) {
@@ -422,5 +433,21 @@ public class TemplateInicioBean implements Serializable {
 
     public void setiMensajeAppService(IMensajeAppService iMensajeAppService) {
         this.iMensajeAppService = iMensajeAppService;
+    }
+
+    public String getNombreDeUsuario() {
+        return nombreDeUsuario;
+    }
+
+    public void setNombreDeUsuario(String nombreDeUsuario) {
+        this.nombreDeUsuario = nombreDeUsuario;
+    }
+
+    public String getNombreDeUnidad() {
+        return nombreDeUnidad;
+    }
+
+    public void setNombreDeUnidad(String nombreDeUnidad) {
+        this.nombreDeUnidad = nombreDeUnidad;
     }
 }
