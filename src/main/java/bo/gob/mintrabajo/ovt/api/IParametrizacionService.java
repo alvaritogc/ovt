@@ -2,6 +2,8 @@ package bo.gob.mintrabajo.ovt.api;
 
 import bo.gob.mintrabajo.ovt.entities.ParParametrizacion;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: gmercado
@@ -11,4 +13,6 @@ import bo.gob.mintrabajo.ovt.entities.ParParametrizacion;
  */
 public interface IParametrizacionService {
     public ParParametrizacion obtenerParametro(String idParametro, String valor);
+    public List<ParParametrizacion> obtenerParametroLista();
+    public ParParametrizacion editarGuardarParametro(ParParametrizacion parParametrizacion);
 }
