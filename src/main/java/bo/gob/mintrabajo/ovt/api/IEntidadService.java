@@ -9,4 +9,5 @@ public interface IEntidadService {
     public ParEntidad saveEntidad(ParEntidad entidad);
     public boolean deleteEntidad(ParEntidad entidad);
     ParEntidad buscaPorId(Long idEntidad);
+    public void guardarEliminar(String sw,ParEntidad entidad);
 }
