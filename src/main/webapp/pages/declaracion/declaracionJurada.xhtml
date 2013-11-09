@@ -10,7 +10,7 @@
 
 <h:form id="formularioFrm" enctype="multipart/form-data">
 
-<h:commandButton value="presionar" action="#{declaracionBean.validaArchivo}"/>
+    <h:commandButton value="presionar" action="#{declaracionBean.validaArchivo}" rendered="false"/>
 
 <h:panelGroup rendered="#{declaracionBean.estaDeclarado}">
     <h1>Usted ya realizo la declaracion jurada en este trimestre</h1>
