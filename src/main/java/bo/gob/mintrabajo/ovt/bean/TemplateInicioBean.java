@@ -207,11 +207,11 @@ public class TemplateInicioBean implements Serializable {
 
     public String logout() {
         logger.info("logout()");
-        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        //ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         // Usar el contexto de JSF para invalidar la sesión,
         // NO EL DE SERVLETS (nada de HttpServletRequest)
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         SecurityUtils.getSubject().logout();
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 
         // Redirección de nuevo con el contexto de JSF,
         // si se usa una HttpServletResponse fallará.
