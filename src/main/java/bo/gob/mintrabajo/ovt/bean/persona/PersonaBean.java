@@ -176,7 +176,7 @@ public class PersonaBean implements Serializable{
         }
 
 
-        if(unidad.getFechaNacimiento()==null){
+/*        if(unidad.getFechaNacimiento()==null){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Fecha actividad es obligatorio."));
             ini();
@@ -202,7 +202,7 @@ public class PersonaBean implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de Caja de salud es obligatorio."));
             ini();
             return ;
-        }
+        }*/
 
         if(unidad.getActividadDeclarada()==null){
             FacesContext.getCurrentInstance().addMessage(null,
@@ -211,12 +211,12 @@ public class PersonaBean implements Serializable{
             return ;
         }
 
-        if(unidad.getObservaciones()==null){
+/*        if(unidad.getObservaciones()==null){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Observaciones es obligatorio."));
             ini();
             return ;
-        }
+        }*/
 
         if(persona.getNombreRazonSocial()==null){
           FacesContext.getCurrentInstance().addMessage(null,
@@ -282,6 +282,8 @@ public class PersonaBean implements Serializable{
       persona.setRegistroBitacora(REGISTRO_BITACORA);
       persona.setEsNatural(esNatural);
 
+      unidad.setObservaciones("REGISTRO");
+      unidad.setFechaNacimiento(new Date());
       unidad.setRegistroBitacora(REGISTRO_BITACORA);
       unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
       PerUnidadPK perUnidadPK=new PerUnidadPK();
@@ -292,18 +294,18 @@ public class PersonaBean implements Serializable{
       usuario.setIdUsuario(iUsuarioService.obtenerSecuencia("USR_USUARIO_SEC"));
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
       usuario.setEsDelegado((short)0);
-      ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO);
+      usuario.setEsInterno((short) 0);
+      ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO__USUARIO_SINCONFIRMAR);
       usuario.setEstadoUsuario(d.getParDominioPK().getValor());
         //usuario.setIdPersona(persona);
       usuario.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION, PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
-      usuario.setEsInterno((short) 0);
+
       usuario.setFechaBitacora(new Date());
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
-      usuario.setEsDelegado((short)0);
-      usuario.setEstadoUsuario("A");
+
       usuario.setIdPersona(persona);
       usuario.setTipoAutenticacion("LOCAL");
-      usuario.setEsInterno((short)0);
+
 
         mostrar= iPersonaService.registrar(persona,unidad,usuario);
         if(mostrar)
@@ -313,6 +315,7 @@ public class PersonaBean implements Serializable{
         mostrar= iPersonaService.registrar(persona,unidad,usuario);
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("mostrar ---------------------------------- " + mostrar);
+
         if (mostrar) {
             context.execute("dlg.show()");
             ServicioEnvioEmail see = new ServicioEnvioEmail();

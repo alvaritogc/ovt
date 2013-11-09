@@ -5,6 +5,7 @@ import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.ParDominioPK;
 import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
+import com.google.common.base.Strings;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -97,4 +98,17 @@ public class DominioService implements IDominioService{
             return null;
         }
     }
+
+    public List<ParDominio> obtenerDominioLista(){
+        return dominioRepository.findAll();
+    }
+
+    public ParDominio editarGuardarDominio(ParDominio parDominio){
+        if (Strings.isNullOrEmpty(parDominio.getRegistroBitacora())) {
+            parDominio.setFechaBitacora(new Date());
+            parDominio.setRegistroBitacora("ROE");
+        }
+        return dominioRepository.save(parDominio);
+    }
+
 }

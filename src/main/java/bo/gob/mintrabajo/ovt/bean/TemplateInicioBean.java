@@ -3,6 +3,11 @@ package bo.gob.mintrabajo.ovt.bean;
 import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -37,6 +42,18 @@ public class TemplateInicioBean implements Serializable {
     //
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
+
+    public IUsuarioService getiUsuarioCambiarContraseniaService() {
+        return iUsuarioCambiarContraseniaService;
+    }
+
+    public void setiUsuarioCambiarContraseniaService(IUsuarioService iUsuarioCambiarContraseniaService) {
+        this.iUsuarioCambiarContraseniaService = iUsuarioCambiarContraseniaService;
+    }
+
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioCambiarContraseniaService;
+
     @ManagedProperty(value = "#{recursoService}")
     private IRecursoService iRecursoService;
     @ManagedProperty(value = "#{personaService}")
@@ -64,27 +81,20 @@ public class TemplateInicioBean implements Serializable {
     //
     private List<UsrRecurso> listaRecursosContenido;
     private UsrRecurso recurso;
+    //
+    private String nombreDeUsuario;
+    private String nombreDeUnidad;
 
-    public String getNit() {
-        return nit;
-    }
 
-    public void setNit(String nit) {
-        this.nit = nit;
-    }
 
-    // Variables que se utilizan cuando el usuario quire recuperar su contrasenia
+    // Variables que se utilizan cuando el usuario olvido contrasenia
     private String nit;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     private String email;
+
+    //Varibles que se utilizan cuando el usuario quiere cambiar su contrasenia
+    private String contrasenia;
+    private String nuevaContrasenia;
+    private String confirmarContrasenia;
 
     @PostConstruct
     public void ini() {
@@ -114,7 +124,15 @@ public class TemplateInicioBean implements Serializable {
             idEmpleador = (String) session.getAttribute("idEmpleador");
             if (idEmpleador != null) {
                 empleador = iPersonaService.findById(idEmpleador);
+                nombreDeUnidad=empleador.getNombreRazonSocial();
             }
+            else{
+                nombreDeUnidad="N/A";
+            }
+            //
+            nombreDeUsuario=usuario.getUsuario();
+            
+            //
             logger.info("usuario ok");
             cargar();
         } catch (Exception e) {
@@ -192,21 +210,15 @@ public class TemplateInicioBean implements Serializable {
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         // Usar el contexto de JSF para invalidar la sesión,
         // NO EL DE SERVLETS (nada de HttpServletRequest)
-        String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
-        ((HttpSession) ctx.getSession(false)).invalidate();
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        SecurityUtils.getSubject().logout();
 
         // Redirección de nuevo con el contexto de JSF,
         // si se usa una HttpServletResponse fallará.
         // Sin embargo, como ya está fuera del ciclo de vida
         // de JSF se debe usar la ruta completa 
-        try {
-            //ctx.redirect(ctxPath + "/faces/index.xhtml");
-            ctx.redirect(ctxPath + "/faces/pages/inicio.xhtml");
-        } catch (IOException e) {
-            System.out.println("Error en cerrar sesion");
-            e.printStackTrace();
-        }
-        return "";
+        //ctx.redirect(ctxPath + "/faces/index.xhtml");
+        return "irInicio";
     }
 
     public String login() {
@@ -219,23 +231,35 @@ public class TemplateInicioBean implements Serializable {
             session.setAttribute("idUsuario", idUsuario);
             UsrUsuario usuario = iUsuarioService.findById(idUsuario);
             session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
+
             if (usuario.getEsInterno() == 1) {
                 session.setAttribute("idEmpleador", null);
-                ini();
+                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+                Subject subject = SecurityUtils.getSubject();
+                token.setRememberMe(true);
+                subject.login(token);
+                //ini();
+                token.clear();
                 return "irEmpleadorBusqueda";
             } else {
                 session.setAttribute("idEmpleador", usuario.getIdPersona().getIdPersona());
-                ini();
+                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+                Subject subject = SecurityUtils.getSubject();
+                token.setRememberMe(true);
+                subject.login(token);
+                //ini();
+                token.clear();
                 return "irEscritorio";
             }
             //
         } catch (RuntimeException e) {
+            e.printStackTrace();
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
-        } catch (Exception e) {
+        } /**catch (Exception e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
-        }
+        }    */
         password = "";
         return "";
     }
@@ -259,9 +283,8 @@ public class TemplateInicioBean implements Serializable {
 
 
     public void olvidoContrasenia(){
-       logger.info("=======>>>> OLVIDO SU CONTRASENIA ");
+        logger.info("=======>>>> OLVIDO SU CONTRASENIA ");
         logger.info("==============>>>>  NIT: "+nit+" EMAIL"+" emial");
-
         PerUsuarioUnidad perUsuarioUnidad=iUsuarioUnidadService.obtenerPorNITyEmail(nit,email);
 
        if(perUsuarioUnidad==null) {
@@ -275,14 +298,35 @@ public class TemplateInicioBean implements Serializable {
            envioEmail.envioEmail2(usuario);
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", " Verifique su correo electronico"));
        }
-
        limpiar();
+    }
+
+    public void cambiarContrasenia(){
+        logger.info("=======>>>> CAMBIAR CONTRASENIA ");
+        logger.info("==============>>>>  contrasenia: "+contrasenia+" nueva contrasenia: "+nuevaContrasenia+" confirmar Contrasenia: "+confirmarContrasenia);
+        session.setAttribute("idUsuario", idUsuario);
+        Long idUsuario=(Long)session.getAttribute("idUsuario");
+
+           String mensaeje= iUsuarioService.cambiarContrasenia(idUsuario,contrasenia,nuevaContrasenia,confirmarContrasenia);
+           if(mensaeje.equalsIgnoreCase("OK")){
+               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", "Se cambio la contraseni con exito."));
+               limpiar();
+               logout();
+           }else{
+               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", mensaeje));
+           }
+
+
+
 
     }
 
     public void limpiar(){
         nit="";
         email="";
+        password="";
+        nuevaContrasenia="";
+        confirmarContrasenia="";
     }
     
     public void cargarRercursoContenido(){
@@ -422,5 +466,60 @@ public class TemplateInicioBean implements Serializable {
 
     public void setiMensajeAppService(IMensajeAppService iMensajeAppService) {
         this.iMensajeAppService = iMensajeAppService;
+    }
+
+    public String getNuevaContrasenia() {
+        return nuevaContrasenia;
+    }
+
+    public void setNuevaContrasenia(String nuevaContrasenia) {
+        this.nuevaContrasenia = nuevaContrasenia;
+    }
+
+    public String getConfirmarContrasenia() {
+        return confirmarContrasenia;
+    }
+
+    public void setConfirmarContrasenia(String confirmarContrasenia) {
+        this.confirmarContrasenia = confirmarContrasenia;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNit() {
+        return nit;
+    }
+
+    public void setNit(String nit) {
+        this.nit = nit;
+    }
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
+    }
+
+    public String getNombreDeUsuario() {
+        return nombreDeUsuario;
+    }
+
+    public void setNombreDeUsuario(String nombreDeUsuario) {
+        this.nombreDeUsuario = nombreDeUsuario;
+    }
+
+    public String getNombreDeUnidad() {
+        return nombreDeUnidad;
+    }
+
+    public void setNombreDeUnidad(String nombreDeUnidad) {
+        this.nombreDeUnidad = nombreDeUnidad;
     }
 }

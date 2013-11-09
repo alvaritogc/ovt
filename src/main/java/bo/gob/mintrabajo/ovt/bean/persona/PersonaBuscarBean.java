@@ -37,46 +37,14 @@ public class PersonaBuscarBean implements Serializable{
     private HttpSession session;
 
     private PerPersona persona;
-
     private List<PerPersona> listaPersona;
-
-    public IPersonaService getiPersonaService() {
-        return iPersonaService;
-    }
-
-    public void setiPersonaService(IPersonaService iPersonaService) {
-        this.iPersonaService = iPersonaService;
-    }
 
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
 
-    public IUtilsService getiUtilsService() {
-        return iUtilsService;
-    }
-
-    public void setiUtilsService(IUtilsService iUtilsService) {
-        this.iUtilsService = iUtilsService;
-    }
 
     @ManagedProperty(value = "#{utilService}")
     private IUtilsService iUtilsService;
-
-    public IUsuarioService getiUsuarioService() {
-        return iUsuarioService;
-    }
-
-    public void setiUsuarioService(IUsuarioService iUsuarioService) {
-        this.iUsuarioService = iUsuarioService;
-    }
-
-    public ExternalContext getExternalContext() {
-        return externalContext;
-    }
-
-    public void setExternalContext(ExternalContext externalContext) {
-        this.externalContext = externalContext;
-    }
 
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
@@ -94,12 +62,14 @@ public class PersonaBuscarBean implements Serializable{
         listaPersona=iPersonaService.findAll();
        // listaPersona=  iPersonaService.buscarPorNroNombre("","");
 
+    }
 
-
+    public void irUnidad()throws IOException{
+        session.setAttribute("persona",persona);
+        externalContext.redirect("registroPersonaUnidad.xhtml");
     }
 
     public void nuevo()throws IOException {
-
         externalContext.redirect("registroPersona.xhtml");
     }
     public void cargar(){
@@ -110,6 +80,44 @@ public class PersonaBuscarBean implements Serializable{
    public void limpiar(){
        persona=new PerPersona();
    }
+
+    /*
+     * ************************************
+     *      GETTER Y SETTER
+     * ************************************
+     */
+
+    public IPersonaService getiPersonaService() {
+        return iPersonaService;
+    }
+
+    public void setiPersonaService(IPersonaService iPersonaService) {
+        this.iPersonaService = iPersonaService;
+    }
+
+    public IUtilsService getiUtilsService() {
+        return iUtilsService;
+    }
+
+    public void setiUtilsService(IUtilsService iUtilsService) {
+        this.iUtilsService = iUtilsService;
+    }
+
+    public IUsuarioService getiUsuarioService() {
+        return iUsuarioService;
+    }
+
+    public void setiUsuarioService(IUsuarioService iUsuarioService) {
+        this.iUsuarioService = iUsuarioService;
+    }
+
+    public ExternalContext getExternalContext() {
+        return externalContext;
+    }
+
+    public void setExternalContext(ExternalContext externalContext) {
+        this.externalContext = externalContext;
+    }
 
     public PerPersona getPersona() {
         return persona;

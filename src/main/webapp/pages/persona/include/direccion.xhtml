@@ -5,58 +5,69 @@
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:p="http://primefaces.org/ui">
- <p:panel>
+
+<h:form id="frmDireccion">
+ <p:panel id="pnlDireccion" >
+     <f:facet name="footer">
+         <p:commandButton value="#{personaUnidadBean.tituloDialog}"
+                          icon="#{personaUnidadBean.iconoUnidad}"
+                          action="#{personaUnidadBean.procesarUnidad}"
+                          id="cmdButtonDireccion"
+                 />
+     </f:facet>
+
+     <br/>
 
      <h:panelGrid columns="2">
-         <h:outputText value="Direccion:"/>
-         <p:inputTextarea id="txtAreaDireccion" value="#{personaUnidadBean.direccion.direccion}"
-                          rows="5"
-                          cols="50"
-                          autoResize="false"
-                          style="width: 550px;"
-                          tabindex="11"
-                          required="true"
-                          requiredMessage="El campo Direccion es obligatorio."/>
+
          <h:outputText value="Tipo de direccion:   "/>
          <p:selectOneMenu id="slcOneMenuTipoDireccion" value="#{personaUnidadBean.direccion.tipoDireccion}"
                           tabindex="1"
-                          style="width: 225px;"
+                          style="width: 220px;"
                           required="true"
                           requiredMessage="El campo Tipo de direccion es obligatorio.">
              <f:selectItem itemLabel="---Seleccione una direccion---" itemValue="0" />
              <f:selectItems value="#{personaBean.listaTipoEmpresa}" />
          </p:selectOneMenu>
-     </h:panelGrid>
 
-     <h:panelGrid columns="6">
+         <h:outputText value="Direccion:"/>
+         <p:inputTextarea id="txtAreaDireccion" value="#{personaUnidadBean.direccion.direccion}"
+                          rows="5"
+                          cols="50"
+                          autoResize="false"
+                          style="width: 220px;text-transform: uppercase;"
+                          tabindex="11"
+                          required="true"
+                          requiredMessage="El campo Direccion es obligatorio."/>
+
          <h:outputText value="Zona:"/>
          <p:inputText id="txtAreaZona" value="#{personaUnidadBean.direccion.zonaUrbanizacion}"
-                      style="width: 250px;"
+                      style="width: 220px;text-transform: uppercase;"
                       tabindex="11"
                       required="true"
                       requiredMessage="El campo Zona es obligatorio."/>
 
+
          <h:outputText value="Piso, Depto u Oficina:"/>
          <p:inputText id="inputTxtPiso" value="#{personaUnidadBean.direccion.pisoDepOfi}"
-                      style="width: 70px;"
+                      style="width: 60px;text-transform: uppercase;"
                       tabindex="3"
                       required="true"
                       requiredMessage="El campo Nombre comercial es obligatorio."/>
          <h:outputText value="Cod. localidad:"/>
          <p:inputText id="inputTxtCodLocalidad" value="#{personaUnidadBean.direccion.codLocalidad}"
-                      style="width: 70px;"
+                      style="width: 60px;"
                       tabindex="3"
                       required="true"
                       requiredMessage="El campo Nombre comercial es obligatorio."/>
-     </h:panelGrid>
 
-     <h:panelGrid columns="2">
+
          <h:outputText value="Referencia: "/>
          <p:inputTextarea id="txtAreaReferencia" value="#{personaUnidadBean.direccion.referencia}"
                           rows="5"
                           cols="50"
                           autoResize="false"
-                          style="width: 550px;"
+                          style="width: 220px;text-transform: uppercase;"
                           tabindex="11"
                           required="true"
                           requiredMessage="El campo Referencia es obligatorio."/>
@@ -65,59 +76,54 @@
      <h:panelGrid columns="2">
          <h:outputText value="Fax: "/>
          <p:inputText id="inputTxtFax" value="#{personaUnidadBean.direccion.fax}"
-                      style="width: 250px;"
+                      style="width: 220px;"
                       tabindex="3"
                       required="true"
                       requiredMessage="El campo Fax es obligatorio."/>
-     </h:panelGrid>
 
-     <h:panelGrid columns="4">
          <h:outputText value="Telefono 1: "/>
          <p:inputText id="inputTxtTelf1" value="#{personaUnidadBean.direccion.telefono}"
-                      style="width: 210px;"
+                      style="width: 220px;"
                       tabindex="3"
                       required="true"
                       requiredMessage="El campo Telefono 1 es obligatorio."/>
 
          <h:outputText value="Telefono 2: "/>
          <p:inputText id="inputTxtTelf2" value="#{personaUnidadBean.direccion.telefono2}"
-                      style="width: 210px;"
+                      style="width: 220px;"
                       tabindex="3"
                       required="true"
                       requiredMessage="El campo Fax es obligatorio."/>
-     </h:panelGrid>
 
-     <h:panelGrid columns="4">
          <h:outputText value="Celular 1: "/>
          <p:inputText id="inputTxtCelular1" value="#{personaUnidadBean.direccion.celular}"
-                      style="width: 210px;"
+                      style="width: 220px;"
                       tabindex="3"
                       required="true"
                       requiredMessage="El campo Celular 1 es obligatorio."/>
 
          <h:outputText value="Celular 2: "/>
          <p:inputText id="inputTxtCelular2" value="#{personaUnidadBean.direccion.celular2}"
-                      style="width: 210px;"
+                      style="width: 220px;"
                       tabindex="3"
                       required="true"
                       requiredMessage="El campo Fax es obligatorio."/>
-     </h:panelGrid>
 
-     <h:panelGrid columns="4">
          <h:outputText value="Correo electronico 1:"/>
          <p:inputText id="inputTxtEmail1" value="#{personaUnidadBean.direccion.email}"
-                      style="width: 210px;"
+                      style="width: 220px;"
                       tabindex="3"
                       required="true"
                       requiredMessage="El campo Correo electronico 1 es obligatorio."/>
 
          <h:outputText value="Correo electronico 2: "/>
          <p:inputText id="inputTxtEmail2" value="#{personaUnidadBean.direccion.email2}"
-                      style="width: 210px;"
+                      style="width: 220px;"
                       tabindex="3"
                       required="true"
                       requiredMessage="El campo Fax es obligatorio."/>
      </h:panelGrid>
 
  </p:panel>
+</h:form>
 </ui:composition>

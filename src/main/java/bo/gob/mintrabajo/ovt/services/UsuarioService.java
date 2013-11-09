@@ -125,6 +125,39 @@ public class UsuarioService implements IUsuarioService{
 
       return mensaje;
    }
+     /*
+      *
+      * Este se metodo se utiliza cuando el usuario realiza la operacion de cambiar su Contrasenia
+      */
+    public String cambiarContrasenia(Long idUsuario,String clave,String nuevaClave,String confirmarClave){
+
+        String mensaje="";
+        UsrUsuario usuario=usuarioRepository.findOne(idUsuario);
+
+        //verificar que la contrasenia sea la asociada a su cuenta
+        if(!usuario.getClave().equals(clave)){
+            mensaje="La contrasenia no esta asociada a su cuenta de usuario.";
+            return mensaje;
+        }
+               //Verificar que la nueva contrasenia sea distinta  a la antigua contrasenia
+            if(usuario.getClave().equals(nuevaClave)){
+                mensaje ="La nueva contrasenia debe ser distinta a la version anterior." ;
+                return mensaje;
+            }
+
+            //Verificar que la nueva contrasenia sea igual a la confirmacion de contrasenia
+            if(!nuevaClave.equals(confirmarClave)){
+                mensaje ="El valor del campo Nueva contrasenia debe ser igual al campo Confirmar contrasenia." ;
+                return mensaje;
+            }
+
+            //actualizar contrasenia
+            usuario.setClave(nuevaClave);
+            usuarioRepository.save(usuario);
+            mensaje="OK";
+            return mensaje;
+
+    }
 
 
     public String olvidoContrasenia(String email,String clave,String nuevaClave,String confirmarClave){

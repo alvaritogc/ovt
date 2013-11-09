@@ -56,17 +56,16 @@
                 <h:outputText value="#{persona.codLocalidad.tipoLocalidad}"/>
             </p:column>
             <p:column headerText="Acciones">
-                <p:commandButton   update="@all"  ajax="true" icon="ui-icon-zoomin" title="Registrar unidad">
+                <p:commandButton   update="@all"
+                                   ajax="true"
+                                   icon="ui-icon-zoomin"
+                                   title="Registrar unidad"
+                                   action="#{personaBuscarBean.irUnidad}">
                     <f:setPropertyActionListener value="#{persona}" target="#{personaBuscarBean.persona}" />
                 </p:commandButton>
             </p:column>
 
         </p:dataTable>
-
-        <br/>
-        <h:form>
-            <p:commandButton value="Nuevo" action="#{personaBuscarBean.nuevo}"/>
-        </h:form>
 
     </ui:define>
 </ui:composition>

@@ -48,7 +48,7 @@
             .ui-panelgrid td{
                 border-style: none;
             }
-            
+
             .ui-menu .ui-menu-parent .ui-menu-child{
                 width: 13.5em;
             }
@@ -87,6 +87,14 @@
                     <h:form>
                         <p:commandButton value="Inicio" action="#{templateInicioBean.irInicio}" style="width: 100%"/>
                     </h:form>
+                    <h:form rendered="#{templateInicioBean.idUsuario !=null}">
+                        <p:outputLabel value="Usuario: "/>
+                        <p:outputLabel value="#{templateInicioBean.nombreDeUsuario}" style="color: #0069B1;"/>
+                        <br/>
+                        <p:outputLabel value="Empleador:" />
+                        <p:outputLabel value="#{templateInicioBean.nombreDeUnidad}" style="color: #0069B1;"/>
+                    </h:form>
+
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario ==null}">
                         <p:panel  >
                             <h2 class="form-signin-heading">Conéctate</h2>
@@ -125,9 +133,9 @@
                     <p:dialog id="basicDialog" header="Acceso al Sistema" widgetVar="dlg1" width="700" height="470" resizable="false">  
                         <ui:include src="/mensajes/informacion.xhtml"/>
                     </p:dialog>
-
+                    <!-- ***********  DIALOG OLVIDO SU CONTRASENIA ************* -->
                     <p:dialog id="basicDialog2" header="Olvido su contrasenia" modal="true" widgetVar="dlg2" width="420" height="280" resizable="false">
-                       <!-- <ui:include src="/mensajes/informacion.xhtml"/>-->
+                        <!-- <ui:include src="/mensajes/informacion.xhtml"/>-->
 
                         <!--<p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>-->
 
@@ -136,38 +144,60 @@
                             <p:graphicImage value="../../images/ajax-loader.gif" />
                         </p:dialog>
                         <h:form id="frmOlvidoContrasenia">
-                        <p:messages id="abc" showDetail="true" autoUpdate="false" closable="true" globalOnly="false" />
-                        <br/>
-                        <p style="font-size: 12px;">Para recuperar su contrasenia, ingrese su Nro. de identificacion(NIT) y direccion de correo electronico asociada al Sistema.</p>
-
-                         <h:panelGrid columns="1" id="pnlGridContrasenia">
-                        <h:outputText value="Nro de identificacion (NIT):"/>
-                        <p:inputText id="txtOlvidoNIT" value="#{templateInicioBean.nit}"></p:inputText>
-                        <p:watermark for="txtOlvidoNIT" value="Nro de identificacion (NIT)" />
-                        <h:outputText value="Correo electronico:"/>
-                        <p:inputText id="txtOlvidoEmail" value="#{templateInicioBean.email}"></p:inputText>
-                            <p:watermark for="txtOlvidoEmail" value="Correo electronico" />
-                         </h:panelGrid>
+                            <p:messages id="abc" showDetail="true" autoUpdate="false" closable="true" globalOnly="false" />
                             <br/>
-                        <p:commandButton value="Enviar"
-                                         action="#{templateInicioBean.olvidoContrasenia}"
-                                         tabindex="2"
-                                         process="@form"
-                                         update=":frmOlvidoContrasenia"
-                                        >
+                            <p style="font-size: 12px;">Para recuperar su contrasenia, ingrese su Nro. de identificacion(NIT) y direccion de correo electronico asociada al Sistema.</p>
 
-                        </p:commandButton>
+                            <h:panelGrid columns="1" id="pnlGridContrasenia">
+                                <h:outputText value="Nro de identificacion (NIT):"/>
+                                <p:inputText id="txtOlvidoNIT" value="#{templateInicioBean.nit}"></p:inputText>
+                                <p:watermark for="txtOlvidoNIT" value="Nro de identificacion (NIT)" />
+                                <h:outputText value="Correo electronico:"/>
+                                <p:inputText id="txtOlvidoEmail" value="#{templateInicioBean.email}"></p:inputText>
+                                <p:watermark for="txtOlvidoEmail" value="Correo electronico" />
+                            </h:panelGrid>
+                            <br/>
+                            <p:commandButton value="Enviar"
+                                             action="#{templateInicioBean.olvidoContrasenia}"
+                                             tabindex="2"
+                                             process="@form"
+                                             update=":frmOlvidoContrasenia"
+                                             >
+
+                            </p:commandButton>
 
                         </h:form>
                     </p:dialog>
 
+                    <!-- ***********  DIALOG CAMBIAR CONTRASENIA ************* -->
+                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar contrasenia" modal="true" widgetVar="dlgCambiarContrasenia" resizable="true">
+
+                        <h:form id="frmCambiarContrasenia">
+                            <p:messages id="mssgCambiarContrasenia" showDetail="true" autoUpdate="false" closable="true" globalOnly="false" />
+                            <br/>
+                            <h:panelGrid columns="2" id="pnlGridCambiarContrasenia">
+                                <h:outputText value="Contrasenia:"/>
+                                <p:password id="txtContrasenia" value="#{templateInicioBean.contrasenia}"/>
+                                <h:outputText value="Nueva contrasenia:"/>
+                                <p:password id="txtNuevaContrasenia" value="#{templateInicioBean.nuevaContrasenia}"/>
+                                <h:outputText value="Confirmar contrasenia:"/>
+                                <p:password id="txtConfirmarContrasenia" value="#{templateInicioBean.confirmarContrasenia}"/>
+                            </h:panelGrid>
+                            <br/>
+                            <p:commandButton value="Enviar"
+                                             action="#{templateInicioBean.cambiarContrasenia}"
+                                             tabindex="2"
+                                             process="@form"
+                                             update=":frmCambiarContrasenia"
+                                    >
+
+                            </p:commandButton>
+
+                        </h:form>
+                    </p:dialog>
+
+
                     <h:form>
-                        <p:panel  header="Servicios públicos">
-                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/publico/informacion.xhtml"> Pasos trámite planilla  trimestral</a>
-                            <br/><br/>
-                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/publico/descargarPlanilla.xhtml"> Descarga de formatos de planillas </a>
-                        </p:panel>
-                        <br/>
                         <p:dataTable var="recursoPublico" value="#{templateInicioBean.listaRecursosContenido}">  
                             <p:column headerText="Servicios públicos">
                                 <p:commandLink value="#{recursoPublico.etiqueta}" action="#{templateInicioBean.verRecursoContenido}">
@@ -175,8 +205,26 @@
                                 </p:commandLink>
                             </p:column>
                         </p:dataTable>
-                       
+                        <br/>
+                        <p:panel  header="Descargas">
+<!--                            <a href="# {facesContext.externalContext.requestContextPath}/faces/pages/publico/informacion.xhtml"> Pasos trámite planilla  trimestral</a>
+                            <br/><br/>-->
+                            <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/publico/descargarPlanilla.xhtml"> Descarga de formatos de planillas </a>
+                        </p:panel>
+                        
+                        
+
                     </h:form>
+                    <h:form>
+                        <p:panel  header="Administracion de usuario" rendered="#{templateInicioBean.idUsuario!=null}">
+                            <br/>
+                            <p:commandLink value="Cambiar contrasenia?" onclick="PF('dlgCambiarContrasenia').show();" style="color:red;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
+                        </p:panel>
+                        <br/>
+
+
+                    </h:form>
+
                 </div>
                 <div class="span9">
                     <h:form id="idBarraDeMenu" rendered="#{!(templateInicioBean.idUsuario == null)}">
