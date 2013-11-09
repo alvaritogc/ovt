@@ -32,9 +32,11 @@
                     <h:outputText value="Nombre o Razon social:"/>
                     <p:inputText id="inputTxtNombre" value="#{personaBean.persona.nombreRazonSocial}"
                                  required="true"
-                                 style="width: 215px;text-transform: uppercase;"
+                                 style="width: 215px;"
                                  requiredMessage="El campo Nombre o Razon social es obligatorio"
-                                 tabindex="2"/>
+                                 tabindex="2">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
 
 
                     <h:outputText value="Apellido paterno:" rendered="#{personaBean.esNatural}"/>
@@ -48,7 +50,8 @@
                     <p:inputText id="inputTxtMaterno" value="#{personaBean.persona.apellidoMaterno}"
                                  tabindex="4"
                                  style="width: 215px;text-transform: uppercase;"
-                                 rendered="#{personaBean.esNatural}"/>
+                                 rendered="#{personaBean.esNatural}" />
+
 
                     <h:outputText value="Tipo de identificacion:"/>
                     <p:selectOneMenu id="slcOneMenuTipoIdentificacion" value="#{personaBean.persona.tipoIdentificacion}"
