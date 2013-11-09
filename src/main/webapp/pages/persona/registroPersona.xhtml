@@ -17,16 +17,17 @@
 
     <h:form id="frmBucarPersona">
         <p:growl showDetail="true" id="growl" />
-
-
         <h:panelGrid columns="1" >
 
             <p:panel id="pnlPersona" header="DATOS GENERALES" style="height: 300px;width: 700px;">
                 <h:panelGrid id="pnlGridBuscarPersona" columns="2" >
                     <h:outputText value="Es natural:"/>
-                    <p:selectBooleanCheckbox id="checkEsNatural" value="#{personaBean.persona.esNatural}" tabindex="1">
-                        <p:ajax   listener="#{personaBean.cambiarNatural}" update=":frmBucarPersona:inputTxtPaterno"  />
+                    <p:selectBooleanCheckbox id="checkEsNatural" value="#{personaBean.persona.esNatural}"
+                                             tabindex="1" immediate="true" >
+                        <p:ajax   listener="#{personaBean.cambiarNatural}" update="pnlPersona" />
                     </p:selectBooleanCheckbox>
+
+
 
                     <h:outputText value="Nombre o Razon social:"/>
                     <p:inputText id="inputTxtNombre" value="#{personaBean.persona.nombreRazonSocial}"
@@ -34,6 +35,7 @@
                                  style="width: 215px;"
                                  requiredMessage="El campo Nombre o Razon social es obligatorio"
                                  tabindex="2"/>
+
 
                     <h:outputText value="Apellido paterno:" rendered="#{personaBean.esNatural}"/>
                     <p:inputText id="inputTxtPaterno" value="#{personaBean.persona.apellidoPaterno}"
@@ -114,8 +116,8 @@
                    <f:facet name="footer">
                        <p:commandButton value="Guardar"
                                         action="#{personaBean.registrar}"
-                                        tabindex="21"
-                                        process="this"
+                                        tabindex="15"
+                                        process="@form"
                                         update="growl"
                                />
                    </f:facet>

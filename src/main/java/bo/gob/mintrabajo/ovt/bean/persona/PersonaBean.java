@@ -69,7 +69,7 @@ public class PersonaBean implements Serializable{
     private String idLocalidad;
     private List<SelectItem>listaLocalidad;
 
-    private PerUnidad unidad;
+    private PerUnidad unidad=new PerUnidad();
     private List<PerUnidad>listaUnidad;
 
     private  UsrUsuario usuario;
@@ -128,7 +128,14 @@ public class PersonaBean implements Serializable{
     }
 
     public void cambiarNatural(){
-      esNatural=persona.getEsNatural()?true:false;
+
+        System.out.println("=====>>> CAMBIARNATURAL() esNatural "+esNatural);
+        System.out.println("=====>>> CAMBIARNATURAL() persona.getEsNatural() "+persona.getEsNatural());
+        esNatural= esNatural==false?true:true;
+        persona.setEsNatural(esNatural);
+     // esNatural=persona.getEsNatural()?true:false;
+        System.out.println("=====>>> esNatural() "+esNatural);
+        ini();
     }
 
     public void cargar(){
