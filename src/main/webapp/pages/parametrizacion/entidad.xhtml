@@ -8,12 +8,10 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../../pages/template/templateInicio.xhtml">
         <ui:define name="content">
-            <br/>
-                <h2 class="form-signin-heading">Entidades</h2>
-            <br/>
-            <!--  Formulario de busqueda-->
-            <br />
-            <p:commandButton value="Nuevo" onclick="dlgFormEntidad.show();" update=":formEntidad" icon="ui-icon-document-b"/>
+            <h2 class="form-signin-heading">Entidades</h2>
+            <p:commandButton value="Nuevo" onclick="dlgFormEntidad.show();" update=":formEntidad" icon="ui-icon-document-b">
+                <f:setPropertyActionListener target="#{entidadBean.sw}" value="a"/>
+            </p:commandButton>    
             <br />
             <!--  Listado de entidades en tabla-->
             <br/>
@@ -28,38 +26,25 @@
                     <h:outputText value="#{parEntidad.descripcion}" />  
                 </p:column>  
 
-                <p:column sortBy="codigo" headerText="Codigo">    
+                <p:column sortBy="codigo" headerText="Codigo interno">    
                     <h:outputText value="#{parEntidad.codigo}" />  
                 </p:column>  
 
-<!--                <p:column>  
-                    <f:facet name="header">  
-                        <h:outputText value="Unidad" />  
-                    </f:facet>  
-                    <h:outputText value="{entidad.perUnidad.nombreComercial}" />  
-                </p:column> 
-                <p:column>  
-                    <f:facet name="header">  
-                        <h:outputText value="Persona" />  
-                    </f:facet>  
-                    <h:outputText value="{entidad.perUnidad.perPersona.nombreRazonSocial} 
-                                  {entidad.perUnidad.perPersona.apellidoPaterno}" />  
-                </p:column>-->
                 <p:column sortBy="tipoEntidad" headerText="Tipo de entidad">  
                     <h:outputText value="#{parEntidad.tipoEntidad}" />  
                 </p:column>
-                <p:column headerText="Acciones">
-                    
-                    <h:form>                             
-                        <p:commandButton icon="ui-icon-pencil" title="Editar" onclick="dlgFormEntidad.show()" update=":formEntidad"> 
+                <p:column headerText="Acciones">                
+                    <p:commandButton title="Editar" onclick="dlgFormEntidad.show()" update=":formEntidad" icon="ui-icon-pencil">
                             <f:setPropertyActionListener target="#{entidadBean.entidad}" value="#{parEntidad}" />
+                            <f:setPropertyActionListener target="#{entidadBean.dominio}" value="#{parEntidad.tipoEntidad}" />
                             <f:setPropertyActionListener target="#{entidadBean.evento}" value="true" />
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" title="Eliminar" onclick="confirmation.show()"> 
+                            <f:setPropertyActionListener target="#{entidadBean.sw}" value="b"/>
+                    </p:commandButton>
+                    <p:commandButton title="Eliminar" onclick="confirmation.show()" icon="ui-icon-trash">
                             <f:setPropertyActionListener target="#{entidadBean.entidad}" value="#{parEntidad}" />
-                        </p:commandButton>
-                        
-                    </h:form>
+                            <f:setPropertyActionListener target="#{entidadBean.sw}" value="c"/>
+                    </p:commandButton>
+                    
                 </p:column>  
             </p:dataTable>
             
@@ -70,8 +55,12 @@
                  <p:commandButton value="Si" update=":messages :dataTableEntidad" oncomplete="confirmation.hide()" actionListener="#{entidadBean.confirmaEliminar}" />  
                  <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
             </p:confirmDialog>
+            
+            <p:dialog id="modalDialog" header="Atencion" widgetVar="dlgMensaje" width="350" modal="true">  
+                <span class="ui-icon ui-icon-alert"></span>
+                <h:outputText value="El registro esta siendo usado en otro lugar, por lo que no se puede eliminar." />  
+            </p:dialog>
                 
-             <!--            Formulario de registro y edicion-->   
             <p:dialog id="basicDialogMessage" header="Entidad" widgetVar="dlgFormEntidad" 
                       width="400" closable="false" 
                       resizable="false"
@@ -84,28 +73,18 @@
                     <p:inputText id="descripcion" value="#{entidadBean.entidad.descripcion}" required="true" 
                                  requiredMessage="Debe ingresar el campo Descripcion" maxlength="120" style="text-transform: uppercase;"/>  
                     
-                    <h:outputLabel for="codigo" value="Codigo:" style="font-weight:bold"/>  
+                    <h:outputLabel for="codigo" value="Codigo interno:" style="font-weight:bold"/>  
                     <p:inputText id="codigo" value="#{entidadBean.entidad.codigo}" required="true" 
                                  requiredMessage="Debe ingresar el campo Codigo" maxlength="20" style="text-transform: uppercase;"/>
                     
-                    <h:outputLabel for="tipoEntidad" value="Tipo entidad:" style="font-weight:bold"/>  
-                    <p:inputText id="tipoEntidad" value="#{entidadBean.entidad.tipoEntidad}" required="true" 
-                                 requiredMessage="Debe ingresar el campo Tipo de Entidad" maxlength="15" style="text-transform: uppercase;"/>
+                    <h:outputLabel for="tipoEntidad" value="Tipo entidad:" style="font-weight:bold"/>
+                    <p:selectOneMenu id="tipoEntidad" value="#{entidadBean.dominio}" required="true" requiredMessage="Debe eleccionar el Tipo de Entidad">  
+                            <f:selectItem itemLabel="---Seleccione tipo de entidad---" itemValue="" />
+                            <f:selectItems value="#{entidadBean.listaDominio}" var="do" itemLabel="#{do.descripcion}" itemValue="#{do.parDominioPK.valor}"/>
+                    </p:selectOneMenu>
                    
                     <p:commandButton value="Guardar" actionListener="#{entidadBean.guardarModificar}" update=":growl formEntidad :dataTableEntidad" icon="ui-icon-disk"/>
                     <p:commandButton value="Canselar" actionListener="#{entidadBean.limpiar}" onclick="dlgFormEntidad.hide();" update="formEntidad" icon="ui-icon-close"/>
-                    
-                    <!--                     <h:outputLabel for="unidad" value="Unidad:" style="font-weight:bold"/>  
-                     <p:selectOneMenu id="unidad" value="">  
-                        <f:selectItem itemLabel="Seleccione unidad" itemValue="" />  
-                        <f:selectItems value="" />   
-                    </p:selectOneMenu>
-                    
-                    <h:outputLabel for="persona" value="Persona:" style="font-weight:bold"/>  
-                    <p:selectOneMenu id="persona" value="">  
-                        <f:selectItem itemLabel="Seleccione persona" itemValue="" />  
-                        <f:selectItems value="" />   
-                    </p:selectOneMenu>-->
                 </h:panelGrid>  
             </h:form> 
             </p:dialog>
