@@ -61,7 +61,7 @@
                         <h:outputText value="#{calendario.fechaPlazo}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>  
                     </p:column>
                     
-                    <p:column headerText="Acciones">
+                    <p:column headerText="Acciones" style="width: 80px;">
                     
                         <p:commandButton icon="ui-icon-pencil" title="Editar" oncomplete="dlgFormObligacionCalendario.show()" update=":basicDialogMessage"> 
                             <f:setPropertyActionListener target="#{obligacionCalendarioBean.obligacionCalendario}" value="#{calendario}" />

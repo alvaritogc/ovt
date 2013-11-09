@@ -4,6 +4,8 @@ import bo.gob.mintrabajo.ovt.api.IEntidadService;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IUnidadService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
+import bo.gob.mintrabajo.ovt.api.IDominioService;
+import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.ParEntidad;
 import bo.gob.mintrabajo.ovt.entities.PerPersona;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
@@ -33,12 +35,18 @@ public class EntidadBean implements Serializable{
     
     @ManagedProperty(value = "#{entidadService}")
     private IEntidadService iEntidadService;
+    @ManagedProperty(value = "#{entidadService}")
+    private IEntidadService iEntidadServiceAux;
+//    @ManagedProperty(value = "#{entidadService}")
+//    private IEntidadService iEntidadServiceAux1;
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
     @ManagedProperty(value = "#{unidadService}")
     private IUnidadService iUnidadService;
     @ManagedProperty(value = "#{utilsService}")
     private IUtilsService iUtilsService;
+    @ManagedProperty(value = "#{dominioService}")
+    private IDominioService iDominioService;
     
      private HttpSession session;
     private Long idUsuario;
@@ -49,9 +57,12 @@ public class EntidadBean implements Serializable{
     private ParEntidad entidad=new ParEntidad();
     private List<PerUnidad> listaUnidad=null;
     private List<PerPersona> listaPersona;
+    private List<ParDominio> listaDominio;
+    private String dominio="";
     private PerUnidad unidad=null;
     private PerPersona persona;
     private boolean evento=false;
+    private String sw;
 
     @PostConstruct
     public void ini() {
@@ -65,6 +76,8 @@ public class EntidadBean implements Serializable{
         listaEntidad =new ArrayList<ParEntidad>();
         //listaEntidad= iEntidadService.listaEntidad();
         listaEntidad= iEntidadService.listaEntidadPorOrden();
+        listaDominio = new ArrayList<ParDominio>();
+        listaDominio = iDominioService.obtenerItemsDominio("TENTIDAD");
     }
     
     public void confirmaEliminar(){  
@@ -75,6 +88,8 @@ public class EntidadBean implements Serializable{
                 entidad=new ParEntidad();
             }
         } catch (Exception e) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dlgMensaje.show()");
             e.printStackTrace();
         }
     } 
@@ -83,12 +98,13 @@ public class EntidadBean implements Serializable{
         RequestContext context = RequestContext.getCurrentInstance();
         if(entidad.getDescripcion().isEmpty()){ return;}
         if(entidad.getCodigo().isEmpty()){return;}
-        if(entidad.getTipoEntidad().isEmpty()){return;}
+        if(dominio.isEmpty()){return;}
         context.execute("dlgFormEntidad.hide();");
         
         entidad.setDescripcion(entidad.getDescripcion().toUpperCase());
         entidad.setCodigo(entidad.getCodigo().toUpperCase());
-        entidad.setTipoEntidad(entidad.getTipoEntidad().toUpperCase());
+        entidad.setTipoEntidad(dominio.toUpperCase());
+        
         //final String  REGISTRO_BITACORA="OVT";
         final String  REGISTRO_BITACORA=idUsuario.toString();        
         Date fechaBitacora = new Date();
@@ -105,6 +121,36 @@ public class EntidadBean implements Serializable{
            limpiar();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    
+    public void guardarModificar1(){
+        System.out.println("=======" + sw);   
+                RequestContext context = RequestContext.getCurrentInstance();
+        if(entidad.getDescripcion().isEmpty()){ return;}
+        if(entidad.getCodigo().isEmpty()){return;}
+        if(dominio.isEmpty()){return;}
+        context.execute("dlgFormEntidad.hide();");
+        
+                //final String  REGISTRO_BITACORA="OVT";
+        final String  REGISTRO_BITACORA=idUsuario.toString();        
+        Date fechaBitacora = new Date();
+        
+        if(sw.equals("a")){
+                entidad.setDescripcion(entidad.getDescripcion().toUpperCase());
+            entidad.setCodigo(entidad.getCodigo().toUpperCase());
+            entidad.setTipoEntidad(dominio.toUpperCase());
+            entidad.setFechaBitacora(fechaBitacora);
+            entidad.setRegistroBitacora(REGISTRO_BITACORA);
+            iEntidadServiceAux.guardarEliminar(sw, entidad);
+        }
+
+        if(sw.equals("b")){
+            iEntidadServiceAux.guardarEliminar(sw, entidad);
+        }
+        
+        if(sw.equals("c")){
+            iEntidadServiceAux.guardarEliminar(sw, entidad);
         }
     }
     
@@ -262,6 +308,90 @@ public class EntidadBean implements Serializable{
 
     public void setiUtilsService(IUtilsService iUtilsService) {
         this.iUtilsService = iUtilsService;
+    }
+
+    /**
+     * @return the iDominioService
+     */
+    public IDominioService getiDominioService() {
+        return iDominioService;
+    }
+
+    /**
+     * @param iDominioService the iDominioService to set
+     */
+    public void setiDominioService(IDominioService iDominioService) {
+        this.iDominioService = iDominioService;
+    }
+
+    /**
+     * @return the listaDominio
+     */
+    public List<ParDominio> getListaDominio() {
+        return listaDominio;
+    }
+
+    /**
+     * @param listaDominio the listaDominio to set
+     */
+    public void setListaDominio(List<ParDominio> listaDominio) {
+        this.listaDominio = listaDominio;
+    }
+
+    /**
+     * @return the dominio
+     */
+    public String getDominio() {
+        return dominio;
+    }
+
+    /**
+     * @param dominio the dominio to set
+     */
+    public void setDominio(String dominio) {
+        this.dominio = dominio;
+    }
+
+    /**
+     * @return the iEntidadServiceAux
+     */
+    public IEntidadService getiEntidadServiceAux() {
+        return iEntidadServiceAux;
+    }
+
+    /**
+     * @param iEntidadServiceAux the iEntidadServiceAux to set
+     */
+    public void setiEntidadServiceAux(IEntidadService iEntidadServiceAux) {
+        this.iEntidadServiceAux = iEntidadServiceAux;
+    }
+
+//    /**
+//     * @return the iEntidadServiceAux1
+//     */
+//    public IEntidadService getiEntidadServiceAux1() {
+//        return iEntidadServiceAux1;
+//    }
+//
+//    /**
+//     * @param iEntidadServiceAux1 the iEntidadServiceAux1 to set
+//     */
+//    public void setiEntidadServiceAux1(IEntidadService iEntidadServiceAux1) {
+//        this.iEntidadServiceAux1 = iEntidadServiceAux1;
+//    }
+
+    /**
+     * @return the sw
+     */
+    public String getSw() {
+        return sw;
+    }
+
+    /**
+     * @param sw the sw to set
+     */
+    public void setSw(String sw) {
+        this.sw = sw;
     }
 
 }
