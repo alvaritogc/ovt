@@ -7,10 +7,14 @@
       xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions">
 <ui:composition template="../../pages/template/templateInicio.xhtml">
 <ui:define name="content">
+<h:form id="idMensajeContenido">
+    <p:poll interval="1" id="idPollParMensajeApp"
+            listener="#{declaracionBean.abrirPanel}"
+            update=":idMensajeContenido:idPollParMensajeApp"
+            stop="true"/>
+</h:form>
 
 <h:form id="formularioFrm" enctype="multipart/form-data">
-
-    <h:commandButton value="presionar" action="#{declaracionBean.validaArchivo}" rendered="false"/>
 
 <h:panelGroup rendered="#{declaracionBean.estaDeclarado}">
     <h1>Usted ya realizo la declaracion jurada en este trimestre</h1>
@@ -529,7 +533,22 @@
     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
 </p:confirmDialog>
 </h:panelGroup>
+
 </h:form>
+
+<p:dialog widgetVar="seleccionEmpresa" id="seleccionEmpresa" header="Seleccione" modal="true" closable="false" resizable="false">
+    <h:form id="form2">
+        <p:outputLabel value="El siguiente formulario se declarará, consolidado o por sucursal." style="font-size: 12px"/>
+        <h:panelGrid id="pan" columns="2" border="0">
+
+
+            <p:selectOneMenu style="width: 260px; height: 20px">
+                <f:selectItem itemValue="ninguno" itemLabel="#{declaracionBean.perPersona.nombreRazonSocial}"/>
+            </p:selectOneMenu>
+        <p:commandButton id="submitButton" value="Aceptar" oncomplete="PF('seleccionEmpresa').hide();"/>
+        </h:panelGrid>
+    </h:form>
+</p:dialog>
 
 </ui:define>
 </ui:composition>

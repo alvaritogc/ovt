@@ -7,6 +7,7 @@ import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import com.csvreader.CsvReader;
 import org.apache.commons.io.FilenameUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -102,6 +104,8 @@ public class declaracionBean implements Serializable {
 
     private Long idRectificatorio;
     private List<String> errores = new ArrayList<String>();
+    private boolean valor;
+    private short tipoEmpresa;
 
     @PostConstruct
     public void ini() {
@@ -155,6 +159,13 @@ public class declaracionBean implements Serializable {
 //        persona = iPersonaService.buscarPorId(idPersona);
         logger.info("persona ok");
         cargar();
+        valor=true;
+    }
+
+    public void abrirPanel() {
+        if(valor)
+            RequestContext.getCurrentInstance().execute("seleccionEmpresa.show()");
+        valor = false;
     }
 
     public void cargar() {
@@ -246,9 +257,17 @@ public class declaracionBean implements Serializable {
         }
     }
 
-    public String guardaDocumentoPlanillaBinario(){
-        validaArchivo(listaBinarios);
-        error();
+    public String guardaDocumentoPlanillaBinario(ActionEvent actionEvent){
+//        validaArchivo(listaBinarios);
+//        if(errores.size()>0){
+//            String e="";
+//            for(String error:errores)
+//                e=e+ error;
+//            System.out.println(e);
+//            FacesContext.getCurrentInstance().addMessage(String.valueOf(idUsuario), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error de dato: ", e));
+//            return null;
+//        }
+
         if(errores.size()==0){
             try{
                 logger.info("Guardando documento, binario y planilla");
@@ -284,13 +303,8 @@ public class declaracionBean implements Serializable {
         parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendario();
     }
 
-    public void error() {
-        if(errores.size()>0){
-            String e="";
-            for(String error:errores)
-                e=e+ error+"\n";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Errores ", e));
-        }
+    public String mensajeError(int i, String titulo){
+        return "Fila: "+i+" y Columna: "+ titulo+ ";";
     }
 
     public void validaArchivo(List<DocBinario> listaBinarios){
@@ -302,9 +316,9 @@ public class declaracionBean implements Serializable {
             for(DocBinario docBinario:listaBinarios){
                 CsvReader registro;
                 if(!FilenameUtils.getExtension(docBinario.getTipoDocumento()).toUpperCase().equals(Dominios.EXTENSION_CSV)){
-//                    OutputStream output= XlsToCSV.xlsToCsv(new ByteArrayInputStream(docBinario.getBinario()));
-//                    registro = new CsvReader(new InputStreamReader(new ByteArrayInputStream(((ByteArrayOutputStream) output).toByteArray())));
-                    registro =null;
+                    OutputStream output= XlsToCSV.xlsToCsv(new ByteArrayInputStream(docBinario.getBinario()));
+                    registro = new CsvReader(new InputStreamReader(new ByteArrayInputStream(((ByteArrayOutputStream) output).toByteArray())));
+//                    registro =null;
                 }
                 else
                     registro = new CsvReader(new InputStreamReader(new ByteArrayInputStream(docBinario.getBinario())));
@@ -324,6 +338,8 @@ public class declaracionBean implements Serializable {
 
                 registro.readHeaders();
                 int c=0;
+                //TODO nombre del documento extraido del metadata
+                errores.add(docBinario.getTipoDocumento().toUpperCase());
                 while (registro.readRecord()){
                     c++;
                     int columna=1;
@@ -641,8 +657,8 @@ public class declaracionBean implements Serializable {
                 }
             }
             if(errores.size()>0){
-                for (String error:errores)
-                    System.out.println(error);
+//                for (String error:errores)
+//                    System.out.println(error);
             }
             else{
                 for(DocPlanillaDetalle docPlanillaDetalle:docPlanillaDetalles){
@@ -654,10 +670,6 @@ public class declaracionBean implements Serializable {
         catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    public String mensajeError(int i, String titulo){
-           return "Error de dato en el registro "+i+", en la columna "+ titulo;
     }
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
@@ -976,5 +988,13 @@ public class declaracionBean implements Serializable {
 
     public void setiPlanillaDetalleService(IPlanillaDetalleService iPlanillaDetalleService) {
         this.iPlanillaDetalleService = iPlanillaDetalleService;
+    }
+
+    public short getTipoEmpresa() {
+        return tipoEmpresa;
+    }
+
+    public void setTipoEmpresa(short tipoEmpresa) {
+        this.tipoEmpresa = tipoEmpresa;
     }
 }
