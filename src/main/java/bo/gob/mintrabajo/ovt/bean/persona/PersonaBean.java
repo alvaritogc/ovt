@@ -14,6 +14,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -34,6 +35,7 @@ import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
  * Time: 2:57 PM
  * To change this template use File | Settings | File Templates.
  */
+
 @ManagedBean(name = "personaBean")
 @ViewScoped
 public class PersonaBean implements Serializable{
@@ -151,7 +153,8 @@ public class PersonaBean implements Serializable{
             listaLocalidad=new ArrayList<SelectItem>();
             localidades=iLocalidadService.getAllLocalidades();
             for (ParLocalidad l:localidades){
-                listaLocalidad.add(new SelectItem(l.getCodLocalidad(),l.getDescripcion()));
+                if(!l.getDescripcion().equalsIgnoreCase("BOLIVIA"))
+                    listaLocalidad.add(new SelectItem(l.getCodLocalidad(),l.getDescripcion()));
             }
         }
         catch (Exception e) {
