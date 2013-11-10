@@ -20,8 +20,8 @@ public interface UnidadRepository extends OpenJpaRepository<PerUnidad, PerUnidad
             )
     List<PerUnidad> buscarPorPersona(@Param("idPersona") String idPersona);
 
-    @Query("delete from PerUnidad u " +
+    @Query("select u from PerUnidad u " +
             "where u.perUnidadPK.idPersona=:idPersona")
-    void eliminarUnidad(@Param("idPersona")String idPersona);
+    PerUnidad unidadPorIdPersona(@Param("idPersona")String idPersona);
     
 }

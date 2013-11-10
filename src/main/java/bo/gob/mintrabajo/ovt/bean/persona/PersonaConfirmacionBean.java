@@ -4,10 +4,15 @@ import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IParametrizacionService;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
-import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -16,7 +21,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -49,23 +53,28 @@ public class PersonaConfirmacionBean {
 
     private static final Logger logger = LoggerFactory.getLogger(PersonaConfirmacionBean.class);
 
-    public PersonaConfirmacionBean(){
+    public PersonaConfirmacionBean() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         Map params = ec.getRequestParameterMap();
         String passwordCode = params.get("codeUnic").toString();
         String passwordCodeFinal = "";
-        for (int x=0; x < passwordCode.length(); x++) {
-            if (passwordCode.charAt(x) != ' '){
-                passwordCodeFinal += passwordCode.charAt(x);
-            }else{
-                passwordCodeFinal += '+';
+        if (passwordCode != null) {
+            for (int x = 0; x < passwordCode.length(); x++) {
+                if (passwordCode.charAt(x) != ' ') {
+                    passwordCodeFinal += passwordCode.charAt(x);
+                } else {
+                    passwordCodeFinal += '+';
+                }
             }
-        }
-        passwordParameter = Util.decrypt(passwordCodeFinal);
-        setLoginParameter((String) params.get("codeNam"));
-        setPasswordParameter(passwordParameter);
+            passwordParameter = Util.decrypt(passwordCodeFinal);
+            setLoginParameter((String) params.get("codeNam"));
+            setPasswordParameter(passwordParameter);
 
-        logger.info(" Password ---- " + passwordParameter );
+            logger.info(" Password ---- " + passwordParameter);
+        }else{
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Operación Inválida"));
+        }
     }
 
     public String confirmaRegistro() {
@@ -73,7 +82,7 @@ public class PersonaConfirmacionBean {
         if (passwordParameter.equals(passwordConfirm)) {
             try {
 
-                Long idUsuario = iUsuarioService.login(getLoginParameter(), getPasswordParameter());
+                Long idUsuario = iUsuarioService.loginConfirmacion(getLoginParameter(), getPasswordParameter());
                 logger.info("usuario aceptado");
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                 session.setAttribute("idUsuario", idUsuario);
@@ -87,21 +96,45 @@ public class PersonaConfirmacionBean {
 
                 if ((TimeUnit.MINUTES.toMillis(timer) > diferenciaLong)) {
 
+                    System.out.println("--------------- " + usuario.getIdPersona());
+                    System.out.println("--------------- " + usuario.getIdUsuario());
+                    System.out.println("--------------- " + usuario.getClave());
+                    System.out.println("--------------- " + usuario.getRegistroBitacora());
+                    System.out.println("--------------- " + usuario.getEstadoUsuario());
+                    System.out.println("--------------- " + usuario.getEsDelegado());
+                    System.out.println("--------------- " + usuario.getUsuario());
+
                     session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
                     if (usuario.getEsInterno() == 1) {
                         session.setAttribute("idEmpleador", null);
+                        UsernamePasswordToken token = new UsernamePasswordToken(usuario.getUsuario(), passwordParameter);
+                        Subject subject = SecurityUtils.getSubject();
+                        token.setRememberMe(true);
+                        subject.login(token);
+
+                        token.clear();
+                        //cambiaEstadoUsuario(idUsuario);
                         return "irEmpleadorBusqueda";
+
                     } else {
                         session.setAttribute("idEmpleador", usuario.getIdPersona().getIdPersona());
+                        UsernamePasswordToken token = new UsernamePasswordToken(usuario.getUsuario(), passwordParameter);
+                        Subject subject = SecurityUtils.getSubject();
+                        token.setRememberMe(true);
+                        subject.login(token);
+
+                        token.clear();
+
+                        //cambiaEstadoUsuario(idUsuario);
                         return "irEscritorio";
                     }
-
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cuidado", "El tiempo para registrarse expiró, intente registrarse de nuevo"));
                     logger.info("Eliminando .... " + idUsuario);
-                    //iPersonaService.eliminarRegistro(usuario.getIdPersona().getIdPersona());
+                    iPersonaService.eliminarRegistro(usuario.getIdPersona().getIdPersona(), usuario);
                     return null;
                 }
+
             } catch (RuntimeException e) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Controle que el password ingresado sea el mismo del registro inicial"));
@@ -113,6 +146,13 @@ public class PersonaConfirmacionBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cuidado", "El password no es correcto"));
             return null;
         }
+    }
+
+    public void cambiaEstadoUsuario(Long idUsuario){
+        UsrUsuario usuarioSinConfirmar = iUsuarioService.findById(idUsuario);
+
+        usuarioSinConfirmar.setEstadoUsuario("A");
+        iUsuarioService.guardarUsuario(usuarioSinConfirmar);
     }
 
     // ***** Getter y Setters *****//

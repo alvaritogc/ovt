@@ -213,12 +213,38 @@ public class PersonaService implements IPersonaService {
         }
     }
 
-    public boolean eliminarRegistro(String perPersona) {
-        System.out.println("Eliminando el registro ------------------------------------------");
-        usuarioUnidadRepository.eliminarUsuarioUnidad(perPersona);
-        usuarioRepository.eliminarUsuario(perPersona);
-        unidadRepository.eliminarUnidad(perPersona);
-        personaRepository.delete(perPersona);
+    public boolean eliminarRegistro(String perPersona, UsrUsuario usrUsuario) {
+        System.out.println("Eliminando id Persona " + perPersona + " usuario " + usrUsuario.getIdPersona().getIdPersona() + " id Usuario " + usrUsuario.getIdUsuario());
+
+        UsrUsuarioRolPK usrPK = new UsrUsuarioRolPK();
+        usrPK.setIdUsuario(usrUsuario.getIdUsuario());
+        usrPK.setIdRol(new Long("2"));
+        UsrUsuarioRol usrUsuarioRolTmp = usuarioRolRepository.findOne(usrPK);
+
+
+        usuarioRolRepository.delete(usrUsuarioRolTmp.getUsrUsuarioRolPK());
+        usuarioRolRepository.flush();
+        System.out.println("Elimina usuarioRol");
+
+        PerUsuarioUnidad pu = usuarioUnidadRepository.unidadPorIdPersona(perPersona);
+        usuarioUnidadRepository.delete(pu);
+        usuarioUnidadRepository.flush();
+        System.out.println("Elimina usuarioUnidad");
+
+        PerUnidad unidadTmp = unidadRepository.unidadPorIdPersona(perPersona);
+        unidadRepository.delete(unidadTmp);
+        unidadRepository.flush();
+        System.out.println("Elimina unidad ");
+
+        UsrUsuario usuarioTmp = usuarioRepository.findOne(usrUsuario.getIdUsuario());
+        usuarioRepository.delete(usuarioTmp);
+        usuarioRepository.flush();
+        System.out.println("Elimina usuario");
+
+        PerPersona personaTmp = personaRepository.findOne(perPersona);
+        personaRepository.delete(personaTmp);
+        personaRepository.flush();
+        System.out.println("Elimina a la persona");
         return true;
     }
 }

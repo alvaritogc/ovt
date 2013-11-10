@@ -11,10 +11,12 @@ import javax.sql.DataSource;
  */
 public interface IUsuarioService {
     public Long login(String username, String password);
+    public Long loginConfirmacion(String username, String password);
     public List<UsrUsuario> getAllUsuarios();
     public UsrUsuario findById(Long id);
     public Long obtenerSecuencia(String nombreSecuencia);
     public UsrUsuario save(UsrUsuario usrUsuario);
+    public UsrUsuario guardarUsuario(UsrUsuario usrUsuario);
     public UsrUsuario obtenerUsuarioPorNombreUsuario(String email);
     public String cambiarContrasenia(String email,String clave,String nuevaClave,String confirmarClave);
     public String cambiarContrasenia(Long idUsuario,String clave,String nuevaClave,String confirmarClave);
