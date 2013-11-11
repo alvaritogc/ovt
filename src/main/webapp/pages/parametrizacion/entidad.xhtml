@@ -9,9 +9,8 @@
     <ui:composition template="../../pages/template/templateInicio.xhtml">
         <ui:define name="content">
             <h2 class="form-signin-heading">Entidades</h2>
-            <p:commandButton value="Nuevo" onclick="dlgFormEntidad.show();" update=":formEntidad" icon="ui-icon-document-b">
-                <f:setPropertyActionListener target="#{entidadBean.sw}" value="a"/>
-            </p:commandButton>    
+            <p:commandButton value="Nuevo" onclick="dlgFormEntidad.show();" update=":formEntidad:pnlGridEntidad" 
+                             icon="ui-icon-document-b" actionListener="#{entidadBean.nuevo}" /> 
             <br />
             <!--  Listado de entidades en tabla-->
             <br/>
@@ -36,13 +35,10 @@
                 <p:column headerText="Acciones">                
                     <p:commandButton title="Editar" onclick="dlgFormEntidad.show()" update=":formEntidad" icon="ui-icon-pencil">
                             <f:setPropertyActionListener target="#{entidadBean.entidad}" value="#{parEntidad}" />
-                            <f:setPropertyActionListener target="#{entidadBean.dominio}" value="#{parEntidad.tipoEntidad}" />
                             <f:setPropertyActionListener target="#{entidadBean.evento}" value="true" />
-                            <f:setPropertyActionListener target="#{entidadBean.sw}" value="b"/>
                     </p:commandButton>
                     <p:commandButton title="Eliminar" onclick="confirmation.show()" icon="ui-icon-trash">
                             <f:setPropertyActionListener target="#{entidadBean.entidad}" value="#{parEntidad}" />
-                            <f:setPropertyActionListener target="#{entidadBean.sw}" value="c"/>
                     </p:commandButton>
                     
                 </p:column>  
@@ -68,27 +64,30 @@
                 
                 <p:growl id="growl" />
                 <h:form id="formEntidad">     
-                <h:panelGrid columns="2" cellpadding="5">  
+                <h:panelGrid columns="2" cellpadding="5" id="pnlGridEntidad">  
                     <h:outputLabel for="descripcion" value="Descripción:" style="font-weight:bold"/>  
                     <p:inputText id="descripcion" value="#{entidadBean.entidad.descripcion}" required="true" 
-                                 requiredMessage="Debe ingresar el campo Descripcion" maxlength="120" style="text-transform: uppercase;"/>  
+                                 requiredMessage="Debe ingresar el campo Descripcion" maxlength="120" style="text-transform: uppercase;">
+                    <f:converter converterId="lowerConverter"/>
+                    </p:inputText>     
                     
                     <h:outputLabel for="codigo" value="Codigo interno:" style="font-weight:bold"/>  
                     <p:inputText id="codigo" value="#{entidadBean.entidad.codigo}" required="true" 
-                                 requiredMessage="Debe ingresar el campo Codigo" maxlength="20" style="text-transform: uppercase;"/>
+                                 requiredMessage="Debe ingresar el campo Codigo" maxlength="20" style="text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
                     
                     <h:outputLabel for="tipoEntidad" value="Tipo entidad:" style="font-weight:bold"/>
-                    <p:selectOneMenu id="tipoEntidad" value="#{entidadBean.dominio}" required="true" requiredMessage="Debe eleccionar el Tipo de Entidad">  
+                    <p:selectOneMenu id="tipoEntidad" value="#{entidadBean.entidad.tipoEntidad}" required="true" requiredMessage="Debe eleccionar el Tipo de Entidad">  
                             <f:selectItem itemLabel="---Seleccione tipo de entidad---" itemValue="" />
                             <f:selectItems value="#{entidadBean.listaDominio}" var="do" itemLabel="#{do.descripcion}" itemValue="#{do.parDominioPK.valor}"/>
                     </p:selectOneMenu>
                    
                     <p:commandButton value="Guardar" actionListener="#{entidadBean.guardarModificar}" update=":growl formEntidad :dataTableEntidad" icon="ui-icon-disk"/>
-                    <p:commandButton value="Canselar" actionListener="#{entidadBean.limpiar}" onclick="dlgFormEntidad.hide();" update="formEntidad" icon="ui-icon-close"/>
+                    <p:commandButton value="Canselar" action="#{entidadBean.nuevo}" onclick="dlgFormEntidad.hide();" update="formEntidad:pnlGridEntidad" icon="ui-icon-close" />
                 </h:panelGrid>  
             </h:form> 
             </p:dialog>
-
 
         </ui:define>
     </ui:composition>
