@@ -1,4 +1,4 @@
-package bo.gob.mintrabajo.ovt.bean.persona;
+package bo.gob.mintrabajo.ovt.Util;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
