@@ -17,7 +17,6 @@
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -53,7 +52,7 @@ public class DocDocumento implements Serializable {
     private Long idDocumento;
     @Basic(optional = false)
     @Column(name = "NUMERO_DOCUMENTO")
-    private BigInteger numeroDocumento;
+    private long numeroDocumento;
     @Basic(optional = false)
     @Column(name = "FECHA_DOCUMENTO")
     @Temporal(TemporalType.TIMESTAMP)
@@ -108,7 +107,7 @@ public class DocDocumento implements Serializable {
         this.idDocumento = idDocumento;
     }
 
-    public DocDocumento(Long idDocumento, BigInteger numeroDocumento, Date fechaDocumento, String tipoMedioRegistro, Date fechaBitacora, String registroBitacora) {
+    public DocDocumento(Long idDocumento, long numeroDocumento, Date fechaDocumento, String tipoMedioRegistro, Date fechaBitacora, String registroBitacora) {
         this.idDocumento = idDocumento;
         this.numeroDocumento = numeroDocumento;
         this.fechaDocumento = fechaDocumento;
@@ -125,11 +124,11 @@ public class DocDocumento implements Serializable {
         this.idDocumento = idDocumento;
     }
 
-    public BigInteger getNumeroDocumento() {
+    public long getNumeroDocumento() {
         return numeroDocumento;
     }
 
-    public void setNumeroDocumento(BigInteger numeroDocumento) {
+    public void setNumeroDocumento(long numeroDocumento) {
         this.numeroDocumento = numeroDocumento;
     }
 

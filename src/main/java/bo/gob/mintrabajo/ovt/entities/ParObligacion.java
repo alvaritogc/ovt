@@ -120,7 +120,6 @@ public class ParObligacion implements Serializable {
 //    public List<ParObligacionCalendario> getParObligacionCalendarioList() {
 //        return parObligacionCalendarioList;
 //    }
-//
 //    public void setParObligacionCalendarioList(List<ParObligacionCalendario> parObligacionCalendarioList) {
 //        this.parObligacionCalendarioList = parObligacionCalendarioList;
 //    }

@@ -52,6 +52,9 @@ public class DocDefinicion implements Serializable {
     @Column(name = "TIPO_GRUPO_DOCUMENTO")
     private String tipoGrupoDocumento;
     @Basic(optional = false)
+    @Column(name = "ALIAS")
+    private String alias;
+    @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaBitacora;
@@ -72,10 +75,11 @@ public class DocDefinicion implements Serializable {
         this.docDefinicionPK = docDefinicionPK;
     }
 
-    public DocDefinicion(DocDefinicionPK docDefinicionPK, String nombre, String tipoGrupoDocumento, Date fechaBitacora, String registroBitacora) {
+    public DocDefinicion(DocDefinicionPK docDefinicionPK, String nombre, String tipoGrupoDocumento, String alias, Date fechaBitacora, String registroBitacora) {
         this.docDefinicionPK = docDefinicionPK;
         this.nombre = nombre;
         this.tipoGrupoDocumento = tipoGrupoDocumento;
+        this.alias = alias;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
@@ -106,6 +110,14 @@ public class DocDefinicion implements Serializable {
 
     public void setTipoGrupoDocumento(String tipoGrupoDocumento) {
         this.tipoGrupoDocumento = tipoGrupoDocumento;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     public Date getFechaBitacora() {
