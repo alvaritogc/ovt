@@ -32,7 +32,7 @@
                     <h:outputText value="Nombre o Razon social:"/>
                     <p:inputText id="inputTxtNombre" value="#{personaBean.persona.nombreRazonSocial}"
                                  required="true"
-                                 style="width: 215px;"
+                                 style="width: 215px;text-transform: uppercase;"
                                  requiredMessage="El campo Nombre o Razon social es obligatorio"
                                  tabindex="2">
                         <f:converter converterId="lowerConverter"/>
@@ -44,14 +44,17 @@
                                  style="width: 215px;text-transform: uppercase;"
                                  tabindex="3"
                                  rendered="#{personaBean.esNatural}"
-                            />
+                            >
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
 
                     <h:outputText value="Apellido materno:" rendered="#{personaBean.esNatural}"/>
                     <p:inputText id="inputTxtMaterno" value="#{personaBean.persona.apellidoMaterno}"
                                  tabindex="4"
                                  style="width: 215px;text-transform: uppercase;"
-                                 rendered="#{personaBean.esNatural}" />
-
+                                 rendered="#{personaBean.esNatural}" >
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
 
                     <h:outputText value="Tipo de identificacion:"/>
                     <p:selectOneMenu id="slcOneMenuTipoIdentificacion" value="#{personaBean.persona.tipoIdentificacion}"
@@ -80,7 +83,9 @@
                                  style="width: 215px;text-transform: uppercase;"
                                  tabindex="8"
                                  required="true"
-                                 requiredMessage="El campo Nombre comercial es obligatorio."/>
+                                 requiredMessage="El campo Nombre comercial es obligatorio.">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
                     <h:outputText value="Tipo de empresa:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
                     <p:selectOneMenu id="slcOneMenuTipoEmpresa" value="#{personaBean.unidad.tipoEmpresa}"
                                      tabindex="9"
@@ -109,7 +114,9 @@
                                      style="width: 220px;text-transform: uppercase;"
                                      tabindex="11"
                                      required="true"
-                                     requiredMessage="El campo Actividad declarada es obligatorio."/>
+                                     requiredMessage="El campo Actividad declarada es obligatorio.">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputTextarea>
                 </h:panelGrid>
             </p:panel>
 
