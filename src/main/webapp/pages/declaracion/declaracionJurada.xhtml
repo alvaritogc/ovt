@@ -470,7 +470,7 @@
 
 </p:panelGrid>
 
-<p:messages id="mensajes" showDetail="true" autoUpdate="true" closable="true" />
+
 
 <!-- Renato Codigo -->
 <h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionBean.parametro!=2}">
@@ -515,12 +515,13 @@
     <p:growl id="messages" showDetail="true"/>
 </h:panelGrid>
 
+<p:messages id="mensajes" showDetail="true" autoUpdate="true" closable="true" />
 
 <br/>
 
 <div align="CENTER">
     <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada"
-                     action="#{declaracionBean.guardaDocumentoPlanillaBinario}" update="formularioFrm messages"
+                     actionListener="#{declaracionBean.guardaDocumentoPlanillaBinario}" update="formularioFrm messages"
                      disabled="#{declaracionBean.habilita}">
         <p:confirm header="Declaración jurada"
                    message="Si continua, procederá a realizar una declaración jurada. Asegúrese que los datos esten correctamente llenados. Deséa continuar?"
