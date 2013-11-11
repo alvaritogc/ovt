@@ -105,7 +105,11 @@ public class declaracionBean implements Serializable {
     private Long idRectificatorio;
     private List<String> errores = new ArrayList<String>();
     private boolean valor;
-    private short tipoEmpresa;
+    private int tipoEmpresa=1;
+    private PerPersona central;
+    private List<PerPersona> sucursales;
+    private PerPersona empresa;
+
 
     @PostConstruct
     public void ini() {
@@ -172,11 +176,27 @@ public class declaracionBean implements Serializable {
         generaDocumento();
         verEstadoPlanilla();
         cargarListaPorNumeros();
+        obtieneCentralEmpresa();
+        listaSucursalesEmpresa();
+    }
+
+    public void obtieneCentralEmpresa(){
+        central = new PerPersona();
+        central=iPersonaService.obtienePorCentral(idPersona);
+    }
+
+    public void listaSucursalesEmpresa(){
+        sucursales = new ArrayList<PerPersona>();
+        sucursales=iPersonaService.listarPorSucursal(idPersona);
     }
 
     public void cargarListaPorNumeros(){
         docDocumentoList= new ArrayList<DocDocumento>();
         docDocumentoList= iDocumentoService.listarPorPersona(idPersona);
+    }
+
+    public void seleccionaEmpresa(){
+            empresa=tipoEmpresa==1?central:empresa;
     }
 
     public void verEstadoPlanilla(){
@@ -990,11 +1010,35 @@ public class declaracionBean implements Serializable {
         this.iPlanillaDetalleService = iPlanillaDetalleService;
     }
 
-    public short getTipoEmpresa() {
+    public int getTipoEmpresa() {
         return tipoEmpresa;
     }
 
-    public void setTipoEmpresa(short tipoEmpresa) {
+    public void setTipoEmpresa(int tipoEmpresa) {
         this.tipoEmpresa = tipoEmpresa;
+    }
+
+    public PerPersona getCentral() {
+        return central;
+    }
+
+    public void setCentral(PerPersona central) {
+        this.central = central;
+    }
+
+    public List<PerPersona> getSucursales() {
+        return sucursales;
+    }
+
+    public void setSucursales(List<PerPersona> sucursales) {
+        this.sucursales = sucursales;
+    }
+
+    public PerPersona getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(PerPersona empresa) {
+        this.empresa = empresa;
     }
 }

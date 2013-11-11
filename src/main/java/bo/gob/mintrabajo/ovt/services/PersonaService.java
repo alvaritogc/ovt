@@ -5,7 +5,6 @@ import bo.gob.mintrabajo.ovt.entities.*;
 import bo.gob.mintrabajo.ovt.repositories.*;
 import com.google.common.base.Strings;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -252,5 +251,16 @@ public class PersonaService implements IPersonaService {
         personaRepository.flush();
         System.out.println("Elimina a la persona");
         return true;
+    }
+
+    public List<PerPersona> listarPorSucursal(String idPersona){
+       return personaRepository.findByIdPersonaAndEsNatural(idPersona, true);
+    }
+
+    public PerPersona obtienePorCentral(String idPersona){
+        List<PerPersona> personaList=personaRepository.findByIdPersonaAndEsNatural(idPersona, false);
+        if(personaList.size()==0)
+            return new PerPersona();
+        return personaList.get(0);
     }
 }

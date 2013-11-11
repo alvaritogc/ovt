@@ -2,7 +2,7 @@ package bo.gob.mintrabajo.ovt.bean;
 
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
-//import bo.gob.mintrabajo.ovt.envano.DobleTrabajoConexion;
+import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,19 +11,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
-//import java.util.Collection;
-//import java.util.Collection;
-
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.servlet.ServletContext;
-import org.primefaces.context.RequestContext;
+
+//import bo.gob.mintrabajo.ovt.envano.DobleTrabajoConexion;
+//import java.util.Collection;
+//import java.util.Collection;
 
 @ManagedBean
 @ViewScoped

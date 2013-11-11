@@ -8,7 +8,6 @@ import bo.gob.mintrabajo.ovt.repositories.*;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.math.BigInteger;
 import java.util.Formatter;
 import java.util.List;
 
@@ -115,7 +114,7 @@ public class DocumentoService implements IDocumentoService{
 
 
 
-    public BigInteger actualizarNumeroDeOrden(String codDocumento, short version) {
+    public long actualizarNumeroDeOrden(String codDocumento, short version) {
         DocNumeracion numeracionBusqueda = new DocNumeracion(new DocNumeracionPK(codDocumento, version));
 //        numeracionBusqueda.setCodDocumento(codDocumento);
 //        numeracionBusqueda.setVersion(version);
@@ -161,6 +160,6 @@ public class DocumentoService implements IDocumentoService{
         //
         Formatter fmtVerificacion = new Formatter();
         fmtVerificacion.format("%02d", verificacion);
-        return (new BigInteger("" + codNumero + numeroFormato + fmtVerificacion.toString()));
+        return (new Long("" + codNumero + numeroFormato + fmtVerificacion.toString()));
     }
 }

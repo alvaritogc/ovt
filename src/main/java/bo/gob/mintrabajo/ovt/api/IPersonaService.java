@@ -16,4 +16,6 @@ public interface IPersonaService {
     public PerPersona buscarPorId(String id);
     public void cambiarEstadoUsuario(Long usuario);
     public boolean eliminarRegistro(String perPersona, UsrUsuario usrUsuario);
+    List<PerPersona> listarPorSucursal(String idPersona);
+    PerPersona obtienePorCentral(String idPersona);
 }
