@@ -70,10 +70,10 @@ public class ParEntidad implements Serializable {
         @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
     @ManyToOne(fetch = FetchType.LAZY)
     private PerUnidad perUnidad;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidadBanco", fetch = FetchType.LAZY)
-//    private List<DocPlanilla> docPlanillaList;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidadSalud", fetch = FetchType.LAZY)
-//    private List<DocPlanilla> docPlanillaList1;
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "idEntidadBanco", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<DocPlanilla> docPlanillaList;
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "idEntidadSalud", fetch = FetchType.LAZY, orphanRemoval = true )
+    private List<DocPlanilla> docPlanillaList1;
 
     public ParEntidad() {
     }
@@ -147,21 +147,21 @@ public class ParEntidad implements Serializable {
         this.perUnidad = perUnidad;
     }
 
-//    public List<DocPlanilla> getDocPlanillaList() {
-//        return docPlanillaList;
-//    }
-//
-//    public void setDocPlanillaList(List<DocPlanilla> docPlanillaList) {
-//        this.docPlanillaList = docPlanillaList;
-//    }
-//
-//    public List<DocPlanilla> getDocPlanillaList1() {
-//        return docPlanillaList1;
-//    }
-//
-//    public void setDocPlanillaList1(List<DocPlanilla> docPlanillaList1) {
-//        this.docPlanillaList1 = docPlanillaList1;
-//    }
+    public List<DocPlanilla> getDocPlanillaList() {
+        return docPlanillaList;
+    }
+
+    public void setDocPlanillaList(List<DocPlanilla> docPlanillaList) {
+        this.docPlanillaList = docPlanillaList;
+    }
+
+    public List<DocPlanilla> getDocPlanillaList1() {
+        return docPlanillaList1;
+    }
+
+    public void setDocPlanillaList1(List<DocPlanilla> docPlanillaList1) {
+        this.docPlanillaList1 = docPlanillaList1;
+    }
 
     @Override
     public int hashCode() {
