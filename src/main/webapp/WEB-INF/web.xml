@@ -15,6 +15,17 @@
         <param-value>bo.gob.mintrabajo.ovt.Cableado</param-value>
     </context-param>
 
+            <!-- ************  CAPCHA ***************** -->
+    <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value>6Le2TuYSAAAAABAxapY1FIZpUnccoay80Z34rXRM</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value>6Le2TuYSAAAAANHtiG5vAAP2GUODF29WGqtTAXVm</param-value>
+    </context-param>
+
      <!--Start Security Shiro-->
     <listener>
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>

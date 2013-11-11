@@ -40,11 +40,16 @@
                        <h:outputText value="Confirmar contrasenia:"/>
                       <h:inputSecret id="password" value="#{olvidoContraseniaBean.confirmarContrasenia}"
                                      style="width: 200px; font-size: 9px" />
+                       <h:outputText value="Capcha:"/>
+                       <p:captcha theme="white" label="Capcha"
+                                  required="true"
+                                  requiredMessage=" * Ingrese valor al capcha"/>
 
                    </h:panelGrid>
                    </center>
                         <!--<p:captcha label="Captcha" publicKey="6LerTMYSAAAAAGUfbsXu2tf-H8flrPVM1fDUecvi" language="es"-->
                         <!--validatorMessage="Texto no coincide, intente de nuevo." requiredMessage="Ingrese 2 palabras" />-->
+                  <br/>
                   <center>
                   <p:commandButton styleClass="btn btn-large btn-primary" value="Confirmar"
                                          action="#{olvidoContraseniaBean.verificarContrasenia}"
