@@ -58,6 +58,27 @@ public class UsuarioService implements IUsuarioService{
         }
         return usuario.getIdUsuario();
     }
+
+    @Override
+    public Long loginConfirmacion(String username, String password) {
+        logger.info("login("+username+","+password+")");
+        List<UsrUsuario> listaUsuarios=null;
+        try{
+            listaUsuarios = usuarioRepository.findByAttribute("usuario", username, -1, -1);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("Error en el login");
+        }
+        if (listaUsuarios.isEmpty()) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+        UsrUsuario usuario = listaUsuarios.get(0);
+        if (!password.equals(usuario.getClave())) {
+            throw new RuntimeException("Contraseña incorrecta");
+        }
+        return usuario.getIdUsuario();
+    }
     
     @Override
     public List<UsrUsuario> getAllUsuarios() {

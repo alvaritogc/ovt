@@ -170,17 +170,17 @@
                     </p:dialog>
 
                     <!-- ***********  DIALOG CAMBIAR CONTRASENIA ************* -->
-                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar contrasenia" modal="true" widgetVar="dlgCambiarContrasenia" resizable="true">
+                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar Password" modal="true" widgetVar="dlgCambiarContrasenia" resizable="true">
 
                         <h:form id="frmCambiarContrasenia">
                             <p:messages id="mssgCambiarContrasenia" showDetail="true" autoUpdate="false" closable="true" globalOnly="false" />
                             <br/>
                             <h:panelGrid columns="2" id="pnlGridCambiarContrasenia">
-                                <h:outputText value="Contrasenia:"/>
+                                <h:outputText value="Password:"/>
                                 <p:password id="txtContrasenia" value="#{templateInicioBean.contrasenia}"/>
-                                <h:outputText value="Nueva contrasenia:"/>
+                                <h:outputText value="Nuevo Password:"/>
                                 <p:password id="txtNuevaContrasenia" value="#{templateInicioBean.nuevaContrasenia}"/>
-                                <h:outputText value="Confirmar contrasenia:"/>
+                                <h:outputText value="Confirmar Password:"/>
                                 <p:password id="txtConfirmarContrasenia" value="#{templateInicioBean.confirmarContrasenia}"/>
                             </h:panelGrid>
                             <br/>
@@ -211,24 +211,15 @@
                             <br/><br/>-->
                             <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/publico/descargarPlanilla.xhtml"> Descarga de formatos de planillas </a>
                         </p:panel>
-                        
-                        
-
-                    </h:form>
-                    <h:form>
-                        <p:panel  header="Administracion de usuario" rendered="#{templateInicioBean.idUsuario!=null}">
-                            <br/>
-                            <p:commandLink value="Cambiar contrasenia?" onclick="PF('dlgCambiarContrasenia').show();" style="color:red;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
-                        </p:panel>
-                        <br/>
-
-
                     </h:form>
 
                 </div>
                 <div class="span9">
                     <h:form id="idBarraDeMenu" rendered="#{!(templateInicioBean.idUsuario == null)}">
                         <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
+                            <f:facet name="options">
+                              <p:commandLink value="Cambiar Password" onclick="PF('dlgCambiarContrasenia').show();" style="color:red;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
+                            </f:facet>
                         </p:menubar> 
                     </h:form>
                     <ui:insert name="content">
