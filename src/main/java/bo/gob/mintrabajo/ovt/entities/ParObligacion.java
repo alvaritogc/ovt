@@ -59,8 +59,8 @@ public class ParObligacion implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codObligacion", fetch = FetchType.LAZY)
-//    private List<ParObligacionCalendario> parObligacionCalendarioList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codObligacion", fetch = FetchType.LAZY)
+    private List<ParObligacionCalendario> parObligacionCalendarioList;
 
     public ParObligacion() {
     }
@@ -117,12 +117,12 @@ public class ParObligacion implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-//    public List<ParObligacionCalendario> getParObligacionCalendarioList() {
-//        return parObligacionCalendarioList;
-//    }
-//    public void setParObligacionCalendarioList(List<ParObligacionCalendario> parObligacionCalendarioList) {
-//        this.parObligacionCalendarioList = parObligacionCalendarioList;
-//    }
+    public List<ParObligacionCalendario> getParObligacionCalendarioList() {
+        return parObligacionCalendarioList;
+    }
+    public void setParObligacionCalendarioList(List<ParObligacionCalendario> parObligacionCalendarioList) {
+        this.parObligacionCalendarioList = parObligacionCalendarioList;
+    }
 
     @Override
     public int hashCode() {

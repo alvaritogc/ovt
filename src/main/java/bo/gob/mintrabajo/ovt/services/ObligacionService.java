@@ -19,6 +19,7 @@ package bo.gob.mintrabajo.ovt.services;
 import bo.gob.mintrabajo.ovt.api.IObligacionService;
 import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.repositories.ObligacionRepository;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -75,22 +76,35 @@ public class ObligacionService implements IObligacionService{
     }
     
     @Override
-    public ParObligacion saveObligacion(ParObligacion obligacion){               
-        ParObligacion parObligacion;
+    public ParObligacion saveObligacion(ParObligacion obligacion, String REGISTRO_BITACORA, boolean estadoObligacion){               
+        ParObligacion parObligacion= new ParObligacion();
+        parObligacion.setCodObligacion(obligacion.getCodObligacion());
+        parObligacion.setDescripcion(obligacion.getDescripcion());
+        if(estadoObligacion==true){
+            parObligacion.setEstado("A");
+        }
+        else{
+            parObligacion.setEstado("X");
+        }
+        parObligacion.setFechaBitacora(new Date());
+        parObligacion.setRegistroBitacora(REGISTRO_BITACORA);
+            
         try {
-            parObligacion = obligacionRepository.save(obligacion);
+            obligacion = obligacionRepository.save(parObligacion);
         } catch (Exception e) {
             e.printStackTrace();
-            parObligacion = null;
+            obligacion = null;
         }
-        return parObligacion;
+        return obligacion;
     }
     
     @Override
     public boolean deleteObligacion(ParObligacion obligacion){
         boolean deleted = false;
         try {
-            obligacionRepository.delete(obligacion);
+            ParObligacion po=obligacionRepository.findByCodObligacion(obligacion.getCodObligacion());
+            obligacionRepository.delete(po);
+            obligacionRepository.flush();
             deleted = true;
         } catch (Exception e) {
             e.printStackTrace();

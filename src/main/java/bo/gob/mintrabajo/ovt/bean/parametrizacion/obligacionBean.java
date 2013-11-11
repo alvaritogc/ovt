@@ -73,7 +73,6 @@ public class obligacionBean implements Serializable{
                 limpiar();
             }
         } catch (Exception e) {
-            System.out.println("====> ERROR al eliminar obligacion");
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("dlgMensaje.show()");
             e.printStackTrace();
@@ -82,22 +81,11 @@ public class obligacionBean implements Serializable{
     
     public void guardarModificar(){
         RequestContext context = RequestContext.getCurrentInstance();
-        if(obligacion.getCodObligacion().isEmpty()){return;}
-        if(obligacion.getDescripcion().isEmpty()){ return;}
-        context.execute("dlgFormObligacion.hide();");
-        obligacion.setCodObligacion(obligacion.getCodObligacion().toUpperCase());
-        obligacion.setDescripcion(obligacion.getDescripcion().toUpperCase());
-        //final String  REGISTRO_BITACORA="OVT";
         final String  REGISTRO_BITACORA=idUsuario.toString();
-        Date fechaBitacora = new Date();
         try {
-            if(estadoObligacion==true){obligacion.setEstado("A");}
-            else{obligacion.setEstado("X");}
-            obligacion.setFechaBitacora(fechaBitacora);
-            obligacion.setRegistroBitacora(REGISTRO_BITACORA);
-            iObligacionService.saveObligacion(obligacion);
-                //listaObligacion= iObligacionService.listaObligacion();
+            iObligacionService.saveObligacion(obligacion, REGISTRO_BITACORA, estadoObligacion);
            limpiar();
+           context.execute("dlgFormObligacion.hide();");
         } catch (Exception e) {
             e.printStackTrace();                    
         }
@@ -105,6 +93,10 @@ public class obligacionBean implements Serializable{
     
     public void limpiar(){
         listaObligacion= iObligacionService.listaObligacionPorOrden();
+        nuevo();
+    }
+    
+    public void nuevo(){
         obligacion=new ParObligacion();
         evento=false;
         estadoObligacion=false;
