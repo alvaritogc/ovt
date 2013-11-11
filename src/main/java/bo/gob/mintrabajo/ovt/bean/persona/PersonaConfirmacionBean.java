@@ -94,16 +94,9 @@ public class PersonaConfirmacionBean {
 
                 int timer = Integer.parseInt(iParametrizacion.obtenerParametro(ID_PARAMETRO_TIMER, VALOR_TIEMPO_VALIDO).getDescripcion());
 
+                cambiaEstadoUsuario(usuario.getIdUsuario());
+
                 if ((TimeUnit.MINUTES.toMillis(timer) > diferenciaLong)) {
-
-                    System.out.println("--------------- " + usuario.getIdPersona());
-                    System.out.println("--------------- " + usuario.getIdUsuario());
-                    System.out.println("--------------- " + usuario.getClave());
-                    System.out.println("--------------- " + usuario.getRegistroBitacora());
-                    System.out.println("--------------- " + usuario.getEstadoUsuario());
-                    System.out.println("--------------- " + usuario.getEsDelegado());
-                    System.out.println("--------------- " + usuario.getUsuario());
-
                     session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
                     if (usuario.getEsInterno() == 1) {
                         session.setAttribute("idEmpleador", null);
@@ -113,7 +106,6 @@ public class PersonaConfirmacionBean {
                         subject.login(token);
 
                         token.clear();
-                        //cambiaEstadoUsuario(idUsuario);
                         return "irEmpleadorBusqueda";
 
                     } else {
@@ -124,8 +116,6 @@ public class PersonaConfirmacionBean {
                         subject.login(token);
 
                         token.clear();
-
-                        //cambiaEstadoUsuario(idUsuario);
                         return "irEscritorio";
                     }
                 } else {
@@ -149,10 +139,7 @@ public class PersonaConfirmacionBean {
     }
 
     public void cambiaEstadoUsuario(Long idUsuario){
-        UsrUsuario usuarioSinConfirmar = iUsuarioService.findById(idUsuario);
-
-        usuarioSinConfirmar.setEstadoUsuario("A");
-        iUsuarioService.guardarUsuario(usuarioSinConfirmar);
+        iPersonaService.cambiarEstadoUsuario(idUsuario);
     }
 
     // ***** Getter y Setters *****//

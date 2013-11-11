@@ -213,6 +213,12 @@ public class PersonaService implements IPersonaService {
         }
     }
 
+    public void cambiarEstadoUsuario(Long usuario) {
+        UsrUsuario usuarioSinConfirmar = usuarioRepository.findOne(usuario);
+        usuarioSinConfirmar.setEstadoUsuario("A");
+        usuarioRepository.save(usuarioSinConfirmar);
+    }
+
     public boolean eliminarRegistro(String perPersona, UsrUsuario usrUsuario) {
         System.out.println("Eliminando id Persona " + perPersona + " usuario " + usrUsuario.getIdPersona().getIdPersona() + " id Usuario " + usrUsuario.getIdUsuario());
 

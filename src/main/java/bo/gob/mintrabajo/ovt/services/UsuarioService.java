@@ -106,13 +106,6 @@ public class UsuarioService implements IUsuarioService{
         return usr;
     }
 
-    @Override
-    public UsrUsuario guardarUsuario(UsrUsuario usrUsuario){
-        UsrUsuario usr = usuarioRepository.saveAndFlush(usrUsuario);
-
-        return usr;
-    }
-
     public UsrUsuario obtenerUsuarioPorNombreUsuario(String email){
 
        return usuarioRepository.findByUsuario(email);
