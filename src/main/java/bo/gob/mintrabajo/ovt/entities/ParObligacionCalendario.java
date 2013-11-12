@@ -52,6 +52,9 @@ public class ParObligacionCalendario implements Serializable {
     @Column(name = "GESTION")
     private String gestion;
     @Basic(optional = false)
+    @Column(name = "TIPO_PERIODO")
+    private String tipoPeriodo;
+    @Basic(optional = false)
     @Column(name = "FECHA_DESDE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDesde;
@@ -81,10 +84,11 @@ public class ParObligacionCalendario implements Serializable {
         this.idObligacionCalendario = idObligacionCalendario;
     }
 
-    public ParObligacionCalendario(Long idObligacionCalendario, String tipoCalendario, String gestion, Date fechaDesde, Date fechaHasta, Date fechaPlazo, Date fechaBitacora, String registroBitacora) {
+    public ParObligacionCalendario(Long idObligacionCalendario, String tipoCalendario, String gestion, String tipoPeriodo, Date fechaDesde, Date fechaHasta, Date fechaPlazo, Date fechaBitacora, String registroBitacora) {
         this.idObligacionCalendario = idObligacionCalendario;
         this.tipoCalendario = tipoCalendario;
         this.gestion = gestion;
+        this.tipoPeriodo = tipoPeriodo;
         this.fechaDesde = fechaDesde;
         this.fechaHasta = fechaHasta;
         this.fechaPlazo = fechaPlazo;
@@ -114,6 +118,14 @@ public class ParObligacionCalendario implements Serializable {
 
     public void setGestion(String gestion) {
         this.gestion = gestion;
+    }
+
+    public String getTipoPeriodo() {
+        return tipoPeriodo;
+    }
+
+    public void setTipoPeriodo(String tipoPeriodo) {
+        this.tipoPeriodo = tipoPeriodo;
     }
 
     public Date getFechaDesde() {
