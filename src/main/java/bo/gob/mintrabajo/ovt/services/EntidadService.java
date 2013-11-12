@@ -2,8 +2,10 @@ package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IEntidadService;
 import bo.gob.mintrabajo.ovt.entities.ParEntidad;
+import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import bo.gob.mintrabajo.ovt.repositories.EntidadRepository;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -50,43 +52,37 @@ public class EntidadService implements IEntidadService {
     }
     
     @Override
-    public ParEntidad saveEntidad(ParEntidad entidad){               
-        ParEntidad parEntidad;
+    public ParEntidad saveEntidad(ParEntidad entidad,String REGISTRO_BITACORA,PerUnidad unidad, boolean evento){                       
+      ParEntidad pe= new ParEntidad();
+      if(entidad.getIdEntidad()==null && !evento ){
+          pe.setIdEntidad(this.valorSecuencia("PAR_ENTIDAD_SEC"));
+      }else{
+          pe = entidadRepository.findOne(entidad.getIdEntidad());
+      }
+      pe.setDescripcion(entidad.getDescripcion());
+      pe.setTipoEntidad(entidad.getTipoEntidad());
+      pe.setCodigo(entidad.getCodigo());
+
+        //pe.setPerUnidad(unidad);
+        pe.setFechaBitacora(new Date());
+        pe.setRegistroBitacora(REGISTRO_BITACORA);
+            
         try {
-            parEntidad = entidadRepository.save(entidad);
+            entidad = entidadRepository.save(pe);
         } catch (Exception e) {
             e.printStackTrace();
-            parEntidad = null;
+            entidad = null;
         }
-        return parEntidad;
-    }
-    
-    @Override
-    public void guardarEliminar(String sw,ParEntidad entidad){
-        ParEntidad parEntidad;
-        try {
-            if(sw.equals("a") ){
-                entidad.setIdEntidad(this.valorSecuencia("PAR_ENTIDAD_SEC"));
-                parEntidad = entidadRepository.save(entidad);
-            }
-            if(sw.equals("b")){
-                
-                entidadRepository.save(entidad);
-            }
-            if(sw.equals("c")){
-                entidadRepository.delete(entidad);
-            }
-        } catch (Exception e) {
-            
-        }
+        return entidad;
     }
     
     @Override
     public boolean deleteEntidad(ParEntidad entidad){
         boolean deleted = false;
         try {
-            System.out.println("====> " + entidad.getDescripcion() +" === "+entidad.getCodigo() + " === " + entidad.getIdEntidad());
-            entidadRepository.delete(entidad);
+            ParEntidad pe = entidadRepository.findOne(entidad.getIdEntidad());
+            entidadRepository.delete(pe);
+            entidadRepository.flush();
             deleted = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,8 +94,7 @@ public class EntidadService implements IEntidadService {
     public ParEntidad buscaPorId(Long idEntidad){
          return entidadRepository.findOne(idEntidad);
     }
-    
-    
+        
     public Long valorSecuencia (String nombreSecuencia){
         BigDecimal rtn;
         rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();

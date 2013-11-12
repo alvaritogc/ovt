@@ -12,10 +12,8 @@ import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -35,10 +33,6 @@ public class EntidadBean implements Serializable{
     
     @ManagedProperty(value = "#{entidadService}")
     private IEntidadService iEntidadService;
-    @ManagedProperty(value = "#{entidadService}")
-    private IEntidadService iEntidadServiceAux;
-//    @ManagedProperty(value = "#{entidadService}")
-//    private IEntidadService iEntidadServiceAux1;
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
     @ManagedProperty(value = "#{unidadService}")
@@ -58,7 +52,6 @@ public class EntidadBean implements Serializable{
     private List<PerUnidad> listaUnidad=null;
     private List<PerPersona> listaPersona;
     private List<ParDominio> listaDominio;
-    private String dominio="";
     private PerUnidad unidad=null;
     private PerPersona persona;
     private boolean evento=false;
@@ -81,83 +74,36 @@ public class EntidadBean implements Serializable{
     }
     
     public void confirmaEliminar(){  
+        RequestContext context = RequestContext.getCurrentInstance();
         try {
-            if(iEntidadService.deleteEntidad(entidad)){
-                //listaEntidad= iEntidadService.listaEntidad();
-                listaEntidad= iEntidadService.listaEntidadPorOrden();
-                entidad=new ParEntidad();
+            boolean tmp = iEntidadService.deleteEntidad(entidad);
+            if(tmp){
+               listaEntidad= iEntidadService.listaEntidadPorOrden(); 
+            }else{
+               context.execute("dlgMensaje.show()");
             }
         } catch (Exception e) {
-            RequestContext context = RequestContext.getCurrentInstance();
             context.execute("dlgMensaje.show()");
             e.printStackTrace();
         }
     } 
     
+    public void nuevo(){
+        entidad=new ParEntidad();
+        evento=false;
+    }
+    
     public void guardarModificar(){
-        RequestContext context = RequestContext.getCurrentInstance();
-        if(entidad.getDescripcion().isEmpty()){ return;}
-        if(entidad.getCodigo().isEmpty()){return;}
-        if(dominio.isEmpty()){return;}
-        context.execute("dlgFormEntidad.hide();");
-        
-        entidad.setDescripcion(entidad.getDescripcion().toUpperCase());
-        entidad.setCodigo(entidad.getCodigo().toUpperCase());
-        entidad.setTipoEntidad(dominio.toUpperCase());
-        
-        //final String  REGISTRO_BITACORA="OVT";
+        RequestContext context = RequestContext.getCurrentInstance();        
         final String  REGISTRO_BITACORA=idUsuario.toString();        
-        Date fechaBitacora = new Date();
         try {
-            if(entidad.getIdEntidad()==null && evento==false){
-                entidad.setIdEntidad(iUtilsService.valorSecuencia("PAR_ENTIDAD_SEC"));
-            }
-            entidad.setPerUnidad(unidad);
-            entidad.setFechaBitacora(fechaBitacora);
-            entidad.setRegistroBitacora(REGISTRO_BITACORA);
-            ParEntidad pe = iEntidadService.saveEntidad(entidad);
-                //listaEntidad= iEntidadService.listaEntidad();
-               
-           limpiar();
+            ParEntidad pe = iEntidadService.saveEntidad(entidad,REGISTRO_BITACORA,unidad, evento);
+            nuevo();
+            listaEntidad= iEntidadService.listaEntidadPorOrden();
+            context.execute("dlgFormEntidad.hide();");
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    
-    public void guardarModificar1(){
-        System.out.println("=======" + sw);   
-                RequestContext context = RequestContext.getCurrentInstance();
-        if(entidad.getDescripcion().isEmpty()){ return;}
-        if(entidad.getCodigo().isEmpty()){return;}
-        if(dominio.isEmpty()){return;}
-        context.execute("dlgFormEntidad.hide();");
-        
-                //final String  REGISTRO_BITACORA="OVT";
-        final String  REGISTRO_BITACORA=idUsuario.toString();        
-        Date fechaBitacora = new Date();
-        
-        if(sw.equals("a")){
-                entidad.setDescripcion(entidad.getDescripcion().toUpperCase());
-            entidad.setCodigo(entidad.getCodigo().toUpperCase());
-            entidad.setTipoEntidad(dominio.toUpperCase());
-            entidad.setFechaBitacora(fechaBitacora);
-            entidad.setRegistroBitacora(REGISTRO_BITACORA);
-            iEntidadServiceAux.guardarEliminar(sw, entidad);
-        }
-
-        if(sw.equals("b")){
-            iEntidadServiceAux.guardarEliminar(sw, entidad);
-        }
-        
-        if(sw.equals("c")){
-            iEntidadServiceAux.guardarEliminar(sw, entidad);
-        }
-    }
-    
-    public void limpiar(){
-        listaEntidad= iEntidadService.listaEntidadPorOrden();
-        entidad=new ParEntidad();
-        evento=false;
     }
     
     //GET and SET
@@ -337,48 +283,6 @@ public class EntidadBean implements Serializable{
     public void setListaDominio(List<ParDominio> listaDominio) {
         this.listaDominio = listaDominio;
     }
-
-    /**
-     * @return the dominio
-     */
-    public String getDominio() {
-        return dominio;
-    }
-
-    /**
-     * @param dominio the dominio to set
-     */
-    public void setDominio(String dominio) {
-        this.dominio = dominio;
-    }
-
-    /**
-     * @return the iEntidadServiceAux
-     */
-    public IEntidadService getiEntidadServiceAux() {
-        return iEntidadServiceAux;
-    }
-
-    /**
-     * @param iEntidadServiceAux the iEntidadServiceAux to set
-     */
-    public void setiEntidadServiceAux(IEntidadService iEntidadServiceAux) {
-        this.iEntidadServiceAux = iEntidadServiceAux;
-    }
-
-//    /**
-//     * @return the iEntidadServiceAux1
-//     */
-//    public IEntidadService getiEntidadServiceAux1() {
-//        return iEntidadServiceAux1;
-//    }
-//
-//    /**
-//     * @param iEntidadServiceAux1 the iEntidadServiceAux1 to set
-//     */
-//    public void setiEntidadServiceAux1(IEntidadService iEntidadServiceAux1) {
-//        this.iEntidadServiceAux1 = iEntidadServiceAux1;
-//    }
 
     /**
      * @return the sw

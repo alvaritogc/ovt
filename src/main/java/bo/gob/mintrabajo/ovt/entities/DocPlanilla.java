@@ -151,6 +151,30 @@ public class DocPlanilla implements Serializable {
     @Basic(optional = false)
     @Column(name = "NUM_OPERACION")
     private String numOperacion;
+    @Column(name = "NRO_EMPLEADOR")
+    private String nroEmpleador;
+    @Column(name = "NRO_PATRONALSS")
+    private String nroPatronalss;
+    @Column(name = "NOMBRE_RAZON_SOCIAL")
+    private String nombreRazonSocial;
+    @Column(name = "ID_ACTIVIDAD_ECONOMICA")
+    private Long idActividadEconomica;
+    @Column(name = "COD_LOCALIDAD_CIUDAD")
+    private String codLocalidadCiudad;
+    @Column(name = "COD_LOCALIDAD_PAIS")
+    private String codLocalidadPais;
+    @Column(name = "ZONA")
+    private String zona;
+    @Column(name = "DIRECCION")
+    private String direccion;
+    @Column(name = "TELEFONO")
+    private String telefono;
+    @Column(name = "FAX")
+    private String fax;
+    @Column(name = "ID_REPLEGAL")
+    private String idReplegal;
+    @Column(name = "COD_LOCALIDAD_PRESENTACION")
+    private String codLocalidadPresentacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlanilla", fetch = FetchType.LAZY)
     private List<DocPlanillaDetalle> docPlanillaDetalleList;
     @JoinColumn(name = "ID_ENTIDAD_BANCO", referencedColumnName = "ID_ENTIDAD")
@@ -477,6 +501,102 @@ public class DocPlanilla implements Serializable {
 
     public void setNumOperacion(String numOperacion) {
         this.numOperacion = numOperacion;
+    }
+
+    public String getNroEmpleador() {
+        return nroEmpleador;
+    }
+
+    public void setNroEmpleador(String nroEmpleador) {
+        this.nroEmpleador = nroEmpleador;
+    }
+
+    public String getNroPatronalss() {
+        return nroPatronalss;
+    }
+
+    public void setNroPatronalss(String nroPatronalss) {
+        this.nroPatronalss = nroPatronalss;
+    }
+
+    public String getNombreRazonSocial() {
+        return nombreRazonSocial;
+    }
+
+    public void setNombreRazonSocial(String nombreRazonSocial) {
+        this.nombreRazonSocial = nombreRazonSocial;
+    }
+
+    public Long getIdActividadEconomica() {
+        return idActividadEconomica;
+    }
+
+    public void setIdActividadEconomica(Long idActividadEconomica) {
+        this.idActividadEconomica = idActividadEconomica;
+    }
+
+    public String getCodLocalidadCiudad() {
+        return codLocalidadCiudad;
+    }
+
+    public void setCodLocalidadCiudad(String codLocalidadCiudad) {
+        this.codLocalidadCiudad = codLocalidadCiudad;
+    }
+
+    public String getCodLocalidadPais() {
+        return codLocalidadPais;
+    }
+
+    public void setCodLocalidadPais(String codLocalidadPais) {
+        this.codLocalidadPais = codLocalidadPais;
+    }
+
+    public String getZona() {
+        return zona;
+    }
+
+    public void setZona(String zona) {
+        this.zona = zona;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getIdReplegal() {
+        return idReplegal;
+    }
+
+    public void setIdReplegal(String idReplegal) {
+        this.idReplegal = idReplegal;
+    }
+
+    public String getCodLocalidadPresentacion() {
+        return codLocalidadPresentacion;
+    }
+
+    public void setCodLocalidadPresentacion(String codLocalidadPresentacion) {
+        this.codLocalidadPresentacion = codLocalidadPresentacion;
     }
 
     public List<DocPlanillaDetalle> getDocPlanillaDetalleList() {

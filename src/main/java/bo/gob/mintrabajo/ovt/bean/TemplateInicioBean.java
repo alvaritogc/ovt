@@ -6,8 +6,6 @@ import bo.gob.mintrabajo.ovt.entities.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.util.SavedRequest;
-import org.apache.shiro.web.util.WebUtils;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -20,11 +18,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -330,7 +325,13 @@ public class TemplateInicioBean implements Serializable {
     }
     
     public void cargarRercursoContenido(){
+        try{
         listaRecursosContenido=iRecursoService.listarPorTipoRecurso("CON");
+            }
+        catch (Exception e){
+            listaRecursosContenido=new ArrayList<UsrRecurso>();
+                          e.printStackTrace();
+        }
     }
     
     public void verRecursoContenido(){

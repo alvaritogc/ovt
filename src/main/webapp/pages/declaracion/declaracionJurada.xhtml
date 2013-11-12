@@ -20,8 +20,8 @@
     <h1>Usted ya realizo la declaracion jurada en este trimestre</h1>
     <p:commandButton ajax="false" value="Ir a inicio" action="#{declaracionBean.irInicio}"/>
 </h:panelGroup>
-<h:panelGroup rendered="#{!declaracionBean.estaDeclarado}">
-<p:panelGrid>
+<h:panelGroup id="panelForm" rendered="#{!declaracionBean.estaDeclarado}">
+<p:panelGrid id="gridForm">
 <f:facet name="header">
     <p:row>
         <p:column colspan="16">Formulario Único de Presentación Trimestral</p:column>
@@ -92,7 +92,7 @@
     </p:column>
 </p:row>
 
-<p:row>
+<p:row id="filaRazon">
     <p:column colspan="4">
         <p:outputLabel value="2.1 Total nacional"/>
     </p:column>
@@ -106,13 +106,13 @@
         <p:outputLabel value="2.3 Trimestre de presentación"/>
     </p:column>
     <p:column colspan="6">
-        <p:selectOneMenu style="width: 260px; height: 20px">
-            <f:selectItem itemValue="ninguno" itemLabel="#{declaracionBean.perPersona.nombreRazonSocial}"/>
-        </p:selectOneMenu>
-        <p:selectOneMenu value="#{declaracionBean.docPlanilla.periodo}" style="width: 260px; height: 20px">
-            <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-            <f:selectItems value="#{declaracionBean.parObligacionCalendarioLista}" var="it" itemLabel="#{it.gestion}" itemValue="#{it.gestion}"/>
-        </p:selectOneMenu>
+        <p:outputPanel id="empresaRazonSocial">
+            <h:outputText value="#{declaracionBean.empresa.nombreRazonSocial}"/>
+            <p:selectOneMenu value="#{declaracionBean.docPlanilla.periodo}" style="width: 260px; height: 20px">
+                <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
+                <f:selectItems value="#{declaracionBean.parObligacionCalendarioLista}" var="it" itemLabel="#{it.gestion}" itemValue="#{it.gestion}"/>
+            </p:selectOneMenu>
+        </p:outputPanel>
     </p:column>
 </p:row>
 
@@ -470,7 +470,7 @@
 
 </p:panelGrid>
 
-<p:messages id="mensajes" showDetail="true" autoUpdate="true" closable="true" />
+
 
 <!-- Renato Codigo -->
 <h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionBean.parametro!=2}">
@@ -515,12 +515,13 @@
     <p:growl id="messages" showDetail="true"/>
 </h:panelGrid>
 
+<p:messages id="mensajes" showDetail="true" autoUpdate="true" closable="true" />
 
 <br/>
 
 <div align="CENTER">
     <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada"
-                     action="#{declaracionBean.guardaDocumentoPlanillaBinario}" update="formularioFrm messages"
+                     actionListener="#{declaracionBean.guardaDocumentoPlanillaBinario}" update="formularioFrm messages"
                      disabled="#{declaracionBean.habilita}">
         <p:confirm header="Declaración jurada"
                    message="Si continua, procederá a realizar una declaración jurada. Asegúrese que los datos esten correctamente llenados. Deséa continuar?"
@@ -538,15 +539,25 @@
 
 <p:dialog widgetVar="seleccionEmpresa" id="seleccionEmpresa" header="Seleccione" modal="true" closable="false" resizable="false">
     <h:form id="form2">
-        <p:outputLabel value="El siguiente formulario se declarará, consolidado o por sucursal." style="font-size: 12px"/>
-        <h:panelGrid id="pan" columns="2" border="0">
-
-
-            <p:selectOneMenu style="width: 260px; height: 20px">
-                <f:selectItem itemValue="ninguno" itemLabel="#{declaracionBean.perPersona.nombreRazonSocial}"/>
-            </p:selectOneMenu>
-        <p:commandButton id="submitButton" value="Aceptar" oncomplete="PF('seleccionEmpresa').hide();"/>
-        </h:panelGrid>
+        <div align="CENTER">
+        <p:outputLabel value="El siguiente formulario se declarará, para la Central o Sucursal." style="font-size: 12px"/>
+        <p:outputPanel columns="1" >
+            <p:selectOneRadio id="customRadio" value="#{declaracionBean.tipoEmpresa}" columns="2">
+                <p:ajax event="change" update="tipoEmpresa"/>
+                <f:selectItem itemLabel="Central" itemValue="1" />
+                <f:selectItem itemLabel="Sucursal" itemValue="2"/>
+            </p:selectOneRadio>
+            <br/>
+            <h:panelGroup id="tipoEmpresa">
+                <p:outputLabel id="central" value="#{declaracionBean.central.nombreRazonSocial}" rendered="#{declaracionBean.tipoEmpresa==1}" />
+                <p:selectOneMenu id="sucursal" style="width: 260px; height: 20px" rendered="#{declaracionBean.tipoEmpresa==2}" value="#{declaracionBean.empresa}">
+                    <f:selectItem itemLabel="---Seleccione---" itemDisabled="true"/>
+                    <f:selectItems value="#{declaracionBean.sucursales}" var="sucursal" itemLabel="#{sucursal.nombreRazonSocial}" itemValue="#{sucursal}"/>
+                </p:selectOneMenu>
+            </h:panelGroup>
+        </p:outputPanel>  <br/>
+        <p:commandButton value="Aceptar" action="#{declaracionBean.seleccionaEmpresa}" oncomplete="PF('seleccionEmpresa').hide();" update=":formularioFrm:panelForm"/>
+        </div>
     </h:form>
 </p:dialog>
 

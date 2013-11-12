@@ -19,9 +19,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.faces.event.ActionEvent;
 import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -102,10 +102,15 @@ public class declaracionBean implements Serializable {
     private boolean estaDeclarado;
     private Long idEntidadSalud;
 
+    private boolean verificaValidacion;
     private Long idRectificatorio;
     private List<String> errores = new ArrayList<String>();
     private boolean valor;
-    private short tipoEmpresa;
+    private int tipoEmpresa=1;
+    private PerPersona central;
+    private List<PerPersona> sucursales;
+    private PerPersona empresa;
+
 
     @PostConstruct
     public void ini() {
@@ -172,11 +177,27 @@ public class declaracionBean implements Serializable {
         generaDocumento();
         verEstadoPlanilla();
         cargarListaPorNumeros();
+        obtieneCentralEmpresa();
+        listaSucursalesEmpresa();
+    }
+
+    public void obtieneCentralEmpresa(){
+        central = new PerPersona();
+        central=iPersonaService.obtienePorCentral(idPersona);
+    }
+
+    public void listaSucursalesEmpresa(){
+        sucursales = new ArrayList<PerPersona>();
+        sucursales=iPersonaService.listarPorSucursal(idPersona);
     }
 
     public void cargarListaPorNumeros(){
         docDocumentoList= new ArrayList<DocDocumento>();
         docDocumentoList= iDocumentoService.listarPorPersona(idPersona);
+    }
+
+    public void seleccionaEmpresa(){
+            empresa=tipoEmpresa==1?central:empresa;
     }
 
     public void verEstadoPlanilla(){
@@ -206,7 +227,16 @@ public class declaracionBean implements Serializable {
         documento = new DocDocumento();
         documento.setIdPersona(persona);
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(persona.getIdPersona(), 0L)));
-        documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1010", (short) 1)));
+
+        if(parametro==1)
+            documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1010", (short) 1)));
+        else{
+            if(parametro==2)
+                documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1011", (short) 1)));
+            else
+                documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1012", (short) 1)));
+        }
+
         documento.setFechaDocumento(new Date());
         documento.setCodEstado(iDocumentoEstadoService.buscarPorId("110"));
         documento.setFechaReferenca(new Date());
@@ -258,17 +288,17 @@ public class declaracionBean implements Serializable {
     }
 
     public String guardaDocumentoPlanillaBinario(ActionEvent actionEvent){
-//        validaArchivo(listaBinarios);
-//        if(errores.size()>0){
-//            String e="";
-//            for(String error:errores)
-//                e=e+ error;
-//            System.out.println(e);
-//            FacesContext.getCurrentInstance().addMessage(String.valueOf(idUsuario), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error de dato: ", e));
-//            return null;
-//        }
+        validaArchivo(listaBinarios);
+        if(errores.size()>0){
+            String e="";
+            for(String error:errores)
+                e=e+ error;
+            System.out.println(e);
+            FacesContext.getCurrentInstance().addMessage(String.valueOf(idUsuario), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error de dato: ", e));
+            return null;
+        }
 
-        if(errores.size()==0){
+        if(errores.size()==0 && verificaValidacion){
             try{
                 logger.info("Guardando documento, binario y planilla");
                 logger.info(documento.toString());
@@ -309,9 +339,10 @@ public class declaracionBean implements Serializable {
 
     public void validaArchivo(List<DocBinario> listaBinarios){
 //    public void validaArchivo(){
+        verificaValidacion=false;
         List<DocPlanillaDetalle> docPlanillaDetalles = new ArrayList<DocPlanillaDetalle>();
         errores = new ArrayList<String>();
-        int valorPlanilla;
+        int valorPlanilla=0;
         try {
             for(DocBinario docBinario:listaBinarios){
                 CsvReader registro;
@@ -327,23 +358,38 @@ public class declaracionBean implements Serializable {
 //                DocBinario docBinario= new DocBinario();
 //                docBinario.setTipoDocumento("dsfgsdf LC1010-10 sdfgsdfgfdsg");
 
-                if(docBinario.getTipoDocumento().toUpperCase().contains("LC1010-10"))
-                    valorPlanilla=1;
-                else{
-                    if(docBinario.getTipoDocumento().toUpperCase().contains("LC1010-20"))
-                        valorPlanilla=2;
-                    else
-                        valorPlanilla=3;
-                }
+//                if(docBinario.getTipoDocumento().toUpperCase().contains("LC1010-10"))
+//                    valorPlanilla=1;
+//                else{
+//                    if(docBinario.getTipoDocumento().toUpperCase().contains("LC1010-20"))
+//                        valorPlanilla=2;
+//                    else
+//                        valorPlanilla=3;
+//                }
+
 
                 registro.readHeaders();
                 int c=0;
                 //TODO nombre del documento extraido del metadata
                 errores.add(docBinario.getTipoDocumento().toUpperCase());
                 while (registro.readRecord()){
+                    if(c==0){
+                        switch (registro.getColumnCount()){
+                            case 43:
+                                valorPlanilla=1;  //industrial
+                                break;
+                            case 33:
+                                valorPlanilla=2;  //comercial
+                                break;
+                            case 31:
+                                valorPlanilla=3;  //reducido (MyPEs)
+                                break;
+                            default:
+                                return;
+                        }
+                    }
                     c++;
                     int columna=1;
-
                     DocPlanillaDetalle docPlanillaDetalle = new DocPlanillaDetalle();
 //                    docPlanillaDetalle.setIdPlanilla(docPlanilla);
 //                    docPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
@@ -670,6 +716,7 @@ public class declaracionBean implements Serializable {
         catch (Exception e){
             e.printStackTrace();
         }
+        verificaValidacion=true;
     }
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
@@ -990,11 +1037,35 @@ public class declaracionBean implements Serializable {
         this.iPlanillaDetalleService = iPlanillaDetalleService;
     }
 
-    public short getTipoEmpresa() {
+    public int getTipoEmpresa() {
         return tipoEmpresa;
     }
 
-    public void setTipoEmpresa(short tipoEmpresa) {
+    public void setTipoEmpresa(int tipoEmpresa) {
         this.tipoEmpresa = tipoEmpresa;
+    }
+
+    public PerPersona getCentral() {
+        return central;
+    }
+
+    public void setCentral(PerPersona central) {
+        this.central = central;
+    }
+
+    public List<PerPersona> getSucursales() {
+        return sucursales;
+    }
+
+    public void setSucursales(List<PerPersona> sucursales) {
+        this.sucursales = sucursales;
+    }
+
+    public PerPersona getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(PerPersona empresa) {
+        this.empresa = empresa;
     }
 }
