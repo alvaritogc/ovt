@@ -12,7 +12,7 @@
 
              <p:commandButton value="#{personaUnidadBean.tituloDialog}"
                               icon="#{personaUnidadBean.iconoUnidad}"
-                              action="#{personaUnidadBean.procesarUnidad}"
+                              action="#{personaUnidadBean.procesarRepLegal}"
                               id="cmdButtonRepLegal"
                      />
          </f:facet>
@@ -44,7 +44,7 @@
              <p:selectOneMenu id="slcOneMenuTipoIdentificacion2" value="#{personaUnidadBean.repLegal.tipoIdentificacion}"
                               tabindex="16">
                  <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
-                 <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
+                 <f:selectItems value="#{personaUnidadBean.listaTipoIdentificacion}" />
              </p:selectOneMenu>
 
              <h:outputText value="Nro. de documento: "/>
@@ -67,7 +67,7 @@
              <p:selectOneMenu id="slcOneMenuTipoProcedencia2" value="#{personaUnidadBean.repLegal.tipoProcedencia}"
                               tabindex="16">
                  <f:selectItem itemLabel="---Seleccione una procedencia---" itemValue="" />
-                 <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
+                 <f:selectItems value="#{personaUnidadBean.listaLocalidad}" />
              </p:selectOneMenu>
 
          </h:panelGrid>

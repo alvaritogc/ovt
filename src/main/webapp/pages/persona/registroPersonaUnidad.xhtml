@@ -20,7 +20,7 @@
 
      <p:tabView id="tabPersonaUnidad" effect="fade" effectDuration="normal" orientation="top" >
 
-         <p:tab id="tab1" >
+         <p:tab id="tabUnidadPrincipal" >
              <f:facet name="title">
                  <p:graphicImage value="/images/unidad.png"/>
                  <h:outputText value=" UNIDAD PRINCIPAL"/>
@@ -88,7 +88,7 @@
          </p:tab>
 
 
-         <p:tab id="tab2"  >
+         <p:tab id="tabActividad"  >
              <f:facet name="title">
                  <p:graphicImage value="/images/actividadDeclarada.png"/>
                  <h:outputText value=" ACTIVIDAD DECLARADA"/>
@@ -134,7 +134,7 @@
             </p:panel>
          </p:tab>
 
-         <p:tab id="tab3" >
+         <p:tab id="tabRepLegal" >
              <f:facet name="title">
                  <p:graphicImage value="/images/repLegal.png"/>
                  <h:outputText value=" REPRESENTANTE LEGAL"/>
@@ -152,38 +152,38 @@
 
                 <h:panelGrid columns="2">
                     <h:outputText value="Nombre: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                    <p:inputText id="inputTxtNombreRepLegal" value="#{personaUnidadBean.repLegal.nombre}"
+                    <p:inputText id="inputTxtNombreRepLegal" value="#{personaUnidadBean.repLegalPrincipal.nombre}"
                                  readonly="true"/>
 
                     <h:outputText value="Ap. paterno: "/>
-                    <p:inputText id="inputTxtApPaterno" value="#{personaUnidadBean.repLegal.apellidoPaterno}"
+                    <p:inputText id="inputTxtApPaterno" value="#{personaUnidadBean.repLegalPrincipal.apellidoPaterno}"
                                     readonly="true"/>
 
                     <h:outputText value="Ap. materno: "/>
-                    <p:inputText id="inputTxtApMaterno" value="#{personaUnidadBean.repLegal.apellidoMaterno}"
+                    <p:inputText id="inputTxtApMaterno" value="#{personaUnidadBean.repLegalPrincipal.apellidoMaterno}"
                                  readonly="true"/>
 
                     <h:outputText value="Tipo de identificacion:"/>
-                    <p:inputText value="#{personaUnidadBean.repLegal.tipoIdentificacion}" readonly="true"/>
+                    <p:inputText value="#{personaUnidadBean.repLegalPrincipal.tipoIdentificacion}" readonly="true"/>
 
 
                     <h:outputText value="Nro. de documento: "/>
-                    <p:inputText id="inputTxtNroDocumento" value="#{personaUnidadBean.repLegal.nroDocumento}"
+                    <p:inputText id="inputTxtNroDocumento" value="#{personaUnidadBean.repLegalPrincipal.nroDocumento}"
                                  readonly="true"/>
 
                     <h:outputText value="Fecha del documento:&nbsp;&nbsp;&nbsp;"/>
-                    <p:inputText readonly="true" value="#{personaUnidadBean.repLegal.fechaDocumento}"/>
+                    <p:inputText readonly="true" value="#{personaUnidadBean.repLegalPrincipal.fechaDocumento}"/>
 
 
                     <h:outputText value="Tipo de procedencia:"/>
-                    <p:inputText value="#{personaUnidadBean.repLegal.tipoProcedencia}" readonly="true"/>
+                    <p:inputText value="#{personaUnidadBean.repLegalPrincipal.tipoProcedencia}" readonly="true"/>
 
                 </h:panelGrid>
             </p:panel>
 
          </p:tab>
 
-         <p:tab id="tab4" >
+         <p:tab id="tabDireccion" >
              <f:facet name="title">
                  <p:graphicImage value="/images/direccion.png"/>
                  <h:outputText value=" DIRECCION"/>
@@ -198,11 +198,11 @@
 
                <h:panelGrid columns="2">
                    <h:outputText value="Zona:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccion.zonaUrbanizacion}" readonly="true"/>
+                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.zonaUrbanizacion}" readonly="true"/>
                    <h:outputText value="Tipo de direccion:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccion.tipoDireccion}" readonly="true"/>
+                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.tipoDireccion}" readonly="true"/>
                    <h:outputText value="Direccion:"/>
-                   <p:inputTextarea id="txtAreaDireccion22" value="#{personaUnidadBean.direccion.direccion}"
+                   <p:inputTextarea id="txtAreaDireccion22" value="#{personaUnidadBean.direccionPrincipal.direccion}"
                                     rows="5"
                                     cols="50"
                                     autoResize="false"   readonly="true"
@@ -214,14 +214,14 @@
 
                <h:panelGrid columns="4">
                    <h:outputText value="Piso, Depto u Oficina:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccion.pisoDepOfi}" readonly="true" style="width: 100px;"/>
+                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.pisoDepOfi}" readonly="true" style="width: 100px;"/>
                    <h:outputText value="Cod. localidad:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccion.codLocalidad}" readonly="true" style="width: 100px;"/>
+                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.codLocalidad.descripcion}" readonly="true" style="width: 100px;"/>
                </h:panelGrid>
 
                <h:panelGrid columns="2">
                    <h:outputText value="Referencia: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputTextarea id="txtAreaReferencia22" value="#{personaUnidadBean.direccion.referencia}"
+                   <p:inputTextarea id="txtAreaReferencia22" value="#{personaUnidadBean.direccionPrincipal.referencia}"
                                     rows="5"
                                     cols="50"
                                     autoResize="false"  readonly="true"
@@ -231,16 +231,16 @@
                                     requiredMessage="El campo Referencia es obligatorio."/>
 
                    <h:outputText value="Fax: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccion.fax}" readonly="true"/>
+                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.fax}" readonly="true"/>
                </h:panelGrid>
 
                <h:panelGrid columns="2">
                    <h:outputText value="Nro. de celefono(s): "/>
-                   <p:inputText value="#{personaUnidadBean.direccion.telefono} &nbsp;&nbsp;&nbsp; #{personaUnidadBean.direccion.telefono2}" readonly="true"/>
+                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.telefono} &nbsp;&nbsp;&nbsp; #{personaUnidadBean.direccionPrincipal.telefono2}" readonly="true"/>
                    <h:outputText value="Nro. de celular(es): &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccion.celular} &nbsp;&nbsp;&nbsp; #{personaUnidadBean.direccion.celular2}" readonly="true"/>
+                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.celular} &nbsp;&nbsp;&nbsp; #{personaUnidadBean.direccionPrincipal.celular2}" readonly="true"/>
                    <h:outputText value="Correo(s) electronico(s) :"/>
-                   <p:inputText value="#{personaUnidadBean.direccion.email} &nbsp;&nbsp;&nbsp; #{personaUnidadBean.direccion.email2}" readonly="true"/>
+                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.email} &nbsp;&nbsp;&nbsp; #{personaUnidadBean.direccionPrincipal.email2}" readonly="true"/>
                </h:panelGrid>
 
            </p:panel>

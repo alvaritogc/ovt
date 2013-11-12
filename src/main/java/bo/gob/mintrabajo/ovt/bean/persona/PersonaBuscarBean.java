@@ -27,7 +27,7 @@ import java.util.*;
 
 @ManagedBean(name = "personaBuscarBean")
 @ViewScoped
-public class PersonaBuscarBean implements Serializable{
+public class PersonaBuscarBean implements Serializable {
 
 
    private ExternalContext externalContext= FacesContext.getCurrentInstance().getExternalContext();
@@ -127,9 +127,6 @@ public class PersonaBuscarBean implements Serializable{
     }
 
     public List<PerPersona> getListaPersona() {
-        if(listaPersona!=null)
-           listaPersona=iPersonaService.findAll();
-        listaPersona=iPersonaService.findAll();
         return listaPersona;
     }
 
