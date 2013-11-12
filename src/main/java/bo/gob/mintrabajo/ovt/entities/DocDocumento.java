@@ -76,6 +76,9 @@ public class DocDocumento implements Serializable {
         @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerUnidad perUnidad;
+    @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private PerPersona idPersona;
     @JoinColumn(name = "COD_ESTADO", referencedColumnName = "COD_ESTADO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParDocumentoEstado codEstado;
@@ -182,6 +185,14 @@ public class DocDocumento implements Serializable {
 
     public void setPerUnidad(PerUnidad perUnidad) {
         this.perUnidad = perUnidad;
+    }
+
+    public PerPersona getIdPersona() {
+        return idPersona;
+    }
+
+    public void setIdPersona(PerPersona idPersona) {
+        this.idPersona = idPersona;
     }
 
     public ParDocumentoEstado getCodEstado() {
