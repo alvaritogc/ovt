@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 rvelasquez.
+ * Copyright 2013 gmercado.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -24,6 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -33,7 +33,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author rvelasquez
+ * @author gmercado
  */
 @Entity
 @Table(name = "PAR_OBLIGACION_CALENDARIO")
@@ -48,12 +48,6 @@ public class ParObligacionCalendario implements Serializable {
     @Basic(optional = false)
     @Column(name = "TIPO_CALENDARIO")
     private String tipoCalendario;
-    @Basic(optional = false)
-    @Column(name = "GESTION")
-    private String gestion;
-    @Basic(optional = false)
-    @Column(name = "TIPO_PERIODO")
-    private String tipoPeriodo;
     @Basic(optional = false)
     @Column(name = "FECHA_DESDE")
     @Temporal(TemporalType.TIMESTAMP)
@@ -76,6 +70,11 @@ public class ParObligacionCalendario implements Serializable {
     @JoinColumn(name = "COD_OBLIGACION", referencedColumnName = "COD_OBLIGACION")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParObligacion codObligacion;
+    @JoinColumns({
+        @JoinColumn(name = "TIPO_PERIODO", referencedColumnName = "TIPO_PERIODO"),
+        @JoinColumn(name = "GESTION", referencedColumnName = "GESTION")})
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ParCalendario parCalendario;
 
     public ParObligacionCalendario() {
     }
@@ -84,11 +83,9 @@ public class ParObligacionCalendario implements Serializable {
         this.idObligacionCalendario = idObligacionCalendario;
     }
 
-    public ParObligacionCalendario(Long idObligacionCalendario, String tipoCalendario, String gestion, String tipoPeriodo, Date fechaDesde, Date fechaHasta, Date fechaPlazo, Date fechaBitacora, String registroBitacora) {
+    public ParObligacionCalendario(Long idObligacionCalendario, String tipoCalendario, Date fechaDesde, Date fechaHasta, Date fechaPlazo, Date fechaBitacora, String registroBitacora) {
         this.idObligacionCalendario = idObligacionCalendario;
         this.tipoCalendario = tipoCalendario;
-        this.gestion = gestion;
-        this.tipoPeriodo = tipoPeriodo;
         this.fechaDesde = fechaDesde;
         this.fechaHasta = fechaHasta;
         this.fechaPlazo = fechaPlazo;
@@ -110,22 +107,6 @@ public class ParObligacionCalendario implements Serializable {
 
     public void setTipoCalendario(String tipoCalendario) {
         this.tipoCalendario = tipoCalendario;
-    }
-
-    public String getGestion() {
-        return gestion;
-    }
-
-    public void setGestion(String gestion) {
-        this.gestion = gestion;
-    }
-
-    public String getTipoPeriodo() {
-        return tipoPeriodo;
-    }
-
-    public void setTipoPeriodo(String tipoPeriodo) {
-        this.tipoPeriodo = tipoPeriodo;
     }
 
     public Date getFechaDesde() {
@@ -174,6 +155,14 @@ public class ParObligacionCalendario implements Serializable {
 
     public void setCodObligacion(ParObligacion codObligacion) {
         this.codObligacion = codObligacion;
+    }
+
+    public ParCalendario getParCalendario() {
+        return parCalendario;
+    }
+
+    public void setParCalendario(ParCalendario parCalendario) {
+        this.parCalendario = parCalendario;
     }
 
     @Override

@@ -21,9 +21,9 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -36,21 +36,16 @@ import javax.persistence.TemporalType;
  * @author gmercado
  */
 @Entity
-@Table(name = "PAR_OBLIGACION")
+@Table(name = "PAR_CALENDARIO")
 @NamedQueries({
-    @NamedQuery(name = "ParObligacion.findAll", query = "SELECT p FROM ParObligacion p")})
-public class ParObligacion implements Serializable {
+    @NamedQuery(name = "ParCalendario.findAll", query = "SELECT p FROM ParCalendario p")})
+public class ParCalendario implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
+    @EmbeddedId
+    protected ParCalendarioPK parCalendarioPK;
     @Basic(optional = false)
-    @Column(name = "COD_OBLIGACION")
-    private String codObligacion;
-    @Basic(optional = false)
-    @Column(name = "DESCRIPCION")
-    private String descripcion;
-    @Basic(optional = false)
-    @Column(name = "ESTADO")
-    private String estado;
+    @Column(name = "TIPO_CALENDARIO")
+    private String tipoCalendario;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -58,46 +53,41 @@ public class ParObligacion implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codObligacion", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parCalendario", fetch = FetchType.LAZY)
     private List<ParObligacionCalendario> parObligacionCalendarioList;
 
-    public ParObligacion() {
+    public ParCalendario() {
     }
 
-    public ParObligacion(String codObligacion) {
-        this.codObligacion = codObligacion;
+    public ParCalendario(ParCalendarioPK parCalendarioPK) {
+        this.parCalendarioPK = parCalendarioPK;
     }
 
-    public ParObligacion(String codObligacion, String descripcion, String estado, Date fechaBitacora, String registroBitacora) {
-        this.codObligacion = codObligacion;
-        this.descripcion = descripcion;
-        this.estado = estado;
+    public ParCalendario(ParCalendarioPK parCalendarioPK, String tipoCalendario, Date fechaBitacora, String registroBitacora) {
+        this.parCalendarioPK = parCalendarioPK;
+        this.tipoCalendario = tipoCalendario;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
 
-    public String getCodObligacion() {
-        return codObligacion;
+    public ParCalendario(String gestion, String tipoPeriodo) {
+        this.parCalendarioPK = new ParCalendarioPK(gestion, tipoPeriodo);
     }
 
-    public void setCodObligacion(String codObligacion) {
-        this.codObligacion = codObligacion;
+    public ParCalendarioPK getParCalendarioPK() {
+        return parCalendarioPK;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public void setParCalendarioPK(ParCalendarioPK parCalendarioPK) {
+        this.parCalendarioPK = parCalendarioPK;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public String getTipoCalendario() {
+        return tipoCalendario;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setTipoCalendario(String tipoCalendario) {
+        this.tipoCalendario = tipoCalendario;
     }
 
     public Date getFechaBitacora() {
@@ -127,18 +117,18 @@ public class ParObligacion implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codObligacion != null ? codObligacion.hashCode() : 0);
+        hash += (parCalendarioPK != null ? parCalendarioPK.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ParObligacion)) {
+        if (!(object instanceof ParCalendario)) {
             return false;
         }
-        ParObligacion other = (ParObligacion) object;
-        if ((this.codObligacion == null && other.codObligacion != null) || (this.codObligacion != null && !this.codObligacion.equals(other.codObligacion))) {
+        ParCalendario other = (ParCalendario) object;
+        if ((this.parCalendarioPK == null && other.parCalendarioPK != null) || (this.parCalendarioPK != null && !this.parCalendarioPK.equals(other.parCalendarioPK))) {
             return false;
         }
         return true;
@@ -146,7 +136,7 @@ public class ParObligacion implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.ParObligacion[ codObligacion=" + codObligacion + " ]";
+        return "bo.gob.mintrabajo.ovt.entities.ParCalendario[ parCalendarioPK=" + parCalendarioPK + " ]";
     }
     
 }

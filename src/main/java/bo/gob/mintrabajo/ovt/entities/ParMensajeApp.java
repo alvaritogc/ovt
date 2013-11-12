@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 rvelasquez.
+ * Copyright 2013 gmercado.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,13 +28,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
  *
- * @author rvelasquez
+ * @author gmercado
  */
 @Entity
 @Table(name = "PAR_MENSAJE_APP")
@@ -65,6 +67,8 @@ public class ParMensajeApp implements Serializable {
     @JoinColumn(name = "ID_RECURSO", referencedColumnName = "ID_RECURSO")
     @ManyToOne(fetch = FetchType.LAZY)
     private UsrRecurso idRecurso;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMensajeApp", fetch = FetchType.LAZY)
+    private List<ParMensajeContenido> parMensajeContenidoList;
 
     public ParMensajeApp() {
     }
@@ -141,6 +145,14 @@ public class ParMensajeApp implements Serializable {
 
     public void setIdRecurso(UsrRecurso idRecurso) {
         this.idRecurso = idRecurso;
+    }
+
+    public List<ParMensajeContenido> getParMensajeContenidoList() {
+        return parMensajeContenidoList;
+    }
+
+    public void setParMensajeContenidoList(List<ParMensajeContenido> parMensajeContenidoList) {
+        this.parMensajeContenidoList = parMensajeContenidoList;
     }
 
     @Override

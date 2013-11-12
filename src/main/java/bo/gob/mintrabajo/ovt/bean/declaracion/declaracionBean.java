@@ -225,7 +225,8 @@ public class declaracionBean implements Serializable {
     public void generaDocumento(){
         logger.info("generaDocumento()");
         documento = new DocDocumento();
-        documento.setIdPersona(persona);
+        //documento.setIdPersona(persona); ******************************** Revisar porque no hay esta relacion??????
+        
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(persona.getIdPersona(), 0L)));
 
         if(parametro==1)

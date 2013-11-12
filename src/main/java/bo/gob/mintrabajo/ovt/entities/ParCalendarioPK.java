@@ -25,57 +25,57 @@ import javax.persistence.Embeddable;
  * @author gmercado
  */
 @Embeddable
-public class ParParametrizacionPK implements Serializable {
+public class ParCalendarioPK implements Serializable {
     @Basic(optional = false)
-    @Column(name = "ID_PARAMETRO")
-    private String idParametro;
+    @Column(name = "GESTION")
+    private String gestion;
     @Basic(optional = false)
-    @Column(name = "VALOR")
-    private String valor;
+    @Column(name = "TIPO_PERIODO")
+    private String tipoPeriodo;
 
-    public ParParametrizacionPK() {
+    public ParCalendarioPK() {
     }
 
-    public ParParametrizacionPK(String idParametro, String valor) {
-        this.idParametro = idParametro;
-        this.valor = valor;
+    public ParCalendarioPK(String gestion, String tipoPeriodo) {
+        this.gestion = gestion;
+        this.tipoPeriodo = tipoPeriodo;
     }
 
-    public String getIdParametro() {
-        return idParametro;
+    public String getGestion() {
+        return gestion;
     }
 
-    public void setIdParametro(String idParametro) {
-        this.idParametro = idParametro;
+    public void setGestion(String gestion) {
+        this.gestion = gestion;
     }
 
-    public String getValor() {
-        return valor;
+    public String getTipoPeriodo() {
+        return tipoPeriodo;
     }
 
-    public void setValor(String valor) {
-        this.valor = valor;
+    public void setTipoPeriodo(String tipoPeriodo) {
+        this.tipoPeriodo = tipoPeriodo;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idParametro != null ? idParametro.hashCode() : 0);
-        hash += (valor != null ? valor.hashCode() : 0);
+        hash += (gestion != null ? gestion.hashCode() : 0);
+        hash += (tipoPeriodo != null ? tipoPeriodo.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ParParametrizacionPK)) {
+        if (!(object instanceof ParCalendarioPK)) {
             return false;
         }
-        ParParametrizacionPK other = (ParParametrizacionPK) object;
-        if ((this.idParametro == null && other.idParametro != null) || (this.idParametro != null && !this.idParametro.equals(other.idParametro))) {
+        ParCalendarioPK other = (ParCalendarioPK) object;
+        if ((this.gestion == null && other.gestion != null) || (this.gestion != null && !this.gestion.equals(other.gestion))) {
             return false;
         }
-        if ((this.valor == null && other.valor != null) || (this.valor != null && !this.valor.equals(other.valor))) {
+        if ((this.tipoPeriodo == null && other.tipoPeriodo != null) || (this.tipoPeriodo != null && !this.tipoPeriodo.equals(other.tipoPeriodo))) {
             return false;
         }
         return true;
@@ -83,7 +83,7 @@ public class ParParametrizacionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.ParParametrizacionPK[ idParametro=" + idParametro + ", valor=" + valor + " ]";
+        return "bo.gob.mintrabajo.ovt.entities.ParCalendarioPK[ gestion=" + gestion + ", tipoPeriodo=" + tipoPeriodo + " ]";
     }
     
 }

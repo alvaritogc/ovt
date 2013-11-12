@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 rvelasquez.
+ * Copyright 2013 gmercado.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -38,7 +37,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author rvelasquez
+ * @author gmercado
  */
 @Entity
 @Table(name = "DOC_DOCUMENTO")
@@ -77,9 +76,6 @@ public class DocDocumento implements Serializable {
         @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerUnidad perUnidad;
-    @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private PerPersona idPersona;
     @JoinColumn(name = "COD_ESTADO", referencedColumnName = "COD_ESTADO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParDocumentoEstado codEstado;
@@ -186,14 +182,6 @@ public class DocDocumento implements Serializable {
 
     public void setPerUnidad(PerUnidad perUnidad) {
         this.perUnidad = perUnidad;
-    }
-
-    public PerPersona getIdPersona() {
-        return idPersona;
-    }
-
-    public void setIdPersona(PerPersona idPersona) {
-        this.idPersona = idPersona;
     }
 
     public ParDocumentoEstado getCodEstado() {
