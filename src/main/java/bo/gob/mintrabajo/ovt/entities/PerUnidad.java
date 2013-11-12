@@ -86,21 +86,21 @@ public class PerUnidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
+/*    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<PerUsuarioUnidad> perUsuarioUnidadList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
-    private List<PerDireccion> perDireccionList;
+    private List<PerDireccion> perDireccionList;*/
     @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerPersona perPersona;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
+/*    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<PerReplegal> perReplegalList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<PerActividad> perActividadList;
     @OneToMany(mappedBy = "perUnidad", fetch = FetchType.LAZY)
-    private List<ParEntidad> parEntidadList;
+    private List<ParEntidad> parEntidadList;*/
 
     public PerUnidad() {
     }
@@ -254,7 +254,7 @@ public class PerUnidad implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public List<PerUsuarioUnidad> getPerUsuarioUnidadList() {
+  /*  public List<PerUsuarioUnidad> getPerUsuarioUnidadList() {
         return perUsuarioUnidadList;
     }
 
@@ -268,7 +268,7 @@ public class PerUnidad implements Serializable {
 
     public void setPerDireccionList(List<PerDireccion> perDireccionList) {
         this.perDireccionList = perDireccionList;
-    }
+    }*/
 
     public PerPersona getPerPersona() {
         return perPersona;
@@ -278,7 +278,7 @@ public class PerUnidad implements Serializable {
         this.perPersona = perPersona;
     }
 
-    public List<DocDocumento> getDocDocumentoList() {
+   /* public List<DocDocumento> getDocDocumentoList() {
         return docDocumentoList;
     }
 
@@ -308,7 +308,7 @@ public class PerUnidad implements Serializable {
 
     public void setParEntidadList(List<ParEntidad> parEntidadList) {
         this.parEntidadList = parEntidadList;
-    }
+    }*/
 
     @Override
     public int hashCode() {

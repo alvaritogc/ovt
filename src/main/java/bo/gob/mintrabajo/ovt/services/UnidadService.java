@@ -54,12 +54,17 @@ public class UnidadService implements IUnidadService{
     }
 
     public PerUnidad save(PerUnidad unidad,PerPersona persona) {
-       this.obtenerSecuencia("PER_UNIDAD_SEC");
 
-        PerUnidadPK perUnidadPK=new PerUnidadPK();
-        perUnidadPK.setIdPersona(persona.getIdPersona());
-        perUnidadPK.setIdUnidad(this.obtenerSecuencia("PER_UNIDAD_SEC"));
-        unidad.setPerUnidadPK(perUnidadPK);
+        if(unidad.getPerUnidadPK()==null){
+            //Obtener secuencia
+            System.out.println("CREANDO UNA NUEVA UNIDAD");
+            this.obtenerSecuencia("PER_UNIDAD_SEC");
+            PerUnidadPK perUnidadPK=new PerUnidadPK();
+            perUnidadPK.setIdPersona(persona.getIdPersona());
+            perUnidadPK.setIdUnidad(this.obtenerSecuencia("PER_UNIDAD_SEC"));
+            unidad.setPerUnidadPK(perUnidadPK);
+        }
+
 
         unidad.setEstadoUnidad(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
         PerUnidad perUnidadEntity;
