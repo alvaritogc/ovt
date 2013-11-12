@@ -8,7 +8,7 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../../pages/template/templateInicio.xhtml">
     <ui:define name="content">
-        <h:form>
+        <h:form >
             <p:panel id="pnldBuscarPersona" >
                 <f:facet name="header">
                     Busqueda de personas
@@ -28,7 +28,7 @@
             <br/>
             <p:commandButton value="Buscar" action="#{personaBuscarBean.cargar}" update="dtTblUnidad,pnldBuscarPersona" ajax="false"/>
             <p:commandButton value="Limpiar" action="#{personaBuscarBean.limpiar}" update="dtTblUnidad,pnldBuscarPersona" ajax="false"/>
-        </h:form>
+
 
         <p:dataTable id="dtTblUnidad" value="#{personaBuscarBean.listaPersona}"
                      var="persona"
@@ -40,7 +40,8 @@
             <f:facet name="header">
                 Lista de personas
             </f:facet>
-            <p:column headerText="Nombre o Razon social">
+            <p:column headerText="Nombre o Razon social" sortBy="#{persona.nombreRazonSocial}" >
+
                       <h:outputText value="#{persona.nombreRazonSocial}"/>
             </p:column>
             <p:column headerText="Apellidos">
@@ -66,7 +67,7 @@
             </p:column>
 
         </p:dataTable>
-
+        </h:form>
     </ui:define>
 </ui:composition>
 </html>

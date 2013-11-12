@@ -93,7 +93,7 @@ public class PersonaService implements IPersonaService {
     @Override
       public  List<PerPersona> findAll(){
 
-        Sort sort=new Sort(Sort.Direction.DESC,"idPersona");
+        Sort sort=new Sort(Sort.Direction.DESC,"idPersona","nombreRazonSocial");
         return personaRepository.findAll(new PageRequest(0,200,sort)).getContent();
      }
 

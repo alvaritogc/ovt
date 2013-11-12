@@ -15,10 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,7 +56,9 @@ public class PersonaBuscarBean implements Serializable{
        // logger.info("Buscando usuario" + idUsuario);
        // UsrUsuario usuario = iUsuarioService.findById(idUsuario);
         System.out.println("=====================>>>> BUSCAR");
-        listaPersona=iPersonaService.findAll();
+       listaPersona=iPersonaService.findAll();
+       // Arrays.asList(listaPersona) ;
+        //listaPersona =getListaPersona();
        // listaPersona=  iPersonaService.buscarPorNroNombre("","");
 
     }
@@ -128,6 +127,9 @@ public class PersonaBuscarBean implements Serializable{
     }
 
     public List<PerPersona> getListaPersona() {
+        if(listaPersona!=null)
+           listaPersona=iPersonaService.findAll();
+        listaPersona=iPersonaService.findAll();
         return listaPersona;
     }
 
