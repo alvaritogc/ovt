@@ -13,7 +13,7 @@
                     <h2 class="form-signin-heading">Obligacion Calendario</h2>
                 <br/>
                 
-                <p:commandButton value="Nuevo" onclick="dlgFormObligacionCalendario.show();" actionListener="#{obligacionCalendarioBean.limpiar}" icon="ui-icon-document-b"/>
+                <p:commandButton value="Nuevo" onclick="dlgFormObligacionCalendario.show();" actionListener="#{obligacionCalendarioBean.nuevo}" icon="ui-icon-document-b"/>
                 <br />
                 <br />
                 <!--  Busqueda segun obligacion -->
@@ -46,7 +46,7 @@
                     </p:column>  
 
                     <p:column sortBy="gestion" headerText="Gestion">    
-                        <h:outputText value="#{calendario.gestion}" />  
+                        <h:outputText value="" />  
                     </p:column>  
 
                     <p:column sortBy="fechaDesde" headerText="Fecha desde">  
@@ -97,18 +97,36 @@
                     <h:panelGrid columns="2" cellpadding="5">  
 
                         <h:outputLabel for="obligacionForm" value="Obligacion:" style="font-weight:bold"/>  
-                        <p:selectOneMenu id="obligacionForm" value="#{obligacionCalendarioBean.codObligacionForm}" required="true" requiredMessage="Debe eleccionar una obligacion">  
+                        <p:selectOneMenu id="obligacionForm" value="#{obligacionCalendarioBean.codObligacionForm}" required="true" 
+                                         requiredMessage="Debe eleccionar una obligacion" style="text-transform: uppercase; width: 245px">  
                             <f:selectItem itemLabel="---Seleccione obligacion---" itemValue="" />
                             <f:selectItems value="#{obligacionCalendarioBean.listaObligacion}" var="ob" itemLabel="#{ob.descripcion}" itemValue="#{ob.codObligacion}"/>
                         </p:selectOneMenu>
                         
                         <h:outputLabel for="tipoCalendario" value="Tipo calendario:" style="font-weight:bold"/>  
-                        <p:inputText id="tipoCalendario" value="#{obligacionCalendarioBean.obligacionCalendario.tipoCalendario}" required="true" 
-                                     requiredMessage="Debe ingresar el Tipo de calendario" maxlength="15" style="text-transform: uppercase;" />  
+                        <p:selectOneMenu id="tipoCalendario" value="#{obligacionCalendarioBean.obligacionCalendario.tipoCalendario}" required="true" 
+                                         requiredMessage="Debe seleccionar el Tipo de calendario" style="text-transform: uppercase; width: 245px">  
+                            <f:selectItem itemLabel="---Seleccione tipo de calendario---" itemValue="" />
+                            <f:selectItems value="#{obligacionCalendarioBean.listaDominio}" var="do" itemLabel="#{do.descripcion}" itemValue="#{do.parDominioPK.valor}" />
+                            <p:ajax update="tipoPeriodo"  
+                                    listener="#{obligacionCalendarioBean.listarPeriodo}" /> 
+                        </p:selectOneMenu>
 
                         <h:outputLabel for="gestion" value="Gestion:" style="font-weight:bold"/>  
-                        <p:inputText id="gestion" value="#{obligacionCalendarioBean.obligacionCalendario.gestion}" required="true" 
-                                     requiredMessage="Debe ingresar la Gestion" maxlength="20" style="text-transform: uppercase;"/>
+                        <h:panelGroup>
+                        
+                            <p:selectOneMenu id="anio" value="" required="true" style="text-transform: uppercase; width: 55px"  
+                                             requiredMessage="Debe seleccionar el Tipo de calendario" >  
+                                <f:selectItem itemLabel="#{obligacionCalendarioBean.anioActual}" itemValue="#{obligacionCalendarioBean.anioActual}" />
+                                <f:selectItems value="#{obligacionCalendarioBean.listaAnio}" />
+                            </p:selectOneMenu>
+                            &nbsp;
+                            <p:selectOneMenu id="tipoPeriodo" value="" required="true" style="text-transform: uppercase; width: 180px"
+                                         requiredMessage="Debe seleccionar el Tipo de periodo" >  
+                                <f:selectItem itemLabel="---Seleccione tipo de periodo---" itemValue="" />
+                                <f:selectItems value="#{obligacionCalendarioBean.listaDominioPeriodo}" var="do" itemLabel="#{do.descripcion}" itemValue="#{do.parDominioPK.valor}" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
 
                         <h:outputLabel for="fechaDesde" value="Fecha desde:" style="font-weight:bold"/>  
                         <p:calendar id="fechaDesde" value="#{obligacionCalendarioBean.obligacionCalendario.fechaDesde}" showOn="button" required="true" 
@@ -122,8 +140,8 @@
                         <p:calendar id="fechaPlazo" value="#{obligacionCalendarioBean.obligacionCalendario.fechaPlazo}" showOn="button" required="true" 
                                     requiredMessage="Debe ingresar la Fecha plazo" /> 
 
-                        <p:commandButton value="Guardar" actionListener="#{obligacionCalendarioBean.guardarModificar}" update=":growl formCalendario :tablaCalendario" icon="ui-icon-disk"/>
-                        <p:commandButton value="Canselar" actionListener="#{obligacionCalendarioBean.limpiar}" onclick="dlgFormObligacionCalendario.hide();" update="formCalendario" icon="ui-icon-close"/>
+                        <p:commandButton value="Guardar" action="#{obligacionCalendarioBean.guardarModificar}" update=":growl formCalendario :tablaCalendario" icon="ui-icon-disk"/>
+                        <p:commandButton value="Canselar" actionListener="#{obligacionCalendarioBean.nuevo}" onclick="dlgFormObligacionCalendario.hide();" update="formCalendario" icon="ui-icon-close"/>
 
                     </h:panelGrid> 
                     </h:form>

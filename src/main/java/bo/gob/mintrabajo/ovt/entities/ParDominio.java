@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 rvelasquez.
+ * Copyright 2013 gmercado.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -36,7 +35,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author rvelasquez
+ * @author gmercado
  */
 @Entity
 @Table(name = "PAR_DOMINIO")
@@ -62,8 +61,8 @@ public class ParDominio implements Serializable {
     @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private UsrModulo idModulo;
-//    @OneToMany(mappedBy = "parDominio", fetch = FetchType.LAZY)
-//    private List<ParDominio> parDominioList;
+    @OneToMany(mappedBy = "parDominio", fetch = FetchType.LAZY)
+    private List<ParDominio> parDominioList;
     @JoinColumns({
         @JoinColumn(name = "ID_DOMINIO_PADRE", referencedColumnName = "ID_DOMINIO"),
         @JoinColumn(name = "VALOR_PADRE", referencedColumnName = "VALOR")})
@@ -137,13 +136,13 @@ public class ParDominio implements Serializable {
         this.idModulo = idModulo;
     }
 
-//    public List<ParDominio> getParDominioList() {
-//        return parDominioList;
-//    }
-//
-//    public void setParDominioList(List<ParDominio> parDominioList) {
-//        this.parDominioList = parDominioList;
-//    }
+    public List<ParDominio> getParDominioList() {
+        return parDominioList;
+    }
+
+    public void setParDominioList(List<ParDominio> parDominioList) {
+        this.parDominioList = parDominioList;
+    }
 
     public ParDominio getParDominio() {
         return parDominio;

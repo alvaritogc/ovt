@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 rvelasquez.
+ * Copyright 2013 gmercado.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -37,7 +36,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author rvelasquez
+ * @author gmercado
  */
 @Entity
 @Table(name = "PAR_ENTIDAD")
@@ -70,9 +69,9 @@ public class ParEntidad implements Serializable {
         @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
     @ManyToOne(fetch = FetchType.LAZY)
     private PerUnidad perUnidad;
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "idEntidadBanco", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidadBanco", fetch = FetchType.LAZY)
     private List<DocPlanilla> docPlanillaList;
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "idEntidadSalud", fetch = FetchType.LAZY, orphanRemoval = true )
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidadSalud", fetch = FetchType.LAZY)
     private List<DocPlanilla> docPlanillaList1;
 
     public ParEntidad() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 rvelasquez.
+ * Copyright 2013 gmercado.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -36,7 +35,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author rvelasquez
+ * @author gmercado
  */
 @Entity
 @Table(name = "PER_PERSONA")
@@ -75,8 +74,6 @@ public class PerPersona implements Serializable {
     private List<UsrUsuario> usrUsuarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "perPersona", fetch = FetchType.LAZY)
     private List<PerUnidad> perUnidadList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona", fetch = FetchType.LAZY)
-    private List<DocDocumento> docDocumentoList;
     @JoinColumn(name = "COD_LOCALIDAD", referencedColumnName = "COD_LOCALIDAD")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParLocalidad codLocalidad;
@@ -184,14 +181,6 @@ public class PerPersona implements Serializable {
 
     public void setPerUnidadList(List<PerUnidad> perUnidadList) {
         this.perUnidadList = perUnidadList;
-    }
-
-    public List<DocDocumento> getDocDocumentoList() {
-        return docDocumentoList;
-    }
-
-    public void setDocDocumentoList(List<DocDocumento> docDocumentoList) {
-        this.docDocumentoList = docDocumentoList;
     }
 
     public ParLocalidad getCodLocalidad() {
