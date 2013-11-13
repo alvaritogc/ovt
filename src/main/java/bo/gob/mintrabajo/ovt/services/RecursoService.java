@@ -42,11 +42,9 @@ public class RecursoService implements IRecursoService {
         return deleted;
     }
 
-//    @Override
+    @Override
     public UsrRecurso findById(Long id) {
-        UsrRecurso usrRecursoEntity;
-        usrRecursoEntity = recursoRepository.findOne(id);
-        return usrRecursoEntity;
+        return recursoRepository.findOne(id);
     }
 
     @Override
