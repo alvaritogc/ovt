@@ -17,5 +17,5 @@ public interface RolRepository extends OpenJpaRepository<UsrRol, Long>{
 
     List<UsrRol> findByIdModulo(@Param("idModulo") String idModulo);
     UsrRol findByIdRol(@Param("idRol") Long idRol);
-    
+
 }
