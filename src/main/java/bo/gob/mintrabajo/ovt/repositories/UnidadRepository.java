@@ -17,6 +17,7 @@ public interface UnidadRepository extends OpenJpaRepository<PerUnidad, PerUnidad
             + " from PerUnidad u"
             + " where "
             + " u.perUnidadPK.idPersona=:idPersona"
+            + " order by  u.perUnidadPK.idUnidad desc "
             )
     List<PerUnidad> buscarPorPersona(@Param("idPersona") String idPersona);
 

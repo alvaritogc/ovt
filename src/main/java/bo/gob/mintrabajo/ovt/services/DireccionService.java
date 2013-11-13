@@ -63,16 +63,15 @@ public class DireccionService implements IDireccionService{
         return deleted;
     }
 
-     public List<PerDireccion>findByPerUnidad(PerUnidad unidad){
-
-         //return direccionRepository.findByPerUnidad(unidad,new PageRequest(1,10));
+     public List<PerDireccion>obtenerPorIdPersonaYIdUnidad(String idPersona,long idUnidad){
          Sort sort=new Sort(Sort.Direction.DESC,"idDireccion");
-         System.out.println("=====>>>>  idPersona "+unidad.getPerUnidadPK().getIdPersona());
-         System.out.println("=====>>>>  idUnidad "+unidad.getPerUnidadPK().getIdUnidad());
-         List<PerDireccion>direccion=direccionRepository.obtenerPorIdPersonaYIdUnidad(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad(), new PageRequest(1, 10,sort));
-         System.out.println("====>>> direccion encontrados: "+direccionRepository.findAll(new PageRequest(0, 50)));
-         return direccionRepository.obtenerPorIdPersonaYIdUnidad(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad(), new PageRequest(0, 10,sort));
+         return direccionRepository.obtenerPorIdPersonaYIdUnidad(idPersona, idUnidad, new PageRequest(0, 10,sort));
      }
+
+    public List<PerDireccion>obtenerPorIdPersona(String idPersona ){
+        Sort sort=new Sort(Sort.Direction.DESC,"idDireccion");
+        return direccionRepository.obtenerPorIdPersona(idPersona, new PageRequest(0, 10,sort));
+    }
 
     public Long obtenerSecuencia(String nombreSecuencia){
         BigDecimal rtn;

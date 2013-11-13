@@ -2,18 +2,17 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:rich="http://richfaces.org/rich"
-                xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:p="http://primefaces.org/ui">
 
 
 <h:form id="frmActividadDeclarada">
-    <p:panel id="pnlActividadEconomica" >
+    <p:panel id="pnlActividadDeclarada" >
         <f:facet name="footer">
             <p:commandButton value="#{personaUnidadBean.tituloDialog}"
                              icon="#{personaUnidadBean.iconoUnidad}"
-                             action="#{personaUnidadBean.procesarUnidad}"
+                             action="#{personaUnidadBean.procesarActividadEconomica}"
                              id="cmdButtonActividadDeclarada"
+                             update=":tabPersonaUnidad"
                     />
         </f:facet>
 
@@ -21,9 +20,10 @@
         <h:panelGrid columns="2">
             <h:outputText value="Codigo de Actividad economica:"/>
             <p:selectOneMenu id="slcOneMenuCodActvEconomica1" value="#{personaUnidadBean.actividadEconomica.codActividadEconomica}"
-                             tabindex="16">
+                             tabindex="1"
+                             style="text-transform: uppercase;">
                 <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
-                <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
+                <f:selectItems value="#{personaUnidadBean.listaTipoIdentificacion}" />
             </p:selectOneMenu>
 
             <h:outputText value="Descripcion:"/>
@@ -32,15 +32,18 @@
                              cols="50"
                              autoResize="false"
                              style="width: 220px;text-transform: uppercase;"
-                             tabindex="11"
+                             tabindex="2"
                              required="true"
-                             requiredMessage="El campo Descripcion es obligatorio."/>
+                             requiredMessage="El campo Descripcion es obligatorio.">
+                <f:converter converterId="lowerConverter"/>
+            </p:inputTextarea>
 
             <h:outputText value="Codigo de Impuestos:"/>
             <p:selectOneMenu id="slcOneMenuCodImpuestos1" value="#{personaUnidadBean.actividadEconomica.codImpuestos}"
-                             tabindex="16">
+                             tabindex="3"
+                             style="text-transform: uppercase;">
                 <f:selectItem itemLabel="---Seleccione un cod. de impuestos---" itemValue="" />
-                <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
+                <f:selectItems value="#{personaUnidadBean.listaTipoIdentificacion}" />
             </p:selectOneMenu>
 
             <h:outputText value="Descripcion del codigo de impuestos:"/>
@@ -49,9 +52,11 @@
                              cols="50"
                              autoResize="false"
                              style="width: 220px;text-transform: uppercase;"
-                             tabindex="11"
+                             tabindex="4"
                              required="true"
-                             requiredMessage="El campo Descripcion del codigo de impuestos es obligatorio."/>
+                             requiredMessage="El campo Descripcion del codigo de impuestos es obligatorio.">
+                <f:converter converterId="lowerConverter"/>
+            </p:inputTextarea>
 
         </h:panelGrid>
     </p:panel>

@@ -1,13 +1,13 @@
 
 package bo.gob.mintrabajo.ovt.services;
 
+import bo.gob.mintrabajo.ovt.api.IActividadService;
 import bo.gob.mintrabajo.ovt.api.IDireccionService;
-import bo.gob.mintrabajo.ovt.api.IRepLegalService;
+import bo.gob.mintrabajo.ovt.entities.PerActividad;
 import bo.gob.mintrabajo.ovt.entities.PerDireccion;
-import bo.gob.mintrabajo.ovt.entities.PerReplegal;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
+import bo.gob.mintrabajo.ovt.repositories.ActividadRepository;
 import bo.gob.mintrabajo.ovt.repositories.DireccionRepository;
-import bo.gob.mintrabajo.ovt.repositories.RepLegalRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
@@ -24,45 +24,49 @@ import java.util.List;
  *
  * @author pc01
  */
-@Named("repLegalService")
+@Named("actividadService")
 @TransactionAttribute
-public class RepLegalService implements IRepLegalService{
+public class ActividadService implements IActividadService {
 
-    private final RepLegalRepository repLegalRepository;
+    private final ActividadRepository actividadRepository;
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
 
     @Inject
-    public RepLegalService(RepLegalRepository repLegalRepository) {
-        this.repLegalRepository=repLegalRepository;
+    public ActividadService(ActividadRepository actividadRepository) {
+        this.actividadRepository = actividadRepository;
+    }
+
+
+    @Override
+    public PerActividad save(PerActividad actividad) {
+
+        if(actividad.getIdActividad()==null){
+            //Nuevo
+            actividad.setIdActividad(this.obtenerSecuencia("PER_ACTIVIDAD_SEC"));
+        }
+        //preguntar q significa este valor
+        actividad.setEstado("A");
+        actividad.setFechaBitacora(new Date());
+        return actividadRepository.save(actividad);
+
     }
 
     @Override
-    public PerReplegal save(PerReplegal replegal) {
-
-        if(replegal.getIdReplegal()==null){
-            //Nuevo
-            replegal.setIdReplegal(this.obtenerSecuencia("PER_REPLEGAL_SEC"));
-        }
-        //preguntar q significa este valor
-        replegal.setEstadoRepLegal("A");
-        replegal.setFechaBitacora(new Date());
-        return repLegalRepository.save(replegal);
-
+    public List<PerActividad>findByPerUnidad(PerUnidad unidad){
+        Sort sort=new Sort(Sort.Direction.DESC,"idActividad");
+        return actividadRepository.obtenerPorIdPersonaYIdUnidad(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad(), new PageRequest(0, 10,sort));
     }
 
 //    @Override
-    public boolean delete(PerReplegal replegal) {
+    public boolean delete(PerActividad actividad) {
         boolean deleted = false;
-        repLegalRepository.delete(replegal);
+        actividadRepository.delete(actividad);
         return deleted;
     }
 
-     public List<PerReplegal>obtenerPorIdPersona(String idPersona){
-         Sort sort=new Sort(Sort.Direction.DESC,"idReplegal");
-         return repLegalRepository.obtenerPorIdPersona(idPersona, new PageRequest(0, 10,sort));
-     }
+
 
     public Long obtenerSecuencia(String nombreSecuencia){
         BigDecimal rtn;

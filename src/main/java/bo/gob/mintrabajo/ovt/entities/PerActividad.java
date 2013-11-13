@@ -47,8 +47,8 @@ public class PerActividad implements Serializable {
     @Column(name = "ID_ACTIVIDAD")
     private Long idActividad;
     @Basic(optional = false)
-    @Column(name = "ESTADO_ACTIVIDAD")
-    private String estadoActividad;
+    @Column(name = "ESTADO")
+    private String estado;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -72,9 +72,9 @@ public class PerActividad implements Serializable {
         this.idActividad = idActividad;
     }
 
-    public PerActividad(Long idActividad, String estadoActividad, Date fechaBitacora, String registroBitacora) {
+    public PerActividad(Long idActividad, String estado, Date fechaBitacora, String registroBitacora) {
         this.idActividad = idActividad;
-        this.estadoActividad = estadoActividad;
+        this.estado = estado;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
@@ -87,12 +87,12 @@ public class PerActividad implements Serializable {
         this.idActividad = idActividad;
     }
 
-    public String getEstadoActividad() {
-        return estadoActividad;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setEstadoActividad(String estadoActividad) {
-        this.estadoActividad = estadoActividad;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Date getFechaBitacora() {

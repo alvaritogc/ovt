@@ -18,6 +18,7 @@
 
     <h3>Empleador o Empresa: #{personaUnidadBean.titulo} </h3>
 
+
      <p:tabView id="tabPersonaUnidad" effect="fade" effectDuration="normal" orientation="top" >
 
          <p:tab id="tabUnidadPrincipal" >
@@ -25,66 +26,7 @@
                  <p:graphicImage value="/images/unidad.png"/>
                  <h:outputText value=" UNIDAD PRINCIPAL"/>
              </f:facet>
-             <p:panel  id="pnlUnidadPrincipal">
-                 <f:facet name="footer">
-                     <p:commandButton id="cmdButtonPrinc" icon="ui-icon-pencil" value="Modificar"
-                         update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
-                         onclick="PF('dlgUnidad').show()">
-                         <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
-                         <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
-                     </p:commandButton>
-                 </f:facet>
-                 <h:panelGrid columns="2">
-                     <h:outputText value="Nombre comercial: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                     <p:inputText value="#{personaUnidadBean.unidad.nombreComercial}" readonly="true" style="width: 190px;"/>
-                 </h:panelGrid>
-                 <h:panelGrid columns="2">
-                     <h:panelGrid columns="2">
-                         <h:outputText value="Tipo de empresa:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                         <p:inputText value="#{personaUnidadBean.unidad.tipoEmpresa}" readonly="true" style="width: 190px;"/>
-
-                         <h:outputText value="Fecha actividad:"/>
-                         <p:inputText value="#{personaUnidadBean.unidad.fechaNacimiento}" readonly="true" style="width: 190px;">
-                             <f:convertDateTime pattern="dd/MM/yyyy hh:mm a"/>
-                         </p:inputText>
-                         <h:outputText value="Fundempresa:"/>
-                         <p:inputText value="#{personaUnidadBean.unidad.nroFundaempresa}" readonly="true" style="width: 190px;"/>
-                         <h:outputText value="Nro. AFP:"/>
-                         <p:inputText value="#{personaUnidadBean.unidad.nroAfp}" readonly="true" style="width: 190px;"/>
-
-                     </h:panelGrid>
-                     <h:panelGrid columns="2">
-                         <h:outputText/>
-                         <h:outputText/>
-                         <h:outputText value="Tipo de sociedad: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                         <p:inputText value="#{personaUnidadBean.unidad.tipoSociedad}" readonly="true" style="width: 190px;"/>
-                         <h:outputText value="Caja de salud: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
-                         <p:inputText value="#{personaUnidadBean.unidad.nroCajaSalud}" readonly="true" style="width: 190px;"/>
-                         <h:outputText value="Nro. referencial:"/>
-                         <p:inputText value="#{personaUnidadBean.unidad.nroReferencial}" readonly="true" style="width: 190px;"/>
-                         <h:outputText value="Nro. otro:"/>
-                         <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 190px;"/>
-                     </h:panelGrid>
-                 </h:panelGrid>
-                 <h:outputText value="Observaciones:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                 <p:inputTextarea id="txtAreaObservacion" value="#{personaUnidadBean.unidad.observaciones}"
-                                  rows="5"
-                                  cols="50"
-                                  autoResize="false"
-                                  style="width: 510px;"
-                                  tabindex="11"
-                                  readonly="true"/>
-
-                 <h:panelGrid columns="2">
-                     <h:outputText value="Actividad declarada:&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                     <p:inputTextarea id="txtAreaActividadDeclarada" value="#{personaUnidadBean.unidad.actividadDeclarada}"
-                                      rows="5"
-                                      cols="50" autoResize="false"
-                                      style="width: 510px;"
-                                      tabindex="10"
-                                      readonly="true"/>
-                 </h:panelGrid>
-             </p:panel>
+             <ui:include src="../persona/tabs/unidadPrincipal.xhtml"/>
          </p:tab>
 
 
@@ -93,45 +35,7 @@
                  <p:graphicImage value="/images/actividadDeclarada.png"/>
                  <h:outputText value=" ACTIVIDAD DECLARADA"/>
              </f:facet>
-            <p:panel id="pnlActividadDeclaradaP">
-
-                <f:facet name="footer">
-                    <p:commandButton id="cmdButtonActividadDeclaradaP" icon="ui-icon-pencil" value="Agregar/Editar"
-                                     update=":frmUnidad:pnlUnidad,:txtDlgActividadDeclarada,:frmActividadDeclarada:cmdButtonActividadDeclarada"
-                                     onclick="PF('dlgActividadDeclarada').show()">
-                        <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
-                        <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
-                    </p:commandButton>
-                </f:facet>
-
-                    <h:panelGrid columns="2">
-                        <h:outputText value="Codigo de Actividad economica:"/>
-                        <p:inputText  value="#{personaUnidadBean.actividadEconomica.codActividadEconomica}" readonly="true"/>
-
-                        <h:outputText value="Descripcion:"/>
-                        <p:inputTextarea id="txtAreaDescripcionActvEconomica" value="#{personaUnidadBean.actividadEconomica.descripcion}"
-                                         rows="5"
-                                         cols="50"
-                                         autoResize="false"
-                                         style="width: 450px;"
-                                         tabindex="11"
-                                         readonly="true"/>
-
-                        <h:outputText value="Codigo de Impuestos:"/>
-                        <p:inputText  value="#{personaUnidadBean.actividadEconomica.codImpuestos}" readonly="true"/>
-
-                        <h:outputText value="Descripcion del codigo de impuestos:"/>
-                        <p:inputTextarea id="txtAreaDescripcionCodImpuestos" value="#{personaUnidadBean.actividadEconomica.descricpionImpuestos}"
-                                         rows="5"
-                                         cols="50"
-                                         autoResize="false"
-                                         style="width: 450px;"
-                                         tabindex="11"
-                                         required="true"
-                                         requiredMessage="El campo Descripcion del codigo de impuestos es obligatorio."/>
-
-                    </h:panelGrid>
-            </p:panel>
+             <ui:include src="../persona/tabs/actividadDeclaradaPrincipal.xhtml"/>
          </p:tab>
 
          <p:tab id="tabRepLegal" >
@@ -139,48 +43,7 @@
                  <p:graphicImage value="/images/repLegal.png"/>
                  <h:outputText value=" REPRESENTANTE LEGAL"/>
              </f:facet>
-            <p:panel id="pnlRepLegal1" >
-                <f:facet name="footer">
-                    <p:commandButton id="cmdButtonRepLegal"
-                                     value="Agrgar/Editar"
-                                     icon="ui-icon-disk"
-
-                                     onclick="PF('dlgRepLegal').show()"/>
-                </f:facet>
-
-
-
-                <h:panelGrid columns="2">
-                    <h:outputText value="Nombre: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                    <p:inputText id="inputTxtNombreRepLegal" value="#{personaUnidadBean.repLegalPrincipal.nombre}"
-                                 readonly="true"/>
-
-                    <h:outputText value="Ap. paterno: "/>
-                    <p:inputText id="inputTxtApPaterno" value="#{personaUnidadBean.repLegalPrincipal.apellidoPaterno}"
-                                    readonly="true"/>
-
-                    <h:outputText value="Ap. materno: "/>
-                    <p:inputText id="inputTxtApMaterno" value="#{personaUnidadBean.repLegalPrincipal.apellidoMaterno}"
-                                 readonly="true"/>
-
-                    <h:outputText value="Tipo de identificacion:"/>
-                    <p:inputText value="#{personaUnidadBean.repLegalPrincipal.tipoIdentificacion}" readonly="true"/>
-
-
-                    <h:outputText value="Nro. de documento: "/>
-                    <p:inputText id="inputTxtNroDocumento" value="#{personaUnidadBean.repLegalPrincipal.nroDocumento}"
-                                 readonly="true"/>
-
-                    <h:outputText value="Fecha del documento:&nbsp;&nbsp;&nbsp;"/>
-                    <p:inputText readonly="true" value="#{personaUnidadBean.repLegalPrincipal.fechaDocumento}"/>
-
-
-                    <h:outputText value="Tipo de procedencia:"/>
-                    <p:inputText value="#{personaUnidadBean.repLegalPrincipal.tipoProcedencia}" readonly="true"/>
-
-                </h:panelGrid>
-            </p:panel>
-
+             <ui:include src="../persona/tabs/representanteLegalPrincipal.xhtml"/>
          </p:tab>
 
          <p:tab id="tabDireccion" >
@@ -188,63 +51,7 @@
                  <p:graphicImage value="/images/direccion.png"/>
                  <h:outputText value=" DIRECCION"/>
              </f:facet>
-           <p:panel id="pnlDireccion1">
-               <f:facet name="footer">
-                   <p:commandButton id="cmdButtonDireccion1"
-                                    value="Agregar/Editar"
-                                    icon="ui-icon-disk"
-                                    onclick="PF('dlgDireccion').show()"/>
-               </f:facet>
-
-               <h:panelGrid columns="2">
-                   <h:outputText value="Zona:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.zonaUrbanizacion}" readonly="true"/>
-                   <h:outputText value="Tipo de direccion:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.tipoDireccion}" readonly="true"/>
-                   <h:outputText value="Direccion:"/>
-                   <p:inputTextarea id="txtAreaDireccion22" value="#{personaUnidadBean.direccionPrincipal.direccion}"
-                                    rows="5"
-                                    cols="50"
-                                    autoResize="false"   readonly="true"
-                                    style="width: 500px;"
-                                    tabindex="11"
-                                    required="true"
-                                    requiredMessage="El campo Direccion es obligatorio."/>
-               </h:panelGrid>
-
-               <h:panelGrid columns="4">
-                   <h:outputText value="Piso, Depto u Oficina:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.pisoDepOfi}" readonly="true" style="width: 100px;"/>
-                   <h:outputText value="Cod. localidad:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.codLocalidad.descripcion}" readonly="true" style="width: 100px;"/>
-               </h:panelGrid>
-
-               <h:panelGrid columns="2">
-                   <h:outputText value="Referencia: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputTextarea id="txtAreaReferencia22" value="#{personaUnidadBean.direccionPrincipal.referencia}"
-                                    rows="5"
-                                    cols="50"
-                                    autoResize="false"  readonly="true"
-                                    style="width: 500px;"
-                                    tabindex="11"
-                                    required="true"
-                                    requiredMessage="El campo Referencia es obligatorio."/>
-
-                   <h:outputText value="Fax: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.fax}" readonly="true"/>
-               </h:panelGrid>
-
-               <h:panelGrid columns="2">
-                   <h:outputText value="Nro. de celefono(s): "/>
-                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.telefono} &nbsp;&nbsp;&nbsp; #{personaUnidadBean.direccionPrincipal.telefono2}" readonly="true"/>
-                   <h:outputText value="Nro. de celular(es): &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.celular} &nbsp;&nbsp;&nbsp; #{personaUnidadBean.direccionPrincipal.celular2}" readonly="true"/>
-                   <h:outputText value="Correo(s) electronico(s) :"/>
-                   <p:inputText value="#{personaUnidadBean.direccionPrincipal.email} &nbsp;&nbsp;&nbsp; #{personaUnidadBean.direccionPrincipal.email2}" readonly="true"/>
-               </h:panelGrid>
-
-           </p:panel>
-
+                <ui:include src="../persona/tabs/direccionPrincipal.xhtml"/>
          </p:tab>
 
      </p:tabView>
@@ -252,12 +59,6 @@
 
     <h:form id="frmBucarPersona">
         <p:growl showDetail="true" id="growl" />
-
-           <h:panelGrid columns="2" id="pnlGridDoble" >
-
-           </h:panelGrid>
-
-
             <br/>
             <p:commandButton value="Agregar Unidad o Sucursal"
                              action="#{personaUnidadBean.nuevo}"
@@ -267,15 +68,15 @@
                 <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
             </p:commandButton>
-        </h:form>
+    </h:form>
 
-                                    <!-- *********** DIALOGOS ************* -->
+              <!-- ******************** DIALOGOS ********************** -->
 
         <p:dialog id="dlgRepLegal"  widgetVar="dlgRepLegal" resizable="false" modal="true">
             <f:facet name="header">
                 <h:outputText id="txtDlgRepLegal" value="#{personaUnidadBean.tituloDialog}"/>
             </f:facet>
-            <ui:include src="../persona/include/representanteLegal.xhtml"/>
+            <ui:include src="../persona/includeDialogo/representanteLegal.xhtml"/>
         </p:dialog>
 
 
@@ -283,24 +84,26 @@
             <f:facet name="header">
                 <h:outputText id="txtDlgDireccion" value="#{personaUnidadBean.tituloDialog}"/>
             </f:facet>
-            <ui:include src="../persona/include/direccion.xhtml"/>
+            <ui:include src="../persona/includeDialogo/direccion.xhtml"/>
         </p:dialog>
 
         <p:dialog id="dlgActividadDeclarada"  widgetVar="dlgActividadDeclarada" resizable="false" modal="true">
             <f:facet name="header">
                 <h:outputText id="txtDlgActividadDeclarada" value="#{personaUnidadBean.tituloDialog}"/>
             </f:facet>
-            <ui:include src="../persona/include/actividadDeclarada.xhtml"/>
+            <ui:include src="../persona/includeDialogo/actividadDeclarada.xhtml"/>
         </p:dialog>
 
         <p:dialog id="dlgUnidad"  widgetVar="dlgUnidad" resizable="false" modal="true">
             <f:facet name="header">
                 <h:outputText id="txtDldUnidad" value="#{personaUnidadBean.tituloDialog}"/>
             </f:facet>
-            <ui:include src="../persona/include/unidad.xhtml"/>
+            <ui:include src="../persona/includeDialogo/unidad.xhtml"/>
         </p:dialog>
 
+                    <!-- ********************************************* -->
                     <!-- **************   PANEL GRID ***************** -->
+                    <!-- ********************************************* -->
 
             <p:dataGrid id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
                         var="unidad"
@@ -311,7 +114,7 @@
                 Lista de Unidades
             </f:facet>
             <h:form id="frmdataGrid">
-                <p:accordionPanel activeIndex="null">
+                <p:accordionPanel activeIndex="null" >
                 <p:tab >
                 <f:facet name="title">
                     <p:graphicImage value="/images/unidad.png"/>
@@ -383,62 +186,76 @@
                     </f:facet>
 
                     <p:panel id="pnlRepLegal">
-
                         <f:facet name="footer">
-                            <p:commandButton id="cmdButtonRepLegal2" icon="ui-icon-pencil"
-                                             value="Modificar" onclick="PF('dlgRepLegal').show()"
-                                             update=":frmUnidad:pnlUnidad,:txtDlgRepLegal,:frmRepLegal:cmdButtonRepLegal">
+                            <p:commandButton value="Adicionar"
+                                             icon="ui-icon-plus"
+                                             actionListener="#{personaUnidadBean.nuevo}"
+                                             onclick="PF('dlgRepLegal').show()"
+                                             id="cmdButtonRepLegalAdicG"
+                                             update=":frmRepLegal:pnlRepLegal,:txtDlgRepLegal"
+                                             rendered="#{unidad.repLegal==null}">
                                 <f:setPropertyActionListener value="#{unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                                <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
+                                <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
+                            </p:commandButton>
+
+                            <p:commandButton value="Modificar"
+                                             icon="ui-icon-pencil"
+                                             onclick="PF('dlgRepLegal').show()"
+                                             id="cmdButtonRepLegalModifG"
+                                             update=":frmRepLegal:pnlRepLegal,:txtDlgRepLegal"
+                                             rendered="#{unidad.repLegal!=null}">
+                                <f:setPropertyActionListener value="#{unidad.direccion}" target="#{personaUnidadBean.direccion}"/>
                                 <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
                                 <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
                             </p:commandButton>
+
                         </f:facet>
 
                         <h:panelGrid columns="2">
                             <h:outputText value="Nombre:"/>
-                            <p:inputText id="inputTxtNombreRepLegal2" value="#{personaUnidadBean.repLegal.nombre}"
+                            <p:inputText id="inputTxtNombreRepLegal2" value="#{unidad.repLegal.nombre}"
                                          style="width: 210px;"
                                          tabindex="3"
                                          readonly="true"/>
 
                             <h:outputText value="Ap. paterno: "/>
-                            <p:inputText id="inputTxtApPaterno2" value="#{personaUnidadBean.repLegal.apellidoPaterno}"
+                            <p:inputText id="inputTxtApPaterno2" value="#{unidad.repLegal.apellidoPaterno}"
                                          style="width: 210px;"
                                          tabindex="3"
                                          readonly="true"/>
 
                             <h:outputText value="Ap. materno: "/>
-                            <p:inputText id="inputTxtApMaterno2" value="#{personaUnidadBean.repLegal.apellidoMaterno}"
+                            <p:inputText id="inputTxtApMaterno2" value="#{unidad.repLegal.apellidoMaterno}"
                                          style="width: 210px;"
                                          tabindex="3"
                                          readonly="true"/>
 
                             <h:outputText value="Tipo de identificacion:"/>
-                            <p:selectOneMenu id="slcOneMenuTipoIdentificacion2" value="#{personaUnidadBean.repLegal.tipoIdentificacion}"
-                                             tabindex="16">
-                                <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
-                                <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
-                            </p:selectOneMenu>
+                            <p:inputText id="inputTxtTipoIdentificacion2" value="#{unidad.repLegal.tipoIdentificacion}"
+                                         style="width: 210px;"
+                                         tabindex="3"
+                                         readonly="true"/>
 
                             <h:outputText value="Nro. de documento: "/>
-                            <p:inputText id="inputTxtNroDocumento2" value="#{personaUnidadBean.repLegal.nroDocumento}"
+                            <p:inputText id="inputTxtNroDocumento2" value="#{unidad.repLegal.nroDocumento}"
                                          style="width: 210px;"
                                          tabindex="3"
                                          readonly="true"/>
 
                             <h:outputText value="Fecha del documento:"/>
-                            <p:calendar id="calendar" value="#{personaUnidadBean.repLegal.fechaDocumento}"
+                            <p:calendar id="calendar" value="#{unidad.repLegal.fechaDocumento}"
                                         effect="slideDown" tabindex="4"
                                         style="width:200px;"
-                                        readonly="true"/>
+                                        readonly="true">
+
+                           </p:calendar>
 
                             <h:outputText value="Tipo de procedencia:"/>
-                            <p:selectOneMenu id="slcOneMenuTipoProcedencia2" value="#{personaUnidadBean.repLegal.tipoProcedencia}"
-                                             tabindex="16">
-                                <f:selectItem itemLabel="---Seleccione una procedencia---" itemValue="" />
-                                <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
-                            </p:selectOneMenu>
-
+                            <p:inputText id="inputTxtTipoProcedencia2" value="#{unidad.repLegal.tipoProcedencia}"
+                                         style="width: 210px;"
+                                         tabindex="3"
+                                         readonly="true"/>
                         </h:panelGrid>
 
                     </p:panel>
@@ -454,31 +271,45 @@
                     <p:panel id="pnlDireccion" >
 
                         <f:facet name="footer">
-                            <p:commandButton id="cmdButtonDireccion2" icon="ui-icon-pencil"
-                                             value="Modificar" onclick="PF('dlgDireccion').show()"
-                                             update=":frmUnidad:pnlUnidad,:txtDlgDireccion,:frmDireccion:cmdButtonDireccion">
-                                <f:setPropertyActionListener value="#{unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
-                                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
-                                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
-                            </p:commandButton>
-                        </f:facet>
 
+                            <p:commandButton value="Adicionar"
+                                             icon="ui-icon-plus"
+                                             actionListener="#{personaUnidadBean.nuevo}"
+                                             onclick="PF('dlgDireccion').show()"
+                                             id="cmdButtonDireccionAdicG"
+                                             update=":frmDireccion:pnlDireccion,:txtDlgDireccion"
+                                             rendered="#{unidad.direccion==null}">
+                                <f:setPropertyActionListener value="#{unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                                <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
+                                <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
+                            </p:commandButton>
+
+                            <p:commandButton value="Modificar"
+                                             icon="ui-icon-pencil"
+                                             onclick="PF('dlgDireccion').show()"
+                                             id="cmdButtonDireccionModifG"
+                                             update=":frmDireccion:pnlDireccion,:txtDlgDireccion"
+                                             rendered="#{unidad.direccion!=null}">
+                                    <f:setPropertyActionListener value="#{unidad.direccion}" target="#{personaUnidadBean.direccion}"/>
+                                    <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
+                                    <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
+                            </p:commandButton>
+                    </f:facet>
                         <br/>
 
                         <h:panelGrid columns="2">
-
                             <h:outputText value="Zona:"/>
-                            <p:inputText id="txtAreaZona" value="#{personaUnidadBean.direccion.zonaUrbanizacion}"
+                            <p:inputText id="txtAreaZona" value="#{unidad.direccion.zonaUrbanizacion}"
                                          style="width: 190px;"
                                          tabindex="11"
                                          required="true"  readonly="true"
                                          requiredMessage="El campo Zona es obligatorio."/>
 
                             <h:outputText value="Tipo de direccion:   "/>
-                            <p:inputText value="#{unidad.nroOtro}" readonly="true" style="width: 190px;"/>
+                            <p:inputText value="#{unidad.direccion.tipoDireccion}" readonly="true" style="width: 190px;"/>
 
                             <h:outputText value="Direccion:"/>
-                            <p:inputTextarea id="txtAreaDireccion" value="#{personaUnidadBean.direccion.direccion}"
+                            <p:inputTextarea id="txtAreaDireccion" value="#{unidad.direccion.direccion}"
                                              rows="5"
                                              cols="50"
                                              autoResize="false"
@@ -488,13 +319,13 @@
                                              requiredMessage="El campo Direccion es obligatorio."/>
 
                             <h:outputText value="Piso, Depto u Oficina:"/>
-                            <p:inputText value="#{unidad.nroOtro}" readonly="true" style="width: 90px;"/>
+                            <p:inputText value="#{unidad.direccion.pisoDepOfi}" readonly="true" style="width: 90px;"/>
                             <h:outputText value="Cod. localidad:"/>
-                            <p:inputText value="#{unidad.nroOtro}" readonly="true" style="width: 90px;"/>
+                            <p:inputText value="#{unidad.direccion.codLocalidad.descripcion}" readonly="true" style="width: 90px;"/>
 
 
                             <h:outputText value="Referencia: "/>
-                            <p:inputTextarea id="txtAreaReferencia" value="#{personaUnidadBean.direccion.referencia}"
+                            <p:inputTextarea id="txtAreaReferencia" value="#{unidad.direccion.referencia}"
                                              rows="5"
                                              cols="50"
                                              autoResize="false"
@@ -504,16 +335,16 @@
                                              requiredMessage="El campo Referencia es obligatorio."/>
 
                             <h:outputText value="Fax: "/>
-                            <p:inputText value="#{unidad.nroOtro}" readonly="true" style="width: 190px;"/>
+                            <p:inputText value="#{unidad.direccion.fax}" readonly="true" style="width: 190px;"/>
 
                             <h:outputText value="Nro. de telefono(s): "/>
-                            <p:inputText value="#{unidad.nroOtro} &nbsp;&nbsp;&nbsp; #{unidad.nroOtro}" readonly="true" style="width: 190px;"/>
+                            <p:inputText value="#{unidad.direccion.telefono} &nbsp;&nbsp;&nbsp; #{unidad.direccion.telefono2}" readonly="true" style="width: 190px;"/>
 
                             <h:outputText value="Nro. de celular(es): "/>
-                            <p:inputText value="#{unidad.nroOtro} &nbsp;&nbsp;&nbsp; #{unidad.nroOtro}" readonly="true" style="width: 190px;"/>
+                            <p:inputText value="#{unidad.direccion.celular} &nbsp;&nbsp;&nbsp; #{unidad.direccion.celular2}" readonly="true" style="width: 190px;"/>
 
                             <h:outputText value="Correo(s) electronico(s):"/>
-                            <p:inputText value="#{unidad.nroOtro} &nbsp;&nbsp;&nbsp; #{unidad.nroOtro} " readonly="true" style="width: 190px;"/>
+                            <p:inputText value="#{unidad.direccion.email} &nbsp;&nbsp;&nbsp; #{unidad.direccion.email2} " readonly="true" style="width: 190px;"/>
 
                         </h:panelGrid>
 
@@ -525,10 +356,6 @@
             </h:form>
 
             </p:dataGrid>
-
-
-
-
 
 
 

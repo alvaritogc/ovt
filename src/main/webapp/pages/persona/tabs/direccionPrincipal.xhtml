@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panel id="pnlDireccion1">
+        <f:facet name="footer">
+            <p:commandButton value="Adicionar"
+                             icon="ui-icon-plus"
+                             actionListener="#{personaUnidadBean.nuevo}"
+                             onclick="PF('dlgDireccion').show()"
+                             id="cmdButtonDireccion1"
+                             update=":frmDireccion:pnlDireccion,:txtDlgDireccion"
+                             rendered="#{personaUnidadBean.direccionPrincipal.idDireccion==null}">
+                <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
+            <p:commandButton value="Modificar"
+                             icon="ui-icon-pencil"
+                             onclick="PF('dlgDireccion').show()"
+                             id="cmdButtonDireccion2"
+                             update=":frmDireccion:pnlDireccion,:txtDlgDireccion"
+                             rendered="#{personaUnidadBean.direccionPrincipal.idDireccion!=null}">
+                <f:setPropertyActionListener value="#{personaUnidadBean.direccionPrincipal}" target="#{personaUnidadBean.direccion}"/>
+                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
+        </f:facet>
+
+        <h:panelGrid columns="2">
+            <h:outputText value="Zona:&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.zonaUrbanizacion}" readonly="true"/>
+            <h:outputText value="Tipo de direccion:    &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.tipoDireccion}" readonly="true"/>
+            <h:outputText value="Direccion:"/>
+            <p:inputTextarea id="txtAreaDireccion22" value="#{personaUnidadBean.direccionPrincipal.direccion}"
+                             rows="5"
+                             cols="50"
+                             autoResize="false"   readonly="true"
+                             style="width: 500px;"
+                             tabindex="11"
+                             required="true"
+                             requiredMessage="El campo Direccion es obligatorio."/>
+        </h:panelGrid>
+
+        <h:panelGrid columns="4">
+            <h:outputText value="Piso, Depto u Oficina:&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.pisoDepOfi}" readonly="true" style="width: 100px;"/>
+            <h:outputText value="Cod. localidad:&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.codLocalidad.descripcion}" readonly="true" style="width: 100px;"/>
+        </h:panelGrid>
+
+        <h:panelGrid columns="2">
+            <h:outputText value="Referencia: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputTextarea id="txtAreaReferencia22" value="#{personaUnidadBean.direccionPrincipal.referencia}"
+                             rows="5"
+                             cols="50"
+                             autoResize="false"  readonly="true"
+                             style="width: 500px;"
+                             tabindex="11"
+                             required="true"
+                             requiredMessage="El campo Referencia es obligatorio."/>
+
+            <h:outputText value="Fax: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.fax}" readonly="true"/>
+        </h:panelGrid>
+
+        <h:panelGrid columns="2">
+            <h:outputText value="Nro. de celefono(s): "/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.telefono} &#xA0;&#xA0;&#xA0; #{personaUnidadBean.direccionPrincipal.telefono2}" readonly="true"/>
+            <h:outputText value="Nro. de celular(es): &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.celular} &#xA0;&#xA0;&#xA0; #{personaUnidadBean.direccionPrincipal.celular2}" readonly="true"/>
+            <h:outputText value="Correo(s) electronico(s) :"/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.email} &#xA0;&#xA0;&#xA0; #{personaUnidadBean.direccionPrincipal.email2}" readonly="true"/>
+        </h:panelGrid>
+
+    </p:panel>
+</ui:composition>
