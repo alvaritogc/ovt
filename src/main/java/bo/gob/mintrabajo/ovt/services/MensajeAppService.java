@@ -77,5 +77,10 @@ public class MensajeAppService implements IMensajeAppService{
         }
         return lista.get(0);
     }
+     
+    @Override
+    public List<ParMensajeApp> listarPorRecurso(Long idRecurso) {
+        return repository.buscarPorRecurso(idRecurso);
+    }
     
 }

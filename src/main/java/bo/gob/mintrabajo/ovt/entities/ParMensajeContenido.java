@@ -48,7 +48,7 @@ public class ParMensajeContenido implements Serializable {
     @Basic(optional = false)
     @Lob
     @Column(name = "BINARIO")
-    private Serializable binario;
+    private byte[] binario;
     @Basic(optional = false)
     @Lob
     @Column(name = "CONTENIDO")
@@ -78,7 +78,7 @@ public class ParMensajeContenido implements Serializable {
         this.idMensajeContenido = idMensajeContenido;
     }
 
-    public ParMensajeContenido(Long idMensajeContenido, Serializable binario, String contenido, short esDescargable, Date fechaBitacora, String registroBitacora) {
+    public ParMensajeContenido(Long idMensajeContenido, byte[] binario, String contenido, short esDescargable, Date fechaBitacora, String registroBitacora) {
         this.idMensajeContenido = idMensajeContenido;
         this.binario = binario;
         this.contenido = contenido;
@@ -95,11 +95,11 @@ public class ParMensajeContenido implements Serializable {
         this.idMensajeContenido = idMensajeContenido;
     }
 
-    public Serializable getBinario() {
+    public byte[] getBinario() {
         return binario;
     }
 
-    public void setBinario(Serializable binario) {
+    public void setBinario(byte[] binario) {
         this.binario = binario;
     }
 
