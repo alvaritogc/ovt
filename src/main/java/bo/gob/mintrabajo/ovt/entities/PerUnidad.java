@@ -15,23 +15,12 @@
  */
 package bo.gob.mintrabajo.ovt.entities;
 
+
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  *
@@ -101,6 +90,31 @@ public class PerUnidad implements Serializable {
     private List<PerActividad> perActividadList;
     @OneToMany(mappedBy = "perUnidad", fetch = FetchType.LAZY)
     private List<ParEntidad> parEntidadList;*/
+
+    //Variables auxiliares
+    @Transient
+    private PerDireccion direccion;
+    @Transient
+    private PerReplegal repLegal;
+
+    public PerReplegal getRepLegal() {
+        return repLegal;
+    }
+
+    public void setRepLegal(PerReplegal repLegal) {
+        this.repLegal = repLegal;
+    }
+
+
+
+    public PerDireccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(PerDireccion direccion) {
+        this.direccion = direccion;
+    }
+
 
     public PerUnidad() {
     }

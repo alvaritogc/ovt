@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.servlet.ServletOutputStream;
@@ -31,13 +32,9 @@ import org.primefaces.event.FileUploadEvent;
 
 @ManagedBean
 @ViewScoped
-public class ContenidoBean {
+public class ContenidoPublicoBean {
     //
-    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private static final Logger logger = LoggerFactory.getLogger(EscritorioBean.class);
-    //
-    @ManagedProperty(value = "#{recursoService}")
-    private IRecursoService iRecursoService;
     @ManagedProperty(value = "#{mensajeAppService}")
     private IMensajeAppService iMensajeAppService;
     @ManagedProperty(value = "#{mensajeContenidoService}")
@@ -53,7 +50,13 @@ public class ContenidoBean {
     @PostConstruct
     public void ini() {
         logger.info("ContenidosBean.init()");
-        idMensajeApp = (Long)session.getAttribute("idMensajeApp");
+        //
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        Map params = ec.getRequestParameterMap();
+        String parametro= params.get("p").toString();
+        System.out.println("parametro: "+parametro);
+        idMensajeApp=parametro!=null?new Long(parametro):null;
+        //
         mensajeApp = iMensajeAppService.findById(idMensajeApp);
         cargar();
     }
@@ -62,57 +65,7 @@ public class ContenidoBean {
         mensajeContenido = new ParMensajeContenido();
         listaMensajeContenido = iMensajeContenidoService.listarPorMensajeApp(idMensajeApp);
     }
-
-    public void nuevoContenido() {
-        mensajeContenido = new ParMensajeContenido();
-        mensajeContenido.setEsDescargable(new Short("0"));
-        mensajeContenido.setBinario(null);
-        mensajeContenido.setMetadata("N/A");
-    }
-    public void nuevoContenidoDescarga() {
-        mensajeContenido = new ParMensajeContenido();
-        mensajeContenido.setEsDescargable(new Short("1"));
-        mensajeContenido.setBinario(null);
-        mensajeContenido.setMetadata("N/A");
-    }
-
-    public void guardar() {
-        if(mensajeContenido.getEsDescargable()==new Short("1")){
-            mensajeContenido.setContenido("");
-        }
-        //
-        mensajeContenido.setIdMensajeApp(mensajeApp);
-        mensajeContenido = iMensajeContenidoService.save(mensajeContenido);
-//        mensajeContenido = new ParMensajeContenido();
-//        cargar();
-//        //
-//        mensajeApp = iMensajeAppService.findById(idMensajeApp);
-//        //mensajeContenido=iMensajeContenidoService.save(mensajeContenido);
-//        //
-//        //cargar();
-//        //
-////        RequestContext context = RequestContext.getCurrentInstance();
-////        context.execute("condenidoDlg.hide()");
-////        context.execute("condenidoDescargaDlg.hide()");
-//        //
-        try{
-            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-            
-        
-        
-    }
     
-    public void eliminar(){
-        iMensajeContenidoService.delete(mensajeContenido.getIdMensajeContenido());
-        mensajeContenido=new ParMensajeContenido();
-        cargar();
-    }
-
     public void descargar() {
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -134,24 +87,6 @@ public class ContenidoBean {
             e.printStackTrace();
         }
         mensajeContenido = new ParMensajeContenido();
-    }
-
-    public void subirArchivo(FileUploadEvent event) {
-        mensajeContenido.setArchivo(event.getFile().getFileName());
-        mensajeContenido.setBinario(event.getFile().getContents());
-        mensajeContenido.setMetadata(event.getFile().getContentType());
-    }
-
-    public String irContenidoRecurso() {
-        return "irContenidoRecurso";
-    }
-
-    public IRecursoService getiRecursoService() {
-        return iRecursoService;
-    }
-
-    public void setiRecursoService(IRecursoService iRecursoService) {
-        this.iRecursoService = iRecursoService;
     }
 
     public IMensajeAppService getiMensajeAppService() {

@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface IDireccionService {
     public PerDireccion save(PerDireccion direccion);
-    //public List<PerDireccion> obtenerItemsDominio(String dominio);
-    public List<PerDireccion> findByPerUnidad(PerUnidad unidad);
+    public List<PerDireccion>obtenerPorIdPersonaYIdUnidad(String idPersona,long idUnidad);
+    public List<PerDireccion>obtenerPorIdPersona(String idPersona);
 }

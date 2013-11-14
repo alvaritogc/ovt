@@ -19,9 +19,14 @@ public interface DireccionRepository extends OpenJpaRepository<PerDireccion, Lon
             "   from PerDireccion d " +
             "   where d.perUnidad.perUnidadPK.idPersona = :idPersona and " +
             "         d.perUnidad.perUnidadPK.idUnidad = :idUnidad " +
-           // "    order by d.idDireccion desc")
             "    ")
     List<PerDireccion>obtenerPorIdPersonaYIdUnidad(@Param("idPersona") String idPersona,@Param("idUnidad")long idUnidad, Pageable pageable);
+
+    @Query("select d " +
+            "   from PerDireccion d " +
+            "   where d.perUnidad.perUnidadPK.idPersona = :idPersona " +
+            "    ")
+    List<PerDireccion>obtenerPorIdPersona(@Param("idPersona") String idPersona, Pageable pageable);
 
     List<PerDireccion> findByPerUnidad(@Param("unidad") PerUnidad unidad, Pageable pageable);
 

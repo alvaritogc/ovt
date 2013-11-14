@@ -2,8 +2,6 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:rich="http://richfaces.org/rich"
-                xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:p="http://primefaces.org/ui">
  <h:form id="frmRepLegal">
      <p:panel id="pnlRepLegal">
@@ -14,6 +12,7 @@
                               icon="#{personaUnidadBean.iconoUnidad}"
                               action="#{personaUnidadBean.procesarRepLegal}"
                               id="cmdButtonRepLegal"
+                              update=":tabPersonaUnidad:tabRepLegal,:dataGrid"
                      />
          </f:facet>
 
@@ -24,25 +23,33 @@
                           style="width: 210px;text-transform: uppercase;"
                           tabindex="3"
                           required="true"
-                          requiredMessage="El campo Nombre es obligatorio."/>
+                          requiredMessage="El campo Nombre es obligatorio.">
+                 <f:converter converterId="lowerConverter"/>
+             </p:inputText>
 
              <h:outputText value="Ap. paterno: "/>
              <p:inputText id="inputTxtApPaterno2" value="#{personaUnidadBean.repLegal.apellidoPaterno}"
                           style="width: 210px;text-transform: uppercase;"
                           tabindex="3"
                           required="true"
-                          requiredMessage="El campo Ap. paterno es obligatorio."/>
+                          requiredMessage="El campo Ap. paterno es obligatorio.">
+                 <f:converter converterId="lowerConverter"/>
+             </p:inputText>
 
              <h:outputText value="Ap. materno: "/>
              <p:inputText id="inputTxtApMaterno2" value="#{personaUnidadBean.repLegal.apellidoMaterno}"
                           style="width: 210px;text-transform: uppercase;"
                           tabindex="3"
                           required="true"
-                          requiredMessage="El campo Ap. materno es obligatorio."/>
+                          requiredMessage="El campo Ap. materno es obligatorio.">
+                 <f:converter converterId="lowerConverter"/>
+             </p:inputText>
 
              <h:outputText value="Tipo de identificacion:"/>
-             <p:selectOneMenu id="slcOneMenuTipoIdentificacion2" value="#{personaUnidadBean.repLegal.tipoIdentificacion}"
-                              tabindex="16">
+             <p:selectOneMenu id="slcOneMenuTipoIdentificacion2"
+                              value="#{personaUnidadBean.repLegal.tipoIdentificacion}"
+                              tabindex="16"
+                              style="text-transform: uppercase">
                  <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
                  <f:selectItems value="#{personaUnidadBean.listaTipoIdentificacion}" />
              </p:selectOneMenu>
@@ -53,6 +60,13 @@
                           tabindex="3"
                           required="true"
                           requiredMessage="El campo Ap. materno es obligatorio."/>
+
+             <h:outputText value="Nro. de identificacion: "/>
+             <p:inputText id="inputTxtNroIdentificacion" value="#{personaUnidadBean.repLegal.nroIndentificacion}"
+                          style="width: 210px;"
+                          tabindex="3"
+                          required="true"
+                          requiredMessage="El campo Nro. de identificacion es obligatorio."/>
 
              <h:outputText value="Fecha del documento:"/>
              <p:calendar id="calendar" value="#{personaUnidadBean.repLegal.fechaDocumento}"
@@ -65,7 +79,8 @@
 
              <h:outputText value="Tipo de procedencia:"/>
              <p:selectOneMenu id="slcOneMenuTipoProcedencia2" value="#{personaUnidadBean.repLegal.tipoProcedencia}"
-                              tabindex="16">
+                              tabindex="16"
+                              style="text-transform: uppercase">
                  <f:selectItem itemLabel="---Seleccione una procedencia---" itemValue="" />
                  <f:selectItems value="#{personaUnidadBean.listaLocalidad}" />
              </p:selectOneMenu>

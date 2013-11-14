@@ -4,21 +4,17 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                    xmlns:h="http://java.sun.com/jsf/html"
-                    xmlns:f="http://java.sun.com/jsf/core"
-                    xmlns:ui="http://java.sun.com/jsf/facelets"
-                    xmlns:p="http://primefaces.org/ui">
-        <p:dialog id="idParMensajeApp" header="Información" widgetVar="dlgParMensajeApp" resizable="false"
-                  width="700" height="500">  
-            <h:form id="idMensajeContenidoDlg">
+    <ui:composition template="./../template/templateInicio.xhtml">
+        <ui:define name="content">
+            <h:form id="idContenidos">
                 <br/>
                 <center>
-                    <p:outputLabel value="#{mensajeContenidoBean.mensajeApp.mensaje}" style="font-size: 30px;"/>
+                    <p:outputLabel value="#{contenidoPublicoBean.mensajeApp.mensaje}" style="font-size: 30px;"/>
                 </center>
                 <br/>
-                <h:dataTable id="idListaContenidos" value="#{mensajeContenidoBean.listaMensajeContenido}" style="width: 100%;"
+                <h:dataTable id="idListaContenidos" value="#{contenidoPublicoBean.listaMensajeContenido}" style="width: 100%;"
                              var="mensajeContenido"  rows="10" >
                     <h:column>
                         <h:panelGrid columns="1" style="width: 100%;">
@@ -36,19 +32,13 @@
                             </h:panelGrid>
                             <p:commandButton value="Descargar: #{mensajeContenido.archivo}" 
                                              rendered="#{mensajeContenido.esDescargable==1?true:false}"
-                                             action="#{mensajeContenidoBean.descargar}" ajax="false">
-                                <f:setPropertyActionListener value="#{mensajeContenido}" target="#{mensajeContenidoBean.mensajeContenido}" />
+                                             action="#{contenidoPublicoBean.descargar}" ajax="false">
+                                <f:setPropertyActionListener value="#{mensajeContenido}" target="#{contenidoPublicoBean.mensajeContenido}" />
                             </p:commandButton>
                         </h:panelGrid>
                     </h:column>
                 </h:dataTable>
             </h:form>
-        </p:dialog>  
-        <h:form id="idMensajeContenido">
-            <p:poll interval="1"   id="idPollParMensajeApp"
-                    listener="#{mensajeContenidoBean.abrirPanel}"
-                    update=":idMensajeContenido:idPollParMensajeApp" 
-                    stop="#{mensajeContenidoBean.detenerFacesMessages}"/>
-        </h:form>
+        </ui:define>
     </ui:composition>
 </html>

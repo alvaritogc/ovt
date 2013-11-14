@@ -8,7 +8,6 @@ Copyright 2013 lvaldez.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../../pages/template/templateInicio.xhtml">
         <ui:define name="content">
@@ -87,7 +86,8 @@ Copyright 2013 lvaldez.
                     <h:outputLabel for="estado" value="Estado:" style="font-weight:bold"/>  
                     <p:selectBooleanCheckbox id="estado" value="#{obligacionBean.estadoObligacion}"  />
                     <p:commandButton value="Guardar" action="#{obligacionBean.guardarModificar}" update=":growl formObligacion :dataTableObligacion" icon="ui-icon-disk"/>
-                    <p:commandButton value="Canselar" actionListener="#{obligacionBean.limpiar}" onclick="dlgFormObligacion.hide();" update="formObligacion" icon="ui-icon-close"/>
+                    <p:commandButton value="Canselar" actionListener="#{obligacionBean.limpiar}" immediate="true"
+                                     onclick="dlgFormObligacion.hide();" update="formObligacion" icon="ui-icon-close"/>
                 </h:panelGrid>  
             </h:form> 
             </p:dialog>

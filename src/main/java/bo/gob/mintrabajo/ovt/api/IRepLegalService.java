@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface IRepLegalService {
     public PerReplegal save(PerReplegal replegal);
-    public List<PerReplegal> findByPerUnidad(PerUnidad unidad);
+    public List<PerReplegal>obtenerPorIdPersona(String idPersona);
 }

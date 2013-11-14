@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panel id="pnlRepLegal1" >
+        <f:facet name="footer">
+            <p:commandButton id="cmdButtonRepLegalAgregar"
+                             value="Agregar"
+                             icon="ui-icon-plus"
+                             actionListener="#{personaUnidadBean.nuevo}"
+                             update=":frmRepLegal:pnlRepLegal,:txtDlgRepLegal"
+                             rendered="#{personaUnidadBean.repLegalPrincipal.idReplegal==null}"
+                             onclick="PF('dlgRepLegal').show()">
+
+                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
+            <p:commandButton id="cmdButtonRepLegalModificar"
+                             value="Modificar"
+                             icon="ui-icon-pencil"
+                             update=":frmRepLegal:pnlRepLegal,:txtDlgRepLegal"
+                             onclick="PF('dlgRepLegal').show()"
+                             rendered="#{personaUnidadBean.repLegalPrincipal.idReplegal!=null}">
+                <f:setPropertyActionListener value="#{personaUnidadBean.repLegalPrincipal}" target="#{personaUnidadBean.repLegal}"/>
+                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+        </f:facet>
+
+        <h:panelGrid columns="2">
+            <h:outputText value="Nombre: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputText id="inputTxtNombreRepLegal" value="#{personaUnidadBean.repLegalPrincipal.nombre}"
+                         readonly="true"/>
+
+            <h:outputText value="Ap. paterno: "/>
+            <p:inputText id="inputTxtApPaterno" value="#{personaUnidadBean.repLegalPrincipal.apellidoPaterno}"
+                         readonly="true"/>
+
+            <h:outputText value="Ap. materno: "/>
+            <p:inputText id="inputTxtApMaterno" value="#{personaUnidadBean.repLegalPrincipal.apellidoMaterno}"
+                         readonly="true"/>
+
+            <h:outputText value="Tipo de identificacion:"/>
+            <p:inputText value="#{personaUnidadBean.repLegalPrincipal.tipoIdentificacion}" readonly="true"/>
+
+
+            <h:outputText value="Nro. de documento: "/>
+            <p:inputText id="inputTxtNroDocumento" value="#{personaUnidadBean.repLegalPrincipal.nroDocumento}"
+                         readonly="true"/>
+
+            <h:outputText value="Fecha del documento:&#xA0;&#xA0;&#xA0;"/>
+            <p:inputText readonly="true" value="#{personaUnidadBean.repLegalPrincipal.fechaDocumento}">
+                <f:convertDateTime pattern="dd/MM/yyyy hh:mm a"/>
+            </p:inputText>
+
+            <h:outputText value="Tipo de procedencia:"/>
+            <p:inputText value="#{personaUnidadBean.repLegalPrincipal.tipoProcedencia}" readonly="true"/>
+
+        </h:panelGrid>
+    </p:panel>
+</ui:composition>

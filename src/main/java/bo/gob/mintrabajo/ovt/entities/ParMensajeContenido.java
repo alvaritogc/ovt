@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 gmercado.
+ * Copyright 2013 rvelasquez.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -33,7 +34,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author gmercado
+ * @author rvelasquez
  */
 @Entity
 @Table(name = "PAR_MENSAJE_CONTENIDO")
@@ -45,11 +46,9 @@ public class ParMensajeContenido implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID_MENSAJE_CONTENIDO")
     private Long idMensajeContenido;
-    @Basic(optional = false)
     @Lob
     @Column(name = "BINARIO")
     private byte[] binario;
-    @Basic(optional = false)
     @Lob
     @Column(name = "CONTENIDO")
     private String contenido;
@@ -78,9 +77,8 @@ public class ParMensajeContenido implements Serializable {
         this.idMensajeContenido = idMensajeContenido;
     }
 
-    public ParMensajeContenido(Long idMensajeContenido, byte[] binario, String contenido, short esDescargable, Date fechaBitacora, String registroBitacora) {
+    public ParMensajeContenido(Long idMensajeContenido, String contenido, short esDescargable, Date fechaBitacora, String registroBitacora) {
         this.idMensajeContenido = idMensajeContenido;
-        this.binario = binario;
         this.contenido = contenido;
         this.esDescargable = esDescargable;
         this.fechaBitacora = fechaBitacora;

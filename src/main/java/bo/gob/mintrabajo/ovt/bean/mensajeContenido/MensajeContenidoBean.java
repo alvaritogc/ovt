@@ -5,9 +5,7 @@ import bo.gob.mintrabajo.ovt.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
+
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
@@ -16,11 +14,14 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-//import java.util.Collection;
-//import java.util.Collection;
 
 import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.context.ExternalContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.context.RequestContext;
@@ -29,56 +30,61 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class MensajeContenidoBean {
     //
+
     private static final Logger logger = LoggerFactory.getLogger(MensajeContenidoBean.class);
     //
     @ManagedProperty(value = "#{mensajeAppService}")
     private IMensajeAppService iMensajeAppService;
+    @ManagedProperty(value = "#{mensajeContenidoService}")
+    private IMensajeContenidoService iMensajeContenidoService;
     //
-    private String idRecursoString;
+    private Long idRecurso;
+    private ParMensajeApp mensajeApp;
+    private List<ParMensajeContenido> listaMensajeContenido;
     //
     private boolean mostrarFacesMessages;
     private boolean detenerFacesMessages;
-    private String rutaContenidoFacesMessages;
     //
+
     @PostConstruct
     public void ini() {
         logger.info("MensajeContenidoBean.init()");
-        cargarParametro();
-        Long idRecurso = new Long(idRecursoString);
-        detenerFacesMessages = false;
-        try{
-            ParMensajeApp mensaje = iMensajeAppService.buscarPorRecurso(idRecurso);
-            rutaContenidoFacesMessages="file://"+mensaje.getReferencia();
-            mostrarFacesMessages=true;
-        }catch(Exception e){
-            System.out.println("Error al encontrar el recurso");
-            rutaContenidoFacesMessages="/pages/util/default.xhtml";
-            mostrarFacesMessages=false;
-        }
-        System.out.println("mostrarFacesMessages: "+mostrarFacesMessages);
-        System.out.println("ruta: "+rutaContenidoFacesMessages);
-    }
-    
-    public void cargarParametro(){
+        String parametro = "";
         try {
-            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("rec") == null) {
-                idRecursoString = "1";
-                return;
-            }
-            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("rec") != null) {
-                idRecursoString = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("rec");
-                return;
-            }
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            Map params = ec.getRequestParameterMap();
+            parametro = params.get("rec").toString();
         } catch (Exception e) {
-            idRecursoString = "1";
-            System.out.println("Error al cargar en parametro de la url: " + e.getMessage());
-            return;
+            System.out.println("No se encontro el parametro");
+            parametro = "0";
         }
-        
+        System.out.println("parametro: " + parametro);
+        idRecurso = new Long(parametro);
+        cargar();
+        System.out.println("mostrarFacesMessages: " + mostrarFacesMessages);
+    }
+
+    public void cargar() {
+        detenerFacesMessages = false;
+        listaMensajeContenido = new ArrayList<ParMensajeContenido>();
+        //
+        List<ParMensajeApp> listaMensajeApp = iMensajeAppService.listarPorRecurso(idRecurso);
+        if (listaMensajeApp != null && listaMensajeApp.size() > 0) {
+            mensajeApp = listaMensajeApp.get(0);
+            listaMensajeContenido = iMensajeContenidoService.listarPorMensajeApp(mensajeApp.getIdMensajeApp());
+        } else {
+            mostrarFacesMessages = false;
+        }
+        //
+        if (listaMensajeApp.size() > 0) {
+            mostrarFacesMessages = true;
+        } else {
+            mostrarFacesMessages = false;
+        }
     }
 
     public void abrirPanel() {
-        if(mostrarFacesMessages){
+        if (mostrarFacesMessages) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("dlgParMensajeApp.show()");
         }
@@ -109,11 +115,27 @@ public class MensajeContenidoBean {
         this.detenerFacesMessages = detenerFacesMessages;
     }
 
-    public String getRutaContenidoFacesMessages() {
-        return rutaContenidoFacesMessages;
+    public List<ParMensajeContenido> getListaMensajeContenido() {
+        return listaMensajeContenido;
     }
 
-    public void setRutaContenidoFacesMessages(String rutaContenidoFacesMessages) {
-        this.rutaContenidoFacesMessages = rutaContenidoFacesMessages;
+    public void setListaMensajeContenido(List<ParMensajeContenido> listaMensajeContenido) {
+        this.listaMensajeContenido = listaMensajeContenido;
+    }
+
+    public ParMensajeApp getMensajeApp() {
+        return mensajeApp;
+    }
+
+    public void setMensajeApp(ParMensajeApp mensajeApp) {
+        this.mensajeApp = mensajeApp;
+    }
+
+    public IMensajeContenidoService getiMensajeContenidoService() {
+        return iMensajeContenidoService;
+    }
+
+    public void setiMensajeContenidoService(IMensajeContenidoService iMensajeContenidoService) {
+        this.iMensajeContenidoService = iMensajeContenidoService;
     }
 }
