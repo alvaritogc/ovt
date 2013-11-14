@@ -74,8 +74,6 @@ public class TemplateInicioBean implements Serializable {
     private String username;
     private String password;
     //
-    private List<UsrRecurso> listaRecursosContenido;
-    private UsrRecurso recurso;
     //
     private String nombreDeUsuario;
     private String nombreDeUnidad;
@@ -147,7 +145,6 @@ public class TemplateInicioBean implements Serializable {
 
             model.addElement(item);
         }
-        cargarRercursoContenido();
         cargarServiciosPublicos();
     }
 
@@ -315,10 +312,6 @@ public class TemplateInicioBean implements Serializable {
            }else{
                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", mensaeje));
            }
-
-
-
-
     }
 
     public void limpiar(){
@@ -329,26 +322,6 @@ public class TemplateInicioBean implements Serializable {
         confirmarContrasenia="";
     }
     
-    public void cargarRercursoContenido(){
-        try{
-        listaRecursosContenido=iRecursoService.listarPorTipoRecurso("CON");
-            }
-        catch (Exception e){
-            listaRecursosContenido=new ArrayList<UsrRecurso>();
-                          e.printStackTrace();
-        }
-    }
-    
-    public void verRecursoContenido(){
-        ParMensajeApp parMensajeApp=iMensajeAppService.buscarPorRecurso(recurso.getIdRecurso());
-        FacesContext contex = FacesContext.getCurrentInstance();
-        try {
-            contex.getExternalContext().redirect( "/ovt/faces/pages/publico/informacionPublica.xhtml?p="+parMensajeApp.getIdMensajeApp() );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-    }
     
     public void verMensajeApp(){
         FacesContext contex = FacesContext.getCurrentInstance();
@@ -462,22 +435,6 @@ public class TemplateInicioBean implements Serializable {
 
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
-    }
-
-    public List<UsrRecurso> getListaRecursosContenido() {
-        return listaRecursosContenido;
-    }
-
-    public void setListaRecursosContenido(List<UsrRecurso> listaRecursosContenido) {
-        this.listaRecursosContenido = listaRecursosContenido;
-    }
-
-    public UsrRecurso getRecurso() {
-        return recurso;
-    }
-
-    public void setRecurso(UsrRecurso recurso) {
-        this.recurso = recurso;
     }
 
     public IMensajeAppService getiMensajeAppService() {

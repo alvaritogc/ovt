@@ -60,6 +60,10 @@
                 text-align: center;
                 width: 100%;
             }
+            .hPanelGridRight {
+                text-align: right;
+                width: 100%;
+            }
 
         </style>
     </h:head>
@@ -202,13 +206,6 @@
 
 
                     <h:form>
-                        <p:dataTable var="recursoPublico" value="#{templateInicioBean.listaRecursosContenido}">  
-                            <p:column headerText="Servicios públicos">
-                                <p:commandLink value="#{recursoPublico.etiqueta}" action="#{templateInicioBean.verRecursoContenido}">
-                                    <f:setPropertyActionListener value="#{recursoPublico}" target="#{templateInicioBean.recurso}" />  
-                                </p:commandLink>
-                            </p:column>
-                        </p:dataTable>
                         <p:dataTable var="mensajeApp" value="#{templateInicioBean.listaMensajeApp}">  
                             <p:column headerText="Servicios públicos">
                                 <p:commandLink value="#{mensajeApp.mensaje}" action="#{templateInicioBean.verMensajeApp}">
