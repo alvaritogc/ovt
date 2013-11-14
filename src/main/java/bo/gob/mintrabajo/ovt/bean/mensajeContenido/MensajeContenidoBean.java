@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.math.BigDecimal;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -41,6 +42,7 @@ public class MensajeContenidoBean {
     private Long idRecurso;
     private ParMensajeApp mensajeApp;
     private List<ParMensajeContenido> listaMensajeContenido;
+    private ParMensajeContenido mensajeContenido;
     //
     private boolean mostrarFacesMessages;
     private boolean detenerFacesMessages;
@@ -90,6 +92,29 @@ public class MensajeContenidoBean {
         }
         detenerFacesMessages = true;
     }
+    
+    public void descargar() {
+        try {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = facesContext.getExternalContext();
+            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
+            String nombreDocumentoDigital = mensajeContenido.getArchivo();
+            String mimeDocumentoDigital = URLConnection.guessContentTypeFromName(nombreDocumentoDigital);
+            if (mimeDocumentoDigital == null) {
+                mimeDocumentoDigital = "application/octet-stream";
+            }
+            response.reset();
+            response.setContentType(mimeDocumentoDigital);
+            response.setHeader("Content-disposition", "attachment; filename=\"" + nombreDocumentoDigital + "\"");
+            OutputStream output = response.getOutputStream();
+            output.write(mensajeContenido.getBinario());
+            output.close();
+            facesContext.responseComplete();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mensajeContenido = new ParMensajeContenido();
+    }
 
     public IMensajeAppService getiMensajeAppService() {
         return iMensajeAppService;
@@ -137,5 +162,13 @@ public class MensajeContenidoBean {
 
     public void setiMensajeContenidoService(IMensajeContenidoService iMensajeContenidoService) {
         this.iMensajeContenidoService = iMensajeContenidoService;
+    }
+
+    public ParMensajeContenido getMensajeContenido() {
+        return mensajeContenido;
+    }
+
+    public void setMensajeContenido(ParMensajeContenido mensajeContenido) {
+        this.mensajeContenido = mensajeContenido;
     }
 }
