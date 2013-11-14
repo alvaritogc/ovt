@@ -17,6 +17,7 @@
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -24,7 +25,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -37,18 +37,25 @@ import javax.persistence.TemporalType;
  * @author rvelasquez
  */
 @Entity
-@Table(name = "PER_ACTIVIDAD")
+@Table(name = "PAR_MULTA_RANGO")
 @NamedQueries({
-    @NamedQuery(name = "PerActividad.findAll", query = "SELECT p FROM PerActividad p")})
-public class PerActividad implements Serializable {
+    @NamedQuery(name = "ParMultaRango.findAll", query = "SELECT p FROM ParMultaRango p")})
+public class ParMultaRango implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "ID_ACTIVIDAD")
-    private Long idActividad;
+    @Column(name = "ID_MULTA_RANGO")
+    private Long idMultaRango;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @Column(name = "ESTADO")
-    private String estado;
+    @Column(name = "RANGO_INICIAL")
+    private BigDecimal rangoInicial;
+    @Basic(optional = false)
+    @Column(name = "RANGO_FINAL")
+    private BigDecimal rangoFinal;
+    @Basic(optional = false)
+    @Column(name = "FACTOR")
+    private BigDecimal factor;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -56,43 +63,56 @@ public class PerActividad implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @JoinColumns({
-        @JoinColumn(name = "ID_UNIDAD", referencedColumnName = "ID_UNIDAD"),
-        @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
+    @JoinColumn(name = "ID_MULTA", referencedColumnName = "ID_MULTA")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private PerUnidad perUnidad;
-    @JoinColumn(name = "ID_ACTIVIDAD_ECONOMICA", referencedColumnName = "ID_ACTIVIDAD_ECONOMICA")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private ParActividadEconomica idActividadEconomica;
+    private ParMulta idMulta;
 
-    public PerActividad() {
+    public ParMultaRango() {
     }
 
-    public PerActividad(Long idActividad) {
-        this.idActividad = idActividad;
+    public ParMultaRango(Long idMultaRango) {
+        this.idMultaRango = idMultaRango;
     }
 
-    public PerActividad(Long idActividad, String estado, Date fechaBitacora, String registroBitacora) {
-        this.idActividad = idActividad;
-        this.estado = estado;
+    public ParMultaRango(Long idMultaRango, BigDecimal rangoInicial, BigDecimal rangoFinal, BigDecimal factor, Date fechaBitacora, String registroBitacora) {
+        this.idMultaRango = idMultaRango;
+        this.rangoInicial = rangoInicial;
+        this.rangoFinal = rangoFinal;
+        this.factor = factor;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
 
-    public Long getIdActividad() {
-        return idActividad;
+    public Long getIdMultaRango() {
+        return idMultaRango;
     }
 
-    public void setIdActividad(Long idActividad) {
-        this.idActividad = idActividad;
+    public void setIdMultaRango(Long idMultaRango) {
+        this.idMultaRango = idMultaRango;
     }
 
-    public String getEstado() {
-        return estado;
+    public BigDecimal getRangoInicial() {
+        return rangoInicial;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setRangoInicial(BigDecimal rangoInicial) {
+        this.rangoInicial = rangoInicial;
+    }
+
+    public BigDecimal getRangoFinal() {
+        return rangoFinal;
+    }
+
+    public void setRangoFinal(BigDecimal rangoFinal) {
+        this.rangoFinal = rangoFinal;
+    }
+
+    public BigDecimal getFactor() {
+        return factor;
+    }
+
+    public void setFactor(BigDecimal factor) {
+        this.factor = factor;
     }
 
     public Date getFechaBitacora() {
@@ -111,37 +131,29 @@ public class PerActividad implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public PerUnidad getPerUnidad() {
-        return perUnidad;
+    public ParMulta getIdMulta() {
+        return idMulta;
     }
 
-    public void setPerUnidad(PerUnidad perUnidad) {
-        this.perUnidad = perUnidad;
-    }
-
-    public ParActividadEconomica getIdActividadEconomica() {
-        return idActividadEconomica;
-    }
-
-    public void setIdActividadEconomica(ParActividadEconomica idActividadEconomica) {
-        this.idActividadEconomica = idActividadEconomica;
+    public void setIdMulta(ParMulta idMulta) {
+        this.idMulta = idMulta;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idActividad != null ? idActividad.hashCode() : 0);
+        hash += (idMultaRango != null ? idMultaRango.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PerActividad)) {
+        if (!(object instanceof ParMultaRango)) {
             return false;
         }
-        PerActividad other = (PerActividad) object;
-        if ((this.idActividad == null && other.idActividad != null) || (this.idActividad != null && !this.idActividad.equals(other.idActividad))) {
+        ParMultaRango other = (ParMultaRango) object;
+        if ((this.idMultaRango == null && other.idMultaRango != null) || (this.idMultaRango != null && !this.idMultaRango.equals(other.idMultaRango))) {
             return false;
         }
         return true;
@@ -149,7 +161,7 @@ public class PerActividad implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.PerActividad[ idActividad=" + idActividad + " ]";
+        return "bo.gob.mintrabajo.ovt.entities.ParMultaRango[ idMultaRango=" + idMultaRango + " ]";
     }
     
 }

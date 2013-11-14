@@ -75,8 +75,6 @@ public class PerPersona implements Serializable {
     private List<UsrUsuario> usrUsuarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "perPersona", fetch = FetchType.LAZY)
     private List<PerUnidad> perUnidadList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona", fetch = FetchType.LAZY)
-    private List<DocDocumento> docDocumentoList;
     @JoinColumn(name = "COD_LOCALIDAD", referencedColumnName = "COD_LOCALIDAD")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParLocalidad codLocalidad;
@@ -184,14 +182,6 @@ public class PerPersona implements Serializable {
 
     public void setPerUnidadList(List<PerUnidad> perUnidadList) {
         this.perUnidadList = perUnidadList;
-    }
-
-    public List<DocDocumento> getDocDocumentoList() {
-        return docDocumentoList;
-    }
-
-    public void setDocDocumentoList(List<DocDocumento> docDocumentoList) {
-        this.docDocumentoList = docDocumentoList;
     }
 
     public ParLocalidad getCodLocalidad() {

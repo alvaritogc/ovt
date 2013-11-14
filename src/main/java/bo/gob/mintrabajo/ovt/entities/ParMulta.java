@@ -26,7 +26,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -40,24 +39,28 @@ import javax.persistence.TemporalType;
  * @author rvelasquez
  */
 @Entity
-@Table(name = "PAR_ENTIDAD")
+@Table(name = "PAR_MULTA")
 @NamedQueries({
-    @NamedQuery(name = "ParEntidad.findAll", query = "SELECT p FROM ParEntidad p")})
-public class ParEntidad implements Serializable {
+    @NamedQuery(name = "ParMulta.findAll", query = "SELECT p FROM ParMulta p")})
+public class ParMulta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "ID_ENTIDAD")
-    private Long idEntidad;
+    @Column(name = "ID_MULTA")
+    private Long idMulta;
     @Basic(optional = false)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Basic(optional = false)
-    @Column(name = "CODIGO")
-    private String codigo;
+    @Column(name = "FECHA_INICIO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicio;
+    @Column(name = "FECHA_FIN")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFin;
     @Basic(optional = false)
-    @Column(name = "TIPO_ENTIDAD")
-    private String tipoEntidad;
+    @Column(name = "TIPO_MULTA")
+    private String tipoMulta;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -65,38 +68,34 @@ public class ParEntidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @JoinColumns({
-        @JoinColumn(name = "ID_UNIDAD", referencedColumnName = "ID_UNIDAD"),
-        @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
-    @ManyToOne(fetch = FetchType.LAZY)
-    private PerUnidad perUnidad;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidadSalud", fetch = FetchType.LAZY)
-    private List<DocPlanilla> docPlanillaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidadBanco", fetch = FetchType.LAZY)
-    private List<DocPlanilla> docPlanillaList1;
+    @JoinColumn(name = "COD_OBLIGACION", referencedColumnName = "COD_OBLIGACION")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ParObligacion codObligacion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMulta", fetch = FetchType.LAZY)
+    private List<ParMultaRango> parMultaRangoList;
 
-    public ParEntidad() {
+    public ParMulta() {
     }
 
-    public ParEntidad(Long idEntidad) {
-        this.idEntidad = idEntidad;
+    public ParMulta(Long idMulta) {
+        this.idMulta = idMulta;
     }
 
-    public ParEntidad(Long idEntidad, String descripcion, String codigo, String tipoEntidad, Date fechaBitacora, String registroBitacora) {
-        this.idEntidad = idEntidad;
+    public ParMulta(Long idMulta, String descripcion, Date fechaInicio, String tipoMulta, Date fechaBitacora, String registroBitacora) {
+        this.idMulta = idMulta;
         this.descripcion = descripcion;
-        this.codigo = codigo;
-        this.tipoEntidad = tipoEntidad;
+        this.fechaInicio = fechaInicio;
+        this.tipoMulta = tipoMulta;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
 
-    public Long getIdEntidad() {
-        return idEntidad;
+    public Long getIdMulta() {
+        return idMulta;
     }
 
-    public void setIdEntidad(Long idEntidad) {
-        this.idEntidad = idEntidad;
+    public void setIdMulta(Long idMulta) {
+        this.idMulta = idMulta;
     }
 
     public String getDescripcion() {
@@ -107,20 +106,28 @@ public class ParEntidad implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public Date getFechaInicio() {
+        return fechaInicio;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
     }
 
-    public String getTipoEntidad() {
-        return tipoEntidad;
+    public Date getFechaFin() {
+        return fechaFin;
     }
 
-    public void setTipoEntidad(String tipoEntidad) {
-        this.tipoEntidad = tipoEntidad;
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public String getTipoMulta() {
+        return tipoMulta;
+    }
+
+    public void setTipoMulta(String tipoMulta) {
+        this.tipoMulta = tipoMulta;
     }
 
     public Date getFechaBitacora() {
@@ -139,45 +146,37 @@ public class ParEntidad implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public PerUnidad getPerUnidad() {
-        return perUnidad;
+    public ParObligacion getCodObligacion() {
+        return codObligacion;
     }
 
-    public void setPerUnidad(PerUnidad perUnidad) {
-        this.perUnidad = perUnidad;
+    public void setCodObligacion(ParObligacion codObligacion) {
+        this.codObligacion = codObligacion;
     }
 
-    public List<DocPlanilla> getDocPlanillaList() {
-        return docPlanillaList;
+    public List<ParMultaRango> getParMultaRangoList() {
+        return parMultaRangoList;
     }
 
-    public void setDocPlanillaList(List<DocPlanilla> docPlanillaList) {
-        this.docPlanillaList = docPlanillaList;
-    }
-
-    public List<DocPlanilla> getDocPlanillaList1() {
-        return docPlanillaList1;
-    }
-
-    public void setDocPlanillaList1(List<DocPlanilla> docPlanillaList1) {
-        this.docPlanillaList1 = docPlanillaList1;
+    public void setParMultaRangoList(List<ParMultaRango> parMultaRangoList) {
+        this.parMultaRangoList = parMultaRangoList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idEntidad != null ? idEntidad.hashCode() : 0);
+        hash += (idMulta != null ? idMulta.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ParEntidad)) {
+        if (!(object instanceof ParMulta)) {
             return false;
         }
-        ParEntidad other = (ParEntidad) object;
-        if ((this.idEntidad == null && other.idEntidad != null) || (this.idEntidad != null && !this.idEntidad.equals(other.idEntidad))) {
+        ParMulta other = (ParMulta) object;
+        if ((this.idMulta == null && other.idMulta != null) || (this.idMulta != null && !this.idMulta.equals(other.idMulta))) {
             return false;
         }
         return true;
@@ -185,7 +184,7 @@ public class ParEntidad implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.ParEntidad[ idEntidad=" + idEntidad + " ]";
+        return "bo.gob.mintrabajo.ovt.entities.ParMulta[ idMulta=" + idMulta + " ]";
     }
     
 }

@@ -77,9 +77,6 @@ public class DocDocumento implements Serializable {
         @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerUnidad perUnidad;
-    @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private PerPersona idPersona;
     @JoinColumn(name = "COD_ESTADO", referencedColumnName = "COD_ESTADO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParDocumentoEstado codEstado;
@@ -95,6 +92,8 @@ public class DocDocumento implements Serializable {
     private DocDefinicion docDefinicion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
     private List<DocLogEstado> docLogEstadoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
+    private List<DocGenerico> docGenericoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDocumento", fetch = FetchType.LAZY)
     private List<DocBinario> docBinarioList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
@@ -188,14 +187,6 @@ public class DocDocumento implements Serializable {
         this.perUnidad = perUnidad;
     }
 
-    public PerPersona getIdPersona() {
-        return idPersona;
-    }
-
-    public void setIdPersona(PerPersona idPersona) {
-        this.idPersona = idPersona;
-    }
-
     public ParDocumentoEstado getCodEstado() {
         return codEstado;
     }
@@ -234,6 +225,14 @@ public class DocDocumento implements Serializable {
 
     public void setDocLogEstadoList(List<DocLogEstado> docLogEstadoList) {
         this.docLogEstadoList = docLogEstadoList;
+    }
+
+    public List<DocGenerico> getDocGenericoList() {
+        return docGenericoList;
+    }
+
+    public void setDocGenericoList(List<DocGenerico> docGenericoList) {
+        this.docGenericoList = docGenericoList;
     }
 
     public List<DocBinario> getDocBinarioList() {

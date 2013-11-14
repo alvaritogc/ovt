@@ -27,6 +27,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -50,9 +51,6 @@ public class DocPlanilla implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID_PLANILLA")
     private Long idPlanilla;
-    @Basic(optional = false)
-    @Column(name = "PERIODO")
-    private String periodo;
     @Basic(optional = false)
     @Column(name = "TIPO_PLANILLA")
     private String tipoPlanilla;
@@ -177,12 +175,17 @@ public class DocPlanilla implements Serializable {
     private String codLocalidadPresentacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlanilla", fetch = FetchType.LAZY)
     private List<DocPlanillaDetalle> docPlanillaDetalleList;
-    @JoinColumn(name = "ID_ENTIDAD_BANCO", referencedColumnName = "ID_ENTIDAD")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private ParEntidad idEntidadBanco;
     @JoinColumn(name = "ID_ENTIDAD_SALUD", referencedColumnName = "ID_ENTIDAD")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParEntidad idEntidadSalud;
+    @JoinColumn(name = "ID_ENTIDAD_BANCO", referencedColumnName = "ID_ENTIDAD")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ParEntidad idEntidadBanco;
+    @JoinColumns({
+        @JoinColumn(name = "TIPO_PERIODO", referencedColumnName = "TIPO_PERIODO"),
+        @JoinColumn(name = "GESTION", referencedColumnName = "GESTION")})
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ParCalendario parCalendario;
     @JoinColumn(name = "ID_DOCUMENTO", referencedColumnName = "ID_DOCUMENTO")
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private DocDocumento idDocumento;
@@ -194,9 +197,8 @@ public class DocPlanilla implements Serializable {
         this.idPlanilla = idPlanilla;
     }
 
-    public DocPlanilla(Long idPlanilla, String periodo, String tipoPlanilla, int nroAsegCaja, BigDecimal montoAsegCaja, int nroAsegAfp, BigDecimal montoAsegAfp, BigDecimal haberBasico, BigDecimal bonoAntiguedad, BigDecimal bonoProduccion, BigDecimal subsidioFrontera, BigDecimal laborExtra, BigDecimal otrosBonos, BigDecimal aporteAfp, BigDecimal rciva, BigDecimal otrosDescuentos, int nroM, int nroH, int nroJubiladosM, int nroJubiladosH, int nroExtranjerosM, int nroExtranjerosH, int nroDiscapacidadM, int nroDiscapacidadH, int nroContratadosM, int nroContratadosH, int nroRetiradosM, int nroRetiradosH, int nroAccidentes, int nroMuertes, int nroEnfermedades, Date fechaOperacion, BigDecimal montoOperacion, String numOperacion) {
+    public DocPlanilla(Long idPlanilla, String tipoPlanilla, int nroAsegCaja, BigDecimal montoAsegCaja, int nroAsegAfp, BigDecimal montoAsegAfp, BigDecimal haberBasico, BigDecimal bonoAntiguedad, BigDecimal bonoProduccion, BigDecimal subsidioFrontera, BigDecimal laborExtra, BigDecimal otrosBonos, BigDecimal aporteAfp, BigDecimal rciva, BigDecimal otrosDescuentos, int nroM, int nroH, int nroJubiladosM, int nroJubiladosH, int nroExtranjerosM, int nroExtranjerosH, int nroDiscapacidadM, int nroDiscapacidadH, int nroContratadosM, int nroContratadosH, int nroRetiradosM, int nroRetiradosH, int nroAccidentes, int nroMuertes, int nroEnfermedades, Date fechaOperacion, BigDecimal montoOperacion, String numOperacion) {
         this.idPlanilla = idPlanilla;
-        this.periodo = periodo;
         this.tipoPlanilla = tipoPlanilla;
         this.nroAsegCaja = nroAsegCaja;
         this.montoAsegCaja = montoAsegCaja;
@@ -237,14 +239,6 @@ public class DocPlanilla implements Serializable {
 
     public void setIdPlanilla(Long idPlanilla) {
         this.idPlanilla = idPlanilla;
-    }
-
-    public String getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
     }
 
     public String getTipoPlanilla() {
@@ -607,6 +601,14 @@ public class DocPlanilla implements Serializable {
         this.docPlanillaDetalleList = docPlanillaDetalleList;
     }
 
+    public ParEntidad getIdEntidadSalud() {
+        return idEntidadSalud;
+    }
+
+    public void setIdEntidadSalud(ParEntidad idEntidadSalud) {
+        this.idEntidadSalud = idEntidadSalud;
+    }
+
     public ParEntidad getIdEntidadBanco() {
         return idEntidadBanco;
     }
@@ -615,12 +617,12 @@ public class DocPlanilla implements Serializable {
         this.idEntidadBanco = idEntidadBanco;
     }
 
-    public ParEntidad getIdEntidadSalud() {
-        return idEntidadSalud;
+    public ParCalendario getParCalendario() {
+        return parCalendario;
     }
 
-    public void setIdEntidadSalud(ParEntidad idEntidadSalud) {
-        this.idEntidadSalud = idEntidadSalud;
+    public void setParCalendario(ParCalendario parCalendario) {
+        this.parCalendario = parCalendario;
     }
 
     public DocDocumento getIdDocumento() {
