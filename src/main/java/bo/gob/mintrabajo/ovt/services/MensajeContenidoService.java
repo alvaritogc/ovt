@@ -3,6 +3,7 @@ package bo.gob.mintrabajo.ovt.services;
 import bo.gob.mintrabajo.ovt.api.IBinarioService;
 import bo.gob.mintrabajo.ovt.api.IMensajeAppService;
 import bo.gob.mintrabajo.ovt.api.IMensajeContenidoService;
+import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.DocBinario;
 import bo.gob.mintrabajo.ovt.entities.DocLogImpresion;
 import bo.gob.mintrabajo.ovt.entities.ParMensajeApp;
@@ -27,10 +28,12 @@ import java.util.List;
 public class MensajeContenidoService implements IMensajeContenidoService{
 
     private final MensajeContenidoRepository repository;
+    private final IUtilsService utils;
 
     @Inject
-    public MensajeContenidoService(MensajeContenidoRepository repository) {
+    public MensajeContenidoService(MensajeContenidoRepository repository,IUtilsService utils) {
         this.repository = repository;
+        this.utils=utils;
     }
     
     @Override
@@ -50,7 +53,9 @@ public class MensajeContenidoService implements IMensajeContenidoService{
     @Override
     public ParMensajeContenido save(ParMensajeContenido mensajeContenido) {
         System.out.println("Metadata service: "+mensajeContenido.getMetadata());
-        mensajeContenido.setIdMensajeContenido(new Long(repository.findAll().size()+1));
+        
+        //mensajeContenido.setIdMensajeContenido(new Long(repository.findAll().size()+1));
+        mensajeContenido.setIdMensajeContenido(utils.valorSecuencia("PAR_MENSAJE_CONTENIDO_SEC"));
         mensajeContenido.setFechaBitacora(new Date());
         mensajeContenido.setRegistroBitacora("OVT");
         return repository.save(mensajeContenido);

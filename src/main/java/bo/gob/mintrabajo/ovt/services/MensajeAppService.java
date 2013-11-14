@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IBinarioService;
 import bo.gob.mintrabajo.ovt.api.IMensajeAppService;
+import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.DocBinario;
 import bo.gob.mintrabajo.ovt.entities.DocLogImpresion;
 import bo.gob.mintrabajo.ovt.entities.ParMensajeApp;
@@ -31,11 +32,12 @@ public class MensajeAppService implements IMensajeAppService{
 
     private final MensajeAppRepository repository;
     private final RecursoRepository recursoRepository;
-
+    private final IUtilsService utils;
     @Inject
-    public MensajeAppService(MensajeAppRepository repository,RecursoRepository recursoRepository) {
+    public MensajeAppService(MensajeAppRepository repository,RecursoRepository recursoRepository,IUtilsService utils) {
         this.repository = repository;
         this.recursoRepository=recursoRepository;
+        this.utils=utils;
     }
     
     
@@ -89,8 +91,10 @@ public class MensajeAppService implements IMensajeAppService{
         UsrRecurso recurso=recursoRepository.findOne(idRecurso);
         mensajeApp.setIdRecurso(recurso);
         //
-        Long id=new Long(repository.findAll().size()+10);
-        mensajeApp.setIdMensajeApp(id);
+        //Long id=new Long(repository.findAll().size()+10);
+        //mensajeApp.setIdMensajeApp(id);
+        mensajeApp.setIdMensajeApp(utils.valorSecuencia("PAR_MENSAJE_APP_SEC"));
+        
         mensajeApp.setRegistroBitacora("OVT");
         mensajeApp.setFechaBitacora(new Date());
         System.out.println("getMensaje:"+mensajeApp.getMensaje());
