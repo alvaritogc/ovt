@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.servlet.ServletOutputStream;
@@ -49,28 +50,15 @@ public class ContenidoPublicoBean {
     @PostConstruct
     public void ini() {
         logger.info("ContenidosBean.init()");
-        idMensajeApp = cargarIdMensajeApp();
-        System.out.println("idMensajeApp: " + idMensajeApp);
+        //
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        Map params = ec.getRequestParameterMap();
+        String parametro= params.get("p").toString();
+        System.out.println("parametro: "+parametro);
+        idMensajeApp=parametro!=null?new Long(parametro):null;
+        //
         mensajeApp = iMensajeAppService.findById(idMensajeApp);
         cargar();
-    }
-
-    public Long cargarIdMensajeApp() {
-        try {
-            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p") == null) {
-                System.out.println("Error al cargar p, no se encuentra el valor p, p=null");
-                return null;
-            }
-
-            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p") != null) {
-                String p = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p");
-                return new Long(p);
-            }
-        } catch (Exception e) {
-            System.out.println("Error al cargar p: " + e.getMessage());
-            return null;
-        }
-        return null;
     }
 
     public void cargar() {
@@ -79,8 +67,6 @@ public class ContenidoPublicoBean {
     }
     
     public void descargar() {
-        System.out.println("descargar");
-        System.out.println("mensaje: " + mensajeContenido.getContenido());
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ExternalContext externalContext = facesContext.getExternalContext();

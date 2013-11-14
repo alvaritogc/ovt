@@ -47,16 +47,10 @@ public class ContenidoRecursoBean {
     }
     
     public String editar(){
-        System.out.println("mensajeApp: "+mensajeApp.getMensaje());
         session.setAttribute("idMensajeApp", mensajeApp.getIdMensajeApp());
         return "irContenidos";
     }
     public void nuevo(){
-        System.out.println("===========================");
-        System.out.println("===========================");
-        System.out.println("Nuevo");
-        System.out.println("===========================");
-        System.out.println("===========================");
         mensajeApp=new ParMensajeApp();
     }
     
@@ -69,11 +63,6 @@ public class ContenidoRecursoBean {
     }
     
     public void eliminar(){
-        System.out.println("==================");
-        System.out.println("==================");
-        System.out.println("Eliminar");
-        System.out.println("==================");
-        System.out.println("==================");
         iMensajeAppService.delete(mensajeApp.getIdMensajeApp());
         cargar();
     }
