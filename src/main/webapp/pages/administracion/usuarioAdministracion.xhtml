@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="./../template/templateInicio.xhtml">
+    <ui:define name="content">
+        <h3>Administración de Usuarios</h3>
+
+        <h:form id="usuarioFrm">
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+            <p:commandButton value="Nuevo" icon="ui-icon-circle-plus" action="#{usuarioAdministracionBean.instanciarUsuario}" oncomplete="nuevoDlg.show();" update=":nuevoFrm" immediate="true" />
+            <p:dataTable id="usuarioTbl" value="#{usuarioAdministracionBean.usuarioLista}" var="usr" paginator="true"
+                         rows="15" paginatorPosition="bottom">
+                <p:column headerText="Usuario">
+                    <h:outputText value="#{usr.usuario}"/>
+                </p:column>
+                <p:column headerText="Es Interno">
+                    <h:outputText value="#{usr.esInterno eq 1 ? 'SI' : 'NO'}"/>
+                </p:column>
+                <p:column headerText="Es delegado">
+                    <h:outputText value="#{usr.esDelegado eq 1 ? 'SI' : 'NO'}"/>
+                </p:column>
+                <p:column headerText="Fecha Inhabilitacion">
+                    <h:outputText value="#{usr.fechaInhabilitacion}"/>
+                </p:column>
+                <p:column headerText="Fecha Reabilitación">
+                    <h:outputText value="#{usr.fechaRehabilitacion}" />
+                </p:column>
+                <p:column headerText="Estado Usuario">
+                    <h:outputText value="#{usr.estadoUsuario}"/>
+                </p:column>
+                <p:column headerText="Operaciones">
+                    <p:commandLink value="Editar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" oncomplete="edicionDlg.show()" update=":edicionFrm" immediate="true" style="color:#0066CC">
+                        <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
+                    </p:commandLink>
+                    <p:spacer width="5" />
+                    <p:commandLink value="Eliminar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" oncomplete="eliminarDlg.show()" immediate="true" style="color:#0066CC">
+                        <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <!-- Dialogo para nuevo usuario -->
+        <p:dialog modal="true" widgetVar="nuevoDlg" header="Nuevo Usuario">
+            <h:form id="nuevoFrm">
+                <p:messages id="messagesNuevo" showDetail="true" autoUpdate="false" closable="true" />
+                <p:panelGrid columns="2">
+                    <f:facet name="header">
+                        DATOS DE PERSONA
+                    </f:facet>
+                    <p:outputLabel value="Nombre o Razon social :"/>
+                    <p:inputText id="inputTxtNombre"
+                                 value="#{usuarioAdministracionBean.personaSelected.nombreRazonSocial}"
+                                 required="true"
+                                 style="width: 215px;text-transform: uppercase;"
+                                 requiredMessage="El campo Nombre o Razon social es obligatorio" tabindex="2">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Apellido paterno :"/>
+                    <p:inputText id="inputTxtPaterno"
+                                 value="#{usuarioAdministracionBean.personaSelected.apellidoPaterno}"
+                                 style="width: 215px;text-transform: uppercase;"
+                                 tabindex="3">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Apellido materno :"/>
+                    <p:inputText id="inputTxtMaterno"
+                                 value="#{usuarioAdministracionBean.personaSelected.apellidoMaterno}"
+                                 tabindex="4"
+                                 style="width: 215px;text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Tipo de identificacion :"/>
+                    <p:selectOneMenu id="slcOneMenuTipoIdentificacion"
+                                     value="#{usuarioAdministracionBean.personaSelected.tipoIdentificacion}"
+                                     tabindex="5"
+                                     style="text-transform: uppercase;" required="true">
+                        <f:selectItem itemLabel="--seleccione--" itemValue="#{null}"/>
+                        <f:selectItems value="#{usuarioAdministracionBean.tipoDocumentoLista}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="localidadN" value="Localidad:"/>
+                    <p:selectOneMenu id="localidadN" value="#{usuarioAdministracionBean.idLocalidad}"
+                                     tabindex="6"
+                                     style="text-transform: uppercase;">
+                        <f:selectItem itemLabel="--seleccione--" itemValue="#{null}"/>
+                        <f:selectItems value="#{usuarioAdministracionBean.localidadLista}" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Nro. de identificacion :"/>
+                    <p:inputText id="inputTxtNroIdentificacion"
+                                 value="#{usuarioAdministracionBean.personaSelected.nroIdentificacion}"
+                                 tabindex="7"
+                                 required="true"
+                                 style="width: 215px;text-transform: uppercase;"
+                                 requiredMessage="El campo Nro. de identificacion es obligatorio"/>
+
+
+                    <p:outputLabel value="Nombre comercial :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                    <p:inputText id="inputTxtNombreComercial"
+                                 value="#{usuarioAdministracionBean.unidadSelected.nombreComercial}"
+                                 style="width: 215px;text-transform: uppercase;"
+                                 tabindex="8"
+                                 required="true"
+                                 requiredMessage="El campo Nombre comercial es obligatorio.">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Tipo de empresa :    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                    <p:selectOneMenu id="slcOneMenuTipoEmpresa"
+                                     value="#{usuarioAdministracionBean.unidadSelected.tipoEmpresa}"
+                                     tabindex="9"
+                                     style="width: 225px;text-transform: uppercase;"
+                                     required="true"
+                                     requiredMessage="El campo Tipo de empresa es obligatorio.">
+                        <f:selectItem itemLabel="--seleccione--" itemValue="0"/>
+                        <f:selectItems value="#{usuarioAdministracionBean.tipoEmpresaLista}"/>
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel value="Tipo de sociedad :"/>
+                    <p:selectOneMenu id="slcOneMenuTipoSociedad"
+                                     value="#{usuarioAdministracionBean.unidadSelected.tipoSociedad}"
+                                     tabindex="10"
+                                     style="text-transform: uppercase;"
+                                     required="true"
+                                     requiredMessage="El campo Tipo de sociedad es obligatorio.">
+                        <f:selectItem itemLabel="--seleccione--" itemValue="0"/>
+                        <f:selectItems value="#{usuarioAdministracionBean.tipoSociedadLista}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Actividad declarada :&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                    <p:inputTextarea id="txtAreaActividadDeclarada"
+                                     value="#{usuarioAdministracionBean.unidadSelected.actividadDeclarada}"
+                                     rows="5"
+                                     cols="50" autoResize="false"
+                                     style="width: 220px;text-transform: uppercase;"
+                                     tabindex="11"
+                                     required="true"
+                                     requiredMessage="El campo Actividad declarada es obligatorio.">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputTextarea>
+                </p:panelGrid>
+
+                <p:panelGrid columns="2">
+                    <f:facet name="header">
+                        DATOS DE USUARIO
+                    </f:facet>
+                    <p:outputLabel for="inputTxtUsuario" value="Usuario:"/>
+                    <p:inputText id="inputTxtUsuario" value="#{usuarioAdministracionBean.usuarioSelected.usuario}"
+                                 required="true"
+                                 requiredMessage="El campo Usuario es obligatorio"
+                                 tabindex="12"
+                                 autocomplete="off">
+                        <p:watermark for="inputTxtUsuario" value="Correo electronico"/>
+                    </p:inputText>
+
+                    <p:outputLabel for="inputTxtClave" value="Password :"/>
+                    <p:password id="inputTxtClave" value="#{usuarioAdministracionBean.usuarioSelected.clave}"
+                                feedback="true"
+                                tabindex="13"
+                                required="true"
+                                requiredMessage="EL campo Contrasenia es obligatorio"
+                                autocomplete="off"
+                            />
+                    <p:outputLabel for="inputTxtConfirmar" value="Confirmar Password :"/>
+                    <p:password id="inputTxtConfirmar" value="#{usuarioAdministracionBean.confirmarContrasenia}"
+                                feedback="true"
+                                tabindex="14"
+                                autocomplete="off"/>
+                </p:panelGrid>
+                <p:commandButton value="Guardar" action="#{usuarioAdministracionBean.guardarUsuario}" update=":usuarioFrm:usuarioTbl nuevoFrm messagesNuevo" />
+                <p:commandButton value="Cancelar" onclick="nuevoDlg.hide();" immediate="true" />
+            </h:form>
+        </p:dialog>
+
+        <!-- Dialogo para edicion del usuario -->
+        <p:dialog modal="true" widgetVar="edicionDlg" header="Editar Usuario">
+            <h:form id="edicionFrm">
+                <p:panelGrid columns="2">
+                    <f:facet name="header">
+                        DATOS DE PERSONA
+                    </f:facet>
+                    <p:outputLabel for="inputTxtNombre" value="Nombre o Razon social :"/>
+                    <p:inputText id="inputTxtNombre"
+                                 value="#{usuarioAdministracionBean.personaSelected.nombreRazonSocial}"
+                                 required="true"
+                                 style="width: 215px;text-transform: uppercase;"
+                                 requiredMessage="El campo Nombre o Razon social es obligatorio" tabindex="2">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Apellido paterno :"/>
+                    <p:inputText id="paterno"
+                                 value="#{usuarioAdministracionBean.personaSelected.apellidoPaterno}"
+                                 style="width: 215px;text-transform: uppercase;"
+                                 tabindex="3">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Apellido materno :"/>
+                    <p:inputText id="materno"
+                                 value="#{usuarioAdministracionBean.personaSelected.apellidoMaterno}"
+                                 tabindex="4"
+                                 style="width: 215px;text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
+
+                    <p:outputLabel for="tipoIdentificacionE" value="Tipo de identificacion :"/>
+                    <p:selectOneMenu id="tipoIdentificacionE"
+                                     value="#{usuarioAdministracionBean.personaSelected.tipoIdentificacion}"
+                                     tabindex="5"
+                                     style="text-transform: uppercase;" required="true">
+                        <f:selectItem itemLabel="--seleccione--" itemValue="#{null}"/>
+                        <f:selectItems value="#{usuarioAdministracionBean.tipoDocumentoLista}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="localidadE" value="Localidad:"/>
+                    <p:selectOneMenu id="localidadE" value="#{usuarioAdministracionBean.idLocalidad}"
+                                     tabindex="6"
+                                     style="text-transform: uppercase;">
+                        <f:selectItem itemLabel="--seleccione--" itemValue="#{null}"/>
+                        <f:selectItems value="#{usuarioAdministracionBean.localidadLista}" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="identificacionE" value="Nro. de identificacion :"/>
+                    <p:inputText id="identificacionE"
+                                 value="#{usuarioAdministracionBean.personaSelected.nroIdentificacion}"
+                                 tabindex="7"
+                                 required="true"
+                                 style="width: 215px;text-transform: uppercase;"
+                                 requiredMessage="El campo Nro. de identificacion es obligatorio"/>
+
+
+                    <p:outputLabel for="nombreComercial" value="Nombre comercial :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                    <p:inputText id="nombreComercial"
+                                 value="#{usuarioAdministracionBean.unidadSelected.nombreComercial}"
+                                 style="width: 215px;text-transform: uppercase;"
+                                 tabindex="8"
+                                 required="true"
+                                 requiredMessage="El campo Nombre comercial es obligatorio.">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
+
+                    <p:outputLabel for="tipoEmpresaE" value="Tipo de empresa :    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                    <p:selectOneMenu id="tipoEmpresaE"
+                                     value="#{usuarioAdministracionBean.unidadSelected.tipoEmpresa}"
+                                     tabindex="9"
+                                     style="width: 225px;text-transform: uppercase;"
+                                     required="true"
+                                     requiredMessage="El campo Tipo de empresa es obligatorio.">
+                        <f:selectItem itemLabel="--seleccione--" itemValue="0"/>
+                        <f:selectItems value="#{usuarioAdministracionBean.tipoEmpresaLista}"/>
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel for="tipoSociedadE" value="Tipo de sociedad :"/>
+                    <p:selectOneMenu id="tipoSociedadE"
+                                     value="#{usuarioAdministracionBean.unidadSelected.tipoSociedad}"
+                                     tabindex="10"
+                                     style="text-transform: uppercase;"
+                                     required="true"
+                                     requiredMessage="El campo Tipo de sociedad es obligatorio.">
+                        <f:selectItem itemLabel="--seleccione--" itemValue="0"/>
+                        <f:selectItems value="#{usuarioAdministracionBean.tipoSociedadLista}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="actividadDeclarada" value="Actividad declarada :&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                    <p:inputTextarea id="actividadDeclarada"
+                                     value="#{usuarioAdministracionBean.unidadSelected.actividadDeclarada}"
+                                     rows="5"
+                                     cols="50" autoResize="false"
+                                     style="width: 220px;text-transform: uppercase;"
+                                     tabindex="11"
+                                     required="true"
+                                     requiredMessage="El campo Actividad declarada es obligatorio.">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputTextarea>
+                </p:panelGrid>
+                <p:commandButton value="Guardar" action="#{usuarioAdministracionBean.editarUsuario}" update=":usuarioFrm:usuarioTbl edicionFrm" />
+                <p:commandButton value="Cancelar" onclick="edicionDlg.hide();" immediate="true" />
+            </h:form>
+        </p:dialog>
+
+        <!-- Dialgo de confirmacion para la eliminación -->
+        <p:confirmDialog widgetVar="eliminarDlg" global="true" showEffect="fade" hideEffect="explode" message="Está segúro de eliminar este usuario?" header="Confirmar la eliminación">
+            <p:commandButton value="Si" action="#{usuarioAdministracionBean.eliminarUsuario}" oncomplete="eliminarDlg.hide();" update=":usuarioFrm:usuarioTbl" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+            <p:commandButton value="No" type="button"  styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        </p:confirmDialog>
+
+    </ui:define>
+</ui:composition>
+</html>

@@ -1,9 +1,10 @@
 
 package bo.gob.mintrabajo.ovt.services;
 
-import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
+import bo.gob.mintrabajo.ovt.repositories.PersonaRepository;
+import bo.gob.mintrabajo.ovt.repositories.RolRepository;
 import bo.gob.mintrabajo.ovt.repositories.UsuarioRepository;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -11,8 +12,6 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +84,12 @@ public class UsuarioService implements IUsuarioService{
         List<UsrUsuario> lista;
         lista = usuarioRepository.findAll();
         return lista;
-    } 
+    }
+
+    @Override
+    public List<UsrUsuario> obtenerUsuariosIntenos() {
+        return usuarioRepository.findByAttribute("esInterno",1,-1,-1);
+    }
     
     @Override
     public UsrUsuario findById(Long id) {
