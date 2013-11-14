@@ -22,10 +22,10 @@ public interface MensajeAppRepository extends OpenJpaRepository<ParMensajeApp, L
             "   select m "
             + " from ParMensajeApp m"
             + " where "
-            + " m.idRecurso.etiqueta = :etiqueta "
-            + " and :fecha between m.fechaDesde and m.fechaHasta "
+            + " m.idRecurso.idRecurso = :idRecurso"
+            + " and ((:fecha between m.fechaDesde and m.fechaHasta) or (m.fechaDesde<:fecha and m.fechaHasta is null )) "
     )
-    List<ParMensajeApp> buscarPorRecursoFecha(@Param("etiqueta") String etiqueta,@Param("fecha") Date fecha);
+    List<ParMensajeApp> listarPorRecursoYFecha(@Param("idRecurso") Long idRecurso,@Param("fecha") Date fecha);
      
     @Query(
             "   select m "

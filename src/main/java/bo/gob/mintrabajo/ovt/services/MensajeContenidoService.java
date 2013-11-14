@@ -42,9 +42,14 @@ public class MensajeContenidoService implements IMensajeContenidoService{
     public List<ParMensajeContenido> findByAll() {
         return repository.findAll();
     }
+    @Override
+    public List<ParMensajeContenido> listarPorMensajeApp(Long idMensajeApp) {
+        return repository.listarPorMensajeApp(idMensajeApp);
+    }
     
     @Override
     public ParMensajeContenido save(ParMensajeContenido mensajeContenido) {
+        System.out.println("Metadata service: "+mensajeContenido.getMetadata());
         mensajeContenido.setIdMensajeContenido(new Long(repository.findAll().size()+1));
         mensajeContenido.setFechaBitacora(new Date());
         mensajeContenido.setRegistroBitacora("OVT");

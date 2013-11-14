@@ -23,6 +23,7 @@ import java.util.List;
 @ManagedBean
 @ViewScoped
 public class ContenidoRecursoBean {
+    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     //
     private static final Logger logger = LoggerFactory.getLogger(ContenidoRecursoBean.class);
     @ManagedProperty(value = "#{recursoService}")
@@ -41,17 +42,40 @@ public class ContenidoRecursoBean {
     }
     
     public void cargar(){
+        mensajeApp=new ParMensajeApp();
         listaMensajeApp=iMensajeAppService.listarPorRecurso(new Long("1000"));
     }
     
-    public void editar(){
+    public String editar(){
         System.out.println("mensajeApp: "+mensajeApp.getMensaje());
-        FacesContext contex = FacesContext.getCurrentInstance();
-        try {
-            contex.getExternalContext().redirect( "/ovt/faces/pages/contenidos/contenidos.xhtml?p="+mensajeApp.getIdMensajeApp() );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        session.setAttribute("idMensajeApp", mensajeApp.getIdMensajeApp());
+        return "irContenidos";
+    }
+    public void nuevo(){
+        System.out.println("===========================");
+        System.out.println("===========================");
+        System.out.println("Nuevo");
+        System.out.println("===========================");
+        System.out.println("===========================");
+        mensajeApp=new ParMensajeApp();
+    }
+    
+    public void guardar(){
+        mensajeApp=iMensajeAppService.guardar(mensajeApp,new Long("1000"));
+        mensajeApp=new ParMensajeApp();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("contenidoRecursoDlg.hide()");
+        cargar();
+    }
+    
+    public void eliminar(){
+        System.out.println("==================");
+        System.out.println("==================");
+        System.out.println("Eliminar");
+        System.out.println("==================");
+        System.out.println("==================");
+        iMensajeAppService.delete(mensajeApp.getIdMensajeApp());
+        cargar();
     }
     
     public IRecursoService getiRecursoService() {
