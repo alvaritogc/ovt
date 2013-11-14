@@ -15,6 +15,8 @@
  */
 package bo.gob.mintrabajo.ovt.entities;
 
+import bo.gob.mintrabajo.ovt.Util.AbstractEntity;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +43,7 @@ import javax.persistence.TemporalType;
 @Table(name = "PAR_LOCALIDAD")
 @NamedQueries({
     @NamedQuery(name = "ParLocalidad.findAll", query = "SELECT p FROM ParLocalidad p")})
-public class ParLocalidad implements Serializable {
+public class ParLocalidad extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)

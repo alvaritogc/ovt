@@ -4,6 +4,8 @@ import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.entities.*;
 import bo.gob.mintrabajo.ovt.repositories.*;
 import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,6 +39,7 @@ public class PersonaService implements IPersonaService {
     private final ModuloRepository moduloRepository;
     private final UsuarioRolRepository usuarioRolRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(PersonaService.class);
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
@@ -67,6 +70,33 @@ public class PersonaService implements IPersonaService {
         PerPersona perPersonaEntity;
         perPersonaEntity = personaRepository.save(persona);
         return perPersonaEntity;
+    }
+
+    @Override
+    public void editarPersona(PerPersona persona, PerUnidad unidad) {
+        log.info("Editando el Usuario ...");
+        PerPersona perPersonaTmp = personaRepository.findOne(persona.getIdPersona());
+        perPersonaTmp.setTipoIdentificacion(persona.getTipoIdentificacion());
+        perPersonaTmp.setCodLocalidad(persona.getCodLocalidad());
+        perPersonaTmp.setNroIdentificacion(persona.getNroIdentificacion());
+        perPersonaTmp.setNombreRazonSocial(persona.getNombreRazonSocial());
+        perPersonaTmp.setApellidoPaterno(persona.getApellidoPaterno());
+        perPersonaTmp.setApellidoMaterno(persona.getApellidoMaterno());
+        PerPersona personaTmp = personaRepository.save(perPersonaTmp);
+        log.info("Guardando la persona ");
+
+        PerUnidad unidadTmp = unidadRepository.buscarPorPersona(perPersonaTmp.getIdPersona()).get(0);
+        unidadTmp.setNombreComercial(unidad.getNombreComercial());
+        unidadTmp.setTipoEmpresa(unidad.getTipoEmpresa());
+        unidadTmp.setTipoSociedad(unidad.getTipoSociedad());
+        unidadTmp.setActividadDeclarada(unidad.getActividadDeclarada());
+        //unidadTmp.setPerPersona(personaTmp);
+        unidadRepository.save(unidadTmp);
+        log.info("Guardada la unidad sin falla ...");
+    }
+
+    public PerPersona obtenerPersonaPorUsuario(UsrUsuario usrUsuario){
+        return personaRepository.obtenerPersonaPorIdUsuario(usrUsuario.getIdUsuario());
     }
 
 //    @Override
@@ -212,6 +242,48 @@ public class PersonaService implements IPersonaService {
         }
     }
 
+    @Override
+    public boolean guardarUsuarioInterno(PerPersona persona, PerUnidad unidad, UsrUsuario usuario) {
+        log.info("Guardando el registro de usuario Interno ... " + getClass().getSimpleName());
+        persona.setFechaBitacora(new Date());
+        persona.setRegistroBitacora("ROE");
+        persona = personaRepository.save(persona);
+
+        log.info("Guardando la persona ");
+        unidad.setFechaBitacora(new Date());
+        unidad.setRegistroBitacora("ROE");
+        unidad.setFechaNacimiento(new Date());
+        unidad.setObservaciones("NINGUNA");
+        unidad.setPerPersona(persona);
+        unidad = unidadRepository.save(unidad);
+
+        log.info("Guardando la unidad");
+        usuario.setFechaBitacora(new Date());
+        usuario.setRegistroBitacora("ROE");
+        usuario.setIdPersona(persona);
+        usuario.setEstadoUsuario("A");
+        usuario.setEsInterno(new Short("1"));
+        usuario = usuarioRepository.save(usuario);
+
+        log.info("Guardando el usuario");
+        PerUsuarioUnidad usuarioUnidad = new PerUsuarioUnidad();
+        PerUsuarioUnidadPK perUsuarioUnidadPK = new PerUsuarioUnidadPK();
+        perUsuarioUnidadPK.setIdPersona(persona.getIdPersona());
+        perUsuarioUnidadPK.setIdUnidad(unidad.getPerUnidadPK().getIdUnidad());
+        perUsuarioUnidadPK.setIdUsuario(usuario.getIdUsuario());
+
+        log.info("Guardando la relación usuario_unidad");
+        usuarioUnidad.setFechaBitacora(new Date());
+        usuarioUnidad.setRegistroBitacora("ROE");
+        usuarioUnidad.setPerUnidad(unidad);
+        usuarioUnidad.setUsrUsuario(usuario);
+        usuarioUnidad.setPerUsuarioUnidadPK(perUsuarioUnidadPK);
+        usuarioUnidadRepository.save(usuarioUnidad);
+
+        log.info("Guardado del usuario completado sin falla .... ");
+        return true;
+    }
+
     public void cambiarEstadoUsuario(Long usuario) {
         UsrUsuario usuarioSinConfirmar = usuarioRepository.findOne(usuario);
         usuarioSinConfirmar.setEstadoUsuario("A");
@@ -219,37 +291,37 @@ public class PersonaService implements IPersonaService {
     }
 
     public boolean eliminarRegistro(String perPersona, UsrUsuario usrUsuario) {
-        System.out.println("Eliminando id Persona " + perPersona + " usuario " + usrUsuario.getIdPersona().getIdPersona() + " id Usuario " + usrUsuario.getIdUsuario());
+        log.info("Eliminando id Persona " + perPersona + " persona usuario " + usrUsuario.getIdPersona().getIdPersona() + " id Usuario " + usrUsuario.getIdUsuario());
 
         UsrUsuarioRolPK usrPK = new UsrUsuarioRolPK();
         usrPK.setIdUsuario(usrUsuario.getIdUsuario());
         usrPK.setIdRol(new Long("2"));
         UsrUsuarioRol usrUsuarioRolTmp = usuarioRolRepository.findOne(usrPK);
 
-
-        usuarioRolRepository.delete(usrUsuarioRolTmp.getUsrUsuarioRolPK());
-        usuarioRolRepository.flush();
-        System.out.println("Elimina usuarioRol");
+        if (usrUsuarioRolTmp != null) {
+            usuarioRolRepository.delete(usrUsuarioRolTmp.getUsrUsuarioRolPK());
+            usuarioRolRepository.flush();
+        }
 
         PerUsuarioUnidad pu = usuarioUnidadRepository.unidadPorIdPersona(perPersona);
         usuarioUnidadRepository.delete(pu);
         usuarioUnidadRepository.flush();
-        System.out.println("Elimina usuarioUnidad");
+        log.info("Elimina usuarioUnidad");
 
         PerUnidad unidadTmp = unidadRepository.unidadPorIdPersona(perPersona);
         unidadRepository.delete(unidadTmp);
         unidadRepository.flush();
-        System.out.println("Elimina unidad ");
+        log.info("Elimina unidad ");
 
         UsrUsuario usuarioTmp = usuarioRepository.findOne(usrUsuario.getIdUsuario());
         usuarioRepository.delete(usuarioTmp);
         usuarioRepository.flush();
-        System.out.println("Elimina usuario");
+        log.info("Elimina usuario");
 
         PerPersona personaTmp = personaRepository.findOne(perPersona);
         personaRepository.delete(personaTmp);
         personaRepository.flush();
-        System.out.println("Elimina a la persona");
+        log.info("Elimina a la persona");
         return true;
     }
 
