@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panel  id="pnlUnidadPrincipal">
+        <f:facet name="footer">
+            <p:commandButton id="cmdButtonPrinc" icon="ui-icon-pencil" value="Modificar"
+                             update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
+                             onclick="PF('dlgUnidad').show()">
+                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+        </f:facet>
+        <h:panelGrid columns="2">
+            <h:outputText value="Nombre comercial: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputText value="#{personaUnidadBean.unidad.nombreComercial}" readonly="true" style="width: 190px;"/>
+        </h:panelGrid>
+        <h:panelGrid columns="2">
+            <h:panelGrid columns="2">
+                <h:outputText value="Tipo de empresa:    &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+                <p:inputText value="#{personaUnidadBean.unidad.tipoEmpresa}" readonly="true" style="width: 190px;"/>
+
+                <h:outputText value="Fecha actividad:"/>
+                <p:inputText value="#{personaUnidadBean.unidad.fechaNacimiento}" readonly="true" style="width: 190px;">
+                    <f:convertDateTime pattern="dd/MM/yyyy hh:mm a"/>
+                </p:inputText>
+                <h:outputText value="Fundempresa:"/>
+                <p:inputText value="#{personaUnidadBean.unidad.nroFundaempresa}" readonly="true" style="width: 190px;"/>
+                <h:outputText value="Nro. AFP:"/>
+                <p:inputText value="#{personaUnidadBean.unidad.nroAfp}" readonly="true" style="width: 190px;"/>
+
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+                <h:outputText/>
+                <h:outputText/>
+                <h:outputText value="Tipo de sociedad: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+                <p:inputText value="#{personaUnidadBean.unidad.tipoSociedad}" readonly="true" style="width: 190px;"/>
+                <h:outputText value="Caja de salud: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;" />
+                <p:inputText value="#{personaUnidadBean.unidad.nroCajaSalud}" readonly="true" style="width: 190px;"/>
+                <h:outputText value="Nro. referencial:"/>
+                <p:inputText value="#{personaUnidadBean.unidad.nroReferencial}" readonly="true" style="width: 190px;"/>
+                <h:outputText value="Nro. otro:"/>
+                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 190px;"/>
+            </h:panelGrid>
+        </h:panelGrid>
+        <h:outputText value="Observaciones:&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+        <p:inputTextarea id="txtAreaObservacion" value="#{personaUnidadBean.unidad.observaciones}"
+                         rows="5"
+                         cols="50"
+                         autoResize="false"
+                         style="width: 510px;"
+                         tabindex="11"
+                         readonly="true"/>
+
+        <h:panelGrid columns="2">
+            <h:outputText value="Actividad declarada:&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputTextarea id="txtAreaActividadDeclarada" value="#{personaUnidadBean.unidad.actividadDeclarada}"
+                             rows="5"
+                             cols="50" autoResize="false"
+                             style="width: 510px;"
+                             tabindex="10"
+                             readonly="true"/>
+        </h:panelGrid>
+    </p:panel>
+</ui:composition>

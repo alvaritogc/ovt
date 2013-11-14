@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="./../template/templateInicio.xhtml">
+    <ui:define name="content">
+        <h3>Administración de Roles</h3>
+        <h:form id="rolFrm">
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+            <p:commandButton value="Nuevo" icon="ui-icon-circle-plus" action="#{rolAdministracionBean.instanciaRol}" oncomplete="nuevoDlg.show()" update=":rolNuevoFrm" />
+            <p:dataTable id="rolTbl" value="#{rolAdministracionBean.rolLista}" var="rol" paginator="true" rows="15" paginatorPosition="bottom">
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{rol.nombre}" />
+                </p:column>
+                <p:column headerText="Es Interno">
+                    <h:outputText value="#{rol.esInterno eq 1 ? 'SI' : 'NO'}" />
+                </p:column>
+                <p:column headerText="Estado">
+                    <h:outputText value="#{rol.estado}" />
+                </p:column>
+                <p:column headerText="Módulo">
+                    <h:outputText value="#{rol.idModulo.idModulo} - #{rol.idModulo.nombre}" />
+                </p:column>
+                <p:column headerText="Operaciones">
+                    <p:commandLink value="Editar" oncomplete="edicionDlg.show();" update=":rolEdicionFrm" style="color:#0066CC">
+                        <f:setPropertyActionListener value="#{rol}" target="#{rolAdministracionBean.rolSelected}" />
+                        <f:setPropertyActionListener value="#{rol.esInterno}" target="#{rolAdministracionBean.esInterno}" />
+                    </p:commandLink>
+                    <p:spacer width="5" />
+                    <p:commandLink value="Eliminar" oncomplete="eliminarDlg.show();" style="color:#0066CC">
+                        <!--<p:confirm header="Confirmar la eliminación" message="Está segúro de eliminar este rol?" icon="ui-icon-alert" />-->
+                        <f:setPropertyActionListener value="#{rol}" target="#{rolAdministracionBean.rolSelected}" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <!-- Dialogo para un nuevo Rol -->
+        <p:dialog widgetVar="nuevoDlg" modal="true" header="Nuevo Rol">
+            <h:form id="rolNuevoFrm">
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="nombreN" value="Nombre :" />
+                    <p:inputText id="nombreN" value="#{rolAdministracionBean.rolSelected.nombre}" required="true" />
+                    <p:outputLabel for="internoN" value="Es Interno :" />
+                    <p:selectOneMenu id="internoN" value="#{rolAdministracionBean.esInterno}">
+                        <f:selectItem itemLabel="SI" itemValue="#{1}" />
+                        <f:selectItem itemLabel="NO" itemValue="#{0}" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="estadoN" value="Estado :" />
+                    <p:selectOneMenu id="estadoN" value="#{rolAdministracionBean.rolSelected.estado}" required="true">
+                        <f:selectItem itemLabel="--Selección--" itemValue="#{null}" />
+                        <f:selectItems value="#{rolAdministracionBean.dominioLista}" var="dominios" itemLabel="#{dominios.descripcion}" itemValue="#{dominios.parDominioPK.valor}" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="moduloN" value="Módulo :" />
+                    <p:selectOneMenu id="moduloN" value="#{rolAdministracionBean.rolSelected.idModulo}" required="true">
+                        <f:selectItem itemLabel="--Selección--" itemValue="#{null}" />
+                        <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="moduloPojo" itemLabel="#{moduloPojo.idModulo} - #{moduloPojo.nombre}" />
+                        <f:converter converterId="moduloConverter" />
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <p:commandButton value="Guardar" action="#{rolAdministracionBean.guardarRol}" update=":rolFrm:rolTbl rolNuevoFrm" />
+                <p:commandButton value="Cancelar" onclick="nuevoDlg.hide();" immediate="true" />
+            </h:form>
+        </p:dialog>
+
+        <!-- Dialogo para editar el Rol -->
+        <p:dialog widgetVar="edicionDlg" modal="true" header="Editar Rol">
+            <h:form id="rolEdicionFrm">
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="nombreE" value="Nombre :" />
+                    <p:inputText id="nombreE" value="#{rolAdministracionBean.rolSelected.nombre}" required="true" />
+                    <p:outputLabel for="esInternoE" value="Es Interno :" />
+                    <p:selectOneMenu id="esInternoE" value="#{rolAdministracionBean.esInterno}">
+                        <f:selectItem itemLabel="SI" itemValue="#{1}" />
+                        <f:selectItem itemLabel="NO" itemValue="#{0}" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="estadoE" value="Estado :" />
+                    <p:selectOneMenu id="estadoE" value="#{rolAdministracionBean.rolSelected.estado}" required="true">
+                        <f:selectItem itemLabel="--Selección--" itemValue="#{null}" />
+                        <f:selectItems value="#{rolAdministracionBean.dominioLista}" var="dominios" itemLabel="#{dominios.descripcion}" itemValue="#{dominios.parDominioPK.valor}" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="moduloE" value="Módulo :" />
+                    <p:selectOneMenu id="moduloE" value="#{rolAdministracionBean.rolSelected.idModulo}" required="true" >
+                        <f:selectItem itemLabel="--Selección--" itemValue="#{null}" />
+                        <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="moduloPojo" itemLabel="#{moduloPojo.idModulo} - #{moduloPojo.nombre}" />
+                        <f:converter converterId="moduloConverter" />
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <p:commandButton value="Guardar" action="#{rolAdministracionBean.editarRol}" update=":rolFrm:rolTbl rolEdicionFrm" />
+                <p:commandButton value="Cancelar" onclick="edicionDlg.hide();" immediate="true" />
+            </h:form>
+        </p:dialog>
+
+        <!-- Dialgo de confirmacion para la eliminación -->
+        <p:confirmDialog widgetVar="eliminarDlg" global="true" showEffect="fade" hideEffect="explode" message="Está segúro de eliminar este rol?" header="Confirmar la eliminación">
+            <p:commandButton value="Si" action="#{rolAdministracionBean.eliminarRol}" oncomplete="eliminarDlg.hide();" update=":rolFrm:rolTbl" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+            <p:commandButton value="No" type="button"  styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        </p:confirmDialog>
+
+    </ui:define>
+</ui:composition>
+</html>
+
+
