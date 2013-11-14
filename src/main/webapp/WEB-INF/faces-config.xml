@@ -41,6 +41,12 @@
             <redirect include-view-params="false">
             </redirect>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>irContenidos</from-outcome>
+            <to-view-id>/pages/contenidos/contenidos.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
+        </navigation-case>
     </navigation-rule>
 
 </faces-config>

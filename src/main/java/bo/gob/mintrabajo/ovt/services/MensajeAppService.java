@@ -83,4 +83,13 @@ public class MensajeAppService implements IMensajeAppService{
         return repository.buscarPorRecurso(idRecurso);
     }
     
+    @Override
+    public ParMensajeApp guardar(ParMensajeApp mensajeApp){
+        Long id=new Long(repository.findAll().size()+10);
+        mensajeApp.setIdMensajeApp(id);
+        mensajeApp.setRegistroBitacora("OVT");
+        mensajeApp.setFechaBitacora(new Date());
+        return repository.save(mensajeApp);
+    }
+    
 }

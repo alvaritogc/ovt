@@ -9,5 +9,5 @@ public interface IMensajeAppService {
     public ParMensajeApp buscarPorRecurso(String etiqueta);
     public ParMensajeApp buscarPorRecurso(Long idRecurso);
     public List<ParMensajeApp> listarPorRecurso(Long idRecurso);
-    
+    public ParMensajeApp guardar(ParMensajeApp mensajeApp);
 }

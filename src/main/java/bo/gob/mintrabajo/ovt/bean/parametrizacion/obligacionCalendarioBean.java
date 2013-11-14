@@ -92,14 +92,14 @@ public class obligacionCalendarioBean implements Serializable{
         RequestContext context = RequestContext.getCurrentInstance();
         if(codObligacionForm.isEmpty() || codObligacionForm== null ){ return;}
         if(obligacionCalendario.getTipoCalendario().isEmpty()){return;}
-        if(obligacionCalendario.getGestion().isEmpty()){return;}
+        //if(obligacionCalendario.getGestion().isEmpty()){return;}
         if(obligacionCalendario.getFechaDesde().toString().isEmpty()){return;}
         if(obligacionCalendario.getFechaHasta().toString().isEmpty()){return;}
         if(obligacionCalendario.getFechaPlazo().toString().isEmpty()){return;}
         context.execute("dlgFormObligacionCalendario.hide();");
         
         obligacionCalendario.setTipoCalendario(obligacionCalendario.getTipoCalendario().toUpperCase());
-        obligacionCalendario.setGestion(obligacionCalendario.getGestion().toUpperCase());
+        //obligacionCalendario.setGestion(obligacionCalendario.getGestion().toUpperCase());
         ParObligacion parObligacion= new ParObligacion();
         parObligacion= iObligacionService.obligacionPorCod(codObligacionForm);
         

@@ -8,20 +8,39 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="./../template/templateInicio.xhtml">
         <ui:define name="content">
-            <h:form>
+            <h:form id="idContenidoRecurso">
                 <h3>Contenido recurso</h3>
-                <p:dataTable value="#{contenidoRecursoBean.listaMensajeApp}" paginatorPosition="bottom" paginator="true"
+                <p:dataTable id="idListaMensajeApp" value="#{contenidoRecursoBean.listaMensajeApp}" paginatorPosition="bottom" paginator="true"
                              var="mensajeApp"  rows="10" emptyMessage="No se encontraron resultados" >
                     <p:column headerText="Código">
                         <h:outputText value="#{mensajeApp.mensaje}"/>
                     </p:column>
                     <p:column headerText="Acciones">
                         <p:commandButton icon="ui-icon-print" 
-                                         action="#{contenidoRecursoBean.editar}" title="Imprimir documento" ajax="false">
+                                         action="#{contenidoRecursoBean.editar}" title="Editar" immediate="true">
                             <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
+<!--                <p:commandButton value="Nuevo contenido" 
+                                 onclick="PF('contenidoRecursoDlg').show();"
+                                 type="button"
+                                 update=":idContenidoRecurso:contenidoRecursoDialog"/>  -->
+                <p:dialog id="contenidoRecursoDialog" header="Nuevo contenido" widgetVar="contenidoRecursoDlg">  
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Mensaje:"/>
+                        <p:inputText value="#{contenidoRecursoBean.mensajeApp.mensaje}"/>
+                        <p:outputLabel value="Referencia:"/>
+                        <p:inputText value="#{contenidoRecursoBean.mensajeApp.referencia}"/>
+                        <p:outputLabel value="Fecha desde:"/>
+                        <p:calendar value="#{contenidoRecursoBean.mensajeApp.fechaDesde}" showOn="button" />  
+                        <p:outputLabel value="Fecha hasta:"/>
+                        <p:calendar value="#{contenidoRecursoBean.mensajeApp.fechaHasta}" showOn="button" />  
+                    </h:panelGrid>
+                    <p:commandButton value="Guardar" 
+                                     action="#{contenidoRecursoBean.guardar}" 
+                                     update=":idContenidoRecurso:idListaMensajeApp"/>
+                </p:dialog>
             </h:form>
         </ui:define>
     </ui:composition>

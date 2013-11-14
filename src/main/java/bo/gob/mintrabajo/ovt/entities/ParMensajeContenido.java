@@ -45,7 +45,6 @@ public class ParMensajeContenido implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID_MENSAJE_CONTENIDO")
     private Long idMensajeContenido;
-    @Basic(optional = false)
     @Lob
     @Column(name = "BINARIO")
     private byte[] binario;

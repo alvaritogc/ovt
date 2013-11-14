@@ -90,6 +90,11 @@ public class TemplateInicioBean implements Serializable {
     private String contrasenia;
     private String nuevaContrasenia;
     private String confirmarContrasenia;
+    
+    //Variables para los servicios publicos
+    private List<ParMensajeApp> listaMensajeApp;
+    private ParMensajeApp mensajeApp;
+    //
 
     @PostConstruct
     public void ini() {
@@ -143,7 +148,7 @@ public class TemplateInicioBean implements Serializable {
             model.addElement(item);
         }
         cargarRercursoContenido();
-
+        cargarServiciosPublicos();
     }
 
     public void cargar() {
@@ -344,6 +349,20 @@ public class TemplateInicioBean implements Serializable {
         }
         
     }
+    
+    public void verMensajeApp(){
+        FacesContext contex = FacesContext.getCurrentInstance();
+        try {
+            contex.getExternalContext().redirect( "/ovt/faces/pages/contenidos/contenidoPublico.xhtml?p="+mensajeApp.getIdMensajeApp());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
+    public void cargarServiciosPublicos(){
+        listaMensajeApp=iMensajeAppService.listarPorRecurso(new Long("1000"));
+    }
 
     public IUsuarioUnidadService getiUsuarioUnidadService() {
         return iUsuarioUnidadService;
@@ -522,5 +541,22 @@ public class TemplateInicioBean implements Serializable {
 
     public void setNombreDeUnidad(String nombreDeUnidad) {
         this.nombreDeUnidad = nombreDeUnidad;
+    }
+
+
+    public List<ParMensajeApp> getListaMensajeApp() {
+        return listaMensajeApp;
+    }
+
+    public void setListaMensajeApp(List<ParMensajeApp> listaMensajeApp) {
+        this.listaMensajeApp = listaMensajeApp;
+    }
+
+    public ParMensajeApp getMensajeApp() {
+        return mensajeApp;
+    }
+
+    public void setMensajeApp(ParMensajeApp mensajeApp) {
+        this.mensajeApp = mensajeApp;
     }
 }

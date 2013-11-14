@@ -56,6 +56,10 @@
             /*.ui-widget-content {*/
             /*border: none;*/
             /*}*/
+            .hPanelGridCentro {
+                text-align: center;
+                width: 100%;
+            }
 
         </style>
     </h:head>
@@ -189,7 +193,7 @@
                                              tabindex="2"
                                              process="@form"
                                              update=":frmCambiarContrasenia"
-                                    >
+                                             >
 
                             </p:commandButton>
 
@@ -205,10 +209,17 @@
                                 </p:commandLink>
                             </p:column>
                         </p:dataTable>
+                        <p:dataTable var="mensajeApp" value="#{templateInicioBean.listaMensajeApp}">  
+                            <p:column headerText="Servicios públicos">
+                                <p:commandLink value="#{mensajeApp.mensaje}" action="#{templateInicioBean.verMensajeApp}">
+                                    <f:setPropertyActionListener value="#{mensajeApp}" target="#{templateInicioBean.mensajeApp}" />  
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
                         <br/>
                         <p:panel  header="Descargas">
-<!--                            <a href="# {facesContext.externalContext.requestContextPath}/faces/pages/publico/informacion.xhtml"> Pasos trámite planilla  trimestral</a>
-                            <br/><br/>-->
+                            <!--                            <a href="# {facesContext.externalContext.requestContextPath}/faces/pages/publico/informacion.xhtml"> Pasos trámite planilla  trimestral</a>
+                                                        <br/><br/>-->
                             <a href="#{facesContext.externalContext.requestContextPath}/faces/pages/publico/descargarPlanilla.xhtml"> Descarga de formatos de planillas </a>
                         </p:panel>
                     </h:form>
@@ -218,7 +229,7 @@
                     <h:form id="idBarraDeMenu" rendered="#{!(templateInicioBean.idUsuario == null)}">
                         <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
                             <f:facet name="options">
-                              <p:commandLink value="Cambiar Password" onclick="PF('dlgCambiarContrasenia').show();" style="color:red;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
+                                <p:commandLink value="Cambiar Password" onclick="PF('dlgCambiarContrasenia').show();" style="color:red;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
                             </f:facet>
                         </p:menubar> 
                     </h:form>

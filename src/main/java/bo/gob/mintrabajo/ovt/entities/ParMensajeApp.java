@@ -67,8 +67,8 @@ public class ParMensajeApp implements Serializable {
     @JoinColumn(name = "ID_RECURSO", referencedColumnName = "ID_RECURSO")
     @ManyToOne(fetch = FetchType.LAZY)
     private UsrRecurso idRecurso;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMensajeApp", fetch = FetchType.LAZY)
-    private List<ParMensajeContenido> parMensajeContenidoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMensajeApp", fetch = FetchType.LAZY)
+//    private List<ParMensajeContenido> parMensajeContenidoList;
 
     public ParMensajeApp() {
     }
@@ -147,13 +147,13 @@ public class ParMensajeApp implements Serializable {
         this.idRecurso = idRecurso;
     }
 
-    public List<ParMensajeContenido> getParMensajeContenidoList() {
-        return parMensajeContenidoList;
-    }
-
-    public void setParMensajeContenidoList(List<ParMensajeContenido> parMensajeContenidoList) {
-        this.parMensajeContenidoList = parMensajeContenidoList;
-    }
+//    public List<ParMensajeContenido> getParMensajeContenidoList() {
+//        return parMensajeContenidoList;
+//    }
+//
+//    public void setParMensajeContenidoList(List<ParMensajeContenido> parMensajeContenidoList) {
+//        this.parMensajeContenidoList = parMensajeContenidoList;
+//    }
 
     @Override
     public int hashCode() {
