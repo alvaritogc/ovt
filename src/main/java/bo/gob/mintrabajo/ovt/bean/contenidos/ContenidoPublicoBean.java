@@ -75,7 +75,7 @@ public class ContenidoPublicoBean {
 
     public void cargar() {
         mensajeContenido = new ParMensajeContenido();
-        listaMensajeContenido = iMensajeContenidoService.findByAll();
+        listaMensajeContenido = iMensajeContenidoService.listarPorMensajeApp(idMensajeApp);
     }
     
     public void descargar() {

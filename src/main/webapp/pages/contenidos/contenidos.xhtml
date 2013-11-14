@@ -19,17 +19,18 @@
                              var="mensajeContenido"  rows="10" >
                     <h:column>
                         <p:panelGrid columns="1" style="width: 100%;">
-                            <h:outputText value="#{mensajeContenido.contenido}" escape="false" 
-                                          rendered="#{mensajeContenido.esDescargable==0?true:false}"/> 
 
-                            <h:panelGrid columns="1" style="width: 100%;text-align: center;"
-                                         rendered="#{mensajeContenido.esDescargable==0?true:false and  mensajeContenido.metadata!=''}">
-                                
+
+                            <h:panelGrid columns="1" style="width: 100%;"
+                                         rendered="#{mensajeContenido.esDescargable==0?true:false}">
+                                <h:outputText value="#{mensajeContenido.contenido}" escape="false"/>
+                                <h:panelGrid columns="1" style="width: 100%;text-align: center;"
+                                             rendered="#{mensajeContenido.metadata=='image/jpeg'}">
                                     <p:graphicImage value="#{images.image}" cache="false" height="50">
                                         <f:param name="id" value="#{mensajeContenido.idMensajeContenido}" />
                                     </p:graphicImage>
-                                <p:outputLabel value="#{mensajeContenido.archivo}"/>
-                                
+                                    <p:outputLabel value="#{mensajeContenido.archivo}"/>
+                                </h:panelGrid>
                             </h:panelGrid>
                             <p:commandButton value="Descargar: #{mensajeContenido.archivo}" 
                                              rendered="#{mensajeContenido.esDescargable==1?true:false}"
@@ -73,10 +74,12 @@
                                   invalidSizeMessage="Archivo demasiado grande."
                                   update="messages idFileUploadContenido" auto="true"  allowTypes="/(\.|\/)(gif|jpe?g|png|txt)$/"/> 
                     <p:commandButton value="Guardar" action="#{contenidoBean.guardar}" update=":idContenidos:idListaContenidos"/>
-                    
+
                 </p:dialog>
                 <p:dialog id="contenidoDescargaDialog" header="Contenido Dialog" widgetVar="condenidoDescargaDlg">  
-                    <p:growl id="messagesDescarga" showDetail="true"/>  
+                    <br/>
+                    <p:outputLabel id="messagesDescarga" value="Descarga: #{contenidoBean.mensajeContenido.archivo}" style="font-size: 20px;"/>
+                    <br/>
                     <p:fileUpload fileUploadListener="#{contenidoBean.subirArchivo}" mode="advanced"  
                                   uploadLabel="Subir" cancelLabel="Cancelar"
                                   label="Seleccione"

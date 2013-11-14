@@ -11,4 +11,12 @@ import org.springframework.data.repository.query.Param;
 
 @OpenJpaSettings
 public interface MensajeContenidoRepository extends OpenJpaRepository<ParMensajeContenido, Long>{
+    @Query(
+            "   select m "
+            + " from ParMensajeContenido m"
+            + " where "
+            + " m.idMensajeApp.idMensajeApp = :idMensajeApp"
+            + " order by m.idMensajeContenido asc"
+            )
+    List<ParMensajeContenido> listarPorMensajeApp(@Param("idMensajeApp") Long idMensajeApp);
 }

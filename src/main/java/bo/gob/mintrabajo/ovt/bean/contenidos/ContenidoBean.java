@@ -80,30 +80,30 @@ public class ContenidoBean {
 
     public void cargar() {
         mensajeContenido = new ParMensajeContenido();
-        listaMensajeContenido = iMensajeContenidoService.findByAll();
+        listaMensajeContenido = iMensajeContenidoService.listarPorMensajeApp(idMensajeApp);
     }
 
     public void nuevoContenido() {
         System.out.println("=============================");
         System.out.println("=============================");
-        System.out.println("Nuevo");
+        System.out.println("Nuevo contenido");
         System.out.println("=============================");
         System.out.println("=============================");
         mensajeContenido = new ParMensajeContenido();
         mensajeContenido.setEsDescargable(new Short("0"));
         mensajeContenido.setBinario(null);
-        mensajeContenido.setMetadata("");
+        mensajeContenido.setMetadata("N/A");
     }
     public void nuevoContenidoDescarga() {
         System.out.println("=============================");
         System.out.println("=============================");
-        System.out.println("Nuevo");
+        System.out.println("Nuevo contenido descarga");
         System.out.println("=============================");
         System.out.println("=============================");
         mensajeContenido = new ParMensajeContenido();
         mensajeContenido.setEsDescargable(new Short("1"));
         mensajeContenido.setBinario(null);
-        mensajeContenido.setMetadata("");
+        mensajeContenido.setMetadata("N/A");
     }
 
     public void guardar() {

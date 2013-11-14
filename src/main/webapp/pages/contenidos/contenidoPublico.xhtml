@@ -18,16 +18,17 @@
                              var="mensajeContenido"  rows="10" >
                     <h:column>
                         <h:panelGrid columns="1" style="width: 100%;">
-                            <h:outputText value="#{mensajeContenido.contenido}" escape="false" 
-                                          rendered="#{mensajeContenido.esDescargable==0?true:false}"/> 
-
-                            <h:panelGrid columns="1" class="hPanelGridCentro"
-                                         rendered="#{mensajeContenido.esDescargable==0?true:false and  mensajeContenido.metadata!=''}">
-                                
-                                <p:graphicImage value="#{images.image}" cache="false" width="400" height="300">
+                            <h:panelGrid columns="1" 
+                                         rendered="#{mensajeContenido.esDescargable==0?true:false}">
+                                <h:outputText value="#{mensajeContenido.contenido}" escape="false" /> 
+                                <h:panelGrid columns="1" class="hPanelGridCentro"
+                                             rendered="#{mensajeContenido.metadata=='image/jpeg'}">
+                                    <p:graphicImage value="#{images.image}" cache="false">
                                         <f:param name="id" value="#{mensajeContenido.idMensajeContenido}" />
                                     </p:graphicImage>
-                                
+                                </h:panelGrid>
+
+
                             </h:panelGrid>
                             <p:commandButton value="Descargar: #{mensajeContenido.archivo}" 
                                              rendered="#{mensajeContenido.esDescargable==1?true:false}"
