@@ -207,7 +207,8 @@
 
                     <h:form>
                         <p:dataTable var="mensajeApp" value="#{templateInicioBean.listaMensajeApp}">  
-                            <p:column headerText="Servicios públicos">
+                            <p:column headerText="Servicios públicos"
+                                      emptyMessage="No se encontraron servicios públicos">
                                 <p:commandLink value="#{mensajeApp.mensaje}" action="#{templateInicioBean.verMensajeApp}">
                                     <f:setPropertyActionListener value="#{mensajeApp}" target="#{templateInicioBean.mensajeApp}" />  
                                 </p:commandLink>

@@ -334,7 +334,7 @@ public class TemplateInicioBean implements Serializable {
     }
     
     public void cargarServiciosPublicos(){
-        listaMensajeApp=iMensajeAppService.listarPorRecurso(new Long("1000"));
+        listaMensajeApp=iMensajeAppService.listarPorRecursoYFechaActual(new Long("1000"));
     }
 
     public IUsuarioUnidadService getiUsuarioUnidadService() {

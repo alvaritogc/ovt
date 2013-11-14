@@ -51,19 +51,16 @@ public class MensajeAppService implements IMensajeAppService{
     }
     
     @Override
-    public ParMensajeApp buscarPorRecurso(String etiqueta) {
+    public List<ParMensajeApp> listarPorRecursoYFechaActual(Long idRecurso) {
         List<ParMensajeApp> lista=null;
         try{
-            lista=repository.buscarPorRecursoFecha(etiqueta,new Date());
+            lista=repository.listarPorRecursoYFecha(idRecurso,new Date());
         }
         catch(Exception e){
             e.printStackTrace();
             throw new RuntimeException("Error al buscar ParMensajeApp.");
         }
-        if(lista.size()==0){
-            throw new RuntimeException("Error al encontrar ParMensajeApp");
-        }
-        return lista.get(0);
+        return lista;
     }
     
      @Override
