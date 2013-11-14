@@ -54,28 +54,8 @@ public class ContenidoBean {
     public void ini() {
         logger.info("ContenidosBean.init()");
         idMensajeApp = (Long)session.getAttribute("idMensajeApp");
-        //idMensajeApp = cargarIdRecurso();
-        System.out.println("idMensajeApp: " + idMensajeApp);
         mensajeApp = iMensajeAppService.findById(idMensajeApp);
         cargar();
-    }
-
-    public Long cargarIdRecurso() {
-        try {
-            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p") == null) {
-                System.out.println("Error al cargar p, no se encuentra el valor p, p=null");
-                return null;
-            }
-
-            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p") != null) {
-                String p = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p");
-                return new Long(p);
-            }
-        } catch (Exception e) {
-            System.out.println("Error al cargar p: " + e.getMessage());
-            return null;
-        }
-        return null;
     }
 
     public void cargar() {
@@ -84,22 +64,12 @@ public class ContenidoBean {
     }
 
     public void nuevoContenido() {
-        System.out.println("=============================");
-        System.out.println("=============================");
-        System.out.println("Nuevo contenido");
-        System.out.println("=============================");
-        System.out.println("=============================");
         mensajeContenido = new ParMensajeContenido();
         mensajeContenido.setEsDescargable(new Short("0"));
         mensajeContenido.setBinario(null);
         mensajeContenido.setMetadata("N/A");
     }
     public void nuevoContenidoDescarga() {
-        System.out.println("=============================");
-        System.out.println("=============================");
-        System.out.println("Nuevo contenido descarga");
-        System.out.println("=============================");
-        System.out.println("=============================");
         mensajeContenido = new ParMensajeContenido();
         mensajeContenido.setEsDescargable(new Short("1"));
         mensajeContenido.setBinario(null);
@@ -107,28 +77,24 @@ public class ContenidoBean {
     }
 
     public void guardar() {
-        System.out.println("texto :" + mensajeContenido.getContenido());
         if(mensajeContenido.getEsDescargable()==new Short("1")){
             mensajeContenido.setContenido("");
         }
-        
         //
         mensajeContenido.setIdMensajeApp(mensajeApp);
-        
         mensajeContenido = iMensajeContenidoService.save(mensajeContenido);
-        //
-        mensajeContenido = new ParMensajeContenido();
-        cargar();
-        //
-        mensajeApp = iMensajeAppService.findById(idMensajeApp);
-        //mensajeContenido=iMensajeContenidoService.save(mensajeContenido);
-        //
-        //cargar();
-        //
-//        RequestContext context = RequestContext.getCurrentInstance();
-//        context.execute("condenidoDlg.hide()");
-//        context.execute("condenidoDescargaDlg.hide()");
-        //
+//        mensajeContenido = new ParMensajeContenido();
+//        cargar();
+//        //
+//        mensajeApp = iMensajeAppService.findById(idMensajeApp);
+//        //mensajeContenido=iMensajeContenidoService.save(mensajeContenido);
+//        //
+//        //cargar();
+//        //
+////        RequestContext context = RequestContext.getCurrentInstance();
+////        context.execute("condenidoDlg.hide()");
+////        context.execute("condenidoDescargaDlg.hide()");
+//        //
         try{
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
@@ -142,15 +108,12 @@ public class ContenidoBean {
     }
     
     public void eliminar(){
-        System.out.println("eliminar");
         iMensajeContenidoService.delete(mensajeContenido.getIdMensajeContenido());
         mensajeContenido=new ParMensajeContenido();
         cargar();
     }
 
     public void descargar() {
-        System.out.println("descargar");
-        System.out.println("mensaje: " + mensajeContenido.getContenido());
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ExternalContext externalContext = facesContext.getExternalContext();
@@ -174,10 +137,6 @@ public class ContenidoBean {
     }
 
     public void subirArchivo(FileUploadEvent event) {
-        System.out.println("SubirArchivo");
-        //FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-        //FacesContext.getCurrentInstance().addMessage(null, msg);
-
         mensajeContenido.setArchivo(event.getFile().getFileName());
         mensajeContenido.setBinario(event.getFile().getContents());
         mensajeContenido.setMetadata(event.getFile().getContentType());

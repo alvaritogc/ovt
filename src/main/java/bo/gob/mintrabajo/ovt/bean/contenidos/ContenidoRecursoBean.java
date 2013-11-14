@@ -15,6 +15,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import javax.faces.context.ExternalContext;
 
 //import bo.gob.mintrabajo.ovt.envano.DobleTrabajoConexion;
 //import java.util.Collection;
@@ -34,34 +36,33 @@ public class ContenidoRecursoBean {
     private List<ParMensajeApp> listaMensajeApp;
     private ParMensajeApp mensajeApp;
     //
+    private Long idRecurso;
 
     @PostConstruct
     public void ini() {
         logger.info("ContenidosBean.init()");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        Map params = ec.getRequestParameterMap();
+        String parametro= params.get("p").toString();
+        idRecurso=parametro!=null?new Long(parametro):new Long("1000");
         cargar();
     }
     
     public void cargar(){
         mensajeApp=new ParMensajeApp();
-        listaMensajeApp=iMensajeAppService.listarPorRecurso(new Long("1000"));
+        listaMensajeApp=iMensajeAppService.listarPorRecurso(idRecurso);
     }
     
     public String editar(){
-        System.out.println("mensajeApp: "+mensajeApp.getMensaje());
         session.setAttribute("idMensajeApp", mensajeApp.getIdMensajeApp());
         return "irContenidos";
     }
     public void nuevo(){
-        System.out.println("===========================");
-        System.out.println("===========================");
-        System.out.println("Nuevo");
-        System.out.println("===========================");
-        System.out.println("===========================");
         mensajeApp=new ParMensajeApp();
     }
     
     public void guardar(){
-        mensajeApp=iMensajeAppService.guardar(mensajeApp,new Long("1000"));
+        mensajeApp=iMensajeAppService.guardar(mensajeApp,idRecurso);
         mensajeApp=new ParMensajeApp();
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("contenidoRecursoDlg.hide()");
@@ -69,11 +70,6 @@ public class ContenidoRecursoBean {
     }
     
     public void eliminar(){
-        System.out.println("==================");
-        System.out.println("==================");
-        System.out.println("Eliminar");
-        System.out.println("==================");
-        System.out.println("==================");
         iMensajeAppService.delete(mensajeApp.getIdMensajeApp());
         cargar();
     }
