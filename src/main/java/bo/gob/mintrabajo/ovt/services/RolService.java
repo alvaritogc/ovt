@@ -5,12 +5,17 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IRolService;
+import bo.gob.mintrabajo.ovt.entities.UsrModulo;
 import bo.gob.mintrabajo.ovt.entities.UsrRol;
+import bo.gob.mintrabajo.ovt.repositories.ModuloRepository;
 import bo.gob.mintrabajo.ovt.repositories.RolRepository;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -22,37 +27,51 @@ import java.util.List;
 @Named("rolService")
 @TransactionAttribute
 public class RolService implements IRolService{
+
     private final RolRepository rolRepository;
+
+    @PersistenceContext(unitName = "entityManagerFactory")
+    private EntityManager entityManager;
 
     @Inject
     public RolService(RolRepository rolRepository) {
         this.rolRepository = rolRepository;
     }
     
-//    @Override
+    @Override
     public List<UsrRol> getAllRoles() {
-        List<UsrRol> allRoles;
 
         try {
-            allRoles = rolRepository.findAll();
+            return rolRepository.findAll();
         } catch (Exception e) {
             e.printStackTrace();
-            allRoles = null;
         }
-        return allRoles;
+        return null;
     }
     
-//    @Override
-    public UsrRol save(UsrRol rol) {
-        UsrRol usrRolEntity;
-        usrRolEntity = rolRepository.save(rol);
-        return usrRolEntity;
+    @Override
+    public UsrRol save(UsrRol rol, short esInterno) {
+        if(rol.getIdRol() == null){
+            Long tmp_id = obtenerSecuenciaId("USR_ROL_SEC");
+            rol.setIdRol(tmp_id);
+            rol.setRegistroBitacora("ROE");
+            rol.setFechaBitacora(new Date());
+        }
+        rol.setEsInterno(esInterno);
+        return rolRepository.save(rol);
     }
 
-//    @Override
+    @Override
     public boolean delete(UsrRol rol) {
-        boolean deleted = false;
-        rolRepository.delete(rol);
+        boolean deleted;
+        try {
+            UsrRol usrRolTmp = rolRepository.findOne(rol.getIdRol());
+            rolRepository.delete(usrRolTmp);
+            rolRepository.flush();
+            deleted = true;
+        } catch (Exception e) {
+            deleted = false;
+        }
         return deleted;
     }
 
@@ -61,6 +80,12 @@ public class RolService implements IRolService{
         UsrRol usrRolEntity;
         usrRolEntity = rolRepository.findOne(id);
         return usrRolEntity;
+    }
+
+    public Long obtenerSecuenciaId(String nombreSecuencia){
+        BigDecimal tmp = (BigDecimal) entityManager.createNativeQuery("SELECT " + nombreSecuencia + ".nextval FROM DUAL").getSingleResult();
+        Long IdLong = tmp.longValue();
+        return IdLong;
     }
     
 }

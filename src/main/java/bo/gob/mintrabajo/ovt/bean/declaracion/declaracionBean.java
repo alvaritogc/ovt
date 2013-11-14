@@ -226,6 +226,7 @@ public class declaracionBean implements Serializable {
         logger.info("generaDocumento()");
         documento = new DocDocumento();
         documento.setIdPersona(persona);
+        
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(persona.getIdPersona(), 0L)));
 
         if(parametro==1)

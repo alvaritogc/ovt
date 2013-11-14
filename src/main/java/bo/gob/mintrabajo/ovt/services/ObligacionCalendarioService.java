@@ -1,20 +1,20 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
-import bo.gob.mintrabajo.ovt.entities.ParEntidad;
 import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 import bo.gob.mintrabajo.ovt.repositories.ObligacionCalendarioRepository;
-import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
+import java.math.BigDecimal;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * Created with IntelliJ IDEA. User: gmercado Date: 10/10/13 Time: 5:56 PM To
@@ -25,6 +25,8 @@ import java.util.concurrent.TimeUnit;
 public class ObligacionCalendarioService implements IObligacionCalendarioService {
 
     private final ObligacionCalendarioRepository obligacionCalendarioRepository;
+    @PersistenceContext(unitName = "entityManagerFactory")
+    private EntityManager entityManager;
 
     @Inject
     public ObligacionCalendarioService(ObligacionCalendarioRepository obligacionCalendarioRepository) {
@@ -56,22 +58,47 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
     }
     
     @Override
-    public ParObligacionCalendario saveObligacionCalendario(ParObligacionCalendario obligacionCalendario){               
-        ParObligacionCalendario parObligacionCalendario;
-        try {
-            parObligacionCalendario = obligacionCalendarioRepository.save(obligacionCalendario);
+    public ParObligacionCalendario saveObligacionCalendario(ParObligacionCalendario obligacionCalendario, String REGISTRO_BITACORA, ParObligacion parObligacion, boolean evento){               
+        ParObligacionCalendario poc=new ParObligacionCalendario();
+        
+        if(obligacionCalendario.getIdObligacionCalendario()==null && !evento){
+            poc.setIdObligacionCalendario(this.valorSecuencia("PAR_OBLIGACION_CALENDARIO_SEC"));
+        }else{
+            poc=obligacionCalendarioRepository.findOne(obligacionCalendario.getIdObligacionCalendario());
+        }
+        
+        poc.setCodObligacion(parObligacion);
+        poc.setTipoCalendario(obligacionCalendario.getTipoCalendario());
+        //poc.setGestion(obligacionCalendario.getGestion());
+        poc.setFechaDesde(obligacionCalendario.getFechaDesde());
+        poc.setFechaHasta(obligacionCalendario.getFechaHasta());
+        poc.setFechaPlazo(obligacionCalendario.getFechaPlazo());
+        
+        poc.setFechaBitacora(new Date());
+        poc.setRegistroBitacora(REGISTRO_BITACORA);
+        
+//        System.out.println("========>" + obligacionCalendario);
+//        System.out.println("========>" + obligacionCalendario);
+//        System.out.println("========>" + obligacionCalendario);
+//        System.out.println("========>" + obligacionCalendario);
+//        System.out.println("========>" + obligacionCalendario);
+//        System.out.println("========>" + obligacionCalendario);
+        try {    
+            obligacionCalendario = obligacionCalendarioRepository.save(poc);
         } catch (Exception e) {
             e.printStackTrace();
-            parObligacionCalendario = null;
+            obligacionCalendario = null;
         }
-        return parObligacionCalendario;
+        return obligacionCalendario;
     }
     
     @Override
     public boolean deleteObligacionCalendario(ParObligacionCalendario obligacionCalendario){
         boolean deleted = false;
         try {
-            obligacionCalendarioRepository.delete(obligacionCalendario);
+            ParObligacionCalendario poc = obligacionCalendarioRepository.findOne(obligacionCalendario.getIdObligacionCalendario());
+            obligacionCalendarioRepository.delete(poc);
+            obligacionCalendarioRepository.flush();
             deleted = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,6 +123,11 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
             lista = null;
         }
         return lista;
+    }
+    public Long valorSecuencia (String nombreSecuencia){
+        BigDecimal rtn;
+        rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
+        return rtn.longValue();
     }
 
 }

@@ -2,8 +2,6 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:rich="http://richfaces.org/rich"
-                xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:p="http://primefaces.org/ui">
 
 <h:form id="frmDireccion">
@@ -11,8 +9,9 @@
      <f:facet name="footer">
          <p:commandButton value="#{personaUnidadBean.tituloDialog}"
                           icon="#{personaUnidadBean.iconoUnidad}"
-                          action="#{personaUnidadBean.procesarUnidad}"
+                          action="#{personaUnidadBean.procesarDireccion}"
                           id="cmdButtonDireccion"
+                          update=":tabPersonaUnidad:tabDireccion,:dataGrid"
                  />
      </f:facet>
 
@@ -23,11 +22,11 @@
          <h:outputText value="Tipo de direccion:   "/>
          <p:selectOneMenu id="slcOneMenuTipoDireccion" value="#{personaUnidadBean.direccion.tipoDireccion}"
                           tabindex="1"
-                          style="width: 220px;"
+                          style="width: 220px;text-transform: uppercase"
                           required="true"
                           requiredMessage="El campo Tipo de direccion es obligatorio.">
              <f:selectItem itemLabel="---Seleccione una direccion---" itemValue="0" />
-             <f:selectItems value="#{personaBean.listaTipoEmpresa}" />
+             <f:selectItems value="#{personaUnidadBean.listaTipoDirecciones}" />
          </p:selectOneMenu>
 
          <h:outputText value="Direccion:"/>
@@ -36,31 +35,37 @@
                           cols="50"
                           autoResize="false"
                           style="width: 220px;text-transform: uppercase;"
-                          tabindex="11"
+                          tabindex="2"
                           required="true"
-                          requiredMessage="El campo Direccion es obligatorio."/>
+                          requiredMessage="El campo Direccion es obligatorio.">
+             <f:converter converterId="lowerConverter"/>
+         </p:inputTextarea>
 
          <h:outputText value="Zona:"/>
          <p:inputText id="txtAreaZona" value="#{personaUnidadBean.direccion.zonaUrbanizacion}"
                       style="width: 220px;text-transform: uppercase;"
-                      tabindex="11"
+                      tabindex="3"
                       required="true"
-                      requiredMessage="El campo Zona es obligatorio."/>
+                      requiredMessage="El campo Zona es obligatorio.">
+             <f:converter converterId="lowerConverter"/>
+         </p:inputText>
 
 
          <h:outputText value="Piso, Depto u Oficina:"/>
          <p:inputText id="inputTxtPiso" value="#{personaUnidadBean.direccion.pisoDepOfi}"
                       style="width: 60px;text-transform: uppercase;"
-                      tabindex="3"
+                      tabindex="4"
                       required="true"
-                      requiredMessage="El campo Nombre comercial es obligatorio."/>
-         <h:outputText value="Cod. localidad:"/>
-         <p:inputText id="inputTxtCodLocalidad" value="#{personaUnidadBean.direccion.codLocalidad}"
-                      style="width: 60px;"
-                      tabindex="3"
-                      required="true"
-                      requiredMessage="El campo Nombre comercial es obligatorio."/>
-
+                      requiredMessage="El campo Nombre comercial es obligatorio.">
+             <f:converter converterId="lowerConverter"/>
+         </p:inputText>
+         <h:outputText value="Localidad:"/>
+         <p:selectOneMenu id="slcOneMenuLocalidad" value="#{personaUnidadBean.idLocalidad}"
+                          tabindex="5"
+                          style="text-transform: uppercase;">
+             <f:selectItem itemLabel="---Seleccione una localidad---" itemValue="0L" />
+             <f:selectItems value="#{personaUnidadBean.listaLocalidad}" />
+         </p:selectOneMenu>
 
          <h:outputText value="Referencia: "/>
          <p:inputTextarea id="txtAreaReferencia" value="#{personaUnidadBean.direccion.referencia}"
@@ -68,60 +73,70 @@
                           cols="50"
                           autoResize="false"
                           style="width: 220px;text-transform: uppercase;"
-                          tabindex="11"
+                          tabindex="6"
                           required="true"
-                          requiredMessage="El campo Referencia es obligatorio."/>
+                          requiredMessage="El campo Referencia es obligatorio.">
+             <f:converter converterId="lowerConverter"/>
+         </p:inputTextarea>
      </h:panelGrid>
 
      <h:panelGrid columns="2">
          <h:outputText value="Fax: "/>
          <p:inputText id="inputTxtFax" value="#{personaUnidadBean.direccion.fax}"
-                      style="width: 220px;"
-                      tabindex="3"
+                      style="width: 220px;text-transform: uppercase"
+                      tabindex="7"
                       required="true"
                       requiredMessage="El campo Fax es obligatorio."/>
 
          <h:outputText value="Telefono 1: "/>
          <p:inputText id="inputTxtTelf1" value="#{personaUnidadBean.direccion.telefono}"
                       style="width: 220px;"
-                      tabindex="3"
+                      tabindex="8"
                       required="true"
                       requiredMessage="El campo Telefono 1 es obligatorio."/>
 
          <h:outputText value="Telefono 2: "/>
          <p:inputText id="inputTxtTelf2" value="#{personaUnidadBean.direccion.telefono2}"
                       style="width: 220px;"
-                      tabindex="3"
+                      tabindex="9"
                       required="true"
                       requiredMessage="El campo Fax es obligatorio."/>
 
          <h:outputText value="Celular 1: "/>
          <p:inputText id="inputTxtCelular1" value="#{personaUnidadBean.direccion.celular}"
                       style="width: 220px;"
-                      tabindex="3"
+                      tabindex="10"
                       required="true"
                       requiredMessage="El campo Celular 1 es obligatorio."/>
 
          <h:outputText value="Celular 2: "/>
          <p:inputText id="inputTxtCelular2" value="#{personaUnidadBean.direccion.celular2}"
                       style="width: 220px;"
-                      tabindex="3"
+                      tabindex="11"
                       required="true"
                       requiredMessage="El campo Fax es obligatorio."/>
 
          <h:outputText value="Correo electronico 1:"/>
          <p:inputText id="inputTxtEmail1" value="#{personaUnidadBean.direccion.email}"
                       style="width: 220px;"
-                      tabindex="3"
+                      tabindex="12"
                       required="true"
-                      requiredMessage="El campo Correo electronico 1 es obligatorio."/>
+                      requiredMessage="El campo Correo electronico 1 es obligatorio."
+                      validatorMessage="El formato del correo electronico 1 es invalido">
+             <f:validateRegex
+                     pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+         </p:inputText>
 
          <h:outputText value="Correo electronico 2: "/>
          <p:inputText id="inputTxtEmail2" value="#{personaUnidadBean.direccion.email2}"
                       style="width: 220px;"
-                      tabindex="3"
+                      tabindex="13"
                       required="true"
-                      requiredMessage="El campo Fax es obligatorio."/>
+                      requiredMessage="El campo Fax es obligatorio."
+                      validatorMessage="El formato del correo electronico 2 es invalido">
+             <f:validateRegex
+                     pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+         </p:inputText>
      </h:panelGrid>
 
  </p:panel>

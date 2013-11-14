@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panel id="pnlActividadDeclaradaP">
+
+        <f:facet name="footer">
+            <p:commandButton id="cmdButtonActividadPModificar"
+                             icon="ui-icon-pencil"
+                             value="Modificar"
+                             rendered="#{personaUnidadBean.actividadEconomicaPrincipal.idActividadEconomica!=null}"
+                             onclick="PF('dlgActividadDeclarada').show()"
+                             update=":frmActividadDeclarada:pnlActividadDeclarada,:txtDlgActividadDeclarada,:frmActividadDeclarada:cmdButtonActividadDeclarada">
+                <f:setPropertyActionListener value="#{personaUnidadBean.actividadEconomicaPrincipal}" target="#{personaUnidadBean.actividadEconomica}"/>
+                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
+            <p:commandButton id="cmdButtonActividadPAgregar"
+                             icon="ui-icon-plus"
+                             value="Agregar"
+                             actionListener="#{personaUnidadBean.nuevo}"
+                             rendered="#{personaUnidadBean.actividadEconomicaPrincipal.idActividadEconomica==null}"
+                             onclick="PF('dlgActividadDeclarada').show()"
+                             update=":frmActividadDeclarada:pnlActividadDeclarada,:txtDlgActividadDeclarada">
+                <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
+
+
+        </f:facet>
+
+        <h:panelGrid columns="2">
+            <h:outputText value="Codigo de Actividad economica:"/>
+            <p:inputText  value="#{personaUnidadBean.actividadEconomicaPrincipal.codActividadEconomica}" readonly="true"/>
+
+            <h:outputText value="Descripcion:"/>
+            <p:inputTextarea id="txtAreaDescripcionActvEconomica" value="#{personaUnidadBean.actividadEconomicaPrincipal.descripcion}"
+                             rows="5"
+                             cols="50"
+                             autoResize="false"
+                             style="width: 450px;"
+                             tabindex="11"
+                             readonly="true"/>
+
+            <h:outputText value="Codigo de Impuestos:"/>
+            <p:inputText  value="#{personaUnidadBean.actividadEconomicaPrincipal.codImpuestos}" readonly="true"/>
+
+            <h:outputText value="Descripcion del codigo de impuestos:"/>
+            <p:inputTextarea id="txtAreaDescripcionCodImpuestos" value="#{personaUnidadBean.actividadEconomicaPrincipal.descricpionImpuestos}"
+                             rows="5"
+                             cols="50"
+                             autoResize="false"
+                             style="width: 450px;"
+                             tabindex="11"
+                             required="true"
+                             requiredMessage="El campo Descripcion del codigo de impuestos es obligatorio."/>
+
+        </h:panelGrid>
+    </p:panel>
+</ui:composition>

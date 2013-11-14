@@ -10,12 +10,14 @@ import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import bo.gob.mintrabajo.ovt.repositories.DireccionRepository;
 import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +45,13 @@ public class DireccionService implements IDireccionService{
     @Override
     public PerDireccion save(PerDireccion direccion) {
 
+        if(direccion.getIdDireccion()==null){
+            //Nuevo
+            direccion.setIdDireccion(this.obtenerSecuencia("PER_DIRECCION_SEC"));
+        }
+        //preguntar q significa este valor
+        direccion.setEstado("0");
+        direccion.setFechaBitacora(new Date());
         return direccionRepository.save(direccion);
 
     }
@@ -54,8 +63,21 @@ public class DireccionService implements IDireccionService{
         return deleted;
     }
 
-     public List<PerDireccion>findByPerUnidad(PerUnidad unidad){
-         return direccionRepository.findByPerUnidad(unidad,new PageRequest(1,10));
+     public List<PerDireccion>obtenerPorIdPersonaYIdUnidad(String idPersona,long idUnidad){
+         Sort sort=new Sort(Sort.Direction.DESC,"idDireccion");
+         return direccionRepository.obtenerPorIdPersonaYIdUnidad(idPersona, idUnidad, new PageRequest(0, 10,sort));
      }
+
+    public List<PerDireccion>obtenerPorIdPersona(String idPersona ){
+        Sort sort=new Sort(Sort.Direction.DESC,"idDireccion");
+        return direccionRepository.obtenerPorIdPersona(idPersona, new PageRequest(0, 10,sort));
+    }
+
+    public Long obtenerSecuencia(String nombreSecuencia){
+        BigDecimal rtn;
+        rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
+        entityManager.close();
+        return rtn.longValue();
+    }
 
 }

@@ -26,6 +26,7 @@ public class ParametrizacionBean {
 
     @ManagedProperty(value = "#{parametrizacionService}")
     private IParametrizacionService iParametrizacionService;
+
     private ParParametrizacion parametrizacionSelected;
     private List<ParParametrizacion> parametrizacionLista;
 

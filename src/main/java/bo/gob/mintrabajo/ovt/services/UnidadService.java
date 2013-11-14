@@ -13,10 +13,10 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_ESTADO_USUARIO;
-import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_USUARIO_ACTIVO;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
 
 /**
  *
@@ -54,14 +54,16 @@ public class UnidadService implements IUnidadService{
     }
 
     public PerUnidad save(PerUnidad unidad,PerPersona persona) {
-       this.obtenerSecuencia("PER_UNIDAD_SEC");
 
-        PerUnidadPK perUnidadPK=new PerUnidadPK();
-        perUnidadPK.setIdPersona(persona.getIdPersona());
-        perUnidadPK.setIdUnidad(this.obtenerSecuencia("PER_UNIDAD_SEC"));
-        unidad.setPerUnidadPK(perUnidadPK);
-
-        unidad.setEstadoUnidad(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
+        if(unidad.getPerUnidadPK()==null){
+            PerUnidadPK perUnidadPK=new PerUnidadPK();
+            perUnidadPK.setIdPersona(persona.getIdPersona());
+            perUnidadPK.setIdUnidad(this.obtenerSecuencia("PER_UNIDAD_SEC"));
+            unidad.setPerUnidadPK(perUnidadPK);
+        }
+        unidad.setPerPersona(persona);
+        unidad.setFechaBitacora(new Date());
+        unidad.setEstadoUnidad(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO_UNIDAD,PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
         PerUnidad perUnidadEntity;
         perUnidadEntity = unidadRepository.save(unidad);
         return perUnidadEntity;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 rvelasquez.
+ * Copyright 2013 gmercado.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -36,7 +35,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author rvelasquez
+ * @author gmercado
  */
 @Entity
 @Table(name = "PAR_ACTIVIDAD_ECONOMICA")
@@ -68,13 +67,13 @@ public class ParActividadEconomica implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(mappedBy = "idActividadEconomica2", fetch = FetchType.LAZY)
-    private List<ParActividadEconomica> parActividadEconomicaList;
+/*    @OneToMany(mappedBy = "idActividadEconomica2", fetch = FetchType.LAZY)
+    private List<ParActividadEconomica> parActividadEconomicaList;*/
     @JoinColumn(name = "ID_ACTIVIDAD_ECONOMICA2", referencedColumnName = "ID_ACTIVIDAD_ECONOMICA")
     @ManyToOne(fetch = FetchType.LAZY)
     private ParActividadEconomica idActividadEconomica2;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idActividadEconomica", fetch = FetchType.LAZY)
-    private List<PerActividad> perActividadList;
+/*    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idActividadEconomica", fetch = FetchType.LAZY)
+    private List<PerActividad> perActividadList;*/
 
     public ParActividadEconomica() {
     }
@@ -156,13 +155,13 @@ public class ParActividadEconomica implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public List<ParActividadEconomica> getParActividadEconomicaList() {
+/*    public List<ParActividadEconomica> getParActividadEconomicaList() {
         return parActividadEconomicaList;
     }
 
     public void setParActividadEconomicaList(List<ParActividadEconomica> parActividadEconomicaList) {
         this.parActividadEconomicaList = parActividadEconomicaList;
-    }
+    }*/
 
     public ParActividadEconomica getIdActividadEconomica2() {
         return idActividadEconomica2;
@@ -172,13 +171,13 @@ public class ParActividadEconomica implements Serializable {
         this.idActividadEconomica2 = idActividadEconomica2;
     }
 
-    public List<PerActividad> getPerActividadList() {
+ /*   public List<PerActividad> getPerActividadList() {
         return perActividadList;
     }
 
     public void setPerActividadList(List<PerActividad> perActividadList) {
         this.perActividadList = perActividadList;
-    }
+    }*/
 
     @Override
     public int hashCode() {
