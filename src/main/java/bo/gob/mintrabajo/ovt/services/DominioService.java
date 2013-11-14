@@ -98,17 +98,39 @@ public class DominioService implements IDominioService{
             return null;
         }
     }
+    
+    @Override
+    public List<ParDominio> obtenerDominioPorNombrePadreYValorPadre(String dominioP,String valorP){
+        try{
+           return dominioRepository.obtenerDominioPorDominioPadreYValorPadre(dominioP,valorP);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
+    @Override
     public List<ParDominio> obtenerDominioLista(){
         return dominioRepository.findAll();
     }
 
+    @Override
     public ParDominio editarGuardarDominio(ParDominio parDominio){
         if (Strings.isNullOrEmpty(parDominio.getRegistroBitacora())) {
             parDominio.setFechaBitacora(new Date());
             parDominio.setRegistroBitacora("ROE");
         }
         return dominioRepository.save(parDominio);
+    }
+    
+    @Override
+    public List<ParDominio> obtenerDominioPorNombreDistintoValor(String dominio,String valor){
+        try{
+           return dominioRepository.obtenerDominioPorNombreDistintoValor(dominio,valor);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
     }
 
 }

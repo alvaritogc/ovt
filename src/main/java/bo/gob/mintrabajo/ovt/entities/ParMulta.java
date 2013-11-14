@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 gmercado.
+ * Copyright 2013 rvelasquez.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -24,6 +25,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -33,24 +36,31 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author gmercado
+ * @author rvelasquez
  */
 @Entity
-@Table(name = "PAR_OBLIGACION")
+@Table(name = "PAR_MULTA")
 @NamedQueries({
-    @NamedQuery(name = "ParObligacion.findAll", query = "SELECT p FROM ParObligacion p")})
-public class ParObligacion implements Serializable {
+    @NamedQuery(name = "ParMulta.findAll", query = "SELECT p FROM ParMulta p")})
+public class ParMulta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "COD_OBLIGACION")
-    private String codObligacion;
+    @Column(name = "ID_MULTA")
+    private Long idMulta;
     @Basic(optional = false)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Basic(optional = false)
-    @Column(name = "ESTADO")
-    private String estado;
+    @Column(name = "FECHA_INICIO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicio;
+    @Column(name = "FECHA_FIN")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFin;
+    @Basic(optional = false)
+    @Column(name = "TIPO_MULTA")
+    private String tipoMulta;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -58,32 +68,34 @@ public class ParObligacion implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codObligacion", fetch = FetchType.LAZY)
-    private List<ParMulta> parMultaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codObligacion", fetch = FetchType.LAZY)
-    private List<ParObligacionCalendario> parObligacionCalendarioList;
+    @JoinColumn(name = "COD_OBLIGACION", referencedColumnName = "COD_OBLIGACION")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ParObligacion codObligacion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMulta", fetch = FetchType.LAZY)
+    private List<ParMultaRango> parMultaRangoList;
 
-    public ParObligacion() {
+    public ParMulta() {
     }
 
-    public ParObligacion(String codObligacion) {
-        this.codObligacion = codObligacion;
+    public ParMulta(Long idMulta) {
+        this.idMulta = idMulta;
     }
 
-    public ParObligacion(String codObligacion, String descripcion, String estado, Date fechaBitacora, String registroBitacora) {
-        this.codObligacion = codObligacion;
+    public ParMulta(Long idMulta, String descripcion, Date fechaInicio, String tipoMulta, Date fechaBitacora, String registroBitacora) {
+        this.idMulta = idMulta;
         this.descripcion = descripcion;
-        this.estado = estado;
+        this.fechaInicio = fechaInicio;
+        this.tipoMulta = tipoMulta;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
 
-    public String getCodObligacion() {
-        return codObligacion;
+    public Long getIdMulta() {
+        return idMulta;
     }
 
-    public void setCodObligacion(String codObligacion) {
-        this.codObligacion = codObligacion;
+    public void setIdMulta(Long idMulta) {
+        this.idMulta = idMulta;
     }
 
     public String getDescripcion() {
@@ -94,12 +106,28 @@ public class ParObligacion implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getEstado() {
-        return estado;
+    public Date getFechaInicio() {
+        return fechaInicio;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public String getTipoMulta() {
+        return tipoMulta;
+    }
+
+    public void setTipoMulta(String tipoMulta) {
+        this.tipoMulta = tipoMulta;
     }
 
     public Date getFechaBitacora() {
@@ -118,37 +146,37 @@ public class ParObligacion implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public List<ParMulta> getParMultaList() {
-        return parMultaList;
+    public ParObligacion getCodObligacion() {
+        return codObligacion;
     }
 
-    public void setParMultaList(List<ParMulta> parMultaList) {
-        this.parMultaList = parMultaList;
+    public void setCodObligacion(ParObligacion codObligacion) {
+        this.codObligacion = codObligacion;
     }
 
-    public List<ParObligacionCalendario> getParObligacionCalendarioList() {
-        return parObligacionCalendarioList;
+    public List<ParMultaRango> getParMultaRangoList() {
+        return parMultaRangoList;
     }
 
-    public void setParObligacionCalendarioList(List<ParObligacionCalendario> parObligacionCalendarioList) {
-        this.parObligacionCalendarioList = parObligacionCalendarioList;
+    public void setParMultaRangoList(List<ParMultaRango> parMultaRangoList) {
+        this.parMultaRangoList = parMultaRangoList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codObligacion != null ? codObligacion.hashCode() : 0);
+        hash += (idMulta != null ? idMulta.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ParObligacion)) {
+        if (!(object instanceof ParMulta)) {
             return false;
         }
-        ParObligacion other = (ParObligacion) object;
-        if ((this.codObligacion == null && other.codObligacion != null) || (this.codObligacion != null && !this.codObligacion.equals(other.codObligacion))) {
+        ParMulta other = (ParMulta) object;
+        if ((this.idMulta == null && other.idMulta != null) || (this.idMulta != null && !this.idMulta.equals(other.idMulta))) {
             return false;
         }
         return true;
@@ -156,7 +184,7 @@ public class ParObligacion implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.ParObligacion[ codObligacion=" + codObligacion + " ]";
+        return "bo.gob.mintrabajo.ovt.entities.ParMulta[ idMulta=" + idMulta + " ]";
     }
     
 }

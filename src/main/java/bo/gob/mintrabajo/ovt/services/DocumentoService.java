@@ -71,7 +71,8 @@ public class DocumentoService implements IDocumentoService{
     }
 
     public List<DocDocumento> listarPorPersona(String idPersona) {
-        return documentoRepository.findByIdPersona_IdPersona(idPersona);
+//        return documentoRepository.findByIdPersona_IdPersona(idPersona);
+        return null;
     }
 
     
