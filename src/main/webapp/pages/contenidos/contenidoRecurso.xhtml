@@ -12,20 +12,39 @@
                 <h3>Contenido recurso</h3>
                 <p:dataTable id="idListaMensajeApp" value="#{contenidoRecursoBean.listaMensajeApp}" paginatorPosition="bottom" paginator="true"
                              var="mensajeApp"  rows="10" emptyMessage="No se encontraron resultados" >
-                    <p:column headerText="Código">
+                    <p:column headerText="Mensaje">
                         <h:outputText value="#{mensajeApp.mensaje}"/>
                     </p:column>
-                    <p:column headerText="Acciones">
-                        <p:commandButton icon="ui-icon-print" 
-                                         action="#{contenidoRecursoBean.editar}" title="Editar" immediate="true">
+                    <p:column headerText="Referencia">
+                        <h:outputText value="#{mensajeApp.referencia}"/>
+                    </p:column>
+                    <p:column headerText="Fecha desde">
+                        <h:outputText value="#{mensajeApp.fechaDesde}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Fecha hasta">
+                        <h:outputText value="#{mensajeApp.fechaHasta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Acciones" style="width: 60px;">
+                        <p:commandButton icon="ui-icon-pencil" 
+                                         action="#{contenidoRecursoBean.editar}" title="Editar Contenido" immediate="true">
+                            <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" 
+                                         update=":idContenidoRecurso:idListaMensajeApp"
+                                         action="#{contenidoRecursoBean.eliminar}" title="Eliminar" immediate="true">
                             <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
-<!--                <p:commandButton value="Nuevo contenido" 
-                                 onclick="PF('contenidoRecursoDlg').show();"
-                                 type="button"
-                                 update=":idContenidoRecurso:contenidoRecursoDialog"/>  -->
+                <p:commandButton value="Nuevo contenido" 
+                                 action="#{contenidoRecursoBean.nuevo}"
+                                 oncomplete="PF('contenidoRecursoDlg').show();"
+                                 immediate="true"
+                                 update=":idContenidoRecurso:contenidoRecursoDialog"/>  
                 <p:dialog id="contenidoRecursoDialog" header="Nuevo contenido" widgetVar="contenidoRecursoDlg">  
                     <h:panelGrid columns="2">
                         <p:outputLabel value="Mensaje:"/>
