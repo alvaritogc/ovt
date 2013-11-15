@@ -18,7 +18,8 @@ public interface TipoCambioRepository extends OpenJpaRepository<ParTipoCambio, L
     @Query("select p "
             + " from ParTipoCambio p "
             + " where p.parTipoCambioPK.tipoMonedaBase = :monedaBase and "
-            + " p.parTipoCambioPK.tipoMonedaCambio = :monedaCambio")
+            + " p.parTipoCambioPK.tipoMonedaCambio = :monedaCambio"
+            + " order by p.parTipoCambioPK.idFecha desc")
     List<ParTipoCambio> listaTiposDeCambio(@Param("monedaBase")String monedaBase, @Param("monedaCambio")String monedaCambio);
     
     @Query("select p "

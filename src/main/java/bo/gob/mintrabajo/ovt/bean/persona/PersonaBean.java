@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean.persona;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
@@ -76,7 +77,6 @@ public class PersonaBean implements Serializable{
 
     private  UsrUsuario usuario;
 
-    private boolean esNatural=false;
 
     private boolean mostrar=false;
 
@@ -98,9 +98,12 @@ public class PersonaBean implements Serializable{
 
     private String confirmarContrasenia;
 
+    private  final int LONGITUD_MINIMA=3;
+
     @PostConstruct
     public void ini(){
        persona=new PerPersona();
+       persona.setEsNatural(false);
        listaPersona=new ArrayList<PerPersona>();
         unidad=new PerUnidad();
         listaUnidad=new ArrayList<PerUnidad>();
@@ -129,17 +132,6 @@ public class PersonaBean implements Serializable{
         return lista;
     }
 
-    public void cambiarNatural(){
-
-        System.out.println("=====>>> CAMBIARNATURAL() esNatural "+esNatural);
-        System.out.println("=====>>> CAMBIARNATURAL() persona.getEsNatural() "+persona.getEsNatural());
-        esNatural= esNatural==false?true:true;
-        persona.setEsNatural(esNatural);
-     // esNatural=persona.getEsNatural()?true:false;
-        System.out.println("=====>>> esNatural() "+esNatural);
-        ini();
-    }
-
     public void cargar(){
      cargarLocalidad();
      listaTipoEmpresa=cargarListas(listaTipoEmpresa,DOM_TIPOS_EMPRESA);
@@ -164,21 +156,21 @@ public class PersonaBean implements Serializable{
 
     public void registrar(){
 
-        if(unidad.getTipoEmpresa()==null){
+        if(unidad.getTipoEmpresa()==null || unidad.getTipoEmpresa().trim().equals("") ){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de empresa es obligatorio."));
             ini();
             return ;
         }
 
-        if(unidad.getTipoSociedad()==null){
+        if(unidad.getTipoSociedad()==null || unidad.getTipoSociedad().trim().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de sociedad es obligatorio."));
             ini();
             return ;
         }
 
-        if(unidad.getNombreComercial()==null){
+        if(unidad.getNombreComercial()==null || unidad.getNombreComercial().trim().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre comercial es obligatorio."));
             ini();
@@ -214,7 +206,7 @@ public class PersonaBean implements Serializable{
             return ;
         }*/
 
-        if(unidad.getActividadDeclarada()==null){
+        if(unidad.getActividadDeclarada()==null || unidad.getActividadDeclarada().trim().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Actividad declarada es obligatorio."));
             ini();
@@ -228,13 +220,13 @@ public class PersonaBean implements Serializable{
             return ;
         }*/
 
-        if(persona.getNombreRazonSocial()==null){
+        if(persona.getNombreRazonSocial()==null || persona.getNombreRazonSocial().trim().equals("")){
           FacesContext.getCurrentInstance().addMessage(null,
                   new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre o Razon social es obligatorio."));
             ini();
             return ;
         }
-        if(persona.getTipoIdentificacion()==null){
+        if(persona.getTipoIdentificacion()==null || persona.getTipoIdentificacion().trim().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de identificacion es obligatorio."));
             ini();
@@ -248,19 +240,34 @@ public class PersonaBean implements Serializable{
             return ;
         }
 
-        if(persona.getNroIdentificacion()==null){
+        if(persona.getNroIdentificacion()==null || persona.getNroIdentificacion().trim().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de identificacion es obligatorio."));
             ini();
             return ;
+        }else{
+            //validar que nro de identificacion sea unico
+            if(iPersonaService.findByNroIdentificacion(persona.getNroIdentificacion())!=null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL valor del campo Nro. de identificacion ya existe. Modifique este valor"));
+                ini();
+                return ;
+            }
         }
 
-        if(usuario.getUsuario()==null){
+        if(usuario.getUsuario()==null || usuario.getUsuario().trim().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Usuario es obligatorio."));
             ini();
             return ;
         }else{
+            if(iUsuarioService.obtenerUsuarioPorNombreUsuario(usuario.getUsuario())!=null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL valor del campo Usuario ya existe. Modifique este valor."));
+                ini();
+                return ;
+            }
+
             if(!validarEmail(usuario.getUsuario())){
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL formato del correo electronico es incorrecto."));
@@ -269,7 +276,7 @@ public class PersonaBean implements Serializable{
             }
         }
 
-        if(usuario.getClave()==null){
+        if(usuario.getClave()==null || usuario.getClave().trim().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Contrasenia es obligatorio."));
             ini();
@@ -283,6 +290,14 @@ public class PersonaBean implements Serializable{
            return ;
        }
 
+        String contraseniaEsValida=validarContrasenia(usuario.getClave(),LONGITUD_MINIMA);
+        if(!contraseniaEsValida.equals("OK")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",contraseniaEsValida));
+            ini();
+            return ;
+        }
+
 
       final String  REGISTRO_BITACORA="ROE";
         System.out.println("INGRESANDO ................................ ");
@@ -290,7 +305,7 @@ public class PersonaBean implements Serializable{
       persona.setIdPersona(seq.toString());
       persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
       persona.setRegistroBitacora(REGISTRO_BITACORA);
-      persona.setEsNatural(esNatural);
+     // persona.setEsNatural(esNatural);
 
       unidad.setObservaciones("REGISTRO");
       unidad.setFechaNacimiento(new Date());
@@ -305,6 +320,7 @@ public class PersonaBean implements Serializable{
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
       usuario.setEsDelegado((short)0);
       usuario.setEsInterno((short) 0);
+      usuario.setClave(Util.crypt(usuario.getClave()));
       ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO__USUARIO_SINCONFIRMAR);
       usuario.setEstadoUsuario(d.getParDominioPK().getValor());
         //usuario.setIdPersona(persona);
@@ -344,6 +360,27 @@ public class PersonaBean implements Serializable{
         } else {
             return false;
         }
+    }
+
+    public String validarContrasenia(String pass, int longitudMinima){
+
+        String mensaje="";
+
+        if(pass.length()<longitudMinima){
+             mensaje="La longitud minima de la contrasenia es "+longitudMinima+". Intente nuevamente";
+        }else{
+            String validacion="((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{"+String.valueOf(longitudMinima)+",50})";
+            /*Pattern pattern = Pattern
+                    .compile("((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{3,50})");*/
+            Pattern pattern = Pattern.compile(validacion);
+            if (!pattern.matcher(pass).matches()) {
+                mensaje="La contraseña debe contener al menos un caracter númerico, alfabetico y especial.";
+            }else{
+                //La contrasenia es valida
+                mensaje="OK";
+            }
+        }
+        return mensaje;
     }
 
     public String volverLogin()throws IOException {
@@ -516,13 +553,6 @@ public class PersonaBean implements Serializable{
         this.listaUnidad = listaUnidad;
     }
 
-    public boolean isEsNatural() {
-        return esNatural;
-    }
-
-    public void setEsNatural(boolean esNatural) {
-        this.esNatural = esNatural;
-    }
     // ****  Envio de Emails **** //
     public String getFrom() {
         return from;
@@ -578,5 +608,9 @@ public class PersonaBean implements Serializable{
 
     public void setPort(String port) {
         this.port = port;
+    }
+
+    public int getLONGITUD_MINIMA() {
+        return LONGITUD_MINIMA;
     }
 }

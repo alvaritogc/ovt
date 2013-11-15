@@ -91,20 +91,12 @@ public class MensajeAppService implements IMensajeAppService{
         UsrRecurso recurso=recursoRepository.findOne(idRecurso);
         mensajeApp.setIdRecurso(recurso);
         //
-        //Long id=new Long(repository.findAll().size()+10);
-        //mensajeApp.setIdMensajeApp(id);
-        mensajeApp.setIdMensajeApp(utils.valorSecuencia("PAR_MENSAJE_APP_SEC"));
-        
+        if(mensajeApp.getIdMensajeApp()==null){
+            mensajeApp.setIdMensajeApp(utils.valorSecuencia("PAR_MENSAJE_APP_SEC"));
+        }
+        //
         mensajeApp.setRegistroBitacora("OVT");
         mensajeApp.setFechaBitacora(new Date());
-        System.out.println("getMensaje:"+mensajeApp.getMensaje());
-        System.out.println("getReferencia:"+mensajeApp.getReferencia());
-        System.out.println("getRegistroBitacora:"+mensajeApp.getRegistroBitacora());
-        System.out.println("getFechaBitacora:"+mensajeApp.getFechaBitacora());
-        System.out.println("getFechaDesde:"+mensajeApp.getFechaDesde());
-        System.out.println("getFechaHasta:"+mensajeApp.getFechaHasta());
-        System.out.println("getIdMensajeApp:"+mensajeApp.getIdMensajeApp());
-        System.out.println("getIdRecurso:"+mensajeApp.getIdRecurso());
         return repository.save(mensajeApp);
     }
     

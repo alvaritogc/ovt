@@ -14,16 +14,12 @@ Copyright 2013 lvaldez.
             <h2 class="form-signin-heading">Obligaciones</h2>
             <!--  Boton de registro-->
             <p:commandButton value="Nuevo" onclick="dlgFormObligacion.show();" update=":formObligacion" 
-                             icon="ui-icon-document-b" actionListener="#{obligacionBean.nuevo}"/>
-            <br />
+                             icon="ui-icon-circle-plus" actionListener="#{obligacionBean.nuevo}" immediate="true"/>
             <!--  Listado de Obligaciones en tabla-->
-            <br/>
             <p:dataTable id="dataTableObligacion" var="parObligacion" value="#{obligacionBean.listaObligacion}" 
                          paginator="true" rows="10" sortMode="multiple" widgetVar="obligacionTable" paginatorPosition="bottom"
-                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados">
-                <f:facet name="header">  
-                    Obligaciones Encontradas
-                </f:facet>  
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
+                 currentPageReportTemplate="{currentPage} / {totalPages}">
 
                 <p:column sortBy="codigo" headerText="Codigo">    
                     <h:outputText value="#{parObligacion.codObligacion}" />  
@@ -37,7 +33,7 @@ Copyright 2013 lvaldez.
                     <h:outputText value="#{parObligacion.estado}" />  
                 </p:column>
                 <p:column headerText="Acciones">
-                        <p:commandButton icon="ui-icon-pencil" title="Editar" onclick="dlgFormObligacion.show()" update=":formObligacion"> 
+                    <p:commandButton icon="ui-icon-pencil" title="Editar" onclick="dlgFormObligacion.show()" update=":formObligacion" immediate="true"> 
                             <f:setPropertyActionListener target="#{obligacionBean.obligacion}" value="#{parObligacion}" />
                             <f:setPropertyActionListener target="#{obligacionBean.estadoObligacion}" value="#{obligacionBean.obligacion.estado eq 'A'? true : false}" />
                             <f:setPropertyActionListener target="#{obligacionBean.evento}" value="true" />
@@ -58,8 +54,13 @@ Copyright 2013 lvaldez.
              
             <p:dialog id="modalDialog" header="Atencion" widgetVar="dlgMensaje" width="350" modal="true">  
                 <span class="ui-icon ui-icon-alert"></span>
-                <h:outputText value="El registro esta siendo usado en Obligacion Calendario, por lo que no se puede eliminar." />  
+                <h:outputText value="El registro esta siendo usado entro lado, por lo que no se puede eliminar." />  
                 <!---->
+            </p:dialog>
+            
+            <p:dialog id="modalDialog2" header="Atencion" widgetVar="dlgMensajeInfo" width="350" modal="true">  
+                <span class="ui-icon ui-icon-alert"></span>
+                <h:outputText value="El codigo que esta ingresando ya existe o hubo un error al guardar el registro." />  
             </p:dialog>
                 
              <!--            Formulario de registro y edicion-->   
@@ -85,7 +86,10 @@ Copyright 2013 lvaldez.
                     
                     <h:outputLabel for="estado" value="Estado:" style="font-weight:bold"/>  
                     <p:selectBooleanCheckbox id="estado" value="#{obligacionBean.estadoObligacion}"  />
-                    <p:commandButton value="Guardar" action="#{obligacionBean.guardarModificar}" update=":growl formObligacion :dataTableObligacion" icon="ui-icon-disk"/>
+                    <h:panelGroup>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <p:commandButton value="Guardar" action="#{obligacionBean.guardarModificar}" update=":growl formObligacion :dataTableObligacion" icon="ui-icon-disk"/>
+                    </h:panelGroup> 
                     <p:commandButton value="Canselar" actionListener="#{obligacionBean.limpiar}" immediate="true"
                                      onclick="dlgFormObligacion.hide();" update="formObligacion" icon="ui-icon-close"/>
                 </h:panelGrid>  

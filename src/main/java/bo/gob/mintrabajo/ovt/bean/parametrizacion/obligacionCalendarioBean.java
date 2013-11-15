@@ -16,10 +16,12 @@
 
 package bo.gob.mintrabajo.ovt.bean.parametrizacion;
 
+import bo.gob.mintrabajo.ovt.api.ICalendarioService;
 import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
 import bo.gob.mintrabajo.ovt.api.IObligacionService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
+import bo.gob.mintrabajo.ovt.entities.ParCalendario;
 import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
@@ -31,6 +33,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -54,6 +57,8 @@ public class obligacionCalendarioBean implements Serializable{
     private IUtilsService iUtilsService;
     @ManagedProperty(value = "#{dominioService}")
     private IDominioService iDominioService;
+    @ManagedProperty(value = "#{calendarioService}")
+    private ICalendarioService iCalendarioService;
     
     private HttpSession session;
     private Long idUsuario;
@@ -66,9 +71,12 @@ public class obligacionCalendarioBean implements Serializable{
     private List<ParObligacion> listaObligacion;
     private List<ParDominio> listaDominio;
     private List<ParDominio> listaDominioPeriodo;
+    private List<ParCalendario> listaCalendario;
     private ParObligacion obligacion= new ParObligacion();
     private String codObligacion="";
     private String codObligacionForm="";
+    private String gestion;
+    private String periodo;
     private List<Integer> listaAnio;
     private Integer anioActual;
             
@@ -89,19 +97,36 @@ public class obligacionCalendarioBean implements Serializable{
         listaObligacion= iObligacionService.listaObligacion();
         listaDominio = new ArrayList<ParDominio>();
         listaDominio = iDominioService.obtenerItemsDominio("TCALENDARIO");
-        Calendar calendar = Calendar.getInstance();
-        anioActual=calendar.get(Calendar.YEAR);
-        int year = anioActual - 5;
-        listaAnio=new ArrayList<Integer>();
-        for (int i = 0; i < 21; i++) {
-            listaAnio.add(year);
-            year++;
-        }
+        listaCalendario = new ArrayList<ParCalendario>();
+//        Calendar calendar = Calendar.getInstance();
+//        anioActual=calendar.get(Calendar.YEAR);
+//        int year = anioActual - 5;
+//        listaAnio=new ArrayList<Integer>();
+//        for (int i = 0; i < 21; i++) {
+//            listaAnio.add(year);
+//            year++;
+//        }
     }
     
     public void listarPeriodo(){
         listaDominioPeriodo = new ArrayList<ParDominio>();
-        //listaDominioPeriodo = iDominioService.obtenerDominioPorNombrePadreYValorPadre("TCALENDARIO",obligacionCalendario.getTipoCalendario());
+        listaDominioPeriodo = iDominioService.obtenerDominioPorNombrePadreYValorPadre("TCALENDARIO",obligacionCalendario.getTipoCalendario());
+        periodo=listaDominioPeriodo.get(0).getParDominioPK().getValor();
+        System.out.println("== valor periodo " + periodo);
+        System.out.println("== valor tipocalendario " + obligacionCalendario.getTipoCalendario());
+        FacesContext context = FacesContext.getCurrentInstance();  
+        try {
+            listaCalendario=iCalendarioService.listaCalendarioPorTipoPeriodoTipoCalendario(periodo, obligacionCalendario.getTipoCalendario());
+            gestion=listaCalendario.get(0).getParCalendarioPK().getGestion();
+            System.out.println("000>>>> " + gestion);
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("Atencion", "No existe una gestion para el periodo " + listaDominioPeriodo.get(0).getDescripcion()));  
+            e.printStackTrace();
+        }
+    }
+    
+    public void listaGestiong(){
+        listaCalendario=iCalendarioService.listaCalendarioPorTipoPeriodoTipoCalendario(periodo, obligacionCalendario.getTipoCalendario());
     }
     
     public void listarObligacionCalendario(){
@@ -115,35 +140,16 @@ public class obligacionCalendarioBean implements Serializable{
     
     public void guardarModificar(){
         RequestContext context = RequestContext.getCurrentInstance();
-//        if(codObligacionForm.isEmpty() || codObligacionForm== null ){ return;}
-//        if(obligacionCalendario.getTipoCalendario().isEmpty()){return;}
-//        if(obligacionCalendario.getGestion().isEmpty()){return;}
-//        if(obligacionCalendario.getFechaDesde().toString().isEmpty()){return;}
-//        if(obligacionCalendario.getFechaHasta().toString().isEmpty()){return;}
-//        if(obligacionCalendario.getFechaPlazo().toString().isEmpty()){return;}
-        
-//        
-//        obligacionCalendario.setTipoCalendario(obligacionCalendario.getTipoCalendario().toUpperCase());
-//        obligacionCalendario.setGestion(obligacionCalendario.getGestion().toUpperCase());
         
         ParObligacion parObligacion= new ParObligacion();
         parObligacion= iObligacionService.obligacionPorCod(codObligacionForm);
         
-        //final String  REGISTRO_BITACORA="OVT";
-        final String  REGISTRO_BITACORA=idUsuario.toString();
-        //Date fechaBitacora = new Date();
+        String  REGISTRO_BITACORA=idUsuario.toString();
         System.out.println("=====> "  +" = "+ obligacionCalendario.getTipoCalendario() +" = "+
                 obligacionCalendario.getFechaDesde() +" = "+ obligacionCalendario.getFechaHasta() +" = "+ obligacionCalendario.getFechaPlazo());
         System.out.println("=== parObligacion " + parObligacion.getDescripcion());
         try {
-//            if(obligacionCalendario.getIdObligacionCalendario()==null && evento==false){
-//                obligacionCalendario.setIdObligacionCalendario(iUtilsService.valorSecuencia("PAR_ENTIDAD_SEC"));
-//            }
-//            obligacionCalendario.setCodObligacion(parObligacion);
-//            obligacionCalendario.setFechaBitacora(fechaBitacora);
-//            obligacionCalendario.setRegistroBitacora(REGISTRO_BITACORA);
-            ParObligacionCalendario ob = iObligacionCalendarioService.saveObligacionCalendario(obligacionCalendario, REGISTRO_BITACORA, parObligacion, evento);
-                //listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendario();
+            ParObligacionCalendario ob = iObligacionCalendarioService.saveObligacionCalendario(obligacionCalendario,gestion, periodo, REGISTRO_BITACORA, parObligacion, evento);
            context.execute("dlgFormObligacionCalendario.hide();");
             nuevo();
             listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendarioOrdenadoPorDescripcionDeObligacion();
@@ -158,6 +164,8 @@ public class obligacionCalendarioBean implements Serializable{
         evento=false;
         codObligacion="";
         codObligacionForm="";
+        gestion="";
+        periodo="";
     }
     
     public void confirmaEliminar(){  
@@ -394,5 +402,61 @@ public class obligacionCalendarioBean implements Serializable{
      */
     public void setListaDominioPeriodo(List<ParDominio> listaDominioPeriodo) {
         this.listaDominioPeriodo = listaDominioPeriodo;
+    }
+
+    /**
+     * @return the iCalendarioService
+     */
+    public ICalendarioService getiCalendarioService() {
+        return iCalendarioService;
+    }
+
+    /**
+     * @param iCalendarioService the iCalendarioService to set
+     */
+    public void setiCalendarioService(ICalendarioService iCalendarioService) {
+        this.iCalendarioService = iCalendarioService;
+    }
+
+    /**
+     * @return the listaCalendario
+     */
+    public List<ParCalendario> getListaCalendario() {
+        return listaCalendario;
+    }
+
+    /**
+     * @param listaCalendario the listaCalendario to set
+     */
+    public void setListaCalendario(List<ParCalendario> listaCalendario) {
+        this.listaCalendario = listaCalendario;
+    }
+
+    /**
+     * @return the gestion
+     */
+    public String getGestion() {
+        return gestion;
+    }
+
+    /**
+     * @param gestion the gestion to set
+     */
+    public void setGestion(String gestion) {
+        this.gestion = gestion;
+    }
+
+    /**
+     * @return the periodo
+     */
+    public String getPeriodo() {
+        return periodo;
+    }
+
+    /**
+     * @param periodo the periodo to set
+     */
+    public void setPeriodo(String periodo) {
+        this.periodo = periodo;
     }
 }

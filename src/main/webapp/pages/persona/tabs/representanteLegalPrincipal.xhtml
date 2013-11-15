@@ -14,8 +14,9 @@
                              rendered="#{personaUnidadBean.repLegalPrincipal.idReplegal==null}"
                              onclick="PF('dlgRepLegal').show()">
 
-                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
-                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
             </p:commandButton>
 
             <p:commandButton id="cmdButtonRepLegalModificar"
@@ -24,6 +25,7 @@
                              update=":frmRepLegal:pnlRepLegal,:txtDlgRepLegal"
                              onclick="PF('dlgRepLegal').show()"
                              rendered="#{personaUnidadBean.repLegalPrincipal.idReplegal!=null}">
+                <f:setPropertyActionListener value="#{unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
                 <f:setPropertyActionListener value="#{personaUnidadBean.repLegalPrincipal}" target="#{personaUnidadBean.repLegal}"/>
                 <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>

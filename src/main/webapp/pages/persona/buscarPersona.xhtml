@@ -8,26 +8,46 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../../pages/template/templateInicio.xhtml">
     <ui:define name="content">
+
+        <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                  draggable="false" closable="false">
+            <p:graphicImage value="../../images/ajax-loader.gif" />
+        </p:dialog>
+
+        <h2 class="form-signin-heading">Empleadores o empresas</h2>
         <h:form >
             <p:panel id="pnldBuscarPersona" >
                 <f:facet name="header">
-                    Busqueda de personas
+                    Filtro de busqueda de empleadores o empresas
+                </f:facet>
+                <f:facet name="footer">
+                    <p:commandButton value="Buscar" action="#{personaBuscarBean.cargar}"
+                                     update="dtTblUnidad,pnldBuscarPersona"
+                                     process="@form"
+                                     icon="ui-icon-search"/>
+                    <p:commandButton value="Limpiar"
+                                     action="#{personaBuscarBean.limpiar}"
+                                     update="dtTblUnidad,pnldBuscarPersona"
+                                     icon="ui-icon-battery-0"/>
                 </f:facet>
                 <h:panelGrid id="pnlGridBuscarPersona" columns="2" cellpadding="4">
                     <h:outputText value="Nombre:"/>
-                    <p:inputText id="inputTxtNombre" value="#{personaBuscarBean.persona.nombreRazonSocial}"/>
+                    <p:inputText id="inputTxtNombre" value="#{personaBuscarBean.nombreRazonSocial}" style="text-transform: uppercase;"/>
+                    <h:outputText value="Nro. de identificacion:"/>
+                    <p:inputText id="inputNroIdentificacion" value="#{personaBuscarBean.nroIdentificacion}"/>
                     <h:outputText value="Tipo de identificacion:"/>
-                    <p:selectOneMenu id="slcOneMenuTipoIdentificacion" value="#{personaBuscarBean.persona.tipoIdentificacion}" >
-                        <f:selectItem itemLabel="Carnet de identidad" itemValue="1" />
-                        <f:selectItem itemLabel="Pasaporte" itemValue="2"/>
-                        <f:selectItem itemLabel="Otro" itemValue="3"/>
+                    <p:selectOneMenu id="slcOneMenuTipoIdentificacion"
+                                     style="text-transform: uppercase;"
+                                     value="#{personaBuscarBean.tipoIdentificacion}" >
+                        <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
+                        <f:selectItems value="#{personaBuscarBean.listaTipoIdentificacion}" />
                     </p:selectOneMenu>
 
                 </h:panelGrid>
             </p:panel>
             <br/>
-            <p:commandButton value="Buscar" action="#{personaBuscarBean.cargar}" update="dtTblUnidad,pnldBuscarPersona" ajax="false"/>
-            <p:commandButton value="Limpiar" action="#{personaBuscarBean.limpiar}" update="dtTblUnidad,pnldBuscarPersona" ajax="false"/>
 
 
         <p:dataTable id="dtTblUnidad" value="#{personaBuscarBean.listaPersona}"
@@ -36,34 +56,30 @@
                      paginator="true"
                      rows="10"
                      paginatorPosition="bottom"
-                     paginatorAlwaysVisible="false">
+                     paginatorAlwaysVisible="false"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                     currentPageReportTemplate="{currentPage} / {totalPages}">
             <f:facet name="header">
-                Lista de personas
+                Lista de empleadores o empresas
             </f:facet>
-            <p:column headerText="Nombre o Razon social"
-                      sortBy="#{persona.nombreRazonSocial}"
-                      filterMatchMode="contain"
-                    filterBy="#{persona.nombreRazonSocial}">
-
+            <p:column headerText="Nombre o Razon social" style="width:200px;"  >
                       <h:outputText value="#{persona.nombreRazonSocial}"/>
             </p:column>
-            <p:column headerText="Apellidos">
+            <p:column headerText="Apellidos" style="width:200px;">
                 <h:outputText value="#{persona.apellidoPaterno} #{persona.apellidoMaterno}"/>
             </p:column>
-            <p:column headerText="Tipo de identificacion">
+            <p:column headerText="Tipo de identificacion" style="width: 50px;">
                 <h:outputText value="#{persona.tipoIdentificacion}"/>
             </p:column>
-            <p:column headerText="Nro. de identificacion">
+            <p:column headerText="Nro. de identificacion" style="width:80px;">
                 <h:outputText value="#{persona.nroIdentificacion}"/>
             </p:column>
-            <p:column headerText="Localidad">
-                <h:outputText value="#{persona.codLocalidad.tipoLocalidad}"/>
-            </p:column>
+
             <p:column headerText="Acciones">
                 <p:commandButton   update="@all"
                                    ajax="true"
-                                   icon="ui-icon-zoomin"
-                                   title="Registrar unidad"
+                                   icon="ui-icon-home"
+                                   title="Registrar Sucursales"
                                    action="#{personaBuscarBean.irUnidad}">
                     <f:setPropertyActionListener value="#{persona}" target="#{personaBuscarBean.persona}" />
                 </p:commandButton>

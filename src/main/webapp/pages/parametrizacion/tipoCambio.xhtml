@@ -15,13 +15,13 @@
                     <h:outputLabel for="monedaBase" value="Moneda base:" style="font-weight:bold; "/>
                     <p:selectOneMenu id="monedaBase" value="#{tipoCambioBean.monedaBase}" >
                         <f:selectItems value="#{tipoCambioBean.listaMonedasBase}" var="mb" itemLabel="#{mb.descripcion}" itemValue="#{mb.parDominioPK.valor}"/>
-                        <p:ajax update="monedaCambio tabla"  
+                        <p:ajax update="monedaCambio tabla" immediate="true"  
                                 listener="#{tipoCambioBean.mostrarLista}" />
                     </p:selectOneMenu>
                     <h:outputLabel for="monedaCambio" value="Moneda cambio:" style="font-weight:bold"/>
                     <p:selectOneMenu id="monedaCambio"  value="#{tipoCambioBean.monedaCambio}">
                         <f:selectItems value="#{tipoCambioBean.listaMonedasCambio}" var="mc" itemLabel="#{mc.descripcion}" itemValue="#{mc.parDominioPK.valor}"/>
-                        <p:ajax update="tabla"  
+                        <p:ajax update="tabla" immediate="true"  
                                 listener="#{tipoCambioBean.mostrarDatos}" />
                     </p:selectOneMenu>
                 </h:panelGrid>
@@ -31,28 +31,27 @@
                     <f:setPropertyActionListener target="#{tipoCambioBean.seleccion}" value="form" />
                     <f:setPropertyActionListener target="#{tipoCambioBean.accion}" value="true" />
                 </p:commandButton>
-                <br /><br />
+
                 <p:dataTable paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="bottom" id="tabla"
                              emptyMessage="No se encontraron resultados" var="tipoCambio" value="#{tipoCambioBean.listaTipoCambio}"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
                  currentPageReportTemplate="{currentPage} / {totalPages}">
-                    <p:column headerText="Fecha">
+                    <p:column headerText="Fecha" sortBy="idFecha">
                         <h:outputText value="#{tipoCambio.parTipoCambioPK.idFecha}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
                     </p:column>
-                    <p:column headerText="Oficial">
+                    <p:column headerText="Oficial (#{tipoCambioBean.monedaBase})" sortBy="#{tipoCambio.valorOficial}">
                         <pe:inputNumber value="#{tipoCambio.valorOficial}" thousandSeparator="." decimalSeparator="," disabled="true"
                                         style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px "/>
                     </p:column>
-                    <p:column headerText="Compra">
-                        <!--<h:outputText value="# {tipoCambio.valorCompra}" />-->
+                    <p:column headerText="Compra" sortBy="valorCompra">
                         <pe:inputNumber value="#{tipoCambio.valorCompra}" thousandSeparator="." decimalSeparator="," disabled="true"
                                         style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px "/>
                     </p:column>
-                    <p:column headerText="Venta">
+                    <p:column headerText="Venta" sortBy="valorVenta">
                         <pe:inputNumber value="#{tipoCambio.valorVenta}" thousandSeparator="." decimalSeparator="," disabled="true"
                                       style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px "/>
                     </p:column>
-                    <p:column headerText="Venta">
+                    <p:column headerText="Otro" sortBy="valorOtro">
                         <pe:inputNumber value="#{tipoCambio.valorOtro}" thousandSeparator="." decimalSeparator="," disabled="true"
                                       style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px "/>
                     </p:column>
@@ -83,7 +82,7 @@
                 </p:dialog>
             </h:form>  
             
-            <p:dialog id="modalDialog" header="Atencion" widgetVar="dlgMensajeInfo" width="350" modal="true">  
+            <p:dialog id="modalDialog2" header="Atencion" widgetVar="dlgMensajeInfo" width="350" modal="true">  
                 <span class="ui-icon ui-icon-alert"></span>
                 <h:outputText value="La fecha para las monedas ya estan registradas o hubo un error al guardar el registro." />  
             </p:dialog>
@@ -98,7 +97,7 @@
                 <h:panelGrid columns="2" cellpadding="5" id="pnlGridTipoCambio">  
                     <h:outputLabel for="fecha" value="Fecha:" style="font-weight:bold"/>
                     <p:calendar id="fecha" value="#{tipoCambioBean.fecha}" showOn="button" navigator="true" required="true" 
-                                disabled="#{!tipoCambioBean.accion}"/> 
+                                disabled="#{!tipoCambioBean.accion}" pattern="dd/MM/yyyy"/> 
                     
                     <h:outputLabel for="monedaBaseForm" value="Moneda base:" style="font-weight:bold"/> 
                     <p:selectOneMenu id="monedaBaseForm" value="#{tipoCambioBean.monedaBaseForm}" disabled="#{!tipoCambioBean.accion}">
@@ -113,17 +112,17 @@
                     </p:selectOneMenu>
                     
                     <h:outputLabel for="oficial" value="Oficial:" style="font-weight:bold"/> 
-                    <pe:inputNumber id="oficial" value="#{tipoCambioBean.tipoCambioForm.valorOficial}"
+                    <pe:inputNumber id="oficial" value="#{tipoCambioBean.tipoCambioForm.valorOficial}" requiredMessage="Debe llenar el campo de valor Ofifial"
                                 thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                     </pe:inputNumber>
                     
                     <h:outputLabel for="venta" value="Venta:" style="font-weight:bold"/>  
-                    <pe:inputNumber id="venta" value="#{tipoCambioBean.tipoCambioForm.valorVenta}"
+                    <pe:inputNumber id="venta" value="#{tipoCambioBean.tipoCambioForm.valorVenta}" requiredMessage="Debe llenar el campo de valor de Venta"
                                 thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                     </pe:inputNumber>
                     
                     <h:outputLabel for="compra" value="Compra:" style="font-weight:bold"/>
-                    <pe:inputNumber id="compra" value="#{tipoCambioBean.tipoCambioForm.valorCompra}"
+                    <pe:inputNumber id="compra" value="#{tipoCambioBean.tipoCambioForm.valorCompra}" requiredMessage="Debe llenar el campo de valor de Compra"
                                 thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                     </pe:inputNumber>
                     
@@ -132,7 +131,7 @@
                                 thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" maxlength="10">
                     </pe:inputNumber>
                     
-                    <p:commandButton value="Guardar" icon="ui-icon-disk" actionListener="#{tipoCambioBean.guardarModificar}" update=":datos">
+                    <p:commandButton value="Guardar" icon="ui-icon-disk" actionListener="#{tipoCambioBean.guardarModificar}" update=":growl :datos">
                         <f:setPropertyActionListener target="#{tipoCambioBean.accion}" value="true" />
                         <f:setPropertyActionListener target="#{tipoCambioBean.seleccion}" value="vista" />
                     </p:commandButton>

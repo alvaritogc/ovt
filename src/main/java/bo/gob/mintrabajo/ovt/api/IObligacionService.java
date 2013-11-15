@@ -28,6 +28,6 @@ public interface IObligacionService {
     public List<ParObligacion> listaObligacionPorOrden();
     public ParObligacion obligacionPorCod(String codObligacion);
     //public ParObligacion saveObligacion(ParObligacion obligacion);
-    public ParObligacion saveObligacion(ParObligacion obligacion, String REGISTRO_BITACORA, boolean estadoObligacion);
+    public boolean saveObligacion(ParObligacion obligacion, String REGISTRO_BITACORA, boolean estadoObligacion,boolean evento);
     public boolean deleteObligacion(ParObligacion obligacion);
 }

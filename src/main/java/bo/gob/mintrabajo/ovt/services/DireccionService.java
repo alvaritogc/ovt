@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_ESTADO;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_ACTIVO;
+
 /**
  *
  * @author pc01
@@ -31,13 +34,15 @@ import java.util.List;
 public class DireccionService implements IDireccionService{
 
     private final DireccionRepository direccionRepository;
+    private final DominioRepository dominioRepository;
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
 
     @Inject
-    public DireccionService(DireccionRepository direccionRepository) {
+    public DireccionService(DireccionRepository direccionRepository,DominioRepository dominioRepository) {
         this.direccionRepository = direccionRepository;
+        this.dominioRepository=dominioRepository;
     }
 
 
@@ -49,8 +54,7 @@ public class DireccionService implements IDireccionService{
             //Nuevo
             direccion.setIdDireccion(this.obtenerSecuencia("PER_DIRECCION_SEC"));
         }
-        //preguntar q significa este valor
-        direccion.setEstado("0");
+        direccion.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
         direccion.setFechaBitacora(new Date());
         return direccionRepository.save(direccion);
 

@@ -14,7 +14,10 @@ import java.util.List;
 public interface PersonaRepository extends OpenJpaRepository<PerPersona, String>{
     List<PerPersona> findByIdPersonaAndEsNatural(String idPersona, boolean natural);
 
+    PerPersona findByNroIdentificacion(@Param("nroIdentificacion") String nroIdentificacion);
+
     @Query("SELECT DISTINCT a FROM PerPersona a " +
            "WHERE a.idPersona IN (select b.idPersona from UsrUsuario b where b.idUsuario =:idUsuario)")
     PerPersona obtenerPersonaPorIdUsuario(@Param("idUsuario")Long idUsuario);
+
 }

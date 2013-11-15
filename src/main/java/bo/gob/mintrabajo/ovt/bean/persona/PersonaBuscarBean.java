@@ -1,8 +1,10 @@
 package bo.gob.mintrabajo.ovt.bean.persona;
 
+import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
+import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.PerPersona;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 
@@ -12,10 +14,13 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
+
+import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_IDENTIFICACION;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,13 +37,18 @@ public class PersonaBuscarBean implements Serializable {
 
    private ExternalContext externalContext= FacesContext.getCurrentInstance().getExternalContext();
     private HttpSession session;
-
     private PerPersona persona;
     private List<PerPersona> listaPersona;
 
+
+    private List<SelectItem>listaTipoIdentificacion;
+    private String nombreRazonSocial;
+    private String tipoIdentificacion;
+    private String nroIdentificacion;
+
+
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
-
 
     @ManagedProperty(value = "#{utilService}")
     private IUtilsService iUtilsService;
@@ -46,21 +56,20 @@ public class PersonaBuscarBean implements Serializable {
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
 
+    @ManagedProperty(value="#{dominioService}")
+    private IDominioService iDominioService;
+
     @PostConstruct
     public void ini(){
-        persona=new PerPersona();
+
         listaPersona=new ArrayList<PerPersona>();
         session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         Long idUsuario = (Long) session.getAttribute("idUsuario");
-        //
-       // logger.info("Buscando usuario" + idUsuario);
-       // UsrUsuario usuario = iUsuarioService.findById(idUsuario);
-        System.out.println("=====================>>>> BUSCAR");
-       listaPersona=iPersonaService.findAll();
-       // Arrays.asList(listaPersona) ;
-        //listaPersona =getListaPersona();
-       // listaPersona=  iPersonaService.buscarPorNroNombre("","");
 
+        //listaPersona=iPersonaService.findAll();
+       // listaPersona=iPersonaService.buscarPorNroNombre(nombreRazonSocial,tipoIdentificacion);
+
+          cargar();
     }
 
     public void irUnidad()throws IOException{
@@ -72,13 +81,37 @@ public class PersonaBuscarBean implements Serializable {
         externalContext.redirect("registroPersona.xhtml");
     }
     public void cargar(){
-        listaPersona=  iPersonaService. buscarPorNroNombre("1579592010","SUSANA HEREDIA PRADO");
-
+        listaPersona=  iPersonaService. buscarPorNroNombre(nombreRazonSocial,tipoIdentificacion,nroIdentificacion);
+        listaTipoIdentificacion=cargarListas(listaTipoIdentificacion,DOM_TIPOS_IDENTIFICACION);
     }
 
    public void limpiar(){
-       persona=new PerPersona();
+      nombreRazonSocial="";
+       tipoIdentificacion="";
+       nroIdentificacion="";
+       cargar();
    }
+
+    /*
+     **
+     * Este metodo se utliza para cargar las listas
+     * del tipo SelectItem(para el componente <p:selectOneMenu>).
+     *@Param lista .- Es la variable que se utiliza para llenar los valores de dominio
+     *@Param dominio .- Representa un dominio de la tabla PAR_DOMINIO. Estos valores
+     *                  estan parametrizados en la clase Dominios.java
+     */
+    public List<SelectItem> cargarListas(List<SelectItem>lista,String dominio){
+        lista=new ArrayList<SelectItem>();
+        try{
+            List<ParDominio>valoresDominio=iDominioService.obtenerItemsDominio(dominio);
+            for(ParDominio d:valoresDominio){
+                lista.add(new SelectItem(d.getParDominioPK().getValor(),d.getDescripcion()));
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return lista;
+    }
 
     /*
      * ************************************
@@ -118,14 +151,6 @@ public class PersonaBuscarBean implements Serializable {
         this.externalContext = externalContext;
     }
 
-    public PerPersona getPersona() {
-        return persona;
-    }
-
-    public void setPersona(PerPersona persona) {
-        this.persona = persona;
-    }
-
     public List<PerPersona> getListaPersona() {
         return listaPersona;
     }
@@ -134,5 +159,51 @@ public class PersonaBuscarBean implements Serializable {
         this.listaPersona = listaPersona;
     }
 
+    public List<SelectItem> getListaTipoIdentificacion() {
+        return listaTipoIdentificacion;
+    }
 
+    public void setListaTipoIdentificacion(List<SelectItem> listaTipoIdentificacion) {
+        this.listaTipoIdentificacion = listaTipoIdentificacion;
+    }
+
+    public String getNombreRazonSocial() {
+        return nombreRazonSocial;
+    }
+
+    public void setNombreRazonSocial(String nombreRazonSocial) {
+        this.nombreRazonSocial = nombreRazonSocial;
+    }
+
+    public String getTipoIdentificacion() {
+        return tipoIdentificacion;
+    }
+
+    public void setTipoIdentificacion(String tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
+    }
+
+    public String getNroIdentificacion() {
+        return nroIdentificacion;
+    }
+
+    public void setNroIdentificacion(String nroIdentificacion) {
+        this.nroIdentificacion = nroIdentificacion;
+    }
+
+    public PerPersona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(PerPersona persona) {
+        this.persona = persona;
+    }
+
+    public IDominioService getiDominioService() {
+        return iDominioService;
+    }
+
+    public void setiDominioService(IDominioService iDominioService) {
+        this.iDominioService = iDominioService;
+    }
 }
