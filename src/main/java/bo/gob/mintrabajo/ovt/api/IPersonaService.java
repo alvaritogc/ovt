@@ -21,4 +21,6 @@ public interface IPersonaService {
     public PerPersona obtenerPersonaPorUsuario(UsrUsuario usrUsuario);
     public void editarPersona(PerPersona persona, PerUnidad unidad, String idLocalidad);
     public boolean guardarUsuarioInterno(PerPersona persona,PerUnidad unidad,UsrUsuario usuario);
+    public boolean guardarUsuarioRol(Long idUsuario, Long idRol);
+    public void eliminarUsuarioRol(Long idUsuario, Long idRol);
 }

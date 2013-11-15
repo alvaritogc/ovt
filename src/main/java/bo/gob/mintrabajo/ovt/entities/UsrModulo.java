@@ -64,8 +64,6 @@ public class UsrModulo implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModulo", fetch = FetchType.LAZY)
     private List<ParDominio> parDominioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModulo", fetch = FetchType.LAZY)
-    private List<UsrUsuarioRol> usrUsuarioRolList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModulo", fetch = FetchType.LAZY)
     private List<UsrRol> usrRolList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModulo", fetch = FetchType.LAZY)
     private List<UsrRecurso> usrRecursoList;
@@ -140,14 +138,6 @@ public class UsrModulo implements Serializable {
 
     public void setParDominioList(List<ParDominio> parDominioList) {
         this.parDominioList = parDominioList;
-    }
-
-    public List<UsrUsuarioRol> getUsrUsuarioRolList() {
-        return usrUsuarioRolList;
-    }
-
-    public void setUsrUsuarioRolList(List<UsrUsuarioRol> usrUsuarioRolList) {
-        this.usrUsuarioRolList = usrUsuarioRolList;
     }
 
     public List<UsrRol> getUsrRolList() {

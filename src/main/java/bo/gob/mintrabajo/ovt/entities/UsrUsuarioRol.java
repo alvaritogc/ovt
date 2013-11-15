@@ -55,9 +55,6 @@ public class UsrUsuarioRol implements Serializable {
     @JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private UsrRol usrRol;
-    @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private UsrModulo idModulo;
 
     public UsrUsuarioRol() {
     }
@@ -114,14 +111,6 @@ public class UsrUsuarioRol implements Serializable {
 
     public void setUsrRol(UsrRol usrRol) {
         this.usrRol = usrRol;
-    }
-
-    public UsrModulo getIdModulo() {
-        return idModulo;
-    }
-
-    public void setIdModulo(UsrModulo idModulo) {
-        this.idModulo = idModulo;
     }
 
     @Override
