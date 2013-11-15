@@ -58,7 +58,6 @@
 
 
     <h:form id="frmBucarPersona">
-
             <br/>
             <p:commandButton value="Agregar Unidad o Sucursal"
                              action="#{personaUnidadBean.nuevo}"
@@ -354,7 +353,12 @@
          </h:form>
        </p:dataGrid>
 
-
+        <h:form id="frmVolver">
+            <br/>
+            <p:commandButton value="Atras"
+                             action="#{personaUnidadBean.volver}"
+                             icon="ui-icon-arrowthick-1-w"/>
+        </h:form>
 
     </ui:define>
 </ui:composition>
