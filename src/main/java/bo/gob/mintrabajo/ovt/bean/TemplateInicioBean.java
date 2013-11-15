@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @ManagedBean(name = "templateInicioBean")
 @ViewScoped
@@ -88,11 +89,16 @@ public class TemplateInicioBean implements Serializable {
     private String contrasenia;
     private String nuevaContrasenia;
     private String confirmarContrasenia;
+
+
+
+    private  final int LONGITUD_MINIMA=3;
     
     //Variables para los servicios publicos
     private List<ParMensajeApp> listaMensajeApp;
     private ParMensajeApp mensajeApp;
     //
+
 
     @PostConstruct
     public void ini() {
@@ -304,6 +310,15 @@ public class TemplateInicioBean implements Serializable {
         session.setAttribute("idUsuario", idUsuario);
         Long idUsuario=(Long)session.getAttribute("idUsuario");
 
+        String contraseniaEsValida=validarContrasenia(nuevaContrasenia,LONGITUD_MINIMA);
+        if(!contraseniaEsValida.equals("OK")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",contraseniaEsValida));
+            ini();
+            return ;
+        }
+
+
            String mensaeje= iUsuarioService.cambiarContrasenia(idUsuario,contrasenia,nuevaContrasenia,confirmarContrasenia);
            if(mensaeje.equalsIgnoreCase("OK")){
                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", "Se cambio la contraseñia con exito."));
@@ -312,6 +327,27 @@ public class TemplateInicioBean implements Serializable {
            }else{
                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", mensaeje));
            }
+    }
+
+    public String validarContrasenia(String pass, int longitudMinima){
+
+        String mensaje="";
+
+        if(pass.length()<longitudMinima){
+            mensaje="La longitud minima de la contrasenia es "+longitudMinima+". Intente nuevamente";
+        }else{
+            String validacion="((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{"+String.valueOf(longitudMinima)+",50})";
+            /*Pattern pattern = Pattern
+                    .compile("((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{3,50})");*/
+            Pattern pattern = Pattern.compile(validacion);
+            if (!pattern.matcher(pass).matches()) {
+                mensaje="La contraseña debe contener al menos un caracter númerico, alfabetico y especial.";
+            }else{
+                //La contrasenia es valida
+                mensaje="OK";
+            }
+        }
+        return mensaje;
     }
 
     public void limpiar(){
@@ -515,5 +551,9 @@ public class TemplateInicioBean implements Serializable {
 
     public void setMensajeApp(ParMensajeApp mensajeApp) {
         this.mensajeApp = mensajeApp;
+    }
+
+    public int getLONGITUD_MINIMA() {
+        return LONGITUD_MINIMA;
     }
 }
