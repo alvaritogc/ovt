@@ -1,6 +1,7 @@
 
 package bo.gob.mintrabajo.ovt.services;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import bo.gob.mintrabajo.ovt.repositories.PersonaRepository;
@@ -115,7 +116,7 @@ public class UsuarioService implements IUsuarioService{
        try{
            return usuarioRepository.findByUsuario(email);
        }catch (Exception ex){
-           logger.error( ex.getMessage());
+           logger.error(ex.getMessage());
             return null;
        }
     }
@@ -163,14 +164,15 @@ public class UsuarioService implements IUsuarioService{
 
         String mensaje="";
         UsrUsuario usuario=usuarioRepository.findOne(idUsuario);
-
+        //descencriptar la contrasenia del usuario
+        String claveDescencriptada=Util.decrypt(usuario.getClave());
         //verificar que la contrasenia sea la asociada a su cuenta
-        if(!usuario.getClave().equals(clave)){
+        if(!claveDescencriptada.equals(clave)){
             mensaje="La contrasenia no esta asociada a su cuenta de usuario.";
             return mensaje;
         }
                //Verificar que la nueva contrasenia sea distinta  a la antigua contrasenia
-            if(usuario.getClave().equals(nuevaClave)){
+            if(claveDescencriptada.equals(nuevaClave)){
                 mensaje ="La nueva contrasenia debe ser distinta a la version anterior." ;
                 return mensaje;
             }
@@ -181,8 +183,8 @@ public class UsuarioService implements IUsuarioService{
                 return mensaje;
             }
 
-            //actualizar contrasenia
-            usuario.setClave(nuevaClave);
+            //actualizar contrasenia (Encriptada)
+            usuario.setClave(Util.crypt(nuevaClave));
             usuarioRepository.save(usuario);
             mensaje="OK";
             return mensaje;

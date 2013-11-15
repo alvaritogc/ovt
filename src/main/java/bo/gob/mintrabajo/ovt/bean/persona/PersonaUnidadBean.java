@@ -15,6 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
@@ -64,20 +65,14 @@ public class PersonaUnidadBean implements Serializable{
     @ManagedProperty(value = "#{unidadService}")
     private IUnidadService iUnidadService2;
 
-
-
     @ManagedProperty(value = "#{unidadService}")
     private IUnidadService iUnidadServiceModificar;
-
-
 
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
 
-
     @ManagedProperty(value="#{dominioService}")
     private IDominioService iDominioService;
-
 
     @ManagedProperty(value="#{direccionService}")
     private IDireccionService iDireccionService;
@@ -161,6 +156,12 @@ public class PersonaUnidadBean implements Serializable{
         cargarRepLegal();
     }
 
+    public void volver()throws IOException{
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
+        ctx.redirect(ctxPath + "/faces/pages/persona/buscarPersona.xhtml");
+    }
+
     /*
      *******************************************
      *          METODOS UNIDAD
@@ -184,7 +185,6 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public void nuevo(){
-        //unidadRegistro=new PerUnidad();
         direccion=new PerDireccion();
         repLegal=new PerReplegal();
         actividadPrincipal=new PerActividad();

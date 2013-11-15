@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IPersonaService {
     PerPersona findById(String id);
-    List<PerPersona> buscarPorNroNombre(final String nroIdentificacion, final String nombreRazonSocial);
+    public List<PerPersona> buscarPorNroNombre(final String nombreRazonSocial,final String tipoIdentificacion,final String nroIdentificacion);
     public  List<PerPersona> findAll();
     public PerPersona save(PerPersona persona);
     public Long obtenerSecuencia(String nombreSecuencia);

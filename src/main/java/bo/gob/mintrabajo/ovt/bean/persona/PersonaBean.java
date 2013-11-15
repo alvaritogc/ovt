@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean.persona;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
@@ -77,7 +78,6 @@ public class PersonaBean implements Serializable{
     private  UsrUsuario usuario;
 
 
-
     private boolean mostrar=false;
 
     private ExternalContext externalContext= FacesContext.getCurrentInstance().getExternalContext();
@@ -97,6 +97,8 @@ public class PersonaBean implements Serializable{
     private String port;
 
     private String confirmarContrasenia;
+
+    private  final int LONGITUD_MINIMA=3;
 
     @PostConstruct
     public void ini(){
@@ -245,9 +247,9 @@ public class PersonaBean implements Serializable{
             return ;
         }else{
             //validar que nro de identificacion sea unico
-            if(iPersonaService.findByNroIdentificacion(persona.getNroIdentificacion())==null){
+            if(iPersonaService.findByNroIdentificacion(persona.getNroIdentificacion())!=null){
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL valor del campo Nro. de identificacion ya existe."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL valor del campo Nro. de identificacion ya existe. Modifique este valor"));
                 ini();
                 return ;
             }
@@ -259,9 +261,9 @@ public class PersonaBean implements Serializable{
             ini();
             return ;
         }else{
-            if(iUsuarioService.obtenerUsuarioPorNombreUsuario(usuario.getUsuario())==null){
+            if(iUsuarioService.obtenerUsuarioPorNombreUsuario(usuario.getUsuario())!=null){
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL valor del campo Usuario ya existe.."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL valor del campo Usuario ya existe. Modifique este valor."));
                 ini();
                 return ;
             }
@@ -288,7 +290,13 @@ public class PersonaBean implements Serializable{
            return ;
        }
 
-
+        String contraseniaEsValida=validarContrasenia(usuario.getClave(),LONGITUD_MINIMA);
+        if(!contraseniaEsValida.equals("OK")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",contraseniaEsValida));
+            ini();
+            return ;
+        }
 
 
       final String  REGISTRO_BITACORA="ROE";
@@ -312,6 +320,7 @@ public class PersonaBean implements Serializable{
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
       usuario.setEsDelegado((short)0);
       usuario.setEsInterno((short) 0);
+      usuario.setClave(Util.crypt(usuario.getClave()));
       ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO__USUARIO_SINCONFIRMAR);
       usuario.setEstadoUsuario(d.getParDominioPK().getValor());
         //usuario.setIdPersona(persona);
@@ -351,6 +360,27 @@ public class PersonaBean implements Serializable{
         } else {
             return false;
         }
+    }
+
+    public String validarContrasenia(String pass, int longitudMinima){
+
+        String mensaje="";
+
+        if(pass.length()<longitudMinima){
+             mensaje="La longitud minima de la contrasenia es "+longitudMinima+". Intente nuevamente";
+        }else{
+            String validacion="((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{"+String.valueOf(longitudMinima)+",50})";
+            /*Pattern pattern = Pattern
+                    .compile("((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{3,50})");*/
+            Pattern pattern = Pattern.compile(validacion);
+            if (!pattern.matcher(pass).matches()) {
+                mensaje="La contraseña debe contener al menos un caracter númerico, alfabetico y especial.";
+            }else{
+                //La contrasenia es valida
+                mensaje="OK";
+            }
+        }
+        return mensaje;
     }
 
     public String volverLogin()throws IOException {
@@ -578,5 +608,9 @@ public class PersonaBean implements Serializable{
 
     public void setPort(String port) {
         this.port = port;
+    }
+
+    public int getLONGITUD_MINIMA() {
+        return LONGITUD_MINIMA;
     }
 }
