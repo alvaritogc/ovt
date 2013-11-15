@@ -8,6 +8,14 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../../pages/template/templateInicio.xhtml">
     <ui:define name="content">
+
+        <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                  draggable="false" closable="false">
+            <p:graphicImage value="../../images/ajax-loader.gif" />
+        </p:dialog>
+
         <h2 class="form-signin-heading">Empleadores o empresas</h2>
         <h:form >
             <p:panel id="pnldBuscarPersona" >
@@ -17,13 +25,11 @@
                 <f:facet name="footer">
                     <p:commandButton value="Buscar" action="#{personaBuscarBean.cargar}"
                                      update="dtTblUnidad,pnldBuscarPersona"
-                                     ajax="false"
-                                     process="@this"
+                                     process="@form"
                                      icon="ui-icon-search"/>
                     <p:commandButton value="Limpiar"
                                      action="#{personaBuscarBean.limpiar}"
                                      update="dtTblUnidad,pnldBuscarPersona"
-                                     ajax="false"
                                      icon="ui-icon-battery-0"/>
                 </f:facet>
                 <h:panelGrid id="pnlGridBuscarPersona" columns="2" cellpadding="4">
