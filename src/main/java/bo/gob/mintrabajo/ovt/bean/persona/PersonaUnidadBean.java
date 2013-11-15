@@ -144,25 +144,21 @@ public class PersonaUnidadBean implements Serializable{
 
         actividadEconomica=new ParActividadEconomica();
         repLegal=new PerReplegal();
-
         unidadRegistro=new PerUnidad();
-
- /*       //Cargando Representante Legal
-        listaRepLegal=iRepLegalService.findByPerUnidad(unidad);
-        repLegalPrincipal=new PerReplegal();
-        if(!listaRepLegal.isEmpty()){
-            repLegalPrincipal=listaRepLegal.get(0);
-        }*/
         cargar();
-        //Cargando Actividad Economica
-        listaActividad=iActividadService.findByPerUnidad(unidad);
-        actividadEconomicaPrincipal=new ParActividadEconomica();
-        if(listaActividad!=null){
-            if(!listaActividad.isEmpty()){
-                repLegalPrincipal=listaRepLegal.get(0);
-                actividadEconomicaPrincipal=listaActividad.get(0).getIdActividadEconomica();
-            }
-        }
+
+    }
+
+    public  void cargar(){
+        cargarLocalidad();
+        listaTipoEmpresa=cargarListas(listaTipoEmpresa,DOM_TIPOS_EMPRESA);
+        listaTipoSociedad=cargarListas(listaTipoEmpresa,DOM_TIPOS_SOCIEDAD);
+        listaTipoIdentificacion=cargarListas(listaTipoEmpresa,DOM_TIPOS_IDENTIFICACION);
+        listaTipoDirecciones=cargarListas(listaTipoDirecciones,DOM_TIPO_DIRECCION);
+        cargarUnidad();
+        cargarActividadDeclarda();
+        cargarDireccion();
+        cargarRepLegal();
     }
 
     /*
@@ -194,8 +190,48 @@ public class PersonaUnidadBean implements Serializable{
         actividadPrincipal=new PerActividad();
     }
 
+    /*
+    * Este metodo se encarga de realizar un INSERT o UPDATE
+    * de un registro en la tabla  PER_UNIDAD
+    *
+     */
     public void procesarUnidad(){
-        System.out.println("=====>>>>INGRESANDO A  GUARDAR UNIDAD PROCESAR UNIDAD ARIEL ARIEL");
+        //Validaciones
+        if (unidadRegistro.getNombreComercial()==null || unidadRegistro.getNombreComercial().trim().equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre comercial es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(unidadRegistro.getTipoEmpresa()==null || unidadRegistro.getTipoEmpresa().trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de empresa es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(unidadRegistro.getTipoSociedad()==null || unidadRegistro.getTipoSociedad().trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de sociedad es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if (unidadRegistro.getObservaciones()==null || unidadRegistro.getObservaciones().trim().equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Observaciones es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if (unidadRegistro.getActividadDeclarada()==null || unidadRegistro.getActividadDeclarada().trim().equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Actividad declarada es obligatorio."));
+            ini();
+            return ;
+        }
+
         final String  REGISTRO_BITACORA="ROE";
         unidadRegistro.setRegistroBitacora(REGISTRO_BITACORA);
         unidadRegistro=iUnidadServiceModificar.save(unidadRegistro,persona);
@@ -207,41 +243,7 @@ public class PersonaUnidadBean implements Serializable{
         }
     }
 
-    public void modificarUnidad(){
-        System.out.println("=====>>>>INGRESANDO A  MODIFICARUNIDAD");
-        final String  REGISTRO_BITACORA="ROE";
-        //unidadRegistro.setPerPersona(persona);
-       // unidadRegistro.setRegistroBitacora(REGISTRO_BITACORA);
-       // unidadRegistro.setFechaBitacora(new Date());
-        //unidadRegistro.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
-/*        PerUnidadPK perUnidadPK=new PerUnidadPK();
-        perUnidadPK.setIdPersona(persona.getIdPersona());
-        perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
-        unidad.setPerUnidadPK(perUnidadPK);*/
 
-        unidadRegistro=iUnidadServiceModificar.save(unidadRegistro);
-        ini();
-        if(unidadRegistro==null){
-            RequestContext.getCurrentInstance().execute("dlgUnidad.show()");
-        }else {
-            RequestContext.getCurrentInstance().execute("dlgUnidad.hide()");
-        }
-
-
-        System.out.println("=====>>>> GUARDAR UNIDAD OK");
-    }
-
-
-    public  void cargar(){
-        cargarLocalidad();
-        listaTipoEmpresa=cargarListas(listaTipoEmpresa,DOM_TIPOS_EMPRESA);
-        listaTipoSociedad=cargarListas(listaTipoEmpresa,DOM_TIPOS_SOCIEDAD);
-        listaTipoIdentificacion=cargarListas(listaTipoEmpresa,DOM_TIPOS_IDENTIFICACION);
-        listaTipoDirecciones=cargarListas(listaTipoDirecciones,DOM_TIPO_DIRECCION);
-        cargarUnidad();
-        cargarDireccion();
-        cargarRepLegal();
-    }
 
     /*
      *******************************************
@@ -249,6 +251,34 @@ public class PersonaUnidadBean implements Serializable{
      ******************************************
      */
     public void procesarDireccion(){
+
+        if(direccion.getTipoDireccion()==null || direccion.getTipoDireccion().trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de direccion es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(direccion.getDireccion()==null || direccion.getDireccion().trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Direccion es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(direccion.getZonaUrbanizacion()==null || direccion.getZonaUrbanizacion().trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Zona es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(idLocalidad==null || idLocalidad.trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Localidad es obligatorio."));
+            ini();
+            return ;
+        }
 
         direccion.setPerUnidad(unidadRegistro);
         direccion.setCodLocalidad(iLocalidadService.findById(idLocalidad));
@@ -263,21 +293,19 @@ public class PersonaUnidadBean implements Serializable{
         // Cargando Direccion
         listaDireccion= iDireccionService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
         if (!listaDireccion.isEmpty()){
-            direccionPrincipal= listaDireccion.get(listaDireccion.size()-1);
-            System.out.println("=====>> NRO. UNIDADES "+listaUnidad.size());
-            System.out.println("=====>> NRO. DIRECCION "+listaDireccion.size());
-            if (listaDireccion.size()>1){
-                for (int i=listaDireccion.size()-2;i>=0;i--){
-                    System.out.println("=====>> DIRECCION "+listaDireccion.get(i).getIdDireccion()+" idUnidad "+listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad());
+                for (int i=listaDireccion.size()-1;i>=0;i--){
                     for (int j=listaUnidad.size()-1;j>=0;j--){
-                        System.out.println("=====>> UNIDAD "+listaUnidad.get(j).getPerUnidadPK().getIdUnidad());
-                        if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
-                            listaUnidad.get(j).setDireccion(listaDireccion.get(i));
+                        if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==unidad.getPerUnidadPK().getIdUnidad()){
+                            direccionPrincipal= listaDireccion.get(i);
                             break;
+                        } else {
+                            if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
+                                listaUnidad.get(j).setDireccion(listaDireccion.get(i));
+                                break;
+                            }
                         }
                     }
                 }
-            }
         }
     }
     public void cargarLocalidad(){
@@ -302,9 +330,49 @@ public class PersonaUnidadBean implements Serializable{
      */
     public void procesarRepLegal(){
 
+        if(repLegal.getNombre()==null || repLegal.getNombre().trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(repLegal.getApellidoPaterno()==null || repLegal.getApellidoPaterno().trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Ap. paterno es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(repLegal.getApellidoMaterno()==null || repLegal.getApellidoMaterno().trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Ap. Materno es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(repLegal.getTipoIdentificacion()==null || repLegal.getTipoIdentificacion().trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de identificacion es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(repLegal.getNroIndentificacion()==null || repLegal.getNroIndentificacion().trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de identificacion es obligatorio."));
+            ini();
+            return ;
+        }
+
+        if(repLegal.getTipoProcedencia()==null || repLegal.getTipoProcedencia().trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Departamento es obligatorio."));
+            ini();
+            return ;
+        }
+
         repLegal.setPerUnidad(unidadRegistro);
-        //Preguntar que valor debe tener esta variable
-        //repLegal.setEstadoRepLegal("v");
         //Cambiar por el usuario de la session
         repLegal.setRegistroBitacora(persona.getNombreRazonSocial());
         iRepLegalService.save(repLegal);
@@ -316,34 +384,19 @@ public class PersonaUnidadBean implements Serializable{
 
         listaRepLegal=iRepLegalService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
         if(!listaRepLegal.isEmpty()){
-            repLegalPrincipal= listaRepLegal.get(listaRepLegal.size()-1);
-            if (listaRepLegal.size()>1){
-                for (int i=listaRepLegal.size()-2;i>=0;i--){
+                for (int i=listaRepLegal.size()-1;i>=0;i--){
                     for (int j=listaUnidad.size()-1;j>=0;j--){
-                        if(listaRepLegal.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
-                            listaUnidad.get(j).setRepLegal(listaRepLegal.get(i));
-                            break;
+                        if(listaRepLegal.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==unidad.getPerUnidadPK().getIdUnidad()){
+                           repLegalPrincipal= listaRepLegal.get(i);
+                           break;
+                        }else{
+                            if(listaRepLegal.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
+                                listaUnidad.get(j).setRepLegal(listaRepLegal.get(i));
+                                break;
+                            }
                         }
                     }
                 }
-            }
-        }
-
-        listaDireccion= iDireccionService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
-        if (!listaDireccion.isEmpty()){
-            direccionPrincipal= listaDireccion.get(listaDireccion.size()-1);
-            if (listaDireccion.size()>1){
-                for (int i=listaDireccion.size()-2;i>=0;i--){
-                    System.out.println("=====>> DIRECCION "+listaDireccion.get(i).getIdDireccion()+" idUnidad "+listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad());
-                    for (int j=listaUnidad.size()-1;j>=0;j--){
-                        System.out.println("=====>> UNIDAD "+listaUnidad.get(j).getPerUnidadPK().getIdUnidad());
-                        if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
-                            listaUnidad.get(j).setDireccion(listaDireccion.get(i));
-                            break;
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -352,22 +405,34 @@ public class PersonaUnidadBean implements Serializable{
       *          METODOS ACTIVIDAD DECLARADA
       ******************************************
       */
+
+    /*
+    * Este metodo se encarga de realizar un INSERT o UPDATE
+    * de un registro en las tablas: PAR_ACTIVIDAD_ECONOMICA y PER_ACTIVIDAD
+     */
     public void procesarActividadEconomica(){
 
         //Cambiar por el usuario de la session
-         actividadEconomica.setRegistroBitacora(persona.getNombreRazonSocial());
-        actividadEconomica=iActividadEconomicaService.save(actividadEconomica);
+        String registroPersona=  persona.getNombreRazonSocial();
+        iActividadEconomicaService.save(actividadEconomica,unidad,registroPersona);
 
-        //Cambiar por el usuario de la session
-        actividad=new PerActividad();
-        actividad.setRegistroBitacora(persona.getNombreRazonSocial());
-        actividad.setPerUnidad(unidad);
-        actividad.setIdActividadEconomica(actividadEconomica);
-        iActividadService.save(actividad);
         ini();
         //Cerrar dialog
         RequestContext.getCurrentInstance().execute("dlgActividadDeclarada.hide()");
 
+    }
+
+    public void cargarActividadDeclarda(){
+        //Cargando Actividad Economica
+        listaActividad=iActividadService.findByPerUnidad(unidad);
+        actividadEconomicaPrincipal=new ParActividadEconomica();
+        if(listaActividad!=null ){
+            if(!listaActividad.isEmpty()){
+                //se obtiene el primer registro, por que una persona solo tiene
+                // una actividad declarada
+                actividadEconomicaPrincipal=listaActividad.get(0).getIdActividadEconomica();
+            }
+        }
     }
 
     /*

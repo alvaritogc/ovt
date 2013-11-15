@@ -69,6 +69,16 @@ public class PersonaService implements IPersonaService {
         return perPersonaEntity;
     }
 
+   @Override
+   public PerPersona findByNroIdentificacion(String nroIdentificacion){
+        try{
+            return personaRepository.findByNroIdentificacion(nroIdentificacion);
+        }catch (Exception ex){
+           ex.printStackTrace();
+            return null;
+        }
+   }
+
 //    @Override
     public boolean delete(PerPersona persona) {
         boolean deleted = false;

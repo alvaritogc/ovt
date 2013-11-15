@@ -11,4 +11,6 @@ import java.util.List;
 @OpenJpaSettings
 public interface PersonaRepository extends OpenJpaRepository<PerPersona, String>{
     List<PerPersona> findByIdPersonaAndEsNatural(String idPersona, boolean natural);
+
+    PerPersona findByNroIdentificacion(String nroIdentificacion);
 }

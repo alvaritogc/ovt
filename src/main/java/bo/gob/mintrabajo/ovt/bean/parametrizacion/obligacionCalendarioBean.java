@@ -101,7 +101,7 @@ public class obligacionCalendarioBean implements Serializable{
     
     public void listarPeriodo(){
         listaDominioPeriodo = new ArrayList<ParDominio>();
-        listaDominioPeriodo = iDominioService.obtenerDominioPorNombrePadreYValorPadre("TCALENDARIO",obligacionCalendario.getTipoCalendario());
+        //listaDominioPeriodo = iDominioService.obtenerDominioPorNombrePadreYValorPadre("TCALENDARIO",obligacionCalendario.getTipoCalendario());
     }
     
     public void listarObligacionCalendario(){

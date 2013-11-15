@@ -21,13 +21,11 @@
 
             <p:panel id="pnlPersona" header="DATOS GENERALES" style="height: 300px;width: 700px;">
                 <h:panelGrid id="pnlGridBuscarPersona" columns="2" >
-                    <h:outputText value="Es natural:"/>
+                    <h:outputText value="Natural-Juridica:"/>
                     <p:selectBooleanCheckbox id="checkEsNatural" value="#{personaBean.persona.esNatural}"
-                                             tabindex="1" immediate="true" >
-                        <p:ajax    listener="#{personaBean.cambiarNatural}" update="pnlPersona" />
+                                             tabindex="1" >
+                        <p:ajax    process="@this" update="pnlPersona" />
                     </p:selectBooleanCheckbox>
-
-
 
                     <h:outputText value="Nombre o Razon social:"/>
                     <p:inputText id="inputTxtNombre" value="#{personaBean.persona.nombreRazonSocial}"
@@ -38,32 +36,30 @@
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>
 
-
-                    <h:outputText value="Apellido paterno:" rendered="#{personaBean.esNatural}"/>
+                    <h:outputText value="Apellido paterno:" rendered="#{!personaBean.persona.esNatural}"/>
                     <p:inputText id="inputTxtPaterno" value="#{personaBean.persona.apellidoPaterno}"
                                  style="width: 215px;text-transform: uppercase;"
                                  tabindex="3"
-                                 rendered="#{personaBean.esNatural}"
-                            >
+                                 rendered="#{!personaBean.persona.esNatural}">
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>
 
-                    <h:outputText value="Apellido materno:" rendered="#{personaBean.esNatural}"/>
+                    <h:outputText value="Apellido materno:" rendered="#{!personaBean.persona.esNatural}"/>
                     <p:inputText id="inputTxtMaterno" value="#{personaBean.persona.apellidoMaterno}"
                                  tabindex="4"
                                  style="width: 215px;text-transform: uppercase;"
-                                 rendered="#{personaBean.esNatural}" >
+                                 rendered="#{!personaBean.persona.esNatural}" >
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>
 
-                    <h:outputText value="Tipo de identificacion:"/>
+                    <h:outputText value="Identificacion:"/>
                     <p:selectOneMenu id="slcOneMenuTipoIdentificacion" value="#{personaBean.persona.tipoIdentificacion}"
                                      tabindex="5"
                                     style="text-transform: uppercase;">
                         <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
                         <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
                     </p:selectOneMenu>
-                    <h:outputText value="Localidad:"/>
+                    <h:outputText value="Lugar de emision:"/>
                     <p:selectOneMenu id="slcOneMenuLocalidad" value="#{personaBean.idLocalidad}"
                                      tabindex="6"
                                      style="text-transform: uppercase;">
@@ -74,6 +70,8 @@
                     <p:inputText id="inputTxtNroIdentificacion" value="#{personaBean.persona.nroIdentificacion}"
                                  tabindex="7"
                                  required="true"
+                                 size="20"
+                                 maxlength="20"
                                  style="width: 215px;text-transform: uppercase;"
                                  requiredMessage="El campo Nro. de identificacion es obligatorio"/>
 

@@ -40,10 +40,7 @@
             <f:facet name="header">
                 Lista de personas
             </f:facet>
-            <p:column headerText="Nombre o Razon social"
-                      sortBy="#{persona.nombreRazonSocial}"
-                      filterMatchMode="contain"
-                    filterBy="#{persona.nombreRazonSocial}">
+            <p:column headerText="Nombre o Razon social" >
 
                       <h:outputText value="#{persona.nombreRazonSocial}"/>
             </p:column>

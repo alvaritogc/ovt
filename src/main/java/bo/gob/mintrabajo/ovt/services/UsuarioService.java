@@ -106,9 +106,14 @@ public class UsuarioService implements IUsuarioService{
         return usr;
     }
 
+    @Override
     public UsrUsuario obtenerUsuarioPorNombreUsuario(String email){
-
-       return usuarioRepository.findByUsuario(email);
+       try{
+           return usuarioRepository.findByUsuario(email);
+       }catch (Exception ex){
+           logger.error( ex.getMessage());
+            return null;
+       }
     }
 
    /*****************************************************

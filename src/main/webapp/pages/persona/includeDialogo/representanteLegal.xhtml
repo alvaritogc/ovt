@@ -3,7 +3,20 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
+    <style type="text/css">
+        myFieldset .ui-fieldset, .ui-fieldset .ui-fieldset-legend {
+           background-color: transparent;
+            border-color: transparent;
+            background-size: 0px;
+            width: 80px;
+            font-size: 15px;
+            padding:0.0em;
+            margin: 0.1em;
+            text-align: left;
+        }
+    </style>
  <h:form id="frmRepLegal">
+     <p:growl showDetail="true" id="growlRepLegal" />
      <p:panel id="pnlRepLegal">
 
          <f:facet name="footer">
@@ -12,16 +25,15 @@
                               icon="#{personaUnidadBean.iconoUnidad}"
                               action="#{personaUnidadBean.procesarRepLegal}"
                               id="cmdButtonRepLegal"
-                              update=":tabPersonaUnidad:tabRepLegal,:dataGrid"
+                              update=":tabPersonaUnidad,:tabPersonaUnidad:tabRepLegal,:dataGrid,:frmRepLegal:growlRepLegal"
                      />
          </f:facet>
-
 
          <h:panelGrid columns="2">
              <h:outputText value="Nombre:"/>
              <p:inputText id="inputTxtNombreRepLegal2" value="#{personaUnidadBean.repLegal.nombre}"
                           style="width: 210px;text-transform: uppercase;"
-                          tabindex="3"
+                          tabindex="1"
                           required="true"
                           requiredMessage="El campo Nombre es obligatorio.">
                  <f:converter converterId="lowerConverter"/>
@@ -30,7 +42,7 @@
              <h:outputText value="Ap. paterno: "/>
              <p:inputText id="inputTxtApPaterno2" value="#{personaUnidadBean.repLegal.apellidoPaterno}"
                           style="width: 210px;text-transform: uppercase;"
-                          tabindex="3"
+                          tabindex="2"
                           required="true"
                           requiredMessage="El campo Ap. paterno es obligatorio.">
                  <f:converter converterId="lowerConverter"/>
@@ -48,44 +60,47 @@
              <h:outputText value="Tipo de identificacion:"/>
              <p:selectOneMenu id="slcOneMenuTipoIdentificacion2"
                               value="#{personaUnidadBean.repLegal.tipoIdentificacion}"
-                              tabindex="16"
+                              tabindex="4"
                               style="text-transform: uppercase">
                  <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
                  <f:selectItems value="#{personaUnidadBean.listaTipoIdentificacion}" />
              </p:selectOneMenu>
 
-             <h:outputText value="Nro. de documento: "/>
-             <p:inputText id="inputTxtNroDocumento2" value="#{personaUnidadBean.repLegal.nroDocumento}"
-                          style="width: 210px;"
-                          tabindex="3"
-                          required="true"
-                          requiredMessage="El campo Ap. materno es obligatorio."/>
-
              <h:outputText value="Nro. de identificacion: "/>
              <p:inputText id="inputTxtNroIdentificacion" value="#{personaUnidadBean.repLegal.nroIndentificacion}"
                           style="width: 210px;"
-                          tabindex="3"
+                          tabindex="5"
                           required="true"
+                          maxlength="20"
                           requiredMessage="El campo Nro. de identificacion es obligatorio."/>
-
-             <h:outputText value="Fecha del documento:"/>
-             <p:calendar id="calendar" value="#{personaUnidadBean.repLegal.fechaDocumento}"
-                         effect="slideDown" tabindex="4"
-                         style="width:200px;"
-                         showOn="button"
-                         navigator="true"
-                         required="true"
-                         requiredMessage="El campo Fecha del documento es obligatorio."/>
-
-             <h:outputText value="Tipo de procedencia:"/>
-             <p:selectOneMenu id="slcOneMenuTipoProcedencia2" value="#{personaUnidadBean.repLegal.tipoProcedencia}"
-                              tabindex="16"
-                              style="text-transform: uppercase">
-                 <f:selectItem itemLabel="---Seleccione una procedencia---" itemValue="" />
-                 <f:selectItems value="#{personaUnidadBean.listaLocalidad}" />
-             </p:selectOneMenu>
-
          </h:panelGrid>
+
+         <p:fieldset styleClass="myFieldset" legend="&#xA0;&#xA0;&#xA0;Poder" >
+            <h:panelGrid columns="2">
+                <h:outputText value="Nro. de documento: "/>
+                <p:inputText id="inputTxtNroDocumento2" value="#{personaUnidadBean.repLegal.nroDocumento}"
+                             style="width: 210px;"
+                             maxlength="20"
+                             tabindex="6"/>
+                <h:outputText value="Fecha :"/>
+                <p:calendar id="calendar" value="#{personaUnidadBean.repLegal.fechaDocumento}"
+                            effect="slideDown"
+                            tabindex="7"
+                            style="width:200px;"
+                            showOn="button"
+                            navigator="true"/>
+                <h:outputText value="Departamento:"/>
+                <p:selectOneMenu id="slcOneMenuTipoProcedencia2" value="#{personaUnidadBean.repLegal.tipoProcedencia}"
+                                 tabindex="8"
+                                 style="text-transform: uppercase"
+                                 required="true"
+                                 requiredMessage="El campo Departamento es obligatorio">
+                    <f:selectItem itemLabel="---Seleccione una procedencia---" itemValue="" />
+                    <f:selectItems value="#{personaUnidadBean.listaLocalidad}" />
+                </p:selectOneMenu>
+            </h:panelGrid>
+
+         </p:fieldset>
 
      </p:panel>
  </h:form>
