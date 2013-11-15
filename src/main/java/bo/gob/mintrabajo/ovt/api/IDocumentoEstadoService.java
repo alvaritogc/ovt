@@ -9,4 +9,8 @@ public interface IDocumentoEstadoService {
     ParDocumentoEstado buscarPorId(String id);
     public ParDocumentoEstado findById(String id);
     List<ParDocumentoEstado> listarSiguientesTransiciones(DocDocumento documento);
+    List<ParDocumentoEstado> listarDocumentoEstados();
+    ParDocumentoEstado guardarModificarDocumentoEstado(ParDocumentoEstado parDocumentoEstado);
+    void eliminarDocumentoEstado(ParDocumentoEstado parDocumentoEstado);
+
 }

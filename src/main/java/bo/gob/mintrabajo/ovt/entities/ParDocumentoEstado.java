@@ -60,15 +60,15 @@ public class ParDocumentoEstado implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstado", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "codEstado", fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstadoFinal", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "codEstadoFinal", fetch = FetchType.LAZY)
     private List<DocLogEstado> docLogEstadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstadoInicial", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "codEstadoInicial", fetch = FetchType.LAZY)
     private List<DocLogEstado> docLogEstadoList1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parDocumentoEstado", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "parDocumentoEstado", fetch = FetchType.LAZY)
     private List<DocTransicion> docTransicionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parDocumentoEstado1", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "parDocumentoEstado1", fetch = FetchType.LAZY)
     private List<DocTransicion> docTransicionList1;
 
     public ParDocumentoEstado() {
