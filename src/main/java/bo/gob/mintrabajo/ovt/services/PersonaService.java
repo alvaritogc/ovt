@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -143,14 +144,22 @@ public class PersonaService implements IPersonaService {
 
 
     @Override
-    public List<PerPersona> buscarPorNroNombre(final String nroIdentificacion, final String nombreRazonSocial) {
-        if (Strings.isNullOrEmpty(nroIdentificacion) && Strings.isNullOrEmpty(nombreRazonSocial)) {
-            return Collections.emptyList();
-        }
+    public List<PerPersona> buscarPorNroNombre(final String nombreRazonSocial,final String tipoIdentificacion,final String nroIdentificacion) {
+
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PerPersona> criteriaQuery = criteriaBuilder.createQuery(PerPersona.class);
         Root<PerPersona> from = criteriaQuery.from(PerPersona.class);
+        criteriaQuery.orderBy(criteriaBuilder.desc(from.get("idPersona")));
+        if (Strings.isNullOrEmpty(nroIdentificacion) && Strings.isNullOrEmpty(nombreRazonSocial) && Strings.isNullOrEmpty(tipoIdentificacion)) {
+            //return Collections.emptyList();
+
+            Query q= entityManager.createQuery(criteriaQuery);
+            q.setFirstResult(0);
+            q.setMaxResults(200);
+             return q.getResultList();
+            //return entityManager.createQuery(criteriaQuery).getResultList();
+        }
 
         Specification<PerPersona> specification = new Specification<PerPersona>() {
             @Override
@@ -162,6 +171,11 @@ public class PersonaService implements IPersonaService {
 
                 if (!Strings.isNullOrEmpty(nroIdentificacion)) {
                     pr.add(criteriaBuilder.equal(perPersonaEntityRoot.get("nroIdentificacion"), nroIdentificacion));
+                    // PUEDE SER: return criteriaBuilder.equal(perPersonaEntityRoot.get("nroIdentificacion"), nroIdentificacion);
+                }
+
+                if (!Strings.isNullOrEmpty(tipoIdentificacion)) {
+                    pr.add(criteriaBuilder.equal(perPersonaEntityRoot.get("tipoIdentificacion"), tipoIdentificacion));
                     // PUEDE SER: return criteriaBuilder.equal(perPersonaEntityRoot.get("nroIdentificacion"), nroIdentificacion);
                 }
 
