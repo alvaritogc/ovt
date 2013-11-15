@@ -28,8 +28,16 @@
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="Acciones" style="width: 60px;">
+                    <p:column headerText="Acciones" style="width: 90px;">
                         <p:commandButton icon="ui-icon-pencil" 
+                                         update=":idDlgExterno"
+                                         oncomplete="PF('contenidoRecursoDlg').show();" 
+                                         title="Editar mensaje" >
+                            <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}" />
+                            <f:setPropertyActionListener value="true" target="#{contenidoRecursoBean.edicion}" />
+                        </p:commandButton>
+                        
+                        <p:commandButton icon="ui-icon-image" 
                                          action="#{contenidoRecursoBean.editar}" title="Editar Contenido" immediate="true">
                             <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}" />
                         </p:commandButton>
@@ -51,6 +59,7 @@
 
             <p:dialog id="contenidoRecursoDialog" header="Nuevo contenido" widgetVar="contenidoRecursoDlg">  
                 <h:form id="idDlgExterno">
+                    <p:outputLabel value="#{contenidoRecursoBean.edicion}"/>
                     <h:panelGrid columns="2">
                         <p:outputLabel value="Mensaje:"/>
                         <p:inputText value="#{contenidoRecursoBean.mensajeApp.mensaje}"/>

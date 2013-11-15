@@ -37,6 +37,7 @@ public class ContenidoRecursoBean {
     private ParMensajeApp mensajeApp;
     //
     private Long idRecurso;
+    private boolean edicion;
 
     @PostConstruct
     public void ini() {
@@ -59,6 +60,8 @@ public class ContenidoRecursoBean {
     }
     public void nuevo(){
         mensajeApp=new ParMensajeApp();
+        edicion=false;
+        
     }
     
     public void guardar(){
@@ -104,6 +107,14 @@ public class ContenidoRecursoBean {
     
     public void setiMensajeAppService(IMensajeAppService iMensajeAppService) {
         this.iMensajeAppService = iMensajeAppService;
+    }
+
+    public boolean isEdicion() {
+        return edicion;
+    }
+
+    public void setEdicion(boolean edicion) {
+        this.edicion = edicion;
     }
     
 }
