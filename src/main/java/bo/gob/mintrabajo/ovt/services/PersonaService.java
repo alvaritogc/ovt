@@ -38,6 +38,8 @@ public class PersonaService implements IPersonaService {
     private final RolRepository rolRepository;
     private final ModuloRepository moduloRepository;
     private final UsuarioRolRepository usuarioRolRepository;
+    private final LocalidadRepository localidadRepository;
+
 
     private static final Logger log = LoggerFactory.getLogger(PersonaService.class);
 
@@ -45,7 +47,7 @@ public class PersonaService implements IPersonaService {
     private EntityManager entityManager;
 
     @Inject
-    public PersonaService(PersonaRepository personaRepository,UnidadRepository unidadRepository,UsuarioRepository usuarioRepository,UsuarioUnidadRepository usuarioUnidadRepository,RolRepository rolRepository,ModuloRepository moduloRepository,UsuarioRolRepository usuarioRolRepository) {
+    public PersonaService(PersonaRepository personaRepository,UnidadRepository unidadRepository,UsuarioRepository usuarioRepository,UsuarioUnidadRepository usuarioUnidadRepository,RolRepository rolRepository,ModuloRepository moduloRepository,UsuarioRolRepository usuarioRolRepository, LocalidadRepository localidadRepository) {
     //public PersonaService(PersonaRepository personaRepository,UnidadRepository unidadRepository,UnidadService unidadService,UsuarioRepository usuarioRepository,IUsuarioService usuarioService,UsuarioUnidadRepository usuarioUnidadRepository) {
         this.personaRepository = personaRepository;
         this.unidadRepository=unidadRepository;
@@ -56,6 +58,7 @@ public class PersonaService implements IPersonaService {
         this.rolRepository=rolRepository;
         this.moduloRepository=moduloRepository;
         this.usuarioRolRepository=usuarioRolRepository;
+        this.localidadRepository = localidadRepository;
     }
 
 //    @Override
@@ -73,11 +76,11 @@ public class PersonaService implements IPersonaService {
     }
 
     @Override
-    public void editarPersona(PerPersona persona, PerUnidad unidad) {
+    public void editarPersona(PerPersona persona, PerUnidad unidad, String idLocalidad) {
         log.info("Editando el Usuario ...");
         PerPersona perPersonaTmp = personaRepository.findOne(persona.getIdPersona());
         perPersonaTmp.setTipoIdentificacion(persona.getTipoIdentificacion());
-        perPersonaTmp.setCodLocalidad(persona.getCodLocalidad());
+        perPersonaTmp.setCodLocalidad(localidadRepository.findOne(idLocalidad));
         perPersonaTmp.setNroIdentificacion(persona.getNroIdentificacion());
         perPersonaTmp.setNombreRazonSocial(persona.getNombreRazonSocial());
         perPersonaTmp.setApellidoPaterno(persona.getApellidoPaterno());

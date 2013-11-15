@@ -117,8 +117,7 @@ public class UsuarioAdministracionBean {
     public void editarUsuario() {
         log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo editarUsuario()");
         try {
-            personaSelected.setCodLocalidad(iLocalidadService.findById(idLocalidad));
-            iPersonaService.editarPersona(personaSelected, unidadSelected);
+            iPersonaService.editarPersona(personaSelected, unidadSelected, idLocalidad);
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("edicionDlg.hide();");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "El usuario se editó correctamente"));
