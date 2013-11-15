@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 gmercado.
+ * Copyright 2013 rvelasquez.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -33,7 +34,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author gmercado
+ * @author rvelasquez
  */
 @Entity
 @Table(name = "PAR_CALENDARIO")
@@ -53,8 +54,12 @@ public class ParCalendario implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
+    @OneToMany(mappedBy = "parCalendario", fetch = FetchType.LAZY)
+    private List<DocGenerico> docGenericoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parCalendario", fetch = FetchType.LAZY)
     private List<ParObligacionCalendario> parObligacionCalendarioList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parCalendario", fetch = FetchType.LAZY)
+    private List<DocPlanilla> docPlanillaList;
 
     public ParCalendario() {
     }
@@ -106,12 +111,28 @@ public class ParCalendario implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
+    public List<DocGenerico> getDocGenericoList() {
+        return docGenericoList;
+    }
+
+    public void setDocGenericoList(List<DocGenerico> docGenericoList) {
+        this.docGenericoList = docGenericoList;
+    }
+
     public List<ParObligacionCalendario> getParObligacionCalendarioList() {
         return parObligacionCalendarioList;
     }
 
     public void setParObligacionCalendarioList(List<ParObligacionCalendario> parObligacionCalendarioList) {
         this.parObligacionCalendarioList = parObligacionCalendarioList;
+    }
+
+    public List<DocPlanilla> getDocPlanillaList() {
+        return docPlanillaList;
+    }
+
+    public void setDocPlanillaList(List<DocPlanilla> docPlanillaList) {
+        this.docPlanillaList = docPlanillaList;
     }
 
     @Override

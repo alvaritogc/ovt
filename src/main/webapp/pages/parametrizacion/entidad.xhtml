@@ -4,22 +4,19 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../../pages/template/templateInicio.xhtml">
         <ui:define name="content">
             <h2 class="form-signin-heading">Entidades</h2>
             <p:commandButton value="Nuevo" onclick="dlgFormEntidad.show();" update=":formEntidad:pnlGridEntidad" 
-                             icon="ui-icon-document-b" actionListener="#{entidadBean.nuevo}" /> 
+                             icon="ui-icon-circle-plus" actionListener="#{entidadBean.nuevo}" /> 
             <br />
             <!--  Listado de entidades en tabla-->
             <br/>
             <p:dataTable id="dataTableEntidad" var="parEntidad" value="#{entidadBean.listaEntidad}" 
                          paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="bottom"
-                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados">
-                <f:facet name="header">  
-                    Entidades Encontradas
-                </f:facet>  
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
+                 currentPageReportTemplate="{currentPage} / {totalPages}">
 
                 <p:column sortBy="descripcion" headerText="Descripción" >   
                     <h:outputText value="#{parEntidad.descripcion}" />  
@@ -32,7 +29,7 @@
                 <p:column sortBy="tipoEntidad" headerText="Tipo de entidad">  
                     <h:outputText value="#{parEntidad.tipoEntidad}" />  
                 </p:column>
-                <p:column headerText="Acciones">                
+                <p:column headerText="Operaciones">                
                     <p:commandButton title="Editar" onclick="dlgFormEntidad.show()" update=":formEntidad" icon="ui-icon-pencil">
                             <f:setPropertyActionListener target="#{entidadBean.entidad}" value="#{parEntidad}" />
                             <f:setPropertyActionListener target="#{entidadBean.evento}" value="true" />
@@ -84,7 +81,8 @@
                     </p:selectOneMenu>
                    
                     <p:commandButton value="Guardar" actionListener="#{entidadBean.guardarModificar}" update=":growl formEntidad :dataTableEntidad" icon="ui-icon-disk"/>
-                    <p:commandButton value="Canselar" action="#{entidadBean.nuevo}" onclick="dlgFormEntidad.hide();" update="formEntidad:pnlGridEntidad" icon="ui-icon-close" />
+                    <p:commandButton value="Canselar" action="#{entidadBean.nuevo}" onclick="dlgFormEntidad.hide();" 
+                                     update="formEntidad:pnlGridEntidad" icon="ui-icon-close" immediate="true"/>
                 </h:panelGrid>  
             </h:form> 
             </p:dialog>
