@@ -19,6 +19,6 @@ public interface IPersonaService {
     List<PerPersona> listarPorSucursal(String idPersona);
     PerPersona obtienePorCentral(String idPersona);
     public PerPersona obtenerPersonaPorUsuario(UsrUsuario usrUsuario);
-    public void editarPersona(PerPersona persona, PerUnidad unidad);
+    public void editarPersona(PerPersona persona, PerUnidad unidad, String idLocalidad);
     public boolean guardarUsuarioInterno(PerPersona persona,PerUnidad unidad,UsrUsuario usuario);
 }
