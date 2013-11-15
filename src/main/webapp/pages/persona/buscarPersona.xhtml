@@ -8,10 +8,22 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../../pages/template/templateInicio.xhtml">
     <ui:define name="content">
+        <h2 class="form-signin-heading">Empleadores o empresas</h2>
         <h:form >
             <p:panel id="pnldBuscarPersona" >
                 <f:facet name="header">
-                    Busqueda de personas
+                    Filtro de busqueda de empleadores o empresas
+                </f:facet>
+                <f:facet name="footer">
+                    <p:commandButton value="Buscar" action="#{personaBuscarBean.cargar}"
+                                     update="dtTblUnidad,pnldBuscarPersona"
+                                     ajax="false"
+                                     icon="ui-icon-search"/>
+                    <p:commandButton value="Limpiar"
+                                     action="#{personaBuscarBean.limpiar}"
+                                     update="dtTblUnidad,pnldBuscarPersona"
+                                     ajax="false"
+                                     icon="ui-icon-battery-0"/>
                 </f:facet>
                 <h:panelGrid id="pnlGridBuscarPersona" columns="2" cellpadding="4">
                     <h:outputText value="Nombre:"/>
@@ -26,8 +38,6 @@
                 </h:panelGrid>
             </p:panel>
             <br/>
-            <p:commandButton value="Buscar" action="#{personaBuscarBean.cargar}" update="dtTblUnidad,pnldBuscarPersona" ajax="false"/>
-            <p:commandButton value="Limpiar" action="#{personaBuscarBean.limpiar}" update="dtTblUnidad,pnldBuscarPersona" ajax="false"/>
 
 
         <p:dataTable id="dtTblUnidad" value="#{personaBuscarBean.listaPersona}"
@@ -36,7 +46,9 @@
                      paginator="true"
                      rows="10"
                      paginatorPosition="bottom"
-                     paginatorAlwaysVisible="false">
+                     paginatorAlwaysVisible="false"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                     currentPageReportTemplate="{currentPage} / {totalPages}">
             <f:facet name="header">
                 Lista de personas
             </f:facet>
