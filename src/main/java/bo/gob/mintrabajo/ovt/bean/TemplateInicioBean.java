@@ -306,7 +306,7 @@ public class TemplateInicioBean implements Serializable {
 
            String mensaeje= iUsuarioService.cambiarContrasenia(idUsuario,contrasenia,nuevaContrasenia,confirmarContrasenia);
            if(mensaeje.equalsIgnoreCase("OK")){
-               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", "Se cambio la contraseni con exito."));
+               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", "Se cambio la contraseñia con exito."));
                limpiar();
                logout();
            }else{

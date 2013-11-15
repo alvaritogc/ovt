@@ -72,6 +72,7 @@
                                  required="true"
                                  size="20"
                                  maxlength="20"
+                                 autocomplete="false"
                                  style="width: 215px;text-transform: uppercase;"
                                  requiredMessage="El campo Nro. de identificacion es obligatorio"/>
 
@@ -144,22 +145,47 @@
                            <p:watermark for="inputTxtUsuario" value="Correo electronico" />
                        </p:inputText>
 
-
                        <h:outputText value="Contrasenia:" />
+                       <h:panelGrid columns="3">
                        <p:password id="inputTxtClave" value="#{personaBean.usuario.clave}"
                                    feedback="true"
                                    tabindex="13"
                                    required="true"
                                    requiredMessage="EL campo Contrasenia es obligatorio"
                                    autocomplete="off"
+                                   promptLabel="Ingrese su contrasenia"
+                                   weakLabel="Contrasenia debil"
+                                   goodLabel="Contrasenia media"
+                                   strongLabel="Contrasenia fuerte"
                                />
+                       <h:graphicImage value="/images/ayuda.png" id="grafayuda"/>
+                       <p:tooltip for="grafayuda">
+                           <ol>
+                               <li>La Contrase&ntilde;a permite los siguientes caracteres
+                                   especiales:<br /> <b> ` ~ ! @ # $ % ^ &amp; * ( ) _ = { }
+                                       + \ | : ; &prime; &Prime; &lt; &gt; , - . ? /</b>
+                               </li>
+                               <li>La Contrase&ntilde;a permite validar que ingrese al
+                                   menos un caracter especial, numerico y alfabetico</li>
+                               <li>La longitud minima requerida es de
+                                   #{personaBean.LONGITUD_MINIMA} caracteres</li>
+                           </ol>
+                           <b>Ejemplo:</b>
+                           <pre>admin12@</pre>
+                       </p:tooltip>
+                       </h:panelGrid>
+
                        <h:outputText value="Confirmar contrasenia:" />
                        <p:password id="inputTxtConfirmar" value="#{personaBean.confirmarContrasenia}"
                                    feedback="true"
                                    tabindex="14"
                                    autocomplete="off"
+                                   promptLabel="Ingrese su contrasenia"
+                                   weakLabel="Contrasenia debil"
+                                   goodLabel="Contrasenia media"
+                                   strongLabel="Contrasenia fuerte"
                                />
-                   </h:panelGrid>
+           </h:panelGrid>
                </p:panel>
            </h:panelGrid>
 

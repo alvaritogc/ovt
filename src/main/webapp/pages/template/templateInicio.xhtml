@@ -152,12 +152,12 @@
                             <p:graphicImage value="../../images/ajax-loader.gif" />
                         </p:dialog>
                         <h:form id="frmOlvidoContrasenia">
-                            <p:messages id="abc" showDetail="true" autoUpdate="false" closable="true" globalOnly="false" />
+                            <p:growl showDetail="true" id="growlOlvidoContrasenia" />
                             <br/>
-                            <p style="font-size: 12px;">Para recuperar su contrasenia, ingrese su Nro. de identificacion(NIT) y direccion de correo electronico asociada al Sistema.</p>
+                            <p style="font-size: 12px;">Para recuperar su contraseña, ingrese su Nro. de documento con el que se registro (CI,NIT) y direccion de correo electronico asociada al Sistema.</p>
 
                             <h:panelGrid columns="1" id="pnlGridContrasenia">
-                                <h:outputText value="Nro de identificacion (NIT):"/>
+                                <h:outputText value="Nro de documento (NIT,CI):"/>
                                 <p:inputText id="txtOlvidoNIT" value="#{templateInicioBean.nit}"></p:inputText>
                                 <p:watermark for="txtOlvidoNIT" value="Nro de identificacion (NIT)" />
                                 <h:outputText value="Correo electronico:"/>
@@ -178,18 +178,67 @@
                     </p:dialog>
 
                     <!-- ***********  DIALOG CAMBIAR CONTRASENIA ************* -->
-                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar Password" modal="true" widgetVar="dlgCambiarContrasenia" resizable="true">
+                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar Contraseñia" modal="true" widgetVar="dlgCambiarContrasenia" resizable="true">
 
                         <h:form id="frmCambiarContrasenia">
-                            <p:messages id="mssgCambiarContrasenia" showDetail="true" autoUpdate="false" closable="true" globalOnly="false" />
+                            <p:growl showDetail="true" id="growlCambiarContrasenia" />
                             <br/>
                             <h:panelGrid columns="2" id="pnlGridCambiarContrasenia">
-                                <h:outputText value="Password:"/>
-                                <p:password id="txtContrasenia" value="#{templateInicioBean.contrasenia}"/>
-                                <h:outputText value="Nuevo Password:"/>
-                                <p:password id="txtNuevaContrasenia" value="#{templateInicioBean.nuevaContrasenia}"/>
-                                <h:outputText value="Confirmar Password:"/>
-                                <p:password id="txtConfirmarContrasenia" value="#{templateInicioBean.confirmarContrasenia}"/>
+                                <h:outputText value="Contraseñia:"/>
+                                <p:password id="txtContrasenia" value="#{templateInicioBean.contrasenia}"
+                                            feedback="true"
+                                            tabindex="1"
+                                            required="true"
+                                            requiredMessage="EL campo Contrasenia es obligatorio"
+                                            autocomplete="off"
+                                            promptLabel="Ingrese su contrasenia"
+                                            weakLabel="Contrasenia debil"
+                                            goodLabel="Contrasenia media"
+                                            strongLabel="Contrasenia fuerte"
+                                        />
+
+                                <h:outputText value="Nueva contraseñia:"/>
+                                <h:panelGrid columns="3">
+                                    <p:password id="txtNuevaContrasenia" value="#{templateInicioBean.nuevaContrasenia}"
+                                                feedback="true"
+                                                tabindex="2"
+                                                required="true"
+                                                requiredMessage="EL campo Nueva Contraseñia es obligatorio"
+                                                autocomplete="off"
+                                                promptLabel="Ingrese su contrasenia"
+                                                weakLabel="Contrasenia debil"
+                                                goodLabel="Contrasenia media"
+                                                strongLabel="Contrasenia fuerte"
+                                            />
+                                    <h:graphicImage value="/images/ayuda.png" id="grafayuda"/>
+                                    <p:tooltip for="grafayuda">
+                                        <ol>
+                                            <li>La Contrase&ntilde;a permite los siguientes caracteres
+                                                especiales:<br /> <b> ` ~ ! @ # $ % ^ &amp; * ( ) _ = { }
+                                                    + \ | : ; &prime; &Prime; &lt; &gt; , - . ? /</b>
+                                            </li>
+                                            <li>La Contrase&ntilde;a permite validar que ingrese al
+                                                menos un caracter especial, numerico y alfabetico</li>
+                                            <li>La longitud minima requerida es de
+                                                #{personaBean.LONGITUD_MINIMA} caracteres</li>
+                                        </ol>
+                                        <b>Ejemplo:</b>
+                                        <pre>admin12@</pre>
+                                    </p:tooltip>
+                                </h:panelGrid>
+                                <h:outputText value="Confirmar nueva contraseñia:"/>
+                                <p:password id="txtConfirmarContrasenia" value="#{templateInicioBean.confirmarContrasenia}"
+                                            feedback="true"
+                                            tabindex="3"
+                                            required="true"
+                                            requiredMessage="EL campo Confirmar nueva Contraseñia es obligatorio"
+                                            autocomplete="off"
+                                            promptLabel="Ingrese su contrasenia"
+                                            weakLabel="Contrasenia debil"
+                                            goodLabel="Contrasenia media"
+                                            strongLabel="Contrasenia fuerte"
+                                        />
+
                             </h:panelGrid>
                             <br/>
                             <p:commandButton value="Enviar"
