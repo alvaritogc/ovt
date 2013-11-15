@@ -20,7 +20,6 @@ import bo.gob.mintrabajo.ovt.api.IObligacionService;
 import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -48,7 +47,7 @@ public class obligacionBean implements Serializable{
     //Para el formulario
     private ParObligacion obligacion= new ParObligacion();
     private boolean evento=false;
-    private boolean estadoObligacion=false;
+    private boolean estadoObligacion=true;
      
     @PostConstruct
     public void ini() {
@@ -83,11 +82,15 @@ public class obligacionBean implements Serializable{
         RequestContext context = RequestContext.getCurrentInstance();
         final String  REGISTRO_BITACORA=idUsuario.toString();
         try {
-            iObligacionService.saveObligacion(obligacion, REGISTRO_BITACORA, estadoObligacion);
+            if(iObligacionService.saveObligacion(obligacion, REGISTRO_BITACORA, estadoObligacion,evento)){
+                context.execute("dlgFormObligacion.hide();");
+            }else{
+                context.execute("dlgMensajeInfo.show()");
+            }
            limpiar();
-           context.execute("dlgFormObligacion.hide();");
         } catch (Exception e) {
-            e.printStackTrace();                    
+            e.printStackTrace();
+            context.execute("dlgMensajeInfo.show()");
         }
     }
     
@@ -99,7 +102,7 @@ public class obligacionBean implements Serializable{
     public void nuevo(){
         obligacion=new ParObligacion();
         evento=false;
-        estadoObligacion=false;
+        estadoObligacion=true;
     }
     
     //GET and SET

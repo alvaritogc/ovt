@@ -10,9 +10,7 @@
             <h2 class="form-signin-heading">Entidades</h2>
             <p:commandButton value="Nuevo" onclick="dlgFormEntidad.show();" update=":formEntidad:pnlGridEntidad" 
                              icon="ui-icon-circle-plus" actionListener="#{entidadBean.nuevo}" /> 
-            <br />
             <!--  Listado de entidades en tabla-->
-            <br/>
             <p:dataTable id="dataTableEntidad" var="parEntidad" value="#{entidadBean.listaEntidad}" 
                          paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="bottom"
                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"

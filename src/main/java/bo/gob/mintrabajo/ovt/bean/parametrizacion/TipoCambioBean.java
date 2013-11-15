@@ -22,11 +22,9 @@ import bo.gob.mintrabajo.ovt.api.ITipoCambioService;
 import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.ParParametrizacion;
 import bo.gob.mintrabajo.ovt.entities.ParTipoCambio;
-import bo.gob.mintrabajo.ovt.entities.ParTipoCambioPK;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -106,10 +104,8 @@ public class TipoCambioBean implements Serializable{
     }
     
     public void mostrarLista(){
-        System.out.println("seleccion " + seleccion);
         String moneda1;
         String moneda2;
-        System.out.println("===> monedasA  " + monedaCambio + " = "+ monedaBase);
         if(seleccion.equals("form")){
             moneda1=monedaBaseForm;
             monedaCambioForm=valorMonedaCambio(moneda1);
@@ -120,7 +116,6 @@ public class TipoCambioBean implements Serializable{
             moneda2=monedaCambio;
         }
 
-        System.out.println("===> monedasB  " + moneda1 + " = "+ moneda2);
         listaTipoCambio=iTipoCambioService.listaTipoDeCambios(moneda1, moneda2);
     }
     
@@ -139,7 +134,6 @@ public class TipoCambioBean implements Serializable{
             moneda1=monedaBase;
             moneda2=monedaCambio;
         }
-        System.out.println("===> monedas2  " + moneda1 + " = "+ moneda2 +" - "+accion);
         listaTipoCambio=iTipoCambioService.listaTipoDeCambios(moneda1, moneda2);
     }
     
