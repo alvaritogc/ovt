@@ -76,9 +76,20 @@ public class ObligacionService implements IObligacionService{
     }
     
     @Override
-    public ParObligacion saveObligacion(ParObligacion obligacion, String REGISTRO_BITACORA, boolean estadoObligacion){               
+    public boolean saveObligacion(ParObligacion obligacion, String REGISTRO_BITACORA, boolean estadoObligacion, boolean evento){               
         ParObligacion parObligacion= new ParObligacion();
-        parObligacion.setCodObligacion(obligacion.getCodObligacion());
+        if(obligacionRepository.findByCodObligacion(obligacion.getCodObligacion())!=null && !evento){
+            return false;
+        }
+        
+        if(!evento){
+            parObligacion.setCodObligacion(obligacion.getCodObligacion());
+        }
+        
+        if(evento){
+            parObligacion=obligacionRepository.findByCodObligacion(obligacion.getCodObligacion());
+        }
+        
         parObligacion.setDescripcion(obligacion.getDescripcion());
         if(estadoObligacion==true){
             parObligacion.setEstado("A");
@@ -90,12 +101,12 @@ public class ObligacionService implements IObligacionService{
         parObligacion.setRegistroBitacora(REGISTRO_BITACORA);
             
         try {
-            obligacion = obligacionRepository.save(parObligacion);
+            obligacionRepository.save(parObligacion);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            obligacion = null;
+            return false;
         }
-        return obligacion;
     }
     
     @Override
