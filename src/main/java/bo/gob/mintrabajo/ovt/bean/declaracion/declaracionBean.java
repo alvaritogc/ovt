@@ -26,16 +26,12 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
  * User: gmercado
  * Date: 10/29/13
  * Time: 9:34 AM
- * To change this template use File | Settings | File Templates.
  */
 @ManagedBean
 @ViewScoped
@@ -46,6 +42,7 @@ public class declaracionBean implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(declaracionBean.class);
     private Long idUsuario;
     private String idPersona;
+    private Long idUnidad;
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
     @ManagedProperty(value = "#{personaService}")
@@ -107,9 +104,10 @@ public class declaracionBean implements Serializable {
     private List<String> errores = new ArrayList<String>();
     private boolean valor;
     private int tipoEmpresa=1;
-    private PerPersona central;
-    private List<PerPersona> sucursales;
-    private PerPersona empresa;
+    private PerUnidad central;
+    private List<PerUnidad> sucursales;
+    private PerUnidad unidadSeleccionada;
+    private int tamañoSucursales;
 
 
     @PostConstruct
@@ -177,18 +175,22 @@ public class declaracionBean implements Serializable {
         generaDocumento();
         verEstadoPlanilla();
         cargarListaPorNumeros();
-        obtieneCentralEmpresa();
-        listaSucursalesEmpresa();
+        listaCentralSucursales();
     }
 
-    public void obtieneCentralEmpresa(){
-        central = new PerPersona();
-        central=iPersonaService.obtienePorCentral(idPersona);
-    }
 
-    public void listaSucursalesEmpresa(){
-        sucursales = new ArrayList<PerPersona>();
-        sucursales=iPersonaService.listarPorSucursal(idPersona);
+    public void listaCentralSucursales(){
+        central = new PerUnidad();
+        sucursales = new ArrayList<PerUnidad>();
+        List<PerUnidad> listaUnidades;
+        listaUnidades=iUnidadService.listarUnidadesSucursales(idPersona);
+        for(PerUnidad sucursal:listaUnidades)  {
+            if(sucursal.getPerUnidadPK().getIdUnidad()==0)
+                central=sucursal;
+            else
+                sucursales.add(sucursal);
+        }
+        tamañoSucursales=sucursales.size();
     }
 
     public void cargarListaPorNumeros(){
@@ -196,8 +198,12 @@ public class declaracionBean implements Serializable {
         docDocumentoList= iDocumentoService.listarPorPersona(idPersona);
     }
 
+
     public void seleccionaEmpresa(){
-            empresa=tipoEmpresa==1?central:empresa;
+        if(tipoEmpresa!=2)
+            unidadSeleccionada=central;
+        else
+            unidadSeleccionada=iUnidadService.obtienePorId(new PerUnidadPK(idPersona, idUnidad));
     }
 
     public void verEstadoPlanilla(){
@@ -306,6 +312,7 @@ public class declaracionBean implements Serializable {
                 logger.info(listaBinarios.toString());
                 logger.info(docPlanilla.toString());
                 generaPlanilla();
+                documento.setPerUnidad(unidadSeleccionada);
                 idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
                 return "irEscritorio";
@@ -331,7 +338,9 @@ public class declaracionBean implements Serializable {
 
     public void obtenerPeriodoLista(){
         parObligacionCalendarioLista = new ArrayList<ParObligacionCalendario>();
-        parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendario();
+        Calendar c= new GregorianCalendar();
+        c.setTime(new Date());
+        parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendarioPorGestion(String .valueOf(c.get(Calendar.YEAR)));
     }
 
     public String mensajeError(int i, String titulo){
@@ -1046,27 +1055,43 @@ public class declaracionBean implements Serializable {
         this.tipoEmpresa = tipoEmpresa;
     }
 
-    public PerPersona getCentral() {
-        return central;
+    public PerUnidad getUnidadSeleccionada() {
+        return unidadSeleccionada;
     }
 
-    public void setCentral(PerPersona central) {
-        this.central = central;
+    public void setUnidadSeleccionada(PerUnidad unidadSeleccionada) {
+        this.unidadSeleccionada = unidadSeleccionada;
     }
 
-    public List<PerPersona> getSucursales() {
+    public List<PerUnidad> getSucursales() {
         return sucursales;
     }
 
-    public void setSucursales(List<PerPersona> sucursales) {
+    public void setSucursales(List<PerUnidad> sucursales) {
         this.sucursales = sucursales;
     }
 
-    public PerPersona getEmpresa() {
-        return empresa;
+    public PerUnidad getCentral() {
+        return central;
     }
 
-    public void setEmpresa(PerPersona empresa) {
-        this.empresa = empresa;
+    public void setCentral(PerUnidad central) {
+        this.central = central;
+    }
+
+    public int getTamañoSucursales() {
+        return tamañoSucursales;
+    }
+
+    public void setTamañoSucursales(int tamañoSucursales) {
+        this.tamañoSucursales = tamañoSucursales;
+    }
+
+    public Long getIdUnidad() {
+        return idUnidad;
+    }
+
+    public void setIdUnidad(Long idUnidad) {
+        this.idUnidad = idUnidad;
     }
 }

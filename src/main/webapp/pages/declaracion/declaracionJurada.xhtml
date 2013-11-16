@@ -107,10 +107,10 @@
     </p:column>
     <p:column colspan="6">
         <p:outputPanel id="empresaRazonSocial">
-            <h:outputText value="#{declaracionBean.empresa.nombreRazonSocial}"/>
-            <p:selectOneMenu value="#{declaracionBean.docPlanilla.periodo}" style="width: 260px; height: 20px">
+            <h:outputText value="#{declaracionBean.unidadSeleccionada.nombreComercial}"/>
+            <p:selectOneMenu value="#{declaracionBean.docPlanilla.parCalendario.parCalendarioPK.gestion}" style="width: 260px; height: 20px">
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionBean.parObligacionCalendarioLista}" var="it" itemLabel="#{it.gestion}" itemValue="#{it.gestion}"/>
+                <f:selectItems value="#{declaracionBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="#{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}" itemLabel="#{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>
             </p:selectOneMenu>
         </p:outputPanel>
     </p:column>
@@ -549,10 +549,10 @@
             </p:selectOneRadio>
             <br/>
             <h:panelGroup id="tipoEmpresa">
-                <p:outputLabel id="central" value="#{declaracionBean.central.nombreRazonSocial}" rendered="#{declaracionBean.tipoEmpresa==1}" />
-                <p:selectOneMenu id="sucursal" style="width: 260px; height: 20px" rendered="#{declaracionBean.tipoEmpresa==2}" value="#{declaracionBean.empresa}">
+                <p:outputLabel id="central" value="#{declaracionBean.central.nombreComercial}" rendered="#{declaracionBean.tipoEmpresa==1}" />
+                <p:selectOneMenu id="sucursal" style="width: 260px; height: 20px" rendered="#{declaracionBean.tipoEmpresa==2}" value="#{declaracionBean.idUnidad}">
                     <f:selectItem itemLabel="---Seleccione---" itemDisabled="true"/>
-                    <f:selectItems value="#{declaracionBean.sucursales}" var="sucursal" itemLabel="#{sucursal.nombreRazonSocial}" itemValue="#{sucursal}"/>
+                    <f:selectItems value="#{declaracionBean.sucursales}" var="sucursal" itemLabel="#{sucursal.nombreComercial}" itemValue="#{sucursal.perUnidadPK.idUnidad}"/>
                 </p:selectOneMenu>
             </h:panelGroup>
         </p:outputPanel>  <br/>
