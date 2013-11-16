@@ -4,7 +4,26 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <p:panel  id="pnlUnidadPrincipal">
+    <style type="text/css">
+
+        .myPanelContent .ui-panel .ui-panel-footer
+        {
+            border-color: transparent;
+            border: black solid 1px !important;
+        }
+        .ui-panel
+        {
+            border-color: transparent;
+
+            }
+
+        .ui-panel .ui-panel-footer {
+            border-color: transparent;
+        }
+
+    </style>
+
+    <p:panel  id="pnlUnidadPrincipal" styleClass="myPanelContent">
         <f:facet name="footer">
             <p:commandButton id="cmdButtonPrinc" icon="ui-icon-pencil" value="Modificar"
                              update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
@@ -16,7 +35,7 @@
         </f:facet>
         <h:panelGrid columns="2">
             <h:outputText value="Nombre comercial: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
-            <p:inputText value="#{personaUnidadBean.unidad.nombreComercial}" readonly="true" style="width: 190px;"/>
+            <p:inputText value="#{personaUnidadBean.unidad.nombreComercial}" readonly="true" style="width: 505px;"/>
         </h:panelGrid>
         <h:panelGrid columns="2">
             <h:panelGrid columns="2">

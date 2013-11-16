@@ -33,10 +33,14 @@
         </f:facet>
 
         <h:panelGrid columns="2">
-            <h:outputText value="Zona:&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
-            <p:inputText value="#{personaUnidadBean.direccionPrincipal.zonaUrbanizacion}" readonly="true"/>
-            <h:outputText value="Tipo de direccion:    &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
-            <p:inputText value="#{personaUnidadBean.direccionPrincipal.tipoDireccion}" readonly="true"/>
+            <h:outputText value="Zona:" style="width: 250px;" />
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.zonaUrbanizacion}"
+                         readonly="true"
+                         style="width: 250px;"/>
+            <h:outputText value="Tipo de direccion:"/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.tipoDireccion}"
+                         readonly="true"
+                         style="width: 250px;"/>
             <h:outputText value="Direccion:"/>
             <p:inputTextarea id="txtAreaDireccion22" value="#{personaUnidadBean.direccionPrincipal.direccion}"
                              rows="5"
@@ -46,17 +50,13 @@
                              tabindex="11"
                              required="true"
                              requiredMessage="El campo Direccion es obligatorio."/>
-        </h:panelGrid>
 
-        <h:panelGrid columns="4">
             <h:outputText value="Piso, Depto u Oficina:&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
-            <p:inputText value="#{personaUnidadBean.direccionPrincipal.pisoDepOfi}" readonly="true" style="width: 100px;"/>
-            <h:outputText value="Cod. localidad:&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
-            <p:inputText value="#{personaUnidadBean.direccionPrincipal.codLocalidad.descripcion}" readonly="true" style="width: 100px;"/>
-        </h:panelGrid>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.pisoDepOfi}" readonly="true" style="width: 250px;"/>
+            <h:outputText value="Departamento:&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.codLocalidad.descripcion}" readonly="true" style="width: 250px;"/>
 
-        <h:panelGrid columns="2">
-            <h:outputText value="Referencia: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <h:outputText value="Referencia: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
             <p:inputTextarea id="txtAreaReferencia22" value="#{personaUnidadBean.direccionPrincipal.referencia}"
                              rows="5"
                              cols="50"
@@ -66,17 +66,17 @@
                              required="true"
                              requiredMessage="El campo Referencia es obligatorio."/>
 
-            <h:outputText value="Fax: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
-            <p:inputText value="#{personaUnidadBean.direccionPrincipal.fax}" readonly="true"/>
-        </h:panelGrid>
-
-        <h:panelGrid columns="2">
-            <h:outputText value="Nro. de celefono(s): "/>
-            <p:inputText value="#{personaUnidadBean.direccionPrincipal.telefono} &#xA0;&#xA0;&#xA0; #{personaUnidadBean.direccionPrincipal.telefono2}" readonly="true"/>
-            <h:outputText value="Nro. de celular(es): &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
-            <p:inputText value="#{personaUnidadBean.direccionPrincipal.celular} &#xA0;&#xA0;&#xA0; #{personaUnidadBean.direccionPrincipal.celular2}" readonly="true"/>
-            <h:outputText value="Correo(s) electronico(s) :"/>
-            <p:inputText value="#{personaUnidadBean.direccionPrincipal.email} &#xA0;&#xA0;&#xA0; #{personaUnidadBean.direccionPrincipal.email2}" readonly="true"/>
+            <h:outputText value="Nro. de telefono(s): "/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.telefono} &#xA0;&#xA0;&#xA0; #{personaUnidadBean.direccionPrincipal.telefono2}" readonly="true"
+                         style="width: 250px;"/>
+            <h:outputText value="Nro. de celular(es): "/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.celular} &#xA0;&#xA0;&#xA0; #{personaUnidadBean.direccionPrincipal.celular2}" readonly="true"
+                         style="width: 250px;"/>
+            <h:outputText value="Correo(s) electronico(s):&#xA0;"/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.email} &#xA0;&#xA0;&#xA0; #{personaUnidadBean.direccionPrincipal.email2} " readonly="true"
+                         style="width: 250px;"/>
+            <h:outputText value="Fax: "/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.fax}" readonly="true" style="width: 100px;"/>
         </h:panelGrid>
 
     </p:panel>

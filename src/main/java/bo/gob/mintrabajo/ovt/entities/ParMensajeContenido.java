@@ -77,9 +77,8 @@ public class ParMensajeContenido implements Serializable {
         this.idMensajeContenido = idMensajeContenido;
     }
 
-    public ParMensajeContenido(Long idMensajeContenido, String contenido, short esDescargable, Date fechaBitacora, String registroBitacora) {
+    public ParMensajeContenido(Long idMensajeContenido, short esDescargable, Date fechaBitacora, String registroBitacora) {
         this.idMensajeContenido = idMensajeContenido;
-        this.contenido = contenido;
         this.esDescargable = esDescargable;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;

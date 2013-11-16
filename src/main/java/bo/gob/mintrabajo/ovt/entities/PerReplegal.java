@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 gmercado.
+ * Copyright 2013 rvelasquez.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  *
- * @author gmercado
+ * @author rvelasquez
  */
 @Entity
 @Table(name = "PER_REPLEGAL")
@@ -67,6 +56,7 @@ public class PerReplegal implements Serializable {
     @Basic(optional = false)
     @Column(name = "TIPO_PROCEDENCIA")
     private String tipoProcedencia;
+    @Basic(optional = false)
     @Column(name = "ESTADO_REP_LEGAL")
     private String estadoRepLegal;
     @Basic(optional = false)
@@ -82,6 +72,10 @@ public class PerReplegal implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerUnidad perUnidad;
 
+
+    @Transient
+    private String departamento;
+
     public PerReplegal() {
     }
 
@@ -89,13 +83,14 @@ public class PerReplegal implements Serializable {
         this.idReplegal = idReplegal;
     }
 
-    public PerReplegal(Long idReplegal, String tipoIdentificacion, String nroIndentificacion, String nombre, String apellidoPaterno, String tipoProcedencia, Date fechaBitacora, String registroBitacora) {
+    public PerReplegal(Long idReplegal, String tipoIdentificacion, String nroIndentificacion, String nombre, String apellidoPaterno, String tipoProcedencia, String estadoRepLegal, Date fechaBitacora, String registroBitacora) {
         this.idReplegal = idReplegal;
         this.tipoIdentificacion = tipoIdentificacion;
         this.nroIndentificacion = nroIndentificacion;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.tipoProcedencia = tipoProcedencia;
+        this.estadoRepLegal = estadoRepLegal;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
@@ -202,6 +197,14 @@ public class PerReplegal implements Serializable {
 
     public void setPerUnidad(PerUnidad perUnidad) {
         this.perUnidad = perUnidad;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
     }
 
     @Override
