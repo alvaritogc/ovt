@@ -41,6 +41,7 @@ import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
 public class PersonaUnidadBean implements Serializable{
 
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+   // private HttpSession session;
 
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
@@ -110,6 +111,11 @@ public class PersonaUnidadBean implements Serializable{
     private PerDireccion direccionPrincipal;
     private List<SelectItem>listaTipoDirecciones;
 
+
+
+    //Sirve para mostra
+    private String departamentoDireccinoPrincipal;
+
     private PerReplegal repLegal;
     private List<PerReplegal> listaRepLegal;
     private PerReplegal repLegalPrincipal;
@@ -130,12 +136,28 @@ public class PersonaUnidadBean implements Serializable{
     private String tituloDialog;
     private String iconoUnidad;
 
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    private   Long idUsuario;
+    static String  REGISTRO_BITACORA;
+
     @PostConstruct
     public void ini(){
 
         persona=new PerPersona();
-        persona=(PerPersona)session.getAttribute("persona");
-        titulo=persona.getNombreRazonSocial().toUpperCase()+" "+persona.getApellidoPaterno().toUpperCase()+" "+persona.getApellidoMaterno().toUpperCase();
+        String idEmpleador=   (String)session.getAttribute("idEmpleador");
+         idUsuario = (Long) session.getAttribute("idUsuario");
+        REGISTRO_BITACORA=iUsuarioService.findById(idUsuario).getUsuario();
+        persona=iPersonaService.findById(idEmpleador);
+        titulo=persona.getNombreRazonSocial().toUpperCase()+" ";
+        titulo=persona.getApellidoPaterno()==null ?titulo+"":titulo+persona.getApellidoPaterno().toUpperCase()+" ";
+        titulo=persona.getApellidoMaterno()==null ?titulo+"":titulo+persona.getApellidoMaterno().toUpperCase()+" ";
 
         actividadEconomica=new ParActividadEconomica();
         repLegal=new PerReplegal();
@@ -154,12 +176,6 @@ public class PersonaUnidadBean implements Serializable{
         cargarActividadDeclarda();
         cargarDireccion();
         cargarRepLegal();
-    }
-
-    public void volver()throws IOException{
-        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
-        String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
-        ctx.redirect(ctxPath + "/faces/pages/persona/buscarPersona.xhtml");
     }
 
     /*
@@ -181,7 +197,7 @@ public class PersonaUnidadBean implements Serializable{
         unidad=listaUnidadAux.get(listaUnidadAux.size()-1);
         // carga la varible listaUnidad desde el primer registro hasta el penultimo
         // se carga asi, por que en el ultimo registro esta la unidadPrincipal
-        listaUnidad=listaUnidadAux.subList(0,listaUnidadAux.size()-1);
+       listaUnidad=listaUnidadAux.subList(0,listaUnidadAux.size()-1);
     }
 
     public void nuevo(){
@@ -232,7 +248,9 @@ public class PersonaUnidadBean implements Serializable{
             return ;
         }
 
-        final String  REGISTRO_BITACORA="ROE";
+
+
+        //final String  REGISTRO_BITACORA="ROE";
         unidadRegistro.setRegistroBitacora(REGISTRO_BITACORA);
         unidadRegistro=iUnidadServiceModificar.save(unidadRegistro,persona);
         ini();
@@ -384,14 +402,22 @@ public class PersonaUnidadBean implements Serializable{
 
         listaRepLegal=iRepLegalService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
         if(!listaRepLegal.isEmpty()){
+            if(listaUnidad.size()==0){
+                repLegalPrincipal= listaRepLegal.get(0);
+                departamentoDireccinoPrincipal=iLocalidadService.findById(repLegalPrincipal.getTipoProcedencia()).getDescripcion();
+            }
+
                 for (int i=listaRepLegal.size()-1;i>=0;i--){
                     for (int j=listaUnidad.size()-1;j>=0;j--){
                         if(listaRepLegal.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==unidad.getPerUnidadPK().getIdUnidad()){
                            repLegalPrincipal= listaRepLegal.get(i);
+                            departamentoDireccinoPrincipal=iLocalidadService.findById(repLegalPrincipal.getTipoProcedencia()).getDescripcion();
                            break;
                         }else{
                             if(listaRepLegal.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
+                                listaRepLegal.get(i).setDepartamento(iLocalidadService.findById(listaRepLegal.get(i).getTipoProcedencia()).getDescripcion());
                                 listaUnidad.get(j).setRepLegal(listaRepLegal.get(i));
+
                                 break;
                             }
                         }
@@ -772,5 +798,13 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setListaTipoDirecciones(List<SelectItem> listaTipoDirecciones) {
         this.listaTipoDirecciones = listaTipoDirecciones;
+    }
+
+    public String getDepartamentoDireccinoPrincipal() {
+        return departamentoDireccinoPrincipal;
+    }
+
+    public void setDepartamentoDireccinoPrincipal(String departamentoDireccinoPrincipal) {
+        this.departamentoDireccinoPrincipal = departamentoDireccinoPrincipal;
     }
 }

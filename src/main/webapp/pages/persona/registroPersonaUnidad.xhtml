@@ -103,15 +103,13 @@
                     <!-- ********************************************* -->
                     <!-- **************   PANEL GRID ***************** -->
                     <!-- ********************************************* -->
-
+        <h2>Lista de Unidades </h2>
     <p:dataGrid id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
                 var="unidad"
                 columns="1" emptyMessage="No se encontraron resultados"
                 rows="5"  paginatorPosition="bottom"
                 paginator="true" rowIndexVar="index">
-       <f:facet name="header">
-             Lista de Unidades
-       </f:facet>
+
        <h:form id="frmdataGrid">
            <p:accordionPanel activeIndex="" >
              <p:tab >
@@ -251,8 +249,8 @@
 
                                </p:calendar>
 
-                                <h:outputText value="Tipo de procedencia:"/>
-                                <p:inputText id="inputTxtTipoProcedencia2" value="#{unidad.repLegal.tipoProcedencia}"
+                                <h:outputText value="Departamento:"/>
+                                <p:inputText id="inputTxtTipoProcedencia2" value="#{unidad.repLegal.departamento}"
                                              style="width: 210px;"
                                              tabindex="3"
                                              readonly="true"/>
@@ -353,12 +351,6 @@
          </h:form>
        </p:dataGrid>
 
-        <h:form id="frmVolver">
-            <br/>
-            <p:commandButton value="Atras"
-                             action="#{personaUnidadBean.volver}"
-                             icon="ui-icon-arrowthick-1-w"/>
-        </h:form>
 
     </ui:define>
 </ui:composition>

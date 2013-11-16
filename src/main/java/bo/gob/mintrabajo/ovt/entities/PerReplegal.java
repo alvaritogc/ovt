@@ -17,19 +17,7 @@ package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  *
@@ -81,6 +69,10 @@ public class PerReplegal implements Serializable {
         @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerUnidad perUnidad;
+
+
+    @Transient
+    private String departamento;
 
     public PerReplegal() {
     }
@@ -202,6 +194,14 @@ public class PerReplegal implements Serializable {
 
     public void setPerUnidad(PerUnidad perUnidad) {
         this.perUnidad = perUnidad;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
     }
 
     @Override

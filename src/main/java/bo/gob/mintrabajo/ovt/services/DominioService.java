@@ -77,6 +77,7 @@ public class DominioService implements IDominioService{
         return parDominio;
     }
 
+
    @Override
     public  List<ParDominio> obtenerItemsDominio(String dominio){
         try {
