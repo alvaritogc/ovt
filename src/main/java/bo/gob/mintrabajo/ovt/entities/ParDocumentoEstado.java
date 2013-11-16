@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 gmercado.
+ * Copyright 2013 rvelasquez.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -33,7 +34,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author gmercado
+ * @author rvelasquez
  */
 @Entity
 @Table(name = "PAR_DOCUMENTO_ESTADO")
@@ -60,15 +61,15 @@ public class ParDocumentoEstado implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "codEstado", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstado", fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "codEstadoFinal", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstadoFinal", fetch = FetchType.LAZY)
     private List<DocLogEstado> docLogEstadoList;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "codEstadoInicial", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstadoInicial", fetch = FetchType.LAZY)
     private List<DocLogEstado> docLogEstadoList1;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "parDocumentoEstado", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parDocumentoEstado", fetch = FetchType.LAZY)
     private List<DocTransicion> docTransicionList;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "parDocumentoEstado1", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parDocumentoEstado1", fetch = FetchType.LAZY)
     private List<DocTransicion> docTransicionList1;
 
     public ParDocumentoEstado() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 gmercado.
+ * Copyright 2013 rvelasquez.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -33,7 +34,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author gmercado
+ * @author rvelasquez
  */
 @Entity
 @Table(name = "PER_REPLEGAL")
@@ -67,6 +68,7 @@ public class PerReplegal implements Serializable {
     @Basic(optional = false)
     @Column(name = "TIPO_PROCEDENCIA")
     private String tipoProcedencia;
+    @Basic(optional = false)
     @Column(name = "ESTADO_REP_LEGAL")
     private String estadoRepLegal;
     @Basic(optional = false)
@@ -89,13 +91,14 @@ public class PerReplegal implements Serializable {
         this.idReplegal = idReplegal;
     }
 
-    public PerReplegal(Long idReplegal, String tipoIdentificacion, String nroIndentificacion, String nombre, String apellidoPaterno, String tipoProcedencia, Date fechaBitacora, String registroBitacora) {
+    public PerReplegal(Long idReplegal, String tipoIdentificacion, String nroIndentificacion, String nombre, String apellidoPaterno, String tipoProcedencia, String estadoRepLegal, Date fechaBitacora, String registroBitacora) {
         this.idReplegal = idReplegal;
         this.tipoIdentificacion = tipoIdentificacion;
         this.nroIndentificacion = nroIndentificacion;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.tipoProcedencia = tipoProcedencia;
+        this.estadoRepLegal = estadoRepLegal;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
