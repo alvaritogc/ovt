@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 gmercado.
+ * Copyright 2013 rvelasquez.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -35,7 +36,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author gmercado
+ * @author rvelasquez
  */
 @Entity
 @Table(name = "PAR_MENSAJE_APP")
@@ -67,8 +68,8 @@ public class ParMensajeApp implements Serializable {
     @JoinColumn(name = "ID_RECURSO", referencedColumnName = "ID_RECURSO")
     @ManyToOne(fetch = FetchType.LAZY)
     private UsrRecurso idRecurso;
-//    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "idMensajeApp", fetch = FetchType.LAZY,orphanRemoval=true)
-//    private List<ParMensajeContenido> parMensajeContenidoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMensajeApp", fetch = FetchType.LAZY)
+    private List<ParMensajeContenido> parMensajeContenidoList;
 
     public ParMensajeApp() {
     }
@@ -147,13 +148,13 @@ public class ParMensajeApp implements Serializable {
         this.idRecurso = idRecurso;
     }
 
-//    public List<ParMensajeContenido> getParMensajeContenidoList() {
-//        return parMensajeContenidoList;
-//    }
-//
-//    public void setParMensajeContenidoList(List<ParMensajeContenido> parMensajeContenidoList) {
-//        this.parMensajeContenidoList = parMensajeContenidoList;
-//    }
+    public List<ParMensajeContenido> getParMensajeContenidoList() {
+        return parMensajeContenidoList;
+    }
+
+    public void setParMensajeContenidoList(List<ParMensajeContenido> parMensajeContenidoList) {
+        this.parMensajeContenidoList = parMensajeContenidoList;
+    }
 
     @Override
     public int hashCode() {

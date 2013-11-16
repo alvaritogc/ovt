@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 gmercado.
+ * Copyright 2013 rvelasquez.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -32,7 +33,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author gmercado
+ * @author rvelasquez
  */
 @Entity
 @Table(name = "USR_USUARIO_ROL")
@@ -55,9 +56,6 @@ public class UsrUsuarioRol implements Serializable {
     @JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private UsrRol usrRol;
-    @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private UsrModulo idModulo;
 
     public UsrUsuarioRol() {
     }
@@ -114,14 +112,6 @@ public class UsrUsuarioRol implements Serializable {
 
     public void setUsrRol(UsrRol usrRol) {
         this.usrRol = usrRol;
-    }
-
-    public UsrModulo getIdModulo() {
-        return idModulo;
-    }
-
-    public void setIdModulo(UsrModulo idModulo) {
-        this.idModulo = idModulo;
     }
 
     @Override

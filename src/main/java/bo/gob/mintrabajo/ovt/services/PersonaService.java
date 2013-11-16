@@ -253,7 +253,6 @@ public class PersonaService implements IPersonaService {
             UsrUsuarioRol usuarioRol=new UsrUsuarioRol();
             usuarioRol.setFechaBitacora(new Date());
             usuarioRol.setRegistroBitacora(REGISTRO_BITACORA);
-            usuarioRol.setIdModulo(modulo);
             usuarioRol.setUsrRol(rol);
             usuarioRol.setUsrUsuario(usuario);
             UsrUsuarioRolPK usrUsuarioRolPK=new UsrUsuarioRolPK();
@@ -363,5 +362,33 @@ public class PersonaService implements IPersonaService {
         if(personaList.size()==0)
             return new PerPersona();
         return personaList.get(0);
+    }
+
+    public boolean guardarUsuarioRol(Long idUsuario, Long idRol){
+        UsrRol rol = rolRepository.findByIdRol(idRol);
+        UsrUsuario usuario = usuarioRepository.findOne(idUsuario);
+
+        UsrUsuarioRol usuarioRol = new UsrUsuarioRol();
+        usuarioRol.setFechaBitacora(new Date());
+        usuarioRol.setRegistroBitacora("ROE");
+
+        usuarioRol.setUsrRol(rol);
+        usuarioRol.setUsrUsuario(usuario);
+        UsrUsuarioRolPK usrUsuarioRolPK = new UsrUsuarioRolPK();
+        usrUsuarioRolPK.setIdRol(rol.getIdRol());
+        usrUsuarioRolPK.setIdUsuario(usuario.getIdUsuario());
+
+        usuarioRol.setUsrUsuarioRolPK(usrUsuarioRolPK);
+        usuarioRolRepository.save(usuarioRol);
+
+        return true;
+    }
+
+    public void eliminarUsuarioRol(Long idUsuario, Long idRol){
+        UsrUsuarioRolPK usrPK = new UsrUsuarioRolPK();
+        usrPK.setIdUsuario(idUsuario);
+        usrPK.setIdRol(idRol);
+        UsrUsuarioRol usrUsuarioRolTmp = usuarioRolRepository.findOne(usrPK);
+        usuarioRolRepository.delete(usrUsuarioRolTmp);
     }
 }
