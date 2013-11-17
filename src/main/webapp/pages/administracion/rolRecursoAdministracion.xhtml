@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="./../template/templateInicio.xhtml">
+    <ui:define name="content">
+        <style>
+            .ui-chkbox .ui-chkbox-box {
+                width: 13px !important;
+                height: 13px !important;
+            }
+        </style>
+        <h3>Administrar roles y recursos</h3>
+        <h:form id="rolRecursoFrm">
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                      draggable="false" closable="false">
+                <p:graphicImage value="../../images/ajax-loader.gif" />
+            </p:dialog>
+
+            <p:outputLabel value="Selección de usuario :" />
+            <p:selectOneMenu value="#{rolRecursoAdministracionBean.idRol}">
+                <f:selectItem itemValue="#{null}" itemLabel="--seleccione--" />
+                <f:selectItems value="#{rolRecursoAdministracionBean.rolLista}" var="rol" itemLabel="#{rol.nombre}" itemValue="#{rol.idRol}" />
+                <p:ajax listener="#{rolRecursoAdministracionBean.buscarRecursoPorRolRecurso}" update="rolRecursoTbl artificioTbl" />
+            </p:selectOneMenu>
+            <p:panelGrid columns="2">
+            <p:dataTable id="rolRecursoTbl" value="#{rolRecursoAdministracionBean.recursoLista}" var="recurso">
+                <p:column headerText="Tipo recurso">
+                    <h:outputText value="#{recurso.tipoRecurso}" />
+                </p:column>
+                <p:column headerText="Tipo plataforma">
+                    <h:outputText value="#{recurso.tipoPlataforma}" />
+                </p:column>
+                <p:column headerText="Descripción">
+                    <h:outputText value="#{recurso.descripcion}" />
+                </p:column>
+            </p:dataTable>
+
+            <p:dataTable id="artificioTbl" value="#{rolRecursoAdministracionBean.seleccionadoLista}" var="seleccion" style="width: 5%" >
+                <p:column headerText="Escritura">
+                    <p:selectBooleanCheckbox value="#{seleccion.aux2}" />
+                </p:column>
+                <p:column headerText="Ejecución">
+                    <p:selectBooleanCheckbox value="#{seleccion.aux3}" />
+                </p:column>
+                <p:column headerText="Selección">
+                    <p:selectBooleanCheckbox value="#{seleccion.aux1}" />
+                </p:column>
+            </p:dataTable>
+            </p:panelGrid>
+            <p:commandButton value="Guardar" action="#{rolRecursoAdministracionBean.guardarRolRecurso}" update="rolRecursoTbl artificioTbl" />
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

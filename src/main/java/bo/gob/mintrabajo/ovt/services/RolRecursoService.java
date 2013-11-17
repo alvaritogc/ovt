@@ -3,7 +3,10 @@ package bo.gob.mintrabajo.ovt.services;
 import bo.gob.mintrabajo.ovt.api.IRolRecursoService;
 import bo.gob.mintrabajo.ovt.entities.UsrRolRecurso;
 import bo.gob.mintrabajo.ovt.entities.UsrRolRecursoPK;
+import bo.gob.mintrabajo.ovt.repositories.RecursoRepository;
 import bo.gob.mintrabajo.ovt.repositories.RolRecursoRepository;
+import bo.gob.mintrabajo.ovt.repositories.RolRepository;
+
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,10 +24,14 @@ import java.util.List;
 public class RolRecursoService implements IRolRecursoService {
 
     private final RolRecursoRepository rolRecursoRepository;
+    private final RolRepository rolRepository;
+    private final RecursoRepository recursoRepository;
 
     @Inject
-    public RolRecursoService(RolRecursoRepository rolRecursoRepository) {
+    public RolRecursoService(RolRecursoRepository rolRecursoRepository, RolRepository rolRepository, RecursoRepository recursoRepository) {
         this.rolRecursoRepository = rolRecursoRepository;
+        this.rolRepository = rolRepository;
+        this.recursoRepository = recursoRepository;
     }
 
     //@Override
@@ -60,5 +67,54 @@ public class RolRecursoService implements IRolRecursoService {
         UsrRolRecurso entity;
         entity = rolRecursoRepository.findOne(id);
         return entity;
+    }
+
+    public UsrRolRecurso guardarRolRecurso(UsrRolRecurso usrRolRecurso, Long idRol, Long idRecurso){
+        try {
+            usrRolRecurso.setFechaBitacora(new Date());
+            usrRolRecurso.setRegistroBitacora("ROE");
+            usrRolRecurso.setUsrRol(rolRepository.findOne(idRol));
+            usrRolRecurso.setUsrRecurso(recursoRepository.findOne(idRecurso));
+
+            UsrRolRecursoPK usrRolRecursoPK = new UsrRolRecursoPK();
+            usrRolRecursoPK.setIdRol(idRol);
+            usrRolRecursoPK.setIdRecurso(idRecurso);
+
+            usrRolRecurso.setUsrRolRecursoPK(usrRolRecursoPK);
+            return rolRecursoRepository.save(usrRolRecurso);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public boolean eliminarRolRecurso(Long idRol, Long idRecurso) {
+        try{
+            UsrRolRecursoPK usrRolRecursoPK = new UsrRolRecursoPK();
+            usrRolRecursoPK.setIdRol(idRol);
+            usrRolRecursoPK.setIdRecurso(idRecurso);
+            UsrRolRecurso rolRecursoTmp = rolRecursoRepository.findOne(usrRolRecursoPK);
+
+            if(rolRecursoTmp != null){
+                rolRecursoRepository.delete(rolRecursoTmp);
+            }
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public UsrRolRecurso tieneRelacionRolRecurso(UsrRolRecursoPK usrRolRecursoPK){
+        try{
+            UsrRolRecurso rrTmp = rolRecursoRepository.findOne(usrRolRecursoPK);
+            if(rrTmp != null) {
+                return rrTmp;
+            }else{
+                return null;
+            }
+        }catch (Exception e){
+             return null;
+        }
     }
 }

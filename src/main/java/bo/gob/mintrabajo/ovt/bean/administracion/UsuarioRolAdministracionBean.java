@@ -117,13 +117,13 @@ public class UsuarioRolAdministracionBean {
 
     public void asignarRecursoTemporal(){
         log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo asignarRecursoTemporal()");
-        log.info("Asignando el recurso temporal " + recursoSelected.getDescripcion() + " Expira el " + fechaExpiracion);
+        log.info("Asignando el recurso temporal " + recursoSelected.getDescripcion() + " Expira el " + fechaExpiracion + " tipoPermiso " + tipoPermiso);
 
         if(fechaExpiracion == null){
             fechaExpiracion = new Date();
         }
         UsrUsuarioRecurso ur = new UsrUsuarioRecurso();
-        ur.setFechaLimite(fechaExpiracion);
+        ur.setFechaLimite(new java.sql.Date(fechaExpiracion.getTime()));
         ur.setUsrRecurso(recursoSelected);
         ur.setWx(tipoPermiso);
         iUsuarioRecursoService.save(ur, usuarioSelected);
@@ -160,8 +160,8 @@ public class UsuarioRolAdministracionBean {
         usrUsuarioRecursoPK.setIdRecurso(recursoSelected.getIdRecurso());
         boolean tmp = iUsuarioRecursoService.eliminarUsuarioRecurso(usrUsuarioRecursoPK);
         if(tmp){
-            cargarRecursoTemporales();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Se quitó el recurso temporal " + recursoSelected.getDescripcion()));
+            buscarRolesPorUsuario();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Se quitó el recurso temporal -----> " + recursoSelected.getDescripcion()));
         }else{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "No se pudo quitar el recurso!"));
         }

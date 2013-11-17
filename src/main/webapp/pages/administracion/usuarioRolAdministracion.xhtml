@@ -20,7 +20,7 @@
 
             <p:outputLabel for="completeId" value="Usuario" />
             <p:autoComplete id="completeId" value="#{usuarioRolAdministracionBean.usuarioSelected}" completeMethod="#{usuarioRolAdministracionBean.complete}"
-                            var="usr" itemLabel="#{usr.usuario}" itemValue="#{usr.idUsuario}" minQueryLength="3" forceSelection="true" />
+                            var="usr" itemLabel="#{usr.usuario}" itemValue="#{usr.idUsuario}" minQueryLength="3" forceSelection="true" required="true" />
             <p:commandButton value="Buscar" action="#{usuarioRolAdministracionBean.buscarRolesPorUsuario}" update=":usuarioRolFrm:rolTbl :usuarioRolFrm:rolSelectedTbl :usuarioRecurosFrm"  />
             <br/>
             <p:panelGrid columns="2">
@@ -79,7 +79,7 @@
 
         <p:dialog id="asignaRecursoDialogo" widgetVar="asignaDlg" header="Asignar recurso temporal">
             <h:form id="recursoTempFrm">
-                <p:dataTable id="usuarioRecursoTbl" value="#{usuarioRolAdministracionBean.recursoLista}"  var="rec" paginator="true" rows="10" paginatorPosition="bottom">
+                <p:dataTable id="usuarioRecursoTbl" value="#{usuarioRolAdministracionBean.recursoLista}" var="rec" paginator="true" rows="10" paginatorPosition="bottom" rowIndexVar="indexvar">
                     <p:column headerText="Tipo recurso">
                         <h:outputText value="#{rec.tipoRecurso}" />
                     </p:column>
@@ -97,10 +97,16 @@
                                     showOn="button" mindate="#{usuarioRolAdministracionBean.fechaActual}" pattern="dd/MM/yyyy" />
                     </p:column>
                     <p:column headerText="Tipo de permiso">
-                        <p:selectOneMenu value="#{usuarioRolAdministracionBean.tipoPermiso}">
+                        <p:selectOneMenu value="#{usuarioRolAdministracionBean.tipoPermiso}" style="width: 100px;">
                             <f:selectItem itemLabel="Escritura" itemValue="W" />
                             <f:selectItem itemLabel="Ejecucion" itemValue="X" />
                         </p:selectOneMenu>
+                    </p:column>
+                    <p:column headerText="Denegar">
+                    <p:selectOneMenu id="denegadoE" value="#{usuarioRolAdministracionBean.denegado}" style="width: 100px;">
+                        <f:selectItem itemLabel="NO" itemValue="#{0}" />
+                        <f:selectItem itemLabel="SI" itemValue="#{1}" />
+                    </p:selectOneMenu>
                     </p:column>
                     <p:column headerText="Operaciones">
                         <p:commandButton icon="ui-icon-check" title="Asignar" action="#{usuarioRolAdministracionBean.asignarRecursoTemporal}" update=":recursoTempFrm :usuarioRecurosFrm">
