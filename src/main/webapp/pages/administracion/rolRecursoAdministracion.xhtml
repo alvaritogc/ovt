@@ -28,10 +28,11 @@
             <p:selectOneMenu value="#{rolRecursoAdministracionBean.idRol}">
                 <f:selectItem itemValue="#{null}" itemLabel="--seleccione--" />
                 <f:selectItems value="#{rolRecursoAdministracionBean.rolLista}" var="rol" itemLabel="#{rol.nombre}" itemValue="#{rol.idRol}" />
-                <p:ajax listener="#{rolRecursoAdministracionBean.buscarRecursoPorRolRecurso}" update="rolRecursoTbl artificioTbl" />
+                <p:ajax listener="#{rolRecursoAdministracionBean.buscarRecursoPorRolRecurso}" update="rolRecursoTbl" />
             </p:selectOneMenu>
             <p:panelGrid columns="2">
-            <p:dataTable id="rolRecursoTbl" value="#{rolRecursoAdministracionBean.recursoLista}" var="recurso">
+            <p:dataTable id="rolRecursoTbl" value="#{rolRecursoAdministracionBean.recursoLista}" paginator="true" rows="15" paginatorPosition="bottom" var="recurso"
+                         editable="true" editMode="cell">
                 <p:column headerText="Tipo recurso">
                     <h:outputText value="#{recurso.tipoRecurso}" />
                 </p:column>
@@ -41,21 +42,40 @@
                 <p:column headerText="Descripción">
                     <h:outputText value="#{recurso.descripcion}" />
                 </p:column>
-            </p:dataTable>
-
-            <p:dataTable id="artificioTbl" value="#{rolRecursoAdministracionBean.seleccionadoLista}" var="seleccion" style="width: 5%" >
-                <p:column headerText="Escritura">
-                    <p:selectBooleanCheckbox value="#{seleccion.aux2}" />
-                </p:column>
-                <p:column headerText="Ejecución">
-                    <p:selectBooleanCheckbox value="#{seleccion.aux3}" />
+                <p:column headerText="Tipo de permiso">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{recurso.cadenaAuxiliar}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu value="#{recurso.cadenaAuxiliar}" style="width: 100px;" required="true" editable="true">
+                                <f:selectItem itemLabel="-" itemValue="-"/>
+                                <f:selectItem itemLabel="W" itemValue="W"/>
+                                <f:selectItem itemLabel="X" itemValue="X"/>
+                                <f:selectItem itemLabel="WX" itemValue="WX"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
                 <p:column headerText="Selección">
-                    <p:selectBooleanCheckbox value="#{seleccion.aux1}" />
+                    <p:selectBooleanCheckbox value="#{recurso.aux1}" />
                 </p:column>
+
             </p:dataTable>
+
+            <!--<p:dataTable id="artificioTbl" value="# {rolRecursoAdministracionBean.seleccionadoLista}" var="seleccion" style="width: 5%" >-->
+                <!--<p:column headerText="Escritura">-->
+                    <!--<p:selectBooleanCheckbox value="# {seleccion.aux2}" />-->
+                <!--</p:column>-->
+                <!--<p:column headerText="Ejecución">-->
+                    <!--<p:selectBooleanCheckbox value="# {seleccion.aux3}" />-->
+                <!--</p:column>-->
+                <!--<p:column headerText="Selección">-->
+                    <!--<p:selectBooleanCheckbox value="# {seleccion.aux1}" />-->
+                <!--</p:column>-->
+            <!--</p:dataTable>-->
             </p:panelGrid>
-            <p:commandButton value="Guardar" action="#{rolRecursoAdministracionBean.guardarRolRecurso}" update="rolRecursoTbl artificioTbl" />
+            <p:commandButton value="Guardar" action="#{rolRecursoAdministracionBean.guardarRolRecurso}" update="rolRecursoTbl" />
         </h:form>
     </ui:define>
 </ui:composition>

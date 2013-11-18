@@ -1,11 +1,13 @@
 package bo.gob.mintrabajo.ovt.bean;
 
 import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @ManagedBean(name = "templateInicioBean")
@@ -37,6 +40,9 @@ public class TemplateInicioBean implements Serializable {
     private Long idUsuario;
     private String idPersona;
     private String idEmpleador;
+    private String loginNuevo;
+    private String loginConfirmacion;
+    private boolean loginValido;
     private static final Logger logger = LoggerFactory.getLogger(TemplateInicioBean.class);
     //
     @ManagedProperty(value = "#{usuarioService}")
@@ -138,7 +144,7 @@ public class TemplateInicioBean implements Serializable {
             }
             //
             nombreDeUsuario=usuario.getUsuario();
-            
+            loginValido = Util.validaCorreo(usuario.getUsuario());
             //
             logger.info("usuario ok");
             cargar();
@@ -334,6 +340,28 @@ public class TemplateInicioBean implements Serializable {
            }else{
                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", mensaeje));
            }
+    }
+
+    public void editarLogin(){
+        logger.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo editarLogin()");
+        try {
+            if (Util.validaCorreo(loginNuevo)) {
+                if (loginConfirmacion.equals(loginNuevo)) {
+                    iUsuarioService.cambiarLogin(idUsuario, loginNuevo);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", " El lógin se actualizó correctamente"));
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("cambioLoginObligadoDlg.hide();");
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El login nuevo no coincide con el login de confirmación!"));
+                }
+            }else{
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El login no es una cuenta de correo valida!"));
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "No se pudo actualizar el login intente más tarde"));
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("cambioLoginObligadoDlg.hide();");
+        }
     }
 
     public String validarContrasenia(String pass, int longitudMinima){
@@ -562,5 +590,29 @@ public class TemplateInicioBean implements Serializable {
 
     public int getLONGITUD_MINIMA() {
         return LONGITUD_MINIMA;
+    }
+
+    public String getLoginNuevo() {
+        return loginNuevo;
+    }
+
+    public void setLoginNuevo(String loginNuevo) {
+        this.loginNuevo = loginNuevo;
+    }
+
+    public String getLoginConfirmacion() {
+        return loginConfirmacion;
+    }
+
+    public void setLoginConfirmacion(String loginConfirmacion) {
+        this.loginConfirmacion = loginConfirmacion;
+    }
+
+    public boolean isLoginValido() {
+        return loginValido;
+    }
+
+    public void setLoginValido(boolean loginValido) {
+        this.loginValido = loginValido;
     }
 }

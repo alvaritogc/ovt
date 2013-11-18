@@ -5,21 +5,19 @@ import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
 import bo.gob.mintrabajo.ovt.entities.ParCalendario;
 import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
-//import bo.gob.mintrabajo.ovt.repositories.CalendarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.CalendarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.ObligacionCalendarioRepository;
-import java.math.BigDecimal;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import javax.faces.bean.ManagedProperty;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
  * Created with IntelliJ IDEA. User: gmercado Date: 10/10/13 Time: 5:56 PM To
@@ -67,18 +65,11 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         return lista;
     }
     
-    @Override//obligacionCalendario,gestion, periodo, REGISTRO_BITACORA, parObligacion, evento
+    @Override
     public ParObligacionCalendario saveObligacionCalendario(ParObligacionCalendario obligacionCalendario, 
         String gestion, String periodo,String REGISTRO_BITACORA, ParObligacion parObligacion, boolean evento){               
         ParObligacionCalendario poc=new ParObligacionCalendario();
-        ParCalendario pc=new ParCalendario();
-        System.out.println("==> service " + obligacionCalendario);
-        System.out.println("==> service " + gestion);
-        System.out.println("==> service " + periodo);
-        System.out.println("==> service " + REGISTRO_BITACORA);
-        System.out.println("==> service " + parObligacion);
-        System.out.println("==> service " + evento);
-        
+        ParCalendario pc=new ParCalendario();      
         
         if(obligacionCalendario.getIdObligacionCalendario()==null && !evento){
             poc.setIdObligacionCalendario(this.valorSecuencia("PAR_OBLIGACION_CAL_SEC"));
@@ -88,8 +79,7 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         poc.setCodObligacion(parObligacion);
         poc.setTipoCalendario(obligacionCalendario.getTipoCalendario());
         pc=calendarioRepository.obtenerCalendarioPorGestionYPeriodo(gestion, periodo);
-        //pc=iCalendarioService.obtenerCalendarioPorGestionYPeriodo(gestion, periodo);
-        System.out.println(">>> pc " + pc.getParCalendarioPK().getGestion());
+
         poc.setParCalendario(pc);
         poc.setFechaDesde(obligacionCalendario.getFechaDesde());
         poc.setFechaHasta(obligacionCalendario.getFechaHasta());
@@ -97,13 +87,7 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         
         poc.setFechaBitacora(new Date());
         poc.setRegistroBitacora(REGISTRO_BITACORA);
-        
-//        System.out.println("========>" + obligacionCalendario);
-//        System.out.println("========>" + obligacionCalendario);
-//        System.out.println("========>" + obligacionCalendario);
-//        System.out.println("========>" + obligacionCalendario);
-//        System.out.println("========>" + obligacionCalendario);
-//        System.out.println("========>" + obligacionCalendario);
+
         try {    
             obligacionCalendario = obligacionCalendarioRepository.save(poc);
         } catch (Exception e) {
@@ -149,6 +133,19 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         BigDecimal rtn;
         rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
         return rtn.longValue();
+    }
+    
+    @Override
+    public List<ParObligacionCalendario> listaObligacionCalendarioPorGestion(String gestionActual){
+        //el que este usando esto porfavor revise ya que no hay codigo
+        List<ParObligacionCalendario> lista;
+        try {
+            lista = obligacionCalendarioRepository.listarPorGestion(gestionActual);
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
     }
 
 }

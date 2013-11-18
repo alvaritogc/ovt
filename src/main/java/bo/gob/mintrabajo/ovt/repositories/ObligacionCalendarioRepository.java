@@ -35,4 +35,5 @@ public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObl
                     + " a.parCalendario.parCalendarioPK.gestion =:gestion"
     )
     List<ParObligacionCalendario> listarPorGestion(@Param("gestion") String gestion);
+
 }

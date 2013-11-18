@@ -14,22 +14,22 @@
         <p:commandButton value="Nuevo" icon="ui-icon-circle-plus" action="#{parametrizacionBean.inicializaParametro}" oncomplete="parametroNuevo.show();" update=":parametroNuevoFrm" />
         <br/>
         <p:dataTable id="parametroTbl" value="#{parametrizacionBean.parametrizacionLista}" var="par" paginatorPosition="bottom" paginator="true" rows="15">
-            <p:column headerText="Parámetro">
+            <p:column headerText="Parámetro" filterBy="#{par.parParametrizacionPK.idParametro}" footerText="endsWith" filterMatchMode="endsWith">
                 <p:outputLabel value="#{par.parParametrizacionPK.idParametro}" />
             </p:column>
-            <p:column headerText="Valor">
+            <p:column headerText="Código">
                 <p:outputLabel value="#{par.parParametrizacionPK.valor}" />
             </p:column>
-            <p:column headerText="Descripción">
+            <p:column headerText="Valor">
                 <p:outputLabel value="#{par.descripcion}" />
             </p:column>
             <p:column headerText="Observación">
                 <p:outputLabel value="#{par.observacion}" />
             </p:column>
             <p:column headerText="Operaciones">
-                <p:commandLink value="Modificar" oncomplete="parametroEdicion.show();" update=":parametroEdicionFrm" style="color:#0066CC">
+                <p:commandButton icon="ui-icon-pencil" oncomplete="parametroEdicion.show();" update=":parametroEdicionFrm">
                     <f:setPropertyActionListener value="#{par}" target="#{parametrizacionBean.parametrizacionSelected}" />
-                </p:commandLink>
+                </p:commandButton>
             </p:column>
         </p:dataTable>
        </h:form>
@@ -38,15 +38,28 @@
             <h:form id="parametroNuevoFrm">
                 <h:panelGrid columns="2">
                     <p:outputLabel for="parametroN" value="Parámetro"/>
-                    <p:inputText id="parametroN" value="#{parametrizacionBean.parametrizacionSelected.parParametrizacionPK.idParametro}" required="true" />
-                    <p:outputLabel for="valorN" value="Valor"/>
-                    <p:inputText id="valorN" value="#{parametrizacionBean.parametrizacionSelected.parParametrizacionPK.valor}" required="true" />
-                    <p:outputLabel for="descripcionN" value="Descripción" />
-                    <p:inputText id="descripcionN" value="#{parametrizacionBean.parametrizacionSelected.descripcion}" required="true" />
+                    <p:inputText id="parametroN" value="#{parametrizacionBean.parametrizacionSelected.parParametrizacionPK.idParametro}" required="true"
+                                 style="width: 215px;text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter" />
+                    </p:inputText>
+                    <p:outputLabel for="codigoN" value="Código"/>
+                    <p:inputText id="codigoN" value="#{parametrizacionBean.parametrizacionSelected.parParametrizacionPK.valor}" required="true"
+                                 style="width: 215px;text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter" />
+                    </p:inputText>
+                    <p:outputLabel for="valorN" value="Valor" />
+                    <p:inputText id="valorN" value="#{parametrizacionBean.parametrizacionSelected.descripcion}" required="true" />
                     <p:outputLabel for="datoDescripcionN" value="Dato Descripción"/>
-                    <p:inputText id="datoDescripcionN" value="#{parametrizacionBean.parametrizacionSelected.datoDescripcion}" required="true" maxlength="3" />
+                    <p:selectOneMenu id="datoDescripcionN" value="#{parametrizacionBean.parametrizacionSelected.datoDescripcion}" required="true">
+                        <f:selectItem itemLabel="CARACTER" itemValue="C" />
+                        <f:selectItem itemLabel="NÚMERICO" itemValue="N" />
+                        <f:selectItem itemLabel="FECHA" itemValue="D" />
+                    </p:selectOneMenu>
                     <p:outputLabel for="observacionN" value="Observación"/>
-                    <p:inputText id="observacionN" value="#{parametrizacionBean.parametrizacionSelected.observacion}" />
+                    <p:inputTextarea  id="observacionN" value="#{parametrizacionBean.parametrizacionSelected.observacion}"
+                                 style="width: 215px;text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter" />
+                    </p:inputTextarea>
                 </h:panelGrid>
                 <p:commandButton value="Guardar" action="#{parametrizacionBean.guardarParametro}" update=":parametroNuevoFrm :parametroFrm:parametroTbl"/>
                 <p:commandButton value="Cancelar" onclick="parametroNuevo.hide();" immediate="true" />
@@ -57,15 +70,28 @@
             <h:form id="parametroEdicionFrm">
                 <h:panelGrid columns="2">
                     <p:outputLabel value="Parámetro"/>
-                    <p:inputText value="#{parametrizacionBean.parametrizacionSelected.parParametrizacionPK.idParametro}" disabled="true"/>
-                    <p:outputLabel for="valor" value="Valor"/>
-                    <p:inputText id="valor" value="#{parametrizacionBean.parametrizacionSelected.parParametrizacionPK.valor}" required="true" />
-                    <p:outputLabel for="descripcion" value="Descripción" />
-                    <p:inputText id="descripcion" value="#{parametrizacionBean.parametrizacionSelected.descripcion}" required="true" />
+                    <p:inputText value="#{parametrizacionBean.parametrizacionSelected.parParametrizacionPK.idParametro}" disabled="true"
+                                 style="width: 215px;text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter" />
+                    </p:inputText>
+                    <p:outputLabel for="codigoE" value="Código"/>
+                    <p:inputText id="codigoE" value="#{parametrizacionBean.parametrizacionSelected.parParametrizacionPK.valor}" required="true"
+                                 style="width: 215px;text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter" />
+                    </p:inputText>
+                    <p:outputLabel for="valorE" value="Valor" />
+                    <p:inputText id="valorE" value="#{parametrizacionBean.parametrizacionSelected.descripcion}" required="true" />
                     <p:outputLabel for="datoDescripcion" value="Dato Descripción"/>
-                    <p:inputText id="datoDescripcion" value="#{parametrizacionBean.parametrizacionSelected.datoDescripcion}" required="true" />
+                    <p:selectOneMenu id="datoDescripcion" value="#{parametrizacionBean.parametrizacionSelected.datoDescripcion}" required="true">
+                        <f:selectItem itemLabel="CARACTER" itemValue="C"/>
+                        <f:selectItem itemLabel="NÚMERICO" itemValue="N"/>
+                        <f:selectItem itemLabel="FECHA" itemValue="D"/>
+                    </p:selectOneMenu>
                     <p:outputLabel for="observacion" value="Observación"/>
-                    <p:inputText id="observacion" value="#{parametrizacionBean.parametrizacionSelected.observacion}" />
+                    <p:inputTextarea id="observacion" value="#{parametrizacionBean.parametrizacionSelected.observacion}"
+                                     style="width: 215px;text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter" />
+                    </p:inputTextarea>
                 </h:panelGrid>
                 <p:commandButton value="Guardar" action="#{parametrizacionBean.editarParametro}" update=":parametroEdicionFrm :parametroFrm:parametroTbl"/>
                 <p:commandButton value="Cancelar" onclick="parametroEdicion.hide();" immediate="true" />

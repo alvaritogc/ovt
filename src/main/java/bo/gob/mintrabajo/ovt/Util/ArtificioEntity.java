@@ -12,6 +12,7 @@ public class ArtificioEntity {
     private boolean aux1;
     private boolean aux2;
     private boolean aux3;
+    private String cadenaAuxiliar;
 
     public boolean getAux1() {
         return aux1;
@@ -35,5 +36,13 @@ public class ArtificioEntity {
 
     public void setAux3(boolean aux3) {
         this.aux3 = aux3;
+    }
+
+    public String getCadenaAuxiliar() {
+        return cadenaAuxiliar;
+    }
+
+    public void setCadenaAuxiliar(String cadenaAuxiliar) {
+        this.cadenaAuxiliar = cadenaAuxiliar;
     }
 }

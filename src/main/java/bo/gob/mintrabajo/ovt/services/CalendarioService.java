@@ -18,7 +18,9 @@ package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.ICalendarioService;
 import bo.gob.mintrabajo.ovt.entities.ParCalendario;
+import bo.gob.mintrabajo.ovt.entities.ParCalendarioPK;
 import bo.gob.mintrabajo.ovt.repositories.CalendarioRepository;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -46,16 +48,11 @@ public class CalendarioService implements ICalendarioService{
     @Override
     public List<ParCalendario> listaCalendarioPorTipoPeriodoTipoCalendario(String tipoPeriodo, String tipoCalendario){
         List<ParCalendario> lista;
-        System.out.println("===>> tipoPeriodo "+tipoPeriodo);
-        System.out.println("===>> tipoCalendario "+tipoCalendario);
         try {
-            System.out.println("===>> entra ");
             lista = calendarioRepository.listaCalendarioPorTPeriodoYTCalendario(tipoPeriodo, tipoCalendario);
-            System.out.println("===>> sale "+tipoCalendario);
         } catch (Exception e) {
             e.printStackTrace();
             lista = null;
-            System.out.println("===>> no entro "+tipoCalendario);
         }
         return lista;
     }
@@ -67,6 +64,46 @@ public class CalendarioService implements ICalendarioService{
             calendario=calendarioRepository.obtenerCalendarioPorGestionYPeriodo(gestion, tipoPeriodo);
         } catch (Exception e) {
             calendario = null;
+        }
+        return calendario;
+    }
+    
+    @Override
+    public List<ParCalendario> listaCalendario(){
+        List<ParCalendario> lista;
+        try {
+            lista=calendarioRepository.listaCalendarioDesc();
+        } catch (Exception e) {
+            lista = null;
+        }
+        return lista;
+    }
+    @Override
+    public List<ParCalendario> listaCalendarioPorGestion (Integer gestion){
+        List<ParCalendario> lista;
+        try {
+            lista=calendarioRepository.listaCalendarioPorGestion(gestion.toString());
+        } catch (Exception e) {
+            lista = null;
+        }
+        return lista;
+    }
+    
+    @Override
+    public ParCalendario saveCalendario(Integer gestion, String periodo, String tipoCalendario, String REGISTRO_BITACORA){                
+        ParCalendario calendario =new ParCalendario();
+        ParCalendarioPK  parCalendarioPK = new ParCalendarioPK();
+        parCalendarioPK.setGestion(gestion.toString());
+        parCalendarioPK.setTipoPeriodo(periodo);
+        calendario.setParCalendarioPK(parCalendarioPK);
+        calendario.setTipoCalendario(tipoCalendario);
+        calendario.setFechaBitacora(new Date());
+        calendario.setRegistroBitacora(REGISTRO_BITACORA);
+        try {
+            calendario=calendarioRepository.save(calendario);
+        } catch (Exception e) {
+            e.printStackTrace();
+            calendario=null;
         }
         return calendario;
     }

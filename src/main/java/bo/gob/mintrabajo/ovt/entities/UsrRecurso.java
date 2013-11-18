@@ -16,6 +16,8 @@
 
 package bo.gob.mintrabajo.ovt.entities;
 
+import bo.gob.mintrabajo.ovt.Util.ArtificioEntity;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +44,7 @@ import javax.persistence.TemporalType;
 @Table(name = "USR_RECURSO")
 @NamedQueries({
     @NamedQuery(name = "UsrRecurso.findAll", query = "SELECT u FROM UsrRecurso u")})
-public class UsrRecurso implements Serializable {
+public class UsrRecurso extends ArtificioEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)

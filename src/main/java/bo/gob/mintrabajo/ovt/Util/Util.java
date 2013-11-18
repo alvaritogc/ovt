@@ -1,7 +1,7 @@
 package bo.gob.mintrabajo.ovt.Util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -26,4 +26,10 @@ public class Util {
         return crypt.decrypt(text);
     }
 
+    /// **** Validador de emails **** ///
+    public static boolean validaCorreo(String email){
+        Pattern patron = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        Matcher matcher = patron.matcher(email);
+        return matcher.matches();
+    }
 }
