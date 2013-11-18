@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../template/templateInicio.xhtml">
+        <ui:define name="content">
+            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+                <h3>Empleador o Empresa:  </h3>
+                <p:tabView  effect="fade" effectDuration="normal" orientation="top" >
+
+                    <p:tab  >
+                        <f:facet name="title">
+                            <p:graphicImage value="/images/unidad.png"/>
+                            <h:outputText value=" ROE"/>
+                        </f:facet>
+                        <br/>
+                        <p:outputLabel value="Los empleadores que no cuenten con el Registro Obligatorio de Emperadores (ROE), serán sancionados con multa por infracción a la Ley Social de acuerdo al número de empleadores y los días de retraso." />
+                        <br/>
+                        <p:outputLabel value="Calculo de la multa a partir de la fecha #{cotizacionMultasBean.fechaLimiteRoe}" />
+                        <br/>
+                        <p:panel id="pnlRoe1">
+                            <h:panelGrid columns="3" style="width: 100%;">
+                                <p:outputLabel value="Número de trabajadores: "/>    
+                                <p:inputText value="#{cotizacionMultasBean.numeroTrabajadores}"/>
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Fecha inicio actividad / fecha resolución :"/>
+                                <p:calendar value="#{cotizacionMultasBean.fechaSolicitudRoe}" showOn="button" style="width: 10px;"/>  
+                                <p:commandButton value="Calcular con multa por días de retraso " action="#{cotizacionMultasBean.calcularMultaPorMora}" style="width: 130px;" ajax="false" />
+                            </h:panelGrid>
+                        </p:panel>
+                        <br/>
+                        <p:panel id="pnlRoe2">
+                            <h:panelGrid columns="2" >    
+                                <p:outputLabel value="Penalización por el número de trabajadores: "/>
+                                <p:outputLabel value="#{cotizacionMultasBean.multaPorNoContarConElRoe} Bs."/>
+
+                                <p:outputLabel value="Días de retraso:"/>
+                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridos}"/>
+
+                                <p:outputLabel value="Total a pagar para obtener su ROE:"/>
+                                <p:inputText value="#{cotizacionMultasBean.totalAPagarParaObtenerRoe}" readonly="true"/>
+                            </h:panelGrid>
+                        </p:panel>
+
+                    </p:tab>
+                    <p:tab  >
+                        <f:facet name="title">
+                            <p:graphicImage value="/images/unidad.png"/>
+                            <h:outputText value=" Planilla trimestral"/>
+                        </f:facet>
+                        <br/>
+                        <p:outputLabel value="Calculo de la multa de la planilla trimestral." />
+                        <br/>
+                        <p:panel id="pnlPlanillaTrimestral1">
+                            <p:panelGrid columns="3" style="width: 100%;">
+                                <p:outputLabel value="Trimestre: "/>
+                                <p:selectOneMenu value="#{cotizacionMultasBean.tipoPeriodo}">  
+                                    <f:selectItem itemLabel="Seleccione" itemValue="" />  
+                                    <f:selectItem itemLabel="Option 1" itemValue="1" />  
+                                    <f:selectItem itemLabel="Option 2" itemValue="2" />  
+                                    <f:selectItem itemLabel="Option 3" itemValue="3" />  
+                                </p:selectOneMenu>  
+                                <p:commandButton value="Calcular con multa por días de retraso " action="#{cotizacionMultasBean.calcularMultaPorMora}" style="width: 130px;" ajax="false" />
+                                <p:outputLabel value="Fecha presentación:"/>
+                                <p:calendar value="#{cotizacionMultasBean.fechaPresentacion}" showOn="button" style="width: 10px;"/>  
+                                <p:outputLabel value=""/>
+                                <p:outputLabel value="Monto Base:"/>
+                                <p:selectOneMenu value="#{cotizacionMultasBean.montoBase}">  
+                                    <f:selectItem itemLabel="Seleccione" itemValue="" />  
+                                    <f:selectItems value="#{cotizacionMultasBean.listaMontoBase}" />  
+                                </p:selectOneMenu>  
+                                <p:outputLabel value="Bs."/>
+                            </p:panelGrid>
+                        </p:panel>
+                        <br/>
+                        <p:panel id="pnlPlanillaTrimestral2">
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Total:"/>
+                                <p:inputText value="#{cotizacionMultasBean.montoTotalPlanillaTrimestral}" readonly="true"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:tab>
+
+                </p:tabView>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
