@@ -96,6 +96,13 @@ public class UsuarioService implements IUsuarioService{
         return lista;
     }
 
+    public void cambiarLogin(Long idUsuario,String loginNuevo){
+        logger.info("Editando el login del usuario " + idUsuario + " nuevo login " + loginNuevo);
+        UsrUsuario uu = usuarioRepository.findOne(idUsuario);
+        uu.setUsuario(loginNuevo);
+        usuarioRepository.save(uu);
+    }
+
     @Override
     public List<UsrUsuario> obtenerUsuariosIntenos() {
         return usuarioRepository.findByAttribute("esInterno",1,-1,-1);
