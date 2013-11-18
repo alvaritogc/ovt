@@ -61,17 +61,10 @@ public class RolRecursoAdministracionBean {
             usrRolRecursoPK.setIdRecurso(r.getIdRecurso());
             UsrRolRecurso tmp = iRolRecursoService.tieneRelacionRolRecurso(usrRolRecursoPK);
             if(tmp != null){
-                ArtificioEntity p = new ArtificioEntity();
-                p.setAux1(true);
-                p.setAux2(tmp.getWx().toLowerCase().equals("W".toLowerCase()));
-                p.setAux3(tmp.getWx().toLowerCase().equals("X".toLowerCase()));
-                p.setAux2(tmp.getWx().toLowerCase().equals("WX".toLowerCase()));
-                p.setAux3(tmp.getWx().toLowerCase().equals("WX".toLowerCase()));
-                seleccionadoLista.add(p);
+                r.setAux1(true);
+                r.setCadenaAuxiliar(tmp.getWx());
             }else{
-                ArtificioEntity p = new ArtificioEntity();
-                p.setAux1(false);
-                seleccionadoLista.add(p);
+                r.setAux1(false);
             }
         }
     }
@@ -79,28 +72,38 @@ public class RolRecursoAdministracionBean {
     public void guardarRolRecurso() {
         log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo guardarRolRecurso()");
         try {
-            for (int i = 0; i < recursoLista.size(); i++) {
-                if (seleccionadoLista.get(i).getAux1()) {
+            for (UsrRecurso ur :recursoLista) {
+                if(ur.getAux1()){
                     UsrRolRecurso rr = new UsrRolRecurso();
-                    if (seleccionadoLista.get(i).getAux2() && seleccionadoLista.get(i).getAux3()) {
-                        rr.setWx("WX");
-                    } else {
-
-                        if (seleccionadoLista.get(i).getAux2()) {
-                            rr.setWx("W");
-                        }
-                        if (seleccionadoLista.get(i).getAux3()) {
-                            rr.setWx("X");
-                        }
-                    }
-                    iRolRecursoService.guardarRolRecurso(rr, idRol, recursoLista.get(i).getIdRecurso());
-                } else {
-                    iRolRecursoService.eliminarRolRecurso(idRol, recursoLista.get(i).getIdRecurso());
+                    rr.setWx(ur.getCadenaAuxiliar());
+                    iRolRecursoService.guardarRolRecurso(rr, idRol, ur.getIdRecurso());
+                }else{
+                    iRolRecursoService.eliminarRolRecurso(idRol, ur.getIdRecurso());
                 }
+
+
+//                if (seleccionadoLista.get(i).getAux1()) {
+//                    UsrRolRecurso rr = new UsrRolRecurso();
+//                    if (seleccionadoLista.get(i).getAux2() && seleccionadoLista.get(i).getAux3()) {
+//                        rr.setWx("WX");
+//                    } else {
+//
+//                        if (seleccionadoLista.get(i).getAux2()) {
+//                            rr.setWx("W");
+//                        }
+//                        if (seleccionadoLista.get(i).getAux3()) {
+//                            rr.setWx("X");
+//                        }
+//                    }
+//                    iRolRecursoService.guardarRolRecurso(rr, idRol, recursoLista.get(i).getIdRecurso());
+//                } else {
+//                    iRolRecursoService.eliminarRolRecurso(idRol, recursoLista.get(i).getIdRecurso());
+//                }
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Asignación de recursos ejecutado correctamente"));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "la asignación de recursos falló"));
+            e.printStackTrace();
         }
     }
 
