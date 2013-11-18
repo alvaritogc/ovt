@@ -22,12 +22,17 @@ public interface DominioRepository extends OpenJpaRepository<ParDominio, ParDomi
     @Query("select p "
             + " from ParDominio p "
             + " where p.parDominio.parDominioPK.idDominio=:dominioPadre"
-            + " and p.parDominio.parDominioPK.valor=:valorPadre" )
-    List<ParDominio> obtenerDominioPorDominioPadreYValorPadre(@Param("dominioPadre")String dominio,@Param("valorPadre")String valor);
+            + " and p.parDominio.parDominioPK.valor=:valorPadre"
+            + " order by p.descripcion asc" )
+    List<ParDominio> obtenerDominioPorDominioPadreYValorPadre(@Param("dominioPadre")String dominioP,@Param("valorPadre")String valorP);
     
     @Query("select p "
             + " from ParDominio p "
             + " where p.parDominioPK.idDominio = :dominio and p.parDominioPK.valor <> :valor")
     List<ParDominio> obtenerDominioPorNombreDistintoValor(@Param("dominio")String dominio,@Param("valor")String valor);
 
+    @Query("select p "
+            + " from ParDominio p "
+            + " where p.parDominioPK.valor = :valor")
+    ParDominio findByValor(@Param("valor")String valor);
 }

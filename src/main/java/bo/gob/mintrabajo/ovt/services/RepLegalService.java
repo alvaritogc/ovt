@@ -7,6 +7,7 @@ import bo.gob.mintrabajo.ovt.entities.PerDireccion;
 import bo.gob.mintrabajo.ovt.entities.PerReplegal;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import bo.gob.mintrabajo.ovt.repositories.DireccionRepository;
+import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
 import bo.gob.mintrabajo.ovt.repositories.RepLegalRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
+
 /**
  *
  * @author pc01
@@ -29,13 +32,15 @@ import java.util.List;
 public class RepLegalService implements IRepLegalService{
 
     private final RepLegalRepository repLegalRepository;
+    private final DominioRepository dominioRepository;
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
 
     @Inject
-    public RepLegalService(RepLegalRepository repLegalRepository) {
+    public RepLegalService(RepLegalRepository repLegalRepository,DominioRepository dominioRepository) {
         this.repLegalRepository=repLegalRepository;
+        this.dominioRepository=dominioRepository;
     }
 
     @Override
@@ -45,11 +50,9 @@ public class RepLegalService implements IRepLegalService{
             //Nuevo
             replegal.setIdReplegal(this.obtenerSecuencia("PER_REPLEGAL_SEC"));
         }
-        //preguntar q significa este valor
-        replegal.setEstadoRepLegal("A");
+        replegal.setEstadoRepLegal(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
         replegal.setFechaBitacora(new Date());
         return repLegalRepository.save(replegal);
-
     }
 
 //    @Override

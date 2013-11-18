@@ -17,4 +17,6 @@ public interface UsuarioRepository extends OpenJpaRepository<UsrUsuario, Long>{
     @Query(" delete from UsrUsuario u " +
             "where u.idPersona = :idPersona" )
     void eliminarUsuario(@Param("idPersona")String idPersona);
+
+
 }

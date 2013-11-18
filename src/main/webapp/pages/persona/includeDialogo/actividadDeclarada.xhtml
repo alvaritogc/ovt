@@ -4,15 +4,15 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-
 <h:form id="frmActividadDeclarada">
+    <p:growl showDetail="true" id="growlActividadDeclarada" />
     <p:panel id="pnlActividadDeclarada" >
         <f:facet name="footer">
             <p:commandButton value="#{personaUnidadBean.tituloDialog}"
                              icon="#{personaUnidadBean.iconoUnidad}"
                              action="#{personaUnidadBean.procesarActividadEconomica}"
                              id="cmdButtonActividadDeclarada"
-                             update=":tabPersonaUnidad"
+                             update=":tabPersonaUnidad,:tabPersonaUnidad:tabActividad,:dataGrid,growlActividadDeclarada"
                     />
         </f:facet>
 
@@ -39,12 +39,12 @@
             </p:inputTextarea>
 
             <h:outputText value="Codigo de Impuestos:"/>
-            <p:selectOneMenu id="slcOneMenuCodImpuestos1" value="#{personaUnidadBean.actividadEconomica.codImpuestos}"
-                             tabindex="3"
-                             style="text-transform: uppercase;">
-                <f:selectItem itemLabel="---Seleccione un cod. de impuestos---" itemValue="" />
-                <f:selectItems value="#{personaUnidadBean.listaTipoIdentificacion}" />
-            </p:selectOneMenu>
+            <p:inputText value="#{personaUnidadBean.actividadEconomica.codImpuestos}"
+                         style="text-transform: uppercase;width: 215px;"
+                         tabindex="3">
+                <f:converter converterId="lowerConverter"/>
+            </p:inputText>
+
 
             <h:outputText value="Descripcion del codigo de impuestos:"/>
             <p:inputTextarea id="txtAreaDescripcionCodImpuestos1" value="#{personaUnidadBean.actividadEconomica.descricpionImpuestos}"

@@ -8,6 +8,7 @@ import bo.gob.mintrabajo.ovt.entities.PerDireccion;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import bo.gob.mintrabajo.ovt.repositories.ActividadRepository;
 import bo.gob.mintrabajo.ovt.repositories.DireccionRepository;
+import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
@@ -20,6 +21,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_ESTADO_UNIDAD;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_UNIDAD_ACTIVO;
+
 /**
  *
  * @author pc01
@@ -29,13 +33,15 @@ import java.util.List;
 public class ActividadService implements IActividadService {
 
     private final ActividadRepository actividadRepository;
+    private final DominioRepository dominioRepository;
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
 
     @Inject
-    public ActividadService(ActividadRepository actividadRepository) {
+    public ActividadService(ActividadRepository actividadRepository,DominioRepository dominioRepository) {
         this.actividadRepository = actividadRepository;
+        this.dominioRepository=dominioRepository;
     }
 
 
@@ -47,7 +53,7 @@ public class ActividadService implements IActividadService {
             actividad.setIdActividad(this.obtenerSecuencia("PER_ACTIVIDAD_SEC"));
         }
         //preguntar q significa este valor
-        actividad.setEstado("A");
+        actividad.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO_UNIDAD,PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
         actividad.setFechaBitacora(new Date());
         return actividadRepository.save(actividad);
 

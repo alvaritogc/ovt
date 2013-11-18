@@ -43,6 +43,11 @@ public class RecursoService implements IRecursoService {
     }
 
     @Override
+    public List<UsrRecurso> obtenerTodosRecursoLista(){
+        return recursoRepository.obtenerRecursoDescripcionNoNull();
+    }
+
+    @Override
     public UsrRecurso findById(Long id) {
         return recursoRepository.findOne(id);
     }
@@ -55,6 +60,11 @@ public class RecursoService implements IRecursoService {
     @Override
     public List<UsrRecurso> listarPorTipoRecurso(String tipoRecurso) {
         return recursoRepository.findByAttribute("tipoRecurso", tipoRecurso, -1, -1);
+    }
+
+    @Override
+    public List<UsrRecurso> obtenerRecursoEnUsuarioRecurso(Long idUsuario){
+        return recursoRepository.obtenerRecursoEnUsuarioRecurso(idUsuario);
     }
     
 }

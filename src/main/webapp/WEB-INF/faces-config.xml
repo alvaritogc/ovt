@@ -47,6 +47,12 @@
             <redirect include-view-params="false">
             </redirect>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>irUnidad</from-outcome>
+            <to-view-id>/pages/persona/registroPersonaUnidad.xhtml</to-view-id>
+            <redirect >
+            </redirect>
+        </navigation-case>
     </navigation-rule>
 
 </faces-config>

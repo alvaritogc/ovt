@@ -109,4 +109,8 @@ public class UnidadService implements IUnidadService{
     public PerUnidad obtienePorId(PerUnidadPK perUnidadPK){
         return unidadRepository.findByPK(perUnidadPK);
     }
+
+    public List<PerUnidad> listarUnidadesSucursales(String idPersona){
+        return unidadRepository.findByPerPersona_IdPersona(idPersona);
+    }
 }

@@ -1,6 +1,7 @@
 
 package bo.gob.mintrabajo.ovt.services;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import bo.gob.mintrabajo.ovt.repositories.PersonaRepository;
@@ -11,10 +12,19 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+
+import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
@@ -110,9 +120,54 @@ public class UsuarioService implements IUsuarioService{
         return usr;
     }
 
-    public UsrUsuario obtenerUsuarioPorNombreUsuario(String email){
+    @Override
+    public List<UsrUsuario> buscarPorUsuario(final String usuario) {
+        System.out.println("Buscando .................................. " + usuario);
+        if (Strings.isNullOrEmpty(usuario)) {
+            return Collections.emptyList();
+        }
 
-       return usuarioRepository.findByUsuario(email);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<UsrUsuario> criteriaQuery = criteriaBuilder.createQuery(UsrUsuario.class);
+        Root<UsrUsuario> from = criteriaQuery.from(UsrUsuario.class);
+
+        Specification<UsrUsuario> specification = new Specification<UsrUsuario>() {
+            @Override
+            public Predicate toPredicate(Root<UsrUsuario> perPersonaEntityRoot, CriteriaQuery<?> criteriaQuery,
+                                         CriteriaBuilder criteriaBuilder) {
+
+
+                List<Predicate> pr = new LinkedList<Predicate>();
+                pr.add(criteriaBuilder.equal(perPersonaEntityRoot.get("esInterno"), 1));
+                if (!Strings.isNullOrEmpty(usuario)) {
+                    pr.add(criteriaBuilder.like(criteriaBuilder.lower(perPersonaEntityRoot.<String>get("usuario")),
+                            "%" + usuario.toLowerCase() + "%"));
+                }
+
+                return criteriaBuilder.and(pr.toArray(new Predicate[pr.size()])); // O puede ser or()
+            }
+        };
+
+        criteriaQuery.where(specification.toPredicate(from, criteriaQuery, criteriaBuilder));
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+//    @Override
+//    public List<UsrUsuario> buscarPorUsuario(String usuario){
+//        System.out.println("Busca --------------------------------- " + usuario);
+//        System.out.println("Busca --------------------------------- TAMAÑO " + usuarioRepository.findByAttribute("usuario", usuario, -1, -1).size());
+//
+//        return usuarioRepository.findByAttribute("usuario", usuario, -1, -1);
+//    }
+
+    @Override
+    public UsrUsuario obtenerUsuarioPorNombreUsuario(String email){
+       try{
+           return usuarioRepository.findByUsuario(email);
+       }catch (Exception ex){
+           logger.error(ex.getMessage());
+            return null;
+       }
     }
 
    /*****************************************************
@@ -158,14 +213,15 @@ public class UsuarioService implements IUsuarioService{
 
         String mensaje="";
         UsrUsuario usuario=usuarioRepository.findOne(idUsuario);
-
+        //descencriptar la contrasenia del usuario
+        String claveDescencriptada=Util.decrypt(usuario.getClave());
         //verificar que la contrasenia sea la asociada a su cuenta
-        if(!usuario.getClave().equals(clave)){
+        if(!claveDescencriptada.equals(clave)){
             mensaje="La contrasenia no esta asociada a su cuenta de usuario.";
             return mensaje;
         }
                //Verificar que la nueva contrasenia sea distinta  a la antigua contrasenia
-            if(usuario.getClave().equals(nuevaClave)){
+            if(claveDescencriptada.equals(nuevaClave)){
                 mensaje ="La nueva contrasenia debe ser distinta a la version anterior." ;
                 return mensaje;
             }
@@ -176,8 +232,8 @@ public class UsuarioService implements IUsuarioService{
                 return mensaje;
             }
 
-            //actualizar contrasenia
-            usuario.setClave(nuevaClave);
+            //actualizar contrasenia (Encriptada)
+            usuario.setClave(Util.crypt(nuevaClave));
             usuarioRepository.save(usuario);
             mensaje="OK";
             return mensaje;

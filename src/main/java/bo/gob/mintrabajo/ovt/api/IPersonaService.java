@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IPersonaService {
     PerPersona findById(String id);
-    List<PerPersona> buscarPorNroNombre(final String nroIdentificacion, final String nombreRazonSocial);
+    public List<PerPersona> buscarPorNroNombre(final String nombreRazonSocial,final String tipoIdentificacion,final String nroIdentificacion);
     public  List<PerPersona> findAll();
     public PerPersona save(PerPersona persona);
     public Long obtenerSecuencia(String nombreSecuencia);
@@ -18,7 +18,10 @@ public interface IPersonaService {
     public boolean eliminarRegistro(String perPersona, UsrUsuario usrUsuario);
     List<PerPersona> listarPorSucursal(String idPersona);
     PerPersona obtienePorCentral(String idPersona);
+    public PerPersona findByNroIdentificacion(String nroIdentificacion);
     public PerPersona obtenerPersonaPorUsuario(UsrUsuario usrUsuario);
     public void editarPersona(PerPersona persona, PerUnidad unidad, String idLocalidad);
     public boolean guardarUsuarioInterno(PerPersona persona,PerUnidad unidad,UsrUsuario usuario);
+    public boolean guardarUsuarioRol(Long idUsuario, Long idRol);
+    public void eliminarUsuarioRol(Long idUsuario, Long idRol);
 }

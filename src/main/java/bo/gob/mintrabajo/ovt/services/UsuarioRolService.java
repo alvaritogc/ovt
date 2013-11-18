@@ -35,14 +35,14 @@ public class UsuarioRolService implements IUsuarioRolService{
         return allUsuarios;
     }
     
-//    @Override
+    @Override
     public UsrUsuarioRol save(UsrUsuarioRol usuarioRol) {
         UsrUsuarioRol entity;
         entity = usuarioRolRepository.save(usuarioRol);
         return entity;
     }
 
-//    @Override
+    @Override
     public boolean delete(UsrUsuarioRol usuarioRol) {
         boolean deleted = false;
         usuarioRolRepository.delete(usuarioRol);
@@ -54,6 +54,20 @@ public class UsuarioRolService implements IUsuarioRolService{
         UsrUsuarioRol entity;
         entity = usuarioRolRepository.findOne(id);
         return entity;
+    }
+
+    public boolean tieneRelacionUsuarioRol(UsrUsuarioRolPK llave){
+        try{
+            UsrUsuarioRol tmp = usuarioRolRepository.findOne(llave);
+            if(tmp != null)
+                return true;
+            else
+                return false;
+
+        }catch (Exception e){
+
+            return false;
+        }
     }
     
 }

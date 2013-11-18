@@ -77,6 +77,7 @@ public class DominioService implements IDominioService{
         return parDominio;
     }
 
+
    @Override
     public  List<ParDominio> obtenerItemsDominio(String dominio){
         try {
@@ -98,7 +99,17 @@ public class DominioService implements IDominioService{
             return null;
         }
     }
-    
+
+    @Override
+    public ParDominio obtenerDominioPorValor(String valor){
+        try{
+            return dominioRepository.findByValor(valor);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public List<ParDominio> obtenerDominioPorNombrePadreYValorPadre(String dominioP,String valorP){
         try{

@@ -30,9 +30,9 @@
                     <p:outputLabel value="#{dom.idModulo.idModulo} - #{dom.idModulo.nombre}" />
                 </p:column>
                 <p:column headerText="Operaciones">
-                    <p:commandLink value="Modificar" oncomplete="dominioEdicion.show();" update=":dominioEdicionFrm" style="color:#0066CC">
+                    <p:commandButton icon="ui-icon-pencil" oncomplete="dominioEdicion.show();" update=":dominioEdicionFrm">
                         <f:setPropertyActionListener value="#{dom}" target="#{dominioBean.dominioSelected}" />
-                    </p:commandLink>
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -42,13 +42,25 @@
         <h:form id="dominioNuevoFrm">
             <h:panelGrid columns="2">
                 <p:outputLabel for="dominioN" value="Dominio" />
-                <p:inputText id="dominioN" value="#{dominioBean.dominioSelected.parDominioPK.idDominio}" required="true"/>
+                <p:inputText id="dominioN" value="#{dominioBean.dominioSelected.parDominioPK.idDominio}" required="true"
+                             style="width: 215px;text-transform: uppercase;">
+                <f:converter converterId="lowerConverter" />
+                </p:inputText>
                 <p:outputLabel for="valorN" value="Valor" />
-                <p:inputText id="valorN" value="#{dominioBean.dominioSelected.parDominioPK.valor}" required="true" />
+                <p:inputText id="valorN" value="#{dominioBean.dominioSelected.parDominioPK.valor}" required="true"
+                             style="width: 215px;text-transform: uppercase;">
+                    <f:converter converterId="lowerConverter" />
+                </p:inputText>
                 <p:outputLabel for="descripcionN" value="Descripción" />
-                <p:inputText id="descripcionN" value="#{dominioBean.dominioSelected.descripcion}" required="true"/>
+                <p:inputText id="descripcionN" value="#{dominioBean.dominioSelected.descripcion}" required="true"
+                             style="width: 215px;text-transform: uppercase;">
+                    <f:converter converterId="lowerConverter" />
+                </p:inputText>
                 <p:outputLabel for="observacionN" value="Observación" />
-                <p:inputText id="observacionN" value="#{dominioBean.dominioSelected.observacion}" required="true" />
+                <p:inputText id="observacionN" value="#{dominioBean.dominioSelected.observacion}" required="true"
+                             style="width: 215px;text-transform: uppercase;">
+                    <f:converter converterId="lowerConverter" />
+                </p:inputText>
                 <p:outputLabel for="moduleN" value="Módulo de usuario" />
                 <p:selectOneMenu id="moduleN" value="#{dominioBean.dominioSelected.idModulo}" converter="moduloConverter">
                     <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="modules" itemLabel="#{modules.idModulo} - #{modules.nombre}" itemValue="#{modules}" />
@@ -63,13 +75,25 @@
         <h:form id="dominioEdicionFrm">
             <h:panelGrid columns="2">
                 <p:outputLabel for="dominioE" value="Dominio" />
-                <p:inputText id="dominioE" value="#{dominioBean.dominioSelected.parDominioPK.idDominio}" disabled="true"/>
+                <p:inputText id="dominioE" value="#{dominioBean.dominioSelected.parDominioPK.idDominio}" disabled="true"
+                             style="width: 215px;text-transform: uppercase;">
+                    <f:converter converterId="lowerConverter" />
+                </p:inputText>
                 <p:outputLabel for="valorE" value="Valor" />
-                <p:inputText id="valorE" value="#{dominioBean.dominioSelected.parDominioPK.valor}" disabled="true" />
+                <p:inputText id="valorE" value="#{dominioBean.dominioSelected.parDominioPK.valor}" disabled="true"
+                             style="width: 215px;text-transform: uppercase;">
+                    <f:converter converterId="lowerConverter" />
+                </p:inputText>
                 <p:outputLabel for="descripcionE" value="Descripción" />
-                <p:inputText id="descripcionE" value="#{dominioBean.dominioSelected.descripcion}" required="true"/>
+                <p:inputText id="descripcionE" value="#{dominioBean.dominioSelected.descripcion}" required="true"
+                             style="width: 215px;text-transform: uppercase;">
+                    <f:converter converterId="lowerConverter" />
+                </p:inputText>
                 <p:outputLabel for="observacionE" value="Observación" />
-                <p:inputText id="observacionE" value="#{dominioBean.dominioSelected.observacion}" required="true" />
+                <p:inputText id="observacionE" value="#{dominioBean.dominioSelected.observacion}" required="true"
+                             style="width: 215px;text-transform: uppercase;">
+                    <f:converter converterId="lowerConverter" />
+                </p:inputText>
                 <p:outputLabel for="moduleE" value="Módulo de usuario" />
                 <p:selectOneMenu id="moduleE" value="#{dominioBean.dominioSelected.idModulo}" converter="moduloConverter">
                     <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="modules" itemLabel="#{modules.idModulo} - #{modules.nombre}" itemValue="#{modules}" />

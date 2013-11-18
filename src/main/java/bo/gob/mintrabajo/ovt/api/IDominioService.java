@@ -14,4 +14,5 @@ public interface IDominioService {
     public ParDominio editarGuardarDominio(ParDominio parDominio);
     public List<ParDominio> obtenerDominioPorNombrePadreYValorPadre(String dominioP,String valorP);
     public List<ParDominio> obtenerDominioPorNombreDistintoValor(String dominio,String valor);
+    public ParDominio obtenerDominioPorValor(String valor);
 }

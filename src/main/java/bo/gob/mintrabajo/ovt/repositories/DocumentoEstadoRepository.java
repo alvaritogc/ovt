@@ -1,11 +1,12 @@
 package bo.gob.mintrabajo.ovt.repositories;
 
 import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstado;
-import java.util.List;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 @OpenJpaSettings
 public interface DocumentoEstadoRepository extends OpenJpaRepository<ParDocumentoEstado, String> {
@@ -23,4 +24,5 @@ public interface DocumentoEstadoRepository extends OpenJpaRepository<ParDocument
             + " )"
             )
     List<ParDocumentoEstado> listarSiguientesTransiciones(@Param("codDocumento") String codDocumento,@Param("version") short version,@Param("codEstadoInicial") String codEstadoInicial);
+
 }

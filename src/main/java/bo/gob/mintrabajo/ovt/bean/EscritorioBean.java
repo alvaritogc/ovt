@@ -51,7 +51,6 @@ public class EscritorioBean {
     private PerPersona persona;
     private List<PerUnidad> listaUnidades;
     private List<DocDocumento> listaDocumentos;
-//    private VperPersonaEntity vperPersonaEntity;
     //
     private boolean esInterno;
     //
@@ -112,11 +111,6 @@ public class EscritorioBean {
         return "irCambioEstado";
     }
     public void cargarCambioDeEstados(){
-        System.out.println("================================");
-        System.out.println("================================");
-        System.out.println("cargarCambioDeEstados");
-        System.out.println("================================");
-        System.out.println("================================");
         docPlanilla=iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
         listaDocumentoEstado=iDocumentoEstadoService.listarSiguientesTransiciones(docDocumento);
         System.out.println("size: "+listaDocumentoEstado.size());
@@ -128,14 +122,7 @@ public class EscritorioBean {
         }
     }
     public String realizarCambioDeEstados(){
-        System.out.println("================================");
-        System.out.println("================================");
-        System.out.println("realizarCambioDeEstados");
-        System.out.println("================================");
-        System.out.println("================================");
-        System.out.println("codEstadoFinal : "+codEstadoFinal);
         parDocumentoEstado=iDocumentoEstadoService.findById(codEstadoFinal);
-        System.out.println("pardDocEstado"+parDocumentoEstado.toString());
         //
         docDocumento=iDocumentoService.guardarCambioEstado(docDocumento, parDocumentoEstado, idPersona);
         //

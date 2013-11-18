@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <h2 class="form-signin-heading">Documento Estado</h2>
+            <p:commandButton value="Nuevo" onclick="PF('dlgFormDocEstado').show();" action="#{documentoEstadoBean.cargarNuevo}"
+                             icon="ui-icon-document-b" update=":formDocEstado:pnlGridDocEstado"/>
+            <br />
+            <!--  Listado de entidades en tabla-->
+            <br/>
+            <p:dataTable id="dataTableDocEstado" var="docEstado" value="#{documentoEstadoBean.listaParDocumentoEstado}"
+                         paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="bottom"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados">
+                <f:facet name="header">  
+                    Documentos Estado
+                </f:facet>
+
+                <p:column sortBy="codigo" headerText="Codigo Estado">
+                    <h:outputText value="#{docEstado.codEstado}" />
+                </p:column>
+
+                <p:column sortBy="descripcion" headerText="Descripción" >
+                    <h:outputText value="#{docEstado.descripcion}" />
+                </p:column>
+
+                <p:column sortBy="estado" headerText="Estado">
+                    <h:outputText value="#{docEstado.estado}" />
+                </p:column>
+
+                <p:column sortBy="metadata" headerText="Metadata">
+                    <h:outputText value="#{docEstado.metadata}" />
+                </p:column>
+                <p:column headerText="Acciones">                
+                    <p:commandButton action="#{documentoEstadoBean.cargarModificar}" title="Editar" onclick="PF('dlgFormDocEstado').show()" update=":formDocEstado:pnlGridDocEstado" icon="ui-icon-pencil">
+                            <f:setPropertyActionListener target="#{documentoEstadoBean.parDocumentoEstado}" value="#{docEstado}" />
+                    </p:commandButton>
+                    <p:commandButton title="Eliminar" onclick="PF('confirmation').show()" icon="ui-icon-trash">
+                            <f:setPropertyActionListener target="#{documentoEstadoBean.parDocumentoEstado}" value="#{docEstado}" />
+                    </p:commandButton>
+                    
+                </p:column>  
+            </p:dataTable>
+            
+            <p:growl id="messages" showDetail="true" /> 
+             <p:confirmDialog message="Esta seguro de eliminar este registro?"
+                showEffect="fade" hideEffect="explode"  
+                header="Confirmacion" severity="alert" widgetVar="confirmation">  
+                 <p:commandButton value="Si" update=":messages :dataTableDocEstado" oncomplete="PF('confirmation').hide()" actionListener="#{documentoEstadoBean.eliminaDocumentoEstado}" />
+                 <p:commandButton value="No" onclick="PF('confirmation').hide()" type="button" update=":dataTableDocEstado"/>
+            </p:confirmDialog>
+                
+            <p:dialog id="basicDialogMessage" header="DocumentoEstado" widgetVar="dlgFormDocEstado"
+                      width="400" closable="false" 
+                      resizable="false"
+                      modal="true" >  
+                
+                <p:growl id="growl" />
+                <h:form id="formDocEstado">
+                <h:panelGrid columns="2" cellpadding="5" id="pnlGridDocEstado">
+                    
+                    <p:outputLabel for="codigo" value="Codigo estado:" style="font-weight:bold; text-align: right"/>
+                    <p:inputText id="codigo" value="#{documentoEstadoBean.parDocumentoEstado.codEstado}" required="true" type="number" disabled="#{documentoEstadoBean.modifica}"
+                                 requiredMessage="Debe ingresar el campo Codigo" maxlength="4" style="text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputText>
+
+                    <p:outputLabel for="descripcion" value="Descripción:" style="font-weight:bold; text-align: right"/>
+                    <p:inputTextarea id="descripcion" value="#{documentoEstadoBean.parDocumentoEstado.descripcion}" required="true"
+                                     requiredMessage="Debe ingresar el campo Descripcion" maxlength="120" style="text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputTextarea>
+
+                    <p:outputLabel for="estado" value="Estado:" style="font-weight:bold; text-align: right" />
+                    <p:selectBooleanCheckbox id="estado" value="#{documentoEstadoBean.estado}" style="text-align: left" required="true"/>
+
+                    <p:outputLabel for="metadata" value="Metadata:" style="font-weight:bold; text-align: right"/>
+                    <p:inputTextarea id="metadata" value="#{documentoEstadoBean.parDocumentoEstado.metadata}" required="true"
+                                 requiredMessage="Debe ingresar el campo Codigo" maxlength="20" style="text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter"/>
+                    </p:inputTextarea>
+
+                </h:panelGrid>
+                    <div align="center">
+                        <p:commandButton value="Guardar" actionListener="#{documentoEstadoBean.guardaModificaDocumentoEstado}" update=":growl formDocEstado :dataTableDocEstado" icon="ui-icon-disk" oncomplete="PF('dlgFormDocEstado').hide();"/>
+                        <p:commandButton value="Cancelar" onclick="PF('dlgFormDocEstado').close();" update="formDocEstado:pnlGridDocEstado" icon="ui-icon-close" immediate="true"/>
+                    </div>
+            </h:form> 
+            </p:dialog>
+
+        </ui:define>
+    </ui:composition>
+</html>

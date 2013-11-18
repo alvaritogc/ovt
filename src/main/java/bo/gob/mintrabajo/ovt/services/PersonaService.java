@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -75,6 +76,17 @@ public class PersonaService implements IPersonaService {
         return perPersonaEntity;
     }
 
+
+   @Override
+   public PerPersona findByNroIdentificacion(String nroIdentificacion){
+        try{
+            return personaRepository.findByNroIdentificacion(nroIdentificacion);
+        }catch (Exception ex){
+           ex.printStackTrace();
+            return null;
+        }
+   }
+
     @Override
     public void editarPersona(PerPersona persona, PerUnidad unidad, String idLocalidad) {
         log.info("Editando el Usuario ...");
@@ -101,6 +113,7 @@ public class PersonaService implements IPersonaService {
     public PerPersona obtenerPersonaPorUsuario(UsrUsuario usrUsuario){
         return personaRepository.obtenerPersonaPorIdUsuario(usrUsuario.getIdUsuario());
     }
+
 
 //    @Override
     public boolean delete(PerPersona persona) {
@@ -131,14 +144,22 @@ public class PersonaService implements IPersonaService {
 
 
     @Override
-    public List<PerPersona> buscarPorNroNombre(final String nroIdentificacion, final String nombreRazonSocial) {
-        if (Strings.isNullOrEmpty(nroIdentificacion) && Strings.isNullOrEmpty(nombreRazonSocial)) {
-            return Collections.emptyList();
-        }
+    public List<PerPersona> buscarPorNroNombre(final String nombreRazonSocial,final String tipoIdentificacion,final String nroIdentificacion) {
+
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PerPersona> criteriaQuery = criteriaBuilder.createQuery(PerPersona.class);
         Root<PerPersona> from = criteriaQuery.from(PerPersona.class);
+        criteriaQuery.orderBy(criteriaBuilder.desc(from.get("idPersona")));
+        if (Strings.isNullOrEmpty(nroIdentificacion) && Strings.isNullOrEmpty(nombreRazonSocial) && Strings.isNullOrEmpty(tipoIdentificacion)) {
+            //return Collections.emptyList();
+
+            Query q= entityManager.createQuery(criteriaQuery);
+            q.setFirstResult(0);
+            q.setMaxResults(200);
+             return q.getResultList();
+            //return entityManager.createQuery(criteriaQuery).getResultList();
+        }
 
         Specification<PerPersona> specification = new Specification<PerPersona>() {
             @Override
@@ -150,6 +171,11 @@ public class PersonaService implements IPersonaService {
 
                 if (!Strings.isNullOrEmpty(nroIdentificacion)) {
                     pr.add(criteriaBuilder.equal(perPersonaEntityRoot.get("nroIdentificacion"), nroIdentificacion));
+                    // PUEDE SER: return criteriaBuilder.equal(perPersonaEntityRoot.get("nroIdentificacion"), nroIdentificacion);
+                }
+
+                if (!Strings.isNullOrEmpty(tipoIdentificacion)) {
+                    pr.add(criteriaBuilder.equal(perPersonaEntityRoot.get("tipoIdentificacion"), tipoIdentificacion));
                     // PUEDE SER: return criteriaBuilder.equal(perPersonaEntityRoot.get("nroIdentificacion"), nroIdentificacion);
                 }
 
@@ -227,7 +253,6 @@ public class PersonaService implements IPersonaService {
             UsrUsuarioRol usuarioRol=new UsrUsuarioRol();
             usuarioRol.setFechaBitacora(new Date());
             usuarioRol.setRegistroBitacora(REGISTRO_BITACORA);
-            usuarioRol.setIdModulo(modulo);
             usuarioRol.setUsrRol(rol);
             usuarioRol.setUsrUsuario(usuario);
             UsrUsuarioRolPK usrUsuarioRolPK=new UsrUsuarioRolPK();
@@ -337,5 +362,35 @@ public class PersonaService implements IPersonaService {
         if(personaList.size()==0)
             return new PerPersona();
         return personaList.get(0);
+    }
+
+    public boolean guardarUsuarioRol(Long idUsuario, Long idRol){
+        UsrRol rol = rolRepository.findByIdRol(idRol);
+        UsrUsuario usuario = usuarioRepository.findOne(idUsuario);
+
+        UsrUsuarioRol usuarioRol = new UsrUsuarioRol();
+        usuarioRol.setFechaBitacora(new Date());
+        usuarioRol.setRegistroBitacora("ROE");
+
+        usuarioRol.setUsrRol(rol);
+        usuarioRol.setUsrUsuario(usuario);
+        UsrUsuarioRolPK usrUsuarioRolPK = new UsrUsuarioRolPK();
+        usrUsuarioRolPK.setIdRol(rol.getIdRol());
+        usrUsuarioRolPK.setIdUsuario(usuario.getIdUsuario());
+
+        usuarioRol.setUsrUsuarioRolPK(usrUsuarioRolPK);
+        usuarioRolRepository.save(usuarioRol);
+
+        return true;
+    }
+
+    public void eliminarUsuarioRol(Long idUsuario, Long idRol){
+        UsrUsuarioRolPK usrPK = new UsrUsuarioRolPK();
+        usrPK.setIdUsuario(idUsuario);
+        usrPK.setIdRol(idRol);
+        UsrUsuarioRol usrUsuarioRolTmp = usuarioRolRepository.findOne(usrPK);
+        if(usrUsuarioRolTmp != null){
+        usuarioRolRepository.delete(usrUsuarioRolTmp);
+        }
     }
 }

@@ -8,4 +8,6 @@ import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 
 @OpenJpaSettings
 public interface LocalidadRepository extends OpenJpaRepository<ParLocalidad, String>{
+
+
 }

@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="./../template/templateInicio.xhtml">
+    <ui:define name="content">
+        <h3>Administrar usuarios y roles</h3>
+        <h:form id="usuarioRolFrm">
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                      draggable="false" closable="false">
+                <p:graphicImage value="../../images/ajax-loader.gif" />
+            </p:dialog>
+
+            <p:outputLabel for="completeId" value="Usuario" />
+            <p:autoComplete id="completeId" value="#{usuarioRolAdministracionBean.usuarioSelected}" completeMethod="#{usuarioRolAdministracionBean.complete}"
+                            var="usr" itemLabel="#{usr.usuario}" itemValue="#{usr.idUsuario}" minQueryLength="3" forceSelection="true" required="true" />
+            <p:commandButton value="Buscar" action="#{usuarioRolAdministracionBean.buscarRolesPorUsuario}" update=":usuarioRolFrm:rolTbl :usuarioRolFrm:rolSelectedTbl :usuarioRecurosFrm"  />
+            <br/>
+            <p:panelGrid columns="2">
+                <p:dataTable id="rolTbl" value="#{usuarioRolAdministracionBean.rolLista}" var="rol">
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{rol.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Es Interno">
+                        <h:outputText value="#{rol.esInterno eq 1 ? 'SI' : 'NO'}"/>
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{rol.estado}"/>
+                    </p:column>
+                    <p:column headerText="Módulo">
+                        <h:outputText value="#{rol.idModulo.idModulo} - #{rol.idModulo.nombre}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="rolSelectedTbl" value="#{usuarioRolAdministracionBean.seleccionadoLista}" var="seleccion">
+                    <p:column headerText="selección">
+                        <p:selectBooleanCheckbox value="#{seleccion.esNatural}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panelGrid>
+            <p:commandButton value="guardar" action="#{usuarioRolAdministracionBean.guardarUsuarioRol}" update=":usuarioRolFrm:rolTbl :usuarioRolFrm:rolSelectedTbl" />
+        </h:form>
+
+        <h:form id="usuarioRecurosFrm">
+            <h3>Administrar recursos temporales</h3>
+            <p:commandButton value="Asignar" icon="ui-icon-circle-plus" oncomplete="asignaDlg.show()"
+                             update=":recursoTempFrm" >
+                <f:setPropertyActionListener value="#{null}" target="#{usuarioRolAdministracionBean.tipoPermiso}" />
+                <f:setPropertyActionListener value="#{null}" target="#{usuarioRolAdministracionBean.fechaExpiracion}" />
+                <f:setPropertyActionListener value="#{0}" target="#{usuarioRolAdministracionBean.denegado}" />
+            </p:commandButton>
+            <p:panelGrid columns="2">
+                <p:dataTable id="usuarioRecursoTbl" value="#{usuarioRolAdministracionBean.usuarioRecursoLista}"
+                             var="recurso">
+                    <p:column headerText="Descripción">
+                        <h:outputText value="#{recurso.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Tipo plataforma">
+                        <h:outputText value="#{recurso.tipoPlataforma}"/>
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{recurso.estado}"/>
+                    </p:column>
+                    <p:column headerText="Operaciones">
+                        <p:commandButton icon="ui-icon-pencil" action="#{usuarioRolAdministracionBean.cargarUsuarioRecursoData}" oncomplete="editarRecursoTmpDlg.show();" update=":usuarioRecursoFrm">
+                            <f:setPropertyActionListener value="#{recurso}" target="#{usuarioRolAdministracionBean.recursoSelected}"/>
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" title="quitar recurso"
+                                         action="#{usuarioRolAdministracionBean.eliminarRecursoTemporal}"
+                                         update=":usuarioRecurosFrm">
+                            <f:setPropertyActionListener value="#{recurso}" target="#{usuarioRolAdministracionBean.recursoSelected}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panelGrid>
+        </h:form>
+
+        <p:dialog id="asignaRecursoDialogo" widgetVar="asignaDlg" header="Asignar recurso temporal">
+            <h:form id="recursoTempFrm">
+                <p:dataTable id="usuarioRecursoTbl" value="#{usuarioRolAdministracionBean.recursoLista}" var="rec" paginator="true" rows="10"
+                             editable="true" editMode="cell" paginatorPosition="bottom" rowIndexVar="indexvar">
+                    <p:column headerText="Tipo recurso">
+                        <h:outputText value="#{rec.tipoRecurso}" />
+                    </p:column>
+                    <p:column headerText="Descripción">
+                        <h:outputText value="#{rec.descripcion}" />
+                    </p:column>
+                    <p:column headerText="Tipo plataforma">
+                        <h:outputText value="#{rec.tipoPlataforma}" />
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{rec.estado}" />
+                    </p:column>
+                    <p:column headerText="Fecha de expiración">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{usuarioRolAdministracionBean.fechaExpiracion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:calendar value="#{usuarioRolAdministracionBean.fechaExpiracion}"
+                                            showOn="button" mindate="#{usuarioRolAdministracionBean.fechaActual}" pattern="dd/MM/yyyy">
+                                    <p:ajax event="dateSelect" />
+                                </p:calendar>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Tipo de permiso">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{usuarioRolAdministracionBean.tipoPermiso}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:selectOneMenu value="#{usuarioRolAdministracionBean.tipoPermiso}" style="width: 100px;" required="true">
+                                    <f:selectItem itemLabel="Escritura" itemValue="W"/>
+                                    <f:selectItem itemLabel="Ejecucion" itemValue="X"/>
+                                    <f:selectItem itemLabel="Acceso total" itemValue="WX"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Denegar">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{usuarioRolAdministracionBean.denegado eq 1 ? 'SI' : 'NO'}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:selectOneMenu id="denegadoE" value="#{usuarioRolAdministracionBean.denegado}"
+                                                 style="width: 100px;">
+                                    <f:selectItem itemLabel="NO" itemValue="#{0}"/>
+                                    <f:selectItem itemLabel="SI" itemValue="#{1}"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Operaciones">
+                        <p:commandButton icon="ui-icon-check" title="Asignar" action="#{usuarioRolAdministracionBean.asignarRecursoTemporal}" update=":recursoTempFrm :usuarioRecurosFrm">
+                            <f:setPropertyActionListener value="#{rec}" target="#{usuarioRolAdministracionBean.recursoSelected}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Cancelar" onclick="asignaDlg.hide();" immediate="true"/>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog id="editarFechaDialogo" widgetVar="editarRecursoTmpDlg" header="Editar">
+            <h:form id="usuarioRecursoFrm">
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="tipoPermisoE" value="Tipo de permiso" />
+                    <p:selectOneMenu id="tipoPermisoE" value="#{usuarioRolAdministracionBean.tipoPermiso}">
+                        <f:selectItem itemLabel="Escritura" itemValue="W" />
+                        <f:selectItem itemLabel="Ejecucion" itemValue="X" />
+                        <f:selectItem itemLabel="Acceso total" itemValue="WX"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="denegadoE" value="Denegar" />
+                    <p:selectOneMenu id="denegadoE" value="#{usuarioRolAdministracionBean.denegado}">
+                        <f:selectItem itemLabel="NO" itemValue="#{0}" />
+                        <f:selectItem itemLabel="SI" itemValue="#{1}" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="fechaExpiracionE" value="Fecha de expiración"/>
+                    <p:calendar id="fechaExpiracionE" value="#{usuarioRolAdministracionBean.fechaExpiracion}"
+                                showOn="button" mindate="#{usuarioRolAdministracionBean.fechaActual}" pattern="dd/MM/yyyy" required="true" />
+                </p:panelGrid>
+                <p:commandButton value="Guardar" action="#{usuarioRolAdministracionBean.editarUsuarioRecurso}" update=":usuarioRecursoFrm" oncomplete="editarRecursoTmpDlg.hide();" />
+                <p:commandButton value="Cancelar" onclick="editarRecursoTmpDlg.hide();" immediate="true" />
+            </h:form>
+        </p:dialog>
+
+
+    </ui:define>
+</ui:composition>
+</html>
