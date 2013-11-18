@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <h2 class="form-signin-heading">Calendario</h2>
+            <h:form id="tabla">
+                <p:commandButton value="Nuevo" oncomplete="dlgCalendario.show()"  
+                                 update="" icon="ui-icon-circle-plus" immediate="true">
+<!--                    <f:setPropertyActionListener target="# {tipoCambioBean.seleccion}" value="form" />
+                    <f:setPropertyActionListener target="# {tipoCambioBean.accion}" value="true" />-->
+                </p:commandButton>
+                
+                <p:dataTable paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="bottom" id="tabla"
+                             emptyMessage="No se encontraron resultados" var="calendario" value="#{calendarioBean.listaCalendario}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                             currentPageReportTemplate="{currentPage} / {totalPages}">
+                    
+                    <p:column headerText="Gestion" sortBy="gestion">
+                        <h:outputText value="#{calendario.parCalendarioPK.gestion}" />
+                    </p:column>
+                    <p:column headerText="Periodo" sortBy="tipoPeriodo">
+                        <h:outputText value="#{calendario.parCalendarioPK.tipoPeriodo}" />
+                    </p:column>
+                    <p:column headerText="Tipo calendario" sortBy="tipoCalendario">
+                        <h:outputText value="#{calendario.tipoCalendario}" />
+                    </p:column>
+                    
+                </p:dataTable>
+                
+            </h:form> 
+            
+            <p:dialog id="modalDialog2" header="Atencion" widgetVar="dlgMensajeInfo" width="350" modal="true">  
+                <span class="ui-icon ui-icon-alert"></span>
+                <h:outputText value="La fecha para las monedas ya estan registradas o hubo un error al guardar el registro." />  
+            </p:dialog>
+            
+            <p:dialog id="basicDialogMessage" header="Generación de calendario" widgetVar="dlgCalendario" 
+                      width="400" closable="false" 
+                      resizable="false"
+                      modal="true" >  
+                
+                <p:growl id="growl" />
+                <h:form id="form">
+                    <h:panelGrid columns="2" cellpadding="5" id="pnlGridCalenadrio">
+                        <h:outputLabel for="gestion" value="Gestión:" style="font-weight:bold"/>
+                        <p:selectOneMenu id="gestion" value="#{calendarioBean.gestion}" >
+                            <f:selectItems value="#{calendarioBean.listaAnio}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="Generar" icon="ui-icon-disk" actionListener="#{calendarioBean.guardar}" update=":growl :tabla"/>
+                        <p:commandButton value="Cancelar" icon="ui-icon-close" onclick="dlgCalendario.hide();"
+                                         immediate="true"/>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
