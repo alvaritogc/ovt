@@ -113,8 +113,9 @@ public class PersonaUnidadBean implements Serializable{
 
 
 
-    //Sirve para mostra
+    //Sirve para mostrar
     private String departamentoDireccinoPrincipal;
+    private String tipoDireccionPrincipal;
 
     private PerReplegal repLegal;
     private List<PerReplegal> listaRepLegal;
@@ -315,6 +316,7 @@ public class PersonaUnidadBean implements Serializable{
                     for (int j=listaUnidad.size()-1;j>=0;j--){
                         if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==unidad.getPerUnidadPK().getIdUnidad()){
                             direccionPrincipal= listaDireccion.get(i);
+                            tipoDireccionPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_DIRECCION,(listaDireccion.get(i).getTipoDireccion())).getDescripcion();
                             break;
                         } else {
                             if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
@@ -806,5 +808,13 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setDepartamentoDireccinoPrincipal(String departamentoDireccinoPrincipal) {
         this.departamentoDireccinoPrincipal = departamentoDireccinoPrincipal;
+    }
+
+    public String getTipoDireccionPrincipal() {
+        return tipoDireccionPrincipal;
+    }
+
+    public void setTipoDireccionPrincipal(String tipoDireccionPrincipal) {
+        this.tipoDireccionPrincipal = tipoDireccionPrincipal;
     }
 }
