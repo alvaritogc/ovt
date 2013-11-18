@@ -340,7 +340,7 @@ public class declaracionBean implements Serializable {
         parObligacionCalendarioLista = new ArrayList<ParObligacionCalendario>();
         Calendar c= new GregorianCalendar();
         c.setTime(new Date());
-        //parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendarioPorGestion(String .valueOf(c.get(Calendar.YEAR)));
+      //  parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendarioPorGestion(String .valueOf(c.get(Calendar.YEAR)));
     }
 
     public String mensajeError(int i, String titulo){
