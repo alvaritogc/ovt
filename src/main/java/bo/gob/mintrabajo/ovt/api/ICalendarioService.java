@@ -26,4 +26,5 @@ import java.util.List;
 public interface ICalendarioService {
     public List<ParCalendario> listaCalendarioPorTipoPeriodoTipoCalendario(String tipoPeriodo, String tipoCalendario);
     public ParCalendario obtenerCalendarioPorGestionYPeriodo(String gestion,String tipoPeriodo);
+    //
 }
