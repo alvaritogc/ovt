@@ -13,5 +13,5 @@ public interface IObligacionCalendarioService {
     public boolean deleteObligacionCalendario(ParObligacionCalendario obligacionCalendario);
     public List<ParObligacionCalendario> listaObligacionCalendarioPorObligacion(String codObligacion);
     public List<ParObligacionCalendario> listaObligacionCalendarioOrdenadoPorDescripcionDeObligacion();
-    List<ParObligacionCalendario> listaObligacionCalendarioPorGestion(String gestionActual);
+    //public List<ParObligacionCalendario> listaObligacionCalendarioPorGestion(String gestionActual);
 }
