@@ -111,7 +111,7 @@ public class UsuarioRolAdministracionBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Asignación de roles ejecutado correctamente"));
         }catch (Exception e){
             e.printStackTrace();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención!", "No se pudo editar la asignació de roles!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención!", "No se pudo editar la asignació intente de nuevo!"));
         }
     }
 

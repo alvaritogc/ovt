@@ -44,7 +44,7 @@ public class RecursoService implements IRecursoService {
 
     @Override
     public List<UsrRecurso> obtenerTodosRecursoLista(){
-        return recursoRepository.findAll();
+        return recursoRepository.obtenerRecursoDescripcionNoNull();
     }
 
     @Override

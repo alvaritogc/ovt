@@ -389,6 +389,8 @@ public class PersonaService implements IPersonaService {
         usrPK.setIdUsuario(idUsuario);
         usrPK.setIdRol(idRol);
         UsrUsuarioRol usrUsuarioRolTmp = usuarioRolRepository.findOne(usrPK);
+        if(usrUsuarioRolTmp != null){
         usuarioRolRepository.delete(usrUsuarioRolTmp);
+        }
     }
 }

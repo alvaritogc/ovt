@@ -44,5 +44,10 @@ public interface RecursoRepository extends OpenJpaRepository<UsrRecurso, Long>{
             + " )")
     List<UsrRecurso> obtenerRecursoEnUsuarioRecurso(@Param("idUsuario") Long idUsuario);
 
+    @Query("SELECT rec " +
+            "FROM UsrRecurso rec " +
+            "WHERE rec.descripcion IS NOT NULL AND rec.tipoRecurso <> 'MEN'")
+    List<UsrRecurso> obtenerRecursoDescripcionNoNull();
+
 }
 
