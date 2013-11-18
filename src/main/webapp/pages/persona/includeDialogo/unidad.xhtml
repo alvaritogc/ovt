@@ -9,25 +9,31 @@
     <p:panel id="pnlUnidad" >
 
         <f:facet name="footer">
-            <p:commandButton value="#{personaUnidadBean.tituloDialog}"
-                             icon="#{personaUnidadBean.iconoUnidad}"
+            <p:commandButton value="Guardar"
+                             icon="ui-icon-disk"
                              action="#{personaUnidadBean.procesarUnidad}"
                              id="cmdButtonUnidad"
                              update=":tabPersonaUnidad,:tabPersonaUnidad:tabUnidadPrincipal,:dataGrid,growlUnidad"
                              />
+            &#160;&#160;
+            <p:commandButton value="Cancelar"
+                             icon="ui-icon-closethick"
+                             onclick="dlgUnidad.hide()"
+                             id="cmdButtonUnidadCancelar"/>
         </f:facet>
         <br/>
 
-        <h:panelGrid columns="2">
-            <h:outputText value="Nombre comercial: "/>
+        <h:panelGrid columns="2"  width="400">
+            <p:outputLabel for="inputtxtNombre" value="Nombre comercial: "/>
             <p:inputText value="#{personaUnidadBean.unidadRegistro.nombreComercial}"
                          style="width: 205px;text-transform: uppercase"
+                         id="inputtxtNombre"
                          required="true"
                          requiredMessage="El campo Nombre comercial es obligatorio">
                 <f:converter converterId="lowerConverter"/>
             </p:inputText>
 
-            <h:outputText value="Tipo de empresa:    "/>
+            <p:outputLabel for="slcOneMenuTipoEmpresa" value="Tipo de empresa:    "/>
             <p:selectOneMenu id="slcOneMenuTipoEmpresa" value="#{personaUnidadBean.unidadRegistro.tipoEmpresa}"
                                  tabindex="1"
                                  style="width: 215px;text-transform: uppercase"
@@ -37,7 +43,7 @@
                <f:selectItems value="#{personaUnidadBean.listaTipoEmpresa}" />
             </p:selectOneMenu>
 
-            <h:outputText value="Fecha actividad:"/>
+            <p:outputLabel for="calendar" value="Fecha actividad:"/>
             <p:calendar id="calendar" value="#{personaUnidadBean.unidadRegistro.fechaNacimiento}"
                             effect="slideDown"
                             tabindex="2"
@@ -58,7 +64,7 @@
 
                 <h:outputText/>
                 <h:outputText/>
-                <h:outputText value="Tipo de sociedad: "/>
+                <p:outputLabel for="slcOneMenuTipoSociedad" value="Tipo de sociedad: "/>
                 <p:selectOneMenu id="slcOneMenuTipoSociedad" value="#{personaUnidadBean.unidadRegistro.tipoSociedad}"
                                  tabindex="5"
                                  required="true"
@@ -83,7 +89,7 @@
                              maxlength="20"
                              tabindex="8"/>
 
-        <h:outputText value="Observaciones:"/>
+        <p:outputLabel for="txtAreaObservacion2" value="Observaciones:"/>
         <p:inputTextarea id="txtAreaObservacion2" value="#{personaUnidadBean.unidadRegistro.observaciones}"
                          rows="5"
                          cols="50"
@@ -95,7 +101,7 @@
             <f:converter converterId="lowerConverter"/>
         </p:inputTextarea>
 
-        <h:outputText value="Actividad declarada:"/>
+        <p:outputLabel  for="txtAreaActividadDeclarada2" value="Actividad declarada:"/>
         <p:inputTextarea id="txtAreaActividadDeclarada2" value="#{personaUnidadBean.unidadRegistro.actividadDeclarada}"
                          rows="5"
                          cols="50" autoResize="false"

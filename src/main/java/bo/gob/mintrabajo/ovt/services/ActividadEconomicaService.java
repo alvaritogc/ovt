@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
 
@@ -96,6 +97,17 @@ public class ActividadEconomicaService implements IActividadEconomicaService {
     }
 
 
+    @Override
+    public ParActividadEconomica findByIdActividadEconomica(Long idActividadEconomica){
+        try{
+            return actividadEconomicaRepository.findOne(idActividadEconomica);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
 //    @Override
     public boolean delete(ParActividadEconomica actividadEconomica) {
         boolean deleted = false;
@@ -108,6 +120,22 @@ public class ActividadEconomicaService implements IActividadEconomicaService {
         rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
         entityManager.close();
         return rtn.longValue();
+    }
+
+    /*
+  *
+  * Este metodo obtiene una lista de las actividades que tienen codigo = 0.
+  *
+   */
+    public List<BigDecimal> obtenerActividadEconomicaParaRegistro(){
+        List<BigDecimal>lista ;
+        lista = (List<BigDecimal>)entityManager.createNativeQuery("SELECT   a.id_actividad_economica\n" +
+                "      FROM   par_actividad_economica a\n" +
+                "      where level = '2'\n" +
+                " START WITH   a.id_actividad_economica2 is null\n" +
+                " CONNECT BY   PRIOR a.id_actividad_economica = a.id_actividad_economica2").getResultList();
+        entityManager.close();
+        return lista;
     }
 
 }

@@ -6,6 +6,7 @@ import bo.gob.mintrabajo.ovt.entities.ParCalendario;
 import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 //import bo.gob.mintrabajo.ovt.repositories.CalendarioRepository;
+import bo.gob.mintrabajo.ovt.repositories.CalendarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.ObligacionCalendarioRepository;
 import java.math.BigDecimal;
 
@@ -28,7 +29,7 @@ import javax.persistence.PersistenceContext;
 @TransactionAttribute
 public class ObligacionCalendarioService implements IObligacionCalendarioService {
 
-   /* private final ObligacionCalendarioRepository obligacionCalendarioRepository;
+    private final ObligacionCalendarioRepository obligacionCalendarioRepository;
     private final CalendarioRepository calendarioRepository;
     
     @PersistenceContext(unitName = "entityManagerFactory")
@@ -149,5 +150,5 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
         return rtn.longValue();
     }
-*/
+
 }

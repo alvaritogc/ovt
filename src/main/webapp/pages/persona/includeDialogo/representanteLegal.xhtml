@@ -7,8 +7,9 @@
         myFieldset .ui-fieldset, .ui-fieldset .ui-fieldset-legend {
            background-color: transparent;
             border-color: transparent;
+            border-width: 5px;
             background-size: 0px;
-            width: 80px;
+            width: 50px;
             font-size: 15px;
             padding:0.0em;
             margin: 0.1em;
@@ -23,16 +24,21 @@
 
          <f:facet name="footer">
 
-             <p:commandButton value="#{personaUnidadBean.tituloDialog}"
-                              icon="#{personaUnidadBean.iconoUnidad}"
+             <p:commandButton value="Guardar"
+                              icon="ui-icon-disk"
                               action="#{personaUnidadBean.procesarRepLegal}"
                               id="cmdButtonRepLegal"
                               update=":tabPersonaUnidad,:tabPersonaUnidad:tabRepLegal,:dataGrid,:frmRepLegal:growlRepLegal"
                      />
+             &#160;&#160;
+             <p:commandButton value="Cancelar"
+                              icon="ui-icon-closethick"
+                              onclick="dlgRepLegal.hide()"
+                              id="cmdButtonRepLegalCancelar"/>
          </f:facet>
 
-         <h:panelGrid columns="2">
-             <h:outputText value="Nombre:"/>
+         <h:panelGrid columns="2" width="380">
+             <p:outputLabel for="inputTxtNombreRepLegal2" value="Nombre:"/>
              <p:inputText id="inputTxtNombreRepLegal2" value="#{personaUnidadBean.repLegal.nombre}"
                           style="width: 210px;text-transform: uppercase;"
                           tabindex="1"
@@ -41,7 +47,7 @@
                  <f:converter converterId="lowerConverter"/>
              </p:inputText>
 
-             <h:outputText value="Ap. paterno: "/>
+             <p:outputLabel  for="inputTxtApPaterno2" value="Ap. paterno: "/>
              <p:inputText id="inputTxtApPaterno2" value="#{personaUnidadBean.repLegal.apellidoPaterno}"
                           style="width: 210px;text-transform: uppercase;"
                           tabindex="2"
@@ -50,7 +56,7 @@
                  <f:converter converterId="lowerConverter"/>
              </p:inputText>
 
-             <h:outputText value="Ap. materno: "/>
+             <p:outputLabel for="inputTxtApMaterno2" value="Ap. materno: "/>
              <p:inputText id="inputTxtApMaterno2" value="#{personaUnidadBean.repLegal.apellidoMaterno}"
                           style="width: 210px;text-transform: uppercase;"
                           tabindex="3"
@@ -59,16 +65,18 @@
                  <f:converter converterId="lowerConverter"/>
              </p:inputText>
 
-             <h:outputText value="Tipo de identificacion:"/>
+             <p:outputLabel for="slcOneMenuTipoIdentificacion2" value="Tipo de identificacion:"/>
              <p:selectOneMenu id="slcOneMenuTipoIdentificacion2"
                               value="#{personaUnidadBean.repLegal.tipoIdentificacion}"
                               tabindex="4"
+                              required="true"
+                              requiredMessage="El campo Tipo de identificacion es obligatorio"
                               style="text-transform: uppercase">
                  <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
                  <f:selectItems value="#{personaUnidadBean.listaTipoIdentificacion}" />
              </p:selectOneMenu>
 
-             <h:outputText value="Nro. de identificacion: "/>
+             <p:outputLabel for="inputTxtNroIdentificacion" value="Nro. de identificacion: "/>
              <p:inputText id="inputTxtNroIdentificacion" value="#{personaUnidadBean.repLegal.nroIndentificacion}"
                           style="width: 210px;"
                           tabindex="5"
@@ -78,7 +86,7 @@
          </h:panelGrid>
 
          <p:fieldset styleClass="myFieldset" legend="&#xA0;&#xA0;&#xA0;Poder" >
-            <h:panelGrid columns="2">
+            <h:panelGrid columns="2" width="380">
                 <h:outputText value="Nro. de documento: "/>
                 <p:inputText id="inputTxtNroDocumento2" value="#{personaUnidadBean.repLegal.nroDocumento}"
                              style="width: 210px;"
@@ -91,7 +99,8 @@
                             style="width:200px;"
                             showOn="button"
                             navigator="true"/>
-                <h:outputText value="Departamento:"/>
+
+                <p:outputLabel for="slcOneMenuTipoProcedencia2" value="Departamento:"/>
                 <p:selectOneMenu id="slcOneMenuTipoProcedencia2" value="#{personaUnidadBean.repLegal.tipoProcedencia}"
                                  tabindex="8"
                                  style="text-transform: uppercase"

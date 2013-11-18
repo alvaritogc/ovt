@@ -71,7 +71,7 @@
 
               <!-- ******************** DIALOGOS ********************** -->
 
-        <p:dialog id="dlgRepLegal"  widgetVar="dlgRepLegal" resizable="false" modal="true">
+        <p:dialog id="dlgRepLegal"  widgetVar="dlgRepLegal" resizable="false" modal="true" width="450">
             <f:facet name="header">
                 <h:outputText id="txtDlgRepLegal" value="#{personaUnidadBean.tituloDialog}"/>
             </f:facet>
@@ -79,7 +79,7 @@
         </p:dialog>
 
 
-        <p:dialog id="dlgDireccion"  widgetVar="dlgDireccion" resizable="false" modal="true">
+        <p:dialog id="dlgDireccion"  widgetVar="dlgDireccion" width="430" modal="true" resizable="false">
             <f:facet name="header">
                 <h:outputText id="txtDlgDireccion" value="#{personaUnidadBean.tituloDialog}"/>
             </f:facet>
@@ -93,7 +93,7 @@
             <ui:include src="../persona/includeDialogo/actividadDeclarada.xhtml"/>
         </p:dialog>
 
-        <p:dialog id="dlgUnidad"  widgetVar="dlgUnidad" resizable="false" modal="true">
+        <p:dialog id="dlgUnidad"  widgetVar="dlgUnidad"  modal="true" width="430" resizable="false">
             <f:facet name="header">
                 <h:outputText id="txtDldUnidad" value="#{personaUnidadBean.tituloDialog}"/>
             </f:facet>
@@ -133,10 +133,10 @@
                                     <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
                                 </p:commandButton>
                             </f:facet>
-                            <h:panelGrid columns="2">
+                            <h:panelGrid columns="2" >
 
                                 <h:outputText value="Tipo de empresa:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                                <p:inputText value="#{unidad.tipoEmpresa}" readonly="true" style="width: 190px;"/>
+                                <p:inputText value="#{unidad.tipoEmpresaAuxiliar}" readonly="true" style="width: 190px;text-transform: uppercase" />
 
                                 <h:outputText value="Fecha actividad:"/>
                                 <p:inputText value="#{unidad.fechaNacimiento}" readonly="true" style="width: 190px;">
@@ -148,7 +148,7 @@
                                 <p:inputText value="#{unidad.nroAfp}" readonly="true" style="width: 190px;"/>
 
                                 <h:outputText value="Tipo de sociedad: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-                                <p:inputText value="#{unidad.tipoSociedad}" readonly="true" style="width: 190px;"/>
+                                <p:inputText value="#{unidad.tipoSociedadAuxiliar}" readonly="true" style="width: 190px;text-transform: uppercase"/>
                                 <h:outputText value="Caja de salud: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
                                 <p:inputText value="#{unidad.nroCajaSalud}" readonly="true" style="width: 190px;"/>
                                 <h:outputText value="Nro. referencial:"/>
@@ -210,7 +210,7 @@
 
                             </f:facet>
 
-                            <h:panelGrid columns="2">
+                            <h:panelGrid columns="2" width="380">
                                 <h:outputText value="Nombre:"/>
                                 <p:inputText id="inputTxtNombreRepLegal2" value="#{unidad.repLegal.nombre}"
                                              style="width: 210px;"
@@ -244,7 +244,7 @@
                                 <h:outputText value="Fecha del documento:"/>
                                 <p:calendar id="calendar" value="#{unidad.repLegal.fechaDocumento}"
                                             effect="slideDown" tabindex="4"
-                                            style="width:200px;"
+                                            style="width:210px;"
                                             readonly="true">
 
                                </p:calendar>
@@ -293,53 +293,53 @@
                             </f:facet>
                             <br/>
 
-                            <h:panelGrid columns="2">
+                            <h:panelGrid columns="2" width="380px;">
                                 <h:outputText value="Zona:"/>
                                 <p:inputText id="txtAreaZona" value="#{unidad.direccion.zonaUrbanizacion}"
-                                             style="width: 190px;"
+                                             style="width: 220px;"
                                              tabindex="11"
                                              required="true"  readonly="true"
                                              requiredMessage="El campo Zona es obligatorio."/>
 
                                 <h:outputText value="Tipo de direccion:   "/>
-                                <p:inputText value="#{unidad.direccion.tipoDireccion}" readonly="true" style="width: 190px;"/>
+                                <p:inputText value="#{unidad.direccion.tipoDireccionAuxiliar}" readonly="true" style="width: 220px;text-transform: uppercase"/>
 
                                 <h:outputText value="Direccion:"/>
                                 <p:inputTextarea id="txtAreaDireccion" value="#{unidad.direccion.direccion}"
                                                  rows="5"
                                                  cols="50"
                                                  autoResize="false"
-                                                 style="width: 190px;"
+                                                 style="width: 220px;"
                                                 tabindex="11"
                                                 required="true"  readonly="true"
                                                 requiredMessage="El campo Direccion es obligatorio."/>
 
                                 <h:outputText value="Piso, Depto u Oficina:"/>
-                                <p:inputText value="#{unidad.direccion.pisoDepOfi}" readonly="true" style="width: 90px;"/>
+                                <p:inputText value="#{unidad.direccion.pisoDepOfi}" readonly="true" style="width: 220px;"/>
                                 <h:outputText value="Cod. localidad:"/>
-                                <p:inputText value="#{unidad.direccion.codLocalidad.descripcion}" readonly="true" style="width: 90px;"/>
+                                <p:inputText value="#{unidad.direccion.codLocalidad.descripcion}" readonly="true" style="width: 220px;"/>
 
                                 <h:outputText value="Referencia: "/>
                                 <p:inputTextarea id="txtAreaReferencia" value="#{unidad.direccion.referencia}"
                                                  rows="5"
                                                  cols="50"
                                                  autoResize="false"
-                                                 style="width: 190px;"
+                                                 style="width: 220px;"
                                                  tabindex="11"
                                                  required="true"  readonly="true"
                                                  requiredMessage="El campo Referencia es obligatorio."/>
 
-                                <h:outputText value="Fax: "/>
-                                <p:inputText value="#{unidad.direccion.fax}" readonly="true" style="width: 190px;"/>
-
                                 <h:outputText value="Nro. de telefono(s): "/>
-                                <p:inputText value="#{unidad.direccion.telefono} &nbsp;&nbsp;&nbsp; #{unidad.direccion.telefono2}" readonly="true" style="width: 190px;"/>
+                                <p:inputText value="#{unidad.direccion.telefono} &nbsp;&nbsp;&nbsp; #{unidad.direccion.telefono2}" readonly="true" style="width: 220px;"/>
 
                                 <h:outputText value="Nro. de celular(es): "/>
-                                <p:inputText value="#{unidad.direccion.celular} &nbsp;&nbsp;&nbsp; #{unidad.direccion.celular2}" readonly="true" style="width: 190px;"/>
+                                <p:inputText value="#{unidad.direccion.celular} &nbsp;&nbsp;&nbsp; #{unidad.direccion.celular2}" readonly="true" style="width: 220px;"/>
 
                                 <h:outputText value="Correo(s) electronico(s):"/>
-                                <p:inputText value="#{unidad.direccion.email} &nbsp;&nbsp;&nbsp; #{unidad.direccion.email2} " readonly="true" style="width: 190px;"/>
+                                <p:inputText value="#{unidad.direccion.email} &nbsp;&nbsp;&nbsp; #{unidad.direccion.email2} " readonly="true" style="width: 220px;"/>
+
+                                <h:outputText value="Fax: "/>
+                                <p:inputText value="#{unidad.direccion.fax}" readonly="true" style="width: 60px;"/>
 
                             </h:panelGrid>
                          </p:panel>
@@ -350,8 +350,6 @@
            </p:accordionPanel>
          </h:form>
        </p:dataGrid>
-
-
     </ui:define>
 </ui:composition>
 </html>
