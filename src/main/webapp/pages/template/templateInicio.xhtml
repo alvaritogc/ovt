@@ -100,7 +100,14 @@
                         <p:outputLabel value="#{templateInicioBean.nombreDeUsuario}" style="color: #0069B1;"/>
                         <br/>
                         <p:outputLabel value="Empleador:" />
-                        <p:outputLabel value="#{templateInicioBean.nombreDeUnidad}" style="color: #0069B1;"/>
+                        <p:commandLink  action="#{templateInicioBean.irUnidad}" style="color: #0069B1;"
+                                rendered="#{templateInicioBean.nombreDeUnidad!='N/A'}">
+                            <h:outputText value="#{templateInicioBean.nombreDeUnidad}"
+                                          />
+                        </p:commandLink>
+                        <p:outputLabel value="#{templateInicioBean.nombreDeUnidad}"
+                                       rendered="#{templateInicioBean.nombreDeUnidad=='N/A'}"
+                                       style="color: #0069B1;"/>
                     </h:form>
 
                     <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario ==null}">
@@ -178,13 +185,13 @@
                     </p:dialog>
 
                     <!-- ***********  DIALOG CAMBIAR CONTRASENIA ************* -->
-                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar Contraseñia" modal="true" widgetVar="dlgCambiarContrasenia" resizable="true">
+                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar Contraseña" modal="true" widgetVar="dlgCambiarContrasenia" resizable="true">
 
                         <h:form id="frmCambiarContrasenia">
                             <p:growl showDetail="true" id="growlCambiarContrasenia" />
                             <br/>
                             <h:panelGrid columns="2" id="pnlGridCambiarContrasenia">
-                                <h:outputText value="Contraseñia:"/>
+                                <h:outputText value="Contraseña:"/>
                                 <p:password id="txtContrasenia" value="#{templateInicioBean.contrasenia}"
                                             feedback="true"
                                             tabindex="1"
@@ -197,7 +204,7 @@
                                             strongLabel="Contrasenia fuerte"
                                         />
 
-                                <h:outputText value="Nueva contraseñia:"/>
+                                <h:outputText value="Nueva contraseña:"/>
                                 <h:panelGrid columns="3">
                                     <p:password id="txtNuevaContrasenia" value="#{templateInicioBean.nuevaContrasenia}"
                                                 feedback="true"
@@ -226,7 +233,7 @@
                                         <pre>admin12@</pre>
                                     </p:tooltip>
                                 </h:panelGrid>
-                                <h:outputText value="Confirmar nueva contraseñia:"/>
+                                <h:outputText value="Confirmar nueva contraseña:"/>
                                 <p:password id="txtConfirmarContrasenia" value="#{templateInicioBean.confirmarContrasenia}"
                                             feedback="true"
                                             tabindex="3"
@@ -270,7 +277,7 @@
                     <h:form id="idBarraDeMenu" rendered="#{!(templateInicioBean.idUsuario == null)}">
                         <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
                             <f:facet name="options">
-                                <p:commandLink value="Cambiar Password" onclick="PF('dlgCambiarContrasenia').show();" style="color:red;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
+                                <p:commandLink value="Cambiar Contraseña" onclick="PF('dlgCambiarContrasenia').show();" style="color:red;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
                             </f:facet>
                         </p:menubar> 
                     </h:form>

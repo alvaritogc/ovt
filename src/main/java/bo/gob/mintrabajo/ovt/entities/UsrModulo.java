@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 gmercado.
+ * Copyright 2013 rvelasquez.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -33,7 +34,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author gmercado
+ * @author rvelasquez
  */
 @Entity
 @Table(name = "USR_MODULO")
@@ -63,8 +64,6 @@ public class UsrModulo implements Serializable {
     private String registroBitacora;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModulo", fetch = FetchType.LAZY)
     private List<ParDominio> parDominioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModulo", fetch = FetchType.LAZY)
-    private List<UsrUsuarioRol> usrUsuarioRolList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModulo", fetch = FetchType.LAZY)
     private List<UsrRol> usrRolList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModulo", fetch = FetchType.LAZY)
@@ -140,14 +139,6 @@ public class UsrModulo implements Serializable {
 
     public void setParDominioList(List<ParDominio> parDominioList) {
         this.parDominioList = parDominioList;
-    }
-
-    public List<UsrUsuarioRol> getUsrUsuarioRolList() {
-        return usrUsuarioRolList;
-    }
-
-    public void setUsrUsuarioRolList(List<UsrUsuarioRol> usrUsuarioRolList) {
-        this.usrUsuarioRolList = usrUsuarioRolList;
     }
 
     public List<UsrRol> getUsrRolList() {

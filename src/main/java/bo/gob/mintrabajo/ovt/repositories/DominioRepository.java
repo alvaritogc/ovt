@@ -31,4 +31,5 @@ public interface DominioRepository extends OpenJpaRepository<ParDominio, ParDomi
             + " where p.parDominioPK.idDominio = :dominio and p.parDominioPK.valor <> :valor")
     List<ParDominio> obtenerDominioPorNombreDistintoValor(@Param("dominio")String dominio,@Param("valor")String valor);
 
+
 }

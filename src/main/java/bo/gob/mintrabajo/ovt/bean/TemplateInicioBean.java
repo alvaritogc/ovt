@@ -18,8 +18,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +101,7 @@ public class TemplateInicioBean implements Serializable {
     private List<ParMensajeApp> listaMensajeApp;
     private ParMensajeApp mensajeApp;
     //
-
+        private ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
 
     @PostConstruct
     public void ini() {
@@ -113,7 +116,7 @@ public class TemplateInicioBean implements Serializable {
         listaRecursos = new ArrayList<UsrRecurso>();
         usuario = null;
         persona = null;
-        empleador = null;
+        empleador = new PerPersona();
         //
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
@@ -210,7 +213,7 @@ public class TemplateInicioBean implements Serializable {
 
     public String logout() {
         logger.info("logout()");
-        //ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        //ExternalContext ctx = FacesContext.getCuirrentInstance().getExternalContext();
         // Usar el contexto de JSF para invalidar la sesión,
         // NO EL DE SERVLETS (nada de HttpServletRequest)
         SecurityUtils.getSubject().logout();
@@ -265,6 +268,11 @@ public class TemplateInicioBean implements Serializable {
         }    */
         password = "";
         return "";
+    }
+
+    public String irUnidad()throws IOException {
+        session.setAttribute("idEmpleador",idEmpleador);
+        return "irUnidad";
     }
 
     public String irInicio() {

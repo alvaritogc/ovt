@@ -14,5 +14,6 @@ public interface IUnidadService {
      PerUnidad save(PerUnidad unidad,PerPersona persona);
     List<PerUnidad> listarPorPersona(String idPersona);
     PerUnidad obtienePorId(PerUnidadPK perUnidadPK);
+    List<PerUnidad> listarUnidadesSucursales(String idPersona);
 
 }
