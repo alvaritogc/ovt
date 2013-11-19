@@ -147,5 +147,10 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         }
         return lista;
     }
+    
+    @Override
+    public ParObligacionCalendario findById(Long id){
+        return obligacionCalendarioRepository.findOne(id);
+    }
 
 }

@@ -1,13 +1,16 @@
 package bo.gob.mintrabajo.ovt.bean.multasRoe;
 
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
+import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.api.IMultaRangoService;
 import bo.gob.mintrabajo.ovt.api.IMultaService;
+import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
 import bo.gob.mintrabajo.ovt.api.IParametrizacionService;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IUnidadService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.bean.EmpleadorBean;
+import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.ParMulta;
 import bo.gob.mintrabajo.ovt.entities.ParMultaRango;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
@@ -38,6 +41,7 @@ import org.apache.bcel.generic.D2F;
 @ManagedBean
 @ViewScoped
 public class CotizacionMultasBean implements Serializable {
+
     private static final Logger logger = LoggerFactory.getLogger(EmpleadorBean.class);
     //
     @ManagedProperty(value = "#{parametrizacionService}")
@@ -46,6 +50,12 @@ public class CotizacionMultasBean implements Serializable {
     private IMultaService iMultaService;
     @ManagedProperty(value = "#{multaRangoService}")
     private IMultaRangoService iMultaRangoService;
+    @ManagedProperty(value = "#{obligacionCalendarioService}")
+    private IObligacionCalendarioService iObligacionCalendarioService;
+    @ManagedProperty(value = "#{dominioService}")
+    private IDominioService iDominioService;
+    //
+    private int tabActiveIndex=0;
     //
     //Tab Roe
     private ParParametrizacion parametrizacion;
@@ -55,24 +65,31 @@ public class CotizacionMultasBean implements Serializable {
     //
     private int numeroTrabajadores;
     private BigDecimal multaPorNoContarConElRoe;
+    private BigDecimal totalGanadoDeLaPlanillaRoe;
     //
+    private Date fechaInicioActividades;
     private Date fechaLimitePlazo;
-    private Date fechaSolicitudRoe;
+    private Date fechaPresentacionRoe;
+    //
     private int diasTranscurridos;
     private BigDecimal totalAPagarParaObtenerRoe;
     private String fechaLimiteRoe;
     //
+    //Planilla trimestral
+    private List<ParObligacionCalendario> listaObligacionCalendario;
+    private Long idObligacionCalendario;
     private ParObligacionCalendario obligacionCalendario;
-    private List<ParObligacionCalendario> listaoObligacionCalendario;
-    private String tipoPeriodo;
-    private Date fechaPresentacion;
-    private String fechaPresentacionString;
-    private List<String> listaMontoBase;
-    private String montoBase;
+    //
+    private Date fechaVencimientoDeLaPresentacion;
+    private Date fechaLimitePlazoPlanillaTrimestral;
+    private Date fechaPresentacionPlanillaTrimestral;
+    private int diasTranscurridosPlanillaTrimestral;
+    private int numeroTrabajadoresPlanillaTrimestral;
+    private BigDecimal multaPlanillaTrimestral;
+    private BigDecimal totalGanadoDeLaPlanillaTrimestral;
     private BigDecimal montoTotalPlanillaTrimestral;
     //
-            
-    
+
     @PostConstruct
     public void ini() {
         cargarRoe();
@@ -83,35 +100,23 @@ public class CotizacionMultasBean implements Serializable {
         numeroTrabajadores = 0;
         multaPorNoContarConElRoe = BigDecimal.ZERO;
         //
-        parametrizacion = null;
+        totalGanadoDeLaPlanillaRoe = BigDecimal.ZERO;
         //
-        try {
-            parametrizacion=iParametrizacionService.obtenerParametro("MULTAS", "FECHA_LIMITE_ROE");
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            //fechaLimitePlazo = sdf.parse("22/06/2005");   
-            //fechaLimitePlazo = sdf.parse(sdf.format(new Date()));
-            fechaLimiteRoe=parametrizacion.getDescripcion();
-            fechaLimitePlazo = sdf.parse(parametrizacion.getDescripcion());
-        } catch (Exception e) {
-            e.printStackTrace();
-            fechaLimitePlazo=new Date();;
-        }
-        //fechaLimitePlazo=new Date();;
-        fechaSolicitudRoe = new Date();
+        fechaInicioActividades = null;
+        fechaLimitePlazo = null;
+        fechaPresentacionRoe = new Date();
         diasTranscurridos = 0;
         totalAPagarParaObtenerRoe = BigDecimal.ZERO;
     }
-    public void cargarPlanillaTrimestral(){
-        ParObligacionCalendario obligacionCalendario=new ParObligacionCalendario();
-        listaoObligacionCalendario=new ArrayList<ParObligacionCalendario>();
-        tipoPeriodo="";
-        fechaPresentacion=new Date();
-        fechaPresentacionString="";
-        listaMontoBase=new ArrayList<String>();
-        listaMontoBase.add("80");
-        listaMontoBase.add("40");
-        montoBase="";
-        montoTotalPlanillaTrimestral=BigDecimal.ZERO;
+
+    public void calcularFechaLimiteRoe() {
+        parametrizacion = iParametrizacionService.obtenerParametro("MULTAS", "MESES_TOLERANCIA_ROE");
+        //
+        Calendar ca = Calendar.getInstance();
+        ca.setTime(fechaInicioActividades);
+        ca.add(Calendar.MONTH, Integer.valueOf(parametrizacion.getDescripcion()));
+        //
+        fechaLimitePlazo = ca.getTime();
     }
 
     public String calcularMultaPorMora() {
@@ -120,48 +125,122 @@ public class CotizacionMultasBean implements Serializable {
         System.out.println("calcularMultaPorMora");
         System.out.println("=========================================");
         System.out.println("=========================================");
+        if (fechaInicioActividades == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar la fecha de inicio de actividades."));
+            return "";
+        }
+        if (fechaPresentacionRoe.before(fechaLimitePlazo) || fechaPresentacionRoe.equals(fechaLimitePlazo)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La Fecha de inscripción del roe debe ser mayor a la fecha límite para calcular la multa."));
+            return "";
+        }
+        if (fechaPresentacionRoe == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar la de la presentacion ."));
+            return "";
+        }
         if (numeroTrabajadores == 0) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Debe ingresar el numero de Trabajadores .")); 
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el numero de Trabajadores ."));
             return "";
         }
         multa = iMultaService.buscarTipoMulta("Multa");
         multaRangoNumeroTrabajadores = iMultaRangoService.buscarPorRango(multa.getIdMulta(), new BigDecimal(numeroTrabajadores));
-        if(multaRangoNumeroTrabajadores==null){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "No se encontro un rango, para el número de trabajadores.")); 
+        if (multaRangoNumeroTrabajadores == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se encontro un rango, para el número de trabajadores."));
             return "";
         }
         //
-        long numeroT = (long) numeroTrabajadores;
-        //multaPorNoContarConElRoe = multaRangoNumeroTrabajadores.getFactor().multiply(new BigDecimal(numeroT));
         multaPorNoContarConElRoe = multaRangoNumeroTrabajadores.getFactor();
         //
-        if (fechaSolicitudRoe == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Debe ingresar la fecha de la solicitud .")); 
-            return "";
-        }
-        if (fechaSolicitudRoe.before(fechaLimitePlazo) || fechaSolicitudRoe.equals(fechaLimitePlazo)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Información", "La fecha de solicitud debe ser mayor a la fecha limite para calcular la multa.")); 
-            return "";
-        }
 
-        long diferenciaEnMilis = fechaSolicitudRoe.getTime() - fechaLimitePlazo.getTime();
-        System.out.println("Tiempo: " + (diferenciaEnMilis / (1000 * 60 * 60 * 24)));
-        diasTranscurridos=(int)(diferenciaEnMilis / (1000 * 60 * 60 * 24));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.println("fecha INICIO " + sdf.format(fechaInicioActividades));
+        System.out.println("fecha LIMITE " + sdf.format(fechaLimitePlazo));
+
+        long diferenciaFechas = fechaPresentacionRoe.getTime() - fechaLimitePlazo.getTime();
+        diasTranscurridos = (int) (diferenciaFechas / (1000 * 60 * 60 * 24));
+
+        //
         multa = iMultaService.buscarTipoMulta("Multa 2");
         System.out.println("ID multa: " + multa.getIdMulta());
         System.out.println("Dias transcurridos: " + diasTranscurridos);
         multaRangoDiasTranscurridos = iMultaRangoService.buscarPorRango(multa.getIdMulta(), new BigDecimal(diasTranscurridos));
-        if(multaRangoDiasTranscurridos==null){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "No se encontro un rango, para los días transcurridos.")); 
+        if (multaRangoDiasTranscurridos == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se encontro un rango, para los días transcurridos."));
+            return "";
+        }
+        if (!(totalGanadoDeLaPlanillaRoe.compareTo(BigDecimal.ZERO) == 1)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el campo Total ganado de la planilla."));
             return "";
         }
         //
-        totalAPagarParaObtenerRoe = multaRangoDiasTranscurridos.getFactor().multiply(multaPorNoContarConElRoe);
+        totalAPagarParaObtenerRoe = (multaRangoDiasTranscurridos.getFactor().multiply(totalGanadoDeLaPlanillaRoe)).add(multaPorNoContarConElRoe);
         System.out.println("totalAPagarParaObtenerRoe: " + totalAPagarParaObtenerRoe);
         return "";
     }
+
+    public void cargarPlanillaTrimestral() {
+        listaObligacionCalendario=iObligacionCalendarioService.listaObligacionCalendarioPorObligacion("PLATRI");
+        idObligacionCalendario=new Long(0l);
+        fechaVencimientoDeLaPresentacion=null;
+        fechaLimitePlazoPlanillaTrimestral=null;
+        fechaPresentacionPlanillaTrimestral=new Date();
+        diasTranscurridosPlanillaTrimestral=0;
+        numeroTrabajadoresPlanillaTrimestral=0;
+        multaPlanillaTrimestral= BigDecimal.ZERO;
+        totalGanadoDeLaPlanillaTrimestral=BigDecimal.ZERO;
+        montoTotalPlanillaTrimestral=BigDecimal.ZERO;
+    }
     
-    public String calcularMultaPlanillaTrimestral(){
+    public String calcularFechaLimitePlanillaTrimestral(){
+        if(idObligacionCalendario!=null){
+            obligacionCalendario=iObligacionCalendarioService.findById(idObligacionCalendario);
+        fechaLimitePlazoPlanillaTrimestral=obligacionCalendario.getFechaHasta();
+        }
+        else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar el trimestre."));
+            fechaLimitePlazoPlanillaTrimestral=null;
+        }
+        
+        return "";
+    }
+
+    public String calcularMultaPlanillaTrimestral() {
+        System.out.println("===============================0");
+        System.out.println("===============================0");
+        System.out.println("Numero trabajadores: "+numeroTrabajadoresPlanillaTrimestral);
+        System.out.println("===============================0");
+        System.out.println("===============================0");
+        System.out.println("numeroTrabajadoresPlanillaTrimestral: "+numeroTrabajadoresPlanillaTrimestral);
+        if (fechaLimitePlazoPlanillaTrimestral == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar el campo Trimestre."));
+            return "";
+        }
+        multa = iMultaService.buscarTipoMulta("Multa");
+        multaRangoNumeroTrabajadores = iMultaRangoService.buscarPorRango(multa.getIdMulta(), new BigDecimal(numeroTrabajadoresPlanillaTrimestral));
+        if (multaRangoNumeroTrabajadores == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se encontro un rango, para el número de trabajadores."));
+            return "";
+        }
+        multaPlanillaTrimestral=multaRangoNumeroTrabajadores.getFactor();
+        //
+        long diferenciaFechas = fechaPresentacionPlanillaTrimestral.getTime() - fechaLimitePlazoPlanillaTrimestral.getTime();
+        diasTranscurridosPlanillaTrimestral = (int) (diferenciaFechas / (1000 * 60 * 60 * 24));
+
+        //
+        multa = iMultaService.buscarTipoMulta("Multa 2");
+        System.out.println("ID multa: " + multa.getIdMulta());
+        System.out.println("Dias diasTranscurridosPlanillaTrimestral: " + diasTranscurridosPlanillaTrimestral);
+        multaRangoDiasTranscurridos = iMultaRangoService.buscarPorRango(multa.getIdMulta(), new BigDecimal(diasTranscurridosPlanillaTrimestral));
+        if (multaRangoDiasTranscurridos == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se encontro un rango, para los días transcurridos."));
+            return "";
+        }
+        if (!(totalGanadoDeLaPlanillaTrimestral.compareTo(BigDecimal.ZERO) == 1)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el campo Total ganado de la planilla."));
+            return "";
+        }
+        //
+        montoTotalPlanillaTrimestral = (multaRangoDiasTranscurridos.getFactor().multiply(totalGanadoDeLaPlanillaTrimestral)).add(multaPlanillaTrimestral);
+        //
         return "";
     }
 
@@ -203,14 +282,6 @@ public class CotizacionMultasBean implements Serializable {
 
     public void setMultaPorNoContarConElRoe(BigDecimal multaPorNoContarConElRoe) {
         this.multaPorNoContarConElRoe = multaPorNoContarConElRoe;
-    }
-
-    public Date getFechaSolicitudRoe() {
-        return fechaSolicitudRoe;
-    }
-
-    public void setFechaSolicitudRoe(Date fechaSolicitudRoe) {
-        this.fechaSolicitudRoe = fechaSolicitudRoe;
     }
 
     public int getDiasTranscurridos() {
@@ -261,55 +332,6 @@ public class CotizacionMultasBean implements Serializable {
         this.obligacionCalendario = obligacionCalendario;
     }
 
-    public List<ParObligacionCalendario> getListaoObligacionCalendario() {
-        return listaoObligacionCalendario;
-    }
-
-    public void setListaoObligacionCalendario(List<ParObligacionCalendario> listaoObligacionCalendario) {
-        this.listaoObligacionCalendario = listaoObligacionCalendario;
-    }
-
-    public String getTipoPeriodo() {
-        return tipoPeriodo;
-    }
-
-    public void setTipoPeriodo(String tipoPeriodo) {
-        this.tipoPeriodo = tipoPeriodo;
-    }
-
-    public Date getFechaPresentacion() {
-        return fechaPresentacion;
-    }
-
-    public void setFechaPresentacion(Date fechaPresentacion) {
-        this.fechaPresentacion = fechaPresentacion;
-    }
-
-    public String getFechaPresentacionString() {
-        return fechaPresentacionString;
-    }
-
-    public void setFechaPresentacionString(String fechaPresentacionString) {
-        this.fechaPresentacionString = fechaPresentacionString;
-    }
-
-    public List<String> getListaMontoBase() {
-        return listaMontoBase;
-    }
-
-    public void setListaMontoBase(List<String> listaMontoBase) {
-        this.listaMontoBase = listaMontoBase;
-    }
-
-    public String getMontoBase() {
-        return montoBase;
-    }
-
-    public void setMontoBase(String montoBase) {
-        this.montoBase = montoBase;
-    }
-
-
     public BigDecimal getMontoTotalPlanillaTrimestral() {
         return montoTotalPlanillaTrimestral;
     }
@@ -318,4 +340,115 @@ public class CotizacionMultasBean implements Serializable {
         this.montoTotalPlanillaTrimestral = montoTotalPlanillaTrimestral;
     }
 
+    public IObligacionCalendarioService getiObligacionCalendarioService() {
+        return iObligacionCalendarioService;
+    }
+
+    public void setiObligacionCalendarioService(IObligacionCalendarioService iObligacionCalendarioService) {
+        this.iObligacionCalendarioService = iObligacionCalendarioService;
+    }
+
+    public BigDecimal getTotalGanadoDeLaPlanillaRoe() {
+        return totalGanadoDeLaPlanillaRoe;
+    }
+
+    public void setTotalGanadoDeLaPlanillaRoe(BigDecimal totalGanadoDeLaPlanillaRoe) {
+        this.totalGanadoDeLaPlanillaRoe = totalGanadoDeLaPlanillaRoe;
+    }
+
+    public BigDecimal getTotalGanadoDeLaPlanillaTrimestral() {
+        return totalGanadoDeLaPlanillaTrimestral;
+    }
+
+    public void setTotalGanadoDeLaPlanillaTrimestral(BigDecimal totalGanadoDeLaPlanillaTrimestral) {
+        this.totalGanadoDeLaPlanillaTrimestral = totalGanadoDeLaPlanillaTrimestral;
+    }
+
+    public Date getFechaInicioActividades() {
+        return fechaInicioActividades;
+    }
+
+    public void setFechaInicioActividades(Date fechaInicioActividades) {
+        this.fechaInicioActividades = fechaInicioActividades;
+    }
+
+    public Date getFechaPresentacionRoe() {
+        return fechaPresentacionRoe;
+    }
+
+    public void setFechaPresentacionRoe(Date fechaPresentacionRoe) {
+        this.fechaPresentacionRoe = fechaPresentacionRoe;
+    }
+
+    public Date getFechaVencimientoDeLaPresentacion() {
+        return fechaVencimientoDeLaPresentacion;
+    }
+
+    public void setFechaVencimientoDeLaPresentacion(Date fechaVencimientoDeLaPresentacion) {
+        this.fechaVencimientoDeLaPresentacion = fechaVencimientoDeLaPresentacion;
+    }
+
+    public IDominioService getiDominioService() {
+        return iDominioService;
+    }
+
+    public void setiDominioService(IDominioService iDominioService) {
+        this.iDominioService = iDominioService;
+    }
+
+    public Date getFechaLimitePlazoPlanillaTrimestral() {
+        return fechaLimitePlazoPlanillaTrimestral;
+    }
+
+    public void setFechaLimitePlazoPlanillaTrimestral(Date fechaLimitePlazoPlanillaTrimestral) {
+        this.fechaLimitePlazoPlanillaTrimestral = fechaLimitePlazoPlanillaTrimestral;
+    }
+
+    public Date getFechaPresentacionPlanillaTrimestral() {
+        return fechaPresentacionPlanillaTrimestral;
+    }
+
+    public void setFechaPresentacionPlanillaTrimestral(Date fechaPresentacionPlanillaTrimestral) {
+        this.fechaPresentacionPlanillaTrimestral = fechaPresentacionPlanillaTrimestral;
+    }
+
+    public int getDiasTranscurridosPlanillaTrimestral() {
+        return diasTranscurridosPlanillaTrimestral;
+    }
+
+    public void setDiasTranscurridosPlanillaTrimestral(int diasTranscurridosPlanillaTrimestral) {
+        this.diasTranscurridosPlanillaTrimestral = diasTranscurridosPlanillaTrimestral;
+    }
+
+    public int getNumeroTrabajadoresPlanillaTrimestral() {
+        return numeroTrabajadoresPlanillaTrimestral;
+    }
+
+    public void setNumeroTrabajadoresPlanillaTrimestral(int numeroTrabajadoresPlanillaTrimestral) {
+        this.numeroTrabajadoresPlanillaTrimestral = numeroTrabajadoresPlanillaTrimestral;
+    }
+
+    public List<ParObligacionCalendario> getListaObligacionCalendario() {
+        return listaObligacionCalendario;
+    }
+
+    public void setListaObligacionCalendario(List<ParObligacionCalendario> listaObligacionCalendario) {
+        this.listaObligacionCalendario = listaObligacionCalendario;
+    }
+
+    public Long getIdObligacionCalendario() {
+        return idObligacionCalendario;
+    }
+
+    public void setIdObligacionCalendario(Long idObligacionCalendario) {
+        this.idObligacionCalendario = idObligacionCalendario;
+    }
+
+    public int getTabActiveIndex() {
+        return tabActiveIndex;
+    }
+
+    public void setTabActiveIndex(int tabActiveIndex) {
+        this.tabActiveIndex = tabActiveIndex;
+    }
 }
