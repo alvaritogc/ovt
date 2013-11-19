@@ -19,7 +19,7 @@
         <p:growl showDetail="true" id="growl" />
         <h:panelGrid columns="1" >
 
-            <p:panel id="pnlPersona" header="DATOS GENERALES" style="height: 300px;width: 700px;">
+            <p:panel id="pnlPersona" header="DATOS GENERALES" style="height: 320px;width: 700px;">
                 <h:panelGrid id="pnlGridBuscarPersona" columns="2" >
                     <h:outputText value="Natural-Juridica:"/>
                     <p:selectBooleanCheckbox id="checkEsNatural" value="#{personaBean.persona.esNatural}"
@@ -27,7 +27,7 @@
                         <p:ajax    process="@this" update="pnlPersona" />
                     </p:selectBooleanCheckbox>
 
-                    <h:outputText value="Nombre o Razon social:"/>
+                    <p:outputLabel for="inputTxtNombre" value="Nombre o Razon social:"/>
                     <p:inputText id="inputTxtNombre" value="#{personaBean.persona.nombreRazonSocial}"
                                  required="true"
                                  style="width: 215px;text-transform: uppercase;"
@@ -52,21 +52,23 @@
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>
 
-                    <h:outputText value="Identificacion:"/>
+                    <p:outputLabel for="slcOneMenuTipoIdentificacion" value="Identificacion:"/>
                     <p:selectOneMenu id="slcOneMenuTipoIdentificacion" value="#{personaBean.persona.tipoIdentificacion}"
                                      tabindex="5"
                                     style="text-transform: uppercase;">
                         <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
                         <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
                     </p:selectOneMenu>
-                    <h:outputText value="Lugar de emision:"/>
+
+                    <p:outputLabel for="slcOneMenuLocalidad" value="Lugar de emision:"/>
                     <p:selectOneMenu id="slcOneMenuLocalidad" value="#{personaBean.idLocalidad}"
                                      tabindex="6"
                                      style="text-transform: uppercase;">
                         <f:selectItem itemLabel="---Seleccione una localidad---" itemValue="0L" />
                         <f:selectItems value="#{personaBean.listaLocalidad}" />
                     </p:selectOneMenu>
-                    <h:outputText value="Nro. de identificacion:"/>
+
+                    <p:outputLabel for="inputTxtNroIdentificacion" value="Nro. de identificacion:"/>
                     <p:inputText id="inputTxtNroIdentificacion" value="#{personaBean.persona.nroIdentificacion}"
                                  tabindex="7"
                                  required="true"
@@ -77,7 +79,7 @@
                                  requiredMessage="El campo Nro. de identificacion es obligatorio"/>
 
 
-                    <h:outputText value="Nombre comercial:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                    <p:outputLabel for="inputTxtNombreComercial" value="Nombre comercial:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
                     <p:inputText id="inputTxtNombreComercial" value="#{personaBean.unidad.nombreComercial}"
                                  style="width: 215px;text-transform: uppercase;"
                                  tabindex="8"
@@ -85,7 +87,7 @@
                                  requiredMessage="El campo Nombre comercial es obligatorio.">
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>
-                    <h:outputText value="Tipo de empresa:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                    <p:outputLabel for="slcOneMenuTipoEmpresa" value="Tipo de empresa:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
                     <p:selectOneMenu id="slcOneMenuTipoEmpresa" value="#{personaBean.unidad.tipoEmpresa}"
                                      tabindex="9"
                                      style="width: 225px;text-transform: uppercase;"
@@ -96,7 +98,7 @@
                     </p:selectOneMenu>
 
 
-                    <h:outputText value="Tipo de sociedad:"/>
+                    <p:outputLabel for="slcOneMenuTipoSociedad" value="Tipo de sociedad:"/>
                     <p:selectOneMenu id="slcOneMenuTipoSociedad" value="#{personaBean.unidad.tipoSociedad}"
                                      tabindex="10"
                                      style="text-transform: uppercase;"
@@ -106,7 +108,17 @@
                         <f:selectItems value="#{personaBean.listaTipoSociedad}" />
                     </p:selectOneMenu>
 
-                    <h:outputText value="Actividad declarada:&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                    <p:outputLabel for="calendar" value="Fecha actividad:"/>
+                    <p:calendar id="calendar" value="#{personaBean.unidad.fechaNacimiento}"
+                                effect="slideDown"
+                                tabindex="2"
+                                style="width:190px;"
+                                required="true"
+                                showOn="button"
+                                navigator="true"
+                                requiredMessage="El campo Fecha actividad es obligatorio."/>
+
+                    <p:outputLabel for="txtAreaActividadDeclarada" value="Actividad declarada:&nbsp;&nbsp;&nbsp;&nbsp;"/>
                     <p:inputTextarea id="txtAreaActividadDeclarada" value="#{personaBean.unidad.actividadDeclarada}"
                                      rows="5"
                                      cols="50" autoResize="false"

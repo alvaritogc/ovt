@@ -101,7 +101,7 @@ public class TemplateInicioBean implements Serializable {
 
 
 
-    private  final int LONGITUD_MINIMA=3;
+    private  final int LONGITUD_MINIMA=7;
     
     //Variables para los servicios publicos
     private List<ParMensajeApp> listaMensajeApp;
@@ -237,7 +237,8 @@ public class TemplateInicioBean implements Serializable {
         logger.info("login()");
         try {
             logger.info("iUsuarioService.login(" + username + "," + password + ")");
-            Long idUsuario = iUsuarioService.login(username, password);
+            String passwordEncripted = Util.encriptaMD5(password);
+            Long idUsuario = iUsuarioService.login(username, passwordEncripted);
             logger.info("usuario aceptado");
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             session.setAttribute("idUsuario", idUsuario);
@@ -246,7 +247,7 @@ public class TemplateInicioBean implements Serializable {
 
             if (usuario.getEsInterno() == 1) {
                 session.setAttribute("idEmpleador", null);
-                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+                UsernamePasswordToken token = new UsernamePasswordToken(username, passwordEncripted);
                 Subject subject = SecurityUtils.getSubject();
                 token.setRememberMe(true);
                 subject.login(token);
@@ -255,7 +256,7 @@ public class TemplateInicioBean implements Serializable {
                 return "irEmpleadorBusqueda";
             } else {
                 session.setAttribute("idEmpleador", usuario.getIdPersona().getIdPersona());
-                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+                UsernamePasswordToken token = new UsernamePasswordToken(username, passwordEncripted);
                 Subject subject = SecurityUtils.getSubject();
                 token.setRememberMe(true);
                 subject.login(token);

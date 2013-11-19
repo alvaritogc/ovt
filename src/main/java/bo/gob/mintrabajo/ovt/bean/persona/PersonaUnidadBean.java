@@ -336,7 +336,7 @@ public class PersonaUnidadBean implements Serializable{
         direccion.setPerUnidad(unidadRegistro);
         direccion.setCodLocalidad(iLocalidadService.findById(idLocalidad));
         //Cambiar por el usuario de la session
-        direccion.setRegistroBitacora(persona.getNombreRazonSocial());
+        direccion.setRegistroBitacora(REGISTRO_BITACORA);
             iDireccionService.save(direccion);
         ini();
         RequestContext.getCurrentInstance().execute("dlgDireccion.hide()");
@@ -344,14 +344,26 @@ public class PersonaUnidadBean implements Serializable{
 
     public void cargarDireccion(){
         // Cargando Direccion
+        listaDireccion=new ArrayList<PerDireccion>();
         listaDireccion= iDireccionService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
         if (!listaDireccion.isEmpty()){
+            //Significa que solo se registro la unidad principal, entonces solo puede haber una direccion
+            // que seria para la unidad principal.
+            if(listaUnidad.size()==0){
+                direccionPrincipal= listaDireccion.get(0);
+                tipoDireccionPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_DIRECCION,listaDireccion.get(0).getTipoDireccion()).getDescripcion();
+/*                for(int i=listaDireccion.size()-1;i>=0;i--){
+                    if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==unidad.getPerUnidadPK().getIdUnidad()){
+                        direccionPrincipal= listaDireccion.get(i);
+                        tipoDireccionPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_DIRECCION,listaDireccion.get(i).getTipoDireccion()).getDescripcion();
+                    }
+                }*/
+            }else{
                 for (int i=listaDireccion.size()-1;i>=0;i--){
                     for (int j=listaUnidad.size()-1;j>=0;j--){
                         if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==unidad.getPerUnidadPK().getIdUnidad()){
                             direccionPrincipal= listaDireccion.get(i);
                             tipoDireccionPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_DIRECCION,listaDireccion.get(i).getTipoDireccion()).getDescripcion();
-
                             break;
                         } else {
                             if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
@@ -362,6 +374,7 @@ public class PersonaUnidadBean implements Serializable{
                         }
                     }
                 }
+            }
         }
     }
 
@@ -442,19 +455,27 @@ public class PersonaUnidadBean implements Serializable{
 
     public void cargarRepLegal(){
 
+        listaRepLegal=new ArrayList<PerReplegal>();
         listaRepLegal=iRepLegalService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
         if(!listaRepLegal.isEmpty()){
+            //Solo se registro a la unidad principal, entonces solo puede existir un
+            //representante legal para esa unidad.
             if(listaUnidad.size()==0){
                 repLegalPrincipal= listaRepLegal.get(0);
                 departamentoDireccinoPrincipal=iLocalidadService.findById(repLegalPrincipal.getTipoProcedencia()).getDescripcion();
-            }
-
+/*                for(int i=listaRepLegal.size()-1;i>=0;i--){
+                    if(listaRepLegal.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==unidad.getPerUnidadPK().getIdUnidad()){
+                        repLegalPrincipal= listaRepLegal.get(i);
+                        departamentoDireccinoPrincipal=iLocalidadService.findById(repLegalPrincipal.getTipoProcedencia()).getDescripcion();
+                    }
+                }*/
+            }else{
                 for (int i=listaRepLegal.size()-1;i>=0;i--){
                     for (int j=listaUnidad.size()-1;j>=0;j--){
                         if(listaRepLegal.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==unidad.getPerUnidadPK().getIdUnidad()){
-                           repLegalPrincipal= listaRepLegal.get(i);
+                            repLegalPrincipal= listaRepLegal.get(i);
                             departamentoDireccinoPrincipal=iLocalidadService.findById(repLegalPrincipal.getTipoProcedencia()).getDescripcion();
-                           break;
+                            break;
                         }else{
                             if(listaRepLegal.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
                                 listaRepLegal.get(i).setDepartamento(iLocalidadService.findById(listaRepLegal.get(i).getTipoProcedencia()).getDescripcion());
@@ -465,6 +486,7 @@ public class PersonaUnidadBean implements Serializable{
                         }
                     }
                 }
+            }
         }
     }
 
@@ -494,6 +516,8 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public void cargarActividadDeclarda(){
+        logger.info("===>> Ingresando a cargarActividadDeclarda()");
+        logger.info("===>> UNIDAD "+unidad);
         //Cargando Actividad Economica
         listaActividad=iActividadService.findByPerUnidad(unidad);
         actividadEconomicaPrincipal=new ParActividadEconomica();
@@ -714,6 +738,7 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public void setActividadEconomica(ParActividadEconomica actividadEconomica) {
+       idActividadEconomicaPrincipal= actividadEconomica.getIdActividadEconomica2().getIdActividadEconomica();
         this.actividadEconomica = actividadEconomica;
     }
 
