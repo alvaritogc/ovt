@@ -16,5 +16,6 @@ public interface IObligacionCalendarioService {
     //List<ParObligacionCalendario> listaObligacionCalendarioPorGestion(String gestionActual);
 
     public List<ParObligacionCalendario> listaObligacionCalendarioPorGestion(String gestionActual);
+    public ParObligacionCalendario findById(Long id);
 
 }

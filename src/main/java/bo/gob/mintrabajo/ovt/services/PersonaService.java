@@ -280,7 +280,6 @@ public class PersonaService implements IPersonaService {
         log.info("Guardando la persona ");
         unidad.setFechaBitacora(new Date());
         unidad.setRegistroBitacora("ROE");
-        unidad.setFechaNacimiento(new Date());
         unidad.setObservaciones("NINGUNA");
         unidad.setPerPersona(persona);
         unidad = unidadRepository.save(unidad);

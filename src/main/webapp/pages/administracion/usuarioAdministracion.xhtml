@@ -34,13 +34,13 @@
                     <h:outputText value="#{usr.estadoUsuario}"/>
                 </p:column>
                 <p:column headerText="Operaciones">
-                    <p:commandLink value="Editar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" oncomplete="edicionDlg.show()" update=":edicionFrm" immediate="true" style="color:#0066CC">
+                    <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" oncomplete="edicionDlg.show()" update=":edicionFrm" immediate="true" style="color:#0066CC">
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
-                    </p:commandLink>
+                    </p:commandButton>
                     <p:spacer width="5" />
-                    <p:commandLink value="Eliminar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" oncomplete="eliminarDlg.show()" immediate="true" style="color:#0066CC">
+                    <p:commandButton icon="ui-icon-trash" title="Eliminar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" oncomplete="eliminarDlg.show()" immediate="true" style="color:#0066CC">
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
-                    </p:commandLink>
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -103,6 +103,8 @@
                                  style="width: 215px;text-transform: uppercase;"
                                  requiredMessage="El campo Nro. de identificacion es obligatorio"/>
 
+                    <p:outputLabel value="Fecha inicio actividad :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                    <p:calendar value="#{usuarioAdministracionBean.fechaNacimiento}" showOn="button" pattern="dd/MM/yyyy" />
 
                     <p:outputLabel value="Nombre comercial :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
                     <p:inputText id="inputTxtNombreComercial"
