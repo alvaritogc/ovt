@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
 import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
+import static bo.gob.mintrabajo.ovt.Util.Sequencias.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -301,7 +302,7 @@ public class PersonaBean implements Serializable{
 
       final String  REGISTRO_BITACORA="ROE";
         System.out.println("INGRESANDO ................................ ");
-      Long seq= iLocalidadService.localidadSecuencia("PER_PERSONA_SEC");
+      Long seq= iLocalidadService.localidadSecuencia(PER_PERSONA_SEC);
       persona.setIdPersona(seq.toString());
       persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
       persona.setRegistroBitacora(REGISTRO_BITACORA);
@@ -313,10 +314,10 @@ public class PersonaBean implements Serializable{
       unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
       PerUnidadPK perUnidadPK=new PerUnidadPK();
       perUnidadPK.setIdPersona(persona.getIdPersona());
-      perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
+      perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia(PER_UNIDAD_SEC));
       unidad.setPerUnidadPK(perUnidadPK);
 
-      usuario.setIdUsuario(iUsuarioService.obtenerSecuencia("USR_USUARIO_SEC"));
+      usuario.setIdUsuario(iUsuarioService.obtenerSecuencia(USR_USUARIO_SEC));
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
       usuario.setEsDelegado((short)0);
       usuario.setEsInterno((short) 0);
@@ -330,8 +331,7 @@ public class PersonaBean implements Serializable{
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
 
       usuario.setIdPersona(persona);
-      usuario.setTipoAutenticacion("LOCAL");
-
+      usuario.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION,PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
 
         mostrar= iPersonaService.registrar(persona,unidad,usuario);
         if(mostrar)
