@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
     <ui:composition template="../template/templateInicio.xhtml">
         <ui:define name="content">
             <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
@@ -32,6 +33,7 @@
                                 <p:calendar value="#{cotizacionMultasBean.fechaInicioActividades}" 
                                             id="idFechaInicioActividadesRoe"
                                             locale="es"
+                                            pattern="dd/MM/yyyy"
                                             showOn="button">
                                     <p:ajax event="dateSelect" listener="#{cotizacionMultasBean.calcularFechaLimiteRoe}" 
                                             update="pnlRoe1"/>
@@ -40,13 +42,13 @@
 
                                 <p:outputLabel value="Fecha límite plazo :"/>
                                 <p:outputLabel value="#{cotizacionMultasBean.fechaLimitePlazo}">
-                                    <f:convertDateTime pattern="dd/MM/yy"/>
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
                                 </p:outputLabel>
                                 <p:outputLabel value=""/>
 
                                 <p:outputLabel value="Fecha inscripción del roe"/>
                                 <p:outputLabel value="#{cotizacionMultasBean.fechaPresentacionRoe}">
-                                    <f:convertDateTime pattern="dd/MM/yy"/>
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
                                 </p:outputLabel>
                                 <p:outputLabel value=""/>
 
@@ -57,9 +59,10 @@
                                 <p:outputLabel value=""/>
 
                                 <p:outputLabel for="idTotalGanadoDeLaPlanillaRoe" value="Total ganado de la planilla: "/>    
-                                <p:inputText id="idTotalGanadoDeLaPlanillaRoe" 
-                                             required="true"
-                                             value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaRoe}"/>
+                                <pe:inputNumber id="idTotalGanadoDeLaPlanillaRoe" 
+                                                thousandSeparator="." decimalSeparator="," style="width: 205px; height: 10px; text-align: right" required="true" maxlength="10"
+                                                value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaRoe}">
+                                </pe:inputNumber>
                                 <p:outputLabel value=""/>  
                             </h:panelGrid>
                         </p:panel>
@@ -67,13 +70,22 @@
                         <p:panel id="pnlRoe2">
                             <h:panelGrid columns="2" >    
                                 <p:outputLabel value="Penalización por el número de trabajadores: "/>
-                                <p:outputLabel value="#{cotizacionMultasBean.multaPorNoContarConElRoe} Bs."/>
+                                <pe:inputNumber value="#{cotizacionMultasBean.multaPorNoContarConElRoe}"
+                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
+                                                disabled="true"
+                                                maxlength="10">
+                                </pe:inputNumber>
+                                
 
                                 <p:outputLabel value="Días de retraso:"/>
-                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridos}"/>
+                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridos}" style="text-align: right;"/>
 
                                 <p:outputLabel value="Total a pagar para obtener su ROE:"/>
-                                <p:inputText value="#{cotizacionMultasBean.totalAPagarParaObtenerRoe}" readonly="true"/>
+                                <pe:inputNumber value="#{cotizacionMultasBean.totalAPagarParaObtenerRoe}"
+                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
+                                                disabled="true"
+                                                maxlength="10">
+                                </pe:inputNumber>
                             </h:panelGrid>
                         </p:panel>
                         <br/>
@@ -108,13 +120,13 @@
 
                                 <p:outputLabel value="Fecha límite plazo :"/>
                                 <p:outputLabel id="idFechaLimitePlazoPT" value="#{cotizacionMultasBean.fechaLimitePlazoPlanillaTrimestral}">
-                                    <f:convertDateTime pattern="dd/MM/yy"/>
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
                                 </p:outputLabel>
                                 <p:outputLabel value=""/>
 
                                 <p:outputLabel value="Fecha presentación planilla Trimestral"/>
                                 <p:outputLabel value="#{cotizacionMultasBean.fechaPresentacionPlanillaTrimestral}">
-                                    <f:convertDateTime pattern="dd/MM/yy"/>
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
                                 </p:outputLabel>
                                 <p:outputLabel value=""/>
 
@@ -125,10 +137,12 @@
                                 <p:outputLabel value=""/>
 
                                 <p:outputLabel for="idTotalGanadoDeLaPlanillaTrimestral" value="Total ganado de la planilla: "/>    
-                                <p:inputText value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaTrimestral}"
-                                             id="idTotalGanadoDeLaPlanillaTrimestral"
-                                             required="true"/>
+                                <pe:inputNumber id="idTotalGanadoDeLaPlanillaTrimestral" 
+                                                thousandSeparator="." decimalSeparator="," style="width: 205px; height: 10px; text-align: right" required="true" maxlength="10"
+                                                value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaTrimestral}">
+                                </pe:inputNumber>
                                 <p:outputLabel value=""/>
+
                             </h:panelGrid>
 
                         </p:panel>
@@ -136,11 +150,19 @@
                         <p:panel id="pnlPlanillaTrimestral2">
                             <h:panelGrid columns="2">
                                 <p:outputLabel value="Penalizacion por el número de trabajadores:"/>
-                                <p:outputLabel value="#{cotizacionMultasBean.multaPlanillaTrimestral} Bs." />
+                                <pe:inputNumber value="#{cotizacionMultasBean.multaPlanillaTrimestral}"
+                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
+                                                disabled="true"
+                                                maxlength="10">
+                                </pe:inputNumber>
                                 <p:outputLabel value="Días de retraso:"/>
-                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridosPlanillaTrimestral}"/>
+                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridosPlanillaTrimestral}" style="text-align: right;"/>
                                 <p:outputLabel value="Total a pagar:"/>
-                                <p:inputText value="#{cotizacionMultasBean.montoTotalPlanillaTrimestral}" readonly="true"/>
+                                <pe:inputNumber value="#{cotizacionMultasBean.montoTotalPlanillaTrimestral}"
+                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
+                                                disabled="true"
+                                                maxlength="10">
+                                </pe:inputNumber>
                             </h:panelGrid>
                         </p:panel>    
                         <br/>
