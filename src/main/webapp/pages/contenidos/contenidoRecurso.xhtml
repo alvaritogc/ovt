@@ -36,7 +36,7 @@
                             <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}" />
                             <f:setPropertyActionListener value="true" target="#{contenidoRecursoBean.edicion}" />
                         </p:commandButton>
-                        
+
                         <p:commandButton icon="ui-icon-image" 
                                          action="#{contenidoRecursoBean.editar}" title="Editar Contenido" immediate="true">
                             <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}" />
@@ -61,8 +61,12 @@
                 <h:form id="idDlgExterno">
                     <p:outputLabel value="#{contenidoRecursoBean.edicion}"/>
                     <h:panelGrid columns="2">
-                        <p:outputLabel value="Mensaje:"/>
-                        <p:inputText value="#{contenidoRecursoBean.mensajeApp.mensaje}"/>
+                        <p:outputLabel for="idMensaje" value="Mensaje:"/>
+                        <p:inputText id="idMensaje" value="#{contenidoRecursoBean.mensajeApp.mensaje}"
+                                     required="true"
+                                     style="width: 215px;text-transform: uppercase;">
+                            <f:converter converterId="lowerConverter" />
+                        </p:inputText>
                         <p:outputLabel value="Referencia:"/>
                         <p:inputText value="#{contenidoRecursoBean.mensajeApp.referencia}"/>
                         <p:outputLabel value="Fecha desde:"/>
