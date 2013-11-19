@@ -156,6 +156,14 @@ public class DocumentoService implements IDocumentoService{
         Long modulo = sumatoria % 11;
         Long verificacion = 11 - modulo;
         //
+        if(verificacion>new Long(9)){
+            //System.out.println("verificador > a 9");
+            String vAux=""+verificacion;
+            verificacion=new Long((Integer.valueOf(""+vAux.charAt(0))+Integer.valueOf(""+vAux.charAt(1))));
+            //System.out.println("verificacion: "+verificacion);
+        }
+        
+        //
         numeracion.setUltimoNumero(numeracion.getUltimoNumero()+1);
         numeracionRepository.save(numeracion);
         //
