@@ -3,7 +3,6 @@ package bo.gob.mintrabajo.ovt.services;
 //import bo.gob.mintrabajo.ovt.api.ICalendarioService;
 import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
 import bo.gob.mintrabajo.ovt.entities.ParCalendario;
-import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 import bo.gob.mintrabajo.ovt.repositories.CalendarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.ObligacionCalendarioRepository;
@@ -142,7 +141,6 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
     
     @Override
     public List<ParObligacionCalendario> listaObligacionCalendarioPorGestion(String gestionActual){
-        //el que este usando esto porfavor revise ya que no hay codigo
         List<ParObligacionCalendario> lista;
         try {
             lista = obligacionCalendarioRepository.listarPorGestion(gestionActual);

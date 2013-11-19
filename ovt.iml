@@ -28,6 +28,7 @@
           <factory-entry name="ovt" />
           <factory-entry name="persistence" />
           <factory-entry name="persistenceUnit" />
+          <factory-entry name="tutor" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>
