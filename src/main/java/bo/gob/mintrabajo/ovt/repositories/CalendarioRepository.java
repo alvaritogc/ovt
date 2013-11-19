@@ -41,4 +41,14 @@ public interface CalendarioRepository extends OpenJpaRepository<ParCalendario, L
             + " where p.parCalendarioPK.tipoPeriodo = :tPeriodo and "
             + " p.parCalendarioPK.gestion = :gestion")
     ParCalendario obtenerCalendarioPorGestionYPeriodo(@Param("gestion")String gestion, @Param("tPeriodo")String tPeriodo);
+    
+    @Query("select p "
+            + " from ParCalendario p "
+            + " where p.parCalendarioPK.gestion = :gestion")
+    List<ParCalendario> listaCalendarioPorGestion(@Param("gestion")String gestion);
+    
+    @Query("select p "
+            + " from ParCalendario p "
+            + " order by p.parCalendarioPK.gestion desc, p.parCalendarioPK.tipoPeriodo asc")
+    List<ParCalendario> listaCalendarioDesc();
 }

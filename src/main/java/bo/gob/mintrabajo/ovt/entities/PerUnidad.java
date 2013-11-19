@@ -95,25 +95,10 @@ public class PerUnidad implements Serializable {
     private PerDireccion direccion;
     @Transient
     private PerReplegal repLegal;
-
-    public PerReplegal getRepLegal() {
-        return repLegal;
-    }
-
-    public void setRepLegal(PerReplegal repLegal) {
-        this.repLegal = repLegal;
-    }
-
-
-
-    public PerDireccion getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(PerDireccion direccion) {
-        this.direccion = direccion;
-    }
-
+    @Transient
+    private String tipoSociedadAuxiliar;
+    @Transient
+    private String tipoEmpresaAuxiliar;
 
     public PerUnidad() {
     }
@@ -289,6 +274,38 @@ public class PerUnidad implements Serializable {
 
     public void setPerPersona(PerPersona perPersona) {
         this.perPersona = perPersona;
+    }
+
+    public PerReplegal getRepLegal() {
+        return repLegal;
+    }
+
+    public void setRepLegal(PerReplegal repLegal) {
+        this.repLegal = repLegal;
+    }
+
+    public PerDireccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(PerDireccion direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTipoSociedadAuxiliar() {
+        return tipoSociedadAuxiliar;
+    }
+
+    public void setTipoSociedadAuxiliar(String tipoSociedadAuxiliar) {
+        this.tipoSociedadAuxiliar = tipoSociedadAuxiliar;
+    }
+
+    public String getTipoEmpresaAuxiliar() {
+        return tipoEmpresaAuxiliar;
+    }
+
+    public void setTipoEmpresaAuxiliar(String tipoEmpresaAuxiliar) {
+        this.tipoEmpresaAuxiliar = tipoEmpresaAuxiliar;
     }
 
    /* public List<DocDocumento> getDocDocumentoList() {

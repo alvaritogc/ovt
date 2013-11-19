@@ -8,25 +8,30 @@
     <p:growl showDetail="true" id="growlActividadDeclarada" />
     <p:panel id="pnlActividadDeclarada" >
         <f:facet name="footer">
-            <p:commandButton value="#{personaUnidadBean.tituloDialog}"
-                             icon="#{personaUnidadBean.iconoUnidad}"
+            <p:commandButton value="Guardar"
+                             icon="ui-icon-disk"
                              action="#{personaUnidadBean.procesarActividadEconomica}"
                              id="cmdButtonActividadDeclarada"
                              update=":tabPersonaUnidad,:tabPersonaUnidad:tabActividad,:dataGrid,growlActividadDeclarada"
                     />
+            &#160;&#160;
+            <p:commandButton value="Cancelar"
+                             icon="ui-icon-closethick"
+                             onclick="dlgActividadDeclarada.hide()"
+                             id="cmdButtonDireccionCancel"/>
         </f:facet>
 
         <br/>
         <h:panelGrid columns="2">
             <h:outputText value="Codigo de Actividad economica:"/>
-            <p:selectOneMenu id="slcOneMenuCodActvEconomica1" value="#{personaUnidadBean.actividadEconomica.codActividadEconomica}"
+            <p:selectOneMenu id="slcOneMenuCodActvEconomica1" value="#{personaUnidadBean.idActividadEconomicaPrincipal}"
                              tabindex="1"
                              style="text-transform: uppercase;">
-                <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
-                <f:selectItems value="#{personaUnidadBean.listaTipoIdentificacion}" />
+                <f:selectItem itemLabel="---Seleccione---" itemValue="" />
+                <f:selectItems value="#{personaUnidadBean.listaCodActividadEconomica}" />
             </p:selectOneMenu>
 
-            <h:outputText value="Descripcion:"/>
+            <p:outputLabel for="txtAreaDescripcionActvEconomica1" value="Descripcion:"/>
             <p:inputTextarea id="txtAreaDescripcionActvEconomica1" value="#{personaUnidadBean.actividadEconomica.descripcion}"
                              rows="5"
                              cols="50"
@@ -46,7 +51,7 @@
             </p:inputText>
 
 
-            <h:outputText value="Descripcion del codigo de impuestos:"/>
+            <p:outputLabel for="txtAreaDescripcionCodImpuestos1" value="Descripcion del codigo de impuestos:"/>
             <p:inputTextarea id="txtAreaDescripcionCodImpuestos1" value="#{personaUnidadBean.actividadEconomica.descricpionImpuestos}"
                              rows="5"
                              cols="50"

@@ -6,21 +6,26 @@
 
 <h:form id="frmDireccion">
     <p:growl showDetail="true" id="growlDireccion" />
- <p:panel id="pnlDireccion" >
-     <f:facet name="footer">
-         <p:commandButton value="#{personaUnidadBean.tituloDialog}"
-                          icon="#{personaUnidadBean.iconoUnidad}"
-                          action="#{personaUnidadBean.procesarDireccion}"
-                          id="cmdButtonDireccion"
-                          update=":tabPersonaUnidad,:tabPersonaUnidad:tabDireccion,:dataGrid,:frmDireccion:growlDireccion"
-                 />
-     </f:facet>
+    <p:panel id="pnlDireccion" >
+        <f:facet name="footer">
+            <p:commandButton value="#{personaUnidadBean.tituloDialog}"
+                             icon="#{personaUnidadBean.iconoUnidad}"
+                             action="#{personaUnidadBean.procesarDireccion}"
+                             id="cmdButtonDireccion"
+                             update=":tabPersonaUnidad,:tabPersonaUnidad:tabDireccion,:dataGrid,:frmDireccion:growlDireccion"
+                    />
+            &#160;&#160;
+            <p:commandButton value="Cancelar"
+                             icon="ui-icon-closethick"
+                             onclick="dlgDireccion.hide()"
+                             id="cmdButtonDireccionCancel"/>
+        </f:facet>
 
-     <br/>
+        <br/>
 
-     <h:panelGrid columns="2">
+        <h:panelGrid columns="2" width="400">
 
-         <h:outputText value="Tipo de direccion:   "/>
+         <p:outputLabel for="slcOneMenuTipoDireccion" value="Tipo de direccion:   "/>
          <p:selectOneMenu id="slcOneMenuTipoDireccion" value="#{personaUnidadBean.direccion.tipoDireccion}"
                           tabindex="1"
                           style="width: 220px;text-transform: uppercase"
@@ -30,7 +35,7 @@
              <f:selectItems value="#{personaUnidadBean.listaTipoDirecciones}" />
          </p:selectOneMenu>
 
-         <h:outputText value="Direccion:"/>
+         <p:outputLabel for="txtAreaDireccion" value="Direccion:"/>
          <p:inputTextarea id="txtAreaDireccion" value="#{personaUnidadBean.direccion.direccion}"
                           rows="5"
                           cols="50"
@@ -42,7 +47,7 @@
              <f:converter converterId="lowerConverter"/>
          </p:inputTextarea>
 
-         <h:outputText value="Zona:"/>
+         <p:outputLabel for="txtAreaZona" value="Zona:"/>
          <p:inputText id="txtAreaZona" value="#{personaUnidadBean.direccion.zonaUrbanizacion}"
                       style="width: 220px;text-transform: uppercase;"
                       tabindex="3"
@@ -58,7 +63,7 @@
                       tabindex="4">
              <f:converter converterId="lowerConverter"/>
          </p:inputText>
-         <h:outputText value="Departamento:"/>
+         <p:outputLabel for="slcOneMenuLocalidad" value="Departamento:"/>
          <p:selectOneMenu id="slcOneMenuLocalidad" value="#{personaUnidadBean.idLocalidad}"
                           tabindex="5"
                           style="text-transform: uppercase;"
@@ -77,10 +82,8 @@
                           tabindex="6">
              <f:converter converterId="lowerConverter"/>
          </p:inputTextarea>
-     </h:panelGrid>
 
-     <h:panelGrid columns="2">
-         <h:outputText value="Fax: "/>
+         <p:outputLabel for="inputTxtFax" value="Fax: "/>
          <p:inputText id="inputTxtFax" value="#{personaUnidadBean.direccion.fax}"
                       style="width: 220px;text-transform: uppercase"
                       tabindex="7"

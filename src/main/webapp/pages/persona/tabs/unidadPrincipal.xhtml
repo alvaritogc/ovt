@@ -40,7 +40,7 @@
         <h:panelGrid columns="2">
             <h:panelGrid columns="2">
                 <h:outputText value="Tipo de empresa:    &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
-                <p:inputText value="#{personaUnidadBean.unidad.tipoEmpresa}" readonly="true" style="width: 190px;"/>
+                <p:inputText value="#{personaUnidadBean.tipoEmpresaPrincipal}" readonly="true" style="width: 190px;text-transform: uppercase"/>
 
                 <h:outputText value="Fecha actividad:"/>
                 <p:inputText value="#{personaUnidadBean.unidad.fechaNacimiento}" readonly="true" style="width: 190px;">
@@ -56,7 +56,7 @@
                 <h:outputText/>
                 <h:outputText/>
                 <h:outputText value="Tipo de sociedad: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
-                <p:inputText value="#{personaUnidadBean.unidad.tipoSociedad}" readonly="true" style="width: 190px;"/>
+                <p:inputText value="#{personaUnidadBean.tipoSociedadPrincipal}" readonly="true" style="width: 190px;text-transform: uppercase"/>
                 <h:outputText value="Caja de salud: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;" />
                 <p:inputText value="#{personaUnidadBean.unidad.nroCajaSalud}" readonly="true" style="width: 190px;"/>
                 <h:outputText value="Nro. referencial:"/>

@@ -7,18 +7,17 @@ import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 import bo.gob.mintrabajo.ovt.repositories.CalendarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.ObligacionCalendarioRepository;
-import java.math.BigDecimal;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import javax.faces.bean.ManagedProperty;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
  * Created with IntelliJ IDEA. User: gmercado Date: 10/10/13 Time: 5:56 PM To
@@ -141,7 +140,7 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         //el que este usando esto porfavor revise ya que no hay codigo
         List<ParObligacionCalendario> lista;
         try {
-            lista = null;
+            lista = obligacionCalendarioRepository.listarPorGestion(gestionActual);
         } catch (Exception e) {
             e.printStackTrace();
             lista = null;

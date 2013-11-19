@@ -18,19 +18,7 @@ package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  *
@@ -91,6 +79,11 @@ public class PerDireccion implements Serializable {
     @JoinColumn(name = "COD_LOCALIDAD", referencedColumnName = "COD_LOCALIDAD")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParLocalidad codLocalidad;
+    //Variable auxiliar
+    //Se utiliza para mostrar las descripcion de la tabla dominio, por que
+    // en BD se almacena el valor.
+    @Transient
+    private String tipoDireccionAuxiliar;
 
     public PerDireccion() {
     }
@@ -251,6 +244,14 @@ public class PerDireccion implements Serializable {
 
     public void setCodLocalidad(ParLocalidad codLocalidad) {
         this.codLocalidad = codLocalidad;
+    }
+
+    public String getTipoDireccionAuxiliar() {
+        return tipoDireccionAuxiliar;
+    }
+
+    public void setTipoDireccionAuxiliar(String tipoDireccionAuxiliar) {
+        this.tipoDireccionAuxiliar = tipoDireccionAuxiliar;
     }
 
     @Override

@@ -19,6 +19,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -41,7 +42,6 @@ import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
 public class PersonaUnidadBean implements Serializable{
 
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-   // private HttpSession session;
 
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
@@ -114,8 +114,12 @@ public class PersonaUnidadBean implements Serializable{
 
 
     //Sirve para mostrar
+    //DIRECCCION
     private String departamentoDireccinoPrincipal;
     private String tipoDireccionPrincipal;
+    //UNIDAD
+    private String tipoSociedadPrincipal;
+    private String tipoEmpresaPrincipal;
 
     private PerReplegal repLegal;
     private List<PerReplegal> listaRepLegal;
@@ -128,7 +132,29 @@ public class PersonaUnidadBean implements Serializable{
     private ParActividadEconomica actividadEconomica;
     private List<ParActividadEconomica>listaActividadEconomica;
 
+    private List<SelectItem>listaCodActividadEconomica;
+
+    public ExternalContext getExternalContext() {
+        return externalContext;
+    }
+
+    public void setExternalContext(ExternalContext externalContext) {
+        this.externalContext = externalContext;
+    }
+
+    private String codigoActividadEconomicaPrincipal;
+
+    public Long getIdActividadEconomicaPrincipal() {
+        return idActividadEconomicaPrincipal;
+    }
+
+    public void setIdActividadEconomicaPrincipal(Long idActividadEconomicaPrincipal) {
+        this.idActividadEconomicaPrincipal = idActividadEconomicaPrincipal;
+    }
+
+    private Long idActividadEconomicaPrincipal;
     private ParActividadEconomica actividadEconomicaPrincipal;
+
 
     private PerUnidad unidadRegistro;
 
@@ -169,6 +195,7 @@ public class PersonaUnidadBean implements Serializable{
 
     public  void cargar(){
         cargarLocalidad();
+        cargarCodigoActividadEconomica();
         listaTipoEmpresa=cargarListas(listaTipoEmpresa,DOM_TIPOS_EMPRESA);
         listaTipoSociedad=cargarListas(listaTipoEmpresa,DOM_TIPOS_SOCIEDAD);
         listaTipoIdentificacion=cargarListas(listaTipoEmpresa,DOM_TIPOS_IDENTIFICACION);
@@ -196,12 +223,19 @@ public class PersonaUnidadBean implements Serializable{
         List<PerUnidad>listaUnidadAux=iUnidadService.buscarPorPersona(persona.getIdPersona());
         //setea la unidad principal
         unidad=listaUnidadAux.get(listaUnidadAux.size()-1);
+        tipoSociedadPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_SOCIEDAD,unidad.getTipoSociedad()).getDescripcion();
+        tipoEmpresaPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_EMPRESA,unidad.getTipoEmpresa()).getDescripcion();
         // carga la varible listaUnidad desde el primer registro hasta el penultimo
         // se carga asi, por que en el ultimo registro esta la unidadPrincipal
        listaUnidad=listaUnidadAux.subList(0,listaUnidadAux.size()-1);
+        for(PerUnidad u:listaUnidad){
+            u.setTipoEmpresaAuxiliar(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_EMPRESA,u.getTipoEmpresa()).getDescripcion());
+            u.setTipoSociedadAuxiliar(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_SOCIEDAD,u.getTipoSociedad()).getDescripcion());
+        }
     }
 
     public void nuevo(){
+        unidadRegistro=new PerUnidad();
         direccion=new PerDireccion();
         repLegal=new PerReplegal();
         actividadPrincipal=new PerActividad();
@@ -316,10 +350,12 @@ public class PersonaUnidadBean implements Serializable{
                     for (int j=listaUnidad.size()-1;j>=0;j--){
                         if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==unidad.getPerUnidadPK().getIdUnidad()){
                             direccionPrincipal= listaDireccion.get(i);
-                            tipoDireccionPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_DIRECCION,(listaDireccion.get(i).getTipoDireccion())).getDescripcion();
+                            tipoDireccionPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_DIRECCION,listaDireccion.get(i).getTipoDireccion()).getDescripcion();
+
                             break;
                         } else {
                             if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
+                                listaDireccion.get(i).setTipoDireccionAuxiliar(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_DIRECCION,listaDireccion.get(i).getTipoDireccion()).getDescripcion());
                                 listaUnidad.get(j).setDireccion(listaDireccion.get(i));
                                 break;
                             }
@@ -328,6 +364,8 @@ public class PersonaUnidadBean implements Serializable{
                 }
         }
     }
+
+
     public void cargarLocalidad(){
         try {
             List<ParLocalidad>localidades=new ArrayList<ParLocalidad>();
@@ -342,6 +380,8 @@ public class PersonaUnidadBean implements Serializable{
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
+
+
 
     /*
      *******************************************
@@ -442,6 +482,9 @@ public class PersonaUnidadBean implements Serializable{
 
         //Cambiar por el usuario de la session
         String registroPersona=  persona.getNombreRazonSocial();
+       ParActividadEconomica actvEcon=iActividadEconomicaService.findByIdActividadEconomica(idActividadEconomicaPrincipal);
+        actividadEconomica.setCodActividadEconomica(actvEcon.getCodActividadEconomica());
+        actividadEconomica.setIdActividadEconomica2(actvEcon);
         iActividadEconomicaService.save(actividadEconomica,unidad,registroPersona);
 
         ini();
@@ -459,7 +502,27 @@ public class PersonaUnidadBean implements Serializable{
                 //se obtiene el primer registro, por que una persona solo tiene
                 // una actividad declarada
                 actividadEconomicaPrincipal=listaActividad.get(0).getIdActividadEconomica();
+                codigoActividadEconomicaPrincipal= iActividadEconomicaService.findByIdActividadEconomica(actividadEconomicaPrincipal.getIdActividadEconomica2().getIdActividadEconomica()).getDescripcion();
+              //  iActividadEconomicaService.obtenerActividadEconomicaParaRegistro()
             }
+        }
+    }
+
+    public void cargarCodigoActividadEconomica(){
+        try {
+            List<ParActividadEconomica>listaCodActEconomica=new ArrayList<ParActividadEconomica>();
+            listaCodActividadEconomica=new ArrayList<SelectItem>();
+            List<BigDecimal>lista=new ArrayList<BigDecimal>();
+            lista  =iActividadEconomicaService.obtenerActividadEconomicaParaRegistro();
+            //listaCodActEconomica
+            for (BigDecimal actv2:lista){
+
+               ParActividadEconomica actv= iActividadEconomicaService.findByIdActividadEconomica(actv2.longValue());
+                listaCodActividadEconomica.add(new SelectItem(actv.getIdActividadEconomica(),actv.getCodActividadEconomica()+".- "+actv.getDescripcion()));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 
@@ -594,10 +657,13 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public PerDireccion getDireccion() {
+
+
         return direccion;
     }
 
     public void setDireccion(PerDireccion direccion) {
+        idLocalidad=iLocalidadService.findById(direccion.getCodLocalidad().getCodLocalidad()).getCodLocalidad();
         this.direccion = direccion;
     }
 
@@ -791,6 +857,7 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public void setActividadEconomicaPrincipal(ParActividadEconomica actividadEconomicaPrincipal) {
+
         this.actividadEconomicaPrincipal = actividadEconomicaPrincipal;
     }
 
@@ -816,5 +883,37 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setTipoDireccionPrincipal(String tipoDireccionPrincipal) {
         this.tipoDireccionPrincipal = tipoDireccionPrincipal;
+    }
+
+    public String getTipoSociedadPrincipal() {
+        return tipoSociedadPrincipal;
+    }
+
+    public void setTipoSociedadPrincipal(String tipoSociedadPrincipal) {
+        this.tipoSociedadPrincipal = tipoSociedadPrincipal;
+    }
+
+    public String getTipoEmpresaPrincipal() {
+        return tipoEmpresaPrincipal;
+    }
+
+    public void setTipoEmpresaPrincipal(String tipoEmpresaPrincipal) {
+        this.tipoEmpresaPrincipal = tipoEmpresaPrincipal;
+    }
+
+    public List<SelectItem> getListaCodActividadEconomica() {
+        return listaCodActividadEconomica;
+    }
+
+    public void setListaCodActividadEconomica(List<SelectItem> listaCodActividadEconomica) {
+        this.listaCodActividadEconomica = listaCodActividadEconomica;
+    }
+
+    public String getCodigoActividadEconomicaPrincipal() {
+        return codigoActividadEconomicaPrincipal;
+    }
+
+    public void setCodigoActividadEconomicaPrincipal(String codigoActividadEconomicaPrincipal) {
+        this.codigoActividadEconomicaPrincipal = codigoActividadEconomicaPrincipal;
     }
 }
