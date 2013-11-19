@@ -119,11 +119,6 @@ public class CotizacionMultasBean implements Serializable {
     }
 
     public String calcularMultaPorMora() {
-        System.out.println("=========================================");
-        System.out.println("=========================================");
-        System.out.println("calcularMultaPorMora");
-        System.out.println("=========================================");
-        System.out.println("=========================================");
         if (fechaInicioActividades == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar la fecha de inicio de actividades."));
             return "";
@@ -150,17 +145,11 @@ public class CotizacionMultasBean implements Serializable {
         multaPorNoContarConElRoe = multaRangoNumeroTrabajadores.getFactor();
         //
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        System.out.println("fecha INICIO " + sdf.format(fechaInicioActividades));
-        System.out.println("fecha LIMITE " + sdf.format(fechaLimitePlazo));
-
         long diferenciaFechas = fechaPresentacionRoe.getTime() - fechaLimitePlazo.getTime();
         diasTranscurridos = (int) (diferenciaFechas / (1000 * 60 * 60 * 24));
 
         //
         multa = iMultaService.buscarTipoMulta("Multa 2");
-        System.out.println("ID multa: " + multa.getIdMulta());
-        System.out.println("Dias transcurridos: " + diasTranscurridos);
         multaRangoDiasTranscurridos = iMultaRangoService.buscarPorRango(multa.getIdMulta(), new BigDecimal(diasTranscurridos));
         if (multaRangoDiasTranscurridos == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se encontro un rango, para los días transcurridos."));
@@ -172,7 +161,6 @@ public class CotizacionMultasBean implements Serializable {
         }
         //
         totalAPagarParaObtenerRoe = (multaRangoDiasTranscurridos.getFactor().multiply(totalGanadoDeLaPlanillaRoe)).add(multaPorNoContarConElRoe);
-        System.out.println("totalAPagarParaObtenerRoe: " + totalAPagarParaObtenerRoe);
         return "";
     }
 
@@ -203,12 +191,6 @@ public class CotizacionMultasBean implements Serializable {
     }
 
     public String calcularMultaPlanillaTrimestral() {
-        System.out.println("===============================0");
-        System.out.println("===============================0");
-        System.out.println("Numero trabajadores: "+numeroTrabajadoresPlanillaTrimestral);
-        System.out.println("===============================0");
-        System.out.println("===============================0");
-        System.out.println("numeroTrabajadoresPlanillaTrimestral: "+numeroTrabajadoresPlanillaTrimestral);
         if (fechaLimitePlazoPlanillaTrimestral == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar el campo Trimestre."));
             return "";
@@ -226,8 +208,6 @@ public class CotizacionMultasBean implements Serializable {
 
         //
         multa = iMultaService.buscarTipoMulta("Multa 2");
-        System.out.println("ID multa: " + multa.getIdMulta());
-        System.out.println("Dias diasTranscurridosPlanillaTrimestral: " + diasTranscurridosPlanillaTrimestral);
         multaRangoDiasTranscurridos = iMultaRangoService.buscarPorRango(multa.getIdMulta(), new BigDecimal(diasTranscurridosPlanillaTrimestral));
         if (multaRangoDiasTranscurridos == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se encontro un rango, para los días transcurridos."));
