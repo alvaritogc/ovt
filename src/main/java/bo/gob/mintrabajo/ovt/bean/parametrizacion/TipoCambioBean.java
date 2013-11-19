@@ -19,9 +19,11 @@ package bo.gob.mintrabajo.ovt.bean.parametrizacion;
 import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.api.IParametrizacionService;
 import bo.gob.mintrabajo.ovt.api.ITipoCambioService;
+import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.ParParametrizacion;
 import bo.gob.mintrabajo.ovt.entities.ParTipoCambio;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,9 +49,11 @@ public class TipoCambioBean implements Serializable{
     private IParametrizacionService iParametrizacionService;
     @ManagedProperty(value = "#{dominioService}")
     private IDominioService iDominioService;
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioService;
     
     private HttpSession session;
-    private Long idUsuario;
+    private UsrUsuario usuario;
     
     private List<ParTipoCambio> listaTipoCambio;
     private ParTipoCambio tipoCambioForm;
@@ -74,12 +78,12 @@ public class TipoCambioBean implements Serializable{
     
     @PostConstruct
     public void ini() {
-        idUsuario = null;
         fecha= new Date();
         tipoCambioForm= new ParTipoCambio();
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            idUsuario = (Long) session.getAttribute("idUsuario");
+            Long idUsuario = (Long) session.getAttribute("idUsuario");
+            usuario = iUsuarioService.findById(idUsuario);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -115,7 +119,8 @@ public class TipoCambioBean implements Serializable{
             monedaCambio=valorMonedaCambio(moneda1);
             moneda2=monedaCambio;
         }
-
+           System.out.println("===> moneda1" + moneda1);
+           System.out.println("===> moneda2" + moneda2);
         listaTipoCambio=iTipoCambioService.listaTipoDeCambios(moneda1, moneda2);
     }
     
@@ -148,7 +153,7 @@ public class TipoCambioBean implements Serializable{
     
     public void guardarModificar(){
         RequestContext context = RequestContext.getCurrentInstance();        
-        String  REGISTRO_BITACORA=idUsuario.toString();    
+        String  REGISTRO_BITACORA=usuario.getUsuario();
         try {
             if(!iTipoCambioService.saveTipoCambio(fecha, tipoCambioForm,REGISTRO_BITACORA,monedaBaseForm,monedaCambioForm, accion)){
                 context.execute("dlgMensajeInfo.show()");
@@ -432,5 +437,19 @@ public class TipoCambioBean implements Serializable{
      */
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    /**
+     * @return the iUsuarioService
+     */
+    public IUsuarioService getiUsuarioService() {
+        return iUsuarioService;
+    }
+
+    /**
+     * @param iUsuarioService the iUsuarioService to set
+     */
+    public void setiUsuarioService(IUsuarioService iUsuarioService) {
+        this.iUsuarioService = iUsuarioService;
     }
 }

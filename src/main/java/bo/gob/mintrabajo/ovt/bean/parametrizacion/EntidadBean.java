@@ -5,10 +5,12 @@ import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IUnidadService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.api.IDominioService;
+import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.ParEntidad;
 import bo.gob.mintrabajo.ovt.entities.PerPersona;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,9 +43,11 @@ public class EntidadBean implements Serializable{
     private IUtilsService iUtilsService;
     @ManagedProperty(value = "#{dominioService}")
     private IDominioService iDominioService;
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioService;
     
      private HttpSession session;
-    private Long idUsuario;
+    private UsrUsuario usuario;
     
     private List<ParEntidad> listaEntidad;
     
@@ -59,15 +63,14 @@ public class EntidadBean implements Serializable{
 
     @PostConstruct
     public void ini() {
-        idUsuario = null;
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            idUsuario = (Long) session.getAttribute("idUsuario");
+            Long idUsuario = (Long) session.getAttribute("idUsuario");
+            usuario = iUsuarioService.findById(idUsuario);
         } catch (Exception e) {
             e.printStackTrace();
         }
         listaEntidad =new ArrayList<ParEntidad>();
-        //listaEntidad= iEntidadService.listaEntidad();
         listaEntidad= iEntidadService.listaEntidadPorOrden();
         listaDominio = new ArrayList<ParDominio>();
         listaDominio = iDominioService.obtenerItemsDominio("TENTIDAD");
@@ -94,8 +97,10 @@ public class EntidadBean implements Serializable{
     }
     
     public void guardarModificar(){
+        if(entidad.getCodigo().trim().isEmpty()){return;}
+        if(entidad.getDescripcion().trim().isEmpty()){return;}
         RequestContext context = RequestContext.getCurrentInstance();        
-        final String  REGISTRO_BITACORA=idUsuario.toString();        
+        final String  REGISTRO_BITACORA=usuario.getUsuario();
         try {
             ParEntidad pe = iEntidadService.saveEntidad(entidad,REGISTRO_BITACORA,unidad, evento);
             nuevo();
@@ -296,6 +301,20 @@ public class EntidadBean implements Serializable{
      */
     public void setSw(String sw) {
         this.sw = sw;
+    }
+
+    /**
+     * @return the iUsuarioService
+     */
+    public IUsuarioService getiUsuarioService() {
+        return iUsuarioService;
+    }
+
+    /**
+     * @param iUsuarioService the iUsuarioService to set
+     */
+    public void setiUsuarioService(IUsuarioService iUsuarioService) {
+        this.iUsuarioService = iUsuarioService;
     }
 
 }

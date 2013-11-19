@@ -7,6 +7,7 @@ import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 import bo.gob.mintrabajo.ovt.repositories.CalendarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.ObligacionCalendarioRepository;
+import bo.gob.mintrabajo.ovt.repositories.ObligacionRepository;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -29,16 +30,20 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
 
     private final ObligacionCalendarioRepository obligacionCalendarioRepository;
     private final CalendarioRepository calendarioRepository;
+    private final ObligacionRepository obligacionRepository;
+    
     
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
     
     
+    
 
     @Inject
-    public ObligacionCalendarioService(ObligacionCalendarioRepository obligacionCalendarioRepository,CalendarioRepository calendarioRepository) {
+    public ObligacionCalendarioService(ObligacionCalendarioRepository obligacionCalendarioRepository,CalendarioRepository calendarioRepository, ObligacionRepository obligacionRepository) {
         this.obligacionCalendarioRepository = obligacionCalendarioRepository;
         this.calendarioRepository=calendarioRepository;
+        this.obligacionRepository=obligacionRepository;
     }
     
     @Override
@@ -67,7 +72,7 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
     
     @Override
     public ParObligacionCalendario saveObligacionCalendario(ParObligacionCalendario obligacionCalendario, 
-        String gestion, String periodo,String REGISTRO_BITACORA, ParObligacion parObligacion, boolean evento){               
+        String gestion, String periodo,String REGISTRO_BITACORA, String parObligacion, boolean evento){               
         ParObligacionCalendario poc=new ParObligacionCalendario();
         ParCalendario pc=new ParCalendario();      
         
@@ -76,11 +81,11 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         }else{
             poc=obligacionCalendarioRepository.findOne(obligacionCalendario.getIdObligacionCalendario());
         }
-        poc.setCodObligacion(parObligacion);
-        poc.setTipoCalendario(obligacionCalendario.getTipoCalendario());
         pc=calendarioRepository.obtenerCalendarioPorGestionYPeriodo(gestion, periodo);
-
         poc.setParCalendario(pc);
+        poc.setCodObligacion(obligacionRepository.findOne(parObligacion));
+        poc.setTipoCalendario(obligacionCalendario.getTipoCalendario());
+           
         poc.setFechaDesde(obligacionCalendario.getFechaDesde());
         poc.setFechaHasta(obligacionCalendario.getFechaHasta());
         poc.setFechaPlazo(obligacionCalendario.getFechaPlazo());
