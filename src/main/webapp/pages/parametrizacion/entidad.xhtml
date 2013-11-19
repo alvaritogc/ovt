@@ -60,19 +60,19 @@
                 <p:growl id="growl" />
                 <h:form id="formEntidad">     
                 <h:panelGrid columns="2" cellpadding="5" id="pnlGridEntidad">  
-                    <h:outputLabel for="descripcion" value="Descripción:" style="font-weight:bold"/>  
+                    <p:outputLabel for="descripcion" value="Descripción:" style="font-weight:bold"/>  
                     <p:inputText id="descripcion" value="#{entidadBean.entidad.descripcion}" required="true" 
                                  requiredMessage="Debe ingresar el campo Descripcion" maxlength="120" style="text-transform: uppercase;">
-                    <f:converter converterId="lowerConverter"/>
+                        <f:converter converterId="lowerConverter"/>
                     </p:inputText>     
                     
-                    <h:outputLabel for="codigo" value="Codigo interno:" style="font-weight:bold"/>  
+                    <p:outputLabel for="codigo" value="Codigo interno:" style="font-weight:bold"/>  
                     <p:inputText id="codigo" value="#{entidadBean.entidad.codigo}" required="true" 
                                  requiredMessage="Debe ingresar el campo Codigo" maxlength="20" style="text-transform: uppercase;">
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>
                     
-                    <h:outputLabel for="tipoEntidad" value="Tipo entidad:" style="font-weight:bold"/>
+                    <p:outputLabel for="tipoEntidad" value="Tipo entidad:" style="font-weight:bold"/>
                     <p:selectOneMenu id="tipoEntidad" value="#{entidadBean.entidad.tipoEntidad}" required="true" requiredMessage="Debe eleccionar el Tipo de Entidad">  
                             <f:selectItem itemLabel="---Seleccione tipo de entidad---" itemValue="" />
                             <f:selectItems value="#{entidadBean.listaDominio}" var="do" itemLabel="#{do.descripcion}" itemValue="#{do.parDominioPK.valor}"/>

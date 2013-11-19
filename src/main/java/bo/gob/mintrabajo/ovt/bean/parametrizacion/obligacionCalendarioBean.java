@@ -20,11 +20,13 @@ import bo.gob.mintrabajo.ovt.api.ICalendarioService;
 import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
 import bo.gob.mintrabajo.ovt.api.IObligacionService;
+import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.ParCalendario;
 import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.ParObligacion;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +56,11 @@ public class obligacionCalendarioBean implements Serializable{
     private IDominioService iDominioService;
     @ManagedProperty(value = "#{calendarioService}")
     private ICalendarioService iCalendarioService;
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioService;
     
     private HttpSession session;
-    private Long idUsuario;
+    private UsrUsuario usuario;
     
     private List<ParObligacionCalendario> listaObligacionCalendario;
     private ParObligacionCalendario obligacionCalendario= new ParObligacionCalendario();
@@ -68,20 +72,19 @@ public class obligacionCalendarioBean implements Serializable{
     private List<ParDominio> listaDominioPeriodo;
     private List<ParCalendario> listaCalendario;
     private ParObligacion obligacion= new ParObligacion();
-    private String codObligacion="";
-    private String codObligacionForm="";
+    private String codObligacion;
+    private String codObligacionForm;
     private String gestion;
     private String periodo;
     private List<Integer> listaAnio;
     private Integer anioActual;
-            
     
     @PostConstruct
     public void ini() {
-        idUsuario = null;
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            idUsuario = (Long) session.getAttribute("idUsuario");
+            Long idUsuario = (Long) session.getAttribute("idUsuario");
+            usuario = iUsuarioService.findById(idUsuario);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,9 +92,7 @@ public class obligacionCalendarioBean implements Serializable{
         listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendarioOrdenadoPorDescripcionDeObligacion();
         listaObligacion= new ArrayList<ParObligacion>();
         listaObligacion= iObligacionService.listaObligacion();
-        listaDominio = new ArrayList<ParDominio>();
-        listaDominio = iDominioService.obtenerItemsDominio("TCALENDARIO");
-        listaCalendario = new ArrayList<ParCalendario>();
+        nuevo();
     }
     
     public void listarPeriodo(){
@@ -108,7 +109,8 @@ public class obligacionCalendarioBean implements Serializable{
         }
     }
     
-    public void listaGestiong(){
+    public void cargarListaPeriodo(){
+        listaDominioPeriodo = iDominioService.obtenerDominioPorNombrePadreYValorPadre("TCALENDARIO",obligacionCalendario.getTipoCalendario());
         listaCalendario=iCalendarioService.listaCalendarioPorTipoPeriodoTipoCalendario(periodo, obligacionCalendario.getTipoCalendario());
     }
     
@@ -122,18 +124,9 @@ public class obligacionCalendarioBean implements Serializable{
     
     public void guardarModificar(){
         RequestContext context = RequestContext.getCurrentInstance();
-        
-        ParObligacion parObligacion= new ParObligacion();
-        parObligacion= iObligacionService.obligacionPorCod(codObligacionForm);
-        
-        String  REGISTRO_BITACORA=idUsuario.toString();
-        System.out.println("===>obligacionCalendario "+obligacionCalendario);
-        System.out.println("===>gestion " +gestion);
-        System.out.println("===>periodo " +periodo);
-        System.out.println("===>parObligacion "+ parObligacion);
-        System.out.println("===>evento "+evento);
+        String  REGISTRO_BITACORA=usuario.getUsuario();
         try {
-            ParObligacionCalendario ob = iObligacionCalendarioService.saveObligacionCalendario(obligacionCalendario,gestion, periodo, REGISTRO_BITACORA, parObligacion, evento);
+            ParObligacionCalendario ob = iObligacionCalendarioService.saveObligacionCalendario(obligacionCalendario,gestion, periodo, REGISTRO_BITACORA, codObligacionForm, evento);
             context.execute("dlgFormObligacionCalendario.hide();");
             nuevo();
             listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendarioOrdenadoPorDescripcionDeObligacion();
@@ -144,7 +137,11 @@ public class obligacionCalendarioBean implements Serializable{
     }
     
     public void nuevo(){
+        listaDominio = new ArrayList<ParDominio>();
+        listaDominio = iDominioService.obtenerItemsDominio("TCALENDARIO");
         obligacionCalendario=new ParObligacionCalendario();
+        listaDominioPeriodo= new ArrayList<ParDominio>();
+        listaCalendario=new ArrayList<ParCalendario>();
         evento=false;
         codObligacion="";
         codObligacionForm="";
@@ -153,15 +150,19 @@ public class obligacionCalendarioBean implements Serializable{
     }
     
     public void confirmaEliminar(){  
+        RequestContext context = RequestContext.getCurrentInstance();
         try {
-            if(iObligacionCalendarioService.deleteObligacionCalendario(obligacionCalendario)){
-                //listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendario();
+            boolean tmp =iObligacionCalendarioService.deleteObligacionCalendario(obligacionCalendario);
+            if(tmp){
                 listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendarioOrdenadoPorDescripcionDeObligacion();
                 obligacionCalendario=new ParObligacionCalendario();
+            }else{
+                context.execute("dlgMensaje.show()");
             }
         } catch (Exception e) {
+            context.execute("dlgMensaje.show()");
             e.printStackTrace();
-        }
+        }        
     } 
 
     /**
@@ -247,20 +248,6 @@ public class obligacionCalendarioBean implements Serializable{
     public void setiObligacionService(IObligacionService iObligacionService) {
         this.iObligacionService = iObligacionService;
     }
-//
-//    /**
-//     * @return the listaObligacion
-//     */
-//    public List<SelectItem> getListaObligacion() {
-//        return listaObligacion;
-//    }
-//
-//    /**
-//     * @param listaObligacion the listaObligacion to set
-//     */
-//    public void setListaObligacion(List<SelectItem> listaObligacion) {
-//        this.listaObligacion = listaObligacion;
-//    }
 
     /**
      * @return the obligacion
@@ -442,5 +429,19 @@ public class obligacionCalendarioBean implements Serializable{
      */
     public void setPeriodo(String periodo) {
         this.periodo = periodo;
+    }
+
+    /**
+     * @return the iUsuarioService
+     */
+    public IUsuarioService getiUsuarioService() {
+        return iUsuarioService;
+    }
+
+    /**
+     * @param iUsuarioService the iUsuarioService to set
+     */
+    public void setiUsuarioService(IUsuarioService iUsuarioService) {
+        this.iUsuarioService = iUsuarioService;
     }
 }
