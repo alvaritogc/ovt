@@ -16,7 +16,7 @@
 
                     <p:tab  id="idTabRoe">
                         <f:facet name="title">
-                            <p:graphicImage value="/images/unidad.png"/>
+                            <p:graphicImage value="/images/cajaRegistradora.png"/>
                             <h:outputText value=" ROE"/>
                         </f:facet>
                         <br/>
@@ -28,10 +28,13 @@
                         <p:growl id="messages1" showDetail="true"/>
                         <p:panel id="pnlRoe1">
                             <h:panelGrid columns="3" style="width: 100%;">
-                                <p:outputLabel value="Fecha Inicio actividades :"/>
-                                <p:calendar value="#{cotizacionMultasBean.fechaInicioActividades}" showOn="button">
+                                <p:outputLabel for="idFechaInicioActividadesRoe" value="Fecha Inicio actividades :"/>
+                                <p:calendar value="#{cotizacionMultasBean.fechaInicioActividades}" 
+                                            id="idFechaInicioActividadesRoe"
+                                            locale="es"
+                                            showOn="button">
                                     <p:ajax event="dateSelect" listener="#{cotizacionMultasBean.calcularFechaLimiteRoe}" 
-                                            update="@all"/>
+                                            update="pnlRoe1"/>
                                 </p:calendar>  
                                 <p:outputLabel value=""/>
 
@@ -47,18 +50,17 @@
                                 </p:outputLabel>
                                 <p:outputLabel value=""/>
 
-                                <p:outputLabel value="Número de trabajadores: "/>    
-                                <p:inputText value="#{cotizacionMultasBean.numeroTrabajadores}"/>
+                                <p:outputLabel for="idNumeroTrabajadoresRoe" value="Número de trabajadores: "/>    
+                                <p:inputText id="idNumeroTrabajadoresRoe" 
+                                             required="true"
+                                             value="#{cotizacionMultasBean.numeroTrabajadores}"/>
                                 <p:outputLabel value=""/>
 
-                                <p:outputLabel value="Total ganado de la planilla: "/>    
-                                <p:inputText value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaRoe}"/>
-                                <p:commandButton value="Calcular con multa por días de retraso " 
-                                                 action="#{cotizacionMultasBean.calcularMultaPorMora}" style="width: 130px;" 
-                                                 update=":idCotizacionMultas:idTabRoe"
-                                                 ajax="false" />
-
-
+                                <p:outputLabel for="idTotalGanadoDeLaPlanillaRoe" value="Total ganado de la planilla: "/>    
+                                <p:inputText id="idTotalGanadoDeLaPlanillaRoe" 
+                                             required="true"
+                                             value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaRoe}"/>
+                                <p:outputLabel value=""/>  
                             </h:panelGrid>
                         </p:panel>
                         <br/>
@@ -74,10 +76,16 @@
                                 <p:inputText value="#{cotizacionMultasBean.totalAPagarParaObtenerRoe}" readonly="true"/>
                             </h:panelGrid>
                         </p:panel>
+                        <br/>
+                        <p:commandButton value="Calcular con multa por días de retraso " 
+                                         action="#{cotizacionMultasBean.calcularMultaPorMora}" 
+                                         update=":idCotizacionMultas:idTabRoe"
+                                         ajax="false" />
+                        <br/>
                     </p:tab>
                     <p:tab  id="idTabPlanilla">
                         <f:facet name="title">
-                            <p:graphicImage value="/images/unidad.png"/>
+                            <p:graphicImage value="/images/libreta.png"/>
                             <h:outputText value=" Planilla trimestral"/>
                         </f:facet>
                         <br/>
@@ -86,12 +94,13 @@
 
                         <p:growl id="messages2" showDetail="true"/>
                         <p:panel id="pnlPlanillaTrimestral1">
-                            <p:panelGrid columns="3" style="width: 100%;">
-                                <p:outputLabel value="Trimestre: "/>
-                                <p:selectOneMenu id="tipoPeriodo" value="#{cotizacionMultasBean.idObligacionCalendario}" style="text-transform: uppercase; width: 245px">  
+                            <h:panelGrid columns="3" style="width: 100%;">
+                                <p:outputLabel for="idSomObligacionCalendario" value="Trimestre: "/>
+                                <p:selectOneMenu id="idSomObligacionCalendario" 
+                                                 value="#{cotizacionMultasBean.idObligacionCalendario}" style="text-transform: uppercase; width: 245px">  
                                     <f:selectItem itemLabel="Seleccione"/>
                                     <f:selectItems value="#{cotizacionMultasBean.listaObligacionCalendario}" var="oc" 
-                                                   itemLabel="#{oc.parCalendario.parCalendarioPK.gestion} #{oc.parCalendario.parCalendarioPK.tipoPeriodo}" 
+                                                   itemLabel="#{oc.parCalendario.parCalendarioPK.gestion} / #{oc.parCalendario.parCalendarioPK.tipoPeriodo}" 
                                                    itemValue="#{oc.idObligacionCalendario}" />
                                     <p:ajax update="idTabPlanilla"  listener="#{cotizacionMultasBean.calcularFechaLimitePlanillaTrimestral}" />  
                                 </p:selectOneMenu>
@@ -109,27 +118,37 @@
                                 </p:outputLabel>
                                 <p:outputLabel value=""/>
 
-                                <p:outputLabel value="Número de trabajadores: "/>    
-                                <p:inputText value="#{cotizacionMultasBean.numeroTrabajadoresPlanillaTrimestral}"/>
+                                <p:outputLabel for="idNumeroTrabajadoresPlanillaTrimestral" value="Número de trabajadores: "/>    
+                                <p:inputText id="idNumeroTrabajadoresPlanillaTrimestral" 
+                                             required="true"
+                                             value="#{cotizacionMultasBean.numeroTrabajadoresPlanillaTrimestral}"/>
                                 <p:outputLabel value=""/>
 
-                                <p:outputLabel value="Total ganado de la planilla: "/>    
-                                <p:inputText value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaTrimestral}"/>
-                                <p:commandButton value="Calcular con multa por días de retraso " 
-                                                 action="#{cotizacionMultasBean.calcularMultaPlanillaTrimestral}" 
-                                                 update=":idCotizacionMultas:idTabPlanilla"
-                                                 ajax="false"/>
-                            </p:panelGrid>
+                                <p:outputLabel for="idTotalGanadoDeLaPlanillaTrimestral" value="Total ganado de la planilla: "/>    
+                                <p:inputText value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaTrimestral}"
+                                             id="idTotalGanadoDeLaPlanillaTrimestral"
+                                             required="true"/>
+                                <p:outputLabel value=""/>
+                            </h:panelGrid>
 
                         </p:panel>
                         <br/>
                         <p:panel id="pnlPlanillaTrimestral2">
                             <h:panelGrid columns="2">
-                                <p:outputLabel value="Total:"/>
+                                <p:outputLabel value="Penalizacion por el número de trabajadores:"/>
+                                <p:outputLabel value="#{cotizacionMultasBean.multaPlanillaTrimestral} Bs." />
+                                <p:outputLabel value="Días de retraso:"/>
+                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridosPlanillaTrimestral}"/>
+                                <p:outputLabel value="Total a pagar:"/>
                                 <p:inputText value="#{cotizacionMultasBean.montoTotalPlanillaTrimestral}" readonly="true"/>
                             </h:panelGrid>
                         </p:panel>    
-
+                        <br/>
+                        <p:commandButton value="Calcular con multa por días de retraso " 
+                                         action="#{cotizacionMultasBean.calcularMultaPlanillaTrimestral}" 
+                                         update=":idCotizacionMultas:idTabPlanilla"
+                                         ajax="false"/>
+                        <br/>
                     </p:tab>
 
                 </p:tabView>

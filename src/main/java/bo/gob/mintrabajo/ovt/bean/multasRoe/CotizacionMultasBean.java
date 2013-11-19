@@ -55,7 +55,6 @@ public class CotizacionMultasBean implements Serializable {
     @ManagedProperty(value = "#{dominioService}")
     private IDominioService iDominioService;
     //
-    private int tabActiveIndex=0;
     //
     //Tab Roe
     private ParParametrizacion parametrizacion;
@@ -444,11 +443,11 @@ public class CotizacionMultasBean implements Serializable {
         this.idObligacionCalendario = idObligacionCalendario;
     }
 
-    public int getTabActiveIndex() {
-        return tabActiveIndex;
+    public BigDecimal getMultaPlanillaTrimestral() {
+        return multaPlanillaTrimestral;
     }
 
-    public void setTabActiveIndex(int tabActiveIndex) {
-        this.tabActiveIndex = tabActiveIndex;
+    public void setMultaPlanillaTrimestral(BigDecimal multaPlanillaTrimestral) {
+        this.multaPlanillaTrimestral = multaPlanillaTrimestral;
     }
 }
