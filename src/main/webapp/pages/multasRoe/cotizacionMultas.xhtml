@@ -69,26 +69,34 @@
                             </h:panelGrid>
                         </p:panel>
                         <br/>
-                        <p:panel id="pnlRoe2">
+                        <p:panel>
                             <h:panelGrid columns="2" >    
+                                <p:outputLabel value="Días de retraso:"/>
+                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridos}" style="text-align: right;"/>
+                            </h:panelGrid>
+                            <p:panelGrid columns="2" >
                                 <p:outputLabel value="Penalización por el número de trabajadores: "/>
                                 <pe:inputNumber value="#{cotizacionMultasBean.multaPorNoContarConElRoe}"
                                                 thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
                                                 disabled="true"
                                                 maxlength="10">
                                 </pe:inputNumber>
-                                
 
-                                <p:outputLabel value="Días de retraso:"/>
-                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridos}" style="text-align: right;"/>
+                                <p:outputLabel value="Penalización por los días de retraso: "/>
+                                <pe:inputNumber value="#{cotizacionMultasBean.multaRoeDiasDeRetraso}"
+                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
+                                                disabled="true"
+                                                maxlength="10">
+                                </pe:inputNumber>
 
-                                <p:outputLabel value="Total a pagar para obtener su ROE:"/>
+
+                                <p:outputLabel value="Total a pagar para obtener su ROE:" style="font: bold;font-size: 13px;"/>
                                 <pe:inputNumber value="#{cotizacionMultasBean.totalAPagarParaObtenerRoe}"
                                                 thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
                                                 disabled="true"
                                                 maxlength="10">
                                 </pe:inputNumber>
-                            </h:panelGrid>
+                            </p:panelGrid>
                         </p:panel>
                         <br/>
                         <p:commandButton value="Calcular con multa por días de retraso " 
@@ -107,7 +115,7 @@
                         <br/>
 
                         <p:growl id="messages2" showDetail="true"/>
-                        <p:panel id="pnlPlanillaTrimestral1">
+                        <p:panel>
                             <h:panelGrid columns="3" style="width: 100%;">
                                 <p:outputLabel for="idSomObligacionCalendario" value="Trimestre: "/>
                                 <p:selectOneMenu id="idSomObligacionCalendario" 
@@ -151,23 +159,33 @@
 
                         </p:panel>
                         <br/>
-                        <p:panel id="pnlPlanillaTrimestral2">
+                        <p:panel>
                             <h:panelGrid columns="2">
+                                <p:outputLabel value="Días de retraso:"/>
+                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridosPlanillaTrimestral}" style="text-align: right;"/>
+                                </h:panelGrid>
+                            <p:panelGrid columns="2">
                                 <p:outputLabel value="Penalizacion por el número de trabajadores:"/>
                                 <pe:inputNumber value="#{cotizacionMultasBean.multaPlanillaTrimestral}"
                                                 thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
                                                 disabled="true"
                                                 maxlength="10">
                                 </pe:inputNumber>
-                                <p:outputLabel value="Días de retraso:"/>
-                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridosPlanillaTrimestral}" style="text-align: right;"/>
-                                <p:outputLabel value="Total a pagar:"/>
+
+                                <p:outputLabel value="Penalización por los días de retraso: "/>
+                                <pe:inputNumber value="#{cotizacionMultasBean.multaPlanillaTrimestralDiasDeRetraso}"
+                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
+                                                disabled="true"
+                                                maxlength="10">
+                                </pe:inputNumber>
+
+                                <p:outputLabel value="Total a pagar:" style="font: bold;font-size: 13px;"/>
                                 <pe:inputNumber value="#{cotizacionMultasBean.montoTotalPlanillaTrimestral}"
                                                 thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
                                                 disabled="true"
                                                 maxlength="10">
                                 </pe:inputNumber>
-                            </h:panelGrid>
+                            </p:panelGrid>
                         </p:panel>    
                         <br/>
                         <p:commandButton value="Calcular con multa por días de retraso " 

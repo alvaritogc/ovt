@@ -72,6 +72,7 @@ public class CotizacionMultasBean implements Serializable {
     //
     private int diasTranscurridos;
     private BigDecimal totalAPagarParaObtenerRoe;
+    private BigDecimal multaRoeDiasDeRetraso;
     private String fechaLimiteRoe;
     //
     //Planilla trimestral
@@ -86,6 +87,7 @@ public class CotizacionMultasBean implements Serializable {
     private int numeroTrabajadoresPlanillaTrimestral;
     private BigDecimal multaPlanillaTrimestral;
     private BigDecimal totalGanadoDeLaPlanillaTrimestral;
+    private BigDecimal multaPlanillaTrimestralDiasDeRetraso;
     private BigDecimal montoTotalPlanillaTrimestral;
     //
 
@@ -105,7 +107,9 @@ public class CotizacionMultasBean implements Serializable {
         fechaLimitePlazo = null;
         fechaPresentacionRoe = new Date();
         diasTranscurridos = 0;
+        multaRoeDiasDeRetraso= BigDecimal.ZERO;
         totalAPagarParaObtenerRoe = BigDecimal.ZERO;
+        
     }
 
     public void calcularFechaLimiteRoe() {
@@ -160,7 +164,8 @@ public class CotizacionMultasBean implements Serializable {
             return "";
         }
         //
-        totalAPagarParaObtenerRoe = (multaRangoDiasTranscurridos.getFactor().multiply(totalGanadoDeLaPlanillaRoe)).add(multaPorNoContarConElRoe);
+        multaRoeDiasDeRetraso=(multaRangoDiasTranscurridos.getFactor().multiply(totalGanadoDeLaPlanillaRoe));
+        totalAPagarParaObtenerRoe = multaRoeDiasDeRetraso.add(multaPorNoContarConElRoe);
         return "";
     }
 
@@ -174,6 +179,7 @@ public class CotizacionMultasBean implements Serializable {
         numeroTrabajadoresPlanillaTrimestral=0;
         multaPlanillaTrimestral= BigDecimal.ZERO;
         totalGanadoDeLaPlanillaTrimestral=BigDecimal.ZERO;
+        multaPlanillaTrimestralDiasDeRetraso= BigDecimal.ZERO;
         montoTotalPlanillaTrimestral=BigDecimal.ZERO;
     }
     
@@ -218,7 +224,8 @@ public class CotizacionMultasBean implements Serializable {
             return "";
         }
         //
-        montoTotalPlanillaTrimestral = (multaRangoDiasTranscurridos.getFactor().multiply(totalGanadoDeLaPlanillaTrimestral)).add(multaPlanillaTrimestral);
+        multaPlanillaTrimestralDiasDeRetraso=(multaRangoDiasTranscurridos.getFactor().multiply(totalGanadoDeLaPlanillaTrimestral));
+        montoTotalPlanillaTrimestral = multaPlanillaTrimestralDiasDeRetraso.add(multaPlanillaTrimestral);
         //
         return "";
     }
@@ -429,5 +436,21 @@ public class CotizacionMultasBean implements Serializable {
 
     public void setMultaPlanillaTrimestral(BigDecimal multaPlanillaTrimestral) {
         this.multaPlanillaTrimestral = multaPlanillaTrimestral;
+    }
+
+    public BigDecimal getMultaPlanillaTrimestralDiasDeRetraso() {
+        return multaPlanillaTrimestralDiasDeRetraso;
+    }
+
+    public void setMultaPlanillaTrimestralDiasDeRetraso(BigDecimal multaPlanillaTrimestralDiasDeRetraso) {
+        this.multaPlanillaTrimestralDiasDeRetraso = multaPlanillaTrimestralDiasDeRetraso;
+    }
+
+    public BigDecimal getMultaRoeDiasDeRetraso() {
+        return multaRoeDiasDeRetraso;
+    }
+
+    public void setMultaRoeDiasDeRetraso(BigDecimal multaRoeDiasDeRetraso) {
+        this.multaRoeDiasDeRetraso = multaRoeDiasDeRetraso;
     }
 }
