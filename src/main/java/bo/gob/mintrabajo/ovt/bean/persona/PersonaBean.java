@@ -98,7 +98,7 @@ public class PersonaBean implements Serializable{
 
     private String confirmarContrasenia;
 
-    private  final int LONGITUD_MINIMA=3;
+    private  final int LONGITUD_MINIMA=7;
 
     @PostConstruct
     public void ini(){

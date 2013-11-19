@@ -101,7 +101,7 @@ public class TemplateInicioBean implements Serializable {
 
 
 
-    private  final int LONGITUD_MINIMA=3;
+    private  final int LONGITUD_MINIMA=7;
     
     //Variables para los servicios publicos
     private List<ParMensajeApp> listaMensajeApp;
