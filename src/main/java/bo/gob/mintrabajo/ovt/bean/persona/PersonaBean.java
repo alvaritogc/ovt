@@ -320,7 +320,7 @@ public class PersonaBean implements Serializable{
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
       usuario.setEsDelegado((short)0);
       usuario.setEsInterno((short) 0);
-      usuario.setClave(Util.crypt(usuario.getClave()));
+      usuario.setClave(Util.encriptaMD5(usuario.getClave()));
       ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO__USUARIO_SINCONFIRMAR);
       usuario.setEstadoUsuario(d.getParDominioPK().getValor());
         //usuario.setIdPersona(persona);
