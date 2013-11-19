@@ -14,6 +14,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class UsuarioAdministracionBean {
 
     private String idLocalidad;
     private String confirmarContrasenia;
+    private Date fechaNacimiento;
 
     private UsrUsuario usuarioSelected;
     private PerPersona personaSelected;
@@ -99,6 +101,7 @@ public class UsuarioAdministracionBean {
         perUnidadPK.setIdUnidad(iUtilsService.valorSecuencia("PER_UNIDAD_SEC"));
         unidadSelected.setPerUnidadPK(perUnidadPK);
         unidadSelected.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
+        unidadSelected.setFechaNacimiento(fechaNacimiento);
         usuarioSelected.setIdUsuario(iUtilsService.valorSecuencia("USR_USUARIO_SEC"));
         usuarioSelected.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION, PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
         iPersonaService.guardarUsuarioInterno(personaSelected, unidadSelected, usuarioSelected);
@@ -297,5 +300,13 @@ public class UsuarioAdministracionBean {
 
     public void setConfirmarContrasenia(String confirmarContrasenia) {
         this.confirmarContrasenia = confirmarContrasenia;
+    }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 }

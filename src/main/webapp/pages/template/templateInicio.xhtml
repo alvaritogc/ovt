@@ -261,8 +261,8 @@
                     </p:dialog>
 
                     <!-- Dialogo para el cambio obligatorio de login -->
-                    <p:dialog header="Cambio obligatorio de login" modal="true" widgetVar="cambioLoginObligadoDlg">
-                        <p style="color:RED;">LEA CON ATENCION:</p>
+                    <p:dialog header="Cambio obligatorio de login" modal="true" widgetVar="cambioLoginObligadoDlg" closable="false">
+                        <p style="color:RED;">LEA CON ATENCIÓN:</p>
                         <p style="color:#0069B1;">La cuenta con la que ingresó ya no es válida, usted debe cambiar el login</p>
                         <p style="color:#0069B1;">por una cuenta de correo electrónico válido y de su propiedad.</p>
                         <p style="color:#0069B1;">Completado este punto usted debe ingresar de nuevo al sistema con el nuevo login.</p>
@@ -299,7 +299,7 @@
                             <f:facet name="options">
                                 <p:commandLink value="Cambiar Contraseña" onclick="PF('dlgCambiarContrasenia').show();" style="color:#0069B1;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
                                 <br/>
-                                <p:commandLink value="ATENCION:Hacer click aquí!" onclick="PF('cambioLoginObligadoDlg').show();" style="color:RED;" update=":cambioObligatorio" rendered="#{!templateInicioBean.loginValido}" />
+                                <p:commandLink value="ATENCIÓN:Hacer click aquí!" onclick="PF('cambioLoginObligadoDlg').show();" style="color:RED;" update=":cambioObligatorio" rendered="#{!templateInicioBean.loginValido}" />
                             </f:facet>
                         </p:menubar> 
                     </h:form>
