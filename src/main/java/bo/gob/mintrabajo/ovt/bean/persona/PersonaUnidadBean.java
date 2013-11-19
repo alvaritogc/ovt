@@ -738,6 +738,7 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public void setActividadEconomica(ParActividadEconomica actividadEconomica) {
+       idActividadEconomicaPrincipal= actividadEconomica.getIdActividadEconomica2().getIdActividadEconomica();
         this.actividadEconomica = actividadEconomica;
     }
 
