@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean.administracion;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import org.primefaces.context.RequestContext;
@@ -102,6 +103,8 @@ public class UsuarioAdministracionBean {
         unidadSelected.setPerUnidadPK(perUnidadPK);
         unidadSelected.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
         unidadSelected.setFechaNacimiento(fechaNacimiento);
+        String passwordEncriptado = Util.encriptaMD5(usuarioSelected.getClave());
+        usuarioSelected.setClave(passwordEncriptado);
         usuarioSelected.setIdUsuario(iUtilsService.valorSecuencia("USR_USUARIO_SEC"));
         usuarioSelected.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION, PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
         iPersonaService.guardarUsuarioInterno(personaSelected, unidadSelected, usuarioSelected);
