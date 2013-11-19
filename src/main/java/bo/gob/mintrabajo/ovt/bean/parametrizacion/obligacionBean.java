@@ -17,7 +17,9 @@
 package bo.gob.mintrabajo.ovt.bean.parametrizacion;
 
 import bo.gob.mintrabajo.ovt.api.IObligacionService;
+import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.ParObligacion;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +40,11 @@ import org.primefaces.context.RequestContext;
 public class obligacionBean implements Serializable{
     @ManagedProperty(value = "#{obligacionService}")
     private IObligacionService iObligacionService;
+    @ManagedProperty(value = "#{usuarioService}")
+    private IUsuarioService iUsuarioService;
     
     private HttpSession session;
-    private Long idUsuario;
+    private UsrUsuario usuario;
     
     private List<ParObligacion> listaObligacion;
     
@@ -51,15 +55,14 @@ public class obligacionBean implements Serializable{
      
     @PostConstruct
     public void ini() {
-        idUsuario = null;
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            idUsuario = (Long) session.getAttribute("idUsuario");
+            Long idUsuario = (Long) session.getAttribute("idUsuario");
+            usuario = iUsuarioService.findById(idUsuario);
         } catch (Exception e) {
             e.printStackTrace();
         }
         listaObligacion =new ArrayList<ParObligacion>();
-        //listaObligacion= iObligacionService.listaObligacion();
         listaObligacion= iObligacionService.listaObligacionPorOrden();
         limpiar();
     }
@@ -67,7 +70,6 @@ public class obligacionBean implements Serializable{
     public void confirmaEliminar(){  
         try {
             if(iObligacionService.deleteObligacion(obligacion)){
-                //listaObligacion= iObligacionService.listaObligacion();
                 listaObligacion= iObligacionService.listaObligacionPorOrden();
                 limpiar();
             }
@@ -79,8 +81,10 @@ public class obligacionBean implements Serializable{
     } 
     
     public void guardarModificar(){
+        if(obligacion.getCodObligacion().trim().isEmpty()){return;}
+        if(obligacion.getDescripcion().trim().isEmpty()){return;}
         RequestContext context = RequestContext.getCurrentInstance();
-        final String  REGISTRO_BITACORA=idUsuario.toString();
+        final String  REGISTRO_BITACORA=usuario.getUsuario();
         try {
             if(iObligacionService.saveObligacion(obligacion, REGISTRO_BITACORA, estadoObligacion,evento)){
                 context.execute("dlgFormObligacion.hide();");
@@ -175,6 +179,20 @@ public class obligacionBean implements Serializable{
      */
     public void setEstadoObligacion(boolean estadoObligacion) {
         this.estadoObligacion = estadoObligacion;
+    }
+
+    /**
+     * @return the iUsuarioService
+     */
+    public IUsuarioService getiUsuarioService() {
+        return iUsuarioService;
+    }
+
+    /**
+     * @param iUsuarioService the iUsuarioService to set
+     */
+    public void setiUsuarioService(IUsuarioService iUsuarioService) {
+        this.iUsuarioService = iUsuarioService;
     }
     
 }

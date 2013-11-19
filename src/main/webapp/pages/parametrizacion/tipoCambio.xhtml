@@ -15,7 +15,7 @@
                     <h:outputLabel for="monedaBase" value="Moneda base:" style="font-weight:bold; "/>
                     <p:selectOneMenu id="monedaBase" value="#{tipoCambioBean.monedaBase}" >
                         <f:selectItems value="#{tipoCambioBean.listaMonedasBase}" var="mb" itemLabel="#{mb.descripcion}" itemValue="#{mb.parDominioPK.valor}"/>
-                        <p:ajax update="monedaCambio tabla" immediate="true"  
+                        <p:ajax update="monedaCambio tabla"  
                                 listener="#{tipoCambioBean.mostrarLista}" />
                     </p:selectOneMenu>
                     <h:outputLabel for="monedaCambio" value="Moneda cambio:" style="font-weight:bold"/>
@@ -95,38 +95,38 @@
                 <p:growl id="growl" />
                 <h:form id="formTipoCambio">     
                 <h:panelGrid columns="2" cellpadding="5" id="pnlGridTipoCambio">  
-                    <h:outputLabel for="fecha" value="Fecha:" style="font-weight:bold"/>
+                    <p:outputLabel for="fecha" value="Fecha:" style="font-weight:bold"/>
                     <p:calendar id="fecha" value="#{tipoCambioBean.fecha}" showOn="button" navigator="true" required="true" 
                                 disabled="#{!tipoCambioBean.accion}" pattern="dd/MM/yyyy"/> 
                     
-                    <h:outputLabel for="monedaBaseForm" value="Moneda base:" style="font-weight:bold"/> 
+                    <p:outputLabel for="monedaBaseForm" value="Moneda base:" style="font-weight:bold"/> 
                     <p:selectOneMenu id="monedaBaseForm" value="#{tipoCambioBean.monedaBaseForm}" disabled="#{!tipoCambioBean.accion}">
                         <f:selectItems value="#{tipoCambioBean.listaMonedasBase}" var="mb" itemLabel="#{mb.descripcion}" itemValue="#{mb.parDominioPK.valor}"/>
                         <p:ajax update="monedaCambioForm"  
                                 listener="#{tipoCambioBean.mostrarLista}" />
                     </p:selectOneMenu>
                     
-                    <h:outputLabel for="monedaCambioForm" value="Moneda cambio:" style="font-weight:bold"/>
+                    <p:outputLabel for="monedaCambioForm" value="Moneda cambio:" style="font-weight:bold"/>
                     <p:selectOneMenu id="monedaCambioForm"  value="#{tipoCambioBean.monedaCambioForm}" disabled="#{!tipoCambioBean.accion}">
                         <f:selectItems value="#{tipoCambioBean.listaMonedasCambio}" var="mc" itemLabel="#{mc.descripcion}" itemValue="#{mc.parDominioPK.valor}"/>
                     </p:selectOneMenu>
                     
-                    <h:outputLabel for="oficial" value="Oficial:" style="font-weight:bold"/> 
+                    <p:outputLabel for="oficial" value="Oficial:" style="font-weight:bold"/> 
                     <pe:inputNumber id="oficial" value="#{tipoCambioBean.tipoCambioForm.valorOficial}" requiredMessage="Debe llenar el campo de valor Ofifial"
                                 thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                     </pe:inputNumber>
                     
-                    <h:outputLabel for="venta" value="Venta:" style="font-weight:bold"/>  
+                    <p:outputLabel for="venta" value="Venta:" style="font-weight:bold"/>  
                     <pe:inputNumber id="venta" value="#{tipoCambioBean.tipoCambioForm.valorVenta}" requiredMessage="Debe llenar el campo de valor de Venta"
                                 thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                     </pe:inputNumber>
                     
-                    <h:outputLabel for="compra" value="Compra:" style="font-weight:bold"/>
+                    <p:outputLabel for="compra" value="Compra:" style="font-weight:bold"/>
                     <pe:inputNumber id="compra" value="#{tipoCambioBean.tipoCambioForm.valorCompra}" requiredMessage="Debe llenar el campo de valor de Compra"
                                 thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                     </pe:inputNumber>
                     
-                    <h:outputLabel for="otro" value="Otro:" style="font-weight:bold"/>
+                    <p:outputLabel for="otro" value="Otro:" style="font-weight:bold"/>
                     <pe:inputNumber id="otro" value="#{tipoCambioBean.tipoCambioForm.valorOtro}"
                                 thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" maxlength="10">
                     </pe:inputNumber>
@@ -136,7 +136,7 @@
                         <f:setPropertyActionListener target="#{tipoCambioBean.seleccion}" value="vista" />
                     </p:commandButton>
                     <p:commandButton value="Cancelar" icon="ui-icon-close" onclick="dlgTipoCambio.hide();"
-                                     immediate="true">
+                                     immediate="true" action="#{tipoCambioBean.nuevo}">
                         <f:setPropertyActionListener target="#{tipoCambioBean.seleccion}" value="vista" />
                         <f:setPropertyActionListener target="#{tipoCambioBean.accion}" value="true" />
                     </p:commandButton>
