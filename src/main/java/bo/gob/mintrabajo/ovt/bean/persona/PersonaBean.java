@@ -247,6 +247,14 @@ public class PersonaBean implements Serializable{
             ini();
             return ;
         }else{
+
+            if(!esNumero(persona.getNroIdentificacion())){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El valor del campo Nro. de identificacion debe ser numerico."));
+                ini();
+                return ;
+            }
+
             //validar que nro de identificacion sea unico
             if(iPersonaService.findByNroIdentificacion(persona.getNroIdentificacion())!=null){
                 FacesContext.getCurrentInstance().addMessage(null,
@@ -351,6 +359,17 @@ public class PersonaBean implements Serializable{
             context.execute("dlg.hide()");
         }
     }
+
+    //Valida si el parametro es numerico
+    private static boolean esNumero(String cadena){
+        try {
+            Integer.parseInt(cadena);
+            return true;
+        } catch (NumberFormatException nfe){
+            return false;
+        }
+    }
+
 
     public boolean validarEmail(String email){
         Pattern patron = Pattern.compile("^[\\w-\\.]+\\@[\\w\\.-]+\\.[a-z]{2,4}$");
