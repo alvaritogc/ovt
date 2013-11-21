@@ -33,12 +33,37 @@
                 <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
             </p:commandButton>
         </f:facet>
-        <h:panelGrid columns="2">
+
+            <h:panelGrid columns="2" >
+                <h:outputText value="Natural-Juridica:"/>
+                <p:selectBooleanCheckbox id="checkEsNatural" value="#{personaUnidadBean.persona.esNatural}"
+                                         disabled="true">
+                </p:selectBooleanCheckbox>
+
+                <p:outputLabel  value="Nombre o Razon social:"/>
+                <p:inputText readonly="true" value="#{personaUnidadBean.persona.nombreRazonSocial}" style="width: 480px;"/>
+
+
+                <h:outputText value="Apellido paterno:" rendered="#{!personaUnidadBean.persona.esNatural}"/>
+                <p:inputText readonly="true" value="#{personaUnidadBean.persona.apellidoPaterno}" />
+
+                <h:outputText value="Apellido materno:" rendered="#{!personaUnidadBean.persona.esNatural}"/>
+                <p:inputText readonly="true" value="#{personaUnidadBean.persona.apellidoMaterno}" />
+
+                <p:outputLabel  value="Nro. de identificacion:" />
+                <p:inputText readonly="true" value="#{personaUnidadBean.persona.nroIdentificacion}" />
+
+                <p:outputLabel  value="Identificacion:"/>
+                <p:inputText readonly="true" value="#{personaUnidadBean.persona.tipoIdentificacion}" />
+
+                <p:outputLabel value="Lugar de emision:"/>
+                <p:inputText readonly="true" value="#{personaUnidadBean.persona.codLocalidad.descripcion}" />
+
+
             <h:outputText value="Nombre comercial: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
-            <p:inputText value="#{personaUnidadBean.unidad.nombreComercial}" readonly="true" style="width: 505px;"/>
-        </h:panelGrid>
-        <h:panelGrid columns="2">
-            <h:panelGrid columns="2">
+            <p:inputText value="#{personaUnidadBean.unidad.nombreComercial}" readonly="true" style="width: 480px;"/>
+
+
                 <h:outputText value="Tipo de empresa:    &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
                 <p:inputText value="#{personaUnidadBean.tipoEmpresaPrincipal}" readonly="true" style="width: 190px;text-transform: uppercase"/>
 
@@ -51,8 +76,8 @@
                 <h:outputText value="Nro. AFP:"/>
                 <p:inputText value="#{personaUnidadBean.unidad.nroAfp}" readonly="true" style="width: 190px;"/>
 
-            </h:panelGrid>
-            <h:panelGrid columns="2">
+
+
                 <h:outputText/>
                 <h:outputText/>
                 <h:outputText value="Tipo de sociedad: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
@@ -63,25 +88,27 @@
                 <p:inputText value="#{personaUnidadBean.unidad.nroReferencial}" readonly="true" style="width: 190px;"/>
                 <h:outputText value="Nro. otro:"/>
                 <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 190px;"/>
-            </h:panelGrid>
-        </h:panelGrid>
-        <h:outputText value="Observaciones:&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+
+
+
+        <h:outputText value="Observaciones:"/>
         <p:inputTextarea id="txtAreaObservacion" value="#{personaUnidadBean.unidad.observaciones}"
                          rows="5"
                          cols="50"
                          autoResize="false"
-                         style="width: 510px;"
+                         style="width: 480px;"
                          tabindex="11"
                          readonly="true"/>
 
-        <h:panelGrid columns="2">
+
             <h:outputText value="Actividad declarada:&#xA0;&#xA0;&#xA0;&#xA0;"/>
             <p:inputTextarea id="txtAreaActividadDeclarada" value="#{personaUnidadBean.unidad.actividadDeclarada}"
                              rows="5"
                              cols="50" autoResize="false"
-                             style="width: 510px;"
+                             style="width: 480px;"
                              tabindex="10"
                              readonly="true"/>
-        </h:panelGrid>
+
+            </h:panelGrid>
     </p:panel>
 </ui:composition>

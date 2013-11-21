@@ -172,10 +172,23 @@ public class ServicioEnvioEmail implements Serializable {
         from=configuracion.get("from");
         subject=configuracion.get("subject");
         urlRedireccion = configuracion.get("urlRedireccion");
-        urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic");
-        String usuPassword = Util.crypt(usuario.getClave());
-        usuPassword.replace("==","");
-        urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
+        String sw=configuracion.get("sw");
+
+        //registroConfirmacion
+        if(sw.equals("0")){
+            urlRedireccion = urlRedireccion.concat("/registroConfirmacion.xhtml?codeUnic=#codeUnic&codeNam=#codeNam");
+            String usuPassword = Util.crypt(usuario.getClave());
+            urlRedireccion = urlRedireccion.replace("#codeNam", usuario.getUsuario());
+            urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
+        }
+        //olvido contrasenia
+        if(sw.equals("1")){
+            urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic");
+            String usuPassword = Util.crypt(usuario.getClave());
+            //usuPassword.replace("==","");
+            urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
+        }
+
 
         cuerpoMensaje = configuracion.get("cuerpoMensaje")+"\n"+urlRedireccion;
         password = configuracion.get("password");
@@ -183,6 +196,8 @@ public class ServicioEnvioEmail implements Serializable {
         port = configuracion.get("port");
         //getTo().add("aquiroz@mc4.com.bo");
         getTo().add(usuario.getUsuario());
+
+
 
 /*        from = "aquiroz@mc4.com.bo";
         subject = "Olvidar contrasenia";

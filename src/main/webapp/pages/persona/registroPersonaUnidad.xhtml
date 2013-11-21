@@ -19,7 +19,9 @@
     <h3>Empleador o Empresa: #{personaUnidadBean.titulo} </h3>
 
 
-     <p:tabView id="tabPersonaUnidad" effect="fade" effectDuration="normal" orientation="top" >
+     <p:tabView id="tabPersonaUnidad" effect="fade" effectDuration="normal" scrollable="true">
+
+
 
          <p:tab id="tabUnidadPrincipal" >
              <f:facet name="title">
@@ -49,9 +51,17 @@
          <p:tab id="tabDireccion" >
              <f:facet name="title">
                  <p:graphicImage value="/images/direccion.png"/>
-                 <h:outputText value=" DIRECCION"/>
+                 <h:outputText value=" DIRECCION&#xA0;&#xA0;&#xA0;"/>
              </f:facet>
                 <ui:include src="../persona/tabs/direccionPrincipal.xhtml"/>
+         </p:tab>
+
+         <p:tab id="tabTrabajadores" >
+             <f:facet name="title">
+                 <p:graphicImage value="/images/personas.png"/>
+                 <h:outputText value=" TRABAJADORES"/>
+             </f:facet>
+
          </p:tab>
 
      </p:tabView>

@@ -89,6 +89,8 @@ public class PersonaUnidadBean implements Serializable{
 
     private PerPersona persona=new PerPersona();
 
+    private PerPersona personaRegistro;
+
     private String idLocalidad;
     private List<SelectItem>listaLocalidad;
 
@@ -441,6 +443,13 @@ public class PersonaUnidadBean implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de identificacion es obligatorio."));
             ini();
             return ;
+        }else{
+            if(!esNumero(repLegal.getNroIndentificacion())){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El valor del campo Nro. de identificacion debe ser numerico."));
+                ini();
+                return ;
+            }
         }
 
         if(repLegal.getTipoProcedencia()==null || repLegal.getTipoProcedencia().trim().equals("")){
@@ -495,6 +504,16 @@ public class PersonaUnidadBean implements Serializable{
         }
     }
 
+
+    //Valida si el parametro es numerico
+    private static boolean esNumero(String cadena){
+        try {
+            Integer.parseInt(cadena);
+            return true;
+        } catch (NumberFormatException nfe){
+            return false;
+        }
+    }
     /*
       *******************************************
       *          METODOS ACTIVIDAD DECLARADA
@@ -945,5 +964,13 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setCodigoActividadEconomicaPrincipal(String codigoActividadEconomicaPrincipal) {
         this.codigoActividadEconomicaPrincipal = codigoActividadEconomicaPrincipal;
+    }
+
+    public PerPersona getPersonaRegistro() {
+        return personaRegistro;
+    }
+
+    public void setPersonaRegistro(PerPersona personaRegistro) {
+        this.personaRegistro = personaRegistro;
     }
 }
