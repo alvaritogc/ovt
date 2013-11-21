@@ -115,7 +115,7 @@ public class EscritorioBean {
             docPlanilla=iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
         } catch (Exception e) {
             e.printStackTrace();
-            docPlanilla=new DocPlanilla();
+            docPlanilla=null;
         }
         
         listaDocumentoEstado=iDocumentoEstadoService.listarSiguientesTransiciones(docDocumento);
