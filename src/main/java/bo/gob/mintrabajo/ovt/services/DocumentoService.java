@@ -27,10 +27,20 @@ public class DocumentoService implements IDocumentoService{
     private final NumeracionRepository numeracionRepository;
     private final LogEstadoRepository logEstadoRepository;
     private final PlanillaDetalleRepository planillaDetalleRepository;
+    private final DocGenericoRepository docGenericoRepository;
     private final IUtilsService utils;
 
     @Inject
-    public DocumentoService(DocumentoRepository documentoRepository, DocumentoEstadoRepository documentoEstadoRepository, PlanillaRepository planillaRepository, BinarioRepository binarioRepository, UnidadRepository unidadRepository, NumeracionRepository numeracionRepository, LogEstadoRepository logEstadoRepository, PlanillaDetalleRepository planillaDetalleRepository, IUtilsService utils) {
+    public DocumentoService(DocumentoRepository documentoRepository, 
+                            DocumentoEstadoRepository documentoEstadoRepository, 
+                            PlanillaRepository planillaRepository, 
+                            BinarioRepository binarioRepository, 
+                            UnidadRepository unidadRepository, 
+                            NumeracionRepository numeracionRepository, 
+                            LogEstadoRepository logEstadoRepository, 
+                            PlanillaDetalleRepository planillaDetalleRepository, 
+                            DocGenericoRepository docGenericoRepository,
+                            IUtilsService utils) {
         this.documentoRepository = documentoRepository;
         this.documentoEstadoRepository = documentoEstadoRepository;
         this.planillaRepository = planillaRepository;
@@ -39,6 +49,7 @@ public class DocumentoService implements IDocumentoService{
         this.numeracionRepository = numeracionRepository;
         this.logEstadoRepository = logEstadoRepository;
         this.planillaDetalleRepository = planillaDetalleRepository;
+        this.docGenericoRepository=docGenericoRepository;
         this.utils = utils;
     }
 
@@ -111,6 +122,19 @@ public class DocumentoService implements IDocumentoService{
             elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
             binarioRepository.save(elementoBinario);
         }
+    }
+    
+    @Override
+    public DocDocumento guardarBajaRoe(DocDocumento docDocumento, DocGenerico docGenerico){
+        //guarda documento
+        docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+        docDocumento=documentoRepository.save(docDocumento);
+        //
+        docGenerico.setIdDocumento(docDocumento);
+        docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
+        docGenericoRepository.save(docGenerico);
+        return docDocumento;
     }
 
 

@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.api;
 
 import bo.gob.mintrabajo.ovt.entities.DocBinario;
 import bo.gob.mintrabajo.ovt.entities.DocDocumento;
+import bo.gob.mintrabajo.ovt.entities.DocGenerico;
 import bo.gob.mintrabajo.ovt.entities.DocPlanilla;
 import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstado;
 
@@ -12,4 +13,5 @@ public interface IDocumentoService {
 //    void guardaDocumentoBinarioPlanilla(DocDocumento docDocumento, List<DocBinario> listaBinarios, DocPlanilla docPlanilla);
     void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios);
     DocDocumento guardarCambioEstado(DocDocumento documento, ParDocumentoEstado codEstadoFinal,String idUsuario);
+    public DocDocumento guardarBajaRoe(DocDocumento docDocumento, DocGenerico docGenerico);
 }
