@@ -62,6 +62,8 @@ public class ParDocumentoEstado implements Serializable {
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstado", fetch = FetchType.LAZY)
+    private List<DocDefinicion> docDefinicionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstado", fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstadoFinal", fetch = FetchType.LAZY)
     private List<DocLogEstado> docLogEstadoList;
@@ -133,6 +135,14 @@ public class ParDocumentoEstado implements Serializable {
 
     public void setRegistroBitacora(String registroBitacora) {
         this.registroBitacora = registroBitacora;
+    }
+
+    public List<DocDefinicion> getDocDefinicionList() {
+        return docDefinicionList;
+    }
+
+    public void setDocDefinicionList(List<DocDefinicion> docDefinicionList) {
+        this.docDefinicionList = docDefinicionList;
     }
 
     public List<DocDocumento> getDocDocumentoList() {
