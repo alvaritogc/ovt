@@ -129,7 +129,9 @@
                             <p:outputLabel value="AÑO"/>
                         </p:column>
                         <p:column colspan="6" rowspan="2" style="border-right: 1pt solid black;border-left: 1pt solid black;">
-                            <p:inputText id="idEntero01" required="true" value="#{bajaRoeBean.docGenerico.entero01}"  style="width: 170px;height: 15px;"/>
+                            <p:inputText id="idEntero01" required="true" 
+                                         maxlength="10"
+                                         value="#{bajaRoeBean.docGenerico.entero01}"  style="width: 170px;height: 15px;"/>
                         </p:column>
                         <p:column colspan="1" style="border-right: 1pt solid black;border-left: 1pt solid black;">
                             <p:outputLabel value=""/>
@@ -167,16 +169,21 @@
                         <p:column colspan="20" >
                         </p:column>
                     </p:row>
-                    <p:row>
+                    <p:row rendered="#{bajaRoeBean.esFuncionario}">
+                        <p:column colspan="20" style="background-color: #2264B1; color: #FFFFFF">
+                            <p:outputLabel value="2. DOCUMENTOS DE RESPALDO DE BAJA DEFINITIVA (Solo funcionarios)"/>
+                        </p:column>
+                    </p:row>
+                    <p:row rendered="#{bajaRoeBean.esFuncionario}">
                         <p:column colspan="20" >
-                            <p:panelGrid columns="2">
+                            <h:panelGrid columns="6" style="width: 100%;">
                                 <p:outputLabel value="Baja Nit: "/>
                                 <p:selectBooleanCheckbox value="#{bajaRoeBean.entero03}" /> 
-                                <p:outputLabel value="Baja (CAJA): "/>
+                                <p:outputLabel value="Baja seguro a corto plazo (CAJA): "/>
                                 <p:selectBooleanCheckbox value="#{bajaRoeBean.entero04}" /> 
-                                <p:outputLabel value="Baja (AFP): "/>
+                                <p:outputLabel value="Baja seguro a largo plazo(AFP): "/>
                                 <p:selectBooleanCheckbox value="#{bajaRoeBean.entero05}" /> 
-                            </p:panelGrid>
+                            </h:panelGrid>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -184,21 +191,21 @@
                             <p:outputLabel value=""/>
                         </p:column>
                         <p:column colspan="8" style="border-right: 1pt solid black;border-left: 1pt solid black;">
-                            <p:panelGrid columns="1" style="width: 100%;text-align: center;">
-                                <p:inputText value="#{bajaRoeBean.docGenerico.cadena05}" style="width: 200px;"/>
+                            <h:panelGrid columns="1" style="width: 100%;text-align: center;">
+                                <p:outputLabel value="#{bajaRoeBean.docGenerico.cadena05}" />
                                 <p:outputLabel value="Nombre del empleador y/o Representante legal"/>
-                                <p:inputText value="#{bajaRoeBean.docGenerico.entero02}"  style="width: 200px;"/>
+                                <p:outputLabel value="#{bajaRoeBean.docGenerico.cadena06}"  />
                                 <p:outputLabel value="Nº de documento de identidad"/>
-                            </p:panelGrid>
+                            </h:panelGrid>
                         </p:column>
                         <p:column colspan="2" style="border-right: 1pt solid black;border-left: 1pt solid black;">
                             <p:outputLabel value=""/>
                         </p:column>
                         <p:column colspan="8" style="border-right: 1pt solid black;border-left: 1pt solid black;">
-                            <p:panelGrid columns="1" style="width: 100%;text-align: center;" rendered="#{bajaRoeBean.esFuncionario}">
-                                <p:inputText value="#{bajaRoeBean.docGenerico.cadena06}" disabled="true" onkeyup="" style="width: 200px;"/>
+                            <h:panelGrid columns="1" style="width: 100%;text-align: center;" rendered="#{bajaRoeBean.esFuncionario}">
+                                <p:outputLabel value="#{bajaRoeBean.docGenerico.cadena07}"/>
                                 <p:outputLabel value="Nombre del Funcionario de la ventana Especializada del Empleador"/>
-                            </p:panelGrid>
+                            </h:panelGrid>
                         </p:column>
                         <p:column colspan="1" style="border-right: 1pt solid black;border-left: 1pt solid black;">
                             <p:outputLabel value=""/>
