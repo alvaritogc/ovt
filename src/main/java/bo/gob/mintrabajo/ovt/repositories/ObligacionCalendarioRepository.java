@@ -32,7 +32,7 @@ public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObl
             "   select a "
                     + " from ParObligacionCalendario a"
                     + " where "
-                    + " a.parCalendario.parCalendarioPK.gestion =:gestion"
+                    + " a.parCalendario.parCalendarioPK.gestion like :gestion"
     )
     List<ParObligacionCalendario> listarPorGestion(@Param("gestion") String gestion);
 

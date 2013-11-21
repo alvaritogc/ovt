@@ -1,15 +1,14 @@
 package bo.gob.mintrabajo.ovt.services;
 
-import bo.gob.mintrabajo.ovt.api.IDocumentoEstadoService;
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.*;
 import bo.gob.mintrabajo.ovt.repositories.*;
-import java.util.Date;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
 
@@ -87,10 +86,7 @@ public class DocumentoService implements IDocumentoService{
     }
 
     public List<DocDocumento> listarPorPersona(String idPersona) {
-//        return documentoRepository.findByIdPersona_IdPersona(idPersona);
-        //return  documentoRepository.listarPorPersona(idPersona);
         return documentoRepository.findByPerUnidad_PerPersona_IdPersona(idPersona);
-        //return null;
     }
 
     
@@ -110,7 +106,7 @@ public class DocumentoService implements IDocumentoService{
         return documentoRepository.save(documento);
     }
 
-    public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios){
+    public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles){
         //guarda documento
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
@@ -121,6 +117,12 @@ public class DocumentoService implements IDocumentoService{
         docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
         docPlanilla=planillaRepository.save(docPlanilla);
 
+        //guardaPlanillaDetalles
+        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
+            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
+            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_DETALLE_SEC"));
+            planillaDetalleRepository.save(elemPlanillaDetalle);
+        }
 
         //guarda binarios
         int idBinario= 1;

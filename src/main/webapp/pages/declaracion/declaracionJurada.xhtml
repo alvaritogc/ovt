@@ -15,7 +15,7 @@
 </h:form>
 
 <h:form id="formularioFrm" enctype="multipart/form-data">
-
+<!--<h:commandButton value="QR" action="# {declaracionBean.generaQR}"/>-->
 <h:panelGroup rendered="#{declaracionBean.estaDeclarado}">
     <h1>Usted ya realizo la declaracion jurada en este trimestre</h1>
     <p:commandButton ajax="false" value="Ir a inicio" action="#{declaracionBean.irInicio}"/>
@@ -80,7 +80,7 @@
             <p:outputLabel value="1.3 Nro de orden que rectifica"/>
             <p:selectOneMenu id="rectificatorio" value="#{declaracionBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="#{!declaracionBean.esRectificatorio}"><!--disabled="# {declaracionBean.parametro!=3}"-->
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionBean.docDocumentoList}" var="it" itemLabel="#{it.numeroDocumento}&nbsp;-&nbsp;#{it.docPlanilla.periodo}" itemValue="#{it.docPlanilla.idPlanilla}"/>
+                <f:selectItems value="#{declaracionBean.docDocumentoList}" var="it" itemLabel="#{it.numeroDocumento}&nbsp;-&nbsp;#{it.docPlanilla.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{it.docPlanilla.idPlanilla}"/>
             </p:selectOneMenu>
         </p:panelGrid>
     </p:column>
@@ -108,9 +108,9 @@
     <p:column colspan="6">
         <p:outputPanel id="empresaRazonSocial">
             <h:outputText value="#{declaracionBean.unidadSeleccionada.nombreComercial}"/>
-            <p:selectOneMenu value="#{declaracionBean.docPlanilla.parCalendario.parCalendarioPK.gestion}" style="width: 260px; height: 20px">
+            <p:selectOneMenu value="#{declaracionBean.periodo}" style="width: 260px; height: 20px">
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="#{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}" itemLabel="#{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>
+                <f:selectItems value="#{declaracionBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="#{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}" itemLabel="#{oCalendario.parCalendario.parCalendarioPK.gestion} - #{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>
             </p:selectOneMenu>
         </p:outputPanel>
     </p:column>
@@ -474,7 +474,7 @@
 
 <!-- Renato Codigo -->
 <h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionBean.parametro!=2}">
-    <h:outputText style="font-weight: bold;text-align: center" value="JULIO"
+    <h:outputText style="font-weight: bold;text-align: center" value="Primer mes trimestre"
                   rendered="#{declaracionBean.habilita}"/> &nbsp;
     <p:fileUpload fileUploadListener="#{declaracionBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
                   fileLimitMessage="Sólo se puede elegir un archivo."
@@ -487,7 +487,7 @@
     <h:outputText id="idArchivo1" value="#{declaracionBean.nombres[0]}"
                   style="font-weight: bold;text-align: center"/>
 
-    <h:outputText value="AGOSTO" style="font-weight: bold" rendered="#{declaracionBean.habilita}"/> &nbsp;
+    <h:outputText value="Segundo mes trimestre" style="font-weight: bold" rendered="#{declaracionBean.habilita}"/> &nbsp;
 
     <p:fileUpload fileUploadListener="#{declaracionBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
                   fileLimitMessage="Sólo se puede elegir un archivo."
@@ -500,7 +500,7 @@
     <h:outputText id="idArchivo2" value="#{declaracionBean.nombres[1]}"
                   style="font-weight: bold;text-align: center"/>
 
-    <h:outputText value="SEPTIEMBRE" style="font-weight: bold" rendered="#{declaracionBean.habilita}"/> &nbsp;
+    <h:outputText value="Tercer mes trimestre" style="font-weight: bold" rendered="#{declaracionBean.habilita}"/> &nbsp;
 
     <p:fileUpload fileUploadListener="#{declaracionBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
                   fileLimitMessage="Sólo se puede elegir un archivo."
@@ -557,6 +557,9 @@
             </h:panelGroup>
         </p:outputPanel>  <br/>
         <p:commandButton value="Aceptar" action="#{declaracionBean.seleccionaEmpresa}" oncomplete="PF('seleccionEmpresa').hide();" update=":formularioFrm:panelForm"/>
+
+
+
         </div>
     </h:form>
 </p:dialog>
