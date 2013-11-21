@@ -1,9 +1,11 @@
 package bo.gob.mintrabajo.ovt.services;
 
+import bo.gob.mintrabajo.ovt.api.IDocumentoEstadoService;
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.*;
 import bo.gob.mintrabajo.ovt.repositories.*;
+import java.util.Date;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -28,6 +30,7 @@ public class DocumentoService implements IDocumentoService{
     private final LogEstadoRepository logEstadoRepository;
     private final PlanillaDetalleRepository planillaDetalleRepository;
     private final DocGenericoRepository docGenericoRepository;
+    private final DefinicionRepository definicionRepository;
     private final IUtilsService utils;
 
     @Inject
@@ -40,6 +43,7 @@ public class DocumentoService implements IDocumentoService{
                             LogEstadoRepository logEstadoRepository, 
                             PlanillaDetalleRepository planillaDetalleRepository, 
                             DocGenericoRepository docGenericoRepository,
+                            DefinicionRepository definicionRepository,
                             IUtilsService utils) {
         this.documentoRepository = documentoRepository;
         this.documentoEstadoRepository = documentoEstadoRepository;
@@ -50,6 +54,7 @@ public class DocumentoService implements IDocumentoService{
         this.logEstadoRepository = logEstadoRepository;
         this.planillaDetalleRepository = planillaDetalleRepository;
         this.docGenericoRepository=docGenericoRepository;
+        this.definicionRepository=definicionRepository;
         this.utils = utils;
     }
 
@@ -83,7 +88,9 @@ public class DocumentoService implements IDocumentoService{
 
     public List<DocDocumento> listarPorPersona(String idPersona) {
 //        return documentoRepository.findByIdPersona_IdPersona(idPersona);
-        return null;
+        //return  documentoRepository.listarPorPersona(idPersona);
+        return documentoRepository.findByPerUnidad_PerPersona_IdPersona(idPersona);
+        //return null;
     }
 
     
@@ -125,10 +132,23 @@ public class DocumentoService implements IDocumentoService{
     }
     
     @Override
-    public DocDocumento guardarBajaRoe(DocDocumento docDocumento, DocGenerico docGenerico){
-        //guarda documento
+    public DocDocumento guardarBajaRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora){
+        DocDefinicion docDefinicion=definicionRepository.findOne(new DocDefinicionPK("ROE012", (short) 1));
+        //
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
-        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+        docDocumento.setDocDefinicion(docDefinicion);
+        
+        docDocumento.setCodEstado(documentoEstadoRepository.findOne("000"));//Estado inicial
+        docDocumento.setFechaDocumento(new Date());
+        docDocumento.setFechaReferenca(new Date());
+        
+        docDocumento.setFechaBitacora(new Date());
+        docDocumento.setRegistroBitacora(registroBitacora);
+        docDocumento.setTipoMedioRegistro("DDJJ");
+        
+        
+        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("ROE012", (short) 1));
+        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getCodEstado().getCodEstado(), (short) 1));
         docDocumento=documentoRepository.save(docDocumento);
         //
         docGenerico.setIdDocumento(docDocumento);

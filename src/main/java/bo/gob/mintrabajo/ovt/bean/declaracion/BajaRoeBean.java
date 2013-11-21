@@ -73,10 +73,10 @@ public class BajaRoeBean {
         docGenerico.setCadena02("");
         docGenerico.setCadena03("");
         docGenerico.setCadena04("");
-        docGenerico.setCadena05("");
-        docGenerico.setCadena06("");
+        docGenerico.setCadena05(vperPersona.getRlNombre());
+        docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
         if (esFuncionario) {
-            docGenerico.setCadena06(usuario.getUsuario());
+            docGenerico.setCadena07(usuario.getUsuario());
         }
         cargarDocumento();
     }
@@ -85,16 +85,13 @@ public class BajaRoeBean {
         documento = new DocDocumento();
         //
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
-        documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("ROE012", (short) 1)));//trimestral
-        //documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1011", (short) 1)));//sin movimiento
-        //documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1012", (short) 1)));//rectificatoria
+        //documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("ROE012", (short) 1)));//trimestral
         //
-        documento.setFechaDocumento(new Date());
-        documento.setCodEstado(iDocumentoEstadoService.buscarPorId("110"));
-        documento.setFechaReferenca(new Date());
-        documento.setTipoMedioRegistro("DDJJ");
-        documento.setFechaBitacora(new Date());
-        documento.setRegistroBitacora(idUsuario.toString());
+//        documento.setFechaDocumento(new Date());
+//        documento.setCodEstado(iDocumentoEstadoService.buscarPorId("000"));
+//        documento.setFechaReferenca(new Date());
+        
+//        documento.setFechaBitacora(new Date());
     }
 
     public String guardar() {
@@ -127,48 +124,15 @@ public class BajaRoeBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Número de trabajadores."));
             return "";
         }
-        if (docGenerico.getCadena05().trim().equals("")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el nombre del empleador y/o Representante legal."));
-            return "";
-        }
-        if (docGenerico.getEntero02()==null || docGenerico.getEntero02() == 0) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Número de documento de identidad."));
-            return "";
-        }
         //
         if (esFuncionario) {
             System.out.println("Es funcionario");
             docGenerico.setEntero03(entero03 ? 1 : 0);
             docGenerico.setEntero04(entero04 ? 1 : 0);
             docGenerico.setEntero05(entero05 ? 1 : 0);
-//            System.out.println("Es funcionario");
-//            if(entero03){
-//                System.out.println("1");
-//                docGenerico.setEntero03(1);
-//            }
-//            else{
-//                System.out.println("0");
-//                docGenerico.setEntero03(0);
-//            }
-//            if(entero04){
-//                System.out.println("1");
-//                docGenerico.setEntero04(1);
-//            }
-//            else{
-//                System.out.println("0");
-//                docGenerico.setEntero04(0);
-//            }
-//            if(entero05){
-//                System.out.println("1");
-//                docGenerico.setEntero05(1);
-//            }
-//            else{
-//                System.out.println("0");
-//                docGenerico.setEntero05(0);
-//            }
         }
         //
-        documento = iDocumentoService.guardarBajaRoe(documento, docGenerico);
+        documento = iDocumentoService.guardarBajaRoe(documento, docGenerico,idUsuario.toString());
         //RequestContext context = RequestContext.getCurrentInstance();
         //context.execute("dlgConfirmacion.show()");
         return "irEscritorio";

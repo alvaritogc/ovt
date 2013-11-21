@@ -61,12 +61,12 @@ public class DocDefinicion implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
-    private List<DocDocumento> docDocumentoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
-    private List<DocTransicion> docTransicionList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
-    private DocNumeracion docNumeracion;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
+//    private List<DocDocumento> docDocumentoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
+//    private List<DocTransicion> docTransicionList;
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
+//    private DocNumeracion docNumeracion;
 
     public DocDefinicion() {
     }
@@ -136,29 +136,29 @@ public class DocDefinicion implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public List<DocDocumento> getDocDocumentoList() {
-        return docDocumentoList;
-    }
-
-    public void setDocDocumentoList(List<DocDocumento> docDocumentoList) {
-        this.docDocumentoList = docDocumentoList;
-    }
-
-    public List<DocTransicion> getDocTransicionList() {
-        return docTransicionList;
-    }
-
-    public void setDocTransicionList(List<DocTransicion> docTransicionList) {
-        this.docTransicionList = docTransicionList;
-    }
-
-    public DocNumeracion getDocNumeracion() {
-        return docNumeracion;
-    }
-
-    public void setDocNumeracion(DocNumeracion docNumeracion) {
-        this.docNumeracion = docNumeracion;
-    }
+//    public List<DocDocumento> getDocDocumentoList() {
+//        return docDocumentoList;
+//    }
+//
+//    public void setDocDocumentoList(List<DocDocumento> docDocumentoList) {
+//        this.docDocumentoList = docDocumentoList;
+//    }
+//
+//    public List<DocTransicion> getDocTransicionList() {
+//        return docTransicionList;
+//    }
+//
+//    public void setDocTransicionList(List<DocTransicion> docTransicionList) {
+//        this.docTransicionList = docTransicionList;
+//    }
+//
+//    public DocNumeracion getDocNumeracion() {
+//        return docNumeracion;
+//    }
+//
+//    public void setDocNumeracion(DocNumeracion docNumeracion) {
+//        this.docNumeracion = docNumeracion;
+//    }
 
     @Override
     public int hashCode() {
