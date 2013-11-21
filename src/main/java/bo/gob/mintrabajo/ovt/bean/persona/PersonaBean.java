@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
 import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
+import static bo.gob.mintrabajo.ovt.Util.Sequencias.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -246,6 +247,14 @@ public class PersonaBean implements Serializable{
             ini();
             return ;
         }else{
+
+            if(!esNumero(persona.getNroIdentificacion())){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El valor del campo Nro. de identificacion debe ser numerico."));
+                ini();
+                return ;
+            }
+
             //validar que nro de identificacion sea unico
             if(iPersonaService.findByNroIdentificacion(persona.getNroIdentificacion())!=null){
                 FacesContext.getCurrentInstance().addMessage(null,
@@ -301,7 +310,7 @@ public class PersonaBean implements Serializable{
 
       final String  REGISTRO_BITACORA="ROE";
         System.out.println("INGRESANDO ................................ ");
-      Long seq= iLocalidadService.localidadSecuencia("PER_PERSONA_SEC");
+      Long seq= iLocalidadService.localidadSecuencia(PER_PERSONA_SEC);
       persona.setIdPersona(seq.toString());
       persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
       persona.setRegistroBitacora(REGISTRO_BITACORA);
@@ -313,14 +322,14 @@ public class PersonaBean implements Serializable{
       unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
       PerUnidadPK perUnidadPK=new PerUnidadPK();
       perUnidadPK.setIdPersona(persona.getIdPersona());
-      perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia("PER_UNIDAD_SEC"));
+      perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia(PER_UNIDAD_SEC));
       unidad.setPerUnidadPK(perUnidadPK);
 
-      usuario.setIdUsuario(iUsuarioService.obtenerSecuencia("USR_USUARIO_SEC"));
+      usuario.setIdUsuario(iUsuarioService.obtenerSecuencia(USR_USUARIO_SEC));
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
       usuario.setEsDelegado((short)0);
       usuario.setEsInterno((short) 0);
-      usuario.setClave(Util.crypt(usuario.getClave()));
+      usuario.setClave(Util.encriptaMD5(usuario.getClave()));
       ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO__USUARIO_SINCONFIRMAR);
       usuario.setEstadoUsuario(d.getParDominioPK().getValor());
         //usuario.setIdPersona(persona);
@@ -330,8 +339,7 @@ public class PersonaBean implements Serializable{
       usuario.setRegistroBitacora(REGISTRO_BITACORA);
 
       usuario.setIdPersona(persona);
-      usuario.setTipoAutenticacion("LOCAL");
-
+      usuario.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION,PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
 
         mostrar= iPersonaService.registrar(persona,unidad,usuario);
         if(mostrar)
@@ -351,6 +359,17 @@ public class PersonaBean implements Serializable{
             context.execute("dlg.hide()");
         }
     }
+
+    //Valida si el parametro es numerico
+    private static boolean esNumero(String cadena){
+        try {
+            Integer.parseInt(cadena);
+            return true;
+        } catch (NumberFormatException nfe){
+            return false;
+        }
+    }
+
 
     public boolean validarEmail(String email){
         Pattern patron = Pattern.compile("^[\\w-\\.]+\\@[\\w\\.-]+\\.[a-z]{2,4}$");

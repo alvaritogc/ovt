@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -106,10 +107,19 @@ public class ServicioEnvioEmail implements Serializable {
     }
 
 
-    public void envioEmail2(UsrUsuario usuario) {
+
+
+    /*
+     * Este metodo envia un email.
+     * Usuario.- es la cuenta del usuario a la que se enviara el correo
+     * configuracion.- es una estructura de dato del tipo mapa, el cual
+     * contiene la configuracion del correo electronico.
+     *
+     */
+    public void envioEmail2(UsrUsuario usuario,Map<String,String>configuracion) {
 
         //cargar(bean);
-        olvidarContrasenia(usuario);
+        olvidarContrasenia(usuario,configuracion);
         try {
             Properties props = new Properties();
             props.put("mail.smtp.socketFactory.port", port);
@@ -157,10 +167,24 @@ public class ServicioEnvioEmail implements Serializable {
         }
     }
 
-    public void olvidarContrasenia(UsrUsuario usuario) {
+    public void olvidarContrasenia(UsrUsuario usuario,Map<String,String>configuracion) {
         // ** Se debe obtener todos estos Datos de un archivo property o de las paramétricas ** //TODO
-        from = "aquiroz@mc4.com.bo";
-        //from = "quirozariel21@gmail.com";
+        from=configuracion.get("from");
+        subject=configuracion.get("subject");
+        urlRedireccion = configuracion.get("urlRedireccion");
+        urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic");
+        String usuPassword = Util.crypt(usuario.getClave());
+        usuPassword.replace("==","");
+        urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
+
+        cuerpoMensaje = configuracion.get("cuerpoMensaje")+"\n"+urlRedireccion;
+        password = configuracion.get("password");
+        host = configuracion.get("host");
+        port = configuracion.get("port");
+        //getTo().add("aquiroz@mc4.com.bo");
+        getTo().add(usuario.getUsuario());
+
+/*        from = "aquiroz@mc4.com.bo";
         subject = "Olvidar contrasenia";
         urlRedireccion = "http://localhost:8080/faces/pages";
         urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic");
@@ -177,7 +201,7 @@ public class ServicioEnvioEmail implements Serializable {
         host = "mc4.com.bo";
         port = "25";
         //getTo().add("aquiroz@mc4.com.bo");
-        getTo().add(usuario.getUsuario());
+        getTo().add(usuario.getUsuario());*/
     }
 
     public ArrayList<String> getTo() {

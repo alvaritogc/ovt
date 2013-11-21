@@ -197,17 +197,17 @@ public class UsuarioService implements IUsuarioService{
           UsrUsuario usuario= usuarioRepository.findByUsuarioAndClave(email,clave);
           if(usuario!=null)  {
             if(clave.equals(nuevaClave)){
-               mensaje="El valor de la nueva contrasenia asociada debe ser distinta a la anterior contrasenia.";
+               mensaje="El valor de la nueva contraseña asociada debe ser distinta a la anterior contraseña.";
              }else{
                 usuario.setClave(nuevaClave);
                 usuario= usuarioRepository.save(usuario);
                 mensaje="OK";
             }
           }else{
-              mensaje="La contrasenia asociada a su cuenta es incorrecta";
+              mensaje="La contraseña asociada a su cuenta es incorrecta";
           }
       }else {
-          mensaje="El valor del campo Nueva contrasenia debe ser igual al campo Confirmar contrasenia.";
+          mensaje="El valor del campo Nueva contraseña debe ser igual al campo Confirmar contraseña.";
       }
 
       return mensaje;

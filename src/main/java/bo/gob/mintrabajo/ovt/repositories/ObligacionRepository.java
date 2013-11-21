@@ -27,7 +27,7 @@ import org.springframework.data.jpa.repository.Query;
  * @author lvaldez
  */
 @OpenJpaSettings
-public interface ObligacionRepository extends OpenJpaRepository<ParObligacion, Long>{
+public interface ObligacionRepository extends OpenJpaRepository<ParObligacion, String>{
     ParObligacion findByCodObligacion(String codObligacion);
     @Query(
             "   select a "

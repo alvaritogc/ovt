@@ -27,9 +27,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
 
 @ManagedBean(name = "templateInicioBean")
 @ViewScoped
@@ -108,6 +112,12 @@ public class TemplateInicioBean implements Serializable {
     private ParMensajeApp mensajeApp;
     //
         private ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+
+    // envio de email
+    @ManagedProperty(value="#{parametrizacionService}")
+    private IParametrizacionService iParametrizacion;
+
+
 
     @PostConstruct
     public void ini() {
@@ -313,10 +323,37 @@ public class TemplateInicioBean implements Serializable {
            UsrUsuario usuario=iUsuarioService.findById(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUsuario());
            //enviarEmail
            ServicioEnvioEmail envioEmail=new ServicioEnvioEmail();
-           envioEmail.envioEmail2(usuario);
+           Map<String,String>configuracionEmail=new HashMap<String, String>();
+           configuracionEmail= cargaParametricasEmail();
+           envioEmail.envioEmail2(usuario,configuracionEmail);
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", " Verifique su correo electronico"));
        }
        limpiar();
+    }
+
+
+    public Map<String,String> cargaParametricasEmail() {
+        Map<String,String>configuracionEmail=new HashMap<String, String>();
+        try {
+            String from = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_CUENTA_EMAIL).getDescripcion();
+            String subject = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_ASUNTO).getDescripcion();
+            String urlRedireccion = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_URL).getDescripcion();
+            String cuerpoMensaje = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_MENSAJE).getDescripcion();
+            String password = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PASSWORD).getDescripcion();
+            String host = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_SERVIDOR).getDescripcion();
+            String port = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PUERTO).getDescripcion();
+            configuracionEmail.put("from",from);
+            configuracionEmail.put("subject",subject);
+            configuracionEmail.put("urlRedireccion",urlRedireccion);
+            configuracionEmail.put("cuerpoMensaje",cuerpoMensaje);
+            configuracionEmail.put("password",password);
+            configuracionEmail.put("host",host);
+            configuracionEmail.put("port",port);
+            return configuracionEmail;
+        } catch (NullPointerException ne) {
+            logger.info("El parámetro no existe en base de datos ...");
+            return null;
+        }
     }
 
     public void cambiarContrasenia(){
@@ -615,5 +652,13 @@ public class TemplateInicioBean implements Serializable {
 
     public void setLoginValido(boolean loginValido) {
         this.loginValido = loginValido;
+    }
+
+    public IParametrizacionService getiParametrizacion() {
+        return iParametrizacion;
+    }
+
+    public void setiParametrizacion(IParametrizacionService iParametrizacion) {
+        this.iParametrizacion = iParametrizacion;
     }
 }

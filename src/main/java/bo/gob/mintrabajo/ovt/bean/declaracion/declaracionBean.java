@@ -231,17 +231,16 @@ public class declaracionBean implements Serializable {
     public void generaDocumento(){
         logger.info("generaDocumento()");
         documento = new DocDocumento();
-//        documento.setIdPersona(persona);
         
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(persona.getIdPersona(), 0L)));
 
         if(parametro==1)
-            documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1010", (short) 1)));
+            documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1010", (short) 1)));//trimestral
         else{
             if(parametro==2)
-                documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1011", (short) 1)));
+                documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1011", (short) 1)));//sin movimiento
             else
-                documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1012", (short) 1)));
+                documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1012", (short) 1)));//rectificatoria
         }
 
         documento.setFechaDocumento(new Date());
@@ -295,7 +294,7 @@ public class declaracionBean implements Serializable {
     }
 
     public String guardaDocumentoPlanillaBinario(ActionEvent actionEvent){
-        validaArchivo(listaBinarios);
+        //validaArchivo(listaBinarios);
         if(errores.size()>0){
             String e="";
             for(String error:errores)
@@ -340,7 +339,7 @@ public class declaracionBean implements Serializable {
         parObligacionCalendarioLista = new ArrayList<ParObligacionCalendario>();
         Calendar c= new GregorianCalendar();
         c.setTime(new Date());
-        parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendarioPorGestion(String .valueOf(c.get(Calendar.YEAR)));
+        parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendarioPorGestion(String.valueOf(c.get(Calendar.YEAR)));
     }
 
     public String mensajeError(int i, String titulo){

@@ -223,8 +223,13 @@ public class PersonaUnidadBean implements Serializable{
         List<PerUnidad>listaUnidadAux=iUnidadService.buscarPorPersona(persona.getIdPersona());
         //setea la unidad principal
         unidad=listaUnidadAux.get(listaUnidadAux.size()-1);
-        tipoSociedadPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_SOCIEDAD,unidad.getTipoSociedad()).getDescripcion();
-        tipoEmpresaPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_EMPRESA,unidad.getTipoEmpresa()).getDescripcion();
+        try{
+            tipoSociedadPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_SOCIEDAD,unidad.getTipoSociedad()).getDescripcion();
+            tipoEmpresaPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_EMPRESA,unidad.getTipoEmpresa()).getDescripcion();
+        }catch (Exception ex){
+              logger.error(ex.getMessage());
+        }
+
         // carga la varible listaUnidad desde el primer registro hasta el penultimo
         // se carga asi, por que en el ultimo registro esta la unidadPrincipal
        listaUnidad=listaUnidadAux.subList(0,listaUnidadAux.size()-1);
@@ -738,6 +743,7 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public void setActividadEconomica(ParActividadEconomica actividadEconomica) {
+       idActividadEconomicaPrincipal= actividadEconomica.getIdActividadEconomica2().getIdActividadEconomica();
         this.actividadEconomica = actividadEconomica;
     }
 

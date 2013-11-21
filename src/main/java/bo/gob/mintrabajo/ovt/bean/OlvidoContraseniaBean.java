@@ -53,17 +53,19 @@ public class OlvidoContraseniaBean implements Serializable {
         logger.info("=====>>>>  OLVIDO CONTRASENIA");
         contrasenia=getParam("codeUnic");
         logger.info("=====>>>>  PARAMETRO PASADO POR GET "+contrasenia);
-        contrasenia=Util.decrypt(contrasenia);
-        logger.info("=====>>>>  CONTRASENIA DESCENCRIPTADA "+contrasenia);
+/*        contrasenia=Util.decrypt(contrasenia);
+        logger.info("=====>>>>  CONTRASENIA DESCENCRIPTADA "+contrasenia);*/
     }
 
     public String verificarContrasenia()throws  IOException{
-
-        System.out.println("====>>>> verificarContrasenia: email:" + email + " contrasenia: " + contrasenia + " nuevaContrasenia " + nuevaContrasenia + " confirmarContrasenia: " + confirmarContrasenia);
+         //Encriptar la nueva contrasenia y confirmar contrasenia
+        nuevaContrasenia=Util.encriptaMD5(nuevaContrasenia);
+        confirmarContrasenia=Util.encriptaMD5(confirmarContrasenia);
+        logger.info("====>>>> verificarContrasenia: email:" + email + " contrasenia: " + contrasenia + " nuevaContrasenia " + nuevaContrasenia + " confirmarContrasenia: " + confirmarContrasenia);
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
 
-        if(email==null && email.equals("")){
+        if(email==null && email.trim().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Correo electronico es obligatorio."));
             ini();

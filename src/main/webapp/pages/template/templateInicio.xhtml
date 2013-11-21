@@ -149,7 +149,7 @@
                         <ui:include src="/mensajes/informacion.xhtml"/>
                     </p:dialog>
                     <!-- ***********  DIALOG OLVIDO SU CONTRASENIA ************* -->
-                    <p:dialog id="basicDialog2" header="Olvido su contrasenia" modal="true" widgetVar="dlg2" width="420" height="200" resizable="false">
+                    <p:dialog id="basicDialog2" header="Olvido su contrasenia" modal="true" widgetVar="dlg2" width="420" height="200" resizable="false" closable="false">
                         <!-- <ui:include src="/mensajes/informacion.xhtml"/>-->
 
                         <!--<p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>-->
@@ -185,7 +185,7 @@
                     </p:dialog>
 
                     <!-- ***********  DIALOG CAMBIAR CONTRASENIA ************* -->
-                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar Contraseña" modal="true" widgetVar="dlgCambiarContrasenia" resizable="true">
+                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar Contraseña" modal="true" widgetVar="dlgCambiarContrasenia" resizable="true" closable="false">
 
                         <h:form id="frmCambiarContrasenia">
                             <p:growl showDetail="true" id="growlCambiarContrasenia" />
@@ -254,9 +254,10 @@
                                              process="@form"
                                              update=":frmCambiarContrasenia"
                                              >
-
                             </p:commandButton>
-
+                            <p:commandButton value="Cancelar"
+                                             onclick="dlgCambiarContrasenia.hide();"
+                                    />
                         </h:form>
                     </p:dialog>
 

@@ -19,7 +19,7 @@
         <p:growl showDetail="true" id="growl" />
         <h:panelGrid columns="1" >
 
-            <p:panel id="pnlPersona" header="DATOS GENERALES" style="height: 320px;width: 700px;">
+            <p:panel id="pnlPersona" header="DATOS GENERALES" style="height: 330px;width: 700px;">
                 <h:panelGrid id="pnlGridBuscarPersona" columns="2" >
                     <h:outputText value="Natural-Juridica:"/>
                     <p:selectBooleanCheckbox id="checkEsNatural" value="#{personaBean.persona.esNatural}"
@@ -76,7 +76,10 @@
                                  maxlength="20"
                                  autocomplete="false"
                                  style="width: 215px;text-transform: uppercase;"
-                                 requiredMessage="El campo Nro. de identificacion es obligatorio"/>
+                                 converterMessage="El valor del campo Nro. de identificacion debe ser numerico."
+                                 requiredMessage="El campo Nro. de identificacion es obligatorio">
+                        <f:convertNumber integerOnly="true" />
+                    </p:inputText>
 
 
                     <p:outputLabel for="inputTxtNombreComercial" value="Nombre comercial:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
@@ -115,8 +118,10 @@
                                 style="width:190px;"
                                 required="true"
                                 showOn="button"
+                                pattern="dd/mm/yyyy"
                                 navigator="true"
-                                requiredMessage="El campo Fecha actividad es obligatorio."/>
+                                requiredMessage="El campo Fecha actividad es obligatorio.">
+                     </p:calendar>
 
                     <p:outputLabel for="txtAreaActividadDeclarada" value="Actividad declarada:&nbsp;&nbsp;&nbsp;&nbsp;"/>
                     <p:inputTextarea id="txtAreaActividadDeclarada" value="#{personaBean.unidad.actividadDeclarada}"
