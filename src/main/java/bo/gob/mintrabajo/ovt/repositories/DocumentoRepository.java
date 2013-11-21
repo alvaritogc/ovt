@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 @OpenJpaSettings
 public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Long> {
 
-    List<DocDocumento> findByPerUnidad_PerPersona_IdPersona(String idPersona);
+    List<DocDocumento> findByPerUnidad_PerPersona_IdPersonaOrderByIdDocumentoDesc(String idPersona);
 
 //    List<DocDocumento> findByIdPersona_IdPersona(String idPersona);
     @Query(
