@@ -26,15 +26,15 @@
                     <h:outputText value="#{rol.idModulo.idModulo} - #{rol.idModulo.nombre}" />
                 </p:column>
                 <p:column headerText="Operaciones">
-                    <p:commandLink value="Editar" oncomplete="edicionDlg.show();" update=":rolEdicionFrm" style="color:#0066CC">
+                    <p:commandButton icon="ui-icon-pencil" title="Editar" oncomplete="edicionDlg.show();" update=":rolEdicionFrm" style="color:#0066CC">
                         <f:setPropertyActionListener value="#{rol}" target="#{rolAdministracionBean.rolSelected}" />
                         <f:setPropertyActionListener value="#{rol.esInterno}" target="#{rolAdministracionBean.esInterno}" />
-                    </p:commandLink>
+                    </p:commandButton>
                     <p:spacer width="5" />
-                    <p:commandLink value="Eliminar" oncomplete="eliminarDlg.show();" style="color:#0066CC">
+                    <p:commandButton icon="ui-icon-trash" title="Eliminar" oncomplete="eliminarDlg.show();" style="color:#0066CC">
                         <!--<p:confirm header="Confirmar la eliminación" message="Está segúro de eliminar este rol?" icon="ui-icon-alert" />-->
                         <f:setPropertyActionListener value="#{rol}" target="#{rolAdministracionBean.rolSelected}" />
-                    </p:commandLink>
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
         </h:form>
