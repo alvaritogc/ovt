@@ -109,7 +109,6 @@ public class TemplateInicioBean implements Serializable {
     //*** Cache para guardar dominios guava ***//
     public static Cache<ParDominioPK, ParDominio> mapaDominio = CacheBuilder.newBuilder().maximumSize(600).build();
 
-    private  final int LONGITUD_MINIMA=7;
     
     //Variables para los servicios publicos
     private List<ParMensajeApp> listaMensajeApp;
@@ -522,9 +521,6 @@ public class TemplateInicioBean implements Serializable {
 
     public void cargarServiciosPublicos(){
         listaMensajeApp=iMensajeAppService.listarPorRecursoYFechaActual(new Long("1000"));
-
-    public void cargarServiciosPublicos() {
-        listaMensajeApp = iMensajeAppService.listarPorRecursoYFechaActual(new Long("1000"));
     }
 
     public IUsuarioUnidadService getiUsuarioUnidadService() {
@@ -741,13 +737,5 @@ public class TemplateInicioBean implements Serializable {
 
     public void setiParametrizacion(IParametrizacionService iParametrizacion) {
         this.iParametrizacion = iParametrizacion;
-    }
-
-    public IUsuarioService getiUsuarioCambiarContraseniaService() {
-        return iUsuarioCambiarContraseniaService;
-    }
-
-    public void setiUsuarioCambiarContraseniaService(IUsuarioService iUsuarioCambiarContraseniaService) {
-        this.iUsuarioCambiarContraseniaService = iUsuarioCambiarContraseniaService;
     }
 }
