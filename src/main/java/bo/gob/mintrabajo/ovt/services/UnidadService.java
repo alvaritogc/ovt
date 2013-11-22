@@ -5,7 +5,9 @@ import bo.gob.mintrabajo.ovt.entities.PerPersona;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import bo.gob.mintrabajo.ovt.entities.PerUnidadPK;
 import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
+import bo.gob.mintrabajo.ovt.repositories.PersonaRepository;
 import bo.gob.mintrabajo.ovt.repositories.UnidadRepository;
+import org.springframework.data.repository.query.Param;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -27,15 +29,17 @@ import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
 public class UnidadService implements IUnidadService{
     private final UnidadRepository unidadRepository;
     private final DominioRepository dominioRepository;
+    private final PersonaRepository personaRepository;
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
 
 
     @Inject
-    public UnidadService(UnidadRepository unidadRepository,DominioRepository dominioRepository) {
+    public UnidadService(UnidadRepository unidadRepository,DominioRepository dominioRepository,PersonaRepository personaRepository) {
         this.unidadRepository = unidadRepository;
         this.dominioRepository=dominioRepository;
+        this.personaRepository=personaRepository;
     }
     
 
@@ -55,12 +59,27 @@ public class UnidadService implements IUnidadService{
 
     public PerUnidad save(PerUnidad unidad,PerPersona persona) {
 
+        System.out.println("===>> unidad "+unidad);
+        //Si es una nueva unidad
         if(unidad.getPerUnidadPK()==null){
             PerUnidadPK perUnidadPK=new PerUnidadPK();
             perUnidadPK.setIdPersona(persona.getIdPersona());
-            perUnidadPK.setIdUnidad(this.obtenerSecuencia("PER_UNIDAD_SEC"));
+            long idUnidad=this.obtenerMaximaUnidad(persona.getIdPersona())+1;
+            perUnidadPK.setIdUnidad(idUnidad);
+          //  perUnidadPK.setIdUnidad(this.obtenerSecuencia("PER_UNIDAD_SEC"));
             unidad.setPerUnidadPK(perUnidadPK);
+        }else{
+            if(unidad.getPerUnidadPK().getIdUnidad()==0){
+                if(persona.getIdPersona()!=null){
+                    persona.setFechaBitacora(new Date());
+                    System.out.println("===>> GUARDANDO PERSONA "+persona);
+                    persona=personaRepository.save(persona);
+                }
+            }
         }
+
+
+
         unidad.setPerPersona(persona);
         unidad.setFechaBitacora(new Date());
         unidad.setEstadoUnidad(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO_UNIDAD,PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
@@ -112,5 +131,12 @@ public class UnidadService implements IUnidadService{
 
     public List<PerUnidad> listarUnidadesSucursales(String idPersona){
         return unidadRepository.findByPerPersona_IdPersona(idPersona);
+    }
+
+    /*
+     *Obtiene el idUnidad maximo de las unidades de una persona o empresa.
+     */
+    public long obtenerMaximaUnidad(String idPersona){
+           return unidadRepository.obtenerMaximaUnidad(idPersona);
     }
 }

@@ -111,7 +111,13 @@ public class EscritorioBean {
         return "irCambioEstado";
     }
     public void cargarCambioDeEstados(){
-        docPlanilla=iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
+        try {
+            docPlanilla=iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
+        } catch (Exception e) {
+            e.printStackTrace();
+            docPlanilla=null;
+        }
+        
         listaDocumentoEstado=iDocumentoEstadoService.listarSiguientesTransiciones(docDocumento);
         System.out.println("size: "+listaDocumentoEstado.size());
         if(!listaDocumentoEstado.isEmpty()){

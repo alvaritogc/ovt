@@ -19,14 +19,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.faces.event.ActionEvent;
 import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * User: gmercado
@@ -69,6 +72,9 @@ public class declaracionBean implements Serializable {
     private IVperPersonaService iVperPersonaService;
     @ManagedProperty(value = "#{planillaDetalleService}")
     private IPlanillaDetalleService iPlanillaDetalleService;
+    @ManagedProperty(value = "#{calendarioService}")
+    private ICalendarioService iCalendarioService;
+
 
     private int parametro;
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
@@ -108,6 +114,9 @@ public class declaracionBean implements Serializable {
     private List<PerUnidad> sucursales;
     private PerUnidad unidadSeleccionada;
     private int tamañoSucursales;
+
+    private List<DocPlanillaDetalle> docPlanillaDetalles;
+    private String gestion;
 
 
     @PostConstruct
@@ -149,10 +158,12 @@ public class declaracionBean implements Serializable {
         docPlanilla.setMontoAsegCaja(BigDecimal.ZERO);
         docPlanilla.setMontoAsegAfp(BigDecimal.ZERO);
         docPlanilla.setMontoOperacion(BigDecimal.ZERO);
+
+
+
         //** Controlamos que no puedan acceder a una fecha anterior a la actual  **//
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         fechaTexto = sdf.format(fechaTemp);
-        obtenerPeriodoLista();
         obtenerEntidad();
         //** Obtenemos de la Vista a la persona **//
         vperPersona = iVperPersonaService.cargaVistaPersona(perPersona.getIdPersona());
@@ -163,10 +174,16 @@ public class declaracionBean implements Serializable {
         logger.info("persona ok");
         cargar();
         valor=true;
+        gestion=String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+        obtenerPeriodoLista();
+
+    }
+    public void generaQR(){
+//        QRCodeScriptlet.generaQR();
     }
 
     public void abrirPanel() {
-        if(valor)
+        if(valor && !estaDeclarado)
             RequestContext.getCurrentInstance().execute("seleccionEmpresa.show()");
         valor = false;
     }
@@ -220,9 +237,9 @@ public class declaracionBean implements Serializable {
         }
         estaDeclarado=false;
         for(DocDocumento documento:listaDocumentos){
-            if(documento.getCodEstado().getDescripcion().toLowerCase().equals("declarado")
+            if((documento.getCodEstado().getDescripcion().toLowerCase().equals("declarado")
                     || documento.getCodEstado().getDescripcion().toLowerCase().equals("observado")
-                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")){
+                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")) && parametro==1){
                 estaDeclarado=true;
             }
         }
@@ -256,6 +273,22 @@ public class declaracionBean implements Serializable {
         docPlanilla.setIdEntidadBanco(iEntidadService.buscaPorId(new Long("2")));
         docPlanilla.setIdEntidadSalud(iEntidadService.buscaPorId(idEntidadSalud));
         docPlanilla.setFechaOperacion(fechaOperacionAux);
+        //nuevos atributos
+        docPlanilla.setNroEmpleador(vperPersona.getNroOtro());
+        docPlanilla.setNroPatronalss(vperPersona.getNroCajaSalud());
+        docPlanilla.setNombreRazonSocial(vperPersona.getNombreRazonSocial());
+        docPlanilla.setIdActividadEconomica((UtilityData.isInteger(vperPersona.getActividadDeclarada()))? new Long(vperPersona.getActividadDeclarada()):0);
+        docPlanilla.setCodLocalidadCiudad(vperPersona.getCodLocalidad());
+        docPlanilla.setCodLocalidadPais(vperPersona.getLocalidad());
+        docPlanilla.setZona(vperPersona.getDirZona());
+        docPlanilla.setDireccion(vperPersona.getDirDireccion());
+        docPlanilla.setTelefono(vperPersona.getTelefono());
+        docPlanilla.setFax(vperPersona.getFax());
+        docPlanilla.setIdReplegal(vperPersona.getRlNroIdentidad());        //revisar el id aprtir de la BD
+        docPlanilla.setCodLocalidadPresentacion(vperPersona.getLocalidad());
+        docPlanilla.setParCalendario(iCalendarioService.obtenerCalendarioPorGestionYPeriodo(gestion, periodo));
+
+
         switch (parametro){
             case 1:
                 docPlanilla.setTipoPlanilla("DDJJ");
@@ -294,17 +327,19 @@ public class declaracionBean implements Serializable {
     }
 
     public String guardaDocumentoPlanillaBinario(ActionEvent actionEvent){
-        //validaArchivo(listaBinarios);
-        if(errores.size()>0){
-            String e="";
-            for(String error:errores)
-                e=e+ error;
-            System.out.println(e);
-            FacesContext.getCurrentInstance().addMessage(String.valueOf(idUsuario), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error de dato: ", e));
-            return null;
-        }
+        validaArchivo(listaBinarios);
+//        if(errores.size()>0){
+//            String e="";
+//            for(String error:errores)
+//                e=e+ error;
+//            System.out.println(e);
+//            FacesContext.getCurrentInstance().addMessage(String.valueOf(idUsuario), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error de dato: ", e));
+//            return null;
+//        }
 
-        if(errores.size()==0 && verificaValidacion){
+
+
+//        if(errores.size()==0 && verificaValidacion){
             try{
                 logger.info("Guardando documento, binario y planilla");
                 logger.info(documento.toString());
@@ -312,7 +347,7 @@ public class declaracionBean implements Serializable {
                 logger.info(docPlanilla.toString());
                 generaPlanilla();
                 documento.setPerUnidad(unidadSeleccionada);
-                idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios);
+                idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
                 return "irEscritorio";
             }catch (Exception e){
@@ -320,8 +355,8 @@ public class declaracionBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
                 return null;
             }
-        }
-        return null;
+//        }
+//        return null;
     }
 
     public String irInicio(){
@@ -337,9 +372,7 @@ public class declaracionBean implements Serializable {
 
     public void obtenerPeriodoLista(){
         parObligacionCalendarioLista = new ArrayList<ParObligacionCalendario>();
-        Calendar c= new GregorianCalendar();
-        c.setTime(new Date());
-        parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendarioPorGestion(String.valueOf(c.get(Calendar.YEAR)));
+        parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendarioPorGestion(gestion);
     }
 
     public String mensajeError(int i, String titulo){
@@ -349,7 +382,7 @@ public class declaracionBean implements Serializable {
     public void validaArchivo(List<DocBinario> listaBinarios){
 //    public void validaArchivo(){
         verificaValidacion=false;
-        List<DocPlanillaDetalle> docPlanillaDetalles = new ArrayList<DocPlanillaDetalle>();
+        docPlanillaDetalles = new ArrayList<DocPlanillaDetalle>();
         errores = new ArrayList<String>();
         int valorPlanilla=0;
         try {
@@ -711,16 +744,16 @@ public class declaracionBean implements Serializable {
                     docPlanillaDetalles.add(docPlanillaDetalle);
                 }
             }
-            if(errores.size()>0){
+//            if(errores.size()>0){
 //                for (String error:errores)
 //                    System.out.println(error);
-            }
-            else{
-                for(DocPlanillaDetalle docPlanillaDetalle:docPlanillaDetalles){
-                    System.out.println(docPlanillaDetalle);
+//            }
+//            else{
+//                for(DocPlanillaDetalle docPlanillaDetalle:docPlanillaDetalles){
+//                    System.out.println(docPlanillaDetalle);
 //                        iPlanillaDetalleService.guardar(docPlanillaDetalle);
-                }
-            }
+//                }
+//            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -1092,5 +1125,13 @@ public class declaracionBean implements Serializable {
 
     public void setIdUnidad(Long idUnidad) {
         this.idUnidad = idUnidad;
+    }
+
+    public ICalendarioService getiCalendarioService() {
+        return iCalendarioService;
+    }
+
+    public void setiCalendarioService(ICalendarioService iCalendarioService) {
+        this.iCalendarioService = iCalendarioService;
     }
 }

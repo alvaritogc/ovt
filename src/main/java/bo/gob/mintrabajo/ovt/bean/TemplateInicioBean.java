@@ -356,6 +356,7 @@ public class TemplateInicioBean implements Serializable {
             configuracionEmail.put("password",password);
             configuracionEmail.put("host",host);
             configuracionEmail.put("port",port);
+            configuracionEmail.put("sw","1");
             return configuracionEmail;
         } catch (NullPointerException ne) {
             logger.info("El parámetro no existe en base de datos ...");

@@ -55,8 +55,8 @@ public class DocDocumento implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
-    private List<DocLogImpresion> docLogImpresionList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
+//    private List<DocLogImpresion> docLogImpresionList;
     @JoinColumns({
         @JoinColumn(name = "ID_UNIDAD", referencedColumnName = "ID_UNIDAD"),
         @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
@@ -65,8 +65,8 @@ public class DocDocumento implements Serializable {
     @JoinColumn(name = "COD_ESTADO", referencedColumnName = "COD_ESTADO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParDocumentoEstado codEstado;
-    @OneToMany(mappedBy = "idDocumentoRef", fetch = FetchType.LAZY)
-    private List<DocDocumento> docDocumentoList;
+//    @OneToMany(mappedBy = "idDocumentoRef", fetch = FetchType.LAZY)
+//    private List<DocDocumento> docDocumentoList;
     @JoinColumn(name = "ID_DOCUMENTO_REF", referencedColumnName = "ID_DOCUMENTO")
     @ManyToOne(fetch = FetchType.LAZY)
     private DocDocumento idDocumentoRef;
@@ -75,14 +75,14 @@ public class DocDocumento implements Serializable {
         @JoinColumn(name = "VERSION", referencedColumnName = "VERSION")})
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DocDefinicion docDefinicion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
-    private List<DocLogEstado> docLogEstadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
-    private List<DocGenerico> docGenericoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDocumento", fetch = FetchType.LAZY)
-    private List<DocBinario> docBinarioList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
-    private DocPlanilla docPlanilla;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
+//    private List<DocLogEstado> docLogEstadoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
+//    private List<DocGenerico> docGenericoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDocumento", fetch = FetchType.LAZY)
+//    private List<DocBinario> docBinarioList;
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
+//    private DocPlanilla docPlanilla;
 
     public DocDocumento() {
     }
@@ -156,13 +156,13 @@ public class DocDocumento implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public List<DocLogImpresion> getDocLogImpresionList() {
-        return docLogImpresionList;
-    }
-
-    public void setDocLogImpresionList(List<DocLogImpresion> docLogImpresionList) {
-        this.docLogImpresionList = docLogImpresionList;
-    }
+//    public List<DocLogImpresion> getDocLogImpresionList() {
+//        return docLogImpresionList;
+//    }
+//
+//    public void setDocLogImpresionList(List<DocLogImpresion> docLogImpresionList) {
+//        this.docLogImpresionList = docLogImpresionList;
+//    }
 
     public PerUnidad getPerUnidad() {
         return perUnidad;
@@ -180,13 +180,13 @@ public class DocDocumento implements Serializable {
         this.codEstado = codEstado;
     }
 
-    public List<DocDocumento> getDocDocumentoList() {
-        return docDocumentoList;
-    }
-
-    public void setDocDocumentoList(List<DocDocumento> docDocumentoList) {
-        this.docDocumentoList = docDocumentoList;
-    }
+//    public List<DocDocumento> getDocDocumentoList() {
+//        return docDocumentoList;
+//    }
+//
+//    public void setDocDocumentoList(List<DocDocumento> docDocumentoList) {
+//        this.docDocumentoList = docDocumentoList;
+//    }
 
     public DocDocumento getIdDocumentoRef() {
         return idDocumentoRef;
@@ -204,37 +204,37 @@ public class DocDocumento implements Serializable {
         this.docDefinicion = docDefinicion;
     }
 
-    public List<DocLogEstado> getDocLogEstadoList() {
-        return docLogEstadoList;
-    }
+//    public List<DocLogEstado> getDocLogEstadoList() {
+//        return docLogEstadoList;
+//    }
+//
+//    public void setDocLogEstadoList(List<DocLogEstado> docLogEstadoList) {
+//        this.docLogEstadoList = docLogEstadoList;
+//    }
+//
+//    public List<DocGenerico> getDocGenericoList() {
+//        return docGenericoList;
+//    }
+//
+//    public void setDocGenericoList(List<DocGenerico> docGenericoList) {
+//        this.docGenericoList = docGenericoList;
+//    }
+//
+//    public List<DocBinario> getDocBinarioList() {
+//        return docBinarioList;
+//    }
+//
+//    public void setDocBinarioList(List<DocBinario> docBinarioList) {
+//        this.docBinarioList = docBinarioList;
+//    }
 
-    public void setDocLogEstadoList(List<DocLogEstado> docLogEstadoList) {
-        this.docLogEstadoList = docLogEstadoList;
-    }
-
-    public List<DocGenerico> getDocGenericoList() {
-        return docGenericoList;
-    }
-
-    public void setDocGenericoList(List<DocGenerico> docGenericoList) {
-        this.docGenericoList = docGenericoList;
-    }
-
-    public List<DocBinario> getDocBinarioList() {
-        return docBinarioList;
-    }
-
-    public void setDocBinarioList(List<DocBinario> docBinarioList) {
-        this.docBinarioList = docBinarioList;
-    }
-
-    public DocPlanilla getDocPlanilla() {
-        return docPlanilla;
-    }
-
-    public void setDocPlanilla(DocPlanilla docPlanilla) {
-        this.docPlanilla = docPlanilla;
-    }
+//    public DocPlanilla getDocPlanilla() {
+//        return docPlanilla;
+//    }
+//
+//    public void setDocPlanilla(DocPlanilla docPlanilla) {
+//        this.docPlanilla = docPlanilla;
+//    }
 
     @Override
     public int hashCode() {

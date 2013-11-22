@@ -25,6 +25,8 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -61,6 +63,9 @@ public class DocDefinicion implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
+    @JoinColumn(name = "COD_ESTADO", referencedColumnName = "COD_ESTADO")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ParDocumentoEstado codEstado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
     private List<DocDocumento> docDocumentoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
@@ -134,6 +139,14 @@ public class DocDefinicion implements Serializable {
 
     public void setRegistroBitacora(String registroBitacora) {
         this.registroBitacora = registroBitacora;
+    }
+
+    public ParDocumentoEstado getCodEstado() {
+        return codEstado;
+    }
+
+    public void setCodEstado(ParDocumentoEstado codEstado) {
+        this.codEstado = codEstado;
     }
 
     public List<DocDocumento> getDocDocumentoList() {

@@ -1,19 +1,21 @@
 package bo.gob.mintrabajo.ovt.bean;
 
-import bo.gob.mintrabajo.ovt.api.*;
-import bo.gob.mintrabajo.ovt.entities.*;
-import com.itextpdf.text.Document;
+import bo.gob.mintrabajo.ovt.api.IDominioService;
+import bo.gob.mintrabajo.ovt.api.IModuloService;
+import bo.gob.mintrabajo.ovt.api.IUsuarioService;
+import bo.gob.mintrabajo.ovt.entities.ParDominio;
+import bo.gob.mintrabajo.ovt.entities.UsrModulo;
+import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-
 import java.util.List;
-import javax.annotation.PostConstruct;
-import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @ViewScoped
@@ -54,6 +56,7 @@ public class InicioBean {
         iDominioService.save(dominio);
         
     }
+
 
     public List<UsrUsuario> getListaUsuarios() {
         return listaUsuarios;
