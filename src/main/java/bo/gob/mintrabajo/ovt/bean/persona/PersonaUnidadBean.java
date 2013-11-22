@@ -88,6 +88,9 @@ public class PersonaUnidadBean implements Serializable{
     private IActividadService iActividadService;
 
     private PerPersona persona=new PerPersona();
+    private String idLocalidadPersona;
+
+    private PerPersona personaRegistro;
 
     private String idLocalidad;
     private List<SelectItem>listaLocalidad;
@@ -252,7 +255,71 @@ public class PersonaUnidadBean implements Serializable{
     *
      */
     public void procesarUnidad(){
-        //Validaciones
+
+        if(personaRegistro!=null){
+            //Si es la unidad principal no realizar la validacion
+            //if(unidad.getPerUnidadPK().getIdUnidad()==0){
+                //Validaciones para persona
+                if(personaRegistro.getNombreRazonSocial()==null || personaRegistro.getNombreRazonSocial().trim().equals("")){
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre o Razon social es obligatorio."));
+                    ini();
+                    return ;
+                }
+                if(personaRegistro.getTipoIdentificacion()==null || personaRegistro.getTipoIdentificacion().trim().equals("")){
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de identificacion es obligatorio."));
+                    ini();
+                    return ;
+                }
+
+                if(idLocalidadPersona==null && idLocalidadPersona.equals("")){
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Departamento es obligatorio."));
+                    ini();
+                    return ;
+                }
+
+                if(personaRegistro.getNroIdentificacion()==null || personaRegistro.getNroIdentificacion().trim().equals("")){
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de identificacion es obligatorio."));
+                    ini();
+                    return ;
+                }else{
+
+                    if(!esNumero(personaRegistro.getNroIdentificacion())){
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El valor del campo Nro. de identificacion debe ser numerico."));
+                        ini();
+                        return ;
+                    }
+                       //Si es distinto, entonces se modifico el nro de identificacion
+                    if(!personaRegistro.getNroIdentificacion().equals(persona.getNroIdentificacion())){
+                        //validar que nro de identificacion sea unico
+                        if(iPersonaService.findByNroIdentificacion(persona.getNroIdentificacion())!=null){
+                            FacesContext.getCurrentInstance().addMessage(null,
+                                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL valor del campo Nro. de identificacion ya existe. Modifique este valor"));
+                            ini();
+                            return ;
+                        }
+                    }
+                }
+            System.out.println("===>> MODIFICANDO PERSONA "+personaRegistro);
+            //Si todo esta bien, entonces
+            personaRegistro.setRegistroBitacora(REGISTRO_BITACORA);
+            persona=personaRegistro;
+            //}
+        }
+
+
+        //Validar unidad
+        if (unidadRegistro.getNombreComercial()==null || unidadRegistro.getNombreComercial().trim().equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre comercial es obligatorio."));
+            ini();
+            return ;
+        }
+
         if (unidadRegistro.getNombreComercial()==null || unidadRegistro.getNombreComercial().trim().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre comercial es obligatorio."));
@@ -292,8 +359,9 @@ public class PersonaUnidadBean implements Serializable{
 
         //final String  REGISTRO_BITACORA="ROE";
         unidadRegistro.setRegistroBitacora(REGISTRO_BITACORA);
+
         unidadRegistro=iUnidadServiceModificar.save(unidadRegistro,persona);
-        ini();
+        //ini();
         if(unidadRegistro==null){
             RequestContext.getCurrentInstance().execute("dlgUnidad.show()");
         }else {
@@ -441,6 +509,13 @@ public class PersonaUnidadBean implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de identificacion es obligatorio."));
             ini();
             return ;
+        }else{
+            if(!esNumero(repLegal.getNroIndentificacion())){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El valor del campo Nro. de identificacion debe ser numerico."));
+                ini();
+                return ;
+            }
         }
 
         if(repLegal.getTipoProcedencia()==null || repLegal.getTipoProcedencia().trim().equals("")){
@@ -495,6 +570,16 @@ public class PersonaUnidadBean implements Serializable{
         }
     }
 
+
+    //Valida si el parametro es numerico
+    private static boolean esNumero(String cadena){
+        try {
+            Integer.parseInt(cadena);
+            return true;
+        } catch (NumberFormatException nfe){
+            return false;
+        }
+    }
     /*
       *******************************************
       *          METODOS ACTIVIDAD DECLARADA
@@ -945,5 +1030,23 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setCodigoActividadEconomicaPrincipal(String codigoActividadEconomicaPrincipal) {
         this.codigoActividadEconomicaPrincipal = codigoActividadEconomicaPrincipal;
+    }
+
+    public PerPersona getPersonaRegistro() {
+        return personaRegistro;
+    }
+
+    public void setPersonaRegistro(PerPersona personaRegistro) {
+        idLocalidadPersona=iLocalidadService.findById(personaRegistro.getCodLocalidad().getCodLocalidad()).getCodLocalidad();
+        this.personaRegistro = personaRegistro;
+    }
+
+
+    public String getIdLocalidadPersona() {
+        return idLocalidadPersona;
+    }
+
+    public void setIdLocalidadPersona(String idLocalidadPersona) {
+        this.idLocalidadPersona = idLocalidadPersona;
     }
 }

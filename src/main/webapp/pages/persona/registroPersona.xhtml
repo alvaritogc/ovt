@@ -64,7 +64,7 @@
                     <p:selectOneMenu id="slcOneMenuLocalidad" value="#{personaBean.idLocalidad}"
                                      tabindex="6"
                                      style="text-transform: uppercase;">
-                        <f:selectItem itemLabel="---Seleccione una localidad---" itemValue="0L" />
+                        <f:selectItem itemLabel="---Seleccione un departamento---" itemValue="0L" />
                         <f:selectItems value="#{personaBean.listaLocalidad}" />
                     </p:selectOneMenu>
 
@@ -114,7 +114,7 @@
                     <p:outputLabel for="calendar" value="Fecha actividad:"/>
                     <p:calendar id="calendar" value="#{personaBean.unidad.fechaNacimiento}"
                                 effect="slideDown"
-                                tabindex="2"
+                                tabindex="11"
                                 style="width:190px;"
                                 required="true"
                                 showOn="button"
@@ -128,7 +128,7 @@
                                      rows="5"
                                      cols="50" autoResize="false"
                                      style="width: 220px;text-transform: uppercase;"
-                                     tabindex="11"
+                                     tabindex="12"
                                      required="true"
                                      requiredMessage="El campo Actividad declarada es obligatorio.">
                         <f:converter converterId="lowerConverter"/>
@@ -145,7 +145,7 @@
                    <f:facet name="footer">
                        <p:commandButton value="Guardar"
                                         action="#{personaBean.registrar}"
-                                        tabindex="15"
+                                        tabindex="17"
                                         process="@form"
                                         update="growl"
                                />
@@ -156,7 +156,7 @@
                        <p:inputText id="inputTxtUsuario" value="#{personaBean.usuario.usuario}"
                                     required="true"
                                     requiredMessage="El campo Usuario es obligatorio"
-                                    tabindex="12"
+                                    tabindex="14"
                                     autocomplete="off"
                                >
                            <p:watermark for="inputTxtUsuario" value="Correo electronico" />
@@ -166,7 +166,7 @@
                        <h:panelGrid columns="3">
                        <p:password id="inputTxtClave" value="#{personaBean.usuario.clave}"
                                    feedback="true"
-                                   tabindex="13"
+                                   tabindex="15"
                                    required="true"
                                    requiredMessage="EL campo Contrasenia es obligatorio"
                                    autocomplete="off"
@@ -195,7 +195,7 @@
                        <h:outputText value="Confirmar contrasenia:" />
                        <p:password id="inputTxtConfirmar" value="#{personaBean.confirmarContrasenia}"
                                    feedback="true"
-                                   tabindex="14"
+                                   tabindex="16"
                                    autocomplete="off"
                                    promptLabel="Ingrese su contrasenia"
                                    weakLabel="Contrasenia debil"

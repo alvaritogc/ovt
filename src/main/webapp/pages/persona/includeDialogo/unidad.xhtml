@@ -6,36 +6,113 @@
 
 <h:form id="frmUnidad">
     <p:growl showDetail="true" id="growlUnidad" />
-    <p:panel id="pnlUnidad" >
+    <p:panel id="pnlUnidad" style="height:500px">
 
         <f:facet name="footer">
             <p:commandButton value="Guardar"
                              icon="ui-icon-disk"
                              action="#{personaUnidadBean.procesarUnidad}"
                              id="cmdButtonUnidad"
+                             tabindex="19"
                              update=":tabPersonaUnidad,:tabPersonaUnidad:tabUnidadPrincipal,:dataGrid,growlUnidad"
                              />
             &#160;&#160;
             <p:commandButton value="Cancelar"
                              icon="ui-icon-closethick"
                              onclick="dlgUnidad.hide()"
+                             tabindex="20"
                              id="cmdButtonUnidadCancelar"/>
         </f:facet>
         <br/>
 
-        <h:panelGrid columns="2"  width="400">
+        <h:panelGrid columns="2" id="pnlPersonaProcesar" width="400">
+
+            <h:outputText value="Natural-Juridica:"
+                          rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
+            <p:selectBooleanCheckbox id="checkEsNatural"
+                                     value="#{personaUnidadBean.personaRegistro.esNatural}"
+                                     tabindex="1"
+                                     rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
+                <p:ajax    process="@this" update=":frmUnidad:pnlPersonaProcesar" />
+            </p:selectBooleanCheckbox>
+
+            <p:outputLabel for="inputTxtNombre" value="Nombre o Razon social:"
+                           rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
+            <p:inputText id="inputTxtNombre" value="#{personaUnidadBean.personaRegistro.nombreRazonSocial}"
+                         required="true"
+                         style="width: 215px;text-transform: uppercase;"
+                         requiredMessage="El campo Nombre o Razon social es obligatorio"
+                         tabindex="2"
+                         rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
+                <f:converter converterId="lowerConverter"/>
+            </p:inputText>
+
+            <h:outputText value="Apellido paterno:" rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
+            <p:inputText id="inputTxtPaterno" value="#{personaUnidadBean.personaRegistro.apellidoPaterno}"
+                         style="width: 215px;text-transform: uppercase;"
+                         tabindex="3"
+                         rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
+                <f:converter converterId="lowerConverter"/>
+            </p:inputText>
+
+            <h:outputText value="Apellido materno:" rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
+            <p:inputText id="inputTxtMaterno" value="#{personaUnidadBean.personaRegistro.apellidoMaterno}"
+                         tabindex="4"
+                         style="width: 215px;text-transform: uppercase;"
+                         rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}" >
+                <f:converter converterId="lowerConverter"/>
+            </p:inputText>
+
+            <p:outputLabel for="slcOneMenuTipoIdentificacion" value="Identificacion:"
+                           rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
+            <p:selectOneMenu id="slcOneMenuTipoIdentificacion"
+                             value="#{personaUnidadBean.personaRegistro.tipoIdentificacion}"
+                             tabindex="5"
+                             style="text-transform: uppercase;"
+                             rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
+                <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
+                <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
+            </p:selectOneMenu>
+
+            <p:outputLabel for="slcOneMenuLocalidad" value="Lugar de emision:"
+                           rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
+            <p:selectOneMenu id="slcOneMenuLocalidad" value="#{personaUnidadBean.idLocalidadPersona}"
+                             tabindex="6"
+                             style="text-transform: uppercase;"
+                             rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
+                <f:selectItem itemLabel="---Seleccione un departamento---" itemValue="0L" />
+                <f:selectItems value="#{personaUnidadBean.listaLocalidad}" />
+            </p:selectOneMenu>
+
+            <p:outputLabel for="inputTxtNroIdentificacion" value="Nro. de identificacion:"
+                           rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
+            <p:inputText id="inputTxtNroIdentificacion"
+                         value="#{personaUnidadBean.personaRegistro.nroIdentificacion}"
+                         tabindex="7"
+                         required="true"
+                         size="20"
+                         maxlength="20"
+                         autocomplete="false"
+                         style="width: 215px;text-transform: uppercase;"
+                         converterMessage="El valor del campo Nro. de identificacion debe ser numerico."
+                         requiredMessage="El campo Nro. de identificacion es obligatorio"
+                         rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
+                <f:convertNumber integerOnly="true" />
+            </p:inputText>
+
             <p:outputLabel for="inputtxtNombre" value="Nombre comercial: "/>
             <p:inputText value="#{personaUnidadBean.unidadRegistro.nombreComercial}"
                          style="width: 205px;text-transform: uppercase"
                          id="inputtxtNombre"
                          required="true"
+                         tabindex="8"
                          requiredMessage="El campo Nombre comercial es obligatorio">
                 <f:converter converterId="lowerConverter"/>
             </p:inputText>
 
             <p:outputLabel for="slcOneMenuTipoEmpresa" value="Tipo de empresa:    "/>
             <p:selectOneMenu id="slcOneMenuTipoEmpresa" value="#{personaUnidadBean.unidadRegistro.tipoEmpresa}"
-                                 tabindex="1"
+                                 tabindex="9"
                                  style="width: 215px;text-transform: uppercase"
                                  required="true"
                                  requiredMessage="El campo Tipo de empresa es obligatorio.">
@@ -46,67 +123,71 @@
             <p:outputLabel for="calendar" value="Fecha actividad:"/>
             <p:calendar id="calendar" value="#{personaUnidadBean.unidadRegistro.fechaNacimiento}"
                             effect="slideDown"
-                            tabindex="2"
+                            tabindex="10"
                             style="width:190px;"
                             required="true"
                             showOn="button"
                             navigator="true"
+                            pattern="dd/mm/yyyy"
                             requiredMessage="El campo Fecha actividad es obligatorio."/>
+
                 <h:outputText value="Fundempresa:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroFundaempresa}"
                              style="width: 205px;text-transform: uppercase"
-                             tabindex="3" maxlength="20"/>
+                             tabindex="11" maxlength="20"/>
+
                 <h:outputText value="Nro. AFP:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroAfp}"
                              style="width: 205px;text-transform: uppercase"
                              maxlength="20"
-                             tabindex="4"/>
+                             tabindex="12"/>
 
-                <h:outputText/>
-                <h:outputText/>
                 <p:outputLabel for="slcOneMenuTipoSociedad" value="Tipo de sociedad: "/>
                 <p:selectOneMenu id="slcOneMenuTipoSociedad" value="#{personaUnidadBean.unidadRegistro.tipoSociedad}"
-                                 tabindex="5"
+                                 tabindex="13"
                                  required="true"
                                  style="width: 205px;text-transform: uppercase"
                                  requiredMessage="El campo Tipo de sociedad es obligatorio.">
                     <f:selectItem itemLabel="---Seleccione una sociedad---" itemValue="" />
                     <f:selectItems value="#{personaUnidadBean.listaTipoSociedad}" />
                 </p:selectOneMenu>
-                <h:outputText value="Caja de salud: " />
+
+                <h:outputText value="Nro. Caja de salud: " />
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroCajaSalud}"
                              style="width: 205px;"
                              maxlength="20"
-                             tabindex="6"/>
+                             tabindex="14"/>
+
                 <h:outputText value="Nro. referencial:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroReferencial}"
                              style="width: 205px;"
                              maxlength="20"
-                             tabindex="7"/>
+                             tabindex="15"/>
+
                 <h:outputText value="Nro. otro:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroOtro}"
                              style="width: 205px;"
                              maxlength="20"
-                             tabindex="8"/>
+                             tabindex="16"/>
 
-        <p:outputLabel for="txtAreaObservacion2" value="Observaciones:"/>
-        <p:inputTextarea id="txtAreaObservacion2" value="#{personaUnidadBean.unidadRegistro.observaciones}"
+        <p:outputLabel for="txtAreaObs2" value="Observaciones:"/>
+        <p:inputTextarea id="txtAreaObs2" value="#{personaUnidadBean.unidadRegistro.observaciones}"
                          rows="5"
                          cols="50"
                          autoResize="false"
                          style="width: 205px;text-transform: uppercase"
-                         tabindnex="9"
+                         tabindnex="17"
                          required="true"
                          requiredMessage="El campo Observaciones es obligatorio">
             <f:converter converterId="lowerConverter"/>
         </p:inputTextarea>
 
-        <p:outputLabel  for="txtAreaActividadDeclarada2" value="Actividad declarada:"/>
-        <p:inputTextarea id="txtAreaActividadDeclarada2" value="#{personaUnidadBean.unidadRegistro.actividadDeclarada}"
+        <p:outputLabel  for="txtAreaActD2" value="Actividad declarada:"/>
+        <p:inputTextarea id="txtAreaActD2" value="#{personaUnidadBean.unidadRegistro.actividadDeclarada}"
                          rows="5"
                          cols="50" autoResize="false"
                          style="width: 205px;text-transform: uppercase"
-                         tabindex="10"
+                         tabindex="18"
                          required="true"
                          requiredMessage="El campo Actividad declarada es obligatorio">
             <f:converter converterId="lowerConverter"/>
