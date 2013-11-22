@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="roe" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bd315ddf-a308-4fc4-8138-72556be2abec">
+	<property name="ireport.zoom" value="0.7513148009015866"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<parameter name="roe" class="java.lang.String">
+		<defaultValueExpression><![CDATA["roe.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="qr" class="java.lang.String">
+		<defaultValueExpression><![CDATA["qr.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="codigoEmpleador" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombreRazonSocial" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="departamento" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="domOficina" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="repLegal" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaEmision" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nroUbicaciones" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<detail>
+		<band height="752" splitType="Stretch">
+			<image>
+				<reportElement uuid="c6aff287-ae4d-414a-82e8-db1fd1b5f370" x="0" y="0" width="572" height="752"/>
+				<imageExpression><![CDATA[$P{roe}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="3709ebd5-d7f9-4617-9977-a14b04082fb2" x="408" y="593" width="120" height="120"/>
+				<imageExpression><![CDATA[$P{qr}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="33c5a166-be23-4a46-8d69-bb2c1e64a614" x="263" y="283" width="265" height="26"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codigoEmpleador}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="d6c66859-8c49-4720-9416-36a41100d7f6" x="34" y="319" width="494" height="54"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreRazonSocial}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="550aa7d0-b4ba-421f-94de-e250c3c4f244" x="129" y="408" width="399" height="20"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{departamento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="93526d41-76f2-4843-861d-cc7fdd578dd5" x="291" y="435" width="237" height="20"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{domOficina}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="c53a58d9-b3ae-4a12-8245-6f0feac156c0" x="163" y="462" width="365" height="20"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{repLegal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3efc491b-a064-4956-b05c-53069dd14aca" x="148" y="489" width="220" height="20"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaEmision}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8818d5ec-26a0-47b3-8130-dbcb00c1c9c2" x="214" y="515" width="154" height="20"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nroUbicaciones}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

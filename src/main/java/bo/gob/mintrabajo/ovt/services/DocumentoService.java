@@ -4,13 +4,19 @@ import bo.gob.mintrabajo.ovt.api.IDocumentoService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.*;
 import bo.gob.mintrabajo.ovt.repositories.*;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 import javax.ejb.TransactionAttribute;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.Date;
-import java.util.Formatter;
-import java.util.List;
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * User: Renato Velasquez
@@ -31,6 +37,9 @@ public class DocumentoService implements IDocumentoService{
     private final DocGenericoRepository docGenericoRepository;
     private final DefinicionRepository definicionRepository;
     private final IUtilsService utils;
+    private HashMap<String,Object> parametros = new HashMap<String,Object>();
+    private String rutaPdf;
+    private String nombrePdf;
 
     @Inject
     public DocumentoService(DocumentoRepository documentoRepository, 
@@ -194,7 +203,7 @@ public class DocumentoService implements IDocumentoService{
         try {
             numeracion = numeracionRepository.findByExample(numeracionBusqueda, null, null, -1, -1).get(0);
         } catch (Exception e) {
-            throw new RuntimeException("DocNumeracionEntity no encontrado");
+            throw new RuntimeException("DocNumeracion no encontrado");
         }
         String codNumeroS =numeracion.getDocNumeracionPK().getCodDocumento();
         String codNumero = "";
@@ -241,5 +250,124 @@ public class DocumentoService implements IDocumentoService{
         Formatter fmtVerificacion = new Formatter();
         fmtVerificacion.format("%02d", verificacion);
         return (new Long("" + codNumero + numeroFormato + fmtVerificacion.toString()));
+    }
+
+
+    public String generaReporte(DocPlanilla docPlanilla, PerPersona persona , DocDocumento docDocumento, PerUnidad perUnidad, VperPersona vperPersona){
+        parametros.clear();
+        parametros.put("nroOrden", docDocumento.getNumeroDocumento());
+        parametros.put("rectificatoria", " ");
+        parametros.put("nroRectificatoria", " ");
+        parametros.put("totalNacional", "X");
+        parametros.put("oficinaCentral", perUnidad.getNombreComercial());
+        parametros.put("mesPresentacion", docPlanilla.getParCalendario().getParCalendarioPK().getTipoPeriodo());
+        parametros.put("empleadorMTEPS", perUnidad.getNroReferencial());
+        parametros.put("razonSocial", persona.getNombreRazonSocial());
+        parametros.put("departamento", vperPersona.getDirDepartamento());
+        parametros.put("direccion", vperPersona.getDirDireccion());
+        parametros.put("telefono", vperPersona.getTelefono());
+        parametros.put("patronalSS", perUnidad.getNroCajaSalud());
+        parametros.put("ciudadLocalidad", vperPersona.getLocalidad());
+        parametros.put("fax", vperPersona.getFax());
+        parametros.put("nit", vperPersona.getNroIdentificacion() +"");
+        parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
+        parametros.put("zona", vperPersona.getDirZona());
+        parametros.put("numero", vperPersona.getDirNroDireccion());
+        parametros.put("correoElectronico", vperPersona.getEmail());
+        parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
+        parametros.put("montoAportadoAsegurados",docPlanilla.getMontoAsegCaja());
+        parametros.put("gestorSalud", docPlanilla.getIdEntidadSalud().getDescripcion());
+        parametros.put("nroAfiliados",docPlanilla.getNroAsegAfp());
+        parametros.put("montoAportadoAfiliados",docPlanilla.getMontoAsegAfp());
+        parametros.put("haberBasico",docPlanilla.getHaberBasico());
+        parametros.put("bonoAntiguedad",docPlanilla.getBonoAntiguedad());
+        parametros.put("bonoProduccion",docPlanilla.getBonoProduccion());
+        parametros.put("subsidioFrontera",docPlanilla.getSubsidioFrontera());
+        parametros.put("laborExtraordinaria",docPlanilla.getLaborExtra());
+        parametros.put("otrosBono",docPlanilla.getOtrosBonos());
+        parametros.put("aporteAFP",docPlanilla.getAporteAfp());
+        parametros.put("rcIVA",docPlanilla.getRciva());
+        parametros.put("otrosDescuentos",docPlanilla.getOtrosDescuentos());
+        parametros.put("totalMujeres",docPlanilla.getNroM());
+        parametros.put("totalVarones",docPlanilla.getNroH());
+        parametros.put("mujeresJubiladas",docPlanilla.getNroJubiladosM());
+        parametros.put("varonesJubilados",docPlanilla.getNroJubiladosH());
+        parametros.put("mujeresExtranjeras",docPlanilla.getNroExtranjerosM());
+        parametros.put("varonesExtranjeros",docPlanilla.getNroExtranjerosH());
+        parametros.put("mujeresDiscapacidad",docPlanilla.getNroDiscapacidadM());
+        parametros.put("varonesDiscapacidad",docPlanilla.getNroDiscapacidadH());
+        parametros.put("mujeresContratadas",docPlanilla.getNroContratadosM());
+        parametros.put("varonesContratados",docPlanilla.getNroContratadosH());
+        parametros.put("mujeresRetiradas",docPlanilla.getNroRetiradosM());
+        parametros.put("varonesRetirados",docPlanilla.getNroRetiradosH());
+        parametros.put("totalAccidentes",docPlanilla.getNroAccidentes());
+        parametros.put("accidentesMuerte",docPlanilla.getNroMuertes());
+        parametros.put("enfermedadesTrabajos",docPlanilla.getNroEnfermedades());
+//        parametros.put("email",docPlanilla.getIdEntidadBanco()); //----------------;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(docPlanilla.getFechaOperacion());
+        parametros.put("diaDeposito", cal.get(Calendar.DAY_OF_MONTH));
+        cal.add(Calendar.MONTH, 1);
+        parametros.put("mesDeposito", cal.get(Calendar.MONTH));
+        parametros.put("anioDeposito", cal.get(Calendar.YEAR));
+        cal = Calendar.getInstance();
+        cal.setTime(docDocumento.getFechaDocumento());
+        parametros.put("diaFechaPresentacion", cal.get(Calendar.DAY_OF_MONTH));
+        cal.add(Calendar.MONTH, 1);
+        parametros.put("mesFechaPresentacion", cal.get(Calendar.MONTH));
+        parametros.put("anioFechaPresentacion", cal.get(Calendar.YEAR));
+        parametros.put("montoDeposito", docPlanilla.getMontoOperacion());
+        parametros.put("nroComprobante",docPlanilla.getNumOperacion());
+        parametros.put("nombreEmpleador", vperPersona.getRlNombre());
+        parametros.put("nroDocumento", vperPersona.getRlNroIdentidad());
+        parametros.put("lugarPresentacion", "Oficina Virtual");
+        List<DocBinario> lista= binarioRepository.findByIdDocumento(docDocumento.getIdDocumento());
+
+        for(int i=0;i<3;i++){
+            int nroArchivo=i+1;
+            System.out.println("=====>>> "+"archivo"+String.valueOf(nroArchivo));
+            parametros.put("archivo"+String.valueOf(nroArchivo), lista!=null && !lista.isEmpty()?lista.get(nroArchivo-1).getTipoDocumento():"");
+        }
+/*        if (lista!=null && !lista.isEmpty()){
+            //Mostrar el reporte con estos valores con los valores obtenidos.
+            parametros.put("archivo1", lista.get(0).getTipoDocumento());
+            parametros.put("archivo2", lista.get(1).getTipoDocumento());
+            parametros.put("archivo3", lista.get(2).getTipoDocumento());
+        }else{
+            //Mostrar el reporte con estos valores en blanco.
+            parametros.put("archivo1", "");
+            parametros.put("archivo2", "");
+            parametros.put("archivo3", "");
+        }*/
+
+
+
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        parametros.put("escudoBolivia", servletContext.getRealPath("/")+"/images/escudo.jpg");
+        parametros.put("logo",servletContext.getRealPath("/")+"/images/logoMIN.jpg");
+        try {
+            generateReport();
+            return nombrePdf;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERROR al generar el reporte: "+e.getMessage());
+        }
+        return null;
+    }
+
+
+    public void generateReport() throws ClassNotFoundException, IOException, JRException {
+        List<String> lista= new ArrayList<String>();
+        lista.add("asd");
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String rutaWebapp = servletContext.getRealPath("/");
+        rutaPdf= "/reportes/temp/"+ "DDJJ-"+ UUID.randomUUID() + ".pdf";
+        nombrePdf = rutaWebapp + rutaPdf;
+        JasperReport reporte = (JasperReport) JRLoader.loadObject(new File(rutaWebapp + "/reportes/formularioLC1010V1.jasper"));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(lista));
+        JRExporter exporter = new JRPdfExporter();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(nombrePdf));
+        exporter.exportReport();
     }
 }

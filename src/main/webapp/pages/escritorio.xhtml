@@ -52,9 +52,14 @@
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
                         </p:commandButton> 
 
-                        <p:commandButton icon="ui-icon-print" action="#{escritorioBean.irImprimirDocumento}" title="Imprimir documento" ajax="false">
+                        <!--<p:commandButton icon="ui-icon-print" action="# {escritorioBean.irImprimirDocumento}" title="Imprimir documento" ajax="false">-->
+                            <!--<f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />-->
+                        <!--</p:commandButton>-->
+
+                        <h:commandLink target="_blank" action="#{escritorioBean.irImprimirDocumento}" title="Imprimir documento">
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
-                        </p:commandButton>
+                            <h:graphicImage  style="float: left;width:25px;height: 23px;padding-right: 3px; " value="/images/imprimir.png" />
+                        </h:commandLink>
 
                         <p:commandButton action="#{escritorioBean.download}"
                                          ajax="false"
@@ -98,7 +103,7 @@
                     <center>
                     <h:panelGrid columns="2">
 
-                        <h:outputText value="#{escritorioBean.docDocumento.codEstado.descripcion} "  style="font-size: 20px"/>
+                        <h:outputText value="#{escritorioBean.docDocumento.codEstado.descripcion}" style="font-size: 20px"/>
                         <p:selectOneRadio id="grid" value="#{escritorioBean.codEstadoFinal}" 
                                           layout="grid" 
                                           columns="1" 
@@ -116,9 +121,10 @@
                     <br/>
                     <p:commandButton value="Realizar cambio de estado" 
                                      update="idEscritorio"
-                                     rendered="#{escritorioBean.esInterno and escritorioBean.listaDocumentoEstado.size()>0}"
-                                     action="#{escritorioBean.realizarCambioDeEstados}"/>
-                    <p:outputLabel value="No se encontraron transiciones siguientes" rendered="#{!(escritorioBean.esInterno and escritorioBean.listaDocumentoEstado.size()>0)}"/>
+                                     rendered="#{escritorioBean.esInterno}"
+                                     action="#{escritorioBean.realizarCambioDeEstados}"/>          <!--rendered and escritorioBean.listaDocumentoEstado.size()>0}"-->
+                    <p:outputLabel value="No se encontraron transiciones siguientes" rendered="#{!(escritorioBean.esInterno)}"/>
+                    <!--and escritorioBean.listaDocumentoEstado.size()>0)}"/>-->
                 </p:dialog>  
 
             </h:form>
