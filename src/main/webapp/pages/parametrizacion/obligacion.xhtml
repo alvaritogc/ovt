@@ -21,15 +21,15 @@ Copyright 2013 lvaldez.
                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
                  currentPageReportTemplate="{currentPage} / {totalPages}">
 
-                <p:column sortBy="codigo" headerText="Codigo">    
+                <p:column headerText="Codigo">    
                     <h:outputText value="#{parObligacion.codObligacion}" />  
                 </p:column>  
                 
-                <p:column sortBy="descripcion" headerText="Descripción" >   
+                <p:column headerText="Descripción" >   
                     <h:outputText value="#{parObligacion.descripcion}" />  
                 </p:column>  
 
-                <p:column sortBy="estado" headerText="Estado">  
+                <p:column headerText="Estado">  
                     <h:outputText value="#{parObligacion.estado}" />  
                 </p:column>
                 <p:column headerText="Acciones">
@@ -46,8 +46,8 @@ Copyright 2013 lvaldez.
             
             <p:growl id="messages" showDetail="true" /> 
              <p:confirmDialog message="Esta seguro de eliminar este registro?"  
-                showEffect="fade" hideEffect="explode"  
-                header="Confirmacion" severity="alert" widgetVar="confirmation">  
+                              showEffect="fade" hideEffect="explode" closable="false" 
+                header="Confirmación" severity="alert" widgetVar="confirmation">  
                  <p:commandButton value="Si" update=":messages :dataTableObligacion" oncomplete="confirmation.hide()" actionListener="#{obligacionBean.confirmaEliminar}" />  
                  <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
             </p:confirmDialog>
@@ -64,7 +64,7 @@ Copyright 2013 lvaldez.
             </p:dialog>
                 
              <!--            Formulario de registro y edicion-->   
-            <p:dialog id="basicDialogMessage" header="Obligacion" widgetVar="dlgFormObligacion" 
+            <p:dialog id="basicDialogMessage" header="Obligación" widgetVar="dlgFormObligacion" 
                       width="400" closable="false"
                       resizable="false"
                       modal="true" >  

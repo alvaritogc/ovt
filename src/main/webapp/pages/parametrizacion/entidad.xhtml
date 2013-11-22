@@ -16,18 +16,18 @@
                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
                  currentPageReportTemplate="{currentPage} / {totalPages}">
 
-                <p:column sortBy="descripcion" headerText="Descripción" >   
+                <p:column headerText="Descripción" >   
                     <h:outputText value="#{parEntidad.descripcion}" />  
                 </p:column>  
 
-                <p:column sortBy="codigo" headerText="Codigo interno">    
+                <p:column headerText="Codigo interno">    
                     <h:outputText value="#{parEntidad.codigo}" />  
                 </p:column>  
 
-                <p:column sortBy="tipoEntidad" headerText="Tipo de entidad">  
+                <p:column headerText="Tipo de entidad">  
                     <h:outputText value="#{parEntidad.tipoEntidad}" />  
                 </p:column>
-                <p:column headerText="Operaciones">                
+                <p:column headerText="Acciones">                
                     <p:commandButton title="Editar" onclick="dlgFormEntidad.show()" update=":formEntidad" icon="ui-icon-pencil">
                             <f:setPropertyActionListener target="#{entidadBean.entidad}" value="#{parEntidad}" />
                             <f:setPropertyActionListener target="#{entidadBean.evento}" value="true" />
@@ -41,8 +41,8 @@
             
             <p:growl id="messages" showDetail="true" /> 
              <p:confirmDialog message="Esta seguro de eliminar este registro?"  
-                showEffect="fade" hideEffect="explode"  
-                header="Confirmacion" severity="alert" widgetVar="confirmation">  
+                              showEffect="fade" hideEffect="explode" closable="false"  
+                header="Confirmación" severity="alert" widgetVar="confirmation">  
                  <p:commandButton value="Si" update=":messages :dataTableEntidad" oncomplete="confirmation.hide()" actionListener="#{entidadBean.confirmaEliminar}" />  
                  <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
             </p:confirmDialog>
