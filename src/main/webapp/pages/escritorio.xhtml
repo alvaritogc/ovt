@@ -77,7 +77,9 @@
                     </p:row>
                 </p:panelGrid>
             </center>
-                    <h:panelGrid columns="6"  style="border: 1px solid black; height: 50px;width:100%;">
+                    <h:panelGrid columns="6" 
+                                 rendered="#{escritorioBean.docPlanilla!=null}"
+                                 style="border: 1px solid black; height: 50px;width:100%;">
                         <p:outputLabel value="Nº de comprobante de depósito:" style="text-align: right;"/>
                         <p:outputLabel value="#{escritorioBean.docPlanilla.numOperacion}"  style="border: 1px solid black;width: 80px;text-align: left;padding: 3px;"/>
 
@@ -114,8 +116,9 @@
                     <br/>
                     <p:commandButton value="Realizar cambio de estado" 
                                      update="idEscritorio"
-                                     rendered="#{escritorioBean.esInterno}"
+                                     rendered="#{escritorioBean.esInterno and escritorioBean.listaDocumentoEstado.size()>0}"
                                      action="#{escritorioBean.realizarCambioDeEstados}"/>
+                    <p:outputLabel value="No se encontraron transiciones siguientes" rendered="#{!(escritorioBean.esInterno and escritorioBean.listaDocumentoEstado.size()>0)}"/>
                 </p:dialog>  
 
             </h:form>

@@ -1,16 +1,14 @@
 package bo.gob.mintrabajo.ovt.auth;
 
 import oracle.jdbc.pool.OracleDataSource;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.codec.CodecSupport;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
 
-import javax.ejb.TransactionAttribute;
-import javax.inject.Named;
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
