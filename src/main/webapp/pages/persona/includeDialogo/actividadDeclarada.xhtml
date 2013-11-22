@@ -12,10 +12,12 @@
                              icon="ui-icon-disk"
                              action="#{personaUnidadBean.procesarActividadEconomica}"
                              id="cmdButtonActividadDeclarada"
+                             tabindex="5"
                              update=":tabPersonaUnidad,:tabPersonaUnidad:tabActividad,:dataGrid,growlActividadDeclarada"
                     />
             &#160;&#160;
             <p:commandButton value="Cancelar"
+                             tabindex="6"
                              icon="ui-icon-closethick"
                              onclick="dlgActividadDeclarada.hide()"
                              id="cmdButtonDireccionCancel"/>
@@ -53,7 +55,7 @@
 
             <p:outputLabel for="txtAreaDescripcionCodImpuestos1" value="Descripcion del codigo de impuestos:"/>
             <p:inputTextarea id="txtAreaDescripcionCodImpuestos1" value="#{personaUnidadBean.actividadEconomica.descricpionImpuestos}"
-                             rows="5"
+                             rows="4"
                              cols="50"
                              autoResize="false"
                              style="width: 220px;text-transform: uppercase;"

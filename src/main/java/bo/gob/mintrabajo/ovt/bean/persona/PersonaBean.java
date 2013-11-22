@@ -20,9 +20,7 @@ import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -309,20 +307,20 @@ public class PersonaBean implements Serializable{
 
 
       final String  REGISTRO_BITACORA="ROE";
-        System.out.println("INGRESANDO ................................ ");
       Long seq= iLocalidadService.localidadSecuencia(PER_PERSONA_SEC);
       persona.setIdPersona(seq.toString());
       persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
       persona.setRegistroBitacora(REGISTRO_BITACORA);
-     // persona.setEsNatural(esNatural);
-
+      //Se setea por defecto este valor por que en BD es not null.
       unidad.setObservaciones("REGISTRO");
       unidad.setFechaNacimiento(new Date());
       unidad.setRegistroBitacora(REGISTRO_BITACORA);
       unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
       PerUnidadPK perUnidadPK=new PerUnidadPK();
       perUnidadPK.setIdPersona(persona.getIdPersona());
-      perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia(PER_UNIDAD_SEC));
+      //Se setea 0, para identificar a la unidad principal
+      perUnidadPK.setIdUnidad(0L);
+      /*perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia(PER_UNIDAD_SEC));*/
       unidad.setPerUnidadPK(perUnidadPK);
 
       usuario.setIdUsuario(iUsuarioService.obtenerSecuencia(USR_USUARIO_SEC));
@@ -332,7 +330,7 @@ public class PersonaBean implements Serializable{
       usuario.setClave(Util.encriptaMD5(usuario.getClave()));
       ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO__USUARIO_SINCONFIRMAR);
       usuario.setEstadoUsuario(d.getParDominioPK().getValor());
-        //usuario.setIdPersona(persona);
+
       usuario.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION, PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
 
       usuario.setFechaBitacora(new Date());
@@ -348,13 +346,15 @@ public class PersonaBean implements Serializable{
             RequestContext.getCurrentInstance().execute("dlg.hide()");
         mostrar= iPersonaService.registrar(persona,unidad,usuario);
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("mostrar ---------------------------------- " + mostrar);
 
         if (mostrar) {
             context.execute("dlg.show()");
             ServicioEnvioEmail see = new ServicioEnvioEmail();
-            cargaParametricasEmail();
-            see.envioEmail(this);
+           // cargaParametricasEmail();
+            Map<String,String>configuracionEmail=new HashMap<String, String>();
+            configuracionEmail= cargaParametricasEmail();
+            see.envioEmail2(usuario,configuracionEmail);
+            //see.envioEmail(this);
         } else {
             context.execute("dlg.hide()");
         }
@@ -369,7 +369,6 @@ public class PersonaBean implements Serializable{
             return false;
         }
     }
-
 
     public boolean validarEmail(String email){
         Pattern patron = Pattern.compile("^[\\w-\\.]+\\@[\\w\\.-]+\\.[a-z]{2,4}$");
@@ -406,7 +405,7 @@ public class PersonaBean implements Serializable{
         return "irInicio";
     }
 
-    public void cargaParametricasEmail() {
+ /*   public void cargaParametricasEmail() {
         try {
             from = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_CUENTA_EMAIL).getDescripcion();
             subject = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_ASUNTO).getDescripcion();
@@ -418,7 +417,33 @@ public class PersonaBean implements Serializable{
         } catch (NullPointerException ne) {
             logger.info("El parámetro no existe en base de datos ...");
         }
+    }*/
+
+    public Map<String,String> cargaParametricasEmail() {
+        Map<String,String>configuracionEmail=new HashMap<String, String>();
+        try {
+            String from = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_CUENTA_EMAIL).getDescripcion();
+            String subject = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_ASUNTO).getDescripcion();
+            String urlRedireccion = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_URL).getDescripcion();
+            String cuerpoMensaje = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_MENSAJE).getDescripcion();
+            String password = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PASSWORD).getDescripcion();
+            String host = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_SERVIDOR).getDescripcion();
+            String port = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PUERTO).getDescripcion();
+            configuracionEmail.put("from",from);
+            configuracionEmail.put("subject",subject);
+            configuracionEmail.put("urlRedireccion",urlRedireccion);
+            configuracionEmail.put("cuerpoMensaje",cuerpoMensaje);
+            configuracionEmail.put("password",password);
+            configuracionEmail.put("host",host);
+            configuracionEmail.put("port",port);
+            configuracionEmail.put("sw","0");
+            return configuracionEmail;
+        } catch (NullPointerException ne) {
+            logger.info("El parámetro no existe en base de datos ...");
+            return null;
+        }
     }
+
 
      /*
       ******************************************
@@ -426,7 +451,6 @@ public class PersonaBean implements Serializable{
       *             GETTER Y SETTER
       * ****************************************
      */
-
 
     public String getConfirmarContrasenia() {
         return confirmarContrasenia;

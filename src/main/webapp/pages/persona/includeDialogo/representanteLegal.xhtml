@@ -15,8 +15,6 @@
             margin: 0.1em;
             text-align: left;
         }
-
-
     </style>
  <h:form id="frmRepLegal">
      <p:growl showDetail="true" id="growlRepLegal" />
@@ -28,11 +26,13 @@
                               icon="ui-icon-disk"
                               action="#{personaUnidadBean.procesarRepLegal}"
                               id="cmdButtonRepLegal"
+                              tabindex="9"
                               update=":tabPersonaUnidad,:tabPersonaUnidad:tabRepLegal,:dataGrid,:frmRepLegal:growlRepLegal"
                      />
              &#160;&#160;
              <p:commandButton value="Cancelar"
                               icon="ui-icon-closethick"
+                              tabindex="10"
                               onclick="dlgRepLegal.hide()"
                               id="cmdButtonRepLegalCancelar"/>
          </f:facet>
@@ -82,7 +82,10 @@
                           tabindex="5"
                           required="true"
                           maxlength="20"
-                          requiredMessage="El campo Nro. de identificacion es obligatorio."/>
+                          converterMessage="El valor del campo Nro. de identificacion debe ser numerico."
+                          requiredMessage="El campo Nro. de identificacion es obligatorio">
+                 <f:convertNumber integerOnly="true" />
+            </p:inputText>
          </h:panelGrid>
 
          <p:fieldset styleClass="myFieldset" legend="&#xA0;&#xA0;&#xA0;Poder" >
@@ -96,6 +99,7 @@
                 <p:calendar id="calendar" value="#{personaUnidadBean.repLegal.fechaDocumento}"
                             effect="slideDown"
                             tabindex="7"
+                            pattern="dd/mm/yyyy"
                             style="width:200px;"
                             showOn="button"
                             navigator="true"/>
