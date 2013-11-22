@@ -32,5 +32,5 @@ public class Sequencias {
     public static final String USR_RECURSO_SEC="PER_RECURSO_SEC";
     public static final String USR_ROL_SEC="USR_ROL_SEC";
     public static final String USR_USUARIO_ROL_SEC="USR_USUARIO_ROL_SEC";
-    public static final String USR_USUARIO_SEC="PER_USUARIO_SEC";
+    public static final String USR_USUARIO_SEC="USR_USUARIO_SEC";
 }
