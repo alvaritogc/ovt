@@ -26,13 +26,12 @@
                     <h:outputText value="#{rol.idModulo.idModulo} - #{rol.idModulo.nombre}" />
                 </p:column>
                 <p:column headerText="Operaciones">
-                    <p:commandButton icon="ui-icon-pencil" title="Editar" oncomplete="edicionDlg.show();" update=":rolEdicionFrm" style="color:#0066CC">
+                    <p:commandButton icon="ui-icon-pencil" title="Editar" oncomplete="edicionDlg.show();" update=":rolEdicionFrm">
                         <f:setPropertyActionListener value="#{rol}" target="#{rolAdministracionBean.rolSelected}" />
                         <f:setPropertyActionListener value="#{rol.esInterno}" target="#{rolAdministracionBean.esInterno}" />
                     </p:commandButton>
                     <p:spacer width="5" />
-                    <p:commandButton icon="ui-icon-trash" title="Eliminar" oncomplete="eliminarDlg.show();" style="color:#0066CC">
-                        <!--<p:confirm header="Confirmar la eliminación" message="Está segúro de eliminar este rol?" icon="ui-icon-alert" />-->
+                    <p:commandButton icon="ui-icon-trash" title="Eliminar" oncomplete="eliminarDlg.show();">
                         <f:setPropertyActionListener value="#{rol}" target="#{rolAdministracionBean.rolSelected}" />
                     </p:commandButton>
                 </p:column>
@@ -44,19 +43,22 @@
             <h:form id="rolNuevoFrm">
                 <p:panelGrid columns="2">
                     <p:outputLabel for="nombreN" value="Nombre :" />
-                    <p:inputText id="nombreN" value="#{rolAdministracionBean.rolSelected.nombre}" required="true" />
+                    <p:inputText id="nombreN" value="#{rolAdministracionBean.rolSelected.nombre}" required="true" style="text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter" />
+                    </p:inputText>
                     <p:outputLabel for="internoN" value="Es Interno :" />
                     <p:selectOneMenu id="internoN" value="#{rolAdministracionBean.esInterno}">
                         <f:selectItem itemLabel="SI" itemValue="#{1}" />
                         <f:selectItem itemLabel="NO" itemValue="#{0}" />
                     </p:selectOneMenu>
                     <p:outputLabel for="estadoN" value="Estado :" />
-                    <p:selectOneMenu id="estadoN" value="#{rolAdministracionBean.rolSelected.estado}" required="true">
+                    <p:selectOneMenu id="estadoN" value="#{rolAdministracionBean.rolSelected.estado}" required="true" style="text-transform: uppercase;">
                         <f:selectItem itemLabel="--Selección--" itemValue="#{null}" />
                         <f:selectItems value="#{rolAdministracionBean.dominioLista}" var="dominios" itemLabel="#{dominios.descripcion}" itemValue="#{dominios.parDominioPK.valor}" />
+                        <f:converter converterId="lowerConverter" />
                     </p:selectOneMenu>
                     <p:outputLabel for="moduloN" value="Módulo :" />
-                    <p:selectOneMenu id="moduloN" value="#{rolAdministracionBean.rolSelected.idModulo}" required="true">
+                    <p:selectOneMenu id="moduloN" value="#{rolAdministracionBean.rolSelected.idModulo}" required="true" style="text-transform: uppercase;">
                         <f:selectItem itemLabel="--Selección--" itemValue="#{null}" />
                         <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="moduloPojo" itemLabel="#{moduloPojo.idModulo} - #{moduloPojo.nombre}" />
                         <f:converter converterId="moduloConverter" />
@@ -72,19 +74,22 @@
             <h:form id="rolEdicionFrm">
                 <p:panelGrid columns="2">
                     <p:outputLabel for="nombreE" value="Nombre :" />
-                    <p:inputText id="nombreE" value="#{rolAdministracionBean.rolSelected.nombre}" required="true" />
+                    <p:inputText id="nombreE" value="#{rolAdministracionBean.rolSelected.nombre}" required="true" style="text-transform: uppercase;">
+                        <f:converter converterId="lowerConverter" />
+                    </p:inputText>
                     <p:outputLabel for="esInternoE" value="Es Interno :" />
                     <p:selectOneMenu id="esInternoE" value="#{rolAdministracionBean.esInterno}">
                         <f:selectItem itemLabel="SI" itemValue="#{1}" />
                         <f:selectItem itemLabel="NO" itemValue="#{0}" />
                     </p:selectOneMenu>
                     <p:outputLabel for="estadoE" value="Estado :" />
-                    <p:selectOneMenu id="estadoE" value="#{rolAdministracionBean.rolSelected.estado}" required="true">
+                    <p:selectOneMenu id="estadoE" value="#{rolAdministracionBean.rolSelected.estado}" required="true" style="text-transform: uppercase;">
                         <f:selectItem itemLabel="--Selección--" itemValue="#{null}" />
                         <f:selectItems value="#{rolAdministracionBean.dominioLista}" var="dominios" itemLabel="#{dominios.descripcion}" itemValue="#{dominios.parDominioPK.valor}" />
+                        <f:converter converterId="lowerConverter" />
                     </p:selectOneMenu>
                     <p:outputLabel for="moduloE" value="Módulo :" />
-                    <p:selectOneMenu id="moduloE" value="#{rolAdministracionBean.rolSelected.idModulo}" required="true" >
+                    <p:selectOneMenu id="moduloE" value="#{rolAdministracionBean.rolSelected.idModulo}" required="true" style="text-transform: uppercase;">
                         <f:selectItem itemLabel="--Selección--" itemValue="#{null}" />
                         <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="moduloPojo" itemLabel="#{moduloPojo.idModulo} - #{moduloPojo.nombre}" />
                         <f:converter converterId="moduloConverter" />

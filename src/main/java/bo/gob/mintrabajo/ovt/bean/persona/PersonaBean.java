@@ -305,7 +305,7 @@ public class PersonaBean implements Serializable{
             return ;
         }
 
-
+      try {
       final String  REGISTRO_BITACORA="ROE";
       Long seq= iLocalidadService.localidadSecuencia(PER_PERSONA_SEC);
       persona.setIdPersona(seq.toString());
@@ -348,16 +348,21 @@ public class PersonaBean implements Serializable{
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (mostrar) {
-            context.execute("dlg.show()");
             ServicioEnvioEmail see = new ServicioEnvioEmail();
            // cargaParametricasEmail();
             Map<String,String>configuracionEmail=new HashMap<String, String>();
             configuracionEmail= cargaParametricasEmail();
             see.envioEmail2(usuario,configuracionEmail);
+            context.execute("dlg.show()");
             //see.envioEmail(this);
         } else {
             context.execute("dlg.hide()");
         }
+      }catch (Exception e){
+          e.printStackTrace();
+          RequestContext.getCurrentInstance().execute("statusDialog.hide();");
+          FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Atención", "El email no pudo ser enviado intente de nuevo"));
+      }
     }
 
     //Valida si el parametro es numerico
