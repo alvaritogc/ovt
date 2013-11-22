@@ -87,6 +87,9 @@ public class PersonaUnidadBean implements Serializable{
     @ManagedProperty(value = "#{actividadService}")
     private IActividadService iActividadService;
 
+    @ManagedProperty(value = "#{infoLaboralService}")
+    private IInfoLaboralService iInfoLaboralService;
+
     private PerPersona persona=new PerPersona();
     private String idLocalidadPersona;
 
@@ -137,23 +140,7 @@ public class PersonaUnidadBean implements Serializable{
 
     private List<SelectItem>listaCodActividadEconomica;
 
-    public ExternalContext getExternalContext() {
-        return externalContext;
-    }
-
-    public void setExternalContext(ExternalContext externalContext) {
-        this.externalContext = externalContext;
-    }
-
     private String codigoActividadEconomicaPrincipal;
-
-    public Long getIdActividadEconomicaPrincipal() {
-        return idActividadEconomicaPrincipal;
-    }
-
-    public void setIdActividadEconomicaPrincipal(Long idActividadEconomicaPrincipal) {
-        this.idActividadEconomicaPrincipal = idActividadEconomicaPrincipal;
-    }
 
     private Long idActividadEconomicaPrincipal;
     private ParActividadEconomica actividadEconomicaPrincipal;
@@ -166,16 +153,11 @@ public class PersonaUnidadBean implements Serializable{
     private String tituloDialog;
     private String iconoUnidad;
 
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
     private   Long idUsuario;
     static String  REGISTRO_BITACORA;
+
+    private PerInfolaboral infolaboral;
+    private PerInfolaboral infolaboralRegistro;
 
     @PostConstruct
     public void ini(){
@@ -207,6 +189,7 @@ public class PersonaUnidadBean implements Serializable{
         cargarActividadDeclarda();
         cargarDireccion();
         cargarRepLegal();
+        cargarInfoLaboral();
     }
 
     /*
@@ -247,6 +230,11 @@ public class PersonaUnidadBean implements Serializable{
         direccion=new PerDireccion();
         repLegal=new PerReplegal();
         actividadPrincipal=new PerActividad();
+        infolaboralRegistro=new PerInfolaboral();
+        //infolaboralRegistro.setNroTotalTrabajadores(10);
+        infolaboralRegistro.setNroHombres(10);
+        infolaboralRegistro.setNroMujeres(10);
+
     }
 
     /*
@@ -468,7 +456,6 @@ public class PersonaUnidadBean implements Serializable{
     }
 
 
-
     /*
      *******************************************
      *          METODOS REPLEGAL
@@ -527,7 +514,8 @@ public class PersonaUnidadBean implements Serializable{
 
         repLegal.setPerUnidad(unidadRegistro);
         //Cambiar por el usuario de la session
-        repLegal.setRegistroBitacora(persona.getNombreRazonSocial());
+        //repLegal.setRegistroBitacora(persona.getNombreRazonSocial());
+        repLegal.setRegistroBitacora(REGISTRO_BITACORA);
         iRepLegalService.save(repLegal);
         ini();
         RequestContext.getCurrentInstance().execute("dlgRepLegal.hide()");
@@ -593,7 +581,8 @@ public class PersonaUnidadBean implements Serializable{
     public void procesarActividadEconomica(){
 
         //Cambiar por el usuario de la session
-        String registroPersona=  persona.getNombreRazonSocial();
+       // String registroPersona=  persona.getNombreRazonSocial();
+        String registroPersona=REGISTRO_BITACORA;
        ParActividadEconomica actvEcon=iActividadEconomicaService.findByIdActividadEconomica(idActividadEconomicaPrincipal);
         actividadEconomica.setCodActividadEconomica(actvEcon.getCodActividadEconomica());
         actividadEconomica.setIdActividadEconomica2(actvEcon);
@@ -638,6 +627,53 @@ public class PersonaUnidadBean implements Serializable{
         catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+    }
+
+
+    /*
+    *******************************************
+    *          METODOS INFORMACION LABORAL
+    ******************************************
+    */
+
+    /*
+ * Este metodo se encarga de realizar un INSERT o UPDATE
+ * de un registro en las tablas: PAR_ACTIVIDAD_ECONOMICA y PER_ACTIVIDAD
+  */
+    public void procesarInfoLaboral(){
+
+
+        infolaboralRegistro.setRegistroBitacora(REGISTRO_BITACORA);
+        infolaboralRegistro.setPerUnidad(unidad);
+         iInfoLaboralService.save(infolaboralRegistro);
+        ini();
+        //Cerrar dialog
+        RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
+
+    }
+
+    public void cargarInfoLaboral(){
+        infolaboral=new PerInfolaboral();
+
+        logger.info("===>> Ingresando a cargarInfoLaboral()");
+        logger.info("===>> UNIDAD "+unidad);
+        List<PerInfolaboral>listaInfoLaboral=new ArrayList<PerInfolaboral>();
+        listaInfoLaboral=iInfoLaboralService.findByPerUnidad(unidad);
+        if(listaInfoLaboral!=null){
+           if(!listaInfoLaboral.isEmpty()){
+               //se obtiene el primer registro, por que una persona solo tiene
+               // una actividad declarada
+               infolaboral=listaInfoLaboral.get(0);
+               //codigoActividadEconomicaPrincipal= iActividadEconomicaService.findByIdActividadEconomica(actividadEconomicaPrincipal.getIdActividadEconomica2().getIdActividadEconomica()).getDescripcion();
+           }
+        }
+
+
+    }
+
+    public  void sumar(){
+        //if(infolaboral.getNroHombres()!=null)
+        infolaboral.setNroTotalTrabajadores(infolaboral.getNroHombres()+infolaboral.getNroMujeres());
     }
 
     /*
@@ -1048,5 +1084,53 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setIdLocalidadPersona(String idLocalidadPersona) {
         this.idLocalidadPersona = idLocalidadPersona;
+    }
+
+    public ExternalContext getExternalContext() {
+        return externalContext;
+    }
+
+    public void setExternalContext(ExternalContext externalContext) {
+        this.externalContext = externalContext;
+    }
+
+    public Long getIdActividadEconomicaPrincipal() {
+        return idActividadEconomicaPrincipal;
+    }
+
+    public void setIdActividadEconomicaPrincipal(Long idActividadEconomicaPrincipal) {
+        this.idActividadEconomicaPrincipal = idActividadEconomicaPrincipal;
+    }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public PerInfolaboral getInfolaboral() {
+        return infolaboral;
+    }
+
+    public void setInfolaboral(PerInfolaboral infolaboral) {
+        this.infolaboral = infolaboral;
+    }
+
+    public PerInfolaboral getInfolaboralRegistro() {
+        return infolaboralRegistro;
+    }
+
+    public void setInfolaboralRegistro(PerInfolaboral infolaboralRegistro) {
+        this.infolaboralRegistro = infolaboralRegistro;
+    }
+
+    public IInfoLaboralService getiInfoLaboralService() {
+        return iInfoLaboralService;
+    }
+
+    public void setiInfoLaboralService(IInfoLaboralService iInfoLaboralService) {
+        this.iInfoLaboralService = iInfoLaboralService;
     }
 }

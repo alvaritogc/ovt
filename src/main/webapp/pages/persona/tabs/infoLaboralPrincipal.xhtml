@@ -37,55 +37,70 @@
 
     <p:panel  id="pnlInfoLaboralPrincipal" styleClass="myPanelContent" style="width: 500px">
         <f:facet name="footer">
-            <p:commandButton id="cmdButtonInfoLaboral" icon="ui-icon-pencil" value="Modificar"
+            <p:commandButton id="cmdButtonInfoLaboral"
+                             icon="ui-icon-pencil"
+                             value="Modificar"
+                             rendered="#{personaUnidadBean.infolaboral.idInfolaboral!=null}"
                              update=":frmInfoLaboral:pnlInfoLaboral,:txtDlgInfoLaboral,:frmInfoLaboral:cmdButtonInfoLaboral"
                              onclick="PF('dlgInfoLaboral').show()">
                 <f:setPropertyActionListener value="#{personaUnidadBean.persona}" target="#{personaUnidadBean.personaRegistro}"/>
-                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.infolaboral}" target="#{personaUnidadBean.infolaboralRegistro}"/>
                 <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
             </p:commandButton>
+
+            <p:commandButton id="cmdButtonInfoLaboralPAgregar"
+                             icon="ui-icon-plus"
+                             value="Agregar"
+                             actionListener="#{personaUnidadBean.nuevo}"
+                             rendered="#{personaUnidadBean.infolaboral.idInfolaboral==null}"
+                             onclick="PF('dlgInfoLaboral').show()"
+                             update=":frmInfoLaboral:pnlInfoLaboral,:txtDlgInfoLaboral,:frmInfoLaboral:cmdButtonInfoLaboral">
+                <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
         </f:facet>
 
             <h:panelGrid  cellpadding="2" columns="6"  style="width: 680px;" columnClasses="column1,column2,column3,column4,column5,column6">
                 <h:outputText value="Hombres:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroHombres}" readonly="true" style="width: 40px;"/>
 
                 <h:outputText value="Mujeres:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroMujeres}" readonly="true" style="width: 40px;"/>
 
                 <h:outputText value="N° total de trabajadores:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroTotalTrabajadores}" readonly="true" style="width: 40px;"/>
 
                 <h:outputText value="Extranjeros:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroExtranjeros}" readonly="true" style="width: 40px;"/>
 
                 <h:outputText value="Fijos:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroFijos}" readonly="true" style="width: 40px;"/>
 
                 <h:outputText value="Eventuales:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroEventuales}" readonly="true" style="width: 40px;"/>
 
                 <h:outputText value="Menores de 18 años:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroMenores18}" readonly="true" style="width: 40px;"/>
 
                 <h:outputText value="Mayores de 60 años:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroMayores60}" readonly="true" style="width: 40px;"/>
 
                 <h:outputLabel/>
                 <h:outputLabel/>
 
                 <h:outputText value="Personal trabajando jubilado:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroJubilados}" readonly="true" style="width: 40px;"/>
 
                 <h:outputText value="Personal con capacidades diferenciales:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroCapdiferente}" readonly="true" style="width: 40px;"/>
 
                 <h:outputLabel/>
                 <h:outputLabel/>
 
                 <h:outputText value="Total ganado de la planilla (Bs.):"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.totalPlanilla}" readonly="true" style="width: 40px;"/>
 
                 <h:outputLabel/>
                 <h:outputLabel/>
@@ -93,25 +108,29 @@
                 <h:outputLabel/>
 
                 <h:outputText value="N° asegurados en Caja de salud:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroAsegCaja}" readonly="true" style="width: 40px;"/>
 
                 <h:outputText value="Monto aportado (Bs):"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.montoAsegCaja}" readonly="true" style="width: 40px;"/>
 
                 <h:outputLabel/>
                 <h:outputLabel/>
 
                 <h:outputText value="N° asegurados AFPs (largo plazo):"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.nroAsegAfp}" readonly="true" style="width: 40px;"/>
 
                 <h:outputText value="Monto aportado (Bs):"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <p:inputText value="#{personaUnidadBean.infolaboral.montoAsegAfp}" readonly="true" style="width: 40px;"/>
 
                 <h:outputLabel/>
                 <h:outputLabel/>
 
-                <h:outputText value="Cuenta con sindicato):"/>
-                <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 40px;"/>
+                <h:outputText value="Cuenta con sindicato:"/>
+                <p:selectBooleanCheckbox id="checkEsNatural"
+                                         value="#{personaUnidadBean.infolaboral.tipoSindicato}"
+                                         tabindex="16" disabled="true">
+                </p:selectBooleanCheckbox>
+
 
             </h:panelGrid>
     </p:panel>

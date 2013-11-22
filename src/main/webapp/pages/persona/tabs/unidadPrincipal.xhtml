@@ -38,7 +38,7 @@
                              update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
                              onclick="PF('dlgUnidad').show()">
                 <f:setPropertyActionListener value="#{personaUnidadBean.persona}" target="#{personaUnidadBean.personaRegistro}"/>
-                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.infolaboral}" target="#{personaUnidadBean.unidadRegistro}"/>
                 <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
             </p:commandButton>

@@ -344,6 +344,7 @@ public class PersonaBean implements Serializable{
             RequestContext.getCurrentInstance().execute("dlg.show()");
         else
             RequestContext.getCurrentInstance().execute("dlg.hide()");
+
         mostrar= iPersonaService.registrar(persona,unidad,usuario);
         RequestContext context = RequestContext.getCurrentInstance();
 

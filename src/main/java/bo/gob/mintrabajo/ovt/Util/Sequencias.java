@@ -25,6 +25,7 @@ public class Sequencias {
     public static final String PER_PERSONA_SEC="PER_PERSONA_SEC";
     public static final String PER_REPLEGAL_SEC="PER_REPLEGAL_SEC";
     public static final String PER_UNIDAD_SEC="PER_UNIDAD_SEC";
+    public static final String PER_INFOLABORAL_SEC="PER_INFOLABORAL_SEC" ;
 
     public static final String SEQ="SEQ";
 

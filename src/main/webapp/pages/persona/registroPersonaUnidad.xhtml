@@ -9,6 +9,16 @@
 <ui:composition template="../template/templateInicio.xhtml">
     <ui:define name="content">
 
+
+    <style type="text/css">
+
+
+
+        .column1{text-align: left;width: 700px;}
+        .column2{text-align: left;width: 100px;}
+
+    </style>
+
         <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
 
         <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
@@ -70,6 +80,8 @@
 
     <h:form id="frmBucarPersona">
             <br/>
+        <h:panelGrid columns="2"  style="width: 765px" columnClasses="column1,column2">
+            <h:column >
             <p:commandButton value="Agregar Unidad o Sucursal"
                              action="#{personaUnidadBean.nuevo}"
                              icon="ui-icon-plus"
@@ -78,6 +90,18 @@
                 <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
             </p:commandButton>
+            </h:column>
+            <h:column >
+            <p:commandButton value="Generer Documento"
+                             action="#{personaUnidadBean.nuevo}"
+                             icon="ui-icon-plus"
+                             update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
+                             onclick="PF('dlgUnidad').show()">
+                <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+            </h:column>
+        </h:panelGrid>
     </h:form>
 
               <!-- ******************** DIALOGOS ********************** -->
