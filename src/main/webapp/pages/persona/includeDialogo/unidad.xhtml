@@ -94,6 +94,7 @@
                          maxlength="20"
                          autocomplete="false"
                          style="width: 215px;text-transform: uppercase;"
+                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"
                          converterMessage="El valor del campo Nro. de identificacion debe ser numerico."
                          requiredMessage="El campo Nro. de identificacion es obligatorio"
                          rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
@@ -134,13 +135,15 @@
                 <h:outputText value="Fundempresa:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroFundaempresa}"
                              style="width: 205px;text-transform: uppercase"
-                             tabindex="11" maxlength="20"/>
+                             tabindex="11" maxlength="20"
+                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
                 <h:outputText value="Nro. AFP:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroAfp}"
                              style="width: 205px;text-transform: uppercase"
                              maxlength="20"
-                             tabindex="12"/>
+                             tabindex="12"
+                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
                 <p:outputLabel for="slcOneMenuTipoSociedad" value="Tipo de sociedad: "/>
                 <p:selectOneMenu id="slcOneMenuTipoSociedad" value="#{personaUnidadBean.unidadRegistro.tipoSociedad}"
@@ -156,19 +159,22 @@
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroCajaSalud}"
                              style="width: 205px;"
                              maxlength="20"
-                             tabindex="14"/>
+                             tabindex="14"
+                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
                 <h:outputText value="Nro. referencial:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroReferencial}"
                              style="width: 205px;"
                              maxlength="20"
-                             tabindex="15"/>
+                             tabindex="15"
+                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
                 <h:outputText value="Nro. otro:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroOtro}"
                              style="width: 205px;"
                              maxlength="20"
-                             tabindex="16"/>
+                             tabindex="16"
+                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
         <p:outputLabel for="txtAreaObs2" value="Observaciones:"/>
         <p:inputTextarea id="txtAreaObs2" value="#{personaUnidadBean.unidadRegistro.observaciones}"

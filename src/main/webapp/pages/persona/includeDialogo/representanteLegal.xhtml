@@ -2,7 +2,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions">
     <style type="text/css">
         myFieldset .ui-fieldset, .ui-fieldset .ui-fieldset-legend {
            background-color: transparent;
@@ -82,10 +83,12 @@
                           tabindex="5"
                           required="true"
                           maxlength="20"
+                          onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"
                           converterMessage="El valor del campo Nro. de identificacion debe ser numerico."
                           requiredMessage="El campo Nro. de identificacion es obligatorio">
                  <f:convertNumber integerOnly="true" />
             </p:inputText>
+
          </h:panelGrid>
 
          <p:fieldset styleClass="myFieldset" legend="&#xA0;&#xA0;&#xA0;Poder" >
@@ -94,7 +97,8 @@
                 <p:inputText id="inputTxtNroDocumento2" value="#{personaUnidadBean.repLegal.nroDocumento}"
                              style="width: 210px;"
                              maxlength="20"
-                             tabindex="6"/>
+                             tabindex="6"
+                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
                 <h:outputText value="Fecha :"/>
                 <p:calendar id="calendar" value="#{personaUnidadBean.repLegal.fechaDocumento}"
                             effect="slideDown"

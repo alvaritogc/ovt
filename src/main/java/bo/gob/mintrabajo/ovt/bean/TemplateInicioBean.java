@@ -4,6 +4,8 @@ import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -50,6 +52,15 @@ public class TemplateInicioBean implements Serializable {
     //
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
+
+    public IUsuarioService getiUsuarioCambiarContraseniaService() {
+        return iUsuarioCambiarContraseniaService;
+    }
+
+    public void setiUsuarioCambiarContraseniaService(IUsuarioService iUsuarioCambiarContraseniaService) {
+        this.iUsuarioCambiarContraseniaService = iUsuarioCambiarContraseniaService;
+    }
+
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioCambiarContraseniaService;
     @ManagedProperty(value = "#{recursoService}")
@@ -60,13 +71,18 @@ public class TemplateInicioBean implements Serializable {
     private IPerUsuarioService iPerUsuarioService;
     @ManagedProperty(value = "#{usuarioUnidadService}")
     private IUsuarioUnidadService iUsuarioUnidadService;
+    //
     @ManagedProperty(value = "#{mensajeAppService}")
     private IMensajeAppService iMensajeAppService;
+
+    @ManagedProperty(value="#{dominioService}")
+    public IDominioService iDominioService;
     //
     private UsrUsuario usuario;
     private PerPersona persona;
     private PerPersona empleador;
     //
+
     private List<UsrRecurso> listaRecursos;
     private List<UsrRecurso> listaRecursosHijos;
     private List<UsrRecurso> listaRecursosPadres;
@@ -83,10 +99,18 @@ public class TemplateInicioBean implements Serializable {
     private String nit;
     private String email;
     //Varibles que se utilizan cuando el usuario quiere cambiar su contrasenia
+
+    // *** Varibles que se utilizan cuando el usuario quiere cambiar su contrasenia *** //
     private String contrasenia;
     private String nuevaContrasenia;
     private String confirmarContrasenia;
     private final int LONGITUD_MINIMA = 7;
+
+    //*** Cache para guardar dominios guava ***//
+    public static Cache<ParDominioPK, ParDominio> mapaDominio = CacheBuilder.newBuilder().maximumSize(600).build();
+
+    private  final int LONGITUD_MINIMA=7;
+    
     //Variables para los servicios publicos
     private List<ParMensajeApp> listaMensajeApp;
     private ParMensajeApp mensajeApp;
@@ -277,6 +301,8 @@ public class TemplateInicioBean implements Serializable {
             UsrUsuario usuario = iUsuarioService.findById(idUsuario);
             session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
 
+            cargarDominio();
+
             if (usuario.getEsInterno() == 1) {
                 session.setAttribute("idEmpleador", null);
                 UsernamePasswordToken token = new UsernamePasswordToken(username, passwordEncripted);
@@ -462,6 +488,40 @@ public class TemplateInicioBean implements Serializable {
         }
 
     }
+
+    public Cache<ParDominioPK, ParDominio> cargarDominio() {
+        List<ParDominio> todosDominioLista = iDominioService.obtenerDominioLista();
+        logger.info("El numero de dominios en base de datos " + todosDominioLista.size() + ", tamaño de objetos guardados en cache " + mapaDominio.size());
+        if(todosDominioLista.size() != mapaDominio.size()){
+
+        for (ParDominio d : todosDominioLista) {
+            ParDominio parDominio = mapaDominio.getIfPresent(d.getParDominioPK());
+
+            if (parDominio == null) {
+                logger.debug("No existe en la cache este objeto es agregado a cache " + d.getParDominioPK().getIdDominio() + " " + d.getParDominioPK().getValor());
+                mapaDominio.put(d.getParDominioPK(), d);
+            }else{
+                logger.info("Este dominio existe en la cache pasamos al siguiente " + parDominio.getParDominioPK().getIdDominio() + " " + d.getParDominioPK().getValor());
+                continue;
+            }
+        }
+        }else{
+            logger.info("El mapa esta cargado con la misma cantidad de datos en cache ");
+        }
+        return mapaDominio;
+    }
+
+
+    public IDominioService getiDominioService() {
+        return iDominioService;
+    }
+
+    public void setiDominioService(IDominioService iDominioService) {
+        this.iDominioService = iDominioService;
+    }
+
+    public void cargarServiciosPublicos(){
+        listaMensajeApp=iMensajeAppService.listarPorRecursoYFechaActual(new Long("1000"));
 
     public void cargarServiciosPublicos() {
         listaMensajeApp = iMensajeAppService.listarPorRecursoYFechaActual(new Long("1000"));

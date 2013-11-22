@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
 <ui:composition template="../../pages/template/templateInicio.xhtml">
 <ui:define name="content">
 <h:form id="idMensajeContenido">
@@ -78,9 +79,9 @@
                 <p:ajax update="rectificatorio" event="change"/>
             </p:selectBooleanCheckbox>
             <p:outputLabel value="1.3 Nro de orden que rectifica"/>
-            <p:selectOneMenu id="rectificatorio" value="#{declaracionBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="#{!declaracionBean.esRectificatorio}"><!--disabled="# {declaracionBean.parametro!=3}"-->
+            <p:selectOneMenu id="rectificatorio" value="#{declaracionBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="#{!declaracionBean.esRectificatorio}"> <!--disabled="# {declaracionBean.parametro!=3}"-->
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionBean.docDocumentoList}" var="it" itemLabel="#{it.numeroDocumento}&nbsp;-&nbsp;#{it.docPlanilla.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{it.docPlanilla.idPlanilla}"/>
+                <f:selectItems value="#{declaracionBean.docPlanillaLista}" var="ePlanilla" itemLabel="#{ePlanilla.idDocumento.numeroDocumento}&nbsp;-&nbsp;#{ePlanilla.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{ePlanilla.idDocumento.idDocumento}"/>
             </p:selectOneMenu>
         </p:panelGrid>
     </p:column>

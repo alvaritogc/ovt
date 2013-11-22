@@ -62,18 +62,6 @@
                 </p:column>
 
             </p:dataTable>
-
-            <!--<p:dataTable id="artificioTbl" value="# {rolRecursoAdministracionBean.seleccionadoLista}" var="seleccion" style="width: 5%" >-->
-                <!--<p:column headerText="Escritura">-->
-                    <!--<p:selectBooleanCheckbox value="# {seleccion.aux2}" />-->
-                <!--</p:column>-->
-                <!--<p:column headerText="Ejecución">-->
-                    <!--<p:selectBooleanCheckbox value="# {seleccion.aux3}" />-->
-                <!--</p:column>-->
-                <!--<p:column headerText="Selección">-->
-                    <!--<p:selectBooleanCheckbox value="# {seleccion.aux1}" />-->
-                <!--</p:column>-->
-            <!--</p:dataTable>-->
             </p:panelGrid>
             <p:commandButton value="Guardar" action="#{rolRecursoAdministracionBean.guardarRolRecurso}" update="rolRecursoTbl" />
         </h:form>
