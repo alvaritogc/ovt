@@ -67,4 +67,9 @@ public class RecursoService implements IRecursoService {
         return recursoRepository.obtenerRecursoEnUsuarioRecurso(idUsuario);
     }
     
+    public List<UsrRecurso> listarRecursosPorTipo(String tipoRecurso){
+        return recursoRepository.listarRecursosPorTipo(tipoRecurso);
+        
+    }
+    
 }
