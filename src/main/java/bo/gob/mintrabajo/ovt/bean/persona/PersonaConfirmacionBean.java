@@ -4,7 +4,11 @@ import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IParametrizacionService;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
+import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
+import bo.gob.mintrabajo.ovt.entities.ParDominio;
+import bo.gob.mintrabajo.ovt.entities.ParDominioPK;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
+import com.google.common.cache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,9 +83,11 @@ public class PersonaConfirmacionBean {
 
     public String confirmaRegistro() {
         logger.info("Ingresando a la clase " + getClass() + " metodo confirmaRegistro()");
-        if (passwordParameter.equals(passwordConfirm)) {
+        String passwordEncripted = Util.encriptaMD5(getPasswordConfirm());
+        if (passwordParameter.equals(passwordEncripted)) {
             try {
-                String passwordEncripted = Util.encriptaMD5(passwordConfirm);
+                logger.info("Comparando passwords " + Util.encriptaMD5(getPasswordConfirm()));
+
                 Long idUsuario = iUsuarioService.loginConfirmacion(getLoginParameter(), passwordEncripted);
                 logger.info("usuario aceptado");
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);

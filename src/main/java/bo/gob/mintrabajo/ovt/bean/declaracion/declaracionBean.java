@@ -79,7 +79,7 @@ public class declaracionBean implements Serializable {
     private int parametro;
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
     private List<ParEntidad> parEntidadLista;
-    private List<DocDocumento> docDocumentoList;
+    private List<DocPlanilla> docPlanillaLista;
     private PerPersona perPersona;
     private VperPersona vperPersona;
     private DocPlanilla docPlanilla;
@@ -211,8 +211,9 @@ public class declaracionBean implements Serializable {
     }
 
     public void cargarListaPorNumeros(){
-        docDocumentoList= new ArrayList<DocDocumento>();
-        docDocumentoList= iDocumentoService.listarPorPersona(idPersona);
+        docPlanillaLista= new ArrayList<DocPlanilla>();
+        docPlanillaLista= iPlanillaService.listarporPersona(idPersona);
+
     }
 
 
@@ -1015,12 +1016,12 @@ public class declaracionBean implements Serializable {
         this.nombres = nombres;
     }
 
-    public List<DocDocumento> getDocDocumentoList() {
-        return docDocumentoList;
+    public List<DocPlanilla> getDocPlanillaLista() {
+        return docPlanillaLista;
     }
 
-    public void setDocDocumentoEntityList(List<DocDocumento> docDocumentoList) {
-        this.docDocumentoList = docDocumentoList;
+    public void setDocPlanillaLista(List<DocPlanilla> docPlanillaLista) {
+        this.docPlanillaLista = docPlanillaLista;
     }
 
     public IDefinicionService getiDefinicionService() {

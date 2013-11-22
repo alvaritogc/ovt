@@ -17,6 +17,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
@@ -305,65 +307,59 @@ public class PersonaBean implements Serializable{
             return ;
         }
 
-      try {
-      final String  REGISTRO_BITACORA="ROE";
-      Long seq= iLocalidadService.localidadSecuencia(PER_PERSONA_SEC);
-      persona.setIdPersona(seq.toString());
-      persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
-      persona.setRegistroBitacora(REGISTRO_BITACORA);
-      //Se setea por defecto este valor por que en BD es not null.
-      unidad.setObservaciones("REGISTRO");
-      unidad.setFechaNacimiento(new Date());
-      unidad.setRegistroBitacora(REGISTRO_BITACORA);
-      unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
-      PerUnidadPK perUnidadPK=new PerUnidadPK();
-      perUnidadPK.setIdPersona(persona.getIdPersona());
-      //Se setea 0, para identificar a la unidad principal
-      perUnidadPK.setIdUnidad(0L);
+        try {
+
+            final String REGISTRO_BITACORA = "ROE";
+            Long seq = iLocalidadService.localidadSecuencia(PER_PERSONA_SEC);
+            persona.setIdPersona(seq.toString());
+            persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
+            persona.setRegistroBitacora(REGISTRO_BITACORA);
+            //Se setea por defecto este valor por que en BD es not null.
+            unidad.setObservaciones("REGISTRO");
+            unidad.setFechaNacimiento(new Date());
+            unidad.setRegistroBitacora(REGISTRO_BITACORA);
+            unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO, PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
+            PerUnidadPK perUnidadPK = new PerUnidadPK();
+            perUnidadPK.setIdPersona(persona.getIdPersona());
+            //Se setea 0, para identificar a la unidad principal
+            perUnidadPK.setIdUnidad(0L);
       /*perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia(PER_UNIDAD_SEC));*/
-      unidad.setPerUnidadPK(perUnidadPK);
+            unidad.setPerUnidadPK(perUnidadPK);
 
-      usuario.setIdUsuario(iUsuarioService.obtenerSecuencia(USR_USUARIO_SEC));
-      usuario.setRegistroBitacora(REGISTRO_BITACORA);
-      usuario.setEsDelegado((short)0);
-      usuario.setEsInterno((short) 0);
-      usuario.setClave(Util.encriptaMD5(usuario.getClave()));
-      ParDominio d=iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO__USUARIO_SINCONFIRMAR);
-      usuario.setEstadoUsuario(d.getParDominioPK().getValor());
+            usuario.setIdUsuario(iUsuarioService.obtenerSecuencia(USR_USUARIO_SEC));
+            usuario.setRegistroBitacora(REGISTRO_BITACORA);
+            usuario.setEsDelegado((short) 0);
+            usuario.setEsInterno((short) 0);
+            usuario.setClave(Util.encriptaMD5(usuario.getClave()));
+            ParDominio d = iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO, PAR_ESTADO__USUARIO_SINCONFIRMAR);
+            usuario.setEstadoUsuario(d.getParDominioPK().getValor());
 
-      usuario.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION, PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
+            usuario.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION, PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
 
-      usuario.setFechaBitacora(new Date());
-      usuario.setRegistroBitacora(REGISTRO_BITACORA);
+            usuario.setFechaBitacora(new Date());
+            usuario.setRegistroBitacora(REGISTRO_BITACORA);
 
-      usuario.setIdPersona(persona);
-      usuario.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION,PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
+            usuario.setIdPersona(persona);
+            usuario.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION, PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
 
-        mostrar= iPersonaService.registrar(persona,unidad,usuario);
-        if(mostrar)
-            RequestContext.getCurrentInstance().execute("dlg.show()");
-        else
-            RequestContext.getCurrentInstance().execute("dlg.hide()");
-
-        mostrar= iPersonaService.registrar(persona,unidad,usuario);
-        RequestContext context = RequestContext.getCurrentInstance();
-
-        if (mostrar) {
             ServicioEnvioEmail see = new ServicioEnvioEmail();
-           // cargaParametricasEmail();
-            Map<String,String>configuracionEmail=new HashMap<String, String>();
-            configuracionEmail= cargaParametricasEmail();
-            see.envioEmail2(usuario,configuracionEmail);
-            context.execute("dlg.show()");
-            //see.envioEmail(this);
-        } else {
-            context.execute("dlg.hide()");
+            Map<String, String> configuracionEmail = new HashMap<String, String>();
+            configuracionEmail = cargaParametricasEmail();
+            see.envioEmail2(usuario, configuracionEmail);
+
+            mostrar = iPersonaService.registrar(persona, unidad, usuario);
+            if (mostrar) {
+                RequestContext.getCurrentInstance().execute("dlg.show()");
+            } else {
+                RequestContext.getCurrentInstance().execute("dlg.hide()");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            RequestContext.getCurrentInstance().execute("statusDialog.hide();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El registro no fue completado, verifique su configuración de email o base de datos"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", e.getLocalizedMessage()));
         }
-      }catch (Exception e){
-          e.printStackTrace();
-          RequestContext.getCurrentInstance().execute("statusDialog.hide();");
-          FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Atención", "El email no pudo ser enviado intente de nuevo"));
-      }
     }
 
     //Valida si el parametro es numerico

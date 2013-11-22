@@ -41,7 +41,6 @@ import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
 @ViewScoped
 public class TemplateInicioBean implements Serializable {
     //
-
     private HttpSession session;
     private Long idUsuario;
     private String idPersona;
@@ -64,16 +63,13 @@ public class TemplateInicioBean implements Serializable {
 
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioCambiarContraseniaService;
-
     @ManagedProperty(value = "#{recursoService}")
     private IRecursoService iRecursoService;
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
-
     @ManagedProperty(value = "#{perUsuarioService}")
     private IPerUsuarioService iPerUsuarioService;
-
-    @ManagedProperty(value="#{usuarioUnidadService}")
+    @ManagedProperty(value = "#{usuarioUnidadService}")
     private IUsuarioUnidadService iUsuarioUnidadService;
     //
     @ManagedProperty(value = "#{mensajeAppService}")
@@ -85,44 +81,43 @@ public class TemplateInicioBean implements Serializable {
     private UsrUsuario usuario;
     private PerPersona persona;
     private PerPersona empleador;
+    //
 
     private List<UsrRecurso> listaRecursos;
+    private List<UsrRecurso> listaRecursosHijos;
+    private List<UsrRecurso> listaRecursosPadres;
+    private List<UsrRecurso> listaRecursosFinales;
+    //
     private MenuModel model;
     //
     private String username;
     private String password;
     //
-    //
     private String nombreDeUsuario;
     private String nombreDeUnidad;
-
-
-
     // Variables que se utilizan cuando el usuario olvido contrasenia
     private String nit;
     private String email;
+    //Varibles que se utilizan cuando el usuario quiere cambiar su contrasenia
 
     // *** Varibles que se utilizan cuando el usuario quiere cambiar su contrasenia *** //
     private String contrasenia;
     private String nuevaContrasenia;
     private String confirmarContrasenia;
+    private final int LONGITUD_MINIMA = 7;
 
     //*** Cache para guardar dominios guava ***//
     public static Cache<ParDominioPK, ParDominio> mapaDominio = CacheBuilder.newBuilder().maximumSize(600).build();
 
-    private  final int LONGITUD_MINIMA=7;
     
     //Variables para los servicios publicos
     private List<ParMensajeApp> listaMensajeApp;
     private ParMensajeApp mensajeApp;
     //
-        private ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
-
+    private ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
     // envio de email
-    @ManagedProperty(value="#{parametrizacionService}")
+    @ManagedProperty(value = "#{parametrizacionService}")
     private IParametrizacionService iParametrizacion;
-
-
 
     @PostConstruct
     public void ini() {
@@ -152,13 +147,12 @@ public class TemplateInicioBean implements Serializable {
             idEmpleador = (String) session.getAttribute("idEmpleador");
             if (idEmpleador != null) {
                 empleador = iPersonaService.findById(idEmpleador);
-                nombreDeUnidad=empleador.getNombreRazonSocial();
-            }
-            else{
-                nombreDeUnidad="N/A";
+                nombreDeUnidad = empleador.getNombreRazonSocial();
+            } else {
+                nombreDeUnidad = "N/A";
             }
             //
-            nombreDeUsuario=usuario.getUsuario();
+            nombreDeUsuario = usuario.getUsuario();
             loginValido = Util.validaCorreo(usuario.getUsuario());
             //
             logger.info("usuario ok");
@@ -169,21 +163,20 @@ public class TemplateInicioBean implements Serializable {
             DefaultMenuItem item = new DefaultMenuItem("Salir");
             item.setIcon("ui-icon-arrowthickstop-1-e");
             item.setCommand("#{templateInicioBean.logout}");
-
             //reo
             //TODO controlar DDJJ
-
             model.addElement(item);
         }
         cargarServiciosPublicos();
     }
 
     public void cargar() {
-        System.out.println("cargar()");
+        //System.out.println("cargar()");
         model = new DefaultMenuModel();
         try {
-            listaRecursos = iRecursoService.buscarPorUsuario(idUsuario);
-            logger.info("nro recursos del usuario:" + listaRecursos.size());
+            //listaRecursos = iRecursoService.buscarPorUsuario(idUsuario);
+            cargarRecursos();
+            //logger.info("nro recursos del usuario:" + listaRecursos.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -192,6 +185,53 @@ public class TemplateInicioBean implements Serializable {
         item.setIcon("ui-icon-arrowthickstop-1-e");
         item.setCommand("#{templateInicioBean.logout}");
         model.addElement(item);
+    }
+
+    public void cargarRecursos() {
+        listaRecursos = iRecursoService.buscarPorUsuario(idUsuario);
+        listaRecursosHijos = new ArrayList<UsrRecurso>();
+        listaRecursosPadres = new ArrayList<UsrRecurso>();
+        listaRecursosFinales = new ArrayList<UsrRecurso>();
+        //System.out.println("====MEN GUI==="+listaRecursos.size()+"=================");
+        for (UsrRecurso r : listaRecursos) {
+            if (r.getTipoRecurso().equals("GUI")) {
+                listaRecursosHijos.add(r);
+            }
+        }
+        int nroDeRecursos = listaRecursosHijos.size();
+        //System.out.println("=====GUI====="+nroDeRecursos+"==================");
+        while (nroDeRecursos > 0) {
+            listaRecursosPadres = new ArrayList<UsrRecurso>();
+            for (UsrRecurso r : listaRecursosHijos) {
+                if(r.getIdRecursoPadre()!=null){
+                    adicionarPadres(r.getIdRecursoPadre().getIdRecurso());
+                }
+            }
+            for (UsrRecurso r : listaRecursosHijos) {
+                listaRecursosFinales.add(r);
+            }
+            listaRecursosHijos = new ArrayList<UsrRecurso>();
+            for (UsrRecurso r : listaRecursosPadres) {
+                listaRecursosHijos.add(r);
+            }
+            nroDeRecursos = listaRecursosHijos.size();
+        }
+        listaRecursos=listaRecursosFinales;
+    }
+
+    public String adicionarPadres(Long idPadre) {
+        for (UsrRecurso r : listaRecursos) {
+            if (r.getIdRecurso().equals(idPadre)) {
+                if ((!listaRecursosPadres.contains(r)) && (!listaRecursosFinales.contains(r))) {
+                    listaRecursosPadres.add(r);
+                    return "";
+                }
+                else{
+                    return "";
+                }
+            }
+        }
+        return "";
     }
 
     public void crearMenuRecurso() {
@@ -286,16 +326,19 @@ public class TemplateInicioBean implements Serializable {
             e.printStackTrace();
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
-        } /**catch (Exception e) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
-        }    */
+        }
+        /**
+         * catch (Exception e) { FacesContext context =
+         * FacesContext.getCurrentInstance(); context.addMessage(null, new
+         * FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
+         * }
+         */
         password = "";
         return "";
     }
 
-    public String irUnidad()throws IOException {
-        session.setAttribute("idEmpleador",idEmpleador);
+    public String irUnidad() throws IOException {
+        session.setAttribute("idEmpleador", idEmpleador);
         return "irUnidad";
     }
 
@@ -304,10 +347,9 @@ public class TemplateInicioBean implements Serializable {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
             idUsuario = (Long) session.getAttribute("idUsuario");
             usuario = iUsuarioService.findById(idUsuario);
-            if(usuario.getEsInterno()==1){
+            if (usuario.getEsInterno() == 1) {
                 return "irEmpleadorBusqueda";
-            }
-            else{
+            } else {
                 return "irEscritorio";
             }
         } catch (Exception e) {
@@ -316,31 +358,30 @@ public class TemplateInicioBean implements Serializable {
         return "irInicio";
     }
 
-
-    public void olvidoContrasenia(){
+    public void olvidoContrasenia() {
         logger.info("=======>>>> OLVIDO SU CONTRASENIA ");
-        logger.info("==============>>>>  NIT: "+nit+" EMAIL"+" emial");
-        PerUsuarioUnidad perUsuarioUnidad=iUsuarioUnidadService.obtenerPorNITyEmail(nit,email);
+        logger.info("==============>>>>  NIT: " + nit + " EMAIL" + " emial");
+        PerUsuarioUnidad perUsuarioUnidad = iUsuarioUnidadService.obtenerPorNITyEmail(nit, email);
 
-       if(perUsuarioUnidad==null) {
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", "No existe un usuario cuyo Nro. de identificacion (NIT)  y correo electronico sean: "+nit+", "+email));
-       }
-       else {
-           PerPersona persona=iPersonaService.findById( perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona());
-           UsrUsuario usuario=iUsuarioService.findById(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUsuario());
-           //enviarEmail
-           ServicioEnvioEmail envioEmail=new ServicioEnvioEmail();
-           Map<String,String>configuracionEmail=new HashMap<String, String>();
-           configuracionEmail= cargaParametricasEmail();
-           envioEmail.envioEmail2(usuario,configuracionEmail);
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", " Verifique su correo electronico"));
-       }
-       limpiar();
+        if (perUsuarioUnidad == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR ", "No existe un usuario cuyo Nro. de identificacion (NIT)  y correo electronico sean: " + nit + ", " + email));
+        } else {
+            PerPersona persona = iPersonaService.findById(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona());
+            UsrUsuario usuario = iUsuarioService.findById(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUsuario());
+            //enviarEmail
+            ServicioEnvioEmail envioEmail = new ServicioEnvioEmail();
+            Map<String, String> configuracionEmail = new HashMap<String, String>();
+            configuracionEmail = cargaParametricasEmail();
+            envioEmail.envioEmail2(usuario, configuracionEmail);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dlg2.hide();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO ", "Se envió un mail a su correo electrónico, para completar su cambio password "));
+        }
+        limpiar();
     }
 
-
-    public Map<String,String> cargaParametricasEmail() {
-        Map<String,String>configuracionEmail=new HashMap<String, String>();
+    public Map<String, String> cargaParametricasEmail() {
+        Map<String, String> configuracionEmail = new HashMap<String, String>();
         try {
             String from = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_CUENTA_EMAIL).getDescripcion();
             String subject = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_ASUNTO).getDescripcion();
@@ -349,14 +390,14 @@ public class TemplateInicioBean implements Serializable {
             String password = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PASSWORD).getDescripcion();
             String host = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_SERVIDOR).getDescripcion();
             String port = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PUERTO).getDescripcion();
-            configuracionEmail.put("from",from);
-            configuracionEmail.put("subject",subject);
-            configuracionEmail.put("urlRedireccion",urlRedireccion);
-            configuracionEmail.put("cuerpoMensaje",cuerpoMensaje);
-            configuracionEmail.put("password",password);
-            configuracionEmail.put("host",host);
-            configuracionEmail.put("port",port);
-            configuracionEmail.put("sw","1");
+            configuracionEmail.put("from", from);
+            configuracionEmail.put("subject", subject);
+            configuracionEmail.put("urlRedireccion", urlRedireccion);
+            configuracionEmail.put("cuerpoMensaje", cuerpoMensaje);
+            configuracionEmail.put("password", password);
+            configuracionEmail.put("host", host);
+            configuracionEmail.put("port", port);
+            configuracionEmail.put("sw", "1");
             return configuracionEmail;
         } catch (NullPointerException ne) {
             logger.info("El parámetro no existe en base de datos ...");
@@ -364,31 +405,31 @@ public class TemplateInicioBean implements Serializable {
         }
     }
 
-    public void cambiarContrasenia(){
+    public void cambiarContrasenia() {
         logger.info("=======>>>> CAMBIAR CONTRASENIA ");
-        logger.info("==============>>>>  contrasenia: "+contrasenia+" nueva contrasenia: "+nuevaContrasenia+" confirmar Contrasenia: "+confirmarContrasenia);
+        logger.info("==============>>>>  contrasenia: " + contrasenia + " nueva contrasenia: " + nuevaContrasenia + " confirmar Contrasenia: " + confirmarContrasenia);
         session.setAttribute("idUsuario", idUsuario);
-        Long idUsuario=(Long)session.getAttribute("idUsuario");
+        Long idUsuario = (Long) session.getAttribute("idUsuario");
 
-        String contraseniaEsValida=validarContrasenia(nuevaContrasenia,LONGITUD_MINIMA);
-        if(!contraseniaEsValida.equals("OK")){
+        String contraseniaEsValida = validarContrasenia(nuevaContrasenia, LONGITUD_MINIMA);
+        if (!contraseniaEsValida.equals("OK")) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",contraseniaEsValida));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", contraseniaEsValida));
             ini();
-            return ;
+            return;
         }
 
-           String mensaeje= iUsuarioService.cambiarContrasenia(idUsuario,contrasenia,nuevaContrasenia,confirmarContrasenia);
-           if(mensaeje.equalsIgnoreCase("OK")){
-               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"INFO ", "Se cambio la contraseñia con exito."));
-               limpiar();
-               logout();
-           }else{
-               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"ERROR ", mensaeje));
-           }
+        String mensaeje = iUsuarioService.cambiarContrasenia(idUsuario, contrasenia, nuevaContrasenia, confirmarContrasenia);
+        if (mensaeje.equalsIgnoreCase("OK")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO ", "Se cambio la contraseñia con exito."));
+            limpiar();
+            logout();
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR ", mensaeje));
+        }
     }
 
-    public void editarLogin(){
+    public void editarLogin() {
         logger.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo editarLogin()");
         try {
             if (Util.validaCorreo(loginNuevo)) {
@@ -400,7 +441,7 @@ public class TemplateInicioBean implements Serializable {
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El login nuevo no coincide con el login de confirmación!"));
                 }
-            }else{
+            } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El login no es una cuenta de correo valida!"));
             }
         } catch (Exception e) {
@@ -410,44 +451,43 @@ public class TemplateInicioBean implements Serializable {
         }
     }
 
-    public String validarContrasenia(String pass, int longitudMinima){
+    public String validarContrasenia(String pass, int longitudMinima) {
 
-        String mensaje="";
+        String mensaje = "";
 
-        if(pass.length()<longitudMinima){
-            mensaje="La longitud minima de la contrasenia es "+longitudMinima+". Intente nuevamente";
-        }else{
-            String validacion="((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{"+String.valueOf(longitudMinima)+",50})";
+        if (pass.length() < longitudMinima) {
+            mensaje = "La longitud minima de la contrasenia es " + longitudMinima + ". Intente nuevamente";
+        } else {
+            String validacion = "((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{" + String.valueOf(longitudMinima) + ",50})";
             /*Pattern pattern = Pattern
-                    .compile("((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{3,50})");*/
+             .compile("((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{3,50})");*/
             Pattern pattern = Pattern.compile(validacion);
             if (!pattern.matcher(pass).matches()) {
-                mensaje="La contraseña debe contener al menos un caracter númerico, alfabetico y especial.";
-            }else{
+                mensaje = "La contraseña debe contener al menos un caracter númerico, alfabetico y especial.";
+            } else {
                 //La contrasenia es valida
-                mensaje="OK";
+                mensaje = "OK";
             }
         }
         return mensaje;
     }
 
-    public void limpiar(){
-        nit="";
-        email="";
-        password="";
-        nuevaContrasenia="";
-        confirmarContrasenia="";
+    public void limpiar() {
+        nit = "";
+        email = "";
+        password = "";
+        nuevaContrasenia = "";
+        confirmarContrasenia = "";
     }
-    
-    
-    public void verMensajeApp(){
+
+    public void verMensajeApp() {
         FacesContext contex = FacesContext.getCurrentInstance();
         try {
-            contex.getExternalContext().redirect( "/ovt/faces/pages/contenidos/contenidoPublico.xhtml?p="+mensajeApp.getIdMensajeApp());
+            contex.getExternalContext().redirect("/ovt/faces/pages/contenidos/contenidoPublico.xhtml?p=" + mensajeApp.getIdMensajeApp());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
     public Cache<ParDominioPK, ParDominio> cargarDominio() {
@@ -501,11 +541,11 @@ public class TemplateInicioBean implements Serializable {
         this.iPerUsuarioService = iPerUsuarioService;
     }
 
-    public String irRegistro(){
+    public String irRegistro() {
         return "irRegistro";
     }
 
-   public MenuModel getModel() {
+    public MenuModel getModel() {
         return model;
     }
 
@@ -624,6 +664,7 @@ public class TemplateInicioBean implements Serializable {
     public void setNit(String nit) {
         this.nit = nit;
     }
+
     public String getContrasenia() {
         return contrasenia;
     }
@@ -647,7 +688,6 @@ public class TemplateInicioBean implements Serializable {
     public void setNombreDeUnidad(String nombreDeUnidad) {
         this.nombreDeUnidad = nombreDeUnidad;
     }
-
 
     public List<ParMensajeApp> getListaMensajeApp() {
         return listaMensajeApp;

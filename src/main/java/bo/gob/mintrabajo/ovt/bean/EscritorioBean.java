@@ -10,8 +10,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +47,8 @@ public class EscritorioBean {
     private IMensajeAppService iMensajeAppService;
     @ManagedProperty(value = "#{documentoEstadoService}")
     private IDocumentoEstadoService iDocumentoEstadoService;
+    @ManagedProperty(value = "#{vperPersonaService}")
+    private IVperPersonaService iVperPersonaService;
     //
     private String textoBenvenida;
     //
@@ -59,6 +65,7 @@ public class EscritorioBean {
     private ParDocumentoEstado parDocumentoEstado;
     private List<ParDocumentoEstado> listaDocumentoEstado;
     private String codEstadoFinal;
+    private VperPersona vperPersona;
 
     @PostConstruct
     public void ini() {
@@ -140,49 +147,64 @@ public class EscritorioBean {
     }
 
     public void irImprimirDocumento() {
-//        PerUnidad perUnidadEntity = new PerUnidad();
-//        DocPlanillaEntity docPlanillaEntity = new DocPlanillaEntity();
-//        try{
-//            docPlanillaEntity=  iDocumentoService.retornaPlanilla(docDocumentoEntity.getIdDocumento());
-//            perUnidadEntity=  iDocumentoService.retornaUnidad(idPersona);
-//            iPlanillaService.generaReporte(docPlanillaEntity, persona, docDocumentoEntity, perUnidadEntity, vperPersonaEntity);
-//
-//            redirecionarReporte ("");
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//        }
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpServletRequest httpServletRequest = ((HttpServletRequest) externalContext.getRequest());
+        try{
+            vperPersona = iVperPersonaService.cargaVistaPersona(docDocumento.getPerUnidad().getPerPersona().getIdPersona());
+            docPlanilla=iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
+            String rutaPdf= iDocumentoService.generaReporte(docPlanilla, persona, docDocumento, docDocumento.getPerUnidad(), vperPersona);
+//            String url = (httpServletRequest.getRequestURL().toString()).replace("/pages/escritorio.jsf", rutaPdf);
+//            return url;
+            redirecionarReporte(rutaPdf);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+//        return null;
     }
 
-//    private static void redirecionarReporte (String rutaReporte) throws IOException {
-//        FacesContext facesContext=FacesContext.getCurrentInstance();
-//        HttpServletResponse response=(HttpServletResponse) facesContext.getExternalContext().getResponse();
-//
-//        File file=new File(rutaReporte);
-//        BufferedInputStream input=null;
-//        BufferedOutputStream output=null;
-//        try{
-//
-//            input=new BufferedInputStream(new FileInputStream(file),10240);
-//            response.reset();
-//            response.setHeader("Content-Type", "application/pdf");
-//            response.setHeader("Content-Length", String.valueOf(file.length()));
-//            output=new BufferedOutputStream(response.getOutputStream(),10240);
-//
-//            byte[] buffer=new byte[10240];
-//            int length;
-//
-//            while((length=input.read(buffer))>0){
-//                output.write(buffer,0,length);
-//            }
-//            output.flush();
-//        }finally{
-//            close(output);
-//            close(input);
-//        }
-//
-//        facesContext.responseComplete();
-//    }
+    private static void redirecionarReporte (String rutaReporte) throws IOException {
+        FacesContext facesContext=FacesContext.getCurrentInstance();
+        HttpServletResponse response=(HttpServletResponse) facesContext.getExternalContext().getResponse();
+
+        File file=new File(rutaReporte);
+        BufferedInputStream input=null;
+        BufferedOutputStream output=null;
+        try{
+
+            input=new BufferedInputStream(new FileInputStream(file),10240);
+            response.reset();
+            response.setContentType("application/pdf");
+//            response.setHeader("Content-Disposition", "attachment;filename=\"" + file.getName() + "\"");
+            response.setHeader( "Content-Disposition", "filename=" + file.getName() );
+            response.setContentLength((int)file.length());
+            output=new BufferedOutputStream(response.getOutputStream(), 10240);
+
+            byte[] buffer=new byte[10240];
+            int length;
+
+            while((length=input.read(buffer))>0){
+                output.write(buffer,0,length);
+            }
+            output.flush();
+        }finally{
+            close(output);
+            close(input);
+        }
+
+        facesContext.responseComplete();
+    }
+
+    private static void close(Closeable resource) {
+        if (resource != null) {
+            try {
+                resource.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 //    private static void close(Closeable resource) {
 //        if (resource != null) {
 //            try {
@@ -197,6 +219,9 @@ public class EscritorioBean {
 //        session.setAttribute("idDocumento", docDocumentoEntity.getIdDocumento());
 //        return "irDownload";
 //    }
+
+
+
     public IUsuarioService getiUsuarioService() {
         return iUsuarioService;
     }
@@ -331,5 +356,13 @@ public class EscritorioBean {
 
     public void setCodEstadoFinal(String codEstadoFinal) {
         this.codEstadoFinal = codEstadoFinal;
+    }
+
+    public IVperPersonaService getiVperPersonaService() {
+        return iVperPersonaService;
+    }
+
+    public void setiVperPersonaService(IVperPersonaService iVperPersonaService) {
+        this.iVperPersonaService = iVperPersonaService;
     }
 }

@@ -36,7 +36,7 @@ public class DefinicionService implements IDefinicionService {
         return definicionRepository.count();
     }
 
-//    @Override
+    @Override
     public List<DocDefinicion> getAllDefinicion() {
         List<DocDefinicion> lista;
         lista = definicionRepository.findAll();
@@ -56,5 +56,19 @@ public class DefinicionService implements IDefinicionService {
         definicionRepository.delete(definicion);
 
         return deleted;
+    }
+    
+    @Override
+    public List<DocDefinicion> listaVersionesPorCodDocumento(String codDocumento) {
+        List<DocDefinicion> lista;
+        lista = definicionRepository.listaVersionesPorCodDocumento(codDocumento);
+        return lista;
+    }
+    
+    @Override
+    public DocDefinicion obtenerDefinicion(String codigo, short vesion) {
+        DocDefinicion entity;
+        entity = definicionRepository.obtenerDocDefinicion(codigo, vesion);
+        return entity;
     }
 }

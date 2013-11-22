@@ -17,7 +17,7 @@ public interface RecursoRepository extends OpenJpaRepository<UsrRecurso, Long>{
             "   select rec "
             + " from UsrRecurso rec"
             + " where "
-            + " rec.idRecurso IN ("
+            + " (rec.idRecurso IN ("
             + "     select rolRec.usrRolRecursoPK.idRecurso "
             + "     from UsrRolRecurso rolRec "
             + "     where "
@@ -32,6 +32,8 @@ public interface RecursoRepository extends OpenJpaRepository<UsrRecurso, Long>{
             + "     from UsrUsuarioRecurso usRec"
             + "     where usRec.usrUsuarioRecursoPK.idUsuario =: idUsuario"
             + " )"
+            + " and rec.tipoRecurso='GUI' )"
+             + "or rec.tipoRecurso='MEN' "
             )
     List<UsrRecurso> buscarPorUsuario(@Param("idUsuario") Long idUsuario);
 
@@ -48,6 +50,11 @@ public interface RecursoRepository extends OpenJpaRepository<UsrRecurso, Long>{
             "FROM UsrRecurso rec " +
             "WHERE rec.descripcion IS NOT NULL AND rec.tipoRecurso <> 'MEN'")
     List<UsrRecurso> obtenerRecursoDescripcionNoNull();
+    
+    @Query(" SELECT rec " +
+            "FROM UsrRecurso rec " +
+            "WHERE rec.tipoRecurso = :tipoRecurso")
+    List<UsrRecurso> listarRecursosPorTipo(@Param("tipoRecurso") String tipoRecurso);
 
 }
 

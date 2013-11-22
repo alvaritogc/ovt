@@ -119,5 +119,10 @@ public class PlanillaService implements IPlanillaService {
     public DocPlanilla findById(Long id){
         return planillaRepository.findOne(id);
     }
+
+    public List<DocPlanilla> listarporPersona(String idPersona){
+        return   planillaRepository.findByIdDocumento_PerUnidad_PerPersona_IdPersona(idPersona);
+    }
+
 }
 
