@@ -4,6 +4,8 @@ import bo.gob.mintrabajo.ovt.api.IDocumentoService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.*;
 import bo.gob.mintrabajo.ovt.repositories.*;
+import net.glxn.qrgen.QRCode;
+import net.glxn.qrgen.image.ImageType;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -14,8 +16,11 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -40,6 +45,7 @@ public class DocumentoService implements IDocumentoService{
     private HashMap<String,Object> parametros = new HashMap<String,Object>();
     private String rutaPdf;
     private String nombrePdf;
+    private File file;
 
     @Inject
     public DocumentoService(DocumentoRepository documentoRepository, 
@@ -143,9 +149,7 @@ public class DocumentoService implements IDocumentoService{
     }
     
     @Override
-    public DocDocumento guardarImpresionRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora){
-        DocDefinicion docDefinicion=definicionRepository.findOne(new DocDefinicionPK("ROE013", (short) 1));
-        //
+    public DocDocumento guardarImpresionRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora, DocDefinicion docDefinicion){
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setDocDefinicion(docDefinicion);
         
@@ -253,7 +257,7 @@ public class DocumentoService implements IDocumentoService{
     }
 
 
-    public String generaReporte(DocPlanilla docPlanilla, PerPersona persona , DocDocumento docDocumento, PerUnidad perUnidad, VperPersona vperPersona){
+    public String generaReporteLC1010(DocPlanilla docPlanilla, PerPersona persona , DocDocumento docDocumento, PerUnidad perUnidad, VperPersona vperPersona){
         parametros.clear();
         parametros.put("nroOrden", docDocumento.getNumeroDocumento());
         parametros.put("rectificatoria", " ");
@@ -325,28 +329,13 @@ public class DocumentoService implements IDocumentoService{
 
         for(int i=0;i<3;i++){
             int nroArchivo=i+1;
-            System.out.println("=====>>> "+"archivo"+String.valueOf(nroArchivo));
             parametros.put("archivo"+String.valueOf(nroArchivo), lista!=null && !lista.isEmpty()?lista.get(nroArchivo-1).getTipoDocumento():"");
         }
-/*        if (lista!=null && !lista.isEmpty()){
-            //Mostrar el reporte con estos valores con los valores obtenidos.
-            parametros.put("archivo1", lista.get(0).getTipoDocumento());
-            parametros.put("archivo2", lista.get(1).getTipoDocumento());
-            parametros.put("archivo3", lista.get(2).getTipoDocumento());
-        }else{
-            //Mostrar el reporte con estos valores en blanco.
-            parametros.put("archivo1", "");
-            parametros.put("archivo2", "");
-            parametros.put("archivo3", "");
-        }*/
-
-
-
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         parametros.put("escudoBolivia", servletContext.getRealPath("/")+"/images/escudo.jpg");
         parametros.put("logo",servletContext.getRealPath("/")+"/images/logoMIN.jpg");
         try {
-            generateReport();
+            generateReport("DDJJ", "/reportes/formularioLC1010V1.jasper");
             return nombrePdf;
         } catch (Exception e) {
             e.printStackTrace();
@@ -356,18 +345,51 @@ public class DocumentoService implements IDocumentoService{
     }
 
 
-    public void generateReport() throws ClassNotFoundException, IOException, JRException {
+    public String generaReporteROE010(VperPersona vperPersona){
+        parametros.clear();
+        parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
+        parametros.put("nombreRazonSocial", vperPersona.getNombreRazonSocial());
+        parametros.put("departamento", vperPersona.getDirDepartamento());
+        parametros.put("domOficina", vperPersona.getDirDireccion());
+        parametros.put("repLegal", vperPersona.getRlNombre());
+        parametros.put("fechaEmision", (new SimpleDateFormat("dd/MM/yyyy")).format(new Date()));
+        parametros.put("nroUbicaciones", vperPersona.getNroOtro());
+
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        parametros.put("roe", servletContext.getRealPath("/")+"/images/roe.jpg");
+
+        try {
+            //TODO url correspondiente segun el tipo de sesion para que el usuario sea redireccionado al reporte segun el QR
+            String url="https://www.google.com/";
+            ByteArrayOutputStream out = QRCode.from(url).to(ImageType.PNG).stream();
+            file = new File(servletContext.getRealPath("/")+"/images/qr.png");
+            FileOutputStream fout = new FileOutputStream(file);
+            fout.write(out.toByteArray());
+            fout.flush();
+            fout.close();
+        parametros.put("qr",servletContext.getRealPath("/")+"/images/qr.png");
+            generateReport("ROE010", "/reportes/roe.jasper");
+            return nombrePdf;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERROR al generar el reporte: "+e.getMessage());
+        }
+        return null;
+    }
+
+
+    public void generateReport(String nomArchivo, String jasper) throws ClassNotFoundException, IOException, JRException {
         List<String> lista= new ArrayList<String>();
         lista.add("asd");
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String rutaWebapp = servletContext.getRealPath("/");
-        rutaPdf= "/reportes/temp/"+ "DDJJ-"+ UUID.randomUUID() + ".pdf";
+        rutaPdf= "/reportes/temp/"+ nomArchivo+"-"+ UUID.randomUUID() + ".pdf";
         nombrePdf = rutaWebapp + rutaPdf;
-        JasperReport reporte = (JasperReport) JRLoader.loadObject(new File(rutaWebapp + "/reportes/formularioLC1010V1.jasper"));
+        JasperReport reporte = (JasperReport) JRLoader.loadObject(new File(rutaWebapp + jasper));
         JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(lista));
         JRExporter exporter = new JRPdfExporter();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(nombrePdf));
+        exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new File(nombrePdf));
         exporter.exportReport();
     }
 }
