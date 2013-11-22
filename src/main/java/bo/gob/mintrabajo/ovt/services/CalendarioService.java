@@ -107,4 +107,8 @@ public class CalendarioService implements ICalendarioService{
         }
         return calendario;
     }
+    @Override
+    public List<String> listaGestiones(){
+        return calendarioRepository.listarGestiones();
+    }
 }

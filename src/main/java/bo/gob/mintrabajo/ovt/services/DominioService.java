@@ -143,5 +143,9 @@ public class DominioService implements IDominioService{
             return null;
         }
     }
-
+    
+    @Override
+    public List<ParDominio> obtenerDominioPorDominioPadreOrderByValor(ParDominioPK parDominioPK){
+        return dominioRepository.obtenerDominioPorDominioPadreOrderByValor(parDominioPK.getIdDominio(),parDominioPK.getValor());
+    }
 }

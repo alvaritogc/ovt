@@ -43,6 +43,10 @@ public class BajaRoeBean {
     private IVperPersonaService iVperPersonaService;
     @ManagedProperty(value = "#{definicionService}")
     private IDefinicionService iDefinicionService;
+    @ManagedProperty(value = "#{dominioService}")
+    private IDominioService iDominioService;
+    @ManagedProperty(value = "#{calendarioService}")
+    private ICalendarioService iCalendarioService;
     //
     private UsrUsuario usuario;
     private boolean esFuncionario;
@@ -54,6 +58,10 @@ public class BajaRoeBean {
     private boolean entero03;
     private boolean entero04;
     private boolean entero05;
+    //
+    private List<ParDominio> listaDominioMeses;
+    private List<ParCalendario> listaCalendarioAnios;
+    private List<String> listaGestiones;
 
     @PostConstruct
     public void ini() {
@@ -79,6 +87,7 @@ public class BajaRoeBean {
             docGenerico.setCadena07(usuario.getUsuario());
         }
         cargarDocumento();
+        cargarFechas();
     }
 
     public void cargarDocumento() {
@@ -92,6 +101,15 @@ public class BajaRoeBean {
 //        documento.setFechaReferenca(new Date());
         
 //        documento.setFechaBitacora(new Date());
+    }
+    public void cargarFechas(){
+//        listaDominioMeses=iDominioService.obtenerItemsDominio("TPERIODO");
+        ParDominioPK parDominioPK=new ParDominioPK();
+        parDominioPK.setIdDominio("TCALENDARIO");
+        parDominioPK.setValor("MES");
+        listaDominioMeses=iDominioService.obtenerDominioPorDominioPadreOrderByValor(parDominioPK);
+        listaCalendarioAnios=iCalendarioService.listaCalendario();
+        listaGestiones=iCalendarioService.listaGestiones();
     }
 
     public String guardar() {
@@ -262,5 +280,45 @@ public class BajaRoeBean {
 
     public void setEntero05(boolean entero05) {
         this.entero05 = entero05;
+    }
+
+    public List<ParDominio> getListaDominioMeses() {
+        return listaDominioMeses;
+    }
+
+    public void setListaDominioMeses(List<ParDominio> listaDominioMeses) {
+        this.listaDominioMeses = listaDominioMeses;
+    }
+
+    public List<ParCalendario> getListaCalendarioAnios() {
+        return listaCalendarioAnios;
+    }
+
+    public void setListaCalendarioAnios(List<ParCalendario> listaCalendarioAnios) {
+        this.listaCalendarioAnios = listaCalendarioAnios;
+    }
+
+    public IDominioService getiDominioService() {
+        return iDominioService;
+    }
+
+    public void setiDominioService(IDominioService iDominioService) {
+        this.iDominioService = iDominioService;
+    }
+
+    public ICalendarioService getiCalendarioService() {
+        return iCalendarioService;
+    }
+
+    public void setiCalendarioService(ICalendarioService iCalendarioService) {
+        this.iCalendarioService = iCalendarioService;
+    }
+
+    public List<String> getListaGestiones() {
+        return listaGestiones;
+    }
+
+    public void setListaGestiones(List<String> listaGestiones) {
+        this.listaGestiones = listaGestiones;
     }
 }

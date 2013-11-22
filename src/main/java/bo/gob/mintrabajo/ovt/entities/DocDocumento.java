@@ -81,8 +81,8 @@ public class DocDocumento implements Serializable {
 //    private List<DocGenerico> docGenericoList;
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDocumento", fetch = FetchType.LAZY)
 //    private List<DocBinario> docBinarioList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
-    private DocPlanilla docPlanilla;
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
+//    private DocPlanilla docPlanilla;
 
     public DocDocumento() {
     }
@@ -228,13 +228,13 @@ public class DocDocumento implements Serializable {
 //        this.docBinarioList = docBinarioList;
 //    }
 
-    public DocPlanilla getDocPlanilla() {
-        return docPlanilla;
-    }
-
-    public void setDocPlanilla(DocPlanilla docPlanilla) {
-        this.docPlanilla = docPlanilla;
-    }
+//    public DocPlanilla getDocPlanilla() {
+//        return docPlanilla;
+//    }
+//
+//    public void setDocPlanilla(DocPlanilla docPlanilla) {
+//        this.docPlanilla = docPlanilla;
+//    }
 
     @Override
     public int hashCode() {

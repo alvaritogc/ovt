@@ -81,8 +81,8 @@ public class PersonaConfirmacionBean {
         logger.info("Ingresando a la clase " + getClass() + " metodo confirmaRegistro()");
         if (passwordParameter.equals(passwordConfirm)) {
             try {
-
-                Long idUsuario = iUsuarioService.loginConfirmacion(getLoginParameter(), getPasswordParameter());
+                String passwordEncripted = Util.encriptaMD5(passwordConfirm);
+                Long idUsuario = iUsuarioService.loginConfirmacion(getLoginParameter(), passwordEncripted);
                 logger.info("usuario aceptado");
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                 session.setAttribute("idUsuario", idUsuario);
@@ -100,7 +100,7 @@ public class PersonaConfirmacionBean {
                     session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
                     if (usuario.getEsInterno() == 1) {
                         session.setAttribute("idEmpleador", null);
-                        UsernamePasswordToken token = new UsernamePasswordToken(usuario.getUsuario(), passwordParameter);
+                        UsernamePasswordToken token = new UsernamePasswordToken(usuario.getUsuario(), passwordEncripted);
                         Subject subject = SecurityUtils.getSubject();
                         token.setRememberMe(true);
                         subject.login(token);
@@ -110,7 +110,7 @@ public class PersonaConfirmacionBean {
 
                     } else {
                         session.setAttribute("idEmpleador", usuario.getIdPersona().getIdPersona());
-                        UsernamePasswordToken token = new UsernamePasswordToken(usuario.getUsuario(), passwordParameter);
+                        UsernamePasswordToken token = new UsernamePasswordToken(usuario.getUsuario(), passwordEncripted);
                         Subject subject = SecurityUtils.getSubject();
                         token.setRememberMe(true);
                         subject.login(token);

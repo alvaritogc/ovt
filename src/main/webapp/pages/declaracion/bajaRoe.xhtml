@@ -142,24 +142,33 @@
                             <p:outputLabel value=""/>
                         </p:column>
                         <p:column colspan="3" style="border-right: 1pt solid black;border-left: 1pt solid black;">
-                            <p:inputText id="idCadena01" value="#{bajaRoeBean.docGenerico.cadena01}"  style="width: 70px;">
-                                <p:ajax event="keyup" update=":formularioFrm:idCadena03 :formularioFrm:idCadena04" listener="#{bajaRoeBean.vaciarSuspencionDefinitiva()}"/> 
-                            </p:inputText>
+                            <p:selectOneMenu id="idCadena01" value="#{bajaRoeBean.docGenerico.cadena01}" style="width: 70px;" > 
+                                <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                <f:selectItems value="#{bajaRoeBean.listaDominioMeses}" var="mes" itemLabel="#{mes.descripcion}" itemValue="#{mes.descripcion}" /> 
+                                <p:ajax update=":formularioFrm:idCadena03 :formularioFrm:idCadena04" listener="#{bajaRoeBean.vaciarSuspencionDefinitiva()}"/> 
+                            </p:selectOneMenu>
                         </p:column>
                         <p:column colspan="3" style="border-right: 1pt solid black;border-left: 1pt solid black;">
-                            <p:inputText id="idCadena02" value="#{bajaRoeBean.docGenerico.cadena02}"  style="width: 70px;">
-                                <p:ajax event="keyup" update=":formularioFrm:idCadena03 :formularioFrm:idCadena04" listener="#{bajaRoeBean.vaciarSuspencionDefinitiva()}"/> 
-                            </p:inputText>
+                            <p:selectOneMenu id="idCadena02" value="#{bajaRoeBean.docGenerico.cadena02}" style="width: 70px;" > 
+                                <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                <f:selectItems value="#{bajaRoeBean.listaGestiones}" var="anio" itemLabel="#{anio}" itemValue="#{anio}" /> 
+                                <p:ajax update=":formularioFrm:idCadena03 :formularioFrm:idCadena04" listener="#{bajaRoeBean.vaciarSuspencionDefinitiva()}"/> 
+                            </p:selectOneMenu>
                         </p:column>
                         <p:column colspan="3" style="border-right: 1pt solid black;border-left: 1pt solid black;">
-                            <p:inputText id="idCadena03" value="#{bajaRoeBean.docGenerico.cadena03}"  style="width: 70px;">
-                                <p:ajax event="keyup" update=":formularioFrm:idCadena01 :formularioFrm:idCadena02" listener="#{bajaRoeBean.vaciarSuspencionTemporal()}"/> 
-                            </p:inputText>
+
+                            <p:selectOneMenu id="idCadena03" value="#{bajaRoeBean.docGenerico.cadena03}" style="width: 70px;" > 
+                                <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                <f:selectItems value="#{bajaRoeBean.listaDominioMeses}" var="mes" itemLabel="#{mes.descripcion}" itemValue="#{mes.descripcion}" /> 
+                                <p:ajax update=":formularioFrm:idCadena01 :formularioFrm:idCadena02" listener="#{bajaRoeBean.vaciarSuspencionTemporal()}"/> 
+                            </p:selectOneMenu>
                         </p:column>
                         <p:column colspan="3" style="border-right: 1pt solid black;border-left: 1pt solid black;">
-                            <p:inputText id="idCadena04" value="#{bajaRoeBean.docGenerico.cadena04}"  style="width: 70px;">
-                                <p:ajax event="keyup" update=":formularioFrm:idCadena01 :formularioFrm:idCadena02" listener="#{bajaRoeBean.vaciarSuspencionTemporal()}"/> 
-                            </p:inputText>
+                            <p:selectOneMenu id="idCadena04" value="#{bajaRoeBean.docGenerico.cadena04}" style="width: 70px;" > 
+                                <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                <f:selectItems value="#{bajaRoeBean.listaGestiones}" var="anio" itemLabel="#{anio}" itemValue="#{anio}" /> 
+                                <p:ajax update=":formularioFrm:idCadena01 :formularioFrm:idCadena02" listener="#{bajaRoeBean.vaciarSuspencionTemporal()}"/> 
+                            </p:selectOneMenu>
                         </p:column>
                         <p:column colspan="6" style="border-right: 1pt solid black;border-left: 1pt solid black;">
                             <p:outputLabel value=""/>
