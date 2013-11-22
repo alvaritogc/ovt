@@ -52,15 +52,15 @@
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>
 
-                    <p:outputLabel for="slcOneMenuTipoIdentificacion" value="Identificacion:"/>
+                    <p:outputLabel for="slcOneMenuTipoIdentificacion" value="Identificación:"/>
                     <p:selectOneMenu id="slcOneMenuTipoIdentificacion" value="#{personaBean.persona.tipoIdentificacion}"
                                      tabindex="5"
                                     style="text-transform: uppercase;">
-                        <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
+                        <f:selectItem itemLabel="---Seleccione una identificación---" itemValue="" />
                         <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="slcOneMenuLocalidad" value="Lugar de emision:"/>
+                    <p:outputLabel for="slcOneMenuLocalidad" value="Lugar de emisión:"/>
                     <p:selectOneMenu id="slcOneMenuLocalidad" value="#{personaBean.idLocalidad}"
                                      tabindex="6"
                                      style="text-transform: uppercase;">
@@ -68,7 +68,7 @@
                         <f:selectItems value="#{personaBean.listaLocalidad}" />
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="inputTxtNroIdentificacion" value="Nro. de identificacion:"/>
+                    <p:outputLabel for="inputTxtNroIdentificacion" value="Nro. de identificación:"/>
                     <p:inputText id="inputTxtNroIdentificacion" value="#{personaBean.persona.nroIdentificacion}"
                                  tabindex="7"
                                  required="true"
@@ -76,8 +76,8 @@
                                  maxlength="20"
                                  autocomplete="false"
                                  style="width: 215px;text-transform: uppercase;"
-                                 converterMessage="El valor del campo Nro. de identificacion debe ser numerico."
-                                 requiredMessage="El campo Nro. de identificacion es obligatorio">
+                                 converterMessage="El valor del campo Nro. de identificación debe ser numerico."
+                                 requiredMessage="El campo Nro. de identificación es obligatorio">
                         <f:convertNumber integerOnly="true" />
                     </p:inputText>
 
@@ -148,6 +148,7 @@
                                         tabindex="17"
                                         process="@form"
                                         update="growl"
+                                        icon="ui-icon-disk"
                                />
                    </f:facet>
                    <h:panelGrid id="pnlGridUsuario" columns="2" >
@@ -162,18 +163,18 @@
                            <p:watermark for="inputTxtUsuario" value="Correo electronico" />
                        </p:inputText>
 
-                       <h:outputText value="Contrasenia:" />
+                       <h:outputText value="Contraseña:" />
                        <h:panelGrid columns="3">
                        <p:password id="inputTxtClave" value="#{personaBean.usuario.clave}"
                                    feedback="true"
                                    tabindex="15"
                                    required="true"
-                                   requiredMessage="EL campo Contrasenia es obligatorio"
+                                   requiredMessage="EL campo Contraseña es obligatorio"
                                    autocomplete="off"
-                                   promptLabel="Ingrese su contrasenia"
-                                   weakLabel="Contrasenia debil"
-                                   goodLabel="Contrasenia media"
-                                   strongLabel="Contrasenia fuerte"
+                                   promptLabel="Ingrese su contraseña"
+                                   weakLabel="Contraseña debil"
+                                   goodLabel="Contraseña media"
+                                   strongLabel="Contraseña fuerte"
                                />
                        <h:graphicImage value="/images/ayuda.png" id="grafayuda"/>
                        <p:tooltip for="grafayuda">
@@ -192,15 +193,15 @@
                        </p:tooltip>
                        </h:panelGrid>
 
-                       <h:outputText value="Confirmar contrasenia:" />
+                       <h:outputText value="Confirmar contraseña:" />
                        <p:password id="inputTxtConfirmar" value="#{personaBean.confirmarContrasenia}"
                                    feedback="true"
                                    tabindex="16"
                                    autocomplete="off"
-                                   promptLabel="Ingrese su contrasenia"
-                                   weakLabel="Contrasenia debil"
-                                   goodLabel="Contrasenia media"
-                                   strongLabel="Contrasenia fuerte"
+                                   promptLabel="Ingrese su contraseña"
+                                   weakLabel="Contraseña debil"
+                                   goodLabel="Contraseña media"
+                                   strongLabel="Contraseña fuerte"
                                />
            </h:panelGrid>
                </p:panel>
@@ -211,11 +212,11 @@
 
         </h:form>
 
-         <p:dialog id="dlg" header="Confirmacion" widgetVar="dlg" resizable="false"
+         <p:dialog id="dlg" header="Confirmación" widgetVar="dlg" resizable="false"
                 position="300,400" modal="true" dynamic="true">
              <h:form id="frmDlg">
              <h:panelGrid columns="1">
-                <h:outputText value="Se registraron los datos exitosamente. Se le envió un email para completar su registro."/>
+                <h:outputText value="Se registrarón los datos exitosamente. Se le envió un email para completar su registro."/>
                 <p:commandButton value="Aceptar" action="#{personaBean.volverLogin}"/>
              </h:panelGrid>
              </h:form>

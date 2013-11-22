@@ -13,7 +13,9 @@
        <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
         <p:commandButton value="Nuevo" icon="ui-icon-circle-plus" action="#{parametrizacionBean.inicializaParametro}" oncomplete="parametroNuevo.show();" update=":parametroNuevoFrm" />
         <br/>
-        <p:dataTable id="parametroTbl" value="#{parametrizacionBean.parametrizacionLista}" var="par" paginatorPosition="bottom" paginator="true" rows="15">
+        <p:dataTable id="parametroTbl" value="#{parametrizacionBean.parametrizacionLista}" var="par" paginatorPosition="bottom" paginator="true" rows="15"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
+                 currentPageReportTemplate="{currentPage} / {totalPages}">
             <p:column headerText="Parámetro" filterBy="#{par.parParametrizacionPK.idParametro}" footerText="endsWith" filterMatchMode="endsWith">
                 <p:outputLabel value="#{par.parParametrizacionPK.idParametro}" />
             </p:column>
