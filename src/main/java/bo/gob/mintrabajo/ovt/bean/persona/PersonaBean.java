@@ -318,7 +318,9 @@ public class PersonaBean implements Serializable{
       unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
       PerUnidadPK perUnidadPK=new PerUnidadPK();
       perUnidadPK.setIdPersona(persona.getIdPersona());
-      perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia(PER_UNIDAD_SEC));
+      //Se setea 0, para identificar a la unidad principal
+      perUnidadPK.setIdUnidad(0L);
+      /*perUnidadPK.setIdUnidad(iUnidadService.obtenerSecuencia(PER_UNIDAD_SEC));*/
       unidad.setPerUnidadPK(perUnidadPK);
 
       usuario.setIdUsuario(iUsuarioService.obtenerSecuencia(USR_USUARIO_SEC));

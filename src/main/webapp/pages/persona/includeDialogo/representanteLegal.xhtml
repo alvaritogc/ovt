@@ -26,11 +26,13 @@
                               icon="ui-icon-disk"
                               action="#{personaUnidadBean.procesarRepLegal}"
                               id="cmdButtonRepLegal"
+                              tabindex="9"
                               update=":tabPersonaUnidad,:tabPersonaUnidad:tabRepLegal,:dataGrid,:frmRepLegal:growlRepLegal"
                      />
              &#160;&#160;
              <p:commandButton value="Cancelar"
                               icon="ui-icon-closethick"
+                              tabindex="10"
                               onclick="dlgRepLegal.hide()"
                               id="cmdButtonRepLegalCancelar"/>
          </f:facet>

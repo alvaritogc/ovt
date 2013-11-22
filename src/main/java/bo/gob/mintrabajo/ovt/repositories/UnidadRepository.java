@@ -28,4 +28,8 @@ public interface UnidadRepository extends OpenJpaRepository<PerUnidad, PerUnidad
 
     List<PerUnidad> findByPerPersona_IdPersona(String idPersona);
 
+    @Query("select max (u.perUnidadPK.idUnidad) from PerUnidad u " +
+            "where u.perUnidadPK.idPersona=:idPersona")
+    long obtenerMaximaUnidad(@Param("idPersona")String idPersona);
+
 }

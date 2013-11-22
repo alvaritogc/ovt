@@ -60,7 +60,7 @@ public class AuthenticationRealm extends JdbcRealm {
             OracleDataSource dataSource = new OracleDataSource();
             dataSource.setServerName("192.168.50.7");
             dataSource.setUser("ovt");
-            dataSource.setPassword("ovt");
+            dataSource.setPassword("prueba");
             dataSource.setDatabaseName("DESA");
             dataSource.setPortNumber(1521);
             dataSource.setDriverType("thin");

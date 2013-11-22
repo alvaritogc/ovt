@@ -15,5 +15,6 @@ public interface IUnidadService {
     List<PerUnidad> listarPorPersona(String idPersona);
     PerUnidad obtienePorId(PerUnidadPK perUnidadPK);
     List<PerUnidad> listarUnidadesSucursales(String idPersona);
+    long obtenerMaximaUnidad(String idPersona);
 
 }
