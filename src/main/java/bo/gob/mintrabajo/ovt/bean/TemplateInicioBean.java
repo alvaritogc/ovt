@@ -373,7 +373,9 @@ public class TemplateInicioBean implements Serializable {
             Map<String, String> configuracionEmail = new HashMap<String, String>();
             configuracionEmail = cargaParametricasEmail();
             envioEmail.envioEmail2(usuario, configuracionEmail);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO ", " Verifique su correo electronico"));
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dlg2.hide();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO ", "Se envió un mail a su correo electrónico, para completar su cambio password "));
         }
         limpiar();
     }
