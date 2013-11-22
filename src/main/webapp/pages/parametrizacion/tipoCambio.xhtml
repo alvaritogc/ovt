@@ -55,7 +55,7 @@
                         <pe:inputNumber value="#{tipoCambio.valorOtro}" thousandSeparator="." decimalSeparator="," disabled="true"
                                       style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px "/>
                     </p:column>
-                    <p:column headerText="Operaciones">
+                    <p:column headerText="Acciones">
                         <p:commandButton title="Editar" onclick="dlgTipoCambio.show()" update=":formTipoCambio" icon="ui-icon-pencil" immediate="true">
                             <f:setPropertyActionListener target="#{tipoCambioBean.tipoCambioForm}" value="#{tipoCambio}" />
                             <f:setPropertyActionListener target="#{tipoCambioBean.accion}" value="false" />

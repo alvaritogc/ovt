@@ -22,13 +22,13 @@
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
                              currentPageReportTemplate="{currentPage} / {totalPages}">
                     
-                    <p:column headerText="Gestion" sortBy="gestion">
+                    <p:column headerText="Gestión" >
                         <h:outputText value="#{calendario.parCalendarioPK.gestion}" />
                     </p:column>
-                    <p:column headerText="Periodo" sortBy="tipoPeriodo">
+                    <p:column headerText="Periodo" >
                         <h:outputText value="#{calendario.parCalendarioPK.tipoPeriodo}" />
                     </p:column>
-                    <p:column headerText="Tipo calendario" sortBy="tipoCalendario">
+                    <p:column headerText="Tipo calendario" >
                         <h:outputText value="#{calendario.tipoCalendario}" />
                     </p:column>
                     
@@ -36,7 +36,7 @@
                 
             </h:form> 
             
-            <p:dialog id="modalDialog2" header="Atencion" widgetVar="dlgMensajeInfo" width="350" modal="true">  
+            <p:dialog id="modalDialog2" header="Atención" widgetVar="dlgMensajeInfo" width="350" modal="true">  
                 <span class="ui-icon ui-icon-alert"></span>
                 <h:outputText value="La fecha para las monedas ya estan registradas o hubo un error al guardar el registro." />  
             </p:dialog>

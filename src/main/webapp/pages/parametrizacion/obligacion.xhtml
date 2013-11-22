@@ -72,7 +72,7 @@ Copyright 2013 lvaldez.
                 <p:growl id="growl" />
                 <h:form id="formObligacion">     
                 <h:panelGrid columns="2" cellpadding="5">  
-                    <p:outputLabel for="codigo" value="Codigo de obligacion:" style="font-weight:bold"/>  
+                    <p:outputLabel for="codigo" value="Codigo de obligación:" style="font-weight:bold"/>  
                     <p:inputText id="codigo" value="#{obligacionBean.obligacion.codObligacion}" required="true" requiredMessage="Debe ingresar el codigo de obligacion" maxlength="20" 
                                  disabled="#{obligacionBean.evento? true : false}" style="text-transform: uppercase;">
                     <f:converter converterId="lowerConverter"/>

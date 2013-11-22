@@ -26,7 +26,7 @@
             <p:column headerText="Observación">
                 <p:outputLabel value="#{par.observacion}" />
             </p:column>
-            <p:column headerText="Operaciones">
+            <p:column headerText="Acciones">
                 <p:commandButton icon="ui-icon-pencil" oncomplete="parametroEdicion.show();" update=":parametroEdicionFrm">
                     <f:setPropertyActionListener value="#{par}" target="#{parametrizacionBean.parametrizacionSelected}" />
                 </p:commandButton>
@@ -34,7 +34,7 @@
         </p:dataTable>
        </h:form>
 
-        <p:dialog widgetVar="parametroNuevo" modal="true" header="Nuevo parámetro">
+        <p:dialog widgetVar="parametroNuevo" modal="true" header="Nuevo parámetro" closable="false">
             <h:form id="parametroNuevoFrm">
                 <h:panelGrid columns="2">
                     <p:outputLabel for="parametroN" value="Parámetro"/>
@@ -48,7 +48,7 @@
                         <f:converter converterId="lowerConverter" />
                     </p:inputText>
                     <p:outputLabel for="valorN" value="Valor" />
-                    <p:inputText id="valorN" value="#{parametrizacionBean.parametrizacionSelected.descripcion}" required="true" />
+                    <p:inputText id="valorN" value="#{parametrizacionBean.parametrizacionSelected.descripcion}" required="true" style="width: 215px;" />
                     <p:outputLabel for="datoDescripcionN" value="Dato Descripción"/>
                     <p:selectOneMenu id="datoDescripcionN" value="#{parametrizacionBean.parametrizacionSelected.datoDescripcion}" required="true">
                         <f:selectItem itemLabel="CARACTER" itemValue="C" />
@@ -61,12 +61,12 @@
                         <f:converter converterId="lowerConverter" />
                     </p:inputTextarea>
                 </h:panelGrid>
-                <p:commandButton value="Guardar" action="#{parametrizacionBean.guardarParametro}" update=":parametroNuevoFrm :parametroFrm:parametroTbl"/>
-                <p:commandButton value="Cancelar" onclick="parametroNuevo.hide();" immediate="true" />
+                <p:commandButton value="Guardar" action="#{parametrizacionBean.guardarParametro}" update=":parametroNuevoFrm :parametroFrm:parametroTbl" icon="ui-icon-disk"/>
+                <p:commandButton value="Cancelar" onclick="parametroNuevo.hide();" immediate="true" icon="ui-icon-close"/>
             </h:form>
         </p:dialog>
 
-        <p:dialog widgetVar="parametroEdicion" modal="true" header="Editar parámetro">
+        <p:dialog widgetVar="parametroEdicion" modal="true" header="Editar parámetro" closable="false">
             <h:form id="parametroEdicionFrm">
                 <h:panelGrid columns="2">
                     <p:outputLabel value="Parámetro"/>
@@ -80,7 +80,7 @@
                         <f:converter converterId="lowerConverter" />
                     </p:inputText>
                     <p:outputLabel for="valorE" value="Valor" />
-                    <p:inputText id="valorE" value="#{parametrizacionBean.parametrizacionSelected.descripcion}" required="true" />
+                    <p:inputText id="valorE" value="#{parametrizacionBean.parametrizacionSelected.descripcion}" required="true" style="width: 215px;"/>
                     <p:outputLabel for="datoDescripcion" value="Dato Descripción"/>
                     <p:selectOneMenu id="datoDescripcion" value="#{parametrizacionBean.parametrizacionSelected.datoDescripcion}" required="true">
                         <f:selectItem itemLabel="CARACTER" itemValue="C"/>
@@ -93,8 +93,8 @@
                         <f:converter converterId="lowerConverter" />
                     </p:inputTextarea>
                 </h:panelGrid>
-                <p:commandButton value="Guardar" action="#{parametrizacionBean.editarParametro}" update=":parametroEdicionFrm :parametroFrm:parametroTbl"/>
-                <p:commandButton value="Cancelar" onclick="parametroEdicion.hide();" immediate="true" />
+                <p:commandButton value="Guardar" action="#{parametrizacionBean.editarParametro}" update=":parametroEdicionFrm :parametroFrm:parametroTbl" icon="ui-icon-disk"/>
+                <p:commandButton value="Cancelar" onclick="parametroEdicion.hide();" immediate="true" icon="ui-icon-close"/>
             </h:form>
         </p:dialog>
 
