@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2013 lvaldez.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <h2 class="form-signin-heading">Transición de documentos</h2>
+            <!--  Boton de registro-->
+            <p:commandButton value="Nuevo" oncomplete="dlgFormTransicion.show();" update=":formTransicion" 
+                             icon="ui-icon-circle-plus" actionListener="#{transicionBean.nuevo}" immediate="true"/>
+            <!--  Listado de Transiciones en tabla-->
+            <p:dataTable id="dataTableTransicion" var="transicion" value="#{transicionBean.listaTransicion}" 
+                         paginator="true" rows="10" sortMode="multiple" widgetVar="obligacionTable" paginatorPosition="bottom"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
+                 currentPageReportTemplate="{currentPage} / {totalPages}">
+
+                <p:column sortBy="codigo" headerText="Documento">    
+                    <h:outputText value="#{transicion.docDefinicion.nombre}" />  
+                </p:column>  
+                
+                <p:column sortBy="version" headerText="Versión" >   
+                    <h:outputText value="#{transicion.docTransicionPK.version}" />  
+                </p:column>  
+                
+                <p:column sortBy="descripcion" headerText="Estado inicial" >   
+                    <h:outputText value="#{transicion.parDocumentoEstado.descripcion}" />  
+                </p:column>
+                
+                <p:column sortBy="descripcion" headerText="Estado final" >   
+                    <h:outputText value="#{transicion.parDocumentoEstado1.descripcion}" />  
+                </p:column>
+
+                <p:column sortBy="estado" headerText="Estado">  
+                    <h:outputText value="#{transicion.estado}" />  
+                </p:column>
+                <p:column headerText="Acciones">
+                    <p:commandButton icon="ui-icon-pencil" title="Editar" onclick="dlgFormTransicion.show()" update=":formTransicion"> 
+                            <f:setPropertyActionListener target="#{transicionBean.docTransicion}" value="#{transicion}" />
+                            <f:setPropertyActionListener target="#{transicionBean.estadoTransicion}" value="#{transicion.estado eq 'A'? true : false}" />
+                            <f:setPropertyActionListener target="#{transicionBean.evento}" value="true" />
+                            <f:setPropertyActionListener target="#{transicionBean.codigo}" value="#{transicion.docTransicionPK.codDocumento}" />
+                            <f:setPropertyActionListener target="#{transicionBean.estadoInicial}" value="#{transicion.parDocumentoEstado.codEstado}" />
+                            <f:setPropertyActionListener target="#{transicionBean.estadoFinal}" value="#{transicion.parDocumentoEstado1.codEstado}" />
+                            <f:setPropertyActionListener target="#{transicionBean.version}" value="#{transicion.docTransicionPK.version}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" title="Eliminar" onclick="confirmation.show()"> 
+                            <f:setPropertyActionListener target="#{transicionBean.docTransicion}" value="#{transicion}" />
+                        </p:commandButton>
+                </p:column>  
+            </p:dataTable>
+            
+            <p:growl id="messages" showDetail="true" /> 
+             <p:confirmDialog message="Esta seguro de eliminar este registro?"  
+                showEffect="fade" hideEffect="explode"  
+                header="Confirmacion" severity="alert" widgetVar="confirmation">  
+                 <p:commandButton value="Si" update=":messages :dataTableTransicion" oncomplete="confirmation.hide()" actionListener="#{transicionBean.confirmaEliminar}" />  
+                 <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+            </p:confirmDialog>
+             
+            <p:dialog id="modalDialog" header="Atencion" widgetVar="dlgMensaje" width="350" modal="true">  
+                <span class="ui-icon ui-icon-alert"></span>
+                <h:outputText value="El registro esta siendo usado entro lado, por lo que no se puede eliminar." />  
+                <!---->
+            </p:dialog>
+            
+            <p:dialog id="modalDialog2" header="Atencion" widgetVar="dlgMensajeInfo" width="350" modal="true">  
+                <span class="ui-icon ui-icon-alert"></span>
+                <h:outputText value="Los datos del registro que esta ingresando ya existen o hubo un error al guardar el registro." />  
+            </p:dialog>
+                
+             <!--            Formulario de registro y edicion-->   
+            <p:dialog id="basicDialogMessage" header="Transicion" widgetVar="dlgFormTransicion" 
+                      width="400" closable="false"
+                      resizable="false"
+                      modal="true" >  
+                
+                <p:growl id="growl" />
+                <h:form id="formTransicion">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="codigo" value="Codigo documento:" style="font-weight:bold"/>  
+                        <p:selectOneMenu id="codigo"  value="#{transicionBean.codigo}" disabled="#{transicionBean.evento}"
+                                         required="true" requiredMessage="Debe ingresar el codigo de transicion">
+                            <f:selectItem itemLabel="-- Seleccione estado inicial --" itemValue="" />
+                            <f:selectItems value="#{transicionBean.listaDefinicion}" var="d" itemLabel="#{d.nombre}" itemValue="#{d.docDefinicionPK.codDocumento}"/>
+                            <p:ajax update="version"    
+                                    listener="#{transicionBean.mostrarVersion}" />
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel for="version" value="Version:" style="font-weight:bold"/> 
+                        <p:selectOneMenu id="version"  value="#{transicionBean.version}" disabled="#{transicionBean.evento}"
+                                         required="true" requiredMessage="Debe ingresar la version">
+                            <f:selectItems value="#{transicionBean.listaVersion}" var="v" itemLabel="#{v.docDefinicionPK.version}" itemValue="#{v.docDefinicionPK.version}"/>
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel for="estadoInicial" value="Estado inicial:" style="font-weight:bold"/>
+                        <p:selectOneMenu id="estadoInicial"  value="#{transicionBean.estadoInicial}" disabled="#{transicionBean.evento}"
+                                         required="true" requiredMessage="Debe seleccionar el estado inicial">
+                            <f:selectItem itemLabel="-- Seleccione estado inicial --" itemValue="" />
+                            <f:selectItems value="#{transicionBean.listaEstadoInicial}" var="ei" itemLabel="#{ei.descripcion}" itemValue="#{ei.codEstado}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="estadofinal" value="Estado final:" style="font-weight:bold"/>
+                        <p:selectOneMenu id="estadofinal"  value="#{transicionBean.estadoFinal}" disabled="#{transicionBean.evento}"
+                                         required="true" requiredMessage="Debe seleccionar el estado final">
+                            <f:selectItem itemLabel="-- Seleccione estado final --" itemValue="" />
+                            <f:selectItems value="#{transicionBean.listaEstadoFinal}" var="ef" itemLabel="#{ef.descripcion}" itemValue="#{ef.codEstado}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="estado" value="Estado:" style="font-weight:bold"/>  
+                        <p:selectBooleanCheckbox id="estado" value="#{transicionBean.estadoTransicion}"  />
+                        <h:panelGroup>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <p:commandButton value="Guardar" action="#{transicionBean.guardarModificar}" update=":growl formTransicion :dataTableTransicion" icon="ui-icon-disk"/>
+                        </h:panelGroup> 
+                        <p:commandButton value="Canselar" actionListener="#{transicionBean.limpiar}" immediate="true"
+                                         onclick="dlgFormTransicion.hide();" update="formTransicion" icon="ui-icon-close"/>
+                        
+                    </h:panelGrid>
+                </h:form>
+                
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
