@@ -13,5 +13,14 @@ import java.util.List;
 
 @OpenJpaSettings
 public interface TransicionRepository extends OpenJpaRepository<DocTransicion, DocTransicionPK>{
+    @Query("select p "
+            + " from DocTransicion p "
+            + " where "
+            + " p.docTransicionPK.codDocumento = :codigo and "
+            + " p.docTransicionPK.version = :version and "
+            + " p.docTransicionPK.codEstadoInicial = :estadoInicial and "
+            + " p.docTransicionPK.codEstadoFinal =:estadoFinal")
+    DocTransicion obtieneTransicionPk(@Param("codigo")String codigo, @Param("version")short version, 
+            @Param("estadoInicial")String estadoInicial, @Param("estadoFinal")String estadoFinal);
 
 }

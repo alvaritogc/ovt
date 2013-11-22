@@ -9,10 +9,10 @@
     <ui:composition template="../../pages/template/templateInicio.xhtml">
         <ui:define name="content">
             <h:form id="tablaCalendario">
-                <h2 class="form-signin-heading">Obligacion Calendario</h2>
+                <h2 class="form-signin-heading">Obligación Calendario</h2>
                 <!--  Busqueda segun obligacion -->
                 <h:panelGrid columns="4" style="alignment-adjust: middle" cellpadding="5">
-                    <h:outputLabel for="obligacion" value="Obligacion:" style="font-weight:bold"/>  
+                    <h:outputLabel for="obligacion" value="Obligación:" style="font-weight:bold"/>  
                     <p:selectOneMenu id="obligacion" value="#{obligacionCalendarioBean.codObligacion}">  
                         <f:selectItem itemLabel="---Seleccione obligacion---" itemValue=" " />  
                         <f:selectItems value="#{obligacionCalendarioBean.listaObligacion}" var="ob" itemLabel="#{ob.descripcion}" itemValue="#{ob.codObligacion}"/>
@@ -31,31 +31,31 @@
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
                              currentPageReportTemplate="{currentPage} / {totalPages}">
 
-                    <p:column sortBy="codObligacion.descripcion" headerText="Descripcion obligacion" >   
+                    <p:column headerText="Descripcion obligacion" >   
                         <h:outputText value="#{calendario.codObligacion.descripcion}" />  
                     </p:column>
 
-                    <p:column sortBy="tipoCalendario" headerText="Tipo calendario" >   
+                    <p:column headerText="Tipo calendario" >   
                         <h:outputText value="#{calendario.tipoCalendario}" />  
                     </p:column>  
 
-                    <p:column sortBy="gestion" headerText="Gestion">    
+                    <p:column headerText="Gestion">    
                         <h:outputText value="#{calendario.parCalendario.parCalendarioPK.gestion}" />  
                     </p:column>  
                     
-                    <p:column sortBy="tipoPeriodo" headerText="Periodo">    
+                    <p:column headerText="Periodo">    
                         <h:outputText value="#{calendario.parCalendario.parCalendarioPK.tipoPeriodo}" />  
                     </p:column>  
 
-                    <p:column sortBy="fechaDesde" headerText="Fecha desde">  
+                    <p:column headerText="Fecha desde">  
                         <h:outputText value="#{calendario.fechaDesde}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
                     </p:column>
 
-                    <p:column sortBy="fechaHasta" headerText="Fecha hasta">  
+                    <p:column headerText="Fecha hasta">  
                         <h:outputText value="#{calendario.fechaHasta}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
                     </p:column>
 
-                    <p:column sortBy="fechaPlazo" headerText="Fecha plazo">  
+                    <p:column headerText="Fecha plazo">  
                         <h:outputText value="#{calendario.fechaPlazo}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>  
                     </p:column>
                     
@@ -78,8 +78,8 @@
 <!--             Mensaje de confirmacion de eliminacion -->
                 <p:growl id="messages" showDetail="true" /> 
                 <p:confirmDialog message="Esta seguro de eliminar este registro?"  
-                   showEffect="fade" hideEffect="explode"  
-                   header="Confirmacion" severity="alert" widgetVar="confirmation">  
+                                 showEffect="fade" hideEffect="explode" closable="false" 
+                   header="Confirmación" severity="alert" widgetVar="confirmation">  
                     <p:commandButton value="Si" update="messages tablaCalendario" oncomplete="confirmation.hide()" actionListener="#{obligacionCalendarioBean.confirmaEliminar}" />  
                     <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
                </p:confirmDialog>

@@ -36,22 +36,22 @@
                              emptyMessage="No se encontraron resultados" var="tipoCambio" value="#{tipoCambioBean.listaTipoCambio}"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
                  currentPageReportTemplate="{currentPage} / {totalPages}">
-                    <p:column headerText="Fecha" sortBy="idFecha">
+                    <p:column headerText="Fecha">
                         <h:outputText value="#{tipoCambio.parTipoCambioPK.idFecha}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
                     </p:column>
-                    <p:column headerText="Oficial (#{tipoCambioBean.monedaBase})" sortBy="#{tipoCambio.valorOficial}">
+                    <p:column headerText="Oficial (#{tipoCambioBean.monedaBase})" >
                         <pe:inputNumber value="#{tipoCambio.valorOficial}" thousandSeparator="." decimalSeparator="," disabled="true"
                                         style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px "/>
                     </p:column>
-                    <p:column headerText="Compra" sortBy="valorCompra">
+                    <p:column headerText="Compra" >
                         <pe:inputNumber value="#{tipoCambio.valorCompra}" thousandSeparator="." decimalSeparator="," disabled="true"
                                         style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px "/>
                     </p:column>
-                    <p:column headerText="Venta" sortBy="valorVenta">
+                    <p:column headerText="Venta" >
                         <pe:inputNumber value="#{tipoCambio.valorVenta}" thousandSeparator="." decimalSeparator="," disabled="true"
                                       style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px "/>
                     </p:column>
-                    <p:column headerText="Otro" sortBy="valorOtro">
+                    <p:column headerText="Otro" >
                         <pe:inputNumber value="#{tipoCambio.valorOtro}" thousandSeparator="." decimalSeparator="," disabled="true"
                                       style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px "/>
                     </p:column>
@@ -71,8 +71,8 @@
                 </p:dataTable>
                 
                 <p:confirmDialog message="Esta seguro de eliminar este registro?"  
-                    showEffect="fade" hideEffect="explode"  
-                    header="Confirmacion" severity="alert" widgetVar="confirmation">  
+                                 showEffect="fade" hideEffect="explode"  closable="false"
+                    header="Confirmación" severity="alert" widgetVar="confirmation">  
                     <p:commandButton value="Si" oncomplete="confirmation.hide()" actionListener="#{tipoCambioBean.eliminar}" update="tabla"/>  
                      <p:commandButton value="No" oncomplete="confirmation.hide()" />   
                 </p:confirmDialog>
