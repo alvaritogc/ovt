@@ -48,18 +48,13 @@
                     <p:column headerText="Acciones">
                         <p:commandButton update=":idEscritorio:cambioEstadoDlg" 
                                          action="#{escritorioBean.cargarCambioDeEstados}"
-                                         oncomplete="PF('cambioEstadoDialog').show()" icon="ui-icon-gear" title="Cambio de estados">  
+                                         oncomplete="PF('cambioEstadoDialog').show()" icon="ui-icon-gear" title="Cambio de estados">
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
                         </p:commandButton> 
 
                         <!--<p:commandButton icon="ui-icon-print" action="# {escritorioBean.irImprimirDocumento}" title="Imprimir documento" ajax="false">-->
                             <!--<f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />-->
                         <!--</p:commandButton>-->
-
-                        <h:commandLink target="_blank" action="#{escritorioBean.irImprimirDocumento}" title="Imprimir documento">
-                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
-                            <h:graphicImage  style="float: left;width:25px;height: 23px;padding-right: 3px; " value="/images/imprimir.png" />
-                        </h:commandLink>
 
                         <p:commandButton action="#{escritorioBean.download}"
                                          ajax="false"
@@ -68,7 +63,11 @@
                                          title="Descarga documentos" >
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
                         </p:commandButton>
-                         
+
+                        <h:commandLink target="_blank" action="#{escritorioBean.irImprimirDocumento}" title="Imprimir documento">
+                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
+                            <h:graphicImage  style="float: left;width:25px;height: 23px;padding-right: 3px; " value="/images/print.png" />
+                        </h:commandLink>
                     </p:column>
                 </p:dataTable>
                 <p:dialog header="Cambio de estado" widgetVar="cambioEstadoDialog" resizable="false" id="cambioEstadoDlg"  

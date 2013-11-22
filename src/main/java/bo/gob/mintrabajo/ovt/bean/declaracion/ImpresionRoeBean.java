@@ -1,25 +1,21 @@
 package bo.gob.mintrabajo.ovt.bean.declaracion;
 
-import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
+import bo.gob.mintrabajo.ovt.bean.EscritorioBean;
 import bo.gob.mintrabajo.ovt.entities.*;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
-import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import javax.faces.application.FacesMessage;
 
 @ManagedBean
 @ViewScoped
@@ -53,6 +49,7 @@ public class ImpresionRoeBean {
     private VperPersona vperPersona;
     private DocDocumento documento;
     private DocGenerico docGenerico;
+    private DocDefinicion docDefinicion;
     //
     private String bancoDeposito;
     private int nroComprobanteDeposito;
@@ -64,6 +61,7 @@ public class ImpresionRoeBean {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
+        docDefinicion = iDefinicionService.buscaPorId((DocDefinicionPK) session.getAttribute("docDefinicionPK"));
         usuario = iUsuarioService.findById(idUsuario);
         esFuncionario = usuario.getEsInterno() == 1 ? true : false;
         cargar();
@@ -88,12 +86,6 @@ public class ImpresionRoeBean {
     }
 
     public String guardar() {
-        System.out.println("==================================");
-        System.out.println("==================================");
-        System.out.println("Guardar");
-        System.out.println("==================================");
-        System.out.println("==================================");
-        System.out.println("docGenerico : " + docGenerico.getCadena01());
         if(bancoDeposito==null || bancoDeposito.equals("")){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe el campo Banco."));
             return "";
@@ -116,7 +108,7 @@ public class ImpresionRoeBean {
         docGenerico.setCadena03(sdf.format(fechaDeposito));
         docGenerico.setCadena04(montoDeposito.toString());
         //
-        documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico,idUsuario.toString());
+        documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico,idUsuario.toString(), docDefinicion);
         return "irEscritorio";
     }
 

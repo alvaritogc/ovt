@@ -10,9 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -147,20 +145,30 @@ public class EscritorioBean {
     }
 
     public void irImprimirDocumento() {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        HttpServletRequest httpServletRequest = ((HttpServletRequest) externalContext.getRequest());
-        try{
-            vperPersona = iVperPersonaService.cargaVistaPersona(docDocumento.getPerUnidad().getPerPersona().getIdPersona());
-            docPlanilla=iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
-            String rutaPdf= iDocumentoService.generaReporte(docPlanilla, persona, docDocumento, docDocumento.getPerUnidad(), vperPersona);
-//            String url = (httpServletRequest.getRequestURL().toString()).replace("/pages/escritorio.jsf", rutaPdf);
-//            return url;
-            redirecionarReporte(rutaPdf);
+        String codDocumento =docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento();
+        String rutaPdf;
+        if(codDocumento.equals("LC1010")){
+            try{
+                vperPersona = iVperPersonaService.cargaVistaPersona(docDocumento.getPerUnidad().getPerPersona().getIdPersona());
+                docPlanilla=iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
+                rutaPdf= iDocumentoService.generaReporteLC1010(docPlanilla, persona, docDocumento, docDocumento.getPerUnidad(), vperPersona);
+                redirecionarReporte(rutaPdf);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
         }
-        catch(Exception e){
-            e.printStackTrace();
+
+        if(codDocumento.equals("ROE010")){
+            try{
+                vperPersona = iVperPersonaService.cargaVistaPersona(docDocumento.getPerUnidad().getPerPersona().getIdPersona());
+                rutaPdf= iDocumentoService.generaReporteROE010(vperPersona);
+                redirecionarReporte(rutaPdf);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
         }
-//        return null;
     }
 
     private static void redirecionarReporte (String rutaReporte) throws IOException {
@@ -175,7 +183,6 @@ public class EscritorioBean {
             input=new BufferedInputStream(new FileInputStream(file),10240);
             response.reset();
             response.setContentType("application/pdf");
-//            response.setHeader("Content-Disposition", "attachment;filename=\"" + file.getName() + "\"");
             response.setHeader( "Content-Disposition", "filename=" + file.getName() );
             response.setContentLength((int)file.length());
             output=new BufferedOutputStream(response.getOutputStream(), 10240);
@@ -205,15 +212,6 @@ public class EscritorioBean {
         }
     }
 
-//    private static void close(Closeable resource) {
-//        if (resource != null) {
-//            try {
-//                resource.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 //
 //    public String download(){
 //        session.setAttribute("idDocumento", docDocumentoEntity.getIdDocumento());
