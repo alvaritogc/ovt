@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
 <ui:composition template="../template/templateInicio.xhtml">
     <ui:define name="content">
 
@@ -56,12 +57,12 @@
                 <ui:include src="../persona/tabs/direccionPrincipal.xhtml"/>
          </p:tab>
 
-         <p:tab id="tabTrabajadores" >
+         <p:tab id="tabInfoLaboral" >
              <f:facet name="title">
                  <p:graphicImage value="/images/personas.png"/>
                  <h:outputText value=" TRABAJADORES"/>
              </f:facet>
-
+             <ui:include src="../persona/tabs/infoLaboralPrincipal.xhtml"/>
          </p:tab>
 
      </p:tabView>
@@ -81,6 +82,20 @@
 
               <!-- ******************** DIALOGOS ********************** -->
 
+        <p:dialog id="dlgUnidad"  widgetVar="dlgUnidad"  modal="true" width="430" height="450" resizable="false" closable="false">
+            <f:facet name="header">
+                <h:outputText id="txtDldUnidad" value="#{personaUnidadBean.tituloDialog}"/>
+            </f:facet>
+            <ui:include src="../persona/includeDialogo/unidad.xhtml"/>
+        </p:dialog>
+
+        <p:dialog id="dlgActividadDeclarada"  widgetVar="dlgActividadDeclarada" resizable="false" modal="true" closable="false">
+            <f:facet name="header">
+                <h:outputText id="txtDlgActividadDeclarada" value="#{personaUnidadBean.tituloDialog}"/>
+            </f:facet>
+            <ui:include src="../persona/includeDialogo/actividadDeclarada.xhtml"/>
+        </p:dialog>
+
         <p:dialog id="dlgRepLegal"  widgetVar="dlgRepLegal" resizable="false" modal="true" width="450" closable="false">
             <f:facet name="header">
                 <h:outputText id="txtDlgRepLegal" value="#{personaUnidadBean.tituloDialog}"/>
@@ -89,25 +104,19 @@
         </p:dialog>
 
 
-        <p:dialog id="dlgDireccion"  widgetVar="dlgDireccion" width="430" modal="true" resizable="false">
+        <p:dialog id="dlgDireccion"  widgetVar="dlgDireccion" width="430" modal="true" resizable="false" closable="false">
             <f:facet name="header">
                 <h:outputText id="txtDlgDireccion" value="#{personaUnidadBean.tituloDialog}"/>
             </f:facet>
             <ui:include src="../persona/includeDialogo/direccion.xhtml"/>
         </p:dialog>
 
-        <p:dialog id="dlgActividadDeclarada"  widgetVar="dlgActividadDeclarada" resizable="false" modal="true">
-            <f:facet name="header">
-                <h:outputText id="txtDlgActividadDeclarada" value="#{personaUnidadBean.tituloDialog}"/>
-            </f:facet>
-            <ui:include src="../persona/includeDialogo/actividadDeclarada.xhtml"/>
-        </p:dialog>
 
-        <p:dialog id="dlgUnidad"  widgetVar="dlgUnidad"  modal="true" width="430" height="450" resizable="false" closable="false">
+        <p:dialog id="dlgInfoLaboral"  widgetVar="dlgInfoLaboral"  modal="true" width="730" height="300" resizable="false" closable="false">
             <f:facet name="header">
-                <h:outputText id="txtDldUnidad" value="#{personaUnidadBean.tituloDialog}"/>
+                <h:outputText id="txtDlgInfoLaboral" value="#{personaUnidadBean.tituloDialog}"/>
             </f:facet>
-            <ui:include src="../persona/includeDialogo/unidad.xhtml"/>
+            <ui:include src="../persona/includeDialogo/infoLaboral.xhtml"/>
         </p:dialog>
 
                     <!-- ********************************************* -->

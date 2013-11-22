@@ -28,9 +28,9 @@ public class Sequencias {
 
     public static final String SEQ="SEQ";
 
-    public static final String USR_MODULO_SEC="PER_UNIDAD_SEC";
-    public static final String USR_RECURSO_SEC="PER_UNIDAD_SEC";
-    public static final String USR_ROL_SEC="PER_UNIDAD_SEC";
-    public static final String USR_USUARIO_ROL_SEC="PER_UNIDAD_SEC";
-    public static final String USR_USUARIO_SEC="PER_UNIDAD_SEC";
+    public static final String USR_MODULO_SEC="USR_MODULO_SEC";
+    public static final String USR_RECURSO_SEC="USR_RECURSO_SEC";
+    public static final String USR_ROL_SEC="USR_ROL_SEC";
+    public static final String USR_USUARIO_ROL_SEC="USR_USUARIO_ROL_SEC";
+    public static final String USR_USUARIO_SEC="USR_USUARIO_SEC";
 }

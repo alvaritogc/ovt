@@ -95,22 +95,26 @@
          <h:outputText value="Telefono 1: "/>
          <p:inputText id="inputTxtTelf1" value="#{personaUnidadBean.direccion.telefono}"
                       style="width: 220px;"
-                      tabindex="8"/>
+                      tabindex="8"
+                      onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
          <h:outputText value="Telefono 2: "/>
          <p:inputText id="inputTxtTelf2" value="#{personaUnidadBean.direccion.telefono2}"
                       style="width: 220px;"
-                      tabindex="9"/>
+                      tabindex="9"
+                      onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
          <h:outputText value="Celular 1: "/>
          <p:inputText id="inputTxtCelular1" value="#{personaUnidadBean.direccion.celular}"
                       style="width: 220px;"
-                      tabindex="10"/>
+                      tabindex="10"
+                      onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
          <h:outputText value="Celular 2: "/>
          <p:inputText id="inputTxtCelular2" value="#{personaUnidadBean.direccion.celular2}"
                       style="width: 220px;"
-                      tabindex="11"/>
+                      tabindex="11"
+                      onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
          <h:outputText value="Correo electronico 1:"/>
          <p:inputText id="inputTxtEmail1" value="#{personaUnidadBean.direccion.email}"
