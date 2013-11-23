@@ -24,7 +24,7 @@
                 <p:column headerText="Es delegado">
                     <h:outputText value="#{usr.esDelegado eq 1 ? 'SI' : 'NO'}"/>
                 </p:column>
-                <p:column headerText="Fecha Inhabilitacion">
+                <p:column headerText="Fecha Inhabilitación">
                     <h:outputText value="#{usr.fechaInhabilitacion}"/>
                 </p:column>
                 <p:column headerText="Fecha Reabilitación">
@@ -33,7 +33,7 @@
                 <p:column headerText="Estado Usuario">
                     <h:outputText value="#{usr.estadoUsuario}"/>
                 </p:column>
-                <p:column headerText="Operaciones">
+                <p:column headerText="Acciones">
                     <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" oncomplete="edicionDlg.show()" update=":edicionFrm" immediate="true" style="color:#0066CC">
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
                     </p:commandButton>
@@ -46,7 +46,7 @@
         </h:form>
 
         <!-- Dialogo para nuevo usuario -->
-        <p:dialog modal="true" widgetVar="nuevoDlg" header="Nuevo Usuario">
+        <p:dialog modal="true" widgetVar="nuevoDlg" header="Nuevo Usuario" closable="false">
             <h:form id="nuevoFrm">
                 <p:messages id="messagesNuevo" showDetail="true" autoUpdate="false" closable="true" />
                 <p:panelGrid columns="2">
@@ -179,13 +179,13 @@
                                 tabindex="14"
                                 autocomplete="off"/>
                 </p:panelGrid>
-                <p:commandButton value="Guardar" action="#{usuarioAdministracionBean.guardarUsuario}" update=":usuarioFrm:usuarioTbl nuevoFrm messagesNuevo" />
-                <p:commandButton value="Cancelar" onclick="nuevoDlg.hide();" immediate="true" />
+                <p:commandButton value="Guardar" action="#{usuarioAdministracionBean.guardarUsuario}" update=":usuarioFrm:usuarioTbl nuevoFrm messagesNuevo" icon="ui-icon-disk" />
+                <p:commandButton value="Cancelar" onclick="nuevoDlg.hide();" immediate="true" icon="ui-icon-close"/>
             </h:form>
         </p:dialog>
 
         <!-- Dialogo para edicion del usuario -->
-        <p:dialog modal="true" widgetVar="edicionDlg" header="Editar Usuario">
+        <p:dialog modal="true" widgetVar="edicionDlg" header="Editar Usuario" closable="false">
             <h:form id="edicionFrm">
                 <p:panelGrid columns="2">
                     <f:facet name="header">
@@ -287,13 +287,13 @@
                         <f:converter converterId="lowerConverter"/>
                     </p:inputTextarea>
                 </p:panelGrid>
-                <p:commandButton value="Guardar" action="#{usuarioAdministracionBean.editarUsuario}" update=":usuarioFrm:usuarioTbl edicionFrm" />
-                <p:commandButton value="Cancelar" onclick="edicionDlg.hide();" immediate="true" />
+                <p:commandButton value="Guardar" action="#{usuarioAdministracionBean.editarUsuario}" update=":usuarioFrm:usuarioTbl edicionFrm" icon="ui-icon-disk"/>
+                <p:commandButton value="Cancelar" onclick="edicionDlg.hide();" immediate="true" icon="ui-icon-close"/>
             </h:form>
         </p:dialog>
 
         <!-- Dialgo de confirmacion para la eliminación -->
-        <p:confirmDialog widgetVar="eliminarDlg" global="true" showEffect="fade" hideEffect="explode" message="Está segúro de eliminar este usuario?" header="Confirmar la eliminación">
+        <p:confirmDialog widgetVar="eliminarDlg" global="true" showEffect="fade" hideEffect="explode" message="Está segúro de eliminar este usuario?" header="Confirmar la eliminación" closable="false">
             <p:commandButton value="Si" action="#{usuarioAdministracionBean.eliminarUsuario}" oncomplete="eliminarDlg.hide();" update=":usuarioFrm:usuarioTbl" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
             <p:commandButton value="No" type="button"  styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
         </p:confirmDialog>

@@ -137,7 +137,7 @@
                             <!--  <p:messages id="messages" /> -->
                             <p:commandLink value="Ayuda" onclick="PF('dlg1').show();" style="color:red;"/>
                             <br/>
-                            <p:commandLink value="Olvido su contrasenia?" onclick="PF('dlg2').show();" style="color:#00079C;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
+                            <p:commandLink value="Olvido su contraseña?" onclick="PF('dlg2').show();" style="color:#00079C;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
                             <br/>
                             <p:commandLink value="Regístrate a la oficina vitual" action="#{templateInicioBean.irRegistro}" style="color:#00079C;" immediate="true" />
                         </p:panel>
@@ -149,7 +149,7 @@
                         <ui:include src="/mensajes/informacion.xhtml"/>
                     </p:dialog>
                     <!-- ***********  DIALOG OLVIDO SU CONTRASENIA ************* -->
-                    <p:dialog id="basicDialog2" header="Olvido su contrasenia" modal="true" widgetVar="dlg2" width="420" height="200" resizable="false" closable="false">
+                    <p:dialog id="basicDialog2" header="Olvido su contraseña" modal="true" widgetVar="dlg2" width="420" height="200" resizable="false" closable="false">
                         <p:growl id="olvidoContraseniaGrowl" showDetail="false" life="6000" globalOnly="true"  sticky="false"/>
                         <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
                                   draggable="false" closable="false">
@@ -158,12 +158,12 @@
                         <h:form id="frmOlvidoContrasenia">
                             <p:growl showDetail="true" id="growlOlvidoContrasenia" />
                             <br/>
-                            <p style="font-size: 12px;">Para recuperar su contraseña, ingrese su Nro. de documento con el que se registro (CI,NIT) y direccion de correo electronico asociada al Sistema.</p>
+                            <p style="font-size: 12px;">Para recuperar su contraseña, ingrese su Nro. de documento con el que se registro (CI,NIT) y dirección de correo electronico asociada al Sistema.</p>
 
                             <h:panelGrid columns="1" id="pnlGridContrasenia">
                                 <h:outputText value="Nro de documento (NIT,CI):"/>
                                 <p:inputText id="txtOlvidoNIT" value="#{templateInicioBean.nit}"></p:inputText>
-                                <p:watermark for="txtOlvidoNIT" value="Nro de identificacion (NIT)" />
+                                <p:watermark for="txtOlvidoNIT" value="Nro de identificación (NIT)" />
                                 <h:outputText value="Correo electronico:"/>
                                 <p:inputText id="txtOlvidoEmail" value="#{templateInicioBean.email}"></p:inputText>
                                 <p:watermark for="txtOlvidoEmail" value="Correo electronico" />
@@ -171,11 +171,12 @@
                             <br/>
                             <p:commandButton value="Enviar"
                                              action="#{templateInicioBean.olvidoContrasenia}"
-                                             tabindex="2"
+                                             tabindex="2" icon="ui-icon-check"
                                              process="@form"
                                              update=":frmOlvidoContrasenia" onstart="statusDialog.show();" oncomplete="statusDialog.hide();">
                             </p:commandButton>
-                            <p:commandButton value="Cancelar" onclick="dlg2.hide();" immediate="true" />
+                            &nbsp;&nbsp;
+                            <p:commandButton value="Cancelar" onclick="dlg2.hide();" immediate="true" icon="ui-icon-close" />
 
                         </h:form>
                     </p:dialog>
@@ -262,9 +263,9 @@
                         <p style="color:RED;">LEA CON ATENCIÓN:</p>
                         <p style="color:#0069B1;">La cuenta con la que ingresó ya no es válida, usted debe cambiar el login</p>
                         <p style="color:#0069B1;">por una cuenta de correo electrónico válido y de su propiedad.</p>
-                        <p style="color:#0069B1;">Completado este punto usted debe ingresar de nuevo al sistema con el nuevo login.</p>
+                        <p style="color:#0069B1;">Completado este punto usted debera ingresar al sistema con el nuevo login (correo electrónico).</p>
                         <h:form id="cambioObligatorio">
-                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                            <p:growl showDetail="false" id="growl" autoUpdate="true" />
                             <p:panelGrid columns="2">
                                 <p:outputLabel value="Anterior login de usuario :" />
                                 <p:inputText value="#{templateInicioBean.nombreDeUsuario}" disabled="true" />
@@ -276,6 +277,13 @@
                             <p:commandButton value="Guardar" action="#{templateInicioBean.editarLogin}" update=":cambioObligatorio" />
                         </h:form>
                     </p:dialog>
+
+                    <h:form id="cambioLoginFrm">
+                        <p:poll interval="1"   id="cambioLoginPoll"
+                                listener="#{templateInicioBean.abrirCambioLoginDlg}"
+                                update=":cambioLoginFrm:cambioLoginPoll"
+                                stop="#{templateInicioBean.loginValido}"/>
+                    </h:form>
 
 
                     <h:form>
@@ -295,8 +303,6 @@
                         <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
                             <f:facet name="options">
                                 <p:commandLink value="Cambiar Contraseña" onclick="PF('dlgCambiarContrasenia').show();" style="color:#0069B1;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
-                                <br/>
-                                <p:commandLink value="ATENCIÓN:Hacer click aquí!" onclick="PF('cambioLoginObligadoDlg').show();" style="color:RED;" update=":cambioObligatorio" rendered="#{!templateInicioBean.loginValido}" />
                             </f:facet>
                         </p:menubar> 
                     </h:form>

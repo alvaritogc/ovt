@@ -27,7 +27,9 @@
 
                 <p:dataTable id="idListaDocumentos" 
                              value="#{escritorioBean.listaDocumentos}" paginatorPosition="bottom" paginator="true"
-                             var="o1"  rows="10" emptyMessage="No se encontraron resultados" >
+                             var="o1"  rows="10" emptyMessage="No se encontraron resultados" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                            currentPageReportTemplate="{currentPage} / {totalPages}">
                     <p:column headerText="Código">
                         <h:outputText value="#{o1.docDefinicion.docDefinicionPK.codDocumento}"/>
                     </p:column>

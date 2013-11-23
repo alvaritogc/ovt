@@ -25,7 +25,7 @@
                 <p:column headerText="Módulo">
                     <h:outputText value="#{rol.idModulo.idModulo} - #{rol.idModulo.nombre}" />
                 </p:column>
-                <p:column headerText="Operaciones">
+                <p:column headerText="Acciones">
                     <p:commandButton icon="ui-icon-pencil" title="Editar" oncomplete="edicionDlg.show();" update=":rolEdicionFrm">
                         <f:setPropertyActionListener value="#{rol}" target="#{rolAdministracionBean.rolSelected}" />
                         <f:setPropertyActionListener value="#{rol.esInterno}" target="#{rolAdministracionBean.esInterno}" />
@@ -41,7 +41,7 @@
         <!-- Dialogo para un nuevo Rol -->
         <p:dialog widgetVar="nuevoDlg" modal="true" header="Nuevo Rol">
             <h:form id="rolNuevoFrm">
-                <p:panelGrid columns="2">
+                <h:panelGrid columns="2">
                     <p:outputLabel for="nombreN" value="Nombre :" />
                     <p:inputText id="nombreN" value="#{rolAdministracionBean.rolSelected.nombre}" required="true" style="text-transform: uppercase;">
                         <f:converter converterId="lowerConverter" />
@@ -63,16 +63,16 @@
                         <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="moduloPojo" itemLabel="#{moduloPojo.idModulo} - #{moduloPojo.nombre}" />
                         <f:converter converterId="moduloConverter" />
                     </p:selectOneMenu>
-                </p:panelGrid>
-                <p:commandButton value="Guardar" action="#{rolAdministracionBean.guardarRol}" update=":rolFrm:rolTbl rolNuevoFrm" />
-                <p:commandButton value="Cancelar" onclick="nuevoDlg.hide();" immediate="true" />
+                </h:panelGrid>
+                <p:commandButton value="Guardar" action="#{rolAdministracionBean.guardarRol}" update=":rolFrm:rolTbl rolNuevoFrm" icon="ui-icon-disk"/>
+                <p:commandButton value="Cancelar" onclick="nuevoDlg.hide();" immediate="true" icon="ui-icon-close"/>
             </h:form>
         </p:dialog>
 
         <!-- Dialogo para editar el Rol -->
-        <p:dialog widgetVar="edicionDlg" modal="true" header="Editar Rol">
+        <p:dialog widgetVar="edicionDlg" modal="true" header="Editar Rol" closable="false">
             <h:form id="rolEdicionFrm">
-                <p:panelGrid columns="2">
+                <h:panelGrid columns="2">
                     <p:outputLabel for="nombreE" value="Nombre :" />
                     <p:inputText id="nombreE" value="#{rolAdministracionBean.rolSelected.nombre}" required="true" style="text-transform: uppercase;">
                         <f:converter converterId="lowerConverter" />
@@ -94,14 +94,14 @@
                         <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="moduloPojo" itemLabel="#{moduloPojo.idModulo} - #{moduloPojo.nombre}" />
                         <f:converter converterId="moduloConverter" />
                     </p:selectOneMenu>
-                </p:panelGrid>
-                <p:commandButton value="Guardar" action="#{rolAdministracionBean.editarRol}" update=":rolFrm:rolTbl rolEdicionFrm" />
-                <p:commandButton value="Cancelar" onclick="edicionDlg.hide();" immediate="true" />
+                </h:panelGrid>
+                <p:commandButton value="Guardar" action="#{rolAdministracionBean.editarRol}" update=":rolFrm:rolTbl rolEdicionFrm" icon="ui-icon-disk"/>
+                <p:commandButton value="Cancelar" onclick="edicionDlg.hide();" immediate="true" icon="ui-icon-close"/>
             </h:form>
         </p:dialog>
 
         <!-- Dialgo de confirmacion para la eliminación -->
-        <p:confirmDialog widgetVar="eliminarDlg" global="true" showEffect="fade" hideEffect="explode" message="Está segúro de eliminar este rol?" header="Confirmar la eliminación">
+        <p:confirmDialog widgetVar="eliminarDlg" global="true" showEffect="fade" hideEffect="explode" message="Está segúro de eliminar este rol?" header="Confirmar la eliminación" closable="false">
             <p:commandButton value="Si" action="#{rolAdministracionBean.eliminarRol}" oncomplete="eliminarDlg.hide();" update=":rolFrm:rolTbl" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
             <p:commandButton value="No" type="button"  styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
         </p:confirmDialog>

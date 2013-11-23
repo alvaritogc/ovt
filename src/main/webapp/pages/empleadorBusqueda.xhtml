@@ -25,21 +25,25 @@
                         <p:outputLabel value="NOMBRE RAZON SOCIAL: "/>
                         <p:inputText value="#{empleadorBean.busquedaNombreRazonSocial}" style="height: 15px;"/>
                         <h:panelGroup>
-                            <p:commandButton action="#{empleadorBean.cargar}" value="Buscar" update=":idFormEmpleadorBusqueda:idPanelBusqueda, :idFormEmpleadorBusqueda:idDTlistaPersonas"/>
-                            <p:commandButton action="#{empleadorBean.limpiar}" value="Limpiar" update=":idFormEmpleadorBusqueda:idPanelBusqueda, :idFormEmpleadorBusqueda:idDTlistaPersonas"/>
+                            <p:commandButton action="#{empleadorBean.cargar}" value="Buscar" icon="ui-icon-search"
+                                             update=":idFormEmpleadorBusqueda:idPanelBusqueda, :idFormEmpleadorBusqueda:idDTlistaPersonas"/>
+                            <p:commandButton action="#{empleadorBean.limpiar}" value="Limpiar" icon="ui-icon-arrowrefresh-1-s"
+                                             update=":idFormEmpleadorBusqueda:idPanelBusqueda, :idFormEmpleadorBusqueda:idDTlistaPersonas"/>
                         </h:panelGroup>
                     </h:panelGrid>
                 </p:panel>
                 <br/>
                 <p:dataTable id="idDTlistaPersonas" sortMode="multiple" value="#{empleadorBean.listaPersonas}" var="o" rows="10" emptyMessage="No se encontraron resultados"
-                             paginatorPosition="bottom" paginator="true">
-                    <p:column headerText="Tipo identifiacion">
+                             paginatorPosition="bottom" paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                            currentPageReportTemplate="{currentPage} / {totalPages}">
+                    <p:column headerText="Tipo identifiación">
                         <h:outputLabel value="#{o.tipoIdentificacion}"/>
                     </p:column>
-                    <p:column  sortBy="nroIdentificacion" headerText="Nro. identificacion">
+                    <p:column headerText="Nro. identificación">
                         <h:outputLabel value="#{o.nroIdentificacion}"/>
                     </p:column>
-                    <p:column headerText="Nombre razon social ">
+                    <p:column headerText="Nombre razón social ">
                         <h:outputLabel value="#{o.nombreRazonSocial} #{o.apellidoPaterno} #{o.apellidoMaterno}"/>
                     </p:column>
                     

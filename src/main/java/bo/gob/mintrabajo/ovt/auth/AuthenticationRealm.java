@@ -8,6 +8,8 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.codec.CodecSupport;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -43,7 +45,7 @@ public class AuthenticationRealm extends JdbcRealm {
 //                    + "JOIN SEC_REL_ROLE_RESOURCES ON RES_ID = SROR_RES_ID "
 //                    + "JOIN SEC_CLA_ROLES ON SROR_SROLE_ID = SROLE_ID "
 //                    + "where SROLE_NAME = ?";
-    //private static final Logger log = LoggerFactory.getLogger(AuthenticationRealm.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationRealm.class);
 
     public AuthenticationRealm() {
 
@@ -52,8 +54,6 @@ public class AuthenticationRealm extends JdbcRealm {
 
         try {
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-//            DataSource dataSource = (DataSource) DriverManager.getConnection("jdbc:oracle:thin:@192.168.50.7:1521:DESA", "ovt", "ovt");
-//            setDataSource(dataSource);
 
             OracleDataSource dataSource = new OracleDataSource();
             dataSource.setServerName("192.168.50.7");
@@ -74,16 +74,13 @@ public class AuthenticationRealm extends JdbcRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(final AuthenticationToken token) throws AuthenticationException {
         SimpleAuthenticationInfo authenticationInfo = (SimpleAuthenticationInfo) super.doGetAuthenticationInfo(token);
 
+        log.info("Credentials="+new String((char[])authenticationInfo.getCredentials()));
+        log.info("Credentials.string="+new String((char[])authenticationInfo.getCredentials()));
 
-
-        System.out.println("SALT========================"+authenticationInfo.getCredentialsSalt());
-        System.out.println("Credentials="+new String((char[])authenticationInfo.getCredentials()));
-        System.out.println("Credentials.string="+new String((char[])authenticationInfo.getCredentials()));
-
-        System.out.println("=================== TOKEN PASSWORD " + new String((char[])token.getCredentials()));
-        System.out.println("=================== TOKEN PRINCIPA " + token.getPrincipal().toString());
-        System.out.println("=================== AUTHE USUARIO " + new String((char[]) authenticationInfo.getCredentials()));
-        System.out.println("La comparación de credenciales es ..... "+getCredentialsMatcher().doCredentialsMatch(token, authenticationInfo));
+        log.info("=================== TOKEN PASSWORD " + new String((char[])token.getCredentials()));
+        log.info("=================== TOKEN PRINCIPA " + token.getPrincipal().toString());
+        log.info("=================== AUTHE USUARIO " + new String((char[]) authenticationInfo.getCredentials()));
+        log.info("La comparación de credenciales es ..... "+getCredentialsMatcher().doCredentialsMatch(token, authenticationInfo));
 
 
         CredentialsMatcher cm = getCredentialsMatcher();
@@ -106,11 +103,6 @@ public class AuthenticationRealm extends JdbcRealm {
 //                storedBytes = Base64.decode(storedBytes, 0, storedBytes.length);
 //            }
         }
-
-        //AbstractHash ahash = new SimpleHash(Sha256Hash.ALGORITHM_NAME);
-        //ahash.setBytes(storedBytes);
-        //System.out.println("GENERATED FROM DATABASE="+ahash.toBase64());
-
         return authenticationInfo;
     }
 
