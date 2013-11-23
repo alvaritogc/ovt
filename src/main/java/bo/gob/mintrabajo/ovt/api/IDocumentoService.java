@@ -14,4 +14,5 @@ public interface IDocumentoService {
     public DocDocumento guardarImpresionRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora, DocDefinicion docDefinicion);
     String generaReporteLC1010(DocPlanilla docPlanilla, PerPersona persona , DocDocumento docDocumento, PerUnidad perUnidad, VperPersona vperPersona);
     String generaReporteROE010(VperPersona vperPersona);
+    public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK ,String registroBitacora);
 }
