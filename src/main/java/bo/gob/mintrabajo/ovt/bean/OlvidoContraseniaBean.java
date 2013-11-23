@@ -39,6 +39,7 @@ public class OlvidoContraseniaBean implements Serializable {
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
 
+
     private String contrasenia;
     private String nuevaContrasenia;
     private String confirmarContrasenia;
@@ -51,19 +52,29 @@ public class OlvidoContraseniaBean implements Serializable {
     @PostConstruct
     public void ini() {
         logger.info("=====>>>>  OLVIDO CONTRASENIA");
+        email=getParam("codeNam");
         contrasenia=getParam("codeUnic");
-        logger.info("=====>>>>  PARAMETRO PASADO POR GET "+contrasenia);
+        logger.info("=====>>>>  PARAMETRO PASADO POR GET correo: "+email);
+        logger.info("=====>>>>  PARAMETRO PASADO POR GET password: "+contrasenia);
 /*        contrasenia=Util.decrypt(contrasenia);
         logger.info("=====>>>>  CONTRASENIA DESCENCRIPTADA "+contrasenia);*/
     }
 
     public String verificarContrasenia()throws  IOException{
-         //Encriptar la nueva contrasenia y confirmar contrasenia
+        logger.info("=====>>>>  VERIFICAR CONTRASENIA");
         nuevaContrasenia=Util.encriptaMD5(nuevaContrasenia);
         confirmarContrasenia=Util.encriptaMD5(confirmarContrasenia);
         logger.info("====>>>> verificarContrasenia: email:" + email + " contrasenia: " + contrasenia + " nuevaContrasenia " + nuevaContrasenia + " confirmarContrasenia: " + confirmarContrasenia);
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
+
+        final int LONGITUD_MINIMA=7;
+        if(nuevaContrasenia.length()<LONGITUD_MINIMA){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","La longitud minima de la contrasenia es "+LONGITUD_MINIMA+". Intente nuevamente"));
+            ini();
+            return "";
+        }
 
         if(email==null && email.trim().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
@@ -81,7 +92,7 @@ public class OlvidoContraseniaBean implements Serializable {
 
         if(contrasenia==null && contrasenia.equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Contrasenia es obligatorio."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Contraseña es obligatorio."));
             ini();
             return "";
         }
