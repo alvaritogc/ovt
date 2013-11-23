@@ -263,9 +263,9 @@
                         <p style="color:RED;">LEA CON ATENCIÓN:</p>
                         <p style="color:#0069B1;">La cuenta con la que ingresó ya no es válida, usted debe cambiar el login</p>
                         <p style="color:#0069B1;">por una cuenta de correo electrónico válido y de su propiedad.</p>
-                        <p style="color:#0069B1;">Completado este punto usted debe ingresar de nuevo al sistema con el nuevo login.</p>
+                        <p style="color:#0069B1;">Completado este punto usted debera ingresar al sistema con el nuevo login (correo electrónico).</p>
                         <h:form id="cambioObligatorio">
-                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                            <p:growl showDetail="false" id="growl" autoUpdate="true" />
                             <p:panelGrid columns="2">
                                 <p:outputLabel value="Anterior login de usuario :" />
                                 <p:inputText value="#{templateInicioBean.nombreDeUsuario}" disabled="true" />
@@ -277,6 +277,13 @@
                             <p:commandButton value="Guardar" action="#{templateInicioBean.editarLogin}" update=":cambioObligatorio" />
                         </h:form>
                     </p:dialog>
+
+                    <h:form id="cambioLoginFrm">
+                        <p:poll interval="1"   id="cambioLoginPoll"
+                                listener="#{templateInicioBean.abrirCambioLoginDlg}"
+                                update=":cambioLoginFrm:cambioLoginPoll"
+                                stop="#{templateInicioBean.loginValido}"/>
+                    </h:form>
 
 
                     <h:form>
@@ -296,8 +303,6 @@
                         <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
                             <f:facet name="options">
                                 <p:commandLink value="Cambiar Contraseña" onclick="PF('dlgCambiarContrasenia').show();" style="color:#0069B1;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
-                                <br/>
-                                <p:commandLink value="ATENCIÓN:Hacer click aquí!" onclick="PF('cambioLoginObligadoDlg').show();" style="color:RED;" update=":cambioObligatorio" rendered="#{!templateInicioBean.loginValido}" />
                             </f:facet>
                         </p:menubar> 
                     </h:form>

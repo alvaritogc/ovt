@@ -47,7 +47,7 @@ public class TemplateInicioBean implements Serializable {
     private String idEmpleador;
     private String loginNuevo;
     private String loginConfirmacion;
-    private boolean loginValido;
+    private boolean loginValido = true;
     private static final Logger logger = LoggerFactory.getLogger(TemplateInicioBean.class);
     //
     @ManagedProperty(value = "#{usuarioService}")
@@ -510,6 +510,15 @@ public class TemplateInicioBean implements Serializable {
             logger.info("El mapa esta cargado con la misma cantidad de datos en cache ");
         }
         return mapaDominio;
+    }
+
+    public void  abrirCambioLoginDlg() {
+        logger.info("Ingresando a la clase " + getClass().getSimpleName() + " poll listener abrirCambioLoginDlg()");
+        if(!loginValido) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("cambioLoginObligadoDlg.show();");
+            loginValido = true;
+        }
     }
 
 
