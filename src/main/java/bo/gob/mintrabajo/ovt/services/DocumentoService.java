@@ -174,6 +174,10 @@ public class DocumentoService implements IDocumentoService{
     
     @Override
     public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK ,String registroBitacora){
+        List<DocDocumento> lista=documentoRepository.listarRoe013(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
+        if(lista.size()>0){
+            throw new RuntimeException("Ya se registro el roe para ese documento");
+        }
         
         DocDocumento docDocumento=new DocDocumento();
         docDocumento.setPerUnidad(unidadRepository.findOne(perUnidadPK));
