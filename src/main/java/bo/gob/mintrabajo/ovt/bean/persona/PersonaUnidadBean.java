@@ -90,6 +90,9 @@ public class PersonaUnidadBean implements Serializable{
     @ManagedProperty(value = "#{infoLaboralService}")
     private IInfoLaboralService iInfoLaboralService;
 
+    @ManagedProperty(value = "#{definicionService}")
+    private IDefinicionService definicionService;
+
     private PerPersona persona=new PerPersona();
     private String idLocalidadPersona;
 
@@ -235,6 +238,14 @@ public class PersonaUnidadBean implements Serializable{
         infolaboralRegistro.setNroHombres(10);
         infolaboralRegistro.setNroMujeres(10);
 
+    }
+
+    public String generarCertificadoROE(){
+        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
+        docDefinicionPK.setCodDocumento("ROE010");
+        docDefinicionPK.setVersion((short)1);
+        session.setAttribute("docDefinicionPK",docDefinicionPK);
+        return "irImpresionRoe";
     }
 
     /*
@@ -1132,5 +1143,13 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setiInfoLaboralService(IInfoLaboralService iInfoLaboralService) {
         this.iInfoLaboralService = iInfoLaboralService;
+    }
+
+    public IDefinicionService getDefinicionService() {
+        return definicionService;
+    }
+
+    public void setDefinicionService(IDefinicionService definicionService) {
+        this.definicionService = definicionService;
     }
 }
