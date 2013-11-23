@@ -211,6 +211,10 @@ public class EscritorioBean {
             }
         }
     }
+    public String irEdicionRoe(){
+        session.setAttribute("idDocumento", docDocumento.getIdDocumento());
+        return "irEdicionRoe";
+    }
 
 //
 //    public String download(){

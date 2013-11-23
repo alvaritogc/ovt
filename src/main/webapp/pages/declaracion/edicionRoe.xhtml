@@ -14,7 +14,7 @@
                 <p:panelGrid style="width: 100%;">
                     <f:facet name="header">
                         <p:row>
-                            <p:column colspan="20">Formulario </p:column>
+                            <p:column colspan="20">FORMULARIO: IMPRESION DEL CERTIFICADO </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="20" />
@@ -49,7 +49,7 @@
                         </p:column>
                         <p:column colspan="12" >
                             <p align="center">
-                                FORMULARIO: AVISO DE NOVEDADES DEL EMPLEADOR <br/>
+                                FORMULARIO: IMPRESION DEL CERTIFICADO <br/>
                             </p>
                         </p:column>
                         <p:column colspan="4" >
@@ -71,19 +71,19 @@
                             <p:outputLabel value="Nº EMPLEADOR CAJA DE SALUD"/>
                         </p:column>
                         <p:column colspan="3" >
-                            <p:inputText value="#{impresionRoeBean.vperPersona.nroCajaSalud}" disabled="true" onkeyup="" style="width: 70px;"/>
+                            <p:inputText value="#{edicionRoeBean.vperPersona.nroCajaSalud}" disabled="true" onkeyup="" style="width: 70px;"/>
                         </p:column>
                         <p:column colspan="3" >
                             <p:outputLabel value="Nº EMPLEADOR MINISTERIO DE TRABAJO"/>
                         </p:column>
                         <p:column colspan="3" >
-                            <p:inputText value="#{impresionRoeBean.vperPersona.nroIdentificacion}" disabled="true" onkeyup="" style="width: 70px;"/>
+                            <p:inputText value="#{edicionRoeBean.vperPersona.nroIdentificacion}" disabled="true" onkeyup="" style="width: 70px;"/>
                         </p:column>
                         <p:column colspan="3" >
                             <p:outputLabel value="Nº DE NIT O RUC"/>
                         </p:column>
                         <p:column colspan="3" >
-                            <p:inputText value="#{impresionRoeBean.vperPersona.nroIdentificacion}" disabled="true" onkeyup="" style="width: 70px;"/>
+                            <p:inputText value="#{edicionRoeBean.vperPersona.nroIdentificacion}" disabled="true" onkeyup="" style="width: 70px;"/>
                         </p:column>
                         <p:column colspan="1" >
                             <p:outputLabel value=""/>
@@ -96,19 +96,19 @@
                     </p:row>
                     <p:row>
                         <p:column colspan="20" >
-                            <p:panelGrid columns="2">
+                            <p:panelGrid columns="2" style="width: 100%;">
                                 <p:outputLabel value="BANCO:" style="text-align: right;"/>
-                                <p:inputText value="#{impresionRoeBean.bancoDeposito}" style="text-align: right;"/>
+                                <p:inputText value="#{edicionRoeBean.bancoDeposito}" style="text-align: right;"/>
                                 <p:outputLabel value="NUMERO DE COMPROBANTE DE DEPÓSITO:" style="text-align: right;"/>
-                                <p:inputText value="#{impresionRoeBean.nroComprobanteDeposito}" maxlength="10" style="text-align: right;"/>
+                                <p:inputText value="#{edicionRoeBean.nroComprobanteDeposito}" maxlength="10" style="text-align: right;"/>
                                 <p:outputLabel value="FECHA DEL DEPÓSITO:" style="text-align: right;"/>
-                                <p:calendar value="#{impresionRoeBean.fechaDeposito}" 
+                                <p:calendar value="#{edicionRoeBean.fechaDeposito}" 
                                             locale="es"
                                             pattern="dd/MM/yyyy"
                                             showOn="button">
                                 </p:calendar>
                                 <p:outputLabel value="MONTO DEL DEPÓSITO:" style="text-align: right;"/>
-                                <pe:inputNumber value="#{impresionRoeBean.montoDeposito}"
+                                <pe:inputNumber value="#{edicionRoeBean.montoDeposito}"
                                                 thousandSeparator="." 
                                                 decimalSeparator="," 
                                                 style="width: 205px; height: 10px; text-align: right" 
@@ -116,11 +116,7 @@
                                                 maxlength="10">
                                 </pe:inputNumber>
                             </p:panelGrid>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="20" >
-                            <p:outputLabel value=" "/>
+                            <br/>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -148,7 +144,7 @@
                     <p:row>
                         <p:column colspan="20">
                             <h:panelGrid columns="1" style="width: 100%;text-align: center;">
-                                <p:commandButton value="Guardar" action="#{impresionRoeBean.guardar}" ajax="false"/>
+                                <p:commandButton value="Guardar" action="#{edicionRoeBean.guardar}" ajax="false"/>
                             </h:panelGrid>
                         </p:column>
                     </p:row>

@@ -59,6 +59,12 @@
             <redirect >
             </redirect>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>irEdicionRoe</from-outcome>
+            <to-view-id> /pages/declaracion/edicionRoe.xhtml</to-view-id>
+            <redirect >
+            </redirect>
+        </navigation-case>
     </navigation-rule>
     /pages/declaracion/impresionRoe.jsf
 </faces-config>

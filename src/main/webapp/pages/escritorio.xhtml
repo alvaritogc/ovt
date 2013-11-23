@@ -53,6 +53,13 @@
                                          oncomplete="PF('cambioEstadoDialog').show()" icon="ui-icon-gear" title="Cambio de estados">
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
                         </p:commandButton> 
+                        
+                        <p:commandButton action="#{escritorioBean.irEdicionRoe}" 
+                                         rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento == 'ROE013'}"
+                                         immediate="true"
+                                         icon="ui-icon-pencil" title="Editar ROE 013">  
+                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
+                        </p:commandButton> 
 
                         <!--<p:commandButton icon="ui-icon-print" action="# {escritorioBean.irImprimirDocumento}" title="Imprimir documento" ajax="false">-->
                             <!--<f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />-->

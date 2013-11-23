@@ -172,6 +172,42 @@ public class DocumentoService implements IDocumentoService{
         return docDocumento;
     }
     
+    @Override
+    public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK ,String registroBitacora){
+        List<DocDocumento> lista=documentoRepository.listarRoe013(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
+        if(lista.size()>0){
+            throw new RuntimeException("Ya se registro el roe para ese documento");
+        }
+        
+        DocDocumento docDocumento=new DocDocumento();
+        docDocumento.setPerUnidad(unidadRepository.findOne(perUnidadPK));
+        
+        //
+        DocDefinicion docDefinicion=definicionRepository.findOne(new DocDefinicionPK("ROE013", (short) 1));
+        //
+        docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+        docDocumento.setDocDefinicion(docDefinicion);
+        
+        docDocumento.setCodEstado(documentoEstadoRepository.findOne("000"));//Estado inicial
+        docDocumento.setFechaDocumento(new Date());
+        docDocumento.setFechaReferenca(new Date());
+        
+        docDocumento.setFechaBitacora(new Date());
+        docDocumento.setRegistroBitacora(registroBitacora);
+        docDocumento.setTipoMedioRegistro("DDJJ");
+        
+        
+        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("ROE012", (short) 1));
+        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getCodEstado().getCodEstado(), (short) 1));
+        docDocumento=documentoRepository.save(docDocumento);
+        //
+        DocGenerico docGenerico=new DocGenerico();
+        docGenerico.setIdDocumento(docDocumento);
+        docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
+        docGenericoRepository.save(docGenerico);
+        return docDocumento;
+    }
+    
     public DocDocumento guardarBajaRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora){
         DocDefinicion docDefinicion=definicionRepository.findOne(new DocDefinicionPK("ROE012", (short) 1));
         //
