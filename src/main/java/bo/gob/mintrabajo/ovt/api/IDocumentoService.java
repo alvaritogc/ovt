@@ -5,6 +5,7 @@ import bo.gob.mintrabajo.ovt.entities.*;
 import java.util.List;
 
 public interface IDocumentoService {
+    public DocDocumento findById(Long id);
     List<DocDocumento> listarPorPersona(String idPersona);
 //    void guardaDocumentoBinarioPlanilla(DocDocumento docDocumento, List<DocBinario> listaBinarios, DocPlanilla docPlanilla);
     void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles);

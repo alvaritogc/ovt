@@ -21,5 +21,15 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
             + " d.perUnidad.perPersona.idPersona=:idPersona"
             )
     List<DocDocumento> listarPorPersona(@Param("idPersona") String idPersona);
+    
+    
+    @Query(
+            "   select d "
+            + " from DocDocumento d"
+            + " where "
+            + " d.perUnidad.perPersona.idPersona=:idEmpleador "
+            + " and d.docDefinicion.docDefinicionPK.codDocumento = :codDocumento "
+            )
+    List<DocDocumento> listarPorEmpleadorAndCodDocumento(@Param("idEmpleador") String idPersona,@Param("codDocumento") String codDocumento);
 
 }
