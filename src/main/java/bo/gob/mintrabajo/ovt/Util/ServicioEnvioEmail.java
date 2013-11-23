@@ -183,9 +183,11 @@ public class ServicioEnvioEmail implements Serializable {
         }
         //olvido contrasenia
         if(sw.equals("1")){
-            urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic");
+            urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic&codeNam=#codeNam");
+
             String usuPassword = Util.crypt(usuario.getClave());
             //usuPassword.replace("==","");
+            urlRedireccion = urlRedireccion.replace("#codeNam", usuario.getUsuario());
             urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
         }
 
