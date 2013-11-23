@@ -62,7 +62,7 @@
          <p:tab id="tabDireccion" >
              <f:facet name="title">
                  <p:graphicImage value="/images/direccion.png"/>
-                 <h:outputText value=" DIRECCION&#xA0;&#xA0;&#xA0;"/>
+                 <h:outputText value=" DIRECCION"/>
              </f:facet>
                 <ui:include src="../persona/tabs/direccionPrincipal.xhtml"/>
          </p:tab>
@@ -70,7 +70,7 @@
          <p:tab id="tabInfoLaboral" >
              <f:facet name="title">
                  <p:graphicImage value="/images/personas.png"/>
-                 <h:outputText value=" TRABAJADORES"/>
+                 <h:outputText value=" TRABAJADORES&#xA0;&#xA0;&#xA0;"/>
              </f:facet>
              <ui:include src="../persona/tabs/infoLaboralPrincipal.xhtml"/>
          </p:tab>
@@ -92,11 +92,10 @@
             </p:commandButton>
             </h:column>
             <h:column >
-            <p:commandButton value="Generer ceritificado ROE"
-                             action="#{personaUnidadBean.nuevo}"
+            <p:commandButton value="Generar ceritificado ROE"
+                             action="#{personaUnidadBean.generarCertificadoROE}"
                              icon="ui-icon-plus"
-                             update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
-                             onclick="PF('dlgUnidad').show()">
+                             >
                 <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
             </p:commandButton>
