@@ -97,7 +97,11 @@ public class OlvidoContraseniaBean implements Serializable {
             return "";
         }
 
-
+        System.out.println("=====>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ");
+         System.out.println("=====>>>>  email: "+email);
+        System.out.println("=====>>>>  contrasenia: "+contrasenia);
+        System.out.println("=====>>>>  nuevaContrasenia: "+nuevaContrasenia);
+        System.out.println("=====>>>>  confirmarContrasenia: "+confirmarContrasenia);
         String mensaje= iUsuarioService.cambiarContrasenia(email,contrasenia,nuevaContrasenia,confirmarContrasenia);
 
         if(mensaje.equalsIgnoreCase("OK")){
