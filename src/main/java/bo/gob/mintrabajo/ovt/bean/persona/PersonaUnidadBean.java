@@ -216,6 +216,7 @@ public class PersonaUnidadBean implements Serializable{
 
         mostrarBotonROE=generarReporteRoe();
         tieneROE=yaTieneROE();
+        System.out.println("=====>>>>>>>>>>> mostrarBotonROE mostrarBotonROE "+mostrarBotonROE);
         System.out.println("=====>>>>>>>>>>> TIENE ROE tieneROE "+tieneROE);
 
     }
@@ -353,8 +354,7 @@ public class PersonaUnidadBean implements Serializable{
         actividadPrincipal=new PerActividad();
         infolaboralRegistro=new PerInfolaboral();
         //infolaboralRegistro.setNroTotalTrabajadores(10);
-        infolaboralRegistro.setNroHombres(10);
-        infolaboralRegistro.setNroMujeres(10);
+
 
     }
 
@@ -369,15 +369,23 @@ public class PersonaUnidadBean implements Serializable{
 
     //
     public boolean yaTieneROE(){
-        List<DocDocumento> lista =documentoService.listarRoe013(unidad.getPerUnidadPK().getIdPersona(),unidad.getPerUnidadPK().getIdUnidad());
+        List<DocDocumento> docDocumentos = documentoService.listarRoe013(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad());
+        List<DocDocumento> lista = docDocumentos;
         System.out.println("=====>>>>>>>>>>> TIENE ROE ");
         System.out.println("=====>>>>>>>>>>> TIENE ROE lista: "+lista.size());
         if(lista!=null){
-             if(lista.size()>=0){
-                 return true;
-             }else{
-                 return false;
-             }
+            if(!lista.isEmpty()){
+                if(lista.size()>=0){
+                    System.out.println("=====>>>>>>>>>>> TIENE ROE "+lista.get(0));
+                    System.out.println("=====>>>>>>>>>>> TIENE ROE "+lista.get(0).getIdDocumento());
+                    return true;
+                }else{
+                    return false;
+                }
+            } else{
+                return false;
+            }
+
         }else{
             return false;
         }
