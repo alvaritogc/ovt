@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.services;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.*;
@@ -16,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,7 +32,6 @@ import java.util.*;
 @Named("documentoService")
 @TransactionAttribute
 public class DocumentoService implements IDocumentoService{
-
     private final DocumentoRepository documentoRepository;
     private final DocumentoEstadoRepository documentoEstadoRepository;
     private final PlanillaRepository planillaRepository;
@@ -149,7 +150,7 @@ public class DocumentoService implements IDocumentoService{
     }
     
     @Override
-    public DocDocumento guardarImpresionRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora, DocDefinicion docDefinicion){
+    public DocDocumento guardarImpresionRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora, DocDefinicion docDefinicion, VperPersona vperPersona, Long idUsuarioEmpleador){
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setDocDefinicion(docDefinicion);
         
@@ -169,6 +170,9 @@ public class DocumentoService implements IDocumentoService{
         docGenerico.setIdDocumento(docDocumento);
         docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
         docGenericoRepository.save(docGenerico);
+
+        generaReporteROE(vperPersona, String.valueOf(idUsuarioEmpleador), String.valueOf(vperPersona.getIdPersona()));
+
         return docDocumento;
     }
     
@@ -381,7 +385,7 @@ public class DocumentoService implements IDocumentoService{
     }
 
 
-    public String generaReporteROE010(VperPersona vperPersona){
+    public String generaReporteROE(VperPersona vperPersona, String idUsuario, String idPersona){
         parametros.clear();
         parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
         parametros.put("nombreRazonSocial", vperPersona.getNombreRazonSocial());
@@ -395,16 +399,26 @@ public class DocumentoService implements IDocumentoService{
         parametros.put("roe", servletContext.getRealPath("/")+"/images/roe.jpg");
 
         try {
-            //TODO url correspondiente segun el tipo de sesion para que el usuario sea redireccionado al reporte segun el QR
-            String url="https://www.google.com/";
+            nombrePdf="ROE".concat(Util.encriptaMD5(idUsuario.concat(idPersona)))+".pdf";
+            HttpServletRequest httpServletRequest = ((HttpServletRequest) (FacesContext.getCurrentInstance().getExternalContext()).getRequest());
+            String rutaUrl=(String) httpServletRequest.getRequestURL().toString();
+            if(rutaUrl.contains(".xhtml"))
+                rutaUrl= rutaUrl.replace("pages/declaracion/impresionRoe.xhtml", "");
+            if(rutaUrl.contains(".jsf"))
+                rutaUrl= rutaUrl.replace("pages/declaracion/impresionRoe.jsf", "");
+
+            String url=rutaUrl.concat("reportes/temp/")+nombrePdf;
+            //genera el QR
             ByteArrayOutputStream out = QRCode.from(url).to(ImageType.PNG).stream();
-            file = new File(servletContext.getRealPath("/")+"/images/qr.png");
+            file = new File(servletContext.getRealPath("/")+"/images/qr"+UUID.randomUUID()+".png");
             FileOutputStream fout = new FileOutputStream(file);
             fout.write(out.toByteArray());
             fout.flush();
             fout.close();
-        parametros.put("qr",servletContext.getRealPath("/")+"/images/qr.png");
-            generateReport("ROE010", "/reportes/roe.jasper");
+            //se asigna la imagen QR al reporte
+            parametros.put("qr",servletContext.getRealPath("/")+"/images/"+file.getName());
+            //manda al metodo generateReport()
+            generateReport(nombrePdf, "/reportes/roe.jasper");
             return nombrePdf;
         } catch (Exception e) {
             e.printStackTrace();
@@ -419,7 +433,7 @@ public class DocumentoService implements IDocumentoService{
         lista.add("asd");
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String rutaWebapp = servletContext.getRealPath("/");
-        rutaPdf= "/reportes/temp/"+ nomArchivo+"-"+ UUID.randomUUID() + ".pdf";
+        rutaPdf= "/reportes/temp/"+ nomArchivo;
         nombrePdf = rutaWebapp + rutaPdf;
         JasperReport reporte = (JasperReport) JRLoader.loadObject(new File(rutaWebapp + jasper));
         JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(lista));

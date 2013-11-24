@@ -1,11 +1,8 @@
 package bo.gob.mintrabajo.ovt.api;
 
-import bo.gob.mintrabajo.ovt.entities.PerPersona;
-import bo.gob.mintrabajo.ovt.entities.UsrRol;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
-import java.math.BigDecimal;
+
 import java.util.List;
-import javax.sql.DataSource;
 
 /**
  *
@@ -24,5 +21,5 @@ public interface IUsuarioService {
     public String cambiarContrasenia(Long idUsuario,String clave,String nuevaClave,String confirmarClave);
     public void cambiarLogin(Long idUsuario,String loginNuevo);
     public List<UsrUsuario> buscarPorUsuario(String usuario);
-
+    UsrUsuario obtenerUsuarioPorIdPersona(String idPersona);
 }
