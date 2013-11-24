@@ -194,6 +194,14 @@ public class DocumentoService implements IDocumentoService{
             return null;
         }
     }
+    public List<DocDocumento>ObtenerRoes(String idPersona,long idUnidad){
+        try {
+            return documentoRepository.ObtenerRoes(idPersona,idUnidad);
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK ,String registroBitacora){

@@ -418,8 +418,10 @@ public class PersonaUnidadBean implements Serializable{
 
     //
     public boolean yaTieneROE(){
-        List<DocDocumento> lista = documentoService.listarRoe013(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad());
-        System.out.println("=====>>>>>>>>>>> TIENE ROE ");
+
+        List<DocDocumento> lista = documentoService.ObtenerRoes(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad());
+        System.out.println("=====>>>>>>>>>>> TIENE ROE unidad.getPerUnidadPK().getIdPersona() "+unidad.getPerUnidadPK().getIdPersona());
+        System.out.println("=====>>>>>>>>>>> TIENE ROE unidad.getPerUnidadPK().getIdUnidad() "+unidad.getPerUnidadPK().getIdUnidad());
         System.out.println("=====>>>>>>>>>>> TIENE ROE lista: "+lista.size());
         System.out.println("=====>>>>>>>>>>> TIENE ROE lista es vacio: "+lista.isEmpty());
         if(lista!=null){
