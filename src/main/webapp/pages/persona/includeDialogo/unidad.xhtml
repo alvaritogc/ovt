@@ -169,12 +169,7 @@
                              tabindex="15"
                              onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
-                <h:outputText value="Nro. otro:"/>
-                <p:inputText value="#{personaUnidadBean.unidadRegistro.nroOtro}"
-                             style="width: 205px;"
-                             maxlength="20"
-                             tabindex="16"
-                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
+
 
         <p:outputLabel for="txtAreaObs2" value="Observaciones:"/>
         <p:inputTextarea id="txtAreaObs2" value="#{personaUnidadBean.unidadRegistro.observaciones}"

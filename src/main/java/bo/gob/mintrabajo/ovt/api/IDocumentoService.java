@@ -15,4 +15,6 @@ public interface IDocumentoService {
     String generaReporteLC1010(DocPlanilla docPlanilla, PerPersona persona , DocDocumento docDocumento, PerUnidad perUnidad, VperPersona vperPersona);
 //    String generaReporteROE(VperPersona vperPersona, String idUsuario, String idPersona);
     public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK ,String registroBitacora);
+
+    public List<DocDocumento>  listarRoe013(String idPersona,long idUnidad);
 }

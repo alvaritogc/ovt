@@ -87,7 +87,7 @@ public class OlvidoContraseniaBean implements Serializable {
 
         nuevaContrasenia=Util.encriptaMD5(nuevaContrasenia);
         confirmarContrasenia=Util.encriptaMD5(confirmarContrasenia);
-        logger.info("====>>>> verificarContrasenia: email:" + email + " contrasenia: " + contrasenia + " nuevaContrasenia " + nuevaContrasenia + " confirmarContrasenia: " + confirmarContrasenia);
+        logger.info("====>>>> verificarContrasenia:  nuevaContraseniaEncrip"+ nuevaContrasenia + " confirmarContraseniaEncri: " + confirmarContrasenia);
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
 
@@ -120,12 +120,8 @@ public class OlvidoContraseniaBean implements Serializable {
             return "";
         }
 
-        System.out.println("=====>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ");
-         System.out.println("=====>>>>  email: "+email);
-        System.out.println("=====>>>>  contrasenia: "+contrasenia);
-        System.out.println("=====>>>>  nuevaContrasenia: "+nuevaContrasenia);
-        System.out.println("=====>>>>  confirmarContrasenia: "+confirmarContrasenia);
-        String mensaje= iUsuarioService.cambiarContrasenia(email,contrasenia,nuevaContrasenia,confirmarContrasenia);
+
+        String mensaje=iUsuarioService.cambiarContrasenia(email, contrasenia, nuevaContrasenia, confirmarContrasenia);
 
         if(mensaje.equalsIgnoreCase("OK")){
             FacesContext.getCurrentInstance().addMessage(null,

@@ -183,13 +183,24 @@ public class DocumentoService implements IDocumentoService{
 
         return docDocumento;
     }
-    
+
+
+    @Override
+    public List<DocDocumento>  listarRoe013(String idPersona,long idUnidad){
+        try {
+            return documentoRepository.listarRoe013(idPersona,idUnidad);
+        } catch (Exception ex){
+           ex.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK ,String registroBitacora){
-        List<DocDocumento> lista=documentoRepository.listarRoe013(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
+    /*    List<DocDocumento> lista=documentoRepository.listarRoe013(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
         if(lista.size()>0){
             throw new RuntimeException("Ya se registro el roe para ese documento");
-        }
+        }*/
         
         DocDocumento docDocumento=new DocDocumento();
         docDocumento.setPerUnidad(unidadRepository.findOne(perUnidadPK));

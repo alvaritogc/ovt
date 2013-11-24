@@ -200,7 +200,9 @@ public class UsuarioService implements IUsuarioService{
              }else{
                 usuario.setClave(nuevaClave);
                 usuario= usuarioRepository.save(usuario);
+                System.out.println("====>>>>>>> SE CAMBIO LA CONTRASENIA<<<<====== ");
                 mensaje="OK";
+
             }
           }else{
               mensaje="La contraseña asociada a su cuenta es incorrecta";
