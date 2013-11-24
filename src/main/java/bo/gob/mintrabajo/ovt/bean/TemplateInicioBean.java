@@ -425,7 +425,9 @@ public class TemplateInicioBean implements Serializable {
         if (mensaeje.equalsIgnoreCase("OK")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO ", "Se cambio la contraseñia con exito."));
             limpiar();
-            logout();
+           // logout();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("growlCambiarContrasenia.hide();");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR ", mensaeje));
         }
