@@ -225,8 +225,10 @@ public class UsuarioService implements IUsuarioService{
         String mensaje="";
         UsrUsuario usuario=usuarioRepository.findOne(idUsuario);
         //descencriptar la contrasenia del usuario
-        String claveDescencriptada=Util.decrypt(usuario.getClave());
-        claveDescencriptada=    usuario.getClave();
+        //String claveDescencriptada=Util.decrypt(usuario.getClave());
+        clave=Util.encriptaMD5(clave);
+        confirmarClave=Util.encriptaMD5(confirmarClave);
+        String claveDescencriptada=    usuario.getClave();
         nuevaClave=Util.encriptaMD5(nuevaClave);
         //verificar que la contrasenia sea la asociada a su cuenta
         if(!claveDescencriptada.equals(clave)){

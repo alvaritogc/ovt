@@ -250,12 +250,14 @@
                             <br/>
                             <p:commandButton value="Enviar"
                                              action="#{templateInicioBean.cambiarContrasenia}"
-                                             tabindex="2"
+                                             tabindex="4"
                                              process="@form"
                                              update=":frmCambiarContrasenia"
                                              >
                             </p:commandButton>
                             <p:commandButton value="Cancelar"
+                                             tabindex="5"
+                                             immediate="true"
                                              onclick="dlgCambiarContrasenia.hide();"
                                     />
                         </h:form>
