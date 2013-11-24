@@ -148,6 +148,8 @@ public class TemplateInicioBean implements Serializable {
             if (idEmpleador != null) {
                 empleador = iPersonaService.findById(idEmpleador);
                 nombreDeUnidad = empleador.getNombreRazonSocial();
+                nombreDeUnidad = empleador.getApellidoPaterno()!=null?(nombreDeUnidad+" "+empleador.getApellidoPaterno()):(nombreDeUnidad);
+                nombreDeUnidad = empleador.getApellidoMaterno()!=null?(nombreDeUnidad+" "+empleador.getApellidoMaterno()):(nombreDeUnidad);
             } else {
                 nombreDeUnidad = "N/A";
             }
