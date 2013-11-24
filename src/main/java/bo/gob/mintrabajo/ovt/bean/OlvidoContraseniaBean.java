@@ -40,7 +40,7 @@ public class OlvidoContraseniaBean implements Serializable {
     private IUsuarioService iUsuarioService;
 
 
-    private String contrasenia;
+    private String contrasenia=getParam("codeUnic");;
 
     public String getNuevaContrasenia() {
         return nuevaContrasenia;
@@ -62,16 +62,16 @@ public class OlvidoContraseniaBean implements Serializable {
 
     private String confirmarContrasenia="";
 
-    //private String email=getParam("codeNam");
-    private String email="";
+    private String email=getParam("codeNam");
+   // private String email="";
 
 
 
     @PostConstruct
     public void ini() {
         logger.info("=====>>>>  OLVIDO CONTRASENIA");
-        email=getParam("codeNam");
-        contrasenia=getParam("codeUnic");
+       // email=getParam("codeNam");
+        //contrasenia=getParam("codeUnic");
         logger.info("=====>>>>  PARAMETRO PASADO POR GET correo: "+email);
         logger.info("=====>>>>  PARAMETRO PASADO POR GET password: "+contrasenia);
 /*        contrasenia=Util.decrypt(contrasenia);
