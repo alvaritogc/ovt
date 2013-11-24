@@ -89,13 +89,17 @@
                              action="#{personaUnidadBean.generarCertificadoROE}"
                              icon="ui-icon-plus"
                              id="cmdButtonROE"
-                             rendered="#{personaUnidadBean.mostrarBotonROE==true and personaUnidadBean.tieneROE==false}">
+                             update=":growlROE"
+                             process="@this"
+                             rendered="#{ personaUnidadBean.tieneROE==false}">
             </p:commandButton>
+
                 <p:commandButton value="Generar ceritificado ROE2"
                                  action="#{personaUnidadBean.generarCertificadoROE2}"
                                  icon="ui-icon-plus"
                                  id="cmdButtonROE2"
                                  update=":growlROE"
+                                 rendered="#{personaUnidadBean.tieneROE==true}"
                                  >
                 </p:commandButton>
             </h:column>
