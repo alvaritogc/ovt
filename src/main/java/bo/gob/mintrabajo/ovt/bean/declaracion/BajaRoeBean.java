@@ -54,6 +54,7 @@ public class BajaRoeBean {
     private VperPersona vperPersona;
     private DocDocumento documento;
     private DocGenerico docGenerico;
+    private DocDefinicion docDefinicion;
     //
     private boolean entero03;
     private boolean entero04;
@@ -94,13 +95,11 @@ public class BajaRoeBean {
         documento = new DocDocumento();
         //
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
-        //documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("ROE012", (short) 1)));//trimestral
         //
-//        documento.setFechaDocumento(new Date());
-//        documento.setCodEstado(iDocumentoEstadoService.buscarPorId("000"));
-//        documento.setFechaReferenca(new Date());
-        
-//        documento.setFechaBitacora(new Date());
+        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
+        docDefinicionPK.setCodDocumento("ROE012");
+        docDefinicionPK.setVersion((short)1);
+        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
     }
     public void cargarFechas(){
 //        listaDominioMeses=iDominioService.obtenerItemsDominio("TPERIODO");
@@ -320,5 +319,13 @@ public class BajaRoeBean {
 
     public void setListaGestiones(List<String> listaGestiones) {
         this.listaGestiones = listaGestiones;
+    }
+
+    public DocDefinicion getDocDefinicion() {
+        return docDefinicion;
+    }
+
+    public void setDocDefinicion(DocDefinicion docDefinicion) {
+        this.docDefinicion = docDefinicion;
     }
 }
