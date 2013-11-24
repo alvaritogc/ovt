@@ -67,6 +67,7 @@ public class edicionRoeBean {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
+        System.out.println("idEmpleador: "+idEmpleador);
         usuario = iUsuarioService.findById(idUsuario);
         esFuncionario = usuario.getEsInterno() == 1 ? true : false;
         cargarGenericoSession();
@@ -80,13 +81,13 @@ public class edicionRoeBean {
         //
         vperPersona = iVperPersonaService.cargaVistaPersona(docGenerico.getIdDocumento().getPerUnidad().getPerPersona().getIdPersona());
         bancoDeposito=docGenerico.getCadena01();
-        nroComprobanteDeposito=Integer.valueOf(docGenerico.getCadena02());
+        nroComprobanteDeposito=Integer.valueOf(docGenerico.getCadena02()!=null?docGenerico.getCadena02():"0");
         SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
         try {
             fechaDeposito=sdf.parse(docGenerico.getCadena03());
         } catch (Exception e) {
         }
-        montoDeposito=new BigDecimal(docGenerico.getCadena04());
+        montoDeposito=new BigDecimal(docGenerico.getCadena04()!=null?docGenerico.getCadena04():"0");
     }
 
     public String guardar() {
