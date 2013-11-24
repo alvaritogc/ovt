@@ -215,63 +215,141 @@ public class PersonaUnidadBean implements Serializable{
         cargar();
 
         mostrarBotonROE=generarReporteRoe();
-        tieneROE=yaTieneROE();
+        //tieneROE=yaTieneROE();
         System.out.println("=====>>>>>>>>>>> mostrarBotonROE mostrarBotonROE "+mostrarBotonROE);
         System.out.println("=====>>>>>>>>>>> TIENE ROE tieneROE "+tieneROE);
 
     }
 
     public boolean generarReporteRoe(){
-        boolean mostrarBotonROE=false;
+
 
         //validar datos de persona
         if(persona.getIdPersona()!=null){
             if(persona.getNombreRazonSocial()==null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                   return false;
             }
 
             if(persona.getApellidoPaterno()==null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
             }
 
             if(persona.getApellidoMaterno()==null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
             }
             if(persona.getNroIdentificacion()==null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
             }
 
             if(persona.getCodLocalidad()==null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
             }
             if(persona.getTipoIdentificacion()==null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
             }
         }
 
         //validar datos de unidad
         if(unidad.getPerUnidadPK()!=null){
-            if(unidad.getNombreComercial()==null)
+            if(unidad.getNombreComercial()==null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
-            if(unidad.getNombreComercial()==null)
+            }
+
+            if(unidad.getNombreComercial()==null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
-            if(unidad.getTipoEmpresa()==null)
+            }
+
+            if(unidad.getTipoEmpresa()==null)  {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
-            if(unidad.getTipoSociedad()==null)
+            }
+
+            if(unidad.getTipoSociedad()==null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
-            if(unidad.getFechaNacimiento()==null)
+            }
+
+            if(unidad.getFechaNacimiento()==null)  {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
-            if(unidad.getNroFundaempresa()==null)
+            }
+
+            if(unidad.getNroFundaempresa()==null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
-            if(unidad.getNroAfp()==null)
+            }
+
+            if(unidad.getNroAfp()==null)  {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
-            if(unidad.getNombreComercial()==null)
+            }
+
+            if(unidad.getNombreComercial()==null)  {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
+            }
+
         }
 
         //vallidad actividad declarada
-        if(actividadEconomicaPrincipal.getIdActividadEconomica()==null)
+        if(actividadEconomicaPrincipal.getIdActividadEconomica()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+            ini();
             return false;
+        }
+
 
 
                  System.out.print("===>> REP LEGAL "+repLegalPrincipal);
@@ -280,23 +358,41 @@ public class PersonaUnidadBean implements Serializable{
 
         if(repLegalPrincipal!=null){
             //validar representante legal
-            if(repLegalPrincipal.getIdReplegal()==null)
+            if(repLegalPrincipal.getIdReplegal()==null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                ini();
                 return false;
+            }
+
         }
 
          if(direccionPrincipal!=null){
              //validar direccion
-             if(direccionPrincipal.getIdDireccion().equals(null))
+             if(direccionPrincipal.getIdDireccion().equals(null)) {
+                 FacesContext.getCurrentInstance().addMessage(null,
+                         new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                 ini();
                  return false;
+             }
+
          }
 
            if(infolaboral!=null){
                //validar informacion laboral
-               if(infolaboral.getIdInfolaboral()==null)
+               if(infolaboral.getIdInfolaboral()==null)  {
+                   FacesContext.getCurrentInstance().addMessage(null,
+                           new FacesMessage(FacesMessage.SEVERITY_ERROR,"Exito","No se puede generar el documento ROE, por que falta registrar datos."));
+
+                   ini();
                    return false;
+               }
+
            }
 
-
+           tieneROE=true;
         return true;
     }
 
@@ -369,8 +465,7 @@ public class PersonaUnidadBean implements Serializable{
 
     //
     public boolean yaTieneROE(){
-        List<DocDocumento> docDocumentos = documentoService.listarRoe013(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad());
-        List<DocDocumento> lista = docDocumentos;
+        List<DocDocumento> lista = documentoService.listarRoe013(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad());
         System.out.println("=====>>>>>>>>>>> TIENE ROE ");
         System.out.println("=====>>>>>>>>>>> TIENE ROE lista: "+lista.size());
         if(lista!=null){
