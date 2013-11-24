@@ -9,8 +9,7 @@
         <ui:define name="content">
 
             <h:form id="idEscritorio">
-
-                <h1>#{escritorioBean.empleador.nombreRazonSocial}</h1>
+                <h2>#{escritorioBean.empleador.nombreRazonSocial} #{escritorioBean.empleador.apellidoPaterno} #{escritorioBean.empleador.apellidoMaterno}</h2>
                 <p:panelGrid columns="2" style="border-style: hidden;">
                     <p:outputLabel value="#{escritorioBean.empleador.tipoIdentificacion}: " style="size: 20px;"/>
                     <p:outputLabel value="#{escritorioBean.empleador.nroIdentificacion}" />
@@ -18,12 +17,14 @@
                 <p:dataList value="#{escritorioBean.listaUnidades}" var="unidad" itemType="disc">
                     #{unidad.nombreComercial} , #{unidad.nroCajaSalud}
                 </p:dataList>
-                <div style="font-size: 15px">
+                <p:panel rendered="false">
+                <div style="font-size: 15px" >
                     <p>La presentación vía internet de las planillas trimestrales correspondientes al 3er trimestre de 2013 solo es hasta el 31 de octubre del presente, pasada esta fecha la presentación deberá ser de manera tradicional.</p>
                     <p>Los empleadores de <u>La Paz</u>, <u>Cochabamba</u>, <u>Santa Cruz</u> y sus respectivas regionales deberán de manera obligatoria hacerse presentes en la oficina central de su departamento para presentar la boleta de depósito y la declaración jurada con el plazo de 1 mes a partir de realizado el deposito.</p>
                 </div>
+                </p:panel>    
                 <br/>
-                <h3>Documentos</h3>
+                <h3>Lista de documentos</h3>
 
                 <p:dataTable id="idListaDocumentos" 
                              value="#{escritorioBean.listaDocumentos}" paginatorPosition="bottom" paginator="true"
@@ -33,7 +34,7 @@
                     <p:column headerText="Código">
                         <h:outputText value="#{o1.docDefinicion.docDefinicionPK.codDocumento}"/>
                     </p:column>
-                    <p:column headerText="Número">
+                    <p:column headerText="Número de orden">
                         <h:outputText value="#{o1.numeroDocumento}"/>
                     </p:column>
                     <p:column headerText="Fecha">
@@ -44,7 +45,7 @@
                     <p:column headerText="Estado" >
                         <h:outputText value="#{o1.codEstado.descripcion}" style="color: #{o1.codEstado.metadata}; font-weight: bold"/>
                     </p:column>
-                    <p:column headerText="Medio de registro">
+                    <p:column headerText="Medio de registro" rendered="false">
                         <h:outputText value="#{o1.tipoMedioRegistro}"/>
                     </p:column>
                     <p:column headerText="Acciones">
@@ -55,7 +56,7 @@
                         </p:commandButton> 
                         
                         <p:commandButton action="#{escritorioBean.irEdicionRoe}" 
-                                         rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento == 'ROE013'}"
+                                         rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento == 'ROE013' and o1.codEstado.codEstado=='010'}"
                                          immediate="true"
                                          icon="ui-icon-pencil" title="Editar ROE 013">  
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
