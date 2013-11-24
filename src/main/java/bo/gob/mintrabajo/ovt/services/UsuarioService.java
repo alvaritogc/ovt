@@ -193,10 +193,13 @@ public class UsuarioService implements IUsuarioService{
       if (nuevaClave.equals(confirmarClave)){
           System.out.println("====>> BUSCANDO USUARIO "+email+"  CLAVE "+clave);
           System.out.println("====>> BUSCANDO nuevaClave "+nuevaClave+"  confirmarClave "+confirmarClave);
+          System.out.println("====>> BUSCANDO USR USR ");
           UsrUsuario usuario= usuarioRepository.findByUsuarioAndClave(email,clave);
+          System.out.println("====>> BUSCANDO USR USR usuario "+usuario);
           if(usuario!=null)  {
             if(clave.equals(nuevaClave)){
                mensaje="El valor de la nueva contraseña asociada debe ser distinta a la anterior contraseña.";
+                System.out.println("====>> BUSCANDO USR USR usuario mensaje"+mensaje);
              }else{
                 usuario.setClave(nuevaClave);
                 usuario= usuarioRepository.save(usuario);
