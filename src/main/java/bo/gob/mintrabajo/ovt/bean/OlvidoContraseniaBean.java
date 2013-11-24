@@ -41,8 +41,26 @@ public class OlvidoContraseniaBean implements Serializable {
 
 
     private String contrasenia;
-    private String nuevaContrasenia;
-    private String confirmarContrasenia;
+
+    public String getNuevaContrasenia() {
+        return nuevaContrasenia;
+    }
+
+    public void setNuevaContrasenia(String nuevaContrasenia) {
+        this.nuevaContrasenia = nuevaContrasenia;
+    }
+
+    private String nuevaContrasenia="";
+
+    public String getConfirmarContrasenia() {
+        return confirmarContrasenia;
+    }
+
+    public void setConfirmarContrasenia(String confirmarContrasenia) {
+        this.confirmarContrasenia = confirmarContrasenia;
+    }
+
+    private String confirmarContrasenia="";
 
     //private String email=getParam("codeNam");
     private String email="";
@@ -61,7 +79,12 @@ public class OlvidoContraseniaBean implements Serializable {
     }
 
     public String verificarContrasenia()throws  IOException{
-        logger.info("=====>>>>  VERIFICAR CONTRASENIA");
+        logger.info("=====>>>>  INICIO VERIFICAR CONTRASENIA");
+        System.out.println("=====>>>>  email: "+email);
+        System.out.println("=====>>>>  contrasenia: "+contrasenia);
+        System.out.println("=====>>>>  nuevaContrasenia: "+nuevaContrasenia);
+        System.out.println("=====>>>>  confirmarContrasenia: "+confirmarContrasenia);
+
         nuevaContrasenia=Util.encriptaMD5(nuevaContrasenia);
         confirmarContrasenia=Util.encriptaMD5(confirmarContrasenia);
         logger.info("====>>>> verificarContrasenia: email:" + email + " contrasenia: " + contrasenia + " nuevaContrasenia " + nuevaContrasenia + " confirmarContrasenia: " + confirmarContrasenia);
@@ -205,20 +228,6 @@ public class OlvidoContraseniaBean implements Serializable {
         this.contrasenia = contrasenia;
     }
 
-    public String getNuevaContrasenia() {
-        return nuevaContrasenia;
-    }
 
-    public void setNuevaContrasenia(String nuevaContrasenia) {
-        this.nuevaContrasenia = nuevaContrasenia;
-    }
-
-    public String getConfirmarContrasenia() {
-        return confirmarContrasenia;
-    }
-
-    public void setConfirmarContrasenia(String confirmarContrasenia) {
-        this.confirmarContrasenia = confirmarContrasenia;
-    }
 }
 
