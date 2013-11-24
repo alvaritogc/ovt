@@ -226,9 +226,11 @@ public class UsuarioService implements IUsuarioService{
         UsrUsuario usuario=usuarioRepository.findOne(idUsuario);
         //descencriptar la contrasenia del usuario
         String claveDescencriptada=Util.decrypt(usuario.getClave());
+        claveDescencriptada=    usuario.getClave();
+        nuevaClave=Util.encriptaMD5(nuevaClave);
         //verificar que la contrasenia sea la asociada a su cuenta
         if(!claveDescencriptada.equals(clave)){
-            mensaje="La contrasenia no esta asociada a su cuenta de usuario.";
+            mensaje="La contraseña no esta asociada a su cuenta de usuario.";
             return mensaje;
         }
                //Verificar que la nueva contrasenia sea distinta  a la antigua contrasenia
@@ -244,7 +246,8 @@ public class UsuarioService implements IUsuarioService{
             }
 
             //actualizar contrasenia (Encriptada)
-            usuario.setClave(Util.crypt(nuevaClave));
+        usuario.setClave(nuevaClave);
+            //usuario.setClave(Util.crypt(nuevaClave));
             usuarioRepository.save(usuario);
             mensaje="OK";
             return mensaje;
