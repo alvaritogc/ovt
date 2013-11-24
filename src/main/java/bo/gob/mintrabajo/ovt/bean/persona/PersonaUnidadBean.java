@@ -162,6 +162,18 @@ public class PersonaUnidadBean implements Serializable{
     private PerInfolaboral infolaboral;
     private PerInfolaboral infolaboralRegistro;
 
+
+    public boolean isMostrarBotonROE() {
+        return mostrarBotonROE;
+    }
+
+    public void setMostrarBotonROE(boolean mostrarBotonROE) {
+        this.mostrarBotonROE = mostrarBotonROE;
+    }
+
+    //sw para mostrar el icono de impresion de ROE
+    private boolean mostrarBotonROE;
+
     @PostConstruct
     public void ini(){
 
@@ -179,6 +191,75 @@ public class PersonaUnidadBean implements Serializable{
         unidadRegistro=new PerUnidad();
         cargar();
 
+        mostrarBotonROE=generarReporteRoe();
+
+    }
+
+    public boolean generarReporteRoe(){
+        boolean mostrarBotonROE=false;
+
+        //validar datos de persona
+        if(persona.getIdPersona()!=null){
+            if(persona.getNombreRazonSocial()==null){
+                  return false;
+            }
+
+            if(persona.getApellidoPaterno()==null){
+                return false;
+            }
+
+            if(persona.getApellidoMaterno()==null){
+                return false;
+            }
+            if(persona.getNroIdentificacion()==null){
+                return false;
+            }
+
+            if(persona.getCodLocalidad()==null){
+                return false;
+            }
+            if(persona.getTipoIdentificacion()==null){
+                return false;
+            }
+        }
+
+        //validar datos de unidad
+        if(unidad.getPerUnidadPK()!=null){
+            if(unidad.getNombreComercial()==null)
+                return false;
+            if(unidad.getNombreComercial()==null)
+                return false;
+            if(unidad.getTipoEmpresa()==null)
+                return false;
+            if(unidad.getTipoSociedad()==null)
+                return false;
+            if(unidad.getFechaNacimiento()==null)
+                return false;
+            if(unidad.getNroFundaempresa()==null)
+                return false;
+            if(unidad.getNroAfp()==null)
+                return false;
+            if(unidad.getNombreComercial()==null)
+                return false;
+        }
+
+        //vallidad actividad declarada
+        if(actividadEconomicaPrincipal.getIdActividadEconomica()==null)
+            return false;
+
+        //validar representante legal
+        if(repLegalPrincipal.getIdReplegal()==null)
+            return false;
+
+        //validar direccion
+        if(direccionPrincipal.getIdDireccion()==null)
+            return false;
+
+        //validar informacion laboral
+         if(infolaboral.getIdInfolaboral()==null)
+             return false;
+
+        return true;
     }
 
     public  void cargar(){
@@ -241,6 +322,7 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public String generarCertificadoROE(){
+
         DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
         docDefinicionPK.setCodDocumento("ROE010");
         docDefinicionPK.setVersion((short)1);
@@ -590,6 +672,11 @@ public class PersonaUnidadBean implements Serializable{
     * de un registro en las tablas: PAR_ACTIVIDAD_ECONOMICA y PER_ACTIVIDAD
      */
     public void procesarActividadEconomica(){
+
+
+        actividadEconomica.setCodImpuestos("NADA");
+        actividadEconomica.setDescricpionImpuestos("NADA");
+        actividadEconomica.setDescripcion("NADA");
 
         //Cambiar por el usuario de la session
        // String registroPersona=  persona.getNombreRazonSocial();

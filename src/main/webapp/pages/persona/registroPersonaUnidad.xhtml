@@ -82,22 +82,15 @@
             <br/>
         <h:panelGrid columns="2"  style="width: 765px" columnClasses="column1,column2">
             <h:column >
-            <p:commandButton value="Agregar Unidad o Sucursal"
-                             action="#{personaUnidadBean.nuevo}"
-                             icon="ui-icon-plus"
-                             update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
-                             onclick="PF('dlgUnidad').show()">
-                <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
-                <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
-            </p:commandButton>
+
             </h:column>
             <h:column >
             <p:commandButton value="Generar ceritificado ROE"
                              action="#{personaUnidadBean.generarCertificadoROE}"
                              icon="ui-icon-plus"
-                             >
-                <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
-                <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
+                             id="cmdButtonROE"
+                             rendered="#{personaUnidadBean.mostrarBotonROE==true}">
+
             </p:commandButton>
             </h:column>
         </h:panelGrid>
@@ -146,6 +139,22 @@
                     <!-- **************   PANEL GRID ***************** -->
                     <!-- ********************************************* -->
         <h2>Lista de Unidades </h2>
+    <h:form id="frmAgregarUnidad">
+        <br/>
+        <h:panelGrid columns="2"  style="width: 765px" columnClasses="column1,column2">
+            <h:column >
+                <p:commandButton value="Agregar Unidad o Sucursal"
+                                 action="#{personaUnidadBean.nuevo}"
+                                 icon="ui-icon-plus"
+                                 update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
+                                 onclick="PF('dlgUnidad').show()">
+                    <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
+                    <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
+                </p:commandButton>
+            </h:column>
+
+        </h:panelGrid>
+    </h:form>
     <p:dataGrid id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
                 var="unidad"
                 columns="1" emptyMessage="No se encontraron resultados"
