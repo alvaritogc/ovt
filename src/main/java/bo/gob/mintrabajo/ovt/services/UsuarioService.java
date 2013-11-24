@@ -194,6 +194,7 @@ public class UsuarioService implements IUsuarioService{
        String mensaje="";
       if (nuevaClave.equals(confirmarClave)){
           System.out.println("====>> BUSCANDO USUARIO "+email+"  CLAVE "+clave);
+          System.out.println("====>> BUSCANDO nuevaClave "+nuevaClave+"  confirmarClave "+confirmarClave);
           UsrUsuario usuario= usuarioRepository.findByUsuarioAndClave(email,clave);
           if(usuario!=null)  {
             if(clave.equals(nuevaClave)){

@@ -185,7 +185,8 @@ public class ServicioEnvioEmail implements Serializable {
         if(sw.equals("1")){
             urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic&codeNam=#codeNam");
 
-            String usuPassword = Util.crypt(usuario.getClave());
+            //String usuPassword = Util.crypt(usuario.getClave());
+            String usuPassword=usuario.getClave();
             //usuPassword.replace("==","");
             urlRedireccion = urlRedireccion.replace("#codeNam", usuario.getUsuario());
             urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
