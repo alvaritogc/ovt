@@ -61,7 +61,15 @@ public class ImpresionRoeBean {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
-        docDefinicion = iDefinicionService.buscaPorId((DocDefinicionPK) session.getAttribute("docDefinicionPK"));
+        try {
+            docDefinicion = iDefinicionService.buscaPorId((DocDefinicionPK) session.getAttribute("docDefinicionPK"));
+        } catch (Exception e) {
+            DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
+            docDefinicionPK.setCodDocumento("ROE013");
+            docDefinicionPK.setVersion((short)1);
+            docDefinicion = iDefinicionService.buscaPorId(docDefinicionPK);
+        }
+        
         usuario = iUsuarioService.findById(idUsuario);
         esFuncionario = usuario.getEsInterno() == 1 ? true : false;
         cargar();
@@ -235,5 +243,13 @@ public class ImpresionRoeBean {
 
     public void setMontoDeposito(BigDecimal montoDeposito) {
         this.montoDeposito = montoDeposito;
+    }
+
+    public DocDefinicion getDocDefinicion() {
+        return docDefinicion;
+    }
+
+    public void setDocDefinicion(DocDefinicion docDefinicion) {
+        this.docDefinicion = docDefinicion;
     }
 }

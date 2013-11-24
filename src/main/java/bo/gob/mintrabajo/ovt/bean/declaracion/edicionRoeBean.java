@@ -60,6 +60,7 @@ public class edicionRoeBean {
     private int nroComprobanteDeposito;
     private Date fechaDeposito;
     private BigDecimal montoDeposito;
+    private DocDefinicion docDefinicion;
 
     @PostConstruct
     public void ini() {
@@ -73,7 +74,9 @@ public class edicionRoeBean {
     
     public void cargarGenericoSession(){
         idDocumento=(Long) session.getAttribute("idDocumento");
+        
         docGenerico=iDocGenericoService.buscarPorDocumento(idDocumento);
+        docDefinicion=iDefinicionService.buscaPorId(docGenerico.getIdDocumento().getDocDefinicion().getDocDefinicionPK());
         //
         vperPersona = iVperPersonaService.cargaVistaPersona(docGenerico.getIdDocumento().getPerUnidad().getPerPersona().getIdPersona());
         bancoDeposito=docGenerico.getCadena01();
@@ -84,27 +87,7 @@ public class edicionRoeBean {
         } catch (Exception e) {
         }
         montoDeposito=new BigDecimal(docGenerico.getCadena04());
-        //
     }
-
-    public void cargar() {
-        vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
-        bancoDeposito="";
-        nroComprobanteDeposito=0;
-        fechaDeposito=null;
-        montoDeposito=BigDecimal.ZERO;
-        docGenerico=new DocGenerico();
-        docGenerico.setCadena05(vperPersona.getRlNombre());
-        docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
-        //
-//        documento = new DocDocumento();
-//        documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
-    }
-
-//    public void cargarDocumento() {
-//        documento = new DocDocumento();
-//        documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
-//    }
 
     public String guardar() {
         System.out.println("==================================");
@@ -266,6 +249,14 @@ public class edicionRoeBean {
 
     public void setiDocGenericoService(IDocGenericoService iDocGenericoService) {
         this.iDocGenericoService = iDocGenericoService;
+    }
+
+    public DocDefinicion getDocDefinicion() {
+        return docDefinicion;
+    }
+
+    public void setDocDefinicion(DocDefinicion docDefinicion) {
+        this.docDefinicion = docDefinicion;
     }
 
    
