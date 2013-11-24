@@ -171,8 +171,31 @@ public class PersonaUnidadBean implements Serializable{
         this.mostrarBotonROE = mostrarBotonROE;
     }
 
-    //sw para mostrar el icono de impresion de ROE
+    //sw para mostrar el boton de impresion de ROE1
     private boolean mostrarBotonROE;
+
+    public boolean isTieneROE() {
+        return tieneROE;
+    }
+
+    public void setTieneROE(boolean tieneROE) {
+        this.tieneROE = tieneROE;
+    }
+
+    //Sirve para mostrar boton de impresion ROE2
+    private boolean tieneROE=false;
+
+
+    public IDocumentoService getDocumentoService() {
+        return documentoService;
+    }
+
+    public void setDocumentoService(IDocumentoService documentoService) {
+        this.documentoService = documentoService;
+    }
+
+    @ManagedProperty(value = "#{documentoService}")
+    private IDocumentoService documentoService;
 
     @PostConstruct
     public void ini(){
@@ -192,6 +215,8 @@ public class PersonaUnidadBean implements Serializable{
         cargar();
 
         mostrarBotonROE=generarReporteRoe();
+        tieneROE=yaTieneROE();
+        System.out.println("=====>>>>>>>>>>> TIENE ROE tieneROE "+tieneROE);
 
     }
 
@@ -247,17 +272,29 @@ public class PersonaUnidadBean implements Serializable{
         if(actividadEconomicaPrincipal.getIdActividadEconomica()==null)
             return false;
 
-        //validar representante legal
-        if(repLegalPrincipal.getIdReplegal()==null)
-            return false;
 
-        //validar direccion
-        if(direccionPrincipal.getIdDireccion()==null)
-            return false;
+                 System.out.print("===>> REP LEGAL "+repLegalPrincipal);
+        System.out.print("===>> direccionPrincipal"+direccionPrincipal);
+        System.out.print("===>> infolaboralL "+infolaboral);
 
-        //validar informacion laboral
-         if(infolaboral.getIdInfolaboral()==null)
-             return false;
+        if(repLegalPrincipal!=null){
+            //validar representante legal
+            if(repLegalPrincipal.getIdReplegal()==null)
+                return false;
+        }
+
+         if(direccionPrincipal!=null){
+             //validar direccion
+             if(direccionPrincipal.getIdDireccion().equals(null))
+                 return false;
+         }
+
+           if(infolaboral!=null){
+               //validar informacion laboral
+               if(infolaboral.getIdInfolaboral()==null)
+                   return false;
+           }
+
 
         return true;
     }
@@ -321,13 +358,47 @@ public class PersonaUnidadBean implements Serializable{
 
     }
 
+    //PRIMERA VEZ
     public String generarCertificadoROE(){
-
         DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
         docDefinicionPK.setCodDocumento("ROE010");
         docDefinicionPK.setVersion((short)1);
         session.setAttribute("docDefinicionPK",docDefinicionPK);
         return "irImpresionRoe";
+    }
+
+    //
+    public boolean yaTieneROE(){
+        List<DocDocumento> lista =documentoService.listarRoe013(unidad.getPerUnidadPK().getIdPersona(),unidad.getPerUnidadPK().getIdUnidad());
+        System.out.println("=====>>>>>>>>>>> TIENE ROE ");
+        System.out.println("=====>>>>>>>>>>> TIENE ROE lista: "+lista.size());
+        if(lista!=null){
+             if(lista.size()>=0){
+                 return true;
+             }else{
+                 return false;
+             }
+        }else{
+            return false;
+        }
+    }
+
+    public void generarCertificadoROE2(){
+        try{
+            documentoService.guardarRoeGenerico(unidad.getPerUnidadPK(),REGISTRO_BITACORA);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,"Exito","Se genero un nuevo documneto ROE."));
+
+            ini();
+            return ;
+        } catch (Exception ex){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se pudo generar documento: "+ex.getMessage()));
+            ini();
+            return ;
+        }
+
+
     }
 
     /*
@@ -615,7 +686,7 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public void cargarRepLegal(){
-
+         repLegalPrincipal=new PerReplegal();
         listaRepLegal=new ArrayList<PerReplegal>();
         listaRepLegal=iRepLegalService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
         if(!listaRepLegal.isEmpty()){
