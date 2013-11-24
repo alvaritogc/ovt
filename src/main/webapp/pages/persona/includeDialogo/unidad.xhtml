@@ -145,6 +145,13 @@
                              tabindex="12"
                              onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
+            <h:outputText value="Nro. otro:"/>
+            <p:inputText value="#{personaUnidadBean.unidadRegistro.nroOtro}"
+                         style="width: 205px;"
+                         maxlength="20"
+                         tabindex="16"
+                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
+
                 <p:outputLabel for="slcOneMenuTipoSociedad" value="Tipo de sociedad: "/>
                 <p:selectOneMenu id="slcOneMenuTipoSociedad" value="#{personaUnidadBean.unidadRegistro.tipoSociedad}"
                                  tabindex="13"

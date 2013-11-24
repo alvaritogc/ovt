@@ -173,11 +173,11 @@ public class DocumentoService implements IDocumentoService{
 
         generaReporteROE(vperPersona, String.valueOf(idUsuarioEmpleador), String.valueOf(vperPersona.getIdPersona()));
 
-        //Actualizar el atributo nroOtro de PerUnidad
+        //Actualizar el atributo nroOtro de PerUnidad     por aquiroz
        PerUnidad unidad= unidadRepository.findOne(docDocumento.getPerUnidad().getPerUnidadPK());
         System.out.println("========>>> UNIDAD "+unidad);
         System.out.println("========>>> CAMBIANDO EL VALOR nro de documento"+docDocumento.getNumeroDocumento());
-        unidad.setNroOtro(String.valueOf(docDocumento.getNumeroDocumento()));
+        unidad.setTipoUnidad(String.valueOf(docDocumento.getNumeroDocumento()));
         System.out.println("========>>> MODIFICADO "+unidad);
         unidadRepository.save(unidad);
 
