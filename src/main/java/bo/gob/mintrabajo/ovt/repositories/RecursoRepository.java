@@ -33,7 +33,8 @@ public interface RecursoRepository extends OpenJpaRepository<UsrRecurso, Long>{
             + "     where usRec.usrUsuarioRecursoPK.idUsuario =: idUsuario"
             + " )"
             + " and rec.tipoRecurso='GUI' )"
-             + "or rec.tipoRecurso='MEN' "
+            + " or rec.tipoRecurso='MEN' "
+             + "order by rec.orden asc"
             )
     List<UsrRecurso> buscarPorUsuario(@Param("idUsuario") Long idUsuario);
 
