@@ -4,10 +4,13 @@ package bo.gob.mintrabajo.ovt.services;
 import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IDocGenericoService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
+import bo.gob.mintrabajo.ovt.entities.DocDefinicion;
 import bo.gob.mintrabajo.ovt.entities.DocDocumento;
 import bo.gob.mintrabajo.ovt.entities.DocGenerico;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
+import bo.gob.mintrabajo.ovt.repositories.DefinicionRepository;
 import bo.gob.mintrabajo.ovt.repositories.DocGenericoRepository;
+import bo.gob.mintrabajo.ovt.repositories.DocumentoEstadoRepository;
 import bo.gob.mintrabajo.ovt.repositories.DocumentoRepository;
 import bo.gob.mintrabajo.ovt.repositories.PersonaRepository;
 import bo.gob.mintrabajo.ovt.repositories.RolRepository;
@@ -41,12 +44,14 @@ public class DocGenericoService implements IDocGenericoService{
     private static final Logger logger = LoggerFactory.getLogger(DocGenericoService.class);
     private final DocGenericoRepository docGenericoRepository;
     private final DocumentoRepository documentoRepository;
+    private final DocumentoEstadoRepository documentoEstadoRepository;
 
 
     @Inject
-    public DocGenericoService(DocGenericoRepository docGenericoRepository,DocumentoRepository documentoRepository) {
+    public DocGenericoService(DocGenericoRepository docGenericoRepository,DocumentoRepository documentoRepository,DocumentoEstadoRepository documentoEstadoRepository) {
         this.docGenericoRepository = docGenericoRepository;
         this.documentoRepository=documentoRepository;
+        this.documentoEstadoRepository=documentoEstadoRepository;
     }
     
     @Override
@@ -61,6 +66,9 @@ public class DocGenericoService implements IDocGenericoService{
     
     public DocGenerico modificar(DocGenerico docGenerico, Long idDocumento){
         DocDocumento documento=documentoRepository.findOne(idDocumento);
+        documento.setCodEstado(documentoEstadoRepository.findOne(documento.getDocDefinicion().getCodEstado().getCodEstado()));
+        documentoRepository.save(documento);
+        //
         docGenerico.setIdDocumento(documento);
         docGenerico.setParCalendario(null);
         return docGenericoRepository.save(docGenerico);
