@@ -4,9 +4,12 @@ package bo.gob.mintrabajo.ovt.services;
 import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
-import bo.gob.mintrabajo.ovt.repositories.PersonaRepository;
-import bo.gob.mintrabajo.ovt.repositories.RolRepository;
 import bo.gob.mintrabajo.ovt.repositories.UsuarioRepository;
+import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.domain.Specification;
+
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,11 +23,6 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.google.common.base.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
@@ -269,5 +267,9 @@ public class UsuarioService implements IUsuarioService{
         }
 
         return mensaje;
+    }
+
+    public UsrUsuario obtenerUsuarioPorIdPersona(String idPersona){
+        return usuarioRepository.findByIdPersona_IdPersona(idPersona);
     }
 }
