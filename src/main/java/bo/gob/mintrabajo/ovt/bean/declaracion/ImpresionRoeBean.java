@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @ManagedBean
 @ViewScoped
@@ -42,6 +43,8 @@ public class ImpresionRoeBean {
     private IVperPersonaService iVperPersonaService;
     @ManagedProperty(value = "#{definicionService}")
     private IDefinicionService iDefinicionService;
+    @ManagedProperty(value = "#{entidadService}")
+    private IEntidadService iEntidadService;
     //
     private UsrUsuario usuario;
     private boolean esFuncionario;
@@ -55,6 +58,7 @@ public class ImpresionRoeBean {
     private int nroComprobanteDeposito;
     private Date fechaDeposito;
     private BigDecimal montoDeposito;
+    private List<ParEntidad> listaEntidades;
 
     @PostConstruct
     public void ini() {
@@ -76,6 +80,7 @@ public class ImpresionRoeBean {
         usuario = iUsuarioService.findById(idUsuario);
         esFuncionario = usuario.getEsInterno() == 1 ? true : false;
         cargar();
+        cargarEntidades();
     }
 
     public void cargar() {
@@ -94,6 +99,10 @@ public class ImpresionRoeBean {
     public void cargarDocumento() {
         documento = new DocDocumento();
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
+    }
+    
+    public void cargarEntidades(){
+        listaEntidades=iEntidadService.listarPorTipo("FINANCIERA");
     }
 
     public String guardar() {
@@ -254,5 +263,21 @@ public class ImpresionRoeBean {
 
     public void setDocDefinicion(DocDefinicion docDefinicion) {
         this.docDefinicion = docDefinicion;
+    }
+
+    public IEntidadService getiEntidadService() {
+        return iEntidadService;
+    }
+
+    public void setiEntidadService(IEntidadService iEntidadService) {
+        this.iEntidadService = iEntidadService;
+    }
+
+    public List<ParEntidad> getListaEntidades() {
+        return listaEntidades;
+    }
+
+    public void setListaEntidades(List<ParEntidad> listaEntidades) {
+        this.listaEntidades = listaEntidades;
     }
 }

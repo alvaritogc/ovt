@@ -99,7 +99,13 @@
                         <p:column colspan="20" >
                             <p:panelGrid columns="2" style="width: 100%;">
                                 <p:outputLabel value="BANCO:" style="text-align: right;"/>
-                                <p:inputText value="#{impresionRoeBean.bancoDeposito}" />
+                                <p:selectOneMenu value="#{impresionRoeBean.bancoDeposito}">  
+                                    <f:selectItem itemLabel="Seleccione" itemValue="" />  
+                                    <f:selectItems value="#{impresionRoeBean.listaEntidades}" 
+                                                   var="entidad"
+                                                   itemLabel="#{entidad.descripcion}"
+                                                   itemValue="#{entidad.descripcion}"/>  
+                                </p:selectOneMenu>  
                                 <p:outputLabel value="NUMERO DE COMPROBANTE DE DEPÓSITO:" style="text-align: right;"/>
                                 <p:inputText value="#{impresionRoeBean.nroComprobanteDeposito}" maxlength="10" style="text-align: right;"/>
                                 <p:outputLabel value="FECHA DEL DEPÓSITO:" style="text-align: right;"/>
