@@ -18,10 +18,10 @@
                     #{unidad.nombreComercial} , #{unidad.nroCajaSalud}
                 </p:dataList>
                 <p:panel rendered="false">
-                <div style="font-size: 15px" >
-                    <p>La presentación vía internet de las planillas trimestrales correspondientes al 3er trimestre de 2013 solo es hasta el 31 de octubre del presente, pasada esta fecha la presentación deberá ser de manera tradicional.</p>
-                    <p>Los empleadores de <u>La Paz</u>, <u>Cochabamba</u>, <u>Santa Cruz</u> y sus respectivas regionales deberán de manera obligatoria hacerse presentes en la oficina central de su departamento para presentar la boleta de depósito y la declaración jurada con el plazo de 1 mes a partir de realizado el deposito.</p>
-                </div>
+                    <div style="font-size: 15px" >
+                        <p>La presentación vía internet de las planillas trimestrales correspondientes al 3er trimestre de 2013 solo es hasta el 31 de octubre del presente, pasada esta fecha la presentación deberá ser de manera tradicional.</p>
+                        <p>Los empleadores de <u>La Paz</u>, <u>Cochabamba</u>, <u>Santa Cruz</u> y sus respectivas regionales deberán de manera obligatoria hacerse presentes en la oficina central de su departamento para presentar la boleta de depósito y la declaración jurada con el plazo de 1 mes a partir de realizado el deposito.</p>
+                    </div>
                 </p:panel>    
                 <br/>
                 <h3>Lista de documentos</h3>
@@ -30,7 +30,7 @@
                              value="#{escritorioBean.listaDocumentos}" paginatorPosition="bottom" paginator="true"
                              var="o1"  rows="10" emptyMessage="No se encontraron resultados" 
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
-                            currentPageReportTemplate="{currentPage} / {totalPages}">
+                             currentPageReportTemplate="{currentPage} / {totalPages}">
                     <p:column headerText="Código">
                         <h:outputText value="#{o1.docDefinicion.docDefinicionPK.codDocumento}"/>
                     </p:column>
@@ -54,7 +54,7 @@
                                          oncomplete="PF('cambioEstadoDialog').show()" icon="ui-icon-gear" title="Cambio de estados">
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
                         </p:commandButton> 
-                        
+
                         <p:commandButton action="#{escritorioBean.irEdicionRoe}" 
                                          rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento == 'ROE013' and o1.codEstado.codEstado=='010'}"
                                          immediate="true"
@@ -63,7 +63,7 @@
                         </p:commandButton> 
 
                         <!--<p:commandButton icon="ui-icon-print" action="# {escritorioBean.irImprimirDocumento}" title="Imprimir documento" ajax="false">-->
-                            <!--<f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />-->
+                        <!--<f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />-->
                         <!--</p:commandButton>-->
 
                         <p:commandButton action="#{escritorioBean.download}"
@@ -80,17 +80,19 @@
                         </h:commandLink>
                     </p:column>
                 </p:dataTable>
-                <p:dialog header="Cambio de estado" widgetVar="cambioEstadoDialog" resizable="false" id="cambioEstadoDlg"  
+                <p:dialog header="Cambio de estado" widgetVar="cambioEstadoDialog" 
+                          width="600"
+                          resizable="false" id="cambioEstadoDlg"  
                           showEffect="fade" hideEffect="explode" modal="true">  
                     <center>
-                <p:panelGrid style="width: 100%">
-                    <p:row>
-                        <p:column  style="background-color: #0069B1; color: #FFFFFF" >
-                            <p:outputLabel value="CAMBIO DE ESTADO" />
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
-            </center>
+                        <p:panelGrid style="width: 100%">
+                            <p:row>
+                                <p:column  style="background-color: #0069B1; color: #FFFFFF" >
+                                    <p:outputLabel value="CAMBIO DE ESTADO" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </center>
                     <h:panelGrid columns="6" 
                                  rendered="#{escritorioBean.docPlanilla!=null}"
                                  style="border: 1px solid black; height: 50px;width:100%;">
@@ -110,30 +112,32 @@
                     </h:panelGrid>
                     <br/>
                     <center>
-                    <h:panelGrid columns="2">
+                        <h:panelGrid columns="2">
 
-                        <h:outputText value="#{escritorioBean.docDocumento.codEstado.descripcion}" style="font-size: 20px"/>
-                        <p:selectOneRadio id="grid" value="#{escritorioBean.codEstadoFinal}" 
-                                          layout="grid" 
-                                          columns="1" 
-                                          style="color: #000000; font-weight: bold;"
-                                          >
-                            <f:selectItems value="#{escritorioBean.listaDocumentoEstado}" 
-                                           var="docEst" 
-                                           itemLabel="#{docEst.descripcion}" 
-                                           itemValue="#{docEst.codEstado}"/>
-                            <p:selectOneButton value="123"/>
-                        </p:selectOneRadio>
+                            <h:outputText value="#{escritorioBean.docDocumento.codEstado.descripcion}" style="font-size: 20px"/>
+                            <p:selectOneRadio id="grid" value="#{escritorioBean.codEstadoFinal}" 
+                                              layout="grid" 
+                                              columns="1" 
+                                              style="color: #000000; font-weight: bold;"
+                                              >
+                                <f:selectItems value="#{escritorioBean.listaDocumentoEstado}" 
+                                               var="docEst" 
+                                               itemLabel="#{docEst.descripcion}" 
+                                               itemValue="#{docEst.codEstado}"/>
+                                <p:selectOneButton value="123"/>
+                            </p:selectOneRadio>
 
-                    </h:panelGrid>
-                        </center>
+                        </h:panelGrid>
+                    </center>
                     <br/>
-                    <p:commandButton value="Realizar cambio de estado" 
-                                     update="idEscritorio"
-                                     rendered="#{escritorioBean.esInterno}"
-                                     action="#{escritorioBean.realizarCambioDeEstados}"/>          <!--rendered and escritorioBean.listaDocumentoEstado.size()>0}"-->
-                    <p:outputLabel value="No se encontraron transiciones siguientes" rendered="#{!(escritorioBean.esInterno)}"/>
-                    <!--and escritorioBean.listaDocumentoEstado.size()>0)}"/>-->
+                    <h:panelGrid columns="1" style="text-align: center;" rendered="#{escritorioBean.esInterno}">
+                        <p:commandButton value="Realizar cambio de estado" 
+                                         update="idEscritorio"
+                                         rendered="#{escritorioBean.mostrarCambioDeEstados}"
+                                         action="#{escritorioBean.realizarCambioDeEstados}"/>
+                        <p:outputLabel value="No se encontraron transiciones siguientes" 
+                                       rendered="#{!escritorioBean.mostrarCambioDeEstados}"/>
+                    </h:panelGrid>
                 </p:dialog>  
 
             </h:form>

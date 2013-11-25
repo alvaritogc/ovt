@@ -30,9 +30,10 @@
                 <f:selectItems value="#{rolRecursoAdministracionBean.rolLista}" var="rol" itemLabel="#{rol.nombre}" itemValue="#{rol.idRol}" />
                 <p:ajax listener="#{rolRecursoAdministracionBean.buscarRecursoPorRolRecurso}" update="rolRecursoTbl" />
             </p:selectOneMenu>
-            <p:panelGrid columns="2">
+            
             <p:dataTable id="rolRecursoTbl" value="#{rolRecursoAdministracionBean.recursoLista}" paginator="true" rows="15" paginatorPosition="bottom" var="recurso"
-                         editable="true" editMode="cell">
+                         editable="true" editMode="cell" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
+                 currentPageReportTemplate="{currentPage} / {totalPages}">
                 <p:column headerText="Tipo recurso">
                     <h:outputText value="#{recurso.tipoRecurso}" />
                 </p:column>
@@ -62,8 +63,9 @@
                 </p:column>
 
             </p:dataTable>
-            </p:panelGrid>
-            <p:commandButton value="Guardar" action="#{rolRecursoAdministracionBean.guardarRolRecurso}" update="rolRecursoTbl" />
+            
+            <p:commandButton value="Guardar" action="#{rolRecursoAdministracionBean.guardarRolRecurso}" update="rolRecursoTbl" 
+                             icon="ui-icon-disk"/>
         </h:form>
     </ui:define>
 </ui:composition>

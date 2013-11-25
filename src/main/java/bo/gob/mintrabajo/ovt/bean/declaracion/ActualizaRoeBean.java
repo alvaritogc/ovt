@@ -20,9 +20,8 @@ import javax.faces.application.FacesMessage;
 
 @ManagedBean
 @ViewScoped
-public class BajaRoeBean {
+public class ActualizaRoeBean {
     //
-
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private Long idUsuario;
     private String idPersona;
@@ -56,13 +55,7 @@ public class BajaRoeBean {
     private DocGenerico docGenerico;
     private DocDefinicion docDefinicion;
     //
-    private boolean entero03;
-    private boolean entero04;
-    private boolean entero05;
     //
-    private List<ParDominio> listaDominioMeses;
-    private List<ParCalendario> listaCalendarioAnios;
-    private List<String> listaGestiones;
 
     @PostConstruct
     public void ini() {
@@ -70,45 +63,18 @@ public class BajaRoeBean {
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
         usuario = iUsuarioService.findById(idUsuario);
-        esFuncionario = usuario.getEsInterno() == 1 ? true : false;
         cargar();
     }
 
     public void cargar() {
         vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
-
-        docGenerico = new DocGenerico();
-        docGenerico.setCadena01("");
-        docGenerico.setCadena02("");
-        docGenerico.setCadena03("");
-        docGenerico.setCadena04("");
-        docGenerico.setCadena05(vperPersona.getRlNombre());
-        docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
-        if (esFuncionario) {
-            docGenerico.setCadena07(usuario.getUsuario());
-        }
-        cargarDocumento();
-        cargarFechas();
-    }
-
-    public void cargarDocumento() {
         documento = new DocDocumento();
-        //
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
-        //
+        docGenerico=new DocGenerico();
         DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
-        docDefinicionPK.setCodDocumento("ROE012");
+        docDefinicionPK.setCodDocumento("ROE013");
         docDefinicionPK.setVersion((short)1);
         docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
-    }
-    public void cargarFechas(){
-//        listaDominioMeses=iDominioService.obtenerItemsDominio("TPERIODO");
-        ParDominioPK parDominioPK=new ParDominioPK();
-        parDominioPK.setIdDominio("TCALENDARIO");
-        parDominioPK.setValor("MES");
-        listaDominioMeses=iDominioService.obtenerDominioPorDominioPadreOrderByValor(parDominioPK);
-        listaCalendarioAnios=iCalendarioService.listaCalendario();
-        listaGestiones=iCalendarioService.listaGestiones();
     }
 
     public String guardar() {
@@ -117,56 +83,8 @@ public class BajaRoeBean {
         System.out.println("Guardar");
         System.out.println("==================================");
         System.out.println("==================================");
-        System.out.println("docGenerico : " + docGenerico.getCadena01());
-        if ((docGenerico.getCadena01()==null || docGenerico.getCadena01().trim().equals(""))
-                && (docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals(""))
-                && (docGenerico.getCadena03()==null || docGenerico.getCadena03().trim().equals(""))
-                && (docGenerico.getCadena04()==null || docGenerico.getCadena04().trim().equals(""))) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año para Indicar si la suspención es temporal o definitiva."));
-            return "";
-        }
-        if ((docGenerico.getCadena01()==null || docGenerico.getCadena01().trim().equals("") )
-                && (docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals(""))) {
-            if (!((!(docGenerico.getCadena03()==null||docGenerico.getCadena03().trim().equals(""))) 
-                    && (!(docGenerico.getCadena04()==null || docGenerico.getCadena04().trim().equals(""))))) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año de la Suspención definitiva."));
-                return "";
-            }
-        }
-        if ((docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals("")) 
-                && (docGenerico.getCadena03()==null || docGenerico.getCadena03().trim().equals(""))) {
-            if (!((!(docGenerico.getCadena01()==null || docGenerico.getCadena01().trim().equals(""))) 
-                    && (!(docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals(""))))) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año de la Suspención temporal."));
-                return "";
-            }
-        }
-        if (docGenerico.getEntero01()==null || docGenerico.getEntero01() == 0) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Número de trabajadores."));
-            return "";
-        }
-        //
-        if (esFuncionario) {
-            System.out.println("Es funcionario");
-            docGenerico.setEntero03(entero03 ? 1 : 0);
-            docGenerico.setEntero04(entero04 ? 1 : 0);
-            docGenerico.setEntero05(entero05 ? 1 : 0);
-        }
-        //
-        documento = iDocumentoService.guardarBajaRoe(documento, docGenerico,idUsuario.toString());
-        //RequestContext context = RequestContext.getCurrentInstance();
-        //context.execute("dlgConfirmacion.show()");
+        documento=iDocumentoService.guardarActualizaRoe(documento,docGenerico, idUsuario.toString());
         return "irEscritorio";
-    }
-
-    public void vaciarSuspencionTemporal() {
-        docGenerico.setCadena01("");
-        docGenerico.setCadena02("");
-    }
-
-    public void vaciarSuspencionDefinitiva() {
-        docGenerico.setCadena03("");
-        docGenerico.setCadena04("");
     }
 
     public String irEscritorio() {
@@ -261,45 +179,7 @@ public class BajaRoeBean {
         this.esFuncionario = esFuncionario;
     }
 
-    public boolean isEntero03() {
-        return entero03;
-    }
-
-    public void setEntero03(boolean entero03) {
-        this.entero03 = entero03;
-    }
-
-    public boolean isEntero04() {
-        return entero04;
-    }
-
-    public void setEntero04(boolean entero04) {
-        this.entero04 = entero04;
-    }
-
-    public boolean isEntero05() {
-        return entero05;
-    }
-
-    public void setEntero05(boolean entero05) {
-        this.entero05 = entero05;
-    }
-
-    public List<ParDominio> getListaDominioMeses() {
-        return listaDominioMeses;
-    }
-
-    public void setListaDominioMeses(List<ParDominio> listaDominioMeses) {
-        this.listaDominioMeses = listaDominioMeses;
-    }
-
-    public List<ParCalendario> getListaCalendarioAnios() {
-        return listaCalendarioAnios;
-    }
-
-    public void setListaCalendarioAnios(List<ParCalendario> listaCalendarioAnios) {
-        this.listaCalendarioAnios = listaCalendarioAnios;
-    }
+   
 
     public IDominioService getiDominioService() {
         return iDominioService;
@@ -317,13 +197,7 @@ public class BajaRoeBean {
         this.iCalendarioService = iCalendarioService;
     }
 
-    public List<String> getListaGestiones() {
-        return listaGestiones;
-    }
-
-    public void setListaGestiones(List<String> listaGestiones) {
-        this.listaGestiones = listaGestiones;
-    }
+    
 
     public DocDefinicion getDocDefinicion() {
         return docDefinicion;

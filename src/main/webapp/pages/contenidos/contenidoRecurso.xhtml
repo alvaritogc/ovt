@@ -62,10 +62,13 @@
                     <p:outputLabel value="#{contenidoRecursoBean.edicion}"/>
                     <h:panelGrid columns="2">
                         <p:outputLabel for="idMensaje" value="Mensaje:"/>
-                        <p:inputText id="idMensaje" value="#{contenidoRecursoBean.mensajeApp.mensaje}"
+<!--                        <p:inputText id="idMensaje" value="# {contenidoRecursoBean.mensajeApp.mensaje}"
                                      required="true"
                                      style="width: 215px;text-transform: uppercase;">
                             <f:converter converterId="lowerConverter" />
+                        </p:inputText>-->
+                        <p:inputText id="idMensaje" value="#{contenidoRecursoBean.mensajeApp.mensaje}"
+                                     required="true">
                         </p:inputText>
                         <p:outputLabel value="Referencia:"/>
                         <p:inputText value="#{contenidoRecursoBean.mensajeApp.referencia}"/>

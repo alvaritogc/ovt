@@ -11,5 +11,6 @@ public interface IEntidadService {
     public ParEntidad saveEntidad(ParEntidad entidad,String REGISTRO_BITACORA,PerUnidad unidad, boolean evento);
     public boolean deleteEntidad(ParEntidad entidad);
     public ParEntidad buscaPorId(Long idEntidad);
+    public List<ParEntidad> listarPorTipo(String tipoEntidad);
 
 }

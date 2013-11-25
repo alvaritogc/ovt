@@ -58,7 +58,7 @@
                             <b><p:outputLabel value="#{edicionRoeBean.docDefinicion.alias} Ver. 0#{edicionRoeBean.docDefinicion.docDefinicionPK.version}" style="font-size: 16px"/></b>
                         </p:column>
                     </p:row>
-                    
+
 
                     <p:row>
                         <p:column colspan="20" style="background-color: #2264B1; color: #FFFFFF">
@@ -98,9 +98,16 @@
                     </p:row>
                     <p:row>
                         <p:column colspan="20" >
+                            <!--                            <p:inputText value="# {edicionRoeBean.bancoDeposito}" />-->
                             <p:panelGrid columns="2" style="width: 100%;">
                                 <p:outputLabel value="BANCO:" style="text-align: right;"/>
-                                <p:inputText value="#{edicionRoeBean.bancoDeposito}" />
+                                <p:selectOneMenu value="#{edicionRoeBean.bancoDeposito}">  
+                                    <f:selectItem itemLabel="Seleccione" itemValue="" />  
+                                    <f:selectItems value="#{edicionRoeBean.listaEntidades}" 
+                                                   var="entidad"
+                                                   itemLabel="#{entidad.descripcion}"
+                                                   itemValue="#{entidad.descripcion}"/>  
+                                </p:selectOneMenu>  
                                 <p:outputLabel value="NUMERO DE COMPROBANTE DE DEPÓSITO:" style="text-align: right;"/>
                                 <p:inputText value="#{edicionRoeBean.nroComprobanteDeposito}" maxlength="10" style="text-align: right;"/>
                                 <p:outputLabel value="FECHA DEL DEPÓSITO:" style="text-align: right;"/>
@@ -135,7 +142,7 @@
                                 <p:outputLabel value="#{edicionRoeBean.docGenerico.cadena05}" />
                                 <p:outputLabel value="Nº de documento de identidad"/>
                                 <p:outputLabel value="#{edicionRoeBean.docGenerico.cadena06}"  />
-                                
+
                             </p:panelGrid>
                         </p:column>
                         <p:column colspan="2" >

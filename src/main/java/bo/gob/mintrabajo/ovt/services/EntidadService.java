@@ -100,4 +100,8 @@ public class EntidadService implements IEntidadService {
         rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
         return rtn.longValue();
     }
+    
+    public List<ParEntidad> listarPorTipo(String tipoEntidad){
+        return entidadRepository.findByAttribute("tipoEntidad", tipoEntidad, -1, -1);
+    }
 }

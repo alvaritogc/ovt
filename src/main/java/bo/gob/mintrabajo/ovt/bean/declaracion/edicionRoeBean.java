@@ -47,6 +47,8 @@ public class edicionRoeBean {
     private IDefinicionService iDefinicionService;
     @ManagedProperty(value = "#{docGenericoService}")
     private IDocGenericoService iDocGenericoService;
+    @ManagedProperty(value = "#{entidadService}")
+    private IEntidadService iEntidadService;
     //
     private Long idDocumento;
     private UsrUsuario usuario;
@@ -61,6 +63,7 @@ public class edicionRoeBean {
     private Date fechaDeposito;
     private BigDecimal montoDeposito;
     private DocDefinicion docDefinicion;
+    private List<ParEntidad> listaEntidades;
 
     @PostConstruct
     public void ini() {
@@ -71,6 +74,7 @@ public class edicionRoeBean {
         usuario = iUsuarioService.findById(idUsuario);
         esFuncionario = usuario.getEsInterno() == 1 ? true : false;
         cargarGenericoSession();
+        cargarEntidades();
     }
     
     public void cargarGenericoSession(){
@@ -88,6 +92,9 @@ public class edicionRoeBean {
         } catch (Exception e) {
         }
         montoDeposito=new BigDecimal(docGenerico.getCadena04()!=null?docGenerico.getCadena04():"0");
+    }
+    public void cargarEntidades(){
+        listaEntidades=iEntidadService.listarPorTipo("FINANCIERA");
     }
 
     public String guardar() {
@@ -258,6 +265,22 @@ public class edicionRoeBean {
 
     public void setDocDefinicion(DocDefinicion docDefinicion) {
         this.docDefinicion = docDefinicion;
+    }
+
+    public List<ParEntidad> getListaEntidades() {
+        return listaEntidades;
+    }
+
+    public void setListaEntidades(List<ParEntidad> listaEntidades) {
+        this.listaEntidades = listaEntidades;
+    }
+
+    public IEntidadService getiEntidadService() {
+        return iEntidadService;
+    }
+
+    public void setiEntidadService(IEntidadService iEntidadService) {
+        this.iEntidadService = iEntidadService;
     }
 
    

@@ -25,4 +25,5 @@ public interface IDocumentoService {
 
 
     String generateReport(String nomArchivo, String jasper, HashMap<String, Object> parametros)throws ClassNotFoundException, IOException, JRException;
+    public DocDocumento guardarActualizaRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora);
 }
