@@ -13,7 +13,9 @@
             <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
             <p:commandButton value="Nuevo" icon="ui-icon-circle-plus" action="#{dominioBean.inicializaDominio}" oncomplete="dominioNuevo.show();" update=":dominioNuevoFrm" />
             <br/>
-            <p:dataTable id="dominioTbl" value="#{dominioBean.dominioLista}" var="dom" paginator="true" paginatorPosition="bottom" rows="15">
+            <p:dataTable id="dominioTbl" value="#{dominioBean.dominioLista}" var="dom" paginator="true" paginatorPosition="bottom" rows="15"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
+                        currentPageReportTemplate="{currentPage} / {totalPages}">
                 <p:column headerText="Dominio">
                     <p:outputLabel value="#{dom.parDominioPK.idDominio}" />
                 </p:column>
