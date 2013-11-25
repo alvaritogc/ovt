@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import org.primefaces.context.RequestContext;
@@ -11,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -159,10 +161,12 @@ public class EscritorioBean {
             }
         }
 
-        if(codDocumento.equals("ROE010")){
+        if(codDocumento.equals("ROE010") || codDocumento.equals("ROE013")){
             try{
                 vperPersona = iVperPersonaService.cargaVistaPersona(docDocumento.getPerUnidad().getPerPersona().getIdPersona());
-                rutaPdf= iDocumentoService.generaReporteROE010(vperPersona);
+                Long idUsuarioEmpleador=iUsuarioService.obtenerUsuarioPorIdPersona(docDocumento.getPerUnidad().getPerPersona().getIdPersona()).getIdUsuario();
+                ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+                rutaPdf= servletContext.getRealPath("/")+"/reportes/temp/ROE"+ Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(vperPersona.getIdPersona()))+".pdf";
                 redirecionarReporte(rutaPdf);
             }
             catch(Exception e){
@@ -183,7 +187,7 @@ public class EscritorioBean {
             input=new BufferedInputStream(new FileInputStream(file),10240);
             response.reset();
             response.setContentType("application/pdf");
-            response.setHeader( "Content-Disposition", "filename=" + file.getName() );
+            response.setHeader( "Content-Disposition", "filename=" + file.getName());
             response.setContentLength((int)file.length());
             output=new BufferedOutputStream(response.getOutputStream(), 10240);
 
@@ -210,6 +214,10 @@ public class EscritorioBean {
                 e.printStackTrace();
             }
         }
+    }
+    public String irEdicionRoe(){
+        session.setAttribute("idDocumento", docDocumento.getIdDocumento());
+        return "irEdicionRoe";
     }
 
 //

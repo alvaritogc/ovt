@@ -17,12 +17,13 @@
             </p:dialog>
 
             <h:form id="idFormEmpleadorBusqueda">
+                <h1>Búsqueda de empleador</h1>
 
-                <p:panel header="Empleador" id="idPanelBusqueda">  
-                    <h:panelGrid columns="2">
-                        <p:outputLabel value="NRO IDENTIFICACION: " />
+                
+                    <h:panelGrid columns="2" id="idPanelBusqueda">
+                        <p:outputLabel value="Nro. identificación: " style="font-size: 13px;"/>
                         <p:inputText value="#{empleadorBean.busquedaNroIdentificacion}" style="height: 15px;"/>
-                        <p:outputLabel value="NOMBRE RAZON SOCIAL: "/>
+                        <p:outputLabel value="Nombre razón social: " style="font-size: 13px;"/>
                         <p:inputText value="#{empleadorBean.busquedaNombreRazonSocial}" style="height: 15px;"/>
                         <h:panelGroup>
                             <p:commandButton action="#{empleadorBean.cargar}" value="Buscar" icon="ui-icon-search"
@@ -31,7 +32,7 @@
                                              update=":idFormEmpleadorBusqueda:idPanelBusqueda, :idFormEmpleadorBusqueda:idDTlistaPersonas"/>
                         </h:panelGroup>
                     </h:panelGrid>
-                </p:panel>
+                
                 <br/>
                 <p:dataTable id="idDTlistaPersonas" sortMode="multiple" value="#{empleadorBean.listaPersonas}" var="o" rows="10" emptyMessage="No se encontraron resultados"
                              paginatorPosition="bottom" paginator="true"

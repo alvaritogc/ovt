@@ -14,7 +14,7 @@
                              rendered="#{personaUnidadBean.repLegalPrincipal.idReplegal==null}"
                              onclick="PF('dlgRepLegal').show()">
 
-                <f:setPropertyActionListener value="#{personaUnidadBean.infolaboral}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
                 <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
             </p:commandButton>

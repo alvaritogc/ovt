@@ -26,8 +26,8 @@
             <p:graphicImage value="../../images/ajax-loader.gif" />
         </p:dialog>
 
-
-    <h3>Empleador o Empresa: #{personaUnidadBean.titulo} </h3>
+    <p:growl showDetail="true" id="growlROE" />
+    <h2>Registro Unico de Empleador - ROE </h2>
 
 
      <p:tabView id="tabPersonaUnidad" effect="fade" effectDuration="normal" scrollable="true">
@@ -62,7 +62,7 @@
          <p:tab id="tabDireccion" >
              <f:facet name="title">
                  <p:graphicImage value="/images/direccion.png"/>
-                 <h:outputText value=" DIRECCION&#xA0;&#xA0;&#xA0;"/>
+                 <h:outputText value=" DIRECCION"/>
              </f:facet>
                 <ui:include src="../persona/tabs/direccionPrincipal.xhtml"/>
          </p:tab>
@@ -70,7 +70,7 @@
          <p:tab id="tabInfoLaboral" >
              <f:facet name="title">
                  <p:graphicImage value="/images/personas.png"/>
-                 <h:outputText value=" TRABAJADORES"/>
+                 <h:outputText value=" TRABAJADORES&#xA0;&#xA0;&#xA0;"/>
              </f:facet>
              <ui:include src="../persona/tabs/infoLaboralPrincipal.xhtml"/>
          </p:tab>
@@ -82,24 +82,26 @@
             <br/>
         <h:panelGrid columns="2"  style="width: 765px" columnClasses="column1,column2">
             <h:column >
-            <p:commandButton value="Agregar Unidad o Sucursal"
-                             action="#{personaUnidadBean.nuevo}"
-                             icon="ui-icon-plus"
-                             update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
-                             onclick="PF('dlgUnidad').show()">
-                <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
-                <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
-            </p:commandButton>
+
             </h:column>
             <h:column >
-            <p:commandButton value="Generer Documento"
-                             action="#{personaUnidadBean.nuevo}"
+            <p:commandButton value="Crear ceritificado ROE"
+                             action="#{personaUnidadBean.generarCertificadoROE}"
                              icon="ui-icon-plus"
-                             update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
-                             onclick="PF('dlgUnidad').show()">
-                <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
-                <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
+                             id="cmdButtonROE"
+                             update=":growlROE"
+                             process="@this"
+                             rendered="#{ personaUnidadBean.tieneROE==false}">
             </p:commandButton>
+
+                <p:commandButton value="Crear nuevo ceritificado ROE"
+                                 action="#{personaUnidadBean.generarCertificadoROE2}"
+                                 icon="ui-icon-plus"
+                                 id="cmdButtonROE2"
+                                 update=":growlROE"
+                                 rendered="#{personaUnidadBean.tieneROE==true}"
+                                 >
+                </p:commandButton>
             </h:column>
         </h:panelGrid>
     </h:form>
@@ -147,6 +149,22 @@
                     <!-- **************   PANEL GRID ***************** -->
                     <!-- ********************************************* -->
         <h2>Lista de Unidades </h2>
+    <h:form id="frmAgregarUnidad">
+        <br/>
+        <h:panelGrid columns="2"  style="width: 765px" columnClasses="column1,column2">
+            <h:column >
+                <p:commandButton value="Agregar Unidad o Sucursal"
+                                 action="#{personaUnidadBean.nuevo}"
+                                 icon="ui-icon-plus"
+                                 update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
+                                 onclick="PF('dlgUnidad').show()">
+                    <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
+                    <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
+                </p:commandButton>
+            </h:column>
+
+        </h:panelGrid>
+    </h:form>
     <p:dataGrid id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
                 var="unidad"
                 columns="1" emptyMessage="No se encontraron resultados"

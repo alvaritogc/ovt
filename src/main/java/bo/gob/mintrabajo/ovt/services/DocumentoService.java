@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.services;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.*;
@@ -16,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,7 +32,6 @@ import java.util.*;
 @Named("documentoService")
 @TransactionAttribute
 public class DocumentoService implements IDocumentoService{
-
     private final DocumentoRepository documentoRepository;
     private final DocumentoEstadoRepository documentoEstadoRepository;
     private final PlanillaRepository planillaRepository;
@@ -149,7 +150,7 @@ public class DocumentoService implements IDocumentoService{
     }
     
     @Override
-    public DocDocumento guardarImpresionRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora, DocDefinicion docDefinicion){
+    public DocDocumento guardarImpresionRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora, DocDefinicion docDefinicion, VperPersona vperPersona, Long idUsuarioEmpleador){
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setDocDefinicion(docDefinicion);
         
@@ -166,6 +167,72 @@ public class DocumentoService implements IDocumentoService{
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getCodEstado().getCodEstado(), (short) 1));
         docDocumento=documentoRepository.save(docDocumento);
         //
+        docGenerico.setIdDocumento(docDocumento);
+        docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
+        docGenericoRepository.save(docGenerico);
+
+        generaReporteROE(vperPersona, String.valueOf(idUsuarioEmpleador), String.valueOf(vperPersona.getIdPersona()));
+
+        //Actualizar el atributo nroOtro de PerUnidad     por aquiroz
+       PerUnidad unidad= unidadRepository.findOne(docDocumento.getPerUnidad().getPerUnidadPK());
+        System.out.println("========>>> UNIDAD "+unidad);
+        System.out.println("========>>> CAMBIANDO EL VALOR nro de documento"+docDocumento.getNumeroDocumento());
+        unidad.setTipoUnidad(String.valueOf(docDocumento.getNumeroDocumento()));
+        System.out.println("========>>> MODIFICADO "+unidad);
+        unidadRepository.save(unidad);
+
+        return docDocumento;
+    }
+
+
+    @Override
+    public List<DocDocumento>  listarRoe013(String idPersona,long idUnidad){
+        try {
+            return documentoRepository.listarRoe013(idPersona,idUnidad);
+        } catch (Exception ex){
+           ex.printStackTrace();
+            return null;
+        }
+    }
+    public List<DocDocumento>ObtenerRoes(String idPersona,long idUnidad){
+        try {
+            return documentoRepository.ObtenerRoes(idPersona,idUnidad);
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK ,String registroBitacora){
+       List<DocDocumento> lista=documentoRepository.listarRoe013(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
+        if(lista.size()>0){
+            throw new RuntimeException("Ya se registro el roe para ese documento");
+        }
+        
+        DocDocumento docDocumento=new DocDocumento();
+        docDocumento.setPerUnidad(unidadRepository.findOne(perUnidadPK));
+        
+        //
+        DocDefinicion docDefinicion=definicionRepository.findOne(new DocDefinicionPK("ROE013", (short) 1));
+        //
+        docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+        docDocumento.setDocDefinicion(docDefinicion);
+        
+        docDocumento.setCodEstado(documentoEstadoRepository.findOne("010"));//Estado inicial
+        docDocumento.setFechaDocumento(new Date());
+        docDocumento.setFechaReferenca(new Date());
+        
+        docDocumento.setFechaBitacora(new Date());
+        docDocumento.setRegistroBitacora(registroBitacora);
+        docDocumento.setTipoMedioRegistro("DDJJ");
+        
+        
+        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("ROE012", (short) 1));
+        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getCodEstado().getCodEstado(), (short) 1));
+        docDocumento=documentoRepository.save(docDocumento);
+        //
+        DocGenerico docGenerico=new DocGenerico();
         docGenerico.setIdDocumento(docDocumento);
         docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
         docGenericoRepository.save(docGenerico);
@@ -345,7 +412,7 @@ public class DocumentoService implements IDocumentoService{
     }
 
 
-    public String generaReporteROE010(VperPersona vperPersona){
+    public String generaReporteROE(VperPersona vperPersona, String idUsuario, String idPersona){
         parametros.clear();
         parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
         parametros.put("nombreRazonSocial", vperPersona.getNombreRazonSocial());
@@ -359,16 +426,26 @@ public class DocumentoService implements IDocumentoService{
         parametros.put("roe", servletContext.getRealPath("/")+"/images/roe.jpg");
 
         try {
-            //TODO url correspondiente segun el tipo de sesion para que el usuario sea redireccionado al reporte segun el QR
-            String url="https://www.google.com/";
+            nombrePdf="ROE".concat(Util.encriptaMD5(idUsuario.concat(idPersona)))+".pdf";
+            HttpServletRequest httpServletRequest = ((HttpServletRequest) (FacesContext.getCurrentInstance().getExternalContext()).getRequest());
+            String rutaUrl=(String) httpServletRequest.getRequestURL().toString();
+            if(rutaUrl.contains(".xhtml"))
+                rutaUrl= rutaUrl.replace("pages/declaracion/impresionRoe.xhtml", "");
+            if(rutaUrl.contains(".jsf"))
+                rutaUrl= rutaUrl.replace("pages/declaracion/impresionRoe.jsf", "");
+
+            String url=rutaUrl.concat("reportes/temp/")+nombrePdf;
+            //genera el QR
             ByteArrayOutputStream out = QRCode.from(url).to(ImageType.PNG).stream();
-            file = new File(servletContext.getRealPath("/")+"/images/qr.png");
+            file = new File(servletContext.getRealPath("/")+"/images/qr"+UUID.randomUUID()+".png");
             FileOutputStream fout = new FileOutputStream(file);
             fout.write(out.toByteArray());
             fout.flush();
             fout.close();
-        parametros.put("qr",servletContext.getRealPath("/")+"/images/qr.png");
-            generateReport("ROE010", "/reportes/roe.jasper");
+            //se asigna la imagen QR al reporte
+            parametros.put("qr",servletContext.getRealPath("/")+"/images/"+file.getName());
+            //manda al metodo generateReport()
+            generateReport(nombrePdf, "/reportes/roe.jasper");
             return nombrePdf;
         } catch (Exception e) {
             e.printStackTrace();
@@ -383,7 +460,7 @@ public class DocumentoService implements IDocumentoService{
         lista.add("asd");
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String rutaWebapp = servletContext.getRealPath("/");
-        rutaPdf= "/reportes/temp/"+ nomArchivo+"-"+ UUID.randomUUID() + ".pdf";
+        rutaPdf= "/reportes/temp/"+ nomArchivo;
         nombrePdf = rutaWebapp + rutaPdf;
         JasperReport reporte = (JasperReport) JRLoader.loadObject(new File(rutaWebapp + jasper));
         JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(lista));

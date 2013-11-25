@@ -13,7 +13,7 @@
                              id="cmdButtonDireccion1"
                              update=":frmDireccion:pnlDireccion,:txtDlgDireccion"
                              rendered="#{personaUnidadBean.direccionPrincipal.idDireccion==null}">
-                <f:setPropertyActionListener value="#{personaUnidadBean.infolaboral}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
                 <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
             </p:commandButton>

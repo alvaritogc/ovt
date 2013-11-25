@@ -13,11 +13,12 @@
                              action="#{personaUnidadBean.procesarActividadEconomica}"
                              id="cmdButtonActividadDeclarada"
                              tabindex="5"
-                             update=":tabPersonaUnidad,:tabPersonaUnidad:tabActividad,:dataGrid,growlActividadDeclarada"
+                             update=":tabPersonaUnidad,:tabPersonaUnidad:tabActividad,:dataGrid,growlActividadDeclarada,:frmBucarPersona:cmdButtonROE"
                     />
             &#160;&#160;
             <p:commandButton value="Cancelar"
                              tabindex="6"
+                             immediate="true"
                              icon="ui-icon-closethick"
                              onclick="dlgActividadDeclarada.hide()"
                              id="cmdButtonDireccionCancel"/>
@@ -33,37 +34,8 @@
                 <f:selectItems value="#{personaUnidadBean.listaCodActividadEconomica}" />
             </p:selectOneMenu>
 
-            <p:outputLabel for="txtAreaDescripcionActvEconomica1" value="Descripcion:"/>
-            <p:inputTextarea id="txtAreaDescripcionActvEconomica1" value="#{personaUnidadBean.actividadEconomica.descripcion}"
-                             rows="5"
-                             cols="50"
-                             autoResize="false"
-                             style="width: 220px;text-transform: uppercase;"
-                             tabindex="2"
-                             required="true"
-                             requiredMessage="El campo Descripcion es obligatorio.">
-                <f:converter converterId="lowerConverter"/>
-            </p:inputTextarea>
-
-            <h:outputText value="Codigo de Impuestos:"/>
-            <p:inputText value="#{personaUnidadBean.actividadEconomica.codImpuestos}"
-                         style="text-transform: uppercase;width: 215px;"
-                         tabindex="3">
-                <f:converter converterId="lowerConverter"/>
-            </p:inputText>
 
 
-            <p:outputLabel for="txtAreaDescripcionCodImpuestos1" value="Descripcion del codigo de impuestos:"/>
-            <p:inputTextarea id="txtAreaDescripcionCodImpuestos1" value="#{personaUnidadBean.actividadEconomica.descricpionImpuestos}"
-                             rows="4"
-                             cols="50"
-                             autoResize="false"
-                             style="width: 220px;text-transform: uppercase;"
-                             tabindex="4"
-                             required="true"
-                             requiredMessage="El campo Descripcion del codigo de impuestos es obligatorio.">
-                <f:converter converterId="lowerConverter"/>
-            </p:inputTextarea>
 
         </h:panelGrid>
     </p:panel>

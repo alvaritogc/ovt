@@ -4,9 +4,12 @@ package bo.gob.mintrabajo.ovt.services;
 import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
-import bo.gob.mintrabajo.ovt.repositories.PersonaRepository;
-import bo.gob.mintrabajo.ovt.repositories.RolRepository;
 import bo.gob.mintrabajo.ovt.repositories.UsuarioRepository;
+import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.domain.Specification;
+
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,11 +23,6 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.google.common.base.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
@@ -194,14 +192,20 @@ public class UsuarioService implements IUsuarioService{
        String mensaje="";
       if (nuevaClave.equals(confirmarClave)){
           System.out.println("====>> BUSCANDO USUARIO "+email+"  CLAVE "+clave);
+          System.out.println("====>> BUSCANDO nuevaClave "+nuevaClave+"  confirmarClave "+confirmarClave);
+          System.out.println("====>> BUSCANDO USR USR ");
           UsrUsuario usuario= usuarioRepository.findByUsuarioAndClave(email,clave);
+          System.out.println("====>> BUSCANDO USR USR usuario "+usuario);
           if(usuario!=null)  {
             if(clave.equals(nuevaClave)){
                mensaje="El valor de la nueva contraseña asociada debe ser distinta a la anterior contraseña.";
+                System.out.println("====>> BUSCANDO USR USR usuario mensaje"+mensaje);
              }else{
                 usuario.setClave(nuevaClave);
                 usuario= usuarioRepository.save(usuario);
+                System.out.println("====>>>>>>> SE CAMBIO LA CONTRASENIA<<<<====== ");
                 mensaje="OK";
+
             }
           }else{
               mensaje="La contraseña asociada a su cuenta es incorrecta";
@@ -221,10 +225,14 @@ public class UsuarioService implements IUsuarioService{
         String mensaje="";
         UsrUsuario usuario=usuarioRepository.findOne(idUsuario);
         //descencriptar la contrasenia del usuario
-        String claveDescencriptada=Util.decrypt(usuario.getClave());
+        //String claveDescencriptada=Util.decrypt(usuario.getClave());
+        clave=Util.encriptaMD5(clave);
+        confirmarClave=Util.encriptaMD5(confirmarClave);
+        String claveDescencriptada=    usuario.getClave();
+        nuevaClave=Util.encriptaMD5(nuevaClave);
         //verificar que la contrasenia sea la asociada a su cuenta
         if(!claveDescencriptada.equals(clave)){
-            mensaje="La contrasenia no esta asociada a su cuenta de usuario.";
+            mensaje="La contraseña no esta asociada a su cuenta de usuario.";
             return mensaje;
         }
                //Verificar que la nueva contrasenia sea distinta  a la antigua contrasenia
@@ -240,7 +248,8 @@ public class UsuarioService implements IUsuarioService{
             }
 
             //actualizar contrasenia (Encriptada)
-            usuario.setClave(Util.crypt(nuevaClave));
+        usuario.setClave(nuevaClave);
+            //usuario.setClave(Util.crypt(nuevaClave));
             usuarioRepository.save(usuario);
             mensaje="OK";
             return mensaje;
@@ -269,5 +278,9 @@ public class UsuarioService implements IUsuarioService{
         }
 
         return mensaje;
+    }
+
+    public UsrUsuario obtenerUsuarioPorIdPersona(String idPersona){
+        return usuarioRepository.findByIdPersona_IdPersona(idPersona);
     }
 }

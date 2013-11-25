@@ -1,27 +1,30 @@
 package bo.gob.mintrabajo.ovt.bean.declaracion;
 
+import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
-import bo.gob.mintrabajo.ovt.bean.EscritorioBean;
 import bo.gob.mintrabajo.ovt.entities.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.faces.application.FacesMessage;
 
 @ManagedBean
 @ViewScoped
-public class ImpresionRoeBean {
+public class edicionRoeBean {
     //
-
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private Long idUsuario;
     private String idPersona;
@@ -42,61 +45,58 @@ public class ImpresionRoeBean {
     private IVperPersonaService iVperPersonaService;
     @ManagedProperty(value = "#{definicionService}")
     private IDefinicionService iDefinicionService;
+    @ManagedProperty(value = "#{docGenericoService}")
+    private IDocGenericoService iDocGenericoService;
     //
+    private Long idDocumento;
     private UsrUsuario usuario;
     private boolean esFuncionario;
     //
     private VperPersona vperPersona;
-    private DocDocumento documento;
+    //private DocDocumento documento;
     private DocGenerico docGenerico;
-    private DocDefinicion docDefinicion;
     //
     private String bancoDeposito;
     private int nroComprobanteDeposito;
     private Date fechaDeposito;
     private BigDecimal montoDeposito;
+    private DocDefinicion docDefinicion;
 
     @PostConstruct
     public void ini() {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
-
-
-
-        try {
-            docDefinicion = iDefinicionService.buscaPorId((DocDefinicionPK) session.getAttribute("docDefinicionPK"));
-        } catch (Exception e) {
-            DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
-            docDefinicionPK.setCodDocumento("ROE013");
-            docDefinicionPK.setVersion((short)1);
-            docDefinicion = iDefinicionService.buscaPorId(docDefinicionPK);
-        }
-        
+        System.out.println("idEmpleador: "+idEmpleador);
         usuario = iUsuarioService.findById(idUsuario);
         esFuncionario = usuario.getEsInterno() == 1 ? true : false;
-        cargar();
+        cargarGenericoSession();
     }
-
-    public void cargar() {
-        vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
-        bancoDeposito="";
-        nroComprobanteDeposito=0;
-        fechaDeposito=null;
-        montoDeposito=BigDecimal.ZERO;
-        docGenerico=new DocGenerico();
-        docGenerico.setCadena05(vperPersona.getRlNombre());
-        docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
+    
+    public void cargarGenericoSession(){
+        idDocumento=(Long) session.getAttribute("idDocumento");
+        
+        docGenerico=iDocGenericoService.buscarPorDocumento(idDocumento);
+        docDefinicion=iDefinicionService.buscaPorId(docGenerico.getIdDocumento().getDocDefinicion().getDocDefinicionPK());
         //
-        cargarDocumento();
-    }
-
-    public void cargarDocumento() {
-        documento = new DocDocumento();
-        documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
+        vperPersona = iVperPersonaService.cargaVistaPersona(docGenerico.getIdDocumento().getPerUnidad().getPerPersona().getIdPersona());
+        bancoDeposito=docGenerico.getCadena01();
+        nroComprobanteDeposito=Integer.valueOf(docGenerico.getCadena02()!=null?docGenerico.getCadena02():"0");
+        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            fechaDeposito=sdf.parse(docGenerico.getCadena03());
+        } catch (Exception e) {
+        }
+        montoDeposito=new BigDecimal(docGenerico.getCadena04()!=null?docGenerico.getCadena04():"0");
     }
 
     public String guardar() {
+        System.out.println("==================================");
+        System.out.println("==================================");
+        System.out.println("Guardar");
+        System.out.println("==================================");
+        System.out.println("==================================");
+        System.out.println("docGenerico : " + docGenerico.getCadena01());
         if(bancoDeposito==null || bancoDeposito.equals("")){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe el campo Banco."));
             return "";
@@ -119,12 +119,8 @@ public class ImpresionRoeBean {
         docGenerico.setCadena03(sdf.format(fechaDeposito));
         docGenerico.setCadena04(montoDeposito.toString());
         //
-        String idPersonaPorDocumento= documento.getPerUnidad().getPerPersona().getIdPersona();
-        vperPersona = iVperPersonaService.cargaVistaPersona(idPersonaPorDocumento);
-        Long idUsuarioEmpleador=iUsuarioService.obtenerUsuarioPorIdPersona(idPersonaPorDocumento).getIdUsuario();
-
-        documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico,idUsuario.toString(), docDefinicion, vperPersona, idUsuarioEmpleador);
-
+        //documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico,idUsuario.toString());
+        docGenerico=iDocGenericoService.modificar(docGenerico, idDocumento);
         return "irEscritorio";
     }
 
@@ -176,13 +172,13 @@ public class ImpresionRoeBean {
         this.docGenerico = docGenerico;
     }
 
-    public DocDocumento getDocumento() {
-        return documento;
-    }
-
-    public void setDocumento(DocDocumento documento) {
-        this.documento = documento;
-    }
+//    public DocDocumento getDocumento() {
+//        return documento;
+//    }
+//
+//    public void setDocumento(DocDocumento documento) {
+//        this.documento = documento;
+//    }
 
     public IUnidadService getiUnidadService() {
         return iUnidadService;
@@ -248,6 +244,14 @@ public class ImpresionRoeBean {
         this.montoDeposito = montoDeposito;
     }
 
+    public IDocGenericoService getiDocGenericoService() {
+        return iDocGenericoService;
+    }
+
+    public void setiDocGenericoService(IDocGenericoService iDocGenericoService) {
+        this.iDocGenericoService = iDocGenericoService;
+    }
+
     public DocDefinicion getDocDefinicion() {
         return docDefinicion;
     }
@@ -255,4 +259,6 @@ public class ImpresionRoeBean {
     public void setDocDefinicion(DocDefinicion docDefinicion) {
         this.docDefinicion = docDefinicion;
     }
+
+   
 }

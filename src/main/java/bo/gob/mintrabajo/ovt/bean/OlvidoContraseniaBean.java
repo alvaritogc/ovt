@@ -39,31 +39,79 @@ public class OlvidoContraseniaBean implements Serializable {
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
 
-    private String contrasenia;
-    private String nuevaContrasenia;
-    private String confirmarContrasenia;
 
-    //private String email=getParam("codeNam");
-    private String email="";
+    private String contrasenia=getParam("codeUnic");;
+
+    public String getNuevaContrasenia() {
+        return nuevaContrasenia;
+    }
+
+    public void setNuevaContrasenia(String nuevaContrasenia) {
+        this.nuevaContrasenia = nuevaContrasenia;
+    }
+
+    private String nuevaContrasenia="";
+
+    public String getConfirmarContrasenia() {
+        return confirmarContrasenia;
+    }
+
+    public void setConfirmarContrasenia(String confirmarContrasenia) {
+        this.confirmarContrasenia = confirmarContrasenia;
+    }
+
+    private String confirmarContrasenia="";
+
+    private String email=getParam("codeNam");
+   // private String email="";
 
 
 
     @PostConstruct
     public void ini() {
         logger.info("=====>>>>  OLVIDO CONTRASENIA");
-        contrasenia=getParam("codeUnic");
-        logger.info("=====>>>>  PARAMETRO PASADO POR GET "+contrasenia);
+       // email=getParam("codeNam");
+        //contrasenia=getParam("codeUnic");
+        logger.info("=====>>>>  PARAMETRO PASADO POR GET correo: "+email);
+        logger.info("=====>>>>  PARAMETRO PASADO POR GET password: "+contrasenia);
 /*        contrasenia=Util.decrypt(contrasenia);
         logger.info("=====>>>>  CONTRASENIA DESCENCRIPTADA "+contrasenia);*/
     }
 
     public String verificarContrasenia()throws  IOException{
-         //Encriptar la nueva contrasenia y confirmar contrasenia
+        logger.info("=====>>>>  INICIO VERIFICAR CONTRASENIA");
+        System.out.println("=====>>>>  email: "+email);
+        System.out.println("=====>>>>  contrasenia: "+contrasenia);
+        System.out.println("=====>>>>  nuevaContrasenia: "+nuevaContrasenia);
+        System.out.println("=====>>>>  confirmarContrasenia: "+confirmarContrasenia);
+
+        if(nuevaContrasenia.trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El campo Nueva contraseña no puede ser vacio."));
+            ini();
+            return "";
+        }
+        if(confirmarContrasenia.trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El campo Confirmar contraseña no puede ser vacio."));
+            ini();
+            return "";
+        }
+
         nuevaContrasenia=Util.encriptaMD5(nuevaContrasenia);
         confirmarContrasenia=Util.encriptaMD5(confirmarContrasenia);
-        logger.info("====>>>> verificarContrasenia: email:" + email + " contrasenia: " + contrasenia + " nuevaContrasenia " + nuevaContrasenia + " confirmarContrasenia: " + confirmarContrasenia);
+        logger.info("=====>>>>  INICIO VERIFICAR CONTRASENIA MD5 MD5 MD5 MD5");
+        logger.info("====>>>> verificarContrasenia:  nuevaContraseniaEncrip"+ nuevaContrasenia + " confirmarContraseniaEncri: " + confirmarContrasenia);
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
+
+        final int LONGITUD_MINIMA=7;
+        if(nuevaContrasenia.length()<LONGITUD_MINIMA){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","La longitud minima de la contrasenia es "+LONGITUD_MINIMA+". Intente nuevamente"));
+            ini();
+            return "";
+        }
 
         if(email==null && email.trim().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
@@ -81,13 +129,13 @@ public class OlvidoContraseniaBean implements Serializable {
 
         if(contrasenia==null && contrasenia.equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Contrasenia es obligatorio."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Contraseña es obligatorio."));
             ini();
             return "";
         }
 
 
-        String mensaje= iUsuarioService.cambiarContrasenia(email,contrasenia,nuevaContrasenia,confirmarContrasenia);
+        String mensaje=iUsuarioService.cambiarContrasenia(email, contrasenia, nuevaContrasenia, confirmarContrasenia);
 
         if(mensaje.equalsIgnoreCase("OK")){
             FacesContext.getCurrentInstance().addMessage(null,
@@ -190,20 +238,6 @@ public class OlvidoContraseniaBean implements Serializable {
         this.contrasenia = contrasenia;
     }
 
-    public String getNuevaContrasenia() {
-        return nuevaContrasenia;
-    }
 
-    public void setNuevaContrasenia(String nuevaContrasenia) {
-        this.nuevaContrasenia = nuevaContrasenia;
-    }
-
-    public String getConfirmarContrasenia() {
-        return confirmarContrasenia;
-    }
-
-    public void setConfirmarContrasenia(String confirmarContrasenia) {
-        this.confirmarContrasenia = confirmarContrasenia;
-    }
 }
 

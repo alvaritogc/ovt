@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../template/templateInicio.xhtml">
+        <ui:define name="content">
+
+            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                      draggable="false" closable="false">
+                <p:graphicImage value="../../images/ajax-loader.gif" />
+            </p:dialog>
+
+        <br/>
+           <h:form id="formOlvidoContrasenia" class="form-signin" >
+               <p:growl showDetail="true" id="growl" />
+              <p:panel  >
+                  <h2 class="form-signin-heading" style="text-align: center">Olvido su contraseña</h2>
+                  <br/>
+                   <center>
+                   <h:panelGrid columns="2" >
+
+
+                     <h:outputText value="Correo electronico:"/>
+                     <p:inputText
+                                  value="#{olvidoContraseniaBean.email}"
+                                    style="width: 200px; font-size: 10px"
+                                    readonly="true"
+                                     />
+
+                       <p:outputLabel for="contrasenia2" value="Nueva contraseña"/>
+                       <h:panelGrid columns="3">
+                       <p:password id="contrasenia2"
+                                   value="#{olvidoContraseniaBean.nuevaContrasenia}"
+                                   feedback="true"
+                                   style="width: 200px; font-size: 10px"
+                                   tabindex="1"
+                                   required="true"
+                                   requiredMessage=" El valor del campo Nueva contraseña es obligatorio."
+                                   autocomplete="off"
+                                   promptLabel="Ingrese su contraseña"
+                                   weakLabel="Contraseña debil"
+                                   goodLabel="Contraseña media"
+                                   strongLabel="Contraseña fuerte"
+                               />
+
+                       <h:graphicImage value="/images/ayuda.png" id="grafayuda"/>
+                       <p:tooltip for="grafayuda">
+                           <ol>
+                               <li>La Contrase&ntilde;a permite los siguientes caracteres
+                                   especiales:<br /> <b> ` ~ ! @ # $ % ^ &amp; * ( ) _ = { }
+                                       + \ | : ; &prime; &Prime; &lt; &gt; , - . ? /</b>
+                               </li>
+                               <li>La Contrase&ntilde;a permite validar que ingrese al
+                                   menos un caracter especial, numerico y alfabetico</li>
+                               <li>La longitud minima requerida es de
+                                   #{personaBean.LONGITUD_MINIMA} caracteres</li>
+                           </ol>
+                           <b>Ejemplo:</b>
+                           <pre>admin12@</pre>
+                       </p:tooltip>
+                   </h:panelGrid>
+                       <p:outputLabel for="password" value="Confirmar contraseña"/>
+                       <p:password id="password"
+                                   value="#{olvidoContraseniaBean.confirmarContrasenia}"
+                                   feedback="true"
+                                   style="width: 200px; font-size: 10px"
+                                   tabindex="2"
+                                   required="true"
+                                   requiredMessage=" El valor del campo Confirmar contraseña es obligatorio."
+                                   autocomplete="off"
+                                   promptLabel="Ingrese su contraseña"
+                                   weakLabel="Contraseña debil"
+                                   goodLabel="Contraseña media"
+                                   strongLabel="Contraseña fuerte"
+                               />
+
+
+                   </h:panelGrid>
+                   </center>
+                        <!--<p:captcha label="Captcha" publicKey="6LerTMYSAAAAAGUfbsXu2tf-H8flrPVM1fDUecvi" language="es"-->
+                        <!--validatorMessage="Texto no coincide, intente de nuevo." requiredMessage="Ingrese 2 palabras" />-->
+                  <br/>
+                  <center>
+                  <p:commandButton styleClass="btn btn-large btn-primary" value="Confirmar"
+                                         action="#{olvidoContraseniaBean.verificarContrasenia}"
+                                         update="growl"
+                                         process="@form" />
+                  </center>
+
+
+                    </p:panel>
+                    <br/><br/>
+
+                </h:form>
+                
+
+        </ui:define>
+    </ui:composition>
+</html>

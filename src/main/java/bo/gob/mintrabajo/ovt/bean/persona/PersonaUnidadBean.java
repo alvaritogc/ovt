@@ -90,6 +90,9 @@ public class PersonaUnidadBean implements Serializable{
     @ManagedProperty(value = "#{infoLaboralService}")
     private IInfoLaboralService iInfoLaboralService;
 
+    @ManagedProperty(value = "#{definicionService}")
+    private IDefinicionService definicionService;
+
     private PerPersona persona=new PerPersona();
     private String idLocalidadPersona;
 
@@ -159,6 +162,41 @@ public class PersonaUnidadBean implements Serializable{
     private PerInfolaboral infolaboral;
     private PerInfolaboral infolaboralRegistro;
 
+
+    public boolean isMostrarBotonROE() {
+        return mostrarBotonROE;
+    }
+
+    public void setMostrarBotonROE(boolean mostrarBotonROE) {
+        this.mostrarBotonROE = mostrarBotonROE;
+    }
+
+    //sw para mostrar el boton de impresion de ROE1
+    private boolean mostrarBotonROE;
+
+    public boolean isTieneROE() {
+        return tieneROE;
+    }
+
+    public void setTieneROE(boolean tieneROE) {
+        this.tieneROE = tieneROE;
+    }
+
+    //Sirve para mostrar boton de impresion ROE2
+    private boolean tieneROE=false;
+
+
+    public IDocumentoService getDocumentoService() {
+        return documentoService;
+    }
+
+    public void setDocumentoService(IDocumentoService documentoService) {
+        this.documentoService = documentoService;
+    }
+
+    @ManagedProperty(value = "#{documentoService}")
+    private IDocumentoService documentoService;
+
     @PostConstruct
     public void ini(){
 
@@ -176,6 +214,129 @@ public class PersonaUnidadBean implements Serializable{
         unidadRegistro=new PerUnidad();
         cargar();
 
+        //si es falso mostrar
+        mostrarBotonROE=generarReporteRoe();
+        tieneROE=yaTieneROE();
+        System.out.println("=====>>>>>>>>>>> mostrarBotonROE mostrarBotonROE "+mostrarBotonROE);
+        System.out.println("=====>>>>>>>>>>> TIENE ROE tieneROE "+tieneROE);
+
+    }
+
+    public boolean generarReporteRoe(){
+
+
+        //validar datos de persona
+        if(persona.getIdPersona()!=null){
+            if(persona.getNombreRazonSocial()==null){
+
+                  return false;
+            }
+
+            if(persona.getApellidoPaterno()==null){
+
+                return false;
+            }
+
+            if(persona.getApellidoMaterno()==null){
+
+                return false;
+            }
+            if(persona.getNroIdentificacion()==null){
+
+                return false;
+            }
+
+            if(persona.getCodLocalidad()==null){
+
+                return false;
+            }
+            if(persona.getTipoIdentificacion()==null){
+
+                return false;
+            }
+        }
+
+        //validar datos de unidad
+        if(unidad.getPerUnidadPK()!=null){
+            if(unidad.getNombreComercial()==null) {
+
+                return false;
+            }
+
+            if(unidad.getNombreComercial()==null){
+
+                return false;
+            }
+
+            if(unidad.getTipoEmpresa()==null)  {
+
+                return false;
+            }
+
+            if(unidad.getTipoSociedad()==null) {
+
+                return false;
+            }
+
+            if(unidad.getFechaNacimiento()==null)  {
+
+                return false;
+            }
+
+            if(unidad.getNroFundaempresa()==null) {
+
+                return false;
+            }
+
+            if(unidad.getNroAfp()==null)  {
+
+                return false;
+            }
+
+            if(unidad.getNombreComercial()==null)  {
+
+                return false;
+            }
+
+        }
+
+        //vallidad actividad declarada
+        if(actividadEconomicaPrincipal.getIdActividadEconomica()==null){
+
+            return false;
+        }
+
+
+
+        if(repLegalPrincipal!=null){
+            //validar representante legal
+            if(repLegalPrincipal.getIdReplegal()==null) {
+
+                return false;
+            }
+
+        }
+
+         if(direccionPrincipal!=null){
+             //validar direccion
+             if(direccionPrincipal.getIdDireccion().equals(null)) {
+
+                 return false;
+             }
+
+         }
+
+           if(infolaboral!=null){
+               //validar informacion laboral
+               if(infolaboral.getIdInfolaboral()==null)  {
+
+                   return false;
+               }
+
+           }
+
+
+        return true;
     }
 
     public  void cargar(){
@@ -232,8 +393,70 @@ public class PersonaUnidadBean implements Serializable{
         actividadPrincipal=new PerActividad();
         infolaboralRegistro=new PerInfolaboral();
         //infolaboralRegistro.setNroTotalTrabajadores(10);
-        infolaboralRegistro.setNroHombres(10);
-        infolaboralRegistro.setNroMujeres(10);
+
+
+    }
+
+    //PRIMERA VEZ
+    public String generarCertificadoROE(){
+
+        if(!generarReporteRoe())
+        {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede generar el documento ROE, por que falta registrar datos."));
+
+            return null;
+        }
+
+
+        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
+        docDefinicionPK.setCodDocumento("ROE010");
+        docDefinicionPK.setVersion((short)1);
+        session.setAttribute("docDefinicionPK",docDefinicionPK);
+        return "irImpresionRoe";
+    }
+
+    //
+    public boolean yaTieneROE(){
+
+        List<DocDocumento> lista = documentoService.ObtenerRoes(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad());
+        System.out.println("=====>>>>>>>>>>> TIENE ROE unidad.getPerUnidadPK().getIdPersona() "+unidad.getPerUnidadPK().getIdPersona());
+        System.out.println("=====>>>>>>>>>>> TIENE ROE unidad.getPerUnidadPK().getIdUnidad() "+unidad.getPerUnidadPK().getIdUnidad());
+        System.out.println("=====>>>>>>>>>>> TIENE ROE lista: "+lista.size());
+        System.out.println("=====>>>>>>>>>>> TIENE ROE lista es vacio: "+lista.isEmpty());
+        if(lista!=null){
+            if(!lista.isEmpty()){
+                if(lista.size()>=0){
+                    System.out.println("=====>>>>>>>>>>> TIENE ROE "+lista.get(0));
+                    System.out.println("=====>>>>>>>>>>> TIENE ROE "+lista.get(0).getIdDocumento());
+                    return true;
+                }else{
+                    return false;
+                }
+            } else{
+                return false;
+            }
+
+        }else{
+            return false;
+        }
+    }
+
+    public void generarCertificadoROE2(){
+        try{
+            documentoService.guardarRoeGenerico(unidad.getPerUnidadPK(),REGISTRO_BITACORA);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,"Exito","Se genero un nuevo documneto ROE."));
+
+            ini();
+            return ;
+        } catch (Exception ex){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se pudo generar documento: "+ex.getMessage()));
+            ini();
+            return ;
+        }
+
 
     }
 
@@ -522,7 +745,7 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public void cargarRepLegal(){
-
+         repLegalPrincipal=new PerReplegal();
         listaRepLegal=new ArrayList<PerReplegal>();
         listaRepLegal=iRepLegalService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
         if(!listaRepLegal.isEmpty()){
@@ -579,6 +802,11 @@ public class PersonaUnidadBean implements Serializable{
     * de un registro en las tablas: PAR_ACTIVIDAD_ECONOMICA y PER_ACTIVIDAD
      */
     public void procesarActividadEconomica(){
+
+
+        actividadEconomica.setCodImpuestos("NADA");
+        actividadEconomica.setDescricpionImpuestos("NADA");
+        actividadEconomica.setDescripcion("NADA");
 
         //Cambiar por el usuario de la session
        // String registroPersona=  persona.getNombreRazonSocial();
@@ -1132,5 +1360,13 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setiInfoLaboralService(IInfoLaboralService iInfoLaboralService) {
         this.iInfoLaboralService = iInfoLaboralService;
+    }
+
+    public IDefinicionService getDefinicionService() {
+        return definicionService;
+    }
+
+    public void setDefinicionService(IDefinicionService definicionService) {
+        this.definicionService = definicionService;
     }
 }

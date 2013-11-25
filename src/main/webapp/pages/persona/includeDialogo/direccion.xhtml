@@ -13,12 +13,13 @@
                              action="#{personaUnidadBean.procesarDireccion}"
                              id="cmdButtonDireccion"
                              tabindex="14"
-                             update=":tabPersonaUnidad,:tabPersonaUnidad:tabDireccion,:dataGrid,:frmDireccion:growlDireccion"
+                             update=":tabPersonaUnidad,:tabPersonaUnidad:tabDireccion,:dataGrid,:frmDireccion:growlDireccion,:frmBucarPersona:cmdButtonROE"
                     />
             &#160;&#160;
             <p:commandButton value="Cancelar"
                              tabindex="15"
                              icon="ui-icon-closethick"
+                             immediate="true"
                              onclick="dlgDireccion.hide()"
                              id="cmdButtonDireccionCancel"/>
         </f:facet>

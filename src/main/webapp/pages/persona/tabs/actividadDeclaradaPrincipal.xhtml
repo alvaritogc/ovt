@@ -37,25 +37,9 @@
             <h:outputText value="Codigo de Actividad economica:"/>
             <p:inputText  value="#{personaUnidadBean.codigoActividadEconomicaPrincipal}" readonly="true"  style="width: 445px;"/>
 
-            <h:outputText value="Descripcion:"/>
-            <p:inputTextarea id="txtAreaDescripcionActvEconomica" value="#{personaUnidadBean.actividadEconomicaPrincipal.descripcion}"
-                             rows="5"
-                             cols="50"
-                             autoResize="false"
-                             style="width: 450px;"
-                             readonly="true"/>
 
-            <h:outputText value="Codigo de Impuestos:"/>
-            <p:inputText  value="#{personaUnidadBean.actividadEconomicaPrincipal.codImpuestos}" readonly="true"/>
 
-            <h:outputText value="Descripcion del codigo de impuestos:"/>
-            <p:inputTextarea id="txtAreaDescripcionCodImpuestos" value="#{personaUnidadBean.actividadEconomicaPrincipal.descricpionImpuestos}"
-                             rows="5"
-                             cols="50"
-                             autoResize="false"
-                             style="width: 450px;"
-                             required="true"
-                             requiredMessage="El campo Descripcion del codigo de impuestos es obligatorio."/>
+
 
         </h:panelGrid>
     </p:panel>

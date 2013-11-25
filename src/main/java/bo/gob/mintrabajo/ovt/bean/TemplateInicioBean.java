@@ -148,6 +148,8 @@ public class TemplateInicioBean implements Serializable {
             if (idEmpleador != null) {
                 empleador = iPersonaService.findById(idEmpleador);
                 nombreDeUnidad = empleador.getNombreRazonSocial();
+                nombreDeUnidad = empleador.getApellidoPaterno()!=null?(nombreDeUnidad+" "+empleador.getApellidoPaterno()):(nombreDeUnidad);
+                nombreDeUnidad = empleador.getApellidoMaterno()!=null?(nombreDeUnidad+" "+empleador.getApellidoMaterno()):(nombreDeUnidad);
             } else {
                 nombreDeUnidad = "N/A";
             }
@@ -421,11 +423,16 @@ public class TemplateInicioBean implements Serializable {
 
         String mensaeje = iUsuarioService.cambiarContrasenia(idUsuario, contrasenia, nuevaContrasenia, confirmarContrasenia);
         if (mensaeje.equalsIgnoreCase("OK")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO ", "Se cambio la contraseñia con exito."));
+
             limpiar();
-            logout();
+           // logout();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dlgCambiarContrasenia.hide();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO ", "Se cambio la contraseñia con exito."));
+            return;
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR ", mensaeje));
+            return;
         }
     }
 
