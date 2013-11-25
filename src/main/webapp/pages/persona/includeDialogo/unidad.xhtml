@@ -21,6 +21,7 @@
                              icon="ui-icon-closethick"
                              onclick="dlgUnidad.hide()"
                              tabindex="20"
+                             immediate="true"
                              id="cmdButtonUnidadCancelar"/>
         </f:facet>
         <br/>
@@ -112,8 +113,15 @@
             </p:inputText>
 
             <p:outputLabel for="slcOneMenuTipoEmpresa" value="Tipo de empresa:    "/>
-            <p:selectOneMenu id="slcOneMenuTipoEmpresa" value="#{personaUnidadBean.unidadRegistro.tipoEmpresa}"
+            <p:inputText value="#{personaUnidadBean.tipoEmpresaPrincipal}"
+                         readonly="true"
+                         tabindex="9"
+                         style="text-transform: uppercase"
+                         rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad!=0}"/>
+            <p:selectOneMenu id="slcOneMenuTipoEmpresa"
+                             value="#{personaUnidadBean.unidadRegistro.tipoEmpresa}"
                                  tabindex="9"
+                                 rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"
                                  style="width: 215px;text-transform: uppercase"
                                  required="true"
                                  requiredMessage="El campo Tipo de empresa es obligatorio.">
@@ -122,7 +130,7 @@
             </p:selectOneMenu>
             <p:outputLabel for="slcOneMenuTipoSociedad" value="Tipo de sociedad: "/>
             <p:selectOneMenu id="slcOneMenuTipoSociedad" value="#{personaUnidadBean.unidadRegistro.tipoSociedad}"
-                             tabindex="13"
+                             tabindex="10"
                              required="true"
                              style="width: 205px;text-transform: uppercase"
                              requiredMessage="El campo Tipo de sociedad es obligatorio.">
@@ -133,7 +141,7 @@
             <p:outputLabel for="calendar" value="Fecha de inicio de actividad:"/>
             <p:calendar id="calendar" value="#{personaUnidadBean.unidadRegistro.fechaNacimiento}"
                             effect="slideDown"
-                            tabindex="10"
+                            tabindex="11"
                             style="width:190px;"
                             required="true"
                             showOn="button"
@@ -144,29 +152,29 @@
                 <h:outputText value="Fundempresa:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroFundaempresa}"
                              style="width: 205px;text-transform: uppercase"
-                             tabindex="11" maxlength="20"
+                             tabindex="12" maxlength="20"
                              onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
                 <h:outputText value="Nro. AFP:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroAfp}"
                              style="width: 205px;text-transform: uppercase"
                              maxlength="20"
-                             tabindex="12"
-                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
+                             tabindex="13"
+                             />
 
                 <h:outputText value="Nro. Caja de salud: " />
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroCajaSalud}"
                              style="width: 205px;"
                              maxlength="20"
                              tabindex="14"
-                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
+                             />
 
                 <h:outputText value="Nro. referencial:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroReferencial}"
                              style="width: 205px;"
                              maxlength="20"
                              tabindex="15"
-                             onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
+                             />
 
 
             <h:outputText value="Nro. otro:"/>
@@ -174,7 +182,7 @@
                          style="width: 205px;"
                          maxlength="20"
                          tabindex="16"
-                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
+                         />
 
         <p:outputLabel for="txtAreaObs2" value="Observaciones:"/>
         <p:inputTextarea id="txtAreaObs2" value="#{personaUnidadBean.unidadRegistro.observaciones}"
@@ -188,8 +196,11 @@
             <f:converter converterId="lowerConverter"/>
         </p:inputTextarea>
 
-        <p:outputLabel  for="txtAreaActD2" value="Actividad declarada:"/>
-        <p:inputTextarea id="txtAreaActD2" value="#{personaUnidadBean.unidadRegistro.actividadDeclarada}"
+        <p:outputLabel  for="txtAreaActD2" value="Actividad declarada:"
+                        />
+        <p:inputTextarea id="txtAreaActD2"
+                         rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"
+                         value="#{personaUnidadBean.unidadRegistro.actividadDeclarada}"
                          rows="5"
                          cols="50" autoResize="false"
                          style="width: 205px;text-transform: uppercase"
@@ -198,6 +209,18 @@
                          requiredMessage="El campo Actividad declarada es obligatorio">
             <f:converter converterId="lowerConverter"/>
         </p:inputTextarea>
+            <p:inputTextarea id="txtAreaActD3"
+                             rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad!=0}"
+                             value="#{personaUnidadBean.unidadRegistro.actividadDeclarada}"
+                             rows="5"
+                             cols="50" autoResize="false"
+                             style="width: 205px;text-transform: uppercase"
+                             tabindex="19"
+                             readonly="true"
+                             required="true"
+                             requiredMessage="El campo Actividad declarada es obligatorio">
+                <f:converter converterId="lowerConverter"/>
+            </p:inputTextarea>
         </h:panelGrid>
     </p:panel>
 </h:form>

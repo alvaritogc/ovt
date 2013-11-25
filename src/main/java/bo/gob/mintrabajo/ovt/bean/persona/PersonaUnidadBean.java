@@ -387,7 +387,11 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public void nuevo(){
+        System.out.println("===>>> INGRESANDO A NUEVO");
+        System.out.println("===>>> INGRESANDO A NUEVO tipoEmpresaPrincipal "+tipoEmpresaPrincipal);
         unidadRegistro=new PerUnidad();
+        unidadRegistro.setTipoEmpresa(unidad.getTipoEmpresa());
+        unidadRegistro.setActividadDeclarada(unidad.getActividadDeclarada());
         direccion=new PerDireccion();
         repLegal=new PerReplegal();
         actividadPrincipal=new PerActividad();
