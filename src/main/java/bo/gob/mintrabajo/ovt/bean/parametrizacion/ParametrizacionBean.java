@@ -34,7 +34,8 @@ public class ParametrizacionBean {
 
     @PostConstruct
     public void cargaParametricasLista(){
-        parametrizacionLista = iParametrizacionService.obtenerParametroLista();
+        //parametrizacionLista = iParametrizacionService.obtenerParametroLista();
+        parametrizacionLista = iParametrizacionService.listaPorOrdenParametroValor();
     }
 
     public void guardarParametro(){

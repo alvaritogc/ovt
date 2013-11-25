@@ -41,6 +41,15 @@ public class ParametrizacionService implements IParametrizacionService {
     public List<ParParametrizacion> obtenerParametroLista(){
         return parametrizacionRepository.findAll();
     }
+    
+    @Override
+    public List<ParParametrizacion> listaPorOrdenParametroValor(){
+        try {
+            return parametrizacionRepository.listaParametroPorOrdenParametroCodigo();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public ParParametrizacion editarGuardarParametro(ParParametrizacion parParametrizacion){
         if (Strings.isNullOrEmpty(parParametrizacion.getRegistroBitacora())) {

@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.repositories;
 
 import bo.gob.mintrabajo.ovt.entities.ParParametrizacion;
 import bo.gob.mintrabajo.ovt.entities.ParParametrizacionPK;
+import java.util.List;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,10 @@ public interface ParametrizacionRepository extends OpenJpaRepository<ParParametr
 
     @Query("select p from ParParametrizacion p where p.parParametrizacionPK.idParametro = :parametro and p.parParametrizacionPK.valor = :valor")
     ParParametrizacion obtenerParametro(@Param("parametro")String parametro, @Param("valor")String valor);
+    
+    @Query("select p "
+            + " from ParParametrizacion p "
+            + " order by p.parParametrizacionPK.idParametro asc, p.parParametrizacionPK.valor asc")
+    List<ParParametrizacion> listaParametroPorOrdenParametroCodigo();
+  
 }

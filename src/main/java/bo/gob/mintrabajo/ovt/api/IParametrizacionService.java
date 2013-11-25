@@ -15,4 +15,5 @@ public interface IParametrizacionService {
     public ParParametrizacion obtenerParametro(String idParametro, String valor);
     public List<ParParametrizacion> obtenerParametroLista();
     public ParParametrizacion editarGuardarParametro(ParParametrizacion parParametrizacion);
+    public List<ParParametrizacion> listaPorOrdenParametroValor();
 }
