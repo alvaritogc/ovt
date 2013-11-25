@@ -118,21 +118,25 @@ public class BajaRoeBean {
         System.out.println("==================================");
         System.out.println("==================================");
         System.out.println("docGenerico : " + docGenerico.getCadena01());
-        if (docGenerico.getCadena01().trim().equals("")
-                && docGenerico.getCadena02().trim().equals("")
-                && docGenerico.getCadena03().trim().equals("")
-                && docGenerico.getCadena04().trim().equals("")) {
+        if ((docGenerico.getCadena01()==null || docGenerico.getCadena01().trim().equals(""))
+                && (docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals(""))
+                && (docGenerico.getCadena03()==null || docGenerico.getCadena03().trim().equals(""))
+                && (docGenerico.getCadena04()==null || docGenerico.getCadena04().trim().equals(""))) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año para Indicar si la suspención es temporal o definitiva."));
             return "";
         }
-        if (docGenerico.getCadena01().trim().equals("") && docGenerico.getCadena02().trim().equals("")) {
-            if (!((!docGenerico.getCadena03().trim().equals("")) && (!docGenerico.getCadena04().trim().equals("")))) {
+        if ((docGenerico.getCadena01()==null || docGenerico.getCadena01().trim().equals("") )
+                && (docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals(""))) {
+            if (!((!(docGenerico.getCadena03()==null||docGenerico.getCadena03().trim().equals(""))) 
+                    && (!(docGenerico.getCadena04()==null || docGenerico.getCadena04().trim().equals(""))))) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año de la Suspención definitiva."));
                 return "";
             }
         }
-        if (docGenerico.getCadena02().trim().equals("") && docGenerico.getCadena03().trim().equals("")) {
-            if (!((!docGenerico.getCadena01().trim().equals("")) && (!docGenerico.getCadena02().trim().equals("")))) {
+        if ((docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals("")) 
+                && (docGenerico.getCadena03()==null || docGenerico.getCadena03().trim().equals(""))) {
+            if (!((!(docGenerico.getCadena01()==null || docGenerico.getCadena01().trim().equals(""))) 
+                    && (!(docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals(""))))) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año de la Suspención temporal."));
                 return "";
             }
