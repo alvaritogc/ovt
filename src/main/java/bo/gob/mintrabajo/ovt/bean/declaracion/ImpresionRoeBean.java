@@ -61,6 +61,9 @@ public class ImpresionRoeBean {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
+
+
+
         try {
             docDefinicion = iDefinicionService.buscaPorId((DocDefinicionPK) session.getAttribute("docDefinicionPK"));
         } catch (Exception e) {

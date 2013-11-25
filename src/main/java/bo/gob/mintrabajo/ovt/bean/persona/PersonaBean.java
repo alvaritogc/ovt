@@ -425,14 +425,16 @@ public class PersonaBean implements Serializable{
         Map<String,String>configuracionEmail=new HashMap<String, String>();
         try {
             String from = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_CUENTA_EMAIL).getDescripcion();
-            String subject = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_ASUNTO).getDescripcion();
+            String subject_confirm = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_ASUNTO).getDescripcion();
+            String subject_recover = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_ASUNTO_RECUPERAR).getDescripcion();
             String urlRedireccion = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_URL).getDescripcion();
             String cuerpoMensaje = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_MENSAJE).getDescripcion();
             String password = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PASSWORD).getDescripcion();
             String host = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_SERVIDOR).getDescripcion();
             String port = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PUERTO).getDescripcion();
             configuracionEmail.put("from",from);
-            configuracionEmail.put("subject",subject);
+            configuracionEmail.put("subject_confirm",subject_confirm);
+            configuracionEmail.put("subject_recover",subject_recover);
             configuracionEmail.put("urlRedireccion",urlRedireccion);
             configuracionEmail.put("cuerpoMensaje",cuerpoMensaje);
             configuracionEmail.put("password",password);

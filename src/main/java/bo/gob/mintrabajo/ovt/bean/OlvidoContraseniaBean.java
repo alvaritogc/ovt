@@ -40,7 +40,7 @@ public class OlvidoContraseniaBean implements Serializable {
     private IUsuarioService iUsuarioService;
 
 
-    private String contrasenia;
+    private String contrasenia=getParam("codeUnic");;
 
     public String getNuevaContrasenia() {
         return nuevaContrasenia;
@@ -62,16 +62,16 @@ public class OlvidoContraseniaBean implements Serializable {
 
     private String confirmarContrasenia="";
 
-    //private String email=getParam("codeNam");
-    private String email="";
+    private String email=getParam("codeNam");
+   // private String email="";
 
 
 
     @PostConstruct
     public void ini() {
         logger.info("=====>>>>  OLVIDO CONTRASENIA");
-        email=getParam("codeNam");
-        contrasenia=getParam("codeUnic");
+       // email=getParam("codeNam");
+        //contrasenia=getParam("codeUnic");
         logger.info("=====>>>>  PARAMETRO PASADO POR GET correo: "+email);
         logger.info("=====>>>>  PARAMETRO PASADO POR GET password: "+contrasenia);
 /*        contrasenia=Util.decrypt(contrasenia);
@@ -85,8 +85,22 @@ public class OlvidoContraseniaBean implements Serializable {
         System.out.println("=====>>>>  nuevaContrasenia: "+nuevaContrasenia);
         System.out.println("=====>>>>  confirmarContrasenia: "+confirmarContrasenia);
 
+        if(nuevaContrasenia.trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El campo Nueva contraseña no puede ser vacio."));
+            ini();
+            return "";
+        }
+        if(confirmarContrasenia.trim().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El campo Confirmar contraseña no puede ser vacio."));
+            ini();
+            return "";
+        }
+
         nuevaContrasenia=Util.encriptaMD5(nuevaContrasenia);
         confirmarContrasenia=Util.encriptaMD5(confirmarContrasenia);
+        logger.info("=====>>>>  INICIO VERIFICAR CONTRASENIA MD5 MD5 MD5 MD5");
         logger.info("====>>>> verificarContrasenia:  nuevaContraseniaEncrip"+ nuevaContrasenia + " confirmarContraseniaEncri: " + confirmarContrasenia);
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();

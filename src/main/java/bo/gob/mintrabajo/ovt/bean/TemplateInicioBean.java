@@ -327,7 +327,7 @@ public class TemplateInicioBean implements Serializable {
         } catch (RuntimeException e) {
             e.printStackTrace();
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
         /**
          * catch (Exception e) { FacesContext context =
@@ -423,11 +423,16 @@ public class TemplateInicioBean implements Serializable {
 
         String mensaeje = iUsuarioService.cambiarContrasenia(idUsuario, contrasenia, nuevaContrasenia, confirmarContrasenia);
         if (mensaeje.equalsIgnoreCase("OK")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO ", "Se cambio la contraseñia con exito."));
+
             limpiar();
-            logout();
+           // logout();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dlgCambiarContrasenia.hide();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO ", "Se cambio la contraseñia con exito."));
+            return;
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR ", mensaeje));
+            return;
         }
     }
 

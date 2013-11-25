@@ -44,4 +44,15 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
             )
     List<DocDocumento> listarRoe013(@Param("idEmpleador") String idPersona,@Param("idUnidad") long idUnidad);
 
+
+    @Query(
+            "   select d "
+                    + " from DocDocumento d"
+                    + " where "
+                    + " d.perUnidad.perUnidadPK.idPersona=:idPersona "
+                    + " and d.perUnidad.perUnidadPK.idUnidad=:idUnidad"
+
+    )
+    List<DocDocumento> ObtenerRoes(@Param("idPersona") String idPersona,@Param("idUnidad") long idUnidad);
+
 }

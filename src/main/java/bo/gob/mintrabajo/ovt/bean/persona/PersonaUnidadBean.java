@@ -214,6 +214,7 @@ public class PersonaUnidadBean implements Serializable{
         unidadRegistro=new PerUnidad();
         cargar();
 
+        //si es falso mostrar
         mostrarBotonROE=generarReporteRoe();
         tieneROE=yaTieneROE();
         System.out.println("=====>>>>>>>>>>> mostrarBotonROE mostrarBotonROE "+mostrarBotonROE);
@@ -222,78 +223,116 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public boolean generarReporteRoe(){
-        boolean mostrarBotonROE=false;
+
 
         //validar datos de persona
         if(persona.getIdPersona()!=null){
             if(persona.getNombreRazonSocial()==null){
+
                   return false;
             }
 
             if(persona.getApellidoPaterno()==null){
+
                 return false;
             }
 
             if(persona.getApellidoMaterno()==null){
+
                 return false;
             }
             if(persona.getNroIdentificacion()==null){
+
                 return false;
             }
 
             if(persona.getCodLocalidad()==null){
+
                 return false;
             }
             if(persona.getTipoIdentificacion()==null){
+
                 return false;
             }
         }
 
         //validar datos de unidad
         if(unidad.getPerUnidadPK()!=null){
-            if(unidad.getNombreComercial()==null)
+            if(unidad.getNombreComercial()==null) {
+
                 return false;
-            if(unidad.getNombreComercial()==null)
+            }
+
+            if(unidad.getNombreComercial()==null){
+
                 return false;
-            if(unidad.getTipoEmpresa()==null)
+            }
+
+            if(unidad.getTipoEmpresa()==null)  {
+
                 return false;
-            if(unidad.getTipoSociedad()==null)
+            }
+
+            if(unidad.getTipoSociedad()==null) {
+
                 return false;
-            if(unidad.getFechaNacimiento()==null)
+            }
+
+            if(unidad.getFechaNacimiento()==null)  {
+
                 return false;
-            if(unidad.getNroFundaempresa()==null)
+            }
+
+            if(unidad.getNroFundaempresa()==null) {
+
                 return false;
-            if(unidad.getNroAfp()==null)
+            }
+
+            if(unidad.getNroAfp()==null)  {
+
                 return false;
-            if(unidad.getNombreComercial()==null)
+            }
+
+            if(unidad.getNombreComercial()==null)  {
+
                 return false;
+            }
+
         }
 
         //vallidad actividad declarada
-        if(actividadEconomicaPrincipal.getIdActividadEconomica()==null)
+        if(actividadEconomicaPrincipal.getIdActividadEconomica()==null){
+
             return false;
+        }
 
 
-                 System.out.print("===>> REP LEGAL "+repLegalPrincipal);
-        System.out.print("===>> direccionPrincipal"+direccionPrincipal);
-        System.out.print("===>> infolaboralL "+infolaboral);
 
         if(repLegalPrincipal!=null){
             //validar representante legal
-            if(repLegalPrincipal.getIdReplegal()==null)
+            if(repLegalPrincipal.getIdReplegal()==null) {
+
                 return false;
+            }
+
         }
 
          if(direccionPrincipal!=null){
              //validar direccion
-             if(direccionPrincipal.getIdDireccion().equals(null))
+             if(direccionPrincipal.getIdDireccion().equals(null)) {
+
                  return false;
+             }
+
          }
 
            if(infolaboral!=null){
                //validar informacion laboral
-               if(infolaboral.getIdInfolaboral()==null)
+               if(infolaboral.getIdInfolaboral()==null)  {
+
                    return false;
+               }
+
            }
 
 
@@ -360,6 +399,16 @@ public class PersonaUnidadBean implements Serializable{
 
     //PRIMERA VEZ
     public String generarCertificadoROE(){
+
+        if(!generarReporteRoe())
+        {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede generar el documento ROE, por que falta registrar datos."));
+
+            return null;
+        }
+
+
         DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
         docDefinicionPK.setCodDocumento("ROE010");
         docDefinicionPK.setVersion((short)1);
@@ -369,10 +418,12 @@ public class PersonaUnidadBean implements Serializable{
 
     //
     public boolean yaTieneROE(){
-        List<DocDocumento> docDocumentos = documentoService.listarRoe013(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad());
-        List<DocDocumento> lista = docDocumentos;
-        System.out.println("=====>>>>>>>>>>> TIENE ROE ");
+
+        List<DocDocumento> lista = documentoService.ObtenerRoes(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad());
+        System.out.println("=====>>>>>>>>>>> TIENE ROE unidad.getPerUnidadPK().getIdPersona() "+unidad.getPerUnidadPK().getIdPersona());
+        System.out.println("=====>>>>>>>>>>> TIENE ROE unidad.getPerUnidadPK().getIdUnidad() "+unidad.getPerUnidadPK().getIdUnidad());
         System.out.println("=====>>>>>>>>>>> TIENE ROE lista: "+lista.size());
+        System.out.println("=====>>>>>>>>>>> TIENE ROE lista es vacio: "+lista.isEmpty());
         if(lista!=null){
             if(!lista.isEmpty()){
                 if(lista.size()>=0){

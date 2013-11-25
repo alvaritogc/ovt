@@ -193,10 +193,13 @@ public class UsuarioService implements IUsuarioService{
       if (nuevaClave.equals(confirmarClave)){
           System.out.println("====>> BUSCANDO USUARIO "+email+"  CLAVE "+clave);
           System.out.println("====>> BUSCANDO nuevaClave "+nuevaClave+"  confirmarClave "+confirmarClave);
+          System.out.println("====>> BUSCANDO USR USR ");
           UsrUsuario usuario= usuarioRepository.findByUsuarioAndClave(email,clave);
+          System.out.println("====>> BUSCANDO USR USR usuario "+usuario);
           if(usuario!=null)  {
             if(clave.equals(nuevaClave)){
                mensaje="El valor de la nueva contraseña asociada debe ser distinta a la anterior contraseña.";
+                System.out.println("====>> BUSCANDO USR USR usuario mensaje"+mensaje);
              }else{
                 usuario.setClave(nuevaClave);
                 usuario= usuarioRepository.save(usuario);
@@ -222,10 +225,14 @@ public class UsuarioService implements IUsuarioService{
         String mensaje="";
         UsrUsuario usuario=usuarioRepository.findOne(idUsuario);
         //descencriptar la contrasenia del usuario
-        String claveDescencriptada=Util.decrypt(usuario.getClave());
+        //String claveDescencriptada=Util.decrypt(usuario.getClave());
+        clave=Util.encriptaMD5(clave);
+        confirmarClave=Util.encriptaMD5(confirmarClave);
+        String claveDescencriptada=    usuario.getClave();
+        nuevaClave=Util.encriptaMD5(nuevaClave);
         //verificar que la contrasenia sea la asociada a su cuenta
         if(!claveDescencriptada.equals(clave)){
-            mensaje="La contrasenia no esta asociada a su cuenta de usuario.";
+            mensaje="La contraseña no esta asociada a su cuenta de usuario.";
             return mensaje;
         }
                //Verificar que la nueva contrasenia sea distinta  a la antigua contrasenia
@@ -241,7 +248,8 @@ public class UsuarioService implements IUsuarioService{
             }
 
             //actualizar contrasenia (Encriptada)
-            usuario.setClave(Util.crypt(nuevaClave));
+        usuario.setClave(nuevaClave);
+            //usuario.setClave(Util.crypt(nuevaClave));
             usuarioRepository.save(usuario);
             mensaje="OK";
             return mensaje;
