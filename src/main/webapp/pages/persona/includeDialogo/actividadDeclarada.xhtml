@@ -32,18 +32,14 @@
         <br/>
         <h:panelGrid columns="2">
             <h:outputText value="Codigo de actividad economica:"/>
+            <p:selectOneMenu id="slcOneMenuCodActvEconomica1" value="#{personaUnidadBean.idActividadEconomicaPrincipal}"
+                             tabindex="1"
+                             style="text-transform: uppercase;">
+                <f:selectItem itemLabel="---Seleccione---" itemValue="" />
+                <f:selectItems value="#{personaUnidadBean.listaCodActividadEconomica}" />
+            </p:selectOneMenu>
 
 
-            <p:orderList value="#{personaUnidadBean.listaCodActividadEconomica}"
-                         var="actividad"
-
-
-                         itemValue="#{actividad}"
-                         controlsLocation="left">
-                <p:column style="width:75%;">
-                    #{actividad.label}
-                </p:column>
-            </p:orderList>
 
 
         </h:panelGrid>

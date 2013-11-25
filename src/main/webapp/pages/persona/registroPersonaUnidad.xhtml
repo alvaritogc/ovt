@@ -312,12 +312,16 @@
                                              readonly="true"/>
 
                                 <h:outputText value="Fecha del documento:"/>
-                                <p:calendar id="calendar" value="#{unidad.repLegal.fechaDocumento}"
-                                            effect="slideDown" tabindex="4"
-                                            style="width:210px;"
-                                            readonly="true">
+                                <p:inputText id="calendar"
+                                             value="#{unidad.repLegal.fechaDocumento}"
+                                             style="width: 210px;"
+                                             tabindex="4"
+                                             readonly="true">
+                                    <f:convertDateTime pattern="dd/mm/yyyy"/>
+                                 </p:inputText>
 
-                               </p:calendar>
+
+
 
                                 <h:outputText value="Departamento:"/>
                                 <p:inputText id="inputTxtTipoProcedencia2" value="#{unidad.repLegal.departamento}"
