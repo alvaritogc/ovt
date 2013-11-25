@@ -7,14 +7,15 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="./../template/templateInicio.xhtml">
     <ui:define name="content">
-        <h3>Administración de Usuarios</h3>
+        <h3>Gestión del funcionario</h3>
 
         <h:form id="usuarioFrm">
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
             <p:commandButton value="Nuevo" icon="ui-icon-circle-plus" action="#{usuarioAdministracionBean.instanciarUsuario}" oncomplete="nuevoDlg.show();" update=":nuevoFrm" immediate="true" />
             <p:dataTable id="usuarioTbl" value="#{usuarioAdministracionBean.usuarioLista}" var="usr" paginator="true"
-                         rows="15" paginatorPosition="bottom">
+                         rows="15" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
+                 currentPageReportTemplate="{currentPage} / {totalPages}">
                 <p:column headerText="Usuario">
                     <h:outputText value="#{usr.usuario}"/>
                 </p:column>
@@ -33,7 +34,7 @@
                 <p:column headerText="Estado Usuario">
                     <h:outputText value="#{usr.estadoUsuario}"/>
                 </p:column>
-                <p:column headerText="Acciones">
+                <p:column headerText="Acciones" style="width: 60px">
                     <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" oncomplete="edicionDlg.show()" update=":edicionFrm" immediate="true" style="color:#0066CC">
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
                     </p:commandButton>
@@ -46,10 +47,10 @@
         </h:form>
 
         <!-- Dialogo para nuevo usuario -->
-        <p:dialog modal="true" widgetVar="nuevoDlg" header="Nuevo Usuario" closable="false">
+        <p:dialog modal="true" widgetVar="nuevoDlg" header="Nuevo Usuario" closable="false" >
             <h:form id="nuevoFrm">
                 <p:messages id="messagesNuevo" showDetail="true" autoUpdate="false" closable="true" />
-                <p:panelGrid columns="2">
+                <p:panelGrid columns="2" style=" width: 420px">
                     <f:facet name="header">
                         DATOS DE PERSONA
                     </f:facet>
@@ -78,7 +79,7 @@
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>
 
-                    <p:outputLabel value="Tipo de identificacion :"/>
+                    <p:outputLabel value="Tipo de identificación :"/>
                     <p:selectOneMenu id="slcOneMenuTipoIdentificacion"
                                      value="#{usuarioAdministracionBean.personaSelected.tipoIdentificacion}"
                                      tabindex="5"
@@ -95,7 +96,7 @@
                         <f:selectItems value="#{usuarioAdministracionBean.localidadLista}" />
                     </p:selectOneMenu>
 
-                    <p:outputLabel value="Nro. de identificacion :"/>
+                    <p:outputLabel value="Nro. de identificación :"/>
                     <p:inputText id="inputTxtNroIdentificacion"
                                  value="#{usuarioAdministracionBean.personaSelected.nroIdentificacion}"
                                  tabindex="7"
@@ -152,7 +153,7 @@
                     </p:inputTextarea>
                 </p:panelGrid>
 
-                <p:panelGrid columns="2">
+                <p:panelGrid columns="2" style=" width: 420px">
                     <f:facet name="header">
                         DATOS DE USUARIO
                     </f:facet>
@@ -187,7 +188,7 @@
         <!-- Dialogo para edicion del usuario -->
         <p:dialog modal="true" widgetVar="edicionDlg" header="Editar Usuario" closable="false">
             <h:form id="edicionFrm">
-                <p:panelGrid columns="2">
+                <p:panelGrid columns="2"  style=" width: 420px; color: #333333; border-style: none !important;"  >
                     <f:facet name="header">
                         DATOS DE PERSONA
                     </f:facet>
@@ -216,7 +217,7 @@
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>
 
-                    <p:outputLabel for="tipoIdentificacionE" value="Tipo de identificacion :"/>
+                    <p:outputLabel for="tipoIdentificacionE" value="Tipo de identificación :"/>
                     <p:selectOneMenu id="tipoIdentificacionE"
                                      value="#{usuarioAdministracionBean.personaSelected.tipoIdentificacion}"
                                      tabindex="5"
@@ -233,7 +234,7 @@
                         <f:selectItems value="#{usuarioAdministracionBean.localidadLista}" />
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="identificacionE" value="Nro. de identificacion :"/>
+                    <p:outputLabel for="identificacionE" value="Nro. de identificación :"/>
                     <p:inputText id="identificacionE"
                                  value="#{usuarioAdministracionBean.personaSelected.nroIdentificacion}"
                                  tabindex="7"

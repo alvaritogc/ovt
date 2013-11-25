@@ -12,6 +12,7 @@ public interface IDominioService {
     public List<ParDominio> obtenerItemsDominio(String dominio);
     public ParDominio obtenerDominioPorNombreYValor(String dominio,String valor);
     public List<ParDominio> obtenerDominioLista();
+    public List<ParDominio> listaDominioPorOrdenDominioAndValor();
     public ParDominio editarGuardarDominio(ParDominio parDominio);
     public List<ParDominio> obtenerDominioPorNombrePadreYValorPadre(String dominioP,String valorP);
     public List<ParDominio> obtenerDominioPorNombreDistintoValor(String dominio,String valor);

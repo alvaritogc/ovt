@@ -43,4 +43,9 @@ public interface DominioRepository extends OpenJpaRepository<ParDominio, ParDomi
             + " and p.parDominio.parDominioPK.valor=:valorPadre"
             + " order by p.parDominioPK.valor asc" )
     List<ParDominio> obtenerDominioPorDominioPadreOrderByValor(@Param("dominioPadre")String dominioP,@Param("valorPadre")String valorP);
+    
+    @Query("select p "
+            + " from ParDominio p "
+            + " order by p.parDominioPK.idDominio asc, p.parDominioPK.valor asc" )
+    List<ParDominio> listaDominioPorOrdenDominioAndValor();
 }
