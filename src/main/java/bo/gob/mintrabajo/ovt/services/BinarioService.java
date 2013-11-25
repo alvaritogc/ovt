@@ -32,6 +32,11 @@ public class BinarioService implements IBinarioService{
         this.logImpresionRepository = logImpresionRepository;
     }
 
+
+    public List<DocBinario> listarPorIdDocumento(Long idDocumento){
+       return  binarioRepository.findByIdDocumento(idDocumento);
+    }
+
 //    @Override
     public DocBinario guardarBinario(DocBinario docBinariosEntity){
         return binarioRepository.save(docBinariosEntity);
