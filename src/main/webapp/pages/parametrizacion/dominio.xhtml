@@ -40,7 +40,7 @@
         </h:form>
 
 
-        <p:dialog widgetVar="dominioNuevo" modal="true" header="Nuevo dominio">
+        <p:dialog widgetVar="dominioNuevo" modal="true" header="Nuevo dominio" closable="false">
         <h:form id="dominioNuevoFrm">
             <h:panelGrid columns="2">
                 <p:outputLabel for="dominioN" value="Dominio" />
@@ -68,12 +68,12 @@
                     <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="modules" itemLabel="#{modules.idModulo} - #{modules.nombre}" itemValue="#{modules}" />
                 </p:selectOneMenu>
             </h:panelGrid>
-            <p:commandButton value="Guardar" action="#{dominioBean.guardarDominio}" update=":dominioNuevoFrm :dominioFrm:dominioTbl"/>
-            <p:commandButton value="Cancelar" onclick="dominioNuevo.hide();" immediate="true" />
+            <p:commandButton value="Guardar" action="#{dominioBean.guardarDominio}" update=":dominioNuevoFrm :dominioFrm:dominioTbl" icon="ui-icon-disk"/>
+            <p:commandButton value="Cancelar" onclick="dominioNuevo.hide();" immediate="true" icon="ui-icon-close"/>
         </h:form>
         </p:dialog>
 
-        <p:dialog widgetVar="dominioEdicion" modal="true" header="Editar dominio">
+        <p:dialog widgetVar="dominioEdicion" modal="true" header="Editar dominio" closable="false">
         <h:form id="dominioEdicionFrm">
             <h:panelGrid columns="2">
                 <p:outputLabel for="dominioE" value="Dominio" />
@@ -101,8 +101,8 @@
                     <f:selectItems value="#{usrModuloConverter.usrModuloConverterLista}" var="modules" itemLabel="#{modules.idModulo} - #{modules.nombre}" itemValue="#{modules}" />
                 </p:selectOneMenu>
             </h:panelGrid>
-            <p:commandButton value="Guardar" action="#{dominioBean.editarDominio}" update=":dominioEdicionFrm :dominioFrm:dominioTbl"/>
-            <p:commandButton value="Cancelar" onclick="dominoEdicion.hide();" immediate="true" />
+            <p:commandButton value="Guardar" action="#{dominioBean.editarDominio}" update=":dominioEdicionFrm :dominioFrm:dominioTbl" icon="ui-icon-disk"/>
+            <p:commandButton value="Cancelar" onclick="dominoEdicion.hide();" immediate="true" icon="ui-icon-close"/>
         </h:form>
         </p:dialog>
 

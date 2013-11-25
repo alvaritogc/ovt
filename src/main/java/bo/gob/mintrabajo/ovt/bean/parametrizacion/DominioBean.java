@@ -35,7 +35,8 @@ public class DominioBean {
 
     @PostConstruct
     public void cargaDominiosLista(){
-        dominioLista = iDominioService.obtenerDominioLista();
+        //dominioLista = iDominioService.obtenerDominioLista();
+        dominioLista = iDominioService.listaDominioPorOrdenDominioAndValor();
     }
 
     public void inicializaDominio(){

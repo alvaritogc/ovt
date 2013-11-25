@@ -124,6 +124,15 @@ public class DominioService implements IDominioService{
     public List<ParDominio> obtenerDominioLista(){
         return dominioRepository.findAll();
     }
+    @Override
+    public List<ParDominio> listaDominioPorOrdenDominioAndValor(){
+        try {
+            return dominioRepository.listaDominioPorOrdenDominioAndValor();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public ParDominio editarGuardarDominio(ParDominio parDominio){
