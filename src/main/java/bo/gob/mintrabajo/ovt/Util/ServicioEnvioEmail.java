@@ -171,11 +171,11 @@ public class ServicioEnvioEmail implements Serializable {
         // ** Se debe obtener todos estos Datos de un archivo property o de las paramétricas ** //TODO
         from=configuracion.get("from");
         urlRedireccion = configuracion.get("urlRedireccion");
+        subject=configuracion.get("subject");
         String sw=configuracion.get("sw");
 
         //registroConfirmacion
         if(sw.equals("0")){
-            subject=configuracion.get("subject_confirm");
             urlRedireccion = urlRedireccion.concat("/registroConfirmacion.xhtml?codeUnic=#codeUnic&codeNam=#codeNam");
             String usuPassword = Util.crypt(usuario.getClave());
             urlRedireccion = urlRedireccion.replace("#codeNam", usuario.getUsuario());
@@ -183,7 +183,6 @@ public class ServicioEnvioEmail implements Serializable {
         }
         //olvido contrasenia
         if(sw.equals("1")){
-            subject=configuracion.get("subject_recover");
             urlRedireccion = urlRedireccion.concat("/olvidoContrasenia.xhtml?codeUnic=#codeUnic&codeNam=#codeNam");
             //String usuPassword = Util.crypt(usuario.getClave());
             String usuPassword=usuario.getClave();
