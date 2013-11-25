@@ -60,7 +60,7 @@ public class ActividadService implements IActividadService {
     }
 
     @Override
-    public List<PerActividad>findByPerUnidad(PerUnidad unidad){
+    public List<PerActividad>obtenerPorIdPersonaYIdUnidad(PerUnidad unidad){
         Sort sort=new Sort(Sort.Direction.DESC,"idActividad");
         return actividadRepository.obtenerPorIdPersonaYIdUnidad(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad(), new PageRequest(0, 10,sort));
     }
