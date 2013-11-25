@@ -166,19 +166,19 @@
 
         </h:panelGrid>
     </h:form>
-    <p:dataList id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
+<!--    <p:dataList id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
                 var="unidad"
                 type="ordered"
                 columns="1" emptyMessage="No se encontraron resultados"
                 rows="5"  paginatorPosition="bottom"
-                paginator="true" rowIndexVar="index">
+                paginator="true" rowIndexVar="index"> -->
 
 
-<!--    <p:dataGrid id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
+    <p:dataGrid id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
                 var="unidad"
                 columns="1" emptyMessage="No se encontraron resultados"
                 rows="5"  paginatorPosition="bottom"
-                paginator="true" rowIndexVar="index">-->
+                paginator="true" rowIndexVar="index">
 
        <h:form id="frmdataGrid">
            <p:accordionPanel activeIndex="" >
@@ -419,8 +419,8 @@
              </p:tab>
            </p:accordionPanel>
          </h:form>
-    </p:dataList>
-       <!--</p:dataGrid>-->
+ <!--   </p:dataList>-->
+       </p:dataGrid>
     </ui:define>
 </ui:composition>
 </html>
