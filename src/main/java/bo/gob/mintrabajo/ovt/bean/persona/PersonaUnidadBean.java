@@ -576,7 +576,7 @@ public class PersonaUnidadBean implements Serializable{
         unidadRegistro.setRegistroBitacora(REGISTRO_BITACORA);
 
         unidadRegistro=iUnidadServiceModificar.save(unidadRegistro,persona);
-        //ini();
+        ini();
         if(unidadRegistro==null){
             RequestContext.getCurrentInstance().execute("dlgUnidad.show()");
         }else {
