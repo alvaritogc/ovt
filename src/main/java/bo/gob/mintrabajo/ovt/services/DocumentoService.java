@@ -195,6 +195,7 @@ public class DocumentoService implements IDocumentoService{
         }
     }
 
+    
     @Override
     public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK ,String registroBitacora){
        List<DocDocumento> lista=documentoRepository.listarRoe013(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
@@ -253,6 +254,34 @@ public class DocumentoService implements IDocumentoService{
         docGenerico.setIdDocumento(docDocumento);
         docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
         docGenericoRepository.save(docGenerico);
+        return docDocumento;
+    }
+    
+    
+    
+    public DocDocumento guardarActualizaRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora){
+        DocDefinicion docDefinicion=definicionRepository.findOne(new DocDefinicionPK("ROE013", (short) 1));
+        //
+        docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+        docDocumento.setDocDefinicion(docDefinicion);
+        
+        docDocumento.setCodEstado(documentoEstadoRepository.findOne(docDefinicion.getCodEstado().getCodEstado()));//Estado inicial
+        docDocumento.setFechaDocumento(new Date());
+        docDocumento.setFechaReferenca(new Date());
+        
+        docDocumento.setFechaBitacora(new Date());
+        docDocumento.setRegistroBitacora(registroBitacora);
+        docDocumento.setTipoMedioRegistro("DDJSM");
+        
+        
+        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("ROE012", (short) 1));
+        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getCodEstado().getCodEstado(), (short) 1));
+        docDocumento=documentoRepository.save(docDocumento);
+        //
+        docGenerico.setIdDocumento(docDocumento);
+        docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
+        docGenericoRepository.save(docGenerico);
+        //
         return docDocumento;
     }
 

@@ -17,4 +17,5 @@ public interface IDocumentoService {
     public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK ,String registroBitacora);
 
     public List<DocDocumento>  listarRoe013(String idPersona,long idUnidad);
+    public DocDocumento guardarActualizaRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora);
 }
