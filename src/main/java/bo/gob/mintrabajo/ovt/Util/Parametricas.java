@@ -13,6 +13,7 @@ public class Parametricas {
     public static final String ID_PARAMETRO_MENSAJERIA="SMTP";
     public static final String VALOR_CUENTA_EMAIL="CUENTA_EMAIL";
     public static final String VALOR_ASUNTO="ASUNTO";
+    public static final String VALOR_ASUNTO_RECUPERAR="ASUNTO_RECUPERAR";
     public static final String VALOR_URL="REDIRECCION_URL";
     public static final String VALOR_MENSAJE="MENSAJE";
     public static final String VALOR_PASSWORD="PASSWORD_CUENTA";

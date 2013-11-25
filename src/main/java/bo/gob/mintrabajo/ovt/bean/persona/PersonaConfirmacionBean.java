@@ -94,6 +94,11 @@ public class PersonaConfirmacionBean {
                 session.setAttribute("idUsuario", idUsuario);
                 UsrUsuario usuario = iUsuarioService.findById(idUsuario);
 
+                if(usuario.getEstadoUsuario().equals("A")) {
+                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "La cuenta ya esta confirmada, ingrese al sistema por el login principal del portal"));
+                  return null;
+                }
+
                 long fechaBitacoraLong = usuario.getFechaBitacora().getTime();
                 long fechaActualLong = new Date().getTime();
                 long diferenciaLong = fechaActualLong - fechaBitacoraLong;
@@ -130,7 +135,6 @@ public class PersonaConfirmacionBean {
                     iPersonaService.eliminarRegistro(usuario.getIdPersona().getIdPersona(), usuario);
                     return null;
                 }
-
             } catch (RuntimeException e) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Controle que el password ingresado sea el mismo del registro inicial"));
