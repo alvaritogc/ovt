@@ -327,7 +327,7 @@ public class TemplateInicioBean implements Serializable {
         } catch (RuntimeException e) {
             e.printStackTrace();
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
         /**
          * catch (Exception e) { FacesContext context =
