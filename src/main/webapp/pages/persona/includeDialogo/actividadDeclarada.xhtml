@@ -3,7 +3,12 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
-
+    <style type="text/css">
+        .ui-orderlist .ui-orderlist-list{
+            width: 700px;
+            height : 200px;
+        }
+    </style>
 <h:form id="frmActividadDeclarada">
     <p:growl showDetail="true" id="growlActividadDeclarada" />
     <p:panel id="pnlActividadDeclarada" >
@@ -27,14 +32,18 @@
         <br/>
         <h:panelGrid columns="2">
             <h:outputText value="Codigo de actividad economica:"/>
-            <p:selectOneMenu id="slcOneMenuCodActvEconomica1" value="#{personaUnidadBean.idActividadEconomicaPrincipal}"
-                             tabindex="1"
-                             style="text-transform: uppercase;">
-                <f:selectItem itemLabel="---Seleccione---" itemValue="" />
-                <f:selectItems value="#{personaUnidadBean.listaCodActividadEconomica}" />
-            </p:selectOneMenu>
 
 
+            <p:orderList value="#{personaUnidadBean.listaCodActividadEconomica}"
+                         var="actividad"
+
+
+                         itemValue="#{actividad}"
+                         controlsLocation="left">
+                <p:column style="width:75%;">
+                    #{actividad.label}
+                </p:column>
+            </p:orderList>
 
 
         </h:panelGrid>

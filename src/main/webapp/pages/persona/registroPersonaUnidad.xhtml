@@ -146,7 +146,7 @@
         </p:dialog>
 
                     <!-- ********************************************* -->
-                    <!-- **************   PANEL GRID ***************** -->
+                    <!-- **************   DATA GRID ***************** -->
                     <!-- ********************************************* -->
         <h2>Lista de Unidades </h2>
     <h:form id="frmAgregarUnidad">
@@ -166,11 +166,19 @@
 
         </h:panelGrid>
     </h:form>
-    <p:dataGrid id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
+    <p:dataList id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
                 var="unidad"
+                type="ordered"
                 columns="1" emptyMessage="No se encontraron resultados"
                 rows="5"  paginatorPosition="bottom"
                 paginator="true" rowIndexVar="index">
+
+
+<!--    <p:dataGrid id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
+                var="unidad"
+                columns="1" emptyMessage="No se encontraron resultados"
+                rows="5"  paginatorPosition="bottom"
+                paginator="true" rowIndexVar="index">-->
 
        <h:form id="frmdataGrid">
            <p:accordionPanel activeIndex="" >
@@ -411,7 +419,8 @@
              </p:tab>
            </p:accordionPanel>
          </h:form>
-       </p:dataGrid>
+    </p:dataList>
+       <!--</p:dataGrid>-->
     </ui:define>
 </ui:composition>
 </html>
