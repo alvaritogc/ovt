@@ -19,4 +19,5 @@ public interface IDocumentoService {
     public List<DocDocumento>  listarRoe013(String idPersona,long idUnidad);
 
     public List<DocDocumento>ObtenerRoes(String idPersona,long idUnidad);
+    public DocDocumento guardarActualizaRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora);
 }

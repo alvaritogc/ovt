@@ -66,6 +66,8 @@ public class EscritorioBean {
     private List<ParDocumentoEstado> listaDocumentoEstado;
     private String codEstadoFinal;
     private VperPersona vperPersona;
+    //
+    private boolean mostrarCambioDeEstados;
 
     @PostConstruct
     public void ini() {
@@ -121,7 +123,7 @@ public class EscritorioBean {
         try {
             docPlanilla=iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             docPlanilla=null;
         }
         
@@ -129,10 +131,14 @@ public class EscritorioBean {
         System.out.println("size: "+listaDocumentoEstado.size());
         if(!listaDocumentoEstado.isEmpty()){
             codEstadoFinal=listaDocumentoEstado.get(0).getCodEstado();
+            mostrarCambioDeEstados=true;
         }
         else{
             codEstadoFinal="";
+            mostrarCambioDeEstados=false;
         }
+        
+        
     }
     public String realizarCambioDeEstados(){
         parDocumentoEstado=iDocumentoEstadoService.findById(codEstadoFinal);
@@ -371,4 +377,13 @@ public class EscritorioBean {
     public void setiVperPersonaService(IVperPersonaService iVperPersonaService) {
         this.iVperPersonaService = iVperPersonaService;
     }
+
+    public boolean isMostrarCambioDeEstados() {
+        return mostrarCambioDeEstados;
+    }
+
+    public void setMostrarCambioDeEstados(boolean mostrarCambioDeEstados) {
+        this.mostrarCambioDeEstados = mostrarCambioDeEstados;
+    }
+
 }
