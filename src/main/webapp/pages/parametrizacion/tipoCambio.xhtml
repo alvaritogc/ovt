@@ -21,7 +21,7 @@
                     <h:outputLabel for="monedaCambio" value="Moneda cambio:" style="font-weight:bold"/>
                     <p:selectOneMenu id="monedaCambio"  value="#{tipoCambioBean.monedaCambio}">
                         <f:selectItems value="#{tipoCambioBean.listaMonedasCambio}" var="mc" itemLabel="#{mc.descripcion}" itemValue="#{mc.parDominioPK.valor}"/>
-                        <p:ajax update="tabla" immediate="true"  
+                        <p:ajax update="tabla"
                                 listener="#{tipoCambioBean.mostrarDatos}" />
                     </p:selectOneMenu>
                 </h:panelGrid>
