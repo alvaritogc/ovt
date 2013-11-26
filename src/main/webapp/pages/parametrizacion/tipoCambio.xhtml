@@ -9,7 +9,7 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../../pages/template/templateInicio.xhtml">
         <ui:define name="content">
-            <h2 class="form-signin-heading">Tipo de cambio</h2>
+            <h2 class="form-signin-heading">Tipos de cambio</h2>
             <h:form id="datos">
                 <h:panelGrid columns="4" style="alignment-adjust: middle" cellpadding="5">
                     <h:outputLabel for="monedaBase" value="Moneda base:" style="font-weight:bold; "/>
@@ -100,14 +100,14 @@
                                 disabled="#{!tipoCambioBean.accion}" pattern="dd/MM/yyyy"/> 
                     
                     <p:outputLabel for="monedaBaseForm" value="Moneda base:" style="font-weight:bold"/> 
-                    <p:selectOneMenu id="monedaBaseForm" value="#{tipoCambioBean.monedaBaseForm}" disabled="#{!tipoCambioBean.accion}">
+                    <p:selectOneMenu id="monedaBaseForm" value="#{tipoCambioBean.monedaBaseForm}" disabled="#{!tipoCambioBean.accion}" style="width: 242px;" >
                         <f:selectItems value="#{tipoCambioBean.listaMonedasBase}" var="mb" itemLabel="#{mb.descripcion}" itemValue="#{mb.parDominioPK.valor}"/>
                         <p:ajax update="monedaCambioForm"  
                                 listener="#{tipoCambioBean.mostrarLista}" />
                     </p:selectOneMenu>
                     
                     <p:outputLabel for="monedaCambioForm" value="Moneda cambio:" style="font-weight:bold"/>
-                    <p:selectOneMenu id="monedaCambioForm"  value="#{tipoCambioBean.monedaCambioForm}" disabled="#{!tipoCambioBean.accion}">
+                    <p:selectOneMenu id="monedaCambioForm"  value="#{tipoCambioBean.monedaCambioForm}" disabled="#{!tipoCambioBean.accion}" style="width: 242px;">
                         <f:selectItems value="#{tipoCambioBean.listaMonedasCambio}" var="mc" itemLabel="#{mc.descripcion}" itemValue="#{mc.parDominioPK.valor}"/>
                     </p:selectOneMenu>
                     

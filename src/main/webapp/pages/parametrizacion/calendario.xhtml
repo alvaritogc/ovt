@@ -53,7 +53,7 @@
                         <p:selectOneMenu id="gestion" value="#{calendarioBean.gestion}" >
                             <f:selectItems value="#{calendarioBean.listaAnio}"/>
                         </p:selectOneMenu>
-                        <p:commandButton value="Generar" icon="ui-icon-disk" actionListener="#{calendarioBean.guardar}" update=":growl :tabla"/>
+                        <p:commandButton value="Generar" icon="ui-icon-circle-arrow-e" actionListener="#{calendarioBean.guardar}" update=":growl :tabla"/>
                         <p:commandButton value="Cancelar" icon="ui-icon-close" onclick="dlgCalendario.hide();"
                                          immediate="true"/>
                     </h:panelGrid>
