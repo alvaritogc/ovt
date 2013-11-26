@@ -304,12 +304,9 @@ public class DocumentoService implements IDocumentoService{
 
 
     public long actualizarNumeroDeOrden(String codDocumento, short version) {
-        DocNumeracion numeracionBusqueda = new DocNumeracion(new DocNumeracionPK(codDocumento, version));
-//        numeracionBusqueda.setCodDocumento(codDocumento);
-//        numeracionBusqueda.setVersion(version);
         DocNumeracion numeracion;
         try {
-            numeracion = numeracionRepository.findByExample(numeracionBusqueda, null, null, -1, -1).get(0);
+            numeracion = numeracionRepository.findOne(new DocNumeracionPK(codDocumento, version));
         } catch (Exception e) {
             throw new RuntimeException("DocNumeracion no encontrado");
         }

@@ -4,11 +4,11 @@ import bo.gob.mintrabajo.ovt.entities.DocDefinicion;
 import bo.gob.mintrabajo.ovt.entities.DocDefinicionPK;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 @OpenJpaSettings
 public interface DefinicionRepository extends OpenJpaRepository<DocDefinicion, DocDefinicionPK> {
@@ -25,4 +25,15 @@ public interface DefinicionRepository extends OpenJpaRepository<DocDefinicion, D
             + " p.docDefinicionPK.version = :version")
     DocDefinicion obtenerDocDefinicion(@Param("codDocumento")String codDocumento, @Param("version")short version);
 
+    @Query(
+            "   select a "
+                    + " from DocDefinicion a"
+                    + " order by a.nombre asc "
+    )
+    List<DocDefinicion> listaPorOrdenDocDefinicion();
+
+    @Query(
+            "select a from DocDefinicion a where (a.docDefinicionPK.codDocumento like :cod and a.docDefinicionPK.version =:ver)"
+    )
+    List<DocDefinicion> listaCodDocumento(@Param("cod") String cod,@Param("ver") Short ver);
 }
