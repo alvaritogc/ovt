@@ -21,7 +21,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -129,10 +128,8 @@ public class PersonaService implements IPersonaService {
         return perPersonaEntity;
     }
 
-    public PerPersona buscarPorId(String id) {
-        PerPersona perPersonaEntity;
-        perPersonaEntity = personaRepository.findByAttribute("idPersona", id, -1, -1).get(0);
-        return perPersonaEntity;
+    public PerPersona buscarPorId(String idPersona) {
+        return personaRepository.findOne(idPersona);
     }
 
     @Override

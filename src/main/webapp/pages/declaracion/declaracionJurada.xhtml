@@ -524,7 +524,7 @@
 
 <div align="CENTER">
     <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada"
-                     actionListener="#{declaracionBean.guardaDocumentoPlanillaBinario}" update="formularioFrm messages"
+                     action="#{declaracionBean.guardaDocumentoPlanillaBinario}" update="formularioFrm messages"
                      disabled="#{declaracionBean.habilita}">
         <p:confirm header="Declaración jurada"
                    message="Si continua, procederá a realizar una declaración jurada. Asegúrese que los datos esten correctamente llenados. Deséa continuar?"
