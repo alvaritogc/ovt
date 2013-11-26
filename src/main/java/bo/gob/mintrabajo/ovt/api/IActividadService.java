@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface IActividadService {
     public PerActividad save(PerActividad actividad);
-    public List<PerActividad> findByPerUnidad(PerUnidad unidad);
+    public List<PerActividad> obtenerPorIdPersonaYIdUnidad(PerUnidad unidad);
 }

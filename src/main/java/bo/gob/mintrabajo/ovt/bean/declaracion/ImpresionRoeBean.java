@@ -128,11 +128,8 @@ public class ImpresionRoeBean {
         docGenerico.setCadena03(sdf.format(fechaDeposito));
         docGenerico.setCadena04(montoDeposito.toString());
         //
-        String idPersonaPorDocumento= documento.getPerUnidad().getPerPersona().getIdPersona();
-        vperPersona = iVperPersonaService.cargaVistaPersona(idPersonaPorDocumento);
-        Long idUsuarioEmpleador=iUsuarioService.obtenerUsuarioPorIdPersona(idPersonaPorDocumento).getIdUsuario();
 
-        documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico,idUsuario.toString(), docDefinicion, vperPersona, idUsuarioEmpleador);
+        documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico,idUsuario.toString(), docDefinicion);//, vperPersona, idUsuarioEmpleador);
 
         return "irEscritorio";
     }

@@ -150,7 +150,7 @@ public class DocumentoService implements IDocumentoService{
     }
     
     @Override
-    public DocDocumento guardarImpresionRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora, DocDefinicion docDefinicion, VperPersona vperPersona, Long idUsuarioEmpleador){
+    public DocDocumento guardarImpresionRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora, DocDefinicion docDefinicion){//, VperPersona vperPersona, Long idUsuarioEmpleador){
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setDocDefinicion(docDefinicion);
         
@@ -171,7 +171,7 @@ public class DocumentoService implements IDocumentoService{
         docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
         docGenericoRepository.save(docGenerico);
 
-        generaReporteROE(vperPersona, String.valueOf(idUsuarioEmpleador), String.valueOf(vperPersona.getIdPersona()));
+//        generaReporteROE(vperPersona, String.valueOf(idUsuarioEmpleador), String.valueOf(vperPersona.getIdPersona()));
 
         //Actualizar el atributo nroOtro de PerUnidad     por aquiroz
        PerUnidad unidad= unidadRepository.findOne(docDocumento.getPerUnidad().getPerUnidadPK());
@@ -431,7 +431,7 @@ public class DocumentoService implements IDocumentoService{
         parametros.put("escudoBolivia", servletContext.getRealPath("/")+"/images/escudo.jpg");
         parametros.put("logo",servletContext.getRealPath("/")+"/images/logoMIN.jpg");
         try {
-            generateReport("DDJJ", "/reportes/formularioLC1010V1.jasper");
+//            generateReport("DDJJ", "/reportes/formularioLC1010V1.jasper");
             return nombrePdf;
         } catch (Exception e) {
             e.printStackTrace();
@@ -474,7 +474,7 @@ public class DocumentoService implements IDocumentoService{
             //se asigna la imagen QR al reporte
             parametros.put("qr",servletContext.getRealPath("/")+"/images/"+file.getName());
             //manda al metodo generateReport()
-            generateReport(nombrePdf, "/reportes/roe.jasper");
+//            generateReport(nombrePdf, "/reportes/roe.jasper");
             return nombrePdf;
         } catch (Exception e) {
             e.printStackTrace();
@@ -484,7 +484,7 @@ public class DocumentoService implements IDocumentoService{
     }
 
 
-    public void generateReport(String nomArchivo, String jasper) throws ClassNotFoundException, IOException, JRException {
+    public String generateReport(String nomArchivo, String jasper, HashMap<String, Object> parametros) throws ClassNotFoundException, IOException, JRException {
         List<String> lista= new ArrayList<String>();
         lista.add("asd");
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
@@ -497,6 +497,7 @@ public class DocumentoService implements IDocumentoService{
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new File(nombrePdf));
         exporter.exportReport();
+        return nombrePdf;
     }
     
     @Override

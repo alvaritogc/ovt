@@ -108,7 +108,7 @@
 
               <!-- ******************** DIALOGOS ********************** -->
 
-        <p:dialog id="dlgUnidad"  widgetVar="dlgUnidad"  modal="true" width="430" height="450" resizable="false" closable="false">
+        <p:dialog id="dlgUnidad"  widgetVar="dlgUnidad"  modal="true" width="450" height="450" resizable="false" closable="false">
             <f:facet name="header">
                 <h:outputText id="txtDldUnidad" value="#{personaUnidadBean.tituloDialog}"/>
             </f:facet>
@@ -146,7 +146,7 @@
         </p:dialog>
 
                     <!-- ********************************************* -->
-                    <!-- **************   PANEL GRID ***************** -->
+                    <!-- **************   DATA GRID ***************** -->
                     <!-- ********************************************* -->
         <h2>Lista de Unidades </h2>
     <h:form id="frmAgregarUnidad">
@@ -156,7 +156,8 @@
                 <p:commandButton value="Agregar Unidad o Sucursal"
                                  action="#{personaUnidadBean.nuevo}"
                                  icon="ui-icon-plus"
-                                 update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
+                                 immediate="true"
+                                 update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad,:frmUnidad:pnlPersonaProcesar"
                                  onclick="PF('dlgUnidad').show()">
                     <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
                     <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
@@ -165,6 +166,14 @@
 
         </h:panelGrid>
     </h:form>
+<!--    <p:dataList id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
+                var="unidad"
+                type="ordered"
+                columns="1" emptyMessage="No se encontraron resultados"
+                rows="5"  paginatorPosition="bottom"
+                paginator="true" rowIndexVar="index"> -->
+
+
     <p:dataGrid id="dataGrid" value="#{personaUnidadBean.listaUnidad}"
                 var="unidad"
                 columns="1" emptyMessage="No se encontraron resultados"
@@ -275,45 +284,42 @@
                                 <h:outputText value="Nombre:"/>
                                 <p:inputText id="inputTxtNombreRepLegal2" value="#{unidad.repLegal.nombre}"
                                              style="width: 210px;"
-                                             tabindex="3"
                                              readonly="true"/>
 
                                 <h:outputText value="Ap. paterno: "/>
                                 <p:inputText id="inputTxtApPaterno2" value="#{unidad.repLegal.apellidoPaterno}"
                                              style="width: 210px;"
-                                             tabindex="3"
                                              readonly="true"/>
 
                                 <h:outputText value="Ap. materno: "/>
                                 <p:inputText id="inputTxtApMaterno2" value="#{unidad.repLegal.apellidoMaterno}"
                                              style="width: 210px;"
-                                             tabindex="3"
                                              readonly="true"/>
 
                                 <h:outputText value="Tipo de identificacion:"/>
                                 <p:inputText id="inputTxtTipoIdentificacion2" value="#{unidad.repLegal.tipoIdentificacion}"
                                              style="width: 210px;"
-                                             tabindex="3"
                                              readonly="true"/>
 
                                 <h:outputText value="Nro. de documento: "/>
                                 <p:inputText id="inputTxtNroDocumento2" value="#{unidad.repLegal.nroDocumento}"
                                              style="width: 210px;"
-                                             tabindex="3"
                                              readonly="true"/>
 
                                 <h:outputText value="Fecha del documento:"/>
-                                <p:calendar id="calendar" value="#{unidad.repLegal.fechaDocumento}"
-                                            effect="slideDown" tabindex="4"
-                                            style="width:210px;"
-                                            readonly="true">
+                                <p:inputText id="calendar"
+                                             value="#{unidad.repLegal.fechaDocumento}"
+                                             style="width: 210px;"
+                                             readonly="true">
+                                    <f:convertDateTime pattern="dd/mm/yyyy"/>
+                                 </p:inputText>
 
-                               </p:calendar>
+
+
 
                                 <h:outputText value="Departamento:"/>
                                 <p:inputText id="inputTxtTipoProcedencia2" value="#{unidad.repLegal.departamento}"
                                              style="width: 210px;"
-                                             tabindex="3"
                                              readonly="true"/>
                             </h:panelGrid>
                         </p:panel>
@@ -358,7 +364,6 @@
                                 <h:outputText value="Zona:"/>
                                 <p:inputText id="txtAreaZona" value="#{unidad.direccion.zonaUrbanizacion}"
                                              style="width: 220px;"
-                                             tabindex="11"
                                              required="true"  readonly="true"
                                              requiredMessage="El campo Zona es obligatorio."/>
 
@@ -371,7 +376,6 @@
                                                  cols="50"
                                                  autoResize="false"
                                                  style="width: 220px;"
-                                                tabindex="11"
                                                 required="true"  readonly="true"
                                                 requiredMessage="El campo Direccion es obligatorio."/>
 
@@ -386,7 +390,6 @@
                                                  cols="50"
                                                  autoResize="false"
                                                  style="width: 220px;"
-                                                 tabindex="11"
                                                  required="true"  readonly="true"
                                                  requiredMessage="El campo Referencia es obligatorio."/>
 
@@ -410,6 +413,7 @@
              </p:tab>
            </p:accordionPanel>
          </h:form>
+ <!--   </p:dataList>-->
        </p:dataGrid>
     </ui:define>
 </ui:composition>

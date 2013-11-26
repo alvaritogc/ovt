@@ -46,12 +46,14 @@
 
             <h:panelGrid   columns="2"  style="width: 680px;">
                         <h:outputText value="Natural-Juridica:"/>
-                        <p:selectBooleanCheckbox id="checkEsNatural" value="#{personaUnidadBean.persona.esNatural}"
+                        <p:selectBooleanCheckbox id="checkEsNatural"
+                                                 value="#{personaUnidadBean.persona.esNatural}"
                                                  disabled="true">
                         </p:selectBooleanCheckbox>
 
                         <p:outputLabel  value="Nombre o Razon social:"/>
-                        <p:inputText readonly="true" value="#{personaUnidadBean.persona.nombreRazonSocial}" style="width: 455px;"/>
+                        <p:inputText readonly="true"
+                                     value="#{personaUnidadBean.persona.nombreRazonSocial}" style="width: 455px;"/>
 
                         <h:outputText value="Ap. paterno:" />
                 <h:panelGrid columns="3" columnClasses="column2,column3">
@@ -112,7 +114,8 @@
 
 
                 <h:outputText value="Actividad declarada:"/>
-                <p:inputTextarea id="txtAreaActividadDeclarada" value="#{personaUnidadBean.unidad.actividadDeclarada}"
+                <p:inputTextarea id="txtAreaActividadDeclarada"
+                                 value="#{personaUnidadBean.unidad.actividadDeclarada}"
                                  rows="5"
                                  cols="50" autoResize="false"
                                  style="width: 455px;"
