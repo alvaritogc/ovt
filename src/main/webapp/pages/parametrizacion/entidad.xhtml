@@ -62,13 +62,13 @@
                 <h:panelGrid columns="2" cellpadding="5" id="pnlGridEntidad">  
                     <p:outputLabel for="descripcion" value="Descripción:" style="font-weight:bold"/>  
                     <p:inputText id="descripcion" value="#{entidadBean.entidad.descripcion}" required="true" 
-                                 requiredMessage="Debe ingresar el campo Descripcion" maxlength="120" style="text-transform: uppercase;">
+                                 requiredMessage="Debe ingresar el campo Descripcion" maxlength="120" style="text-transform: uppercase; width: 214px">
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>     
                     
-                    <p:outputLabel for="codigo" value="Codigo interno:" style="font-weight:bold"/>  
+                    <p:outputLabel for="codigo" value="Codigo interno:" style="font-weight:bold;"/>
                     <p:inputText id="codigo" value="#{entidadBean.entidad.codigo}" required="true" 
-                                 requiredMessage="Debe ingresar el campo Codigo" maxlength="20" style="text-transform: uppercase;">
+                                 requiredMessage="Debe ingresar el campo Codigo" maxlength="20" style="text-transform: uppercase; width: 214px">
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>
                     
