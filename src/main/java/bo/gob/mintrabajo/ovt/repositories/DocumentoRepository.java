@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.repositories;
 
 import bo.gob.mintrabajo.ovt.entities.DocDocumento;
 import bo.gob.mintrabajo.ovt.entities.UsrRecurso;
+import java.util.Date;
 import java.util.List;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
@@ -54,5 +55,15 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
 
     )
     List<DocDocumento> ObtenerRoes(@Param("idPersona") String idPersona,@Param("idUnidad") long idUnidad);
+    
+    @Query(
+            "   select d "
+            + " from DocDocumento d"
+            + " where "
+            + " d.fechaDocumento between :fechaDesde and :fechaHasta"
+            + " and d.docDefinicion.docDefinicionPK.codDocumento = 'LC1010'"
+            + " and d.perUnidad.perUnidadPK.idPersona = :idEmpleador  "
+            )
+    List<DocDocumento> listarPlanillaALaFecha(@Param("idEmpleador") String idEmpleador,@Param("fechaDesde") Date fechaDesde,@Param("fechaHasta") Date fechaHasta);
 
 }

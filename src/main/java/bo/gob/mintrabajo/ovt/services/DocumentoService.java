@@ -498,4 +498,9 @@ public class DocumentoService implements IDocumentoService{
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new File(nombrePdf));
         exporter.exportReport();
     }
+    
+    @Override
+    public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador,Date fechaDesde,Date fechaHasta){
+        return documentoRepository.listarPlanillaALaFecha(idEmpleador,fechaDesde, fechaHasta);
+    }
 }

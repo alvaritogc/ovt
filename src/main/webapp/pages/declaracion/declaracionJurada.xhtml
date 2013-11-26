@@ -17,10 +17,12 @@
 
 <h:form id="formularioFrm" enctype="multipart/form-data">
 <!--<h:commandButton value="QR" action="# {declaracionBean.generaQR}"/>-->
-<h:panelGroup rendered="#{declaracionBean.estaDeclarado}">
-    <h1>Usted ya realizo la declaracion jurada en este trimestre</h1>
+<h:panelGrid columns="1" rendered="#{declaracionBean.estaDeclarado}">
+<!--    <h1>Usted ya realizo la declaracion jurada en este trimestre</h1>-->
+<h1>Información</h1>
+<p:outputLabel value="#{declaracionBean.estaDeclaradoMensaje}" style="font-size: 13px;"/>
     <p:commandButton ajax="false" value="Ir a inicio" action="#{declaracionBean.irInicio}"/>
-</h:panelGroup>
+</h:panelGrid>
 <h:panelGroup id="panelForm" rendered="#{!declaracionBean.estaDeclarado}">
 <p:panelGrid id="gridForm">
 <f:facet name="header">

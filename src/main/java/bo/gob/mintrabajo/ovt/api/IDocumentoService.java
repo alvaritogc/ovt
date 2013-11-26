@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.api;
 
 import bo.gob.mintrabajo.ovt.entities.*;
+import java.util.Date;
 
 import java.util.List;
 
@@ -20,4 +21,5 @@ public interface IDocumentoService {
 
     public List<DocDocumento>ObtenerRoes(String idPersona,long idUnidad);
     public DocDocumento guardarActualizaRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora);
+    public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador,Date fechaDesde,Date fechaHasta);
 }

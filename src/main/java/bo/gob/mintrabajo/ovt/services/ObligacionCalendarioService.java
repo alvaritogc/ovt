@@ -152,5 +152,10 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
     public ParObligacionCalendario findById(Long id){
         return obligacionCalendarioRepository.findOne(id);
     }
+    
+    @Override
+    public ParObligacionCalendario buscarPorPlatriALaFecha(){
+        return obligacionCalendarioRepository.listarPlanillaTrimPorFechaHastaFechaPlazo(new Date());
+    }
 
 }

@@ -14,26 +14,31 @@ public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObl
 
     @Query(
             "   select a "
-                    + " from ParObligacionCalendario a"
-                    + " where "
-                    + " :fecha between a.fechaHasta and a.fechaPlazo "
-    )
+            + " from ParObligacionCalendario a"
+            + " where "
+            + " :fecha between a.fechaHasta and a.fechaPlazo ")
     List<ParObligacionCalendario> buscarPorFecha(@Param("fecha") Date fechaActual);
-    
+
     List<ParObligacionCalendario> findByCodObligacion_CodObligacion(String codObligacion);
+
     @Query(
             "   select a "
-                    + " from ParObligacionCalendario a"
-                    + " order by a.codObligacion.descripcion asc "
-    )
+            + " from ParObligacionCalendario a"
+            + " order by a.codObligacion.descripcion asc ")
     List<ParObligacionCalendario> listaPorOrdenDescripcionDeObligacion();
 
     @Query(
             "   select a "
-                    + " from ParObligacionCalendario a"
-                    + " where "
-                    + " a.parCalendario.parCalendarioPK.gestion like :gestion"
-    )
+            + " from ParObligacionCalendario a"
+            + " where "
+            + " a.parCalendario.parCalendarioPK.gestion like :gestion")
     List<ParObligacionCalendario> listarPorGestion(@Param("gestion") String gestion);
 
+    @Query(
+            "   select a "
+            + " from ParObligacionCalendario a"
+            + " where "
+            + " a.codObligacion.codObligacion= 'PLATRI' "
+            + " and :fecha between a.fechaHasta and a.fechaPlazo")
+    ParObligacionCalendario listarPlanillaTrimPorFechaHastaFechaPlazo(@Param("fecha") Date fecha);
 }

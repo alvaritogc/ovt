@@ -103,6 +103,7 @@ public class declaracionBean implements Serializable {
     private String nombres[]= new String[3];
     //
     private boolean estaDeclarado;
+    private String estaDeclaradoMensaje;
     private Long idEntidadSalud;
 
     private boolean verificaValidacion;
@@ -225,9 +226,24 @@ public class declaracionBean implements Serializable {
     }
 
     public void verEstadoPlanilla(){
+        ParObligacionCalendario parObligacionCalendario;
+        try {
+            parObligacionCalendario=iObligacionCalendarioService.buscarPorPlatriALaFecha();
+        } catch (Exception e) {
+            parObligacionCalendario=null;
+        }
+        if(parObligacionCalendario==null){
+            estaDeclaradoMensaje="Solo puede realizar la Declaración Jurada dentro del plazo establecido.";
+            estaDeclarado=true;
+            return;
+        }
+        
+        
+        
         List<DocDocumento> listaDocumentos;
         try{
-            listaDocumentos=iDocumentoService.listarPorPersona(idPersona);
+            //listaDocumentos=iDocumentoService.listarPorPersona(idPersona);
+            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
             if(listaDocumentos==null){
                 listaDocumentos=new ArrayList<DocDocumento>();
             }
@@ -242,6 +258,7 @@ public class declaracionBean implements Serializable {
                     || documento.getCodEstado().getDescripcion().toLowerCase().equals("observado")
                     || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")) && parametro==1){
                 estaDeclarado=true;
+                estaDeclaradoMensaje="Usted ya realizo la declaracion jurada.";
             }
         }
     }
@@ -1134,5 +1151,13 @@ public class declaracionBean implements Serializable {
 
     public void setiCalendarioService(ICalendarioService iCalendarioService) {
         this.iCalendarioService = iCalendarioService;
+    }
+
+    public String getEstaDeclaradoMensaje() {
+        return estaDeclaradoMensaje;
+    }
+
+    public void setEstaDeclaradoMensaje(String estaDeclaradoMensaje) {
+        this.estaDeclaradoMensaje = estaDeclaradoMensaje;
     }
 }
