@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean;
 
+import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
@@ -124,7 +125,7 @@ public class EscritorioBean {
 
     public String download() {
         session.setAttribute("idDocumento", docDocumento.getIdDocumento());
-        return "irDownload";
+        return "irDescargarPlanillas";
     }
 
     public String irRealizarCambioDeEstados() {
@@ -391,7 +392,7 @@ public class EscritorioBean {
         }
 
         if(verificaReporte==true){
-            DocLogImpresion docLogImpresion = new DocLogImpresion(iUtilsService.valorSecuencia("DOC_LOG_IMPRESION_SEC"), "IMPRESION", new Date(), usuario.getUsuario());
+            DocLogImpresion docLogImpresion = new DocLogImpresion(iUtilsService.valorSecuencia("DOC_LOG_IMPRESION_SEC"), Dominios.DOC_TIPO_IMPRESION, new Date(), usuario.getUsuario());
             docLogImpresion.setIdDocumento(docDocumento);
             iLogImpresionService.guarda(docLogImpresion);
         }
@@ -441,14 +442,6 @@ public class EscritorioBean {
         session.setAttribute("idDocumento", docDocumento.getIdDocumento());
         return "irEdicionRoe";
     }
-
-//
-//    public String download(){
-//        session.setAttribute("idDocumento", docDocumentoEntity.getIdDocumento());
-//        return "irDownload";
-//    }
-
-
 
     public IUsuarioService getiUsuarioService() {
         return iUsuarioService;

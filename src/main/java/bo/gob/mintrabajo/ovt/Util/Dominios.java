@@ -41,4 +41,6 @@ public class Dominios {
     public static final String PAR_TIPO_DIRECCION_OFICINA="OFI";
     public static final String PAR_TIPO_DIRECCION_SUCURSAL="SUC";
     public static final String PAR_TIPO_DIRECCION_DOMICILIO="DOM";
+    public static final String DOC_TIPO_IMPRESION="IMPRESION";
+    public static final String DOC_TIPO_DOWNLOAD="DOWNLOAD";
 }
