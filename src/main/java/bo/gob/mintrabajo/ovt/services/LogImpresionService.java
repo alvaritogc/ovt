@@ -7,7 +7,6 @@ import bo.gob.mintrabajo.ovt.repositories.LogImpresionRepository;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.List;
 
 @Named("logImpresionService")
 @TransactionAttribute
@@ -19,13 +18,7 @@ public class LogImpresionService implements ILogImpresionService {
         this.logImpresionRepository = logImpresionRepository;
     }
 
-//    @Override
-    public void guarda(List<DocLogImpresion> lista){
-        Long a=2000L;
-        for (DocLogImpresion docLogImpresionEntity:lista){
-             docLogImpresionEntity.setIdDoclogimpresion(a++);
-            logImpresionRepository.save(docLogImpresionEntity);
-        }
-
+    public DocLogImpresion guarda(DocLogImpresion docLogImpresion){
+        return logImpresionRepository.save(docLogImpresion);
     }
 }

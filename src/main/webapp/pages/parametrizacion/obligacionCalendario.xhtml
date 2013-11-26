@@ -9,7 +9,7 @@
     <ui:composition template="../../pages/template/templateInicio.xhtml">
         <ui:define name="content">
             <h:form id="tablaCalendario">
-                <h2 class="form-signin-heading">Obligación Calendario</h2>
+                <h2 class="form-signin-heading">Calendario de obligaciones</h2>
                 <!--  Busqueda segun obligacion -->
                 <h:panelGrid columns="4" style="alignment-adjust: middle" cellpadding="5">
                     <h:outputLabel for="obligacion" value="Obligación:" style="font-weight:bold"/>  
@@ -31,7 +31,7 @@
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
                              currentPageReportTemplate="{currentPage} / {totalPages}">
 
-                    <p:column headerText="Descripcion obligacion" >   
+                    <p:column headerText="Descripción obligación" >
                         <h:outputText value="#{calendario.codObligacion.descripcion}" />  
                     </p:column>
 
@@ -39,7 +39,7 @@
                         <h:outputText value="#{calendario.tipoCalendario}" />  
                     </p:column>  
 
-                    <p:column headerText="Gestion">    
+                    <p:column headerText="Gestión">
                         <h:outputText value="#{calendario.parCalendario.parCalendarioPK.gestion}" />  
                     </p:column>  
                     
@@ -84,7 +84,7 @@
                     <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
                </p:confirmDialog>
                 
-                <p:dialog id="modalDialog" header="Atencion" widgetVar="dlgMensaje" width="350" modal="true">  
+                <p:dialog id="modalDialog" header="Atención" widgetVar="dlgMensaje" width="350" modal="true">
                     <span class="ui-icon ui-icon-alert"></span>
                     <h:outputText value="El registro esta siendo usado en otro lugar, por lo que no se puede eliminar." />  
                 </p:dialog>

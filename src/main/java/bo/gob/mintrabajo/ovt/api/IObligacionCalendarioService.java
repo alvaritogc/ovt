@@ -17,5 +17,6 @@ public interface IObligacionCalendarioService {
 
     public List<ParObligacionCalendario> listaObligacionCalendarioPorGestion(String gestionActual);
     public ParObligacionCalendario findById(Long id);
+    public ParObligacionCalendario buscarPorPlatriALaFecha();
 
 }

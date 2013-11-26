@@ -74,7 +74,7 @@
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
                         </p:commandButton>
 
-                        <h:commandLink target="_blank" action="#{escritorioBean.irImprimirDocumento}" title="Imprimir documento">
+                        <h:commandLink target="_blank" action="irEscritorio" title="Imprimir documento">
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
                             <h:graphicImage  style="float: left;width:25px;height: 23px;padding-right: 3px; " value="/images/print.png" />
                         </h:commandLink>
@@ -130,7 +130,13 @@
                         </h:panelGrid>
                     </center>
                     <br/>
-                    <h:panelGrid columns="1" style="text-align: center;" rendered="#{escritorioBean.esInterno}">
+                    <center>
+                    <h:panelGrid columns="2"  rendered="#{escritorioBean.esInterno}">
+                        <p:outputLabel value="Observación: " rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:inputText value="#{escritorioBean.observacionLogEstado}" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
                         <p:commandButton value="Realizar cambio de estado" 
                                          update="idEscritorio"
                                          rendered="#{escritorioBean.mostrarCambioDeEstados}"
@@ -138,6 +144,8 @@
                         <p:outputLabel value="No se encontraron transiciones siguientes" 
                                        rendered="#{!escritorioBean.mostrarCambioDeEstados}"/>
                     </h:panelGrid>
+                        </center>
+                    <br/>
                 </p:dialog>  
 
             </h:form>

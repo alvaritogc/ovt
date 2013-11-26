@@ -107,46 +107,54 @@ public class DocumentoService implements IDocumentoService{
 
     
      @Override
-    public DocDocumento guardarCambioEstado(DocDocumento documento, ParDocumentoEstado codEstadoFinal,String idUsuario) {
-//        DocLogEstado logEstado=new DocLogEstado();
-//        logEstado.setIdDocumento(documento);
-//        logEstado.setCodEstadoFinal(codEstadoFinal);
-//        logEstado.setCodEstadoInicial(documento.getCodEstado());
-//        logEstado.setRegistroBitacora(idUsuario);
-//        Date date=new Date();
-//        logEstado.setFechaBitacora(new Timestamp(date.getTime()));
-//        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
-//        logEstadoRepository.save(logEstado);
+    public DocDocumento guardarCambioEstado(DocDocumento documento, String codEstadoFinal,String idUsuario,String observacionLogEstado) {
+        DocLogEstado logEstado=new DocLogEstado();
+        logEstado.setIdDocumento(documentoRepository.findOne(documento.getIdDocumento()));
+        logEstado.setCodEstadoFinal(documentoEstadoRepository.findOne(codEstadoFinal));
+        logEstado.setCodEstadoInicial(documentoEstadoRepository.findOne(documento.getCodEstado().getCodEstado()));
+        logEstado.setRegistroBitacora(idUsuario);
+        logEstado.setFechaBitacora(new Date());
+        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
+        logEstado.setObservacion(observacionLogEstado);
+        logEstadoRepository.save(logEstado);
         //
-        documento.setCodEstado(codEstadoFinal);
+        documento.setCodEstado(documentoEstadoRepository.findOne(codEstadoFinal));
         return documentoRepository.save(documento);
     }
 
-    public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles){
+    public Long[] guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles){
+        int i=0;
+        Long ids[]=new Long[10];
         //guarda documento
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento=documentoRepository.save(docDocumento);
+        ids[i++]=docDocumento.getIdDocumento();
 
         //guarda planilla
         docPlanilla.setIdDocumento(docDocumento);
         docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
         docPlanilla=planillaRepository.save(docPlanilla);
+        ids[i++]=docPlanilla.getIdPlanilla();
 
         //guardaPlanillaDetalles
-        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
-            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
-            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_DETALLE_SEC"));
-            planillaDetalleRepository.save(elemPlanillaDetalle);
-        }
+//        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
+//            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
+//            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_DETALLE_SEC"));
+//            elemPlanillaDetalle=planillaDetalleRepository.save(elemPlanillaDetalle);
+//            ids=elemPlanillaDetalle.getIdPlanillaDetalle();
+//        }
 
         //guarda binarios
         int idBinario= 1;
         for(DocBinario elementoBinario:listaBinarios){
             elementoBinario.setDocDocumento(docDocumento);
             elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
-            binarioRepository.save(elementoBinario);
+            elementoBinario = binarioRepository.save(elementoBinario);
+            ids[i++]=elementoBinario.getDocBinarioPK().getIdBinario();
+            ids[i++]=elementoBinario.getDocBinarioPK().getIdDocumento();
         }
+        return ids;
     }
     
     @Override
@@ -498,5 +506,10 @@ public class DocumentoService implements IDocumentoService{
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new File(nombrePdf));
         exporter.exportReport();
         return nombrePdf;
+    }
+    
+    @Override
+    public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador,Date fechaDesde,Date fechaHasta){
+        return documentoRepository.listarPlanillaALaFecha(idEmpleador,fechaDesde, fechaHasta);
     }
 }

@@ -1,16 +1,20 @@
 package bo.gob.mintrabajo.ovt.bean.parametrizacion;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IEntidadService;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IUnidadService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
+import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
 import bo.gob.mintrabajo.ovt.entities.ParDominio;
+import bo.gob.mintrabajo.ovt.entities.ParDominioPK;
 import bo.gob.mintrabajo.ovt.entities.ParEntidad;
 import bo.gob.mintrabajo.ovt.entities.PerPersona;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
+import com.google.common.cache.Cache;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -70,10 +74,17 @@ public class EntidadBean implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        
+        
         listaEntidad =new ArrayList<ParEntidad>();
         listaEntidad= iEntidadService.listaEntidadPorOrden();
         listaDominio = new ArrayList<ParDominio>();
         listaDominio = iDominioService.obtenerItemsDominio("TENTIDAD");
+    }
+    
+    public String descripcionEntidad(String valor){
+        return Util.descripcionDominio("TENTIDAD", valor);
     }
     
     public void confirmaEliminar(){  
@@ -93,7 +104,7 @@ public class EntidadBean implements Serializable{
     
     public void nuevo(){
         entidad=new ParEntidad();
-        evento=false;
+        evento=false;       
     }
     
     public void guardarModificar(){

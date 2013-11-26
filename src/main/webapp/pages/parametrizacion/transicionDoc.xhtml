@@ -87,8 +87,8 @@ Copyright 2013 lvaldez.
                     <h:panelGrid columns="2" cellpadding="5">
                         <p:outputLabel for="codigo" value="Codigo documento:" style="font-weight:bold"/>  
                         <p:selectOneMenu id="codigo"  value="#{transicionBean.codigo}" disabled="#{transicionBean.evento}"
-                                         required="true" requiredMessage="Debe ingresar el codigo de transicion">
-                            <f:selectItem itemLabel="-- Seleccione estado inicial --" itemValue="" />
+                                         required="true" requiredMessage="Debe seleccionar el documento">
+                            <f:selectItem itemLabel="-- Seleccione documento --" itemValue="" />
                             <f:selectItems value="#{transicionBean.listaDefinicion}" var="d" itemLabel="#{d.nombre}" itemValue="#{d.docDefinicionPK.codDocumento}"/>
                             <p:ajax update="version"    
                                     listener="#{transicionBean.mostrarVersion}" />
@@ -96,7 +96,7 @@ Copyright 2013 lvaldez.
                         
                         <p:outputLabel for="version" value="Version:" style="font-weight:bold"/> 
                         <p:selectOneMenu id="version"  value="#{transicionBean.version}" disabled="#{transicionBean.evento}"
-                                         required="true" requiredMessage="Debe ingresar la version">
+                                         required="true" requiredMessage="Debe seleccionar la version">
                             <f:selectItems value="#{transicionBean.listaVersion}" var="v" itemLabel="#{v.docDefinicionPK.version}" itemValue="#{v.docDefinicionPK.version}"/>
                         </p:selectOneMenu>
                         
