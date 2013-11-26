@@ -25,7 +25,7 @@ public interface DireccionRepository extends OpenJpaRepository<PerDireccion, Lon
     @Query("select d " +
             "   from PerDireccion d " +
             "   where d.perUnidad.perUnidadPK.idPersona = :idPersona " +
-            "    ")
+            "         and lower(d.estado) = lower('A')")
     List<PerDireccion>obtenerPorIdPersona(@Param("idPersona") String idPersona, Pageable pageable);
 
     List<PerDireccion> findByPerUnidad(@Param("unidad") PerUnidad unidad, Pageable pageable);

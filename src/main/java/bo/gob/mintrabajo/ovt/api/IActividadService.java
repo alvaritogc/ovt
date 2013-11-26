@@ -9,6 +9,6 @@ import java.util.List;
 
 
 public interface IActividadService {
-    public PerActividad save(PerActividad actividad);
+    public PerActividad save(PerActividad actividad,PerUnidad unidad);
     public List<PerActividad> obtenerPorIdPersonaYIdUnidad(PerUnidad unidad);
 }

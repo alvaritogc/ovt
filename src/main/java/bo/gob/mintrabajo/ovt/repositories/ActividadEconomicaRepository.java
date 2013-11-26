@@ -12,5 +12,6 @@ import java.util.List;
 @OpenJpaSettings
 public interface ActividadEconomicaRepository extends OpenJpaRepository<ParActividadEconomica, Long>{
 
+    ParActividadEconomica findByIdActividadEconomica(@Param("idActividadEconomica") Long idActividadEconomica);
 
 }

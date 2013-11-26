@@ -24,6 +24,8 @@ import java.util.List;
 
 import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_ESTADO;
 import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_ACTIVO;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_INACTIVO;
+import static bo.gob.mintrabajo.ovt.Util.Sequencias.PER_DIRECCION_SEC;
 
 /**
  *
@@ -48,15 +50,35 @@ public class DireccionService implements IDireccionService{
 
 
     @Override
-    public PerDireccion save(PerDireccion direccion) {
+    public PerDireccion save(PerDireccion direccion,String registroBitacora,PerUnidad unidad) {
 
         if(direccion.getIdDireccion()==null){
             //Nuevo
-            direccion.setIdDireccion(this.obtenerSecuencia("PER_DIRECCION_SEC"));
+            direccion.setIdDireccion(this.obtenerSecuencia(PER_DIRECCION_SEC));
+            direccion.setPerUnidad(unidad);
+            direccion.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
+            direccion.setFechaBitacora(new Date());
+            direccion.setRegistroBitacora(registroBitacora);
+           return direccionRepository.save(direccion);
+        }else{
+            // - Cambia el estado de direccion
+            PerDireccion direccionHistorico=direccionRepository.findOne(direccion.getIdDireccion());
+            direccionHistorico.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_INACTIVO).getParDominioPK().getValor());
+            direccionHistorico.setFechaBitacora(new Date());
+            direccionHistorico.setRegistroBitacora(registroBitacora);
+            direccionRepository.save(direccionHistorico);
+
+            //- Crear un nuevo registro con los nuevos cambios
+            direccion.setIdDireccion(this.obtenerSecuencia(PER_DIRECCION_SEC));
+            direccion.setPerUnidad(unidad);
+            direccion.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
+            direccion.setFechaBitacora(new Date());
+            direccion.setRegistroBitacora(registroBitacora);
+            return direccionRepository.save(direccion);
         }
-        direccion.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
+/*        direccion.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
         direccion.setFechaBitacora(new Date());
-        return direccionRepository.save(direccion);
+        return direccionRepository.save(direccion);*/
 
     }
 
@@ -72,6 +94,9 @@ public class DireccionService implements IDireccionService{
          return direccionRepository.obtenerPorIdPersonaYIdUnidad(idPersona, idUnidad, new PageRequest(0, 10,sort));
      }
 
+    /*
+     *Obtiene una lista con las direcciones activas de una persona
+     */
     public List<PerDireccion>obtenerPorIdPersona(String idPersona ){
         Sort sort=new Sort(Sort.Direction.DESC,"idDireccion");
         return direccionRepository.obtenerPorIdPersona(idPersona, new PageRequest(0, 10,sort));
