@@ -78,6 +78,7 @@ public class EscritorioBean {
     private boolean mostrarCambioDeEstados;
 
     private HashMap<String,Object> parametros = new HashMap<String,Object>();
+    private String observacionLogEstado;
 
     @PostConstruct
     public void ini() {
@@ -147,13 +148,13 @@ public class EscritorioBean {
             codEstadoFinal="";
             mostrarCambioDeEstados=false;
         }
-        
+        observacionLogEstado="";
         
     }
     public String realizarCambioDeEstados(){
         parDocumentoEstado=iDocumentoEstadoService.findById(codEstadoFinal);
         //
-        docDocumento=iDocumentoService.guardarCambioEstado(docDocumento, parDocumentoEstado, idPersona);
+        docDocumento=iDocumentoService.guardarCambioEstado(docDocumento, codEstadoFinal, idPersona,observacionLogEstado);
         //
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("cambioEstadoDialog.hide()");
@@ -607,4 +608,13 @@ public class EscritorioBean {
     public void setiDocGenericoService(IDocGenericoService iDocGenericoService) {
         this.iDocGenericoService = iDocGenericoService;
     }
+
+    public String getObservacionLogEstado() {
+        return observacionLogEstado;
+    }
+
+    public void setObservacionLogEstado(String observacionLogEstado) {
+        this.observacionLogEstado = observacionLogEstado;
+    }
+
 }

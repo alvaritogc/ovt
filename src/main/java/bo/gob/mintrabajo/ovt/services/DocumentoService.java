@@ -107,18 +107,18 @@ public class DocumentoService implements IDocumentoService{
 
     
      @Override
-    public DocDocumento guardarCambioEstado(DocDocumento documento, ParDocumentoEstado codEstadoFinal,String idUsuario) {
-//        DocLogEstado logEstado=new DocLogEstado();
-//        logEstado.setIdDocumento(documento);
-//        logEstado.setCodEstadoFinal(codEstadoFinal);
-//        logEstado.setCodEstadoInicial(documento.getCodEstado());
-//        logEstado.setRegistroBitacora(idUsuario);
-//        Date date=new Date();
-//        logEstado.setFechaBitacora(new Timestamp(date.getTime()));
-//        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
-//        logEstadoRepository.save(logEstado);
+    public DocDocumento guardarCambioEstado(DocDocumento documento, String codEstadoFinal,String idUsuario,String observacionLogEstado) {
+        DocLogEstado logEstado=new DocLogEstado();
+        logEstado.setIdDocumento(documentoRepository.findOne(documento.getIdDocumento()));
+        logEstado.setCodEstadoFinal(documentoEstadoRepository.findOne(codEstadoFinal));
+        logEstado.setCodEstadoInicial(documentoEstadoRepository.findOne(documento.getCodEstado().getCodEstado()));
+        logEstado.setRegistroBitacora(idUsuario);
+        logEstado.setFechaBitacora(new Date());
+        logEstado.setIdLogestado(utils.valorSecuencia("DOC_LOG_ESTADO_SEC"));
+        logEstado.setObservacion(observacionLogEstado);
+        logEstadoRepository.save(logEstado);
         //
-        documento.setCodEstado(codEstadoFinal);
+        documento.setCodEstado(documentoEstadoRepository.findOne(codEstadoFinal));
         return documentoRepository.save(documento);
     }
 
