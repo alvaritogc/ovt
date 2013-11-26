@@ -40,9 +40,9 @@ public class DefinicionBean {
     private static final Logger logger = LoggerFactory.getLogger(DefinicionBean.class);
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private String idUsuario;
-    
+
     private DocDefinicion docDefinicion=new DocDefinicion();
-    
+
     private String codDocumento;
     private Short version;
     private List<DocDefinicion> listaDocDefinicion;
@@ -56,7 +56,7 @@ public class DefinicionBean {
     private PerPersona perPersona;
     private List<SelectItem>listaTipoGrupoDocumento;
     private String codEstado;
-    
+
     @PostConstruct
     public void init(){
         //docDefinicion = new DocDefinicion();
@@ -68,9 +68,9 @@ public class DefinicionBean {
         llenarListaOrden();
         //listaDocDefinicion=iDefinicionService.listaPorOrdenDocDefinicion();
         this.cargar();
-        
+
     }
-    
+
     /*
  **
  * Este metodo se utliza para cargar las listas
@@ -108,7 +108,7 @@ public class DefinicionBean {
         this.listaTipoGrupoDocumento = listaTipoGrupoDocumento;
     }
 
-    
+
     public void cargar(){
         listaTipoGrupoDocumento=cargarListas(listaTipoGrupoDocumento,DOM_TIPOS_GRUPO_DOCUMENTO);
         listaDocumentoEstados = iDocumentoEstadoService.listarDocumentoEstados();
@@ -118,59 +118,59 @@ public class DefinicionBean {
 //        codDocumento = "LC1010";
 //        version=(short)1;
 
-           if(sw)
-           {//GUERDA UNO NUEVO
-               List<DocDefinicion> li;//=new ArrayList<DocDefinicion>() ;
-               li = llenarListaCodDocumento(codDocumento.toUpperCase(), version);
-               if (li.isEmpty())
-               {
-        //         DocDefinicionPK a= new DocDefinicionPK(codDocumento.toUpperCase(), version);
+        if(sw)
+        {//GUERDA UNO NUEVO
+            List<DocDefinicion> li;//=new ArrayList<DocDefinicion>() ;
+            li = llenarListaCodDocumento(codDocumento.toUpperCase(), version);
+            if (li.isEmpty())
+            {
+                //         DocDefinicionPK a= new DocDefinicionPK(codDocumento.toUpperCase(), version);
 
-        //         a=docDefinicion.getDocDefinicionPK();
-        //         
-        //         a.setCodDocumento(codDocumento.toUpperCase());
-        //         a.setVersion(version);
-                    docDefinicion.setDocDefinicionPK(new DocDefinicionPK(codDocumento.toUpperCase(), version));
-                    docDefinicion.setFechaBitacora(new Date());
-                    docDefinicion.setRegistroBitacora(perPersona.getNombreRazonSocial());
-                            docDefinicion.setCodEstado(iDocumentoEstadoService.findById(codEstado));
-        //***************************
-                    docDefinicion.setAlias(docDefinicion.getAlias().toUpperCase());
-                    docDefinicion.setNombre(docDefinicion.getNombre().toUpperCase());
-        //        docDefinicion.setTipoGrupoDocumento(tipoGrupoDocumento);
-        //        
+                //         a=docDefinicion.getDocDefinicionPK();
+                //
+                //         a.setCodDocumento(codDocumento.toUpperCase());
+                //         a.setVersion(version);
+                docDefinicion.setDocDefinicionPK(new DocDefinicionPK(codDocumento.toUpperCase(), version));
+                docDefinicion.setFechaBitacora(new Date());
+                docDefinicion.setRegistroBitacora(perPersona.getNombreRazonSocial());
+                docDefinicion.setCodEstado(iDocumentoEstadoService.findById(codEstado));
+                //***************************
+                docDefinicion.setAlias(docDefinicion.getAlias().toUpperCase());
+                docDefinicion.setNombre(docDefinicion.getNombre().toUpperCase());
+                //        docDefinicion.setTipoGrupoDocumento(tipoGrupoDocumento);
+                //
 
-                    iDefinicionService.guardarDefincion(docDefinicion);
-                    RequestContext context = RequestContext.getCurrentInstance();
-                    context.execute("dlgFormDocDefinicion.hide();");
-                    init();
-                 }
-                else//           no guarda
-                 {
-                    FacesMessage msg = new FacesMessage("Error Codigo ya existente");
-                    FacesContext.getCurrentInstance().addMessage(null, msg);
-                    System.out.println("Error Codigo ya existente");
-                 }
+                iDefinicionService.guardarDefincion(docDefinicion);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("dlgFormDocDefinicion.hide();");
+                init();
+            }
+            else//           no guarda
+            {
+                FacesMessage msg = new FacesMessage("Error Codigo ya existente");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                System.out.println("Error Codigo ya existente");
+            }
 
-           } else {
-               docDefinicion.setDocDefinicionPK(new DocDefinicionPK(codDocumento.toUpperCase(), version));
-               docDefinicion.setFechaBitacora(new Date());
-               docDefinicion.setRegistroBitacora(perPersona.getNombreRazonSocial());
+        } else {
+            docDefinicion.setDocDefinicionPK(new DocDefinicionPK(codDocumento.toUpperCase(), version));
+            docDefinicion.setFechaBitacora(new Date());
+            docDefinicion.setRegistroBitacora(perPersona.getNombreRazonSocial());
 
-               //***************************
-               docDefinicion.setAlias(docDefinicion.getAlias().toUpperCase());
-               docDefinicion.setNombre(docDefinicion.getNombre().toUpperCase());
-               //        docDefinicion.setTipoGrupoDocumento(tipoGrupoDocumento);
-               //
+            //***************************
+            docDefinicion.setAlias(docDefinicion.getAlias().toUpperCase());
+            docDefinicion.setNombre(docDefinicion.getNombre().toUpperCase());
+            //        docDefinicion.setTipoGrupoDocumento(tipoGrupoDocumento);
+            //
 
-               iDefinicionService.guardarDefincion(docDefinicion);
-               RequestContext context = RequestContext.getCurrentInstance();
-               context.execute("dlgFormDocDefinicion.hide();");
-               init();
-           }
-      
+            iDefinicionService.guardarDefincion(docDefinicion);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dlgFormDocDefinicion.hide();");
+            init();
+        }
+
     }
-     public void confirmaEliminarDocDefinicion(){  
+    public void confirmaEliminarDocDefinicion(){
         try {
             if(iDefinicionService.eliminarDefinicion(docDefinicion)){
                 //listaEntidad= iEntidadService.listaEntidad();
@@ -183,11 +183,11 @@ public class DefinicionBean {
             context.execute("dlgMensaje.show()");
             e.printStackTrace();
         }
-    } 
+    }
     public void llenarLista(){
         listaDocDefinicion=iDefinicionService.listarDefiniciones();
     }
-          
+
     public void llenarListaOrden(){
         listaDocDefinicion=iDefinicionService.listaPorOrdenDocDefinicion();// .listaDocDefinicion();//listaPorOrdenDocDefinicion
     }
@@ -244,10 +244,10 @@ public class DefinicionBean {
     public void setiDocumentoService(IDocumentoService iDocumentoService) {
         this.iDocumentoService = iDocumentoService;
     }
-    
+
     public List<DocDefinicion> getListaDocDefinicion(){
         return listaDocDefinicion;
-        
+
     }
 
     public IPersonaService getiPersonaService() {
@@ -281,7 +281,7 @@ public class DefinicionBean {
     public void setVersion(Short version) {
         this.version = version;
     }
-    
+
     public void limpiar(){
         listaDocDefinicion=iDefinicionService.listaPorOrdenDocDefinicion();
         docDefinicion=new DocDefinicion();
@@ -291,11 +291,11 @@ public class DefinicionBean {
 //        }
         codDocumento="";
         version=0;
-        System.out.println("coddefinicion => "+codDocumento+" version=> "+version);        
+        System.out.println("coddefinicion => "+codDocumento+" version=> "+version);
         sw=true;
         //evento=false;
     }
-   
+
     public void modTexto(){
         sw=false;
     }
