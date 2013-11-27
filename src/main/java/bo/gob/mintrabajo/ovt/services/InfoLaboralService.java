@@ -23,6 +23,7 @@ import java.util.List;
 
 import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_ESTADO;
 import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_ACTIVO;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_INACTIVO;
 import static bo.gob.mintrabajo.ovt.Util.Sequencias.*;
 
 /**
@@ -51,16 +52,33 @@ public class InfoLaboralService implements IInfoLaboralService {
      * PAR_INFO_LABORAL
      */
     @Override
-    public PerInfolaboral save(PerInfolaboral infolaboral) {
+    public PerInfolaboral save(PerInfolaboral infolaboral,String registroBitacora,PerUnidad unidad) {
 
         if(infolaboral.getIdInfolaboral()==null){
             //Nuevo
             infolaboral.setIdInfolaboral(this.obtenerSecuencia(PER_INFOLABORAL_SEC));
-        }
-        infolaboral.setEstadoInfolaboral(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
-        infolaboral.setFechaBitacora(new Date());
+            infolaboral.setEstadoInfolaboral(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
+            infolaboral.setPerUnidad(unidad);
+            infolaboral.setFechaBitacora(new Date());
+            infolaboral.setRegistroBitacora(registroBitacora);
+            return infoLaboralRepository.save(infolaboral);
+        } else{
+            // - Cambiar el estado de infoLaboral
+            PerInfolaboral infoLaboralHistorico=infoLaboralRepository.findOne(infolaboral.getIdInfolaboral());
+            infoLaboralHistorico.setEstadoInfolaboral(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_INACTIVO).getParDominioPK().getValor());
+            infoLaboralHistorico.setFechaBitacora(new Date());
+            infoLaboralHistorico.setRegistroBitacora(registroBitacora);
+            infoLaboralRepository.save(infoLaboralHistorico);
 
-        return infoLaboralRepository.save(infolaboral);
+            // - Crear un nuevo registro con los nuevos cambios
+            infolaboral.setIdInfolaboral(this.obtenerSecuencia(PER_INFOLABORAL_SEC));
+            infolaboral.setEstadoInfolaboral(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
+            infolaboral.setPerUnidad(unidad);
+            infolaboral.setFechaBitacora(new Date());
+            infolaboral.setRegistroBitacora(registroBitacora);
+            return infoLaboralRepository.save(infolaboral);
+
+        }
     }
 
     /*
@@ -111,7 +129,11 @@ public class InfoLaboralService implements IInfoLaboralService {
         }
     }*/
 
-
+     /*
+     *  Obtiene una lista con las informacionLaboral de una empresa o persona, pero
+     *  que se encuentren en estado ACTIVO.
+     *
+      */
     @Override
     public List<PerInfolaboral>findByPerUnidad(PerUnidad unidad){
         Sort sort=new Sort(Sort.Direction.DESC,"idInfolaboral");

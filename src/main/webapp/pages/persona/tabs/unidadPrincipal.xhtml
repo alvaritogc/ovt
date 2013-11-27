@@ -34,7 +34,9 @@
 
     <p:panel  id="pnlUnidadPrincipal" styleClass="myPanelContent" style="width: 100px">
         <f:facet name="footer">
-            <p:commandButton id="cmdButtonPrinc" icon="ui-icon-pencil" value="Modificar"
+            <p:commandButton id="cmdButtonPrinc"
+                             icon="ui-icon-pencil"
+                             value="Modificar"
                              update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
                              onclick="PF('dlgUnidad').show()">
                 <f:setPropertyActionListener value="#{personaUnidadBean.persona}" target="#{personaUnidadBean.personaRegistro}"/>

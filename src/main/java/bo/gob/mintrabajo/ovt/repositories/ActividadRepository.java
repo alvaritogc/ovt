@@ -18,7 +18,7 @@ public interface ActividadRepository extends OpenJpaRepository<PerActividad, Lon
             "   from PerActividad pa " +
             "   where pa.perUnidad.perUnidadPK.idPersona = :idPersona and " +
             "         pa.perUnidad.perUnidadPK.idUnidad = :idUnidad " +
-           // "    order by d.idDireccion desc")
+            "         and lower(pa.estado) = lower('A')" +
             "    ")
     List<PerActividad>obtenerPorIdPersonaYIdUnidad(@Param("idPersona") String idPersona, @Param("idUnidad") long idUnidad, Pageable pageable);
 }
