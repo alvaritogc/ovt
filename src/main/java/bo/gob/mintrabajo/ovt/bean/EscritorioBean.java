@@ -303,6 +303,7 @@ public class EscritorioBean {
                 parametros.put("qr",servletContext.getRealPath("/")+"/images/"+file.getName());
                 //manda al metodo generateReport()
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe.jasper", parametros));
+                file.delete();
                 verificaReporte=true;
             } catch (Exception e) {
                 e.printStackTrace();
