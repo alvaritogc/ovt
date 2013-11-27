@@ -18,7 +18,9 @@ package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,9 +30,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -41,14 +45,16 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "ParMensajeContenido.findAll", query = "SELECT p FROM ParMensajeContenido p")})
 public class ParMensajeContenido implements Serializable {
+    @Lob
+    @Column(name = "BINARIO")
+    private byte[] binario;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMensajeContenido", fetch = FetchType.LAZY)
+//    private List<ParMensajeBinario> parMensajeBinarioList;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "ID_MENSAJE_CONTENIDO")
     private Long idMensajeContenido;
-    @Lob
-    @Column(name = "BINARIO")
-    private byte[] binario;
     @Lob
     @Column(name = "CONTENIDO")
     private String contenido;
@@ -90,14 +96,6 @@ public class ParMensajeContenido implements Serializable {
 
     public void setIdMensajeContenido(Long idMensajeContenido) {
         this.idMensajeContenido = idMensajeContenido;
-    }
-
-    public byte[] getBinario() {
-        return binario;
-    }
-
-    public void setBinario(byte[] binario) {
-        this.binario = binario;
     }
 
     public String getContenido() {
@@ -180,5 +178,22 @@ public class ParMensajeContenido implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.ParMensajeContenido[ idMensajeContenido=" + idMensajeContenido + " ]";
     }
+
+    public byte[] getBinario() {
+        return binario;
+    }
+
+    public void setBinario(byte[] binario) {
+        this.binario = binario;
+    }
+
+//    @XmlTransient
+//    public List<ParMensajeBinario> getParMensajeBinarioList() {
+//        return parMensajeBinarioList;
+//    }
+//
+//    public void setParMensajeBinarioList(List<ParMensajeBinario> parMensajeBinarioList) {
+//        this.parMensajeBinarioList = parMensajeBinarioList;
+//    }
     
 }
