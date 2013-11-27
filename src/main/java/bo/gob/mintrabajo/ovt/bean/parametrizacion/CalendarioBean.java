@@ -16,6 +16,7 @@
 
 package bo.gob.mintrabajo.ovt.bean.parametrizacion;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.ICalendarioService;
 import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
@@ -97,6 +98,12 @@ public class CalendarioBean implements Serializable{
                     context.execute("dlgMensajeInfo.show()");
                 }
                 
+            }
+            try {
+                iCalendarioService.saveCalendario(gestion, "ANUAL", "ANUAL", REGISTRO_BITACORA);
+            } catch (Exception e) {
+                e.printStackTrace();
+                    context.execute("dlgMensajeInfo.show()");
             }
         }else{
             context.execute("dlgMensajeInfo.show()");
