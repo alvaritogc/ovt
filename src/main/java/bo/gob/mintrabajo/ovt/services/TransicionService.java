@@ -6,6 +6,7 @@ import bo.gob.mintrabajo.ovt.entities.DocTransicion;
 import bo.gob.mintrabajo.ovt.entities.DocTransicionPK;
 import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstado;
 import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
+import bo.gob.mintrabajo.ovt.repositories.RolRepository;
 import bo.gob.mintrabajo.ovt.repositories.TransicionRepository;
 
 import javax.ejb.TransactionAttribute;
@@ -26,12 +27,14 @@ public class TransicionService implements ITransicionService {
 
     private final TransicionRepository transicionRepository;
     private final DominioRepository dominioRepository;
+    private final RolRepository rolRepository;
     private List <DocTransicion> listaTransicion= new ArrayList<DocTransicion>();
 
     @Inject
-    public TransicionService(TransicionRepository transicionRepository, DominioRepository dominioRepository) {
+    public TransicionService(TransicionRepository transicionRepository, DominioRepository dominioRepository, RolRepository rolRepository) {
         this.transicionRepository = transicionRepository;
         this.dominioRepository=dominioRepository;
+        this.rolRepository = rolRepository;
     }
 
     @Override
@@ -60,7 +63,9 @@ public class TransicionService implements ITransicionService {
             ParDocumentoEstado parDocumentoEstado1,
             ParDocumentoEstado parDocumentoEstado2,
             String REGISTRO_BITACORA,             
-            boolean evento, DocTransicionPK docTransicionPK){ 
+            boolean evento, 
+            DocTransicionPK docTransicionPK,
+            Long idRol){ 
         
         DocTransicion docTransicion= new DocTransicion();
         docTransicion.setDocDefinicion(definicion);
@@ -68,10 +73,8 @@ public class TransicionService implements ITransicionService {
         docTransicion.setParDocumentoEstado1(parDocumentoEstado2);
         
         if(!evento && transicionRepository.findOne(docTransicionPK)!= null){
-            System.out.println("== esntrando a error");
             return false;
         }else{
-            System.out.println("== esntrando a sin error");
         }
 
         if(!evento){
@@ -87,6 +90,7 @@ public class TransicionService implements ITransicionService {
             docTransicion.setEstado(dominioRepository.obtenerDominioPorNombreYValor("ESTADO", "X").getParDominioPK().getValor());
         }
 
+        docTransicion.setIdRol(rolRepository.findByIdRol(idRol));
         docTransicion.setFechaBitacora(new Date());
         docTransicion.setRegistroBitacora(REGISTRO_BITACORA);
         try {
