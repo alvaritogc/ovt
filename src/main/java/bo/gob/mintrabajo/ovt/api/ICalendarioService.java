@@ -30,4 +30,5 @@ public interface ICalendarioService {
     public List<ParCalendario> listaCalendarioPorGestion (Integer gestion);
     public ParCalendario saveCalendario(Integer gestion, String periodo, String tipoCalendario, String REGISTRO_BITACORA);
     public List<String> listaGestiones();
+    //public List<ParCalendario> listarCalendarioPorGestiones();
 }

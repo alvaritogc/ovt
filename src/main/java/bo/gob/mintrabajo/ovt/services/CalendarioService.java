@@ -111,4 +111,10 @@ public class CalendarioService implements ICalendarioService{
     public List<String> listaGestiones(){
         return calendarioRepository.listarGestiones();
     }
+
+//    @Override
+//    public List<ParCalendario> listarCalendarioPorGestiones(){
+//        //return calendarioRepository.listarCalendarioPorGestiones();
+//        return calendarioRepository.listaCalendarioPorAnio();
+//    }
 }

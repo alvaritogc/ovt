@@ -16,6 +16,7 @@
 
 package bo.gob.mintrabajo.ovt.bean.parametrizacion;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.ICalendarioService;
 import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
@@ -97,10 +98,17 @@ public class obligacionCalendarioBean implements Serializable{
     
     public void listarPeriodo(){
         listaDominioPeriodo = new ArrayList<ParDominio>();
-        listaDominioPeriodo = iDominioService.obtenerDominioPorNombrePadreYValorPadre("TCALENDARIO",obligacionCalendario.getTipoCalendario());
-        periodo=listaDominioPeriodo.get(0).getParDominioPK().getValor();
-        FacesContext context = FacesContext.getCurrentInstance();  
+        listaCalendario=new ArrayList<ParCalendario>();
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
+
+            if(obligacionCalendario.getTipoCalendario().equals("ANUAL")){
+                listaDominioPeriodo.add(iDominioService.obtenerDominioPorNombreYValor("TCALENDARIO",obligacionCalendario.getTipoCalendario()));
+                
+            }else{
+                listaDominioPeriodo = iDominioService.obtenerDominioPorNombrePadreYValorPadre("TCALENDARIO",obligacionCalendario.getTipoCalendario());
+            }
+            periodo=listaDominioPeriodo.get(0).getParDominioPK().getValor();
             listaCalendario=iCalendarioService.listaCalendarioPorTipoPeriodoTipoCalendario(periodo, obligacionCalendario.getTipoCalendario());
             gestion=listaCalendario.get(0).getParCalendarioPK().getGestion();
         } catch (Exception e) {
@@ -110,7 +118,11 @@ public class obligacionCalendarioBean implements Serializable{
     }
     
     public void cargarListaPeriodo(){
-        listaDominioPeriodo = iDominioService.obtenerDominioPorNombrePadreYValorPadre("TCALENDARIO",obligacionCalendario.getTipoCalendario());
+        if(obligacionCalendario.getTipoCalendario().equals("ANUAL")){
+            listaDominioPeriodo.add(iDominioService.obtenerDominioPorNombreYValor("TCALENDARIO",obligacionCalendario.getTipoCalendario()));    
+        }else{
+            listaDominioPeriodo = iDominioService.obtenerDominioPorNombrePadreYValorPadre("TCALENDARIO",obligacionCalendario.getTipoCalendario());
+        }
         listaCalendario=iCalendarioService.listaCalendarioPorTipoPeriodoTipoCalendario(periodo, obligacionCalendario.getTipoCalendario());
     }
     
@@ -126,7 +138,8 @@ public class obligacionCalendarioBean implements Serializable{
         RequestContext context = RequestContext.getCurrentInstance();
         String  REGISTRO_BITACORA=usuario.getUsuario();
         try {
-            ParObligacionCalendario ob = iObligacionCalendarioService.saveObligacionCalendario(obligacionCalendario,gestion, periodo, REGISTRO_BITACORA, codObligacionForm, evento);
+            ParObligacionCalendario ob = iObligacionCalendarioService.saveObligacionCalendario(obligacionCalendario,
+                    iCalendarioService.obtenerCalendarioPorGestionYPeriodo(gestion, periodo).getParCalendarioPK(), REGISTRO_BITACORA, codObligacionForm, evento);
             context.execute("dlgFormObligacionCalendario.hide();");
             nuevo();
             listaObligacionCalendario= iObligacionCalendarioService.listaObligacionCalendarioOrdenadoPorDescripcionDeObligacion();
@@ -147,6 +160,28 @@ public class obligacionCalendarioBean implements Serializable{
         codObligacionForm="";
         gestion="";
         periodo="";
+    }
+    
+    public String descripcionCalendario(String valor){
+        try {
+            return Util.descripcionDominio("TCALENDARIO", valor);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public String descripcionPeriodo(String valor){
+        try {
+            if(valor.equals("ANUAL")){
+                return Util.descripcionDominio("TCALENDARIO", valor);
+            }else{
+                return Util.descripcionDominio("TPERIODO", valor);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     public void confirmaEliminar(){  

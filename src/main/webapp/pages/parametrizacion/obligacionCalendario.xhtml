@@ -14,7 +14,7 @@
                 <h:panelGrid columns="4" style="alignment-adjust: middle" cellpadding="5">
                     <h:outputLabel for="obligacion" value="Obligación:" style="font-weight:bold"/>  
                     <p:selectOneMenu id="obligacion" value="#{obligacionCalendarioBean.codObligacion}">  
-                        <f:selectItem itemLabel="---Seleccione obligacion---" itemValue=" " />  
+                        <f:selectItem itemLabel="---Seleccione obligación---" itemValue=" " />  
                         <f:selectItems value="#{obligacionCalendarioBean.listaObligacion}" var="ob" itemLabel="#{ob.descripcion}" itemValue="#{ob.codObligacion}"/>
                         <p:ajax update="dataTableCalendario"  
                                 listener="#{obligacionCalendarioBean.listarObligacionCalendario}" />
@@ -35,16 +35,16 @@
                         <h:outputText value="#{calendario.codObligacion.descripcion}" />  
                     </p:column>
 
-                    <p:column headerText="Tipo calendario" >   
-                        <h:outputText value="#{calendario.tipoCalendario}" />  
+                    <p:column headerText="Tipo calendario" style="width: 55px;">   
+                        <h:outputText value="#{obligacionCalendarioBean.descripcionCalendario(calendario.tipoCalendario)}" />  
                     </p:column>  
 
                     <p:column headerText="Gestión">
                         <h:outputText value="#{calendario.parCalendario.parCalendarioPK.gestion}" />  
                     </p:column>  
                     
-                    <p:column headerText="Periodo">    
-                        <h:outputText value="#{calendario.parCalendario.parCalendarioPK.tipoPeriodo}" />  
+                    <p:column headerText="Periodo" style="width: 65px;">    
+                        <h:outputText value="#{obligacionCalendarioBean.descripcionPeriodo(calendario.parCalendario.parCalendarioPK.tipoPeriodo)}" />  
                     </p:column>  
 
                     <p:column headerText="Fecha desde">  
@@ -103,8 +103,8 @@
 
                         <p:outputLabel for="obligacionForm" value="Obligación:" style="font-weight:bold"/>  
                         <p:selectOneMenu id="obligacionForm" value="#{obligacionCalendarioBean.codObligacionForm}" required="true" 
-                                         requiredMessage="Debe eleccionar una obligacion" style="text-transform: uppercase; width: 245px">  
-                            <f:selectItem itemLabel="---Seleccione obligacion---" itemValue="" />
+                                         requiredMessage="Debe eleccionar una obligación" style="text-transform: uppercase; width: 245px">  
+                            <f:selectItem itemLabel="---Seleccione obligación---" itemValue="" />
                             <f:selectItems value="#{obligacionCalendarioBean.listaObligacion}" var="ob" itemLabel="#{ob.descripcion}" itemValue="#{ob.codObligacion}"/>
                         </p:selectOneMenu>
                         
@@ -118,13 +118,13 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel for="tipoPeriodo" value="Periodo:" style="font-weight:bold"/>  
-                        <p:selectOneMenu id="tipoPeriodo" value="#{obligacionCalendarioBean.periodo}" style="text-transform: uppercase; width: 245px">  
+                        <p:selectOneMenu id="tipoPeriodo" value="#{obligacionCalendarioBean.periodo}" style="text-transform: uppercase; width: 245px" required="true">  
                                 <f:selectItems value="#{obligacionCalendarioBean.listaDominioPeriodo}" var="tp" itemLabel="#{tp.descripcion}" itemValue="#{tp.parDominioPK.valor}" />
                                 <p:ajax update="gestion" />
                         </p:selectOneMenu>
                         
                         <p:outputLabel for="gestion" value="Gestión:" style="font-weight:bold"/>
-                        <p:selectOneMenu id="gestion" value="#{obligacionCalendarioBean.gestion}" style="text-transform: uppercase; width: 245px" >  
+                        <p:selectOneMenu id="gestion" value="#{obligacionCalendarioBean.gestion}" style="text-transform: uppercase; width: 245px" required="true">  
                                 <f:selectItems value="#{obligacionCalendarioBean.listaCalendario}" var="g" itemLabel="#{g.parCalendarioPK.gestion}" itemValue="#{g.parCalendarioPK.gestion}" />
                         </p:selectOneMenu>
 
