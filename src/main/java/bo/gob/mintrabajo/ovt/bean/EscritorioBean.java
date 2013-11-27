@@ -143,7 +143,7 @@ public class EscritorioBean {
             docPlanilla=null;
         }
         
-        listaDocumentoEstado=iDocumentoEstadoService.listarSiguientesTransiciones(docDocumento);
+        listaDocumentoEstado=iDocumentoEstadoService.listarSiguientesTransiciones(docDocumento,idUsuario);
         System.out.println("size: "+listaDocumentoEstado.size());
         if(!listaDocumentoEstado.isEmpty()){
             codEstadoFinal=listaDocumentoEstado.get(0).getCodEstado();

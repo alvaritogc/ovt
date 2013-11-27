@@ -7,7 +7,11 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../pages/template/templateInicio.xhtml">
         <ui:define name="content">
-
+            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>  
+            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando" resizable="false"
+                      draggable="false" closable="false">
+                <p:graphicImage value="../images/ajax-loader.gif" />
+            </p:dialog>
             <h:form id="idEscritorio">
                 <h2>#{escritorioBean.empleador.nombreRazonSocial} #{escritorioBean.empleador.apellidoPaterno} #{escritorioBean.empleador.apellidoMaterno}</h2>
                 <p:panelGrid columns="2" style="border-style: hidden;">
@@ -131,20 +135,20 @@
                     </center>
                     <br/>
                     <center>
-                    <h:panelGrid columns="2"  rendered="#{escritorioBean.esInterno}">
-                        <p:outputLabel value="Observación: " rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                        <p:inputText value="#{escritorioBean.observacionLogEstado}" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                        <p:commandButton value="Realizar cambio de estado" 
-                                         update="idEscritorio"
-                                         rendered="#{escritorioBean.mostrarCambioDeEstados}"
-                                         action="#{escritorioBean.realizarCambioDeEstados}"/>
-                        <p:outputLabel value="No se encontraron transiciones siguientes" 
-                                       rendered="#{!escritorioBean.mostrarCambioDeEstados}"/>
-                    </h:panelGrid>
-                        </center>
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel value="Observación: " rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                            <p:inputText value="#{escritorioBean.observacionLogEstado}" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                            <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                            <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                            <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                            <p:commandButton value="Realizar cambio de estado" 
+                                             update="idEscritorio"
+                                             rendered="#{escritorioBean.mostrarCambioDeEstados}"
+                                             action="#{escritorioBean.realizarCambioDeEstados}"/>
+                            <p:outputLabel value="No se encontraron transiciones siguientes" 
+                                           rendered="#{!escritorioBean.mostrarCambioDeEstados}"/>
+                        </h:panelGrid>
+                    </center>
                     <br/>
                 </p:dialog>  
 
