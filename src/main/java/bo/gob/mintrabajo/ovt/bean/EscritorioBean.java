@@ -170,7 +170,6 @@ public class EscritorioBean {
 
     public void irImprimirDocumento() {
         String codDocumento =docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento();
-        String rutaPdf;
         String idPersonaPorDocumento= docDocumento.getPerUnidad().getPerPersona().getIdPersona();
         vperPersona = iVperPersonaService.cargaVistaPersona(idPersonaPorDocumento);
         Long idUsuarioEmpleador=iUsuarioService.obtenerUsuarioPorIdPersona(idPersonaPorDocumento).getIdUsuario();
@@ -228,7 +227,6 @@ public class EscritorioBean {
                 parametros.put("totalAccidentes",docPlanilla.getNroAccidentes());
                 parametros.put("accidentesMuerte",docPlanilla.getNroMuertes());
                 parametros.put("enfermedadesTrabajos",docPlanilla.getNroEnfermedades());
-//        parametros.put("email",docPlanilla.getIdEntidadBanco()); //----------------;
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(docPlanilla.getFechaOperacion());
                 parametros.put("diaDeposito", cal.get(Calendar.DAY_OF_MONTH));
@@ -269,7 +267,12 @@ public class EscritorioBean {
         if(codDocumento.equals("ROE010")){
             parametros.clear();
             parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
-            parametros.put("nombreRazonSocial", vperPersona.getNombreRazonSocial()+" "+vperPersona.getApellidoPaterno()+" "+vperPersona.getApellidoMaterno());
+            String nombreCompleto =vperPersona.getNombreRazonSocial();
+            if(vperPersona.getApellidoPaterno()!=null)
+                nombreCompleto=nombreCompleto+" "+vperPersona.getApellidoPaterno();
+            if(vperPersona.getApellidoMaterno()!=null)
+                nombreCompleto=nombreCompleto+" "+vperPersona.getApellidoMaterno();
+            parametros.put("nombreRazonSocial", nombreCompleto);
             parametros.put("departamento", vperPersona.getDirDepartamento());
             parametros.put("domOficina", vperPersona.getDirDireccion());
             parametros.put("repLegal", vperPersona.getRlNombre());
