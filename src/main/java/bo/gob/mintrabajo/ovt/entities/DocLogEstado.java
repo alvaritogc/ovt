@@ -61,6 +61,9 @@ public class DocLogEstado implements Serializable {
     @JoinColumn(name = "ID_DOCUMENTO", referencedColumnName = "ID_DOCUMENTO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DocDocumento idDocumento;
+    //
+    @Column(name = "OBSERVACION")
+    private String observacion;
 
     public DocLogEstado() {
     }
@@ -146,6 +149,14 @@ public class DocLogEstado implements Serializable {
     @Override
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.DocLogEstado[ idLogestado=" + idLogestado + " ]";
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
     
 }

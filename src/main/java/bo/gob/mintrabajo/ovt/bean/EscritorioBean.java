@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean;
 
+import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
@@ -56,6 +57,10 @@ public class EscritorioBean {
     private IBinarioService iBinarioService;
     @ManagedProperty(value = "#{docGenericoService}")
     private IDocGenericoService iDocGenericoService;
+    @ManagedProperty(value = "#{logImpresionService}")
+    private ILogImpresionService iLogImpresionService;
+    @ManagedProperty(value = "#{utilsService}")
+    private IUtilsService iUtilsService;
 
     //
     private String textoBenvenida;
@@ -78,6 +83,7 @@ public class EscritorioBean {
     private boolean mostrarCambioDeEstados;
 
     private HashMap<String,Object> parametros = new HashMap<String,Object>();
+    private String observacionLogEstado;
 
     @PostConstruct
     public void ini() {
@@ -119,7 +125,7 @@ public class EscritorioBean {
 
     public String download() {
         session.setAttribute("idDocumento", docDocumento.getIdDocumento());
-        return "irDownload";
+        return "irDescargarPlanillas";
     }
 
     public String irRealizarCambioDeEstados() {
@@ -147,13 +153,13 @@ public class EscritorioBean {
             codEstadoFinal="";
             mostrarCambioDeEstados=false;
         }
-        
+        observacionLogEstado="";
         
     }
     public String realizarCambioDeEstados(){
         parDocumentoEstado=iDocumentoEstadoService.findById(codEstadoFinal);
         //
-        docDocumento=iDocumentoService.guardarCambioEstado(docDocumento, parDocumentoEstado, idPersona);
+        docDocumento=iDocumentoService.guardarCambioEstado(docDocumento, codEstadoFinal, idPersona,observacionLogEstado);
         //
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("cambioEstadoDialog.hide()");
@@ -164,12 +170,11 @@ public class EscritorioBean {
 
     public void irImprimirDocumento() {
         String codDocumento =docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento();
-        String rutaPdf;
         String idPersonaPorDocumento= docDocumento.getPerUnidad().getPerPersona().getIdPersona();
         vperPersona = iVperPersonaService.cargaVistaPersona(idPersonaPorDocumento);
         Long idUsuarioEmpleador=iUsuarioService.obtenerUsuarioPorIdPersona(idPersonaPorDocumento).getIdUsuario();
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-
+        boolean verificaReporte = false;
         if(codDocumento.equals("LC1010")){
             try{
                 docPlanilla=iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
@@ -222,7 +227,6 @@ public class EscritorioBean {
                 parametros.put("totalAccidentes",docPlanilla.getNroAccidentes());
                 parametros.put("accidentesMuerte",docPlanilla.getNroMuertes());
                 parametros.put("enfermedadesTrabajos",docPlanilla.getNroEnfermedades());
-//        parametros.put("email",docPlanilla.getIdEntidadBanco()); //----------------;
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(docPlanilla.getFechaOperacion());
                 parametros.put("diaDeposito", cal.get(Calendar.DAY_OF_MONTH));
@@ -252,6 +256,7 @@ public class EscritorioBean {
                 String nombrePdf="LC1010-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento))))+".pdf";
 
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC1010V1.jasper", parametros));
+                verificaReporte=true;
             }
             catch(Exception e){
                 e.printStackTrace();
@@ -262,7 +267,12 @@ public class EscritorioBean {
         if(codDocumento.equals("ROE010")){
             parametros.clear();
             parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
-            parametros.put("nombreRazonSocial", vperPersona.getNombreRazonSocial()+" "+vperPersona.getApellidoPaterno()+" "+vperPersona.getApellidoMaterno());
+            String nombreCompleto =vperPersona.getNombreRazonSocial();
+            if(vperPersona.getApellidoPaterno()!=null)
+                nombreCompleto=nombreCompleto+" "+vperPersona.getApellidoPaterno();
+            if(vperPersona.getApellidoMaterno()!=null)
+                nombreCompleto=nombreCompleto+" "+vperPersona.getApellidoMaterno();
+            parametros.put("nombreRazonSocial", nombreCompleto);
             parametros.put("departamento", vperPersona.getDirDepartamento());
             parametros.put("domOficina", vperPersona.getDirDireccion());
             parametros.put("repLegal", vperPersona.getRlNombre());
@@ -293,7 +303,7 @@ public class EscritorioBean {
                 parametros.put("qr",servletContext.getRealPath("/")+"/images/"+file.getName());
                 //manda al metodo generateReport()
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe.jasper", parametros));
-
+                verificaReporte=true;
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("ERROR al generar el reporte: "+e.getMessage());
@@ -330,8 +340,8 @@ public class EscritorioBean {
                 parametros.put("lugarPresentacion", "Oficina Virtual");
 
                 String nombrePdf="ROE012-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento))))+".pdf";
-
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe012.jasper", parametros));
+                verificaReporte=true;
             }catch(Exception e){
                 e.printStackTrace();
                 System.out.println("ERROR al generar el reporte: " + e.getMessage());
@@ -375,15 +385,19 @@ public class EscritorioBean {
                 parametros.put("cadena3", docGenerico.getCadena03());
                 parametros.put("cadena4", docGenerico.getCadena04());
 
-
-
                 String nombrePdf="ROE013-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento))))+".pdf";
-
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe013.jasper", parametros));
+                verificaReporte=true;
             }catch(Exception e){
                 e.printStackTrace();
                 System.out.println("ERROR al generar el reporte: " + e.getMessage());
             }
+        }
+
+        if(verificaReporte==true){
+            DocLogImpresion docLogImpresion = new DocLogImpresion(iUtilsService.valorSecuencia("DOC_LOG_IMPRESION_SEC"), Dominios.DOC_TIPO_IMPRESION, new Date(), usuario.getUsuario());
+            docLogImpresion.setIdDocumento(docDocumento);
+            iLogImpresionService.guarda(docLogImpresion);
         }
     }
 
@@ -431,14 +445,6 @@ public class EscritorioBean {
         session.setAttribute("idDocumento", docDocumento.getIdDocumento());
         return "irEdicionRoe";
     }
-
-//
-//    public String download(){
-//        session.setAttribute("idDocumento", docDocumentoEntity.getIdDocumento());
-//        return "irDownload";
-//    }
-
-
 
     public IUsuarioService getiUsuarioService() {
         return iUsuarioService;
@@ -606,5 +612,29 @@ public class EscritorioBean {
 
     public void setiDocGenericoService(IDocGenericoService iDocGenericoService) {
         this.iDocGenericoService = iDocGenericoService;
+    }
+
+    public String getObservacionLogEstado() {
+        return observacionLogEstado;
+    }
+
+    public void setObservacionLogEstado(String observacionLogEstado) {
+        this.observacionLogEstado = observacionLogEstado;
+    }
+
+    public ILogImpresionService getiLogImpresionService() {
+        return iLogImpresionService;
+    }
+
+    public void setiLogImpresionService(ILogImpresionService iLogImpresionService) {
+        this.iLogImpresionService = iLogImpresionService;
+    }
+
+    public IUtilsService getiUtilsService() {
+        return iUtilsService;
+    }
+
+    public void setiUtilsService(IUtilsService iUtilsService) {
+        this.iUtilsService = iUtilsService;
     }
 }

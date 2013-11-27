@@ -1,6 +1,8 @@
 package bo.gob.mintrabajo.ovt.bean.contenidos;
 
+import bo.gob.mintrabajo.ovt.api.IMensajeBinarioService;
 import bo.gob.mintrabajo.ovt.api.IMensajeContenidoService;
+import bo.gob.mintrabajo.ovt.entities.ParMensajeBinario;
 import bo.gob.mintrabajo.ovt.entities.ParMensajeContenido;
 import java.io.ByteArrayInputStream;
 import javax.annotation.PostConstruct;
@@ -24,6 +26,8 @@ public class Images {
     //
     @ManagedProperty(value = "#{mensajeContenidoService}")
     private IMensajeContenidoService iMensajeContenidoService;
+    @ManagedProperty(value = "#{mensajeBinarioService}")
+    private IMensajeBinarioService iMensajeBinarioService;
 
 //    @EJB
 //    private ImageService service;
@@ -37,7 +41,8 @@ public class Images {
         }
         else {
             // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
-            ParMensajeContenido mensajeContenido=iMensajeContenidoService.findById(id);
+            //ParMensajeContenido mensajeContenido=iMensajeContenidoService.findById(id);
+            ParMensajeBinario mensajeContenido=iMensajeBinarioService.buscarPorMensajeContenido(id);
             image = new DefaultStreamedContent(new ByteArrayInputStream(mensajeContenido.getBinario()));
         }
     }
@@ -56,6 +61,14 @@ public class Images {
 
     public void setiMensajeContenidoService(IMensajeContenidoService iMensajeContenidoService) {
         this.iMensajeContenidoService = iMensajeContenidoService;
+    }
+
+    public IMensajeBinarioService getiMensajeBinarioService() {
+        return iMensajeBinarioService;
+    }
+
+    public void setiMensajeBinarioService(IMensajeBinarioService iMensajeBinarioService) {
+        this.iMensajeBinarioService = iMensajeBinarioService;
     }
 
 }

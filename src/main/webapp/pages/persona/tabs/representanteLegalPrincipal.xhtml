@@ -25,7 +25,7 @@
                              update=":frmRepLegal:pnlRepLegal,:txtDlgRepLegal"
                              onclick="PF('dlgRepLegal').show()"
                              rendered="#{personaUnidadBean.repLegalPrincipal.idReplegal!=null}">
-                <f:setPropertyActionListener value="#{unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.repLegalPrincipal.perUnidad}" target="#{personaUnidadBean.unidadRegistro}"/>
                 <f:setPropertyActionListener value="#{personaUnidadBean.repLegalPrincipal}" target="#{personaUnidadBean.repLegal}"/>
                 <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>

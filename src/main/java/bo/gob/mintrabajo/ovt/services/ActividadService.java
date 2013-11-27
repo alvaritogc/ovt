@@ -21,8 +21,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_ESTADO_UNIDAD;
-import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_UNIDAD_ACTIVO;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
+import static bo.gob.mintrabajo.ovt.Util.Sequencias.*;
 
 /**
  *
@@ -46,21 +46,30 @@ public class ActividadService implements IActividadService {
 
 
     @Override
-    public PerActividad save(PerActividad actividad) {
+    public PerActividad save(PerActividad actividad,PerUnidad unidad) {
 
         if(actividad.getIdActividad()==null){
             //Nuevo
-            actividad.setIdActividad(this.obtenerSecuencia("PER_ACTIVIDAD_SEC"));
+            actividad.setIdActividad(this.obtenerSecuencia(PER_ACTIVIDAD_SEC));
+            actividad.setPerUnidad(unidad);
         }
         //preguntar q significa este valor
-        actividad.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO_UNIDAD,PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
+        actividad.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
         actividad.setFechaBitacora(new Date());
+        System.out.println("====>>> GUARDANDO ACTIVIDAD");
+        System.out.println("====>>> actividad "+actividad);
+        System.out.println("====>>> actividad "+actividad.getIdActividad());
+        System.out.println("====>>> actividad "+actividad.getEstado());
+        System.out.println("====>>> actividad "+actividad.getFechaBitacora());
+        System.out.println("====>>> actividad "+actividad.getIdActividadEconomica());
+        System.out.println("====>>> actividad "+actividad.getPerUnidad());
+        System.out.println("====>>> actividad "+actividad.getRegistroBitacora());
         return actividadRepository.save(actividad);
 
     }
 
     @Override
-    public List<PerActividad>findByPerUnidad(PerUnidad unidad){
+    public List<PerActividad>obtenerPorIdPersonaYIdUnidad(PerUnidad unidad){
         Sort sort=new Sort(Sort.Direction.DESC,"idActividad");
         return actividadRepository.obtenerPorIdPersonaYIdUnidad(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad(), new PageRequest(0, 10,sort));
     }

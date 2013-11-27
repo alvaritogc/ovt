@@ -19,7 +19,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -103,6 +102,7 @@ public class declaracionBean implements Serializable {
     private String nombres[]= new String[3];
     //
     private boolean estaDeclarado;
+    private String estaDeclaradoMensaje;
     private Long idEntidadSalud;
 
     private boolean verificaValidacion;
@@ -225,9 +225,24 @@ public class declaracionBean implements Serializable {
     }
 
     public void verEstadoPlanilla(){
+        ParObligacionCalendario parObligacionCalendario;
+        try {
+            parObligacionCalendario=iObligacionCalendarioService.buscarPorPlatriALaFecha();
+        } catch (Exception e) {
+            parObligacionCalendario=null;
+        }
+        if(parObligacionCalendario==null){
+            estaDeclaradoMensaje="Solo puede realizar la Declaración Jurada dentro del plazo establecido.";
+            estaDeclarado=true;
+            return;
+        }
+
+
+
         List<DocDocumento> listaDocumentos;
         try{
-            listaDocumentos=iDocumentoService.listarPorPersona(idPersona);
+            //listaDocumentos=iDocumentoService.listarPorPersona(idPersona);
+            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
             if(listaDocumentos==null){
                 listaDocumentos=new ArrayList<DocDocumento>();
             }
@@ -242,6 +257,7 @@ public class declaracionBean implements Serializable {
                     || documento.getCodEstado().getDescripcion().toLowerCase().equals("observado")
                     || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")) && parametro==1){
                 estaDeclarado=true;
+                estaDeclaradoMensaje="Usted ya realizo la declaracion jurada.";
             }
         }
     }
@@ -249,7 +265,7 @@ public class declaracionBean implements Serializable {
     public void generaDocumento(){
         logger.info("generaDocumento()");
         documento = new DocDocumento();
-        
+
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(persona.getIdPersona(), 0L)));
 
         if(parametro==1)
@@ -327,8 +343,8 @@ public class declaracionBean implements Serializable {
         }
     }
 
-    public String guardaDocumentoPlanillaBinario(ActionEvent actionEvent){
-        validaArchivo(listaBinarios);
+    public String guardaDocumentoPlanillaBinario(){
+//        validaArchivo(listaBinarios);
 //        if(errores.size()>0){
 //            String e="";
 //            for(String error:errores)
@@ -338,26 +354,26 @@ public class declaracionBean implements Serializable {
 //            return null;
 //        }
 
-
-
 //        if(errores.size()==0 && verificaValidacion){
-            try{
-                logger.info("Guardando documento, binario y planilla");
-                logger.info(documento.toString());
-                logger.info(listaBinarios.toString());
-                logger.info(docPlanilla.toString());
-                generaPlanilla();
-                documento.setPerUnidad(unidadSeleccionada);
-                idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
-                return "irEscritorio";
-            }catch (Exception e){
-                e.printStackTrace();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
-                return null;
-            }
+        try{
+            logger.info("Guardando documento, binario y planilla");
+            logger.info(documento.toString());
+            logger.info(listaBinarios.toString());
+            logger.info(docPlanilla.toString());
+            generaPlanilla();
+            documento.setPerUnidad(unidadSeleccionada);
+            Long ids[]=idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);
+            for(int i=0;i<ids.length; i++)
+                logger.info("ids guardados..."+ ids[i]);
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
+
+        }catch (Exception e){
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+            return null;
+        }
+        return "irEscritorio";
 //        }
-//        return null;
     }
 
     public String irInicio(){
@@ -1134,5 +1150,13 @@ public class declaracionBean implements Serializable {
 
     public void setiCalendarioService(ICalendarioService iCalendarioService) {
         this.iCalendarioService = iCalendarioService;
+    }
+
+    public String getEstaDeclaradoMensaje() {
+        return estaDeclaradoMensaje;
+    }
+
+    public void setEstaDeclaradoMensaje(String estaDeclaradoMensaje) {
+        this.estaDeclaradoMensaje = estaDeclaradoMensaje;
     }
 }

@@ -136,7 +136,7 @@ public class TransicionBean implements Serializable{
         listaTransicion= iTransicionService.listaTransicion();
         listaEstadoInicial=iDocumentoEstadoService.listarDocumentoEstados();
         listaEstadoFinal=iDocumentoEstadoService.listarDocumentoEstados();
-        listaDefinicion=iDefinicionService.getAllDefinicion();
+        listaDefinicion=iDefinicionService.listarDefiniciones();
         listaVersion=iDefinicionService.listaVersionesPorCodDocumento(listaDefinicion.get(0).getDocDefinicionPK().getCodDocumento());
         nuevo();
     }

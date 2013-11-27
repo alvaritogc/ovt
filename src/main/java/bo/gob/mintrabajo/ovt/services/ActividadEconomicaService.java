@@ -61,46 +61,13 @@ public class ActividadEconomicaService implements IActividadEconomicaService {
         return actividadEconomicaRepository.save(actividadEconomica);
     }
 
-    /*
-    * Este metodo realiza un INSERT o UPDATE de un registro de la tabla
-    * PAR_ACTIVIDAD_ECONOMICA   y la tabla PER_ACTIVIDAD
-    * @Param registroBitacora.- Es el usuario de session
-    */
-    @Override
-    public void save(ParActividadEconomica actividadEconomica,PerUnidad unidad,String registroBitacora){
 
-        boolean nuevo=false;
-        PerActividad actividad=new PerActividad();
-        actividadEconomica.setRegistroBitacora(registroBitacora);
-        actividadEconomica.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
-        actividadEconomica.setFechaBitacora(new Date());
-
-        if(actividadEconomica.getIdActividadEconomica()==null){
-            actividadEconomica.setIdActividadEconomica(this.obtenerSecuencia("PAR_ACTIVIDAD_ECONOMICA_SEC"));
-
-            actividad.setFechaBitacora(new Date());
-            actividad.setRegistroBitacora(registroBitacora);
-            actividad.setPerUnidad(unidad);
-
-            actividad.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
-            actividad.setIdActividad(this.obtenerSecuencia("PER_ACTIVIDAD_SEC"));
-
-            nuevo=true;
-        }
-
-        actividadEconomica= actividadEconomicaRepository.save(actividadEconomica);
-        if(nuevo) {
-            actividad.setIdActividadEconomica(actividadEconomica);
-            actividadRepository.save(actividad);
-        }
-
-    }
 
 
     @Override
     public ParActividadEconomica findByIdActividadEconomica(Long idActividadEconomica){
         try{
-            return actividadEconomicaRepository.findOne(idActividadEconomica);
+            return actividadEconomicaRepository.findByIdActividadEconomica(idActividadEconomica);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;

@@ -68,7 +68,7 @@
 
                         <p:commandButton action="#{escritorioBean.download}"
                                          ajax="false"
-                                         rendered="#{escritorioBean.esInterno}"
+                                         rendered="#{escritorioBean.esInterno and o1.docDefinicion.docDefinicionPK.codDocumento == 'LC1010'}"
                                          icon="ui-icon-arrowthickstop-1-s"
                                          title="Descarga documentos" >
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
@@ -130,7 +130,13 @@
                         </h:panelGrid>
                     </center>
                     <br/>
-                    <h:panelGrid columns="1" style="text-align: center;" rendered="#{escritorioBean.esInterno}">
+                    <center>
+                    <h:panelGrid columns="2"  rendered="#{escritorioBean.esInterno}">
+                        <p:outputLabel value="Observación: " rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:inputText value="#{escritorioBean.observacionLogEstado}" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
                         <p:commandButton value="Realizar cambio de estado" 
                                          update="idEscritorio"
                                          rendered="#{escritorioBean.mostrarCambioDeEstados}"
@@ -138,6 +144,8 @@
                         <p:outputLabel value="No se encontraron transiciones siguientes" 
                                        rendered="#{!escritorioBean.mostrarCambioDeEstados}"/>
                     </h:panelGrid>
+                        </center>
+                    <br/>
                 </p:dialog>  
 
             </h:form>

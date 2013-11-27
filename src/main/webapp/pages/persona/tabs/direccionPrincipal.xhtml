@@ -24,7 +24,7 @@
                              id="cmdButtonDireccion2"
                              update=":frmDireccion:pnlDireccion,:txtDlgDireccion"
                              rendered="#{personaUnidadBean.direccionPrincipal.idDireccion!=null}">
-                <f:setPropertyActionListener value="#{unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.direccionPrincipal.perUnidad}" target="#{personaUnidadBean.unidadRegistro}"/>
                 <f:setPropertyActionListener value="#{personaUnidadBean.direccionPrincipal}" target="#{personaUnidadBean.direccion}"/>
                 <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>

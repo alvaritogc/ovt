@@ -4,16 +4,24 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
+    <style type="text/css">
+
+        .menu .ui-selectonelistbox-label {
+            background: pink;
+        }
+
+    </style>
+
     <p:panel id="pnlActividadDeclaradaP">
 
         <f:facet name="footer">
             <p:commandButton id="cmdButtonActividadPModificar"
                              icon="ui-icon-pencil"
                              value="Modificar"
-                             rendered="#{personaUnidadBean.actividadEconomicaPrincipal.idActividadEconomica!=null}"
+                             rendered="#{personaUnidadBean.actividadPrincipal.idActividad!=null}"
                              onclick="PF('dlgActividadDeclarada').show()"
                              update=":frmActividadDeclarada:pnlActividadDeclarada,:txtDlgActividadDeclarada,:frmActividadDeclarada:cmdButtonActividadDeclarada">
-                <f:setPropertyActionListener value="#{personaUnidadBean.actividadEconomicaPrincipal}" target="#{personaUnidadBean.actividadEconomica}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.actividadPrincipal}" target="#{personaUnidadBean.actividad}"/>
                 <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
             </p:commandButton>
@@ -22,7 +30,7 @@
                              icon="ui-icon-plus"
                              value="Agregar"
                              actionListener="#{personaUnidadBean.nuevo}"
-                             rendered="#{personaUnidadBean.actividadEconomicaPrincipal.idActividadEconomica==null}"
+                             rendered="#{personaUnidadBean.actividadPrincipal.idActividad==null}"
                              onclick="PF('dlgActividadDeclarada').show()"
                              update=":frmActividadDeclarada:pnlActividadDeclarada,:txtDlgActividadDeclarada">
                 <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
@@ -35,10 +43,19 @@
 
         <h:panelGrid columns="2">
             <h:outputText value="Codigo de Actividad economica:"/>
-            <p:inputText  value="#{personaUnidadBean.codigoActividadEconomicaPrincipal}" readonly="true"  style="width: 445px;"/>
 
+            <p:selectOneListbox  value="#{personaUnidadBean.codigoActividadEconomicaPrincipal}"
+                                 style="height: 250px;width: 500px;font-weight: bolder;color: #000000" disabled="false"
+                    >
+                <f:selectItems value="#{personaUnidadBean.listaCodActividadEconomica}"
+                               var="actividad"
+                               itemLabel="#{actividad.label}"
+                               itemValue="#{actividad.value}"/>
 
-
+                <p:column>
+                    #{actividad.label}
+                </p:column>
+            </p:selectOneListbox >
 
 
         </h:panelGrid>

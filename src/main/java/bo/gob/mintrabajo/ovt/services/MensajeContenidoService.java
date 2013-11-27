@@ -7,10 +7,12 @@ import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.DocBinario;
 import bo.gob.mintrabajo.ovt.entities.DocLogImpresion;
 import bo.gob.mintrabajo.ovt.entities.ParMensajeApp;
+import bo.gob.mintrabajo.ovt.entities.ParMensajeBinario;
 import bo.gob.mintrabajo.ovt.entities.ParMensajeContenido;
 import bo.gob.mintrabajo.ovt.repositories.BinarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.LogImpresionRepository;
 import bo.gob.mintrabajo.ovt.repositories.MensajeAppRepository;
+import bo.gob.mintrabajo.ovt.repositories.MensajeBinarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.MensajeContenidoRepository;
 
 import javax.ejb.TransactionAttribute;
@@ -28,11 +30,13 @@ import java.util.List;
 public class MensajeContenidoService implements IMensajeContenidoService{
 
     private final MensajeContenidoRepository repository;
+    private final MensajeBinarioRepository mensajeBinarioRepository;
     private final IUtilsService utils;
 
     @Inject
-    public MensajeContenidoService(MensajeContenidoRepository repository,IUtilsService utils) {
+    public MensajeContenidoService(MensajeContenidoRepository repository,IUtilsService utils,MensajeBinarioRepository mensajeBinarioRepository) {
         this.repository = repository;
+        this.mensajeBinarioRepository=mensajeBinarioRepository;
         this.utils=utils;
     }
     
@@ -58,14 +62,28 @@ public class MensajeContenidoService implements IMensajeContenidoService{
         mensajeContenido.setIdMensajeContenido(utils.valorSecuencia("PAR_MENSAJE_CONTENIDO_SEC"));
         mensajeContenido.setFechaBitacora(new Date());
         mensajeContenido.setRegistroBitacora("OVT");
-        return repository.save(mensajeContenido);
+        mensajeContenido=repository.save(mensajeContenido);
+        //
+        ParMensajeBinario parMensajeBinario=new ParMensajeBinario();
+        parMensajeBinario.setIdMensajeBinario(utils.valorSecuencia("PAR_MENSAJE_BINARIO_SEC"));
+        parMensajeBinario.setBinario(mensajeContenido.getBinario());
+        parMensajeBinario.setIdMensajeContenido(mensajeContenido);
+        parMensajeBinario.setFechaBitacora(new Date());
+        parMensajeBinario.setRegistroBitacora("OVt");
+        mensajeBinarioRepository.save(parMensajeBinario);
+        
+        return mensajeContenido;
     }
     
     @Override
     public boolean delete(Long idMensajeContenido){
         try{
+            ParMensajeBinario parMensajeBinario=mensajeBinarioRepository.buscarPorMensajeContenido(idMensajeContenido);
+            mensajeBinarioRepository.delete(parMensajeBinario.getIdMensajeBinario());
+            //
             repository.delete(idMensajeContenido);
-            repository.flush();
+            //repository.flush();
+            //
             return true;
         }
         catch(Exception e){

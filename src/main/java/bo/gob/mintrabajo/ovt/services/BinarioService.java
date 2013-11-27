@@ -37,27 +37,15 @@ public class BinarioService implements IBinarioService{
        return  binarioRepository.findByIdDocumento(idDocumento);
     }
 
-//    @Override
-    public DocBinario guardarBinario(DocBinario docBinariosEntity){
-        return binarioRepository.save(docBinariosEntity);
-    }
-
-//    @Override
-    public Long contar(){
-        return binarioRepository.count();
-    }
-
-
-//    @Override
-    public void download(DocBinario docBinarioEntity, DocLogImpresion docLogImpresionEntity){
+    public void download(DocBinario docBinario, DocLogImpresion docLogImpresion){
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ExternalContext externalContext = facesContext.getExternalContext();
             HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
-            //Cambiar en base al metadata...
-            String nombreDocumentoDigital = docBinarioEntity.getTipoDocumento();
+            // TODO Cambiar en base al metadata...
+            String nombreDocumentoDigital = docBinario.getTipoDocumento();
 //            String mimeDocumentoDigital = URLConnection.guessContentTypeFromName(nombreDocumentoDigital);
-            String mimeDocumentoDigital=docBinarioEntity.getMetadata();
+            String mimeDocumentoDigital=docBinario.getMetadata();
             //
             if (mimeDocumentoDigital == null)
                 mimeDocumentoDigital = "application/octet-stream";
@@ -65,10 +53,10 @@ public class BinarioService implements IBinarioService{
             response.setContentType(mimeDocumentoDigital);
             response.setHeader("Content-disposition", "attachment; filename=\"" + nombreDocumentoDigital + "\"");
             OutputStream output = response.getOutputStream();
-            output.write(docBinarioEntity.getBinario());
+            output.write(docBinario.getBinario());
             output.close();
             facesContext.responseComplete();
-            logImpresionRepository.save(docLogImpresionEntity);
+            logImpresionRepository.save(docLogImpresion);
 
             } catch (Exception e) {
                 System.out.println("El archivo no se descargo correctamente.");

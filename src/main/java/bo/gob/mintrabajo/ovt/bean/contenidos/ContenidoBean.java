@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.URLConnection;
 import java.sql.SQLException;
 import org.primefaces.context.RequestContext;
@@ -31,7 +32,7 @@ import org.primefaces.event.FileUploadEvent;
 
 @ManagedBean
 @ViewScoped
-public class ContenidoBean {
+public class ContenidoBean implements Serializable{
     //
     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private static final Logger logger = LoggerFactory.getLogger(EscritorioBean.class);

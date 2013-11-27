@@ -6,9 +6,13 @@ import bo.gob.mintrabajo.ovt.entities.DocDefinicionPK;
 import java.util.List;
 
 public interface IDefinicionService {
+    DocDefinicion guardarDefincion(DocDefinicion docDefinicion);
+    boolean eliminarDefinicion(DocDefinicion docDefinicion);
+    List<DocDefinicion> listaPorOrdenDocDefinicion();
+    List<DocDefinicion> listaCodDocumento(String cod, Short ver);
     DocDefinicion buscaPorId (DocDefinicionPK docDefinicionPK);
-    public List<DocDefinicion> getAllDefinicion();
-    public List<DocDefinicion> listaVersionesPorCodDocumento(String codDocumento);
-    public DocDefinicion obtenerDefinicion(String codigo, short vesion);
+    List<DocDefinicion> listarDefiniciones();
+    List<DocDefinicion> listaVersionesPorCodDocumento(String codDocumento);
+    DocDefinicion obtenerDefinicion(String codigo, short vesion);
   
 }

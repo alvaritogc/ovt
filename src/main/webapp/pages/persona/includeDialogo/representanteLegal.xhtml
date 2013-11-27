@@ -22,7 +22,6 @@
      <p:panel id="pnlRepLegal" >
 
          <f:facet name="footer">
-
              <p:commandButton value="Guardar"
                               icon="ui-icon-disk"
                               action="#{personaUnidadBean.procesarRepLegal}"
@@ -97,7 +96,7 @@
                 <h:outputText value="Nro. de documento: "/>
                 <p:inputText id="inputTxtNroDocumento2" value="#{personaUnidadBean.repLegal.nroDocumento}"
                              style="width: 210px;"
-                             maxlength="20"
+                             maxlength="9"
                              tabindex="6"
                              onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
                 <h:outputText value="Fecha :"/>
