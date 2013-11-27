@@ -68,13 +68,13 @@
 
                         <p:commandButton action="#{escritorioBean.download}"
                                          ajax="false"
-                                         rendered="#{escritorioBean.esInterno}"
+                                         rendered="#{escritorioBean.esInterno and o1.docDefinicion.docDefinicionPK.codDocumento == 'LC1010'}"
                                          icon="ui-icon-arrowthickstop-1-s"
                                          title="Descarga documentos" >
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
                         </p:commandButton>
 
-                        <h:commandLink target="_blank" action="irEscritorio" title="Imprimir documento">
+                        <h:commandLink target="_blank" action="#{escritorioBean.irImprimirDocumento}" title="Imprimir documento">
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
                             <h:graphicImage  style="float: left;width:25px;height: 23px;padding-right: 3px; " value="/images/print.png" />
                         </h:commandLink>
