@@ -122,31 +122,39 @@ public class DocumentoService implements IDocumentoService{
         return documentoRepository.save(documento);
     }
 
-    public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles){
+    public Long[] guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles){
+        int i=0;
+        Long ids[]=new Long[10];
         //guarda documento
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento=documentoRepository.save(docDocumento);
+        ids[i++]=docDocumento.getIdDocumento();
 
         //guarda planilla
         docPlanilla.setIdDocumento(docDocumento);
         docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
         docPlanilla=planillaRepository.save(docPlanilla);
+        ids[i++]=docPlanilla.getIdPlanilla();
 
         //guardaPlanillaDetalles
-        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
-            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
-            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_DETALLE_SEC"));
-            planillaDetalleRepository.save(elemPlanillaDetalle);
-        }
+//        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
+//            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
+//            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_DETALLE_SEC"));
+//            elemPlanillaDetalle=planillaDetalleRepository.save(elemPlanillaDetalle);
+//            ids=elemPlanillaDetalle.getIdPlanillaDetalle();
+//        }
 
         //guarda binarios
         int idBinario= 1;
         for(DocBinario elementoBinario:listaBinarios){
             elementoBinario.setDocDocumento(docDocumento);
             elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
-            binarioRepository.save(elementoBinario);
+            elementoBinario = binarioRepository.save(elementoBinario);
+            ids[i++]=elementoBinario.getDocBinarioPK().getIdBinario();
+            ids[i++]=elementoBinario.getDocBinarioPK().getIdDocumento();
         }
+        return ids;
     }
     
     @Override
@@ -296,12 +304,9 @@ public class DocumentoService implements IDocumentoService{
 
 
     public long actualizarNumeroDeOrden(String codDocumento, short version) {
-        DocNumeracion numeracionBusqueda = new DocNumeracion(new DocNumeracionPK(codDocumento, version));
-//        numeracionBusqueda.setCodDocumento(codDocumento);
-//        numeracionBusqueda.setVersion(version);
         DocNumeracion numeracion;
         try {
-            numeracion = numeracionRepository.findByExample(numeracionBusqueda, null, null, -1, -1).get(0);
+            numeracion = numeracionRepository.findOne(new DocNumeracionPK(codDocumento, version));
         } catch (Exception e) {
             throw new RuntimeException("DocNumeracion no encontrado");
         }

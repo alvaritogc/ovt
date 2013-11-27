@@ -134,19 +134,21 @@ public class PersonaUnidadBean implements Serializable{
     private List<PerReplegal> listaRepLegal;
     private PerReplegal repLegalPrincipal;
 
-    private PerActividad actividad;
-    private List<PerActividad> listaActividad;
-    private PerActividad actividadPrincipal;
 
-    private ParActividadEconomica actividadEconomica;
-    private List<ParActividadEconomica>listaActividadEconomica;
+
+
 
     private List<SelectItem>listaCodActividadEconomica;
 
-    private String codigoActividadEconomicaPrincipal;
+    private Long codigoActividadEconomicaPrincipal;
+    private PerActividad actividad;
+    private List<PerActividad> listaActividad;
 
+
+
+    private PerActividad actividadPrincipal;
     private Long idActividadEconomicaPrincipal;
-    private ParActividadEconomica actividadEconomicaPrincipal;
+
 
 
     private PerUnidad unidadRegistro;
@@ -201,10 +203,7 @@ public class PersonaUnidadBean implements Serializable{
     public void ini(){
 
         persona=new PerPersona();
-        System.out.println("======>> INGRESANDO A REGISTRO PERSONA UNIDAD");
-        System.out.println("======>> INGRESANDO A REGISTRO PERSONA UNIDAD");
         String idEmpleador=   (String)session.getAttribute("idEmpleador");
-        System.out.println("======>> INGRESANDO A REGISTRO PERSONA UNIDAD idEmpleador" +idEmpleador);
          idUsuario = (Long) session.getAttribute("idUsuario");
         REGISTRO_BITACORA=iUsuarioService.findById(idUsuario).getUsuario();
         persona=iPersonaService.findById(idEmpleador);
@@ -212,7 +211,7 @@ public class PersonaUnidadBean implements Serializable{
         titulo=persona.getApellidoPaterno()==null ?titulo+"":titulo+persona.getApellidoPaterno().toUpperCase()+" ";
         titulo=persona.getApellidoMaterno()==null ?titulo+"":titulo+persona.getApellidoMaterno().toUpperCase()+" ";
 
-        actividadEconomica=new ParActividadEconomica();
+       actividad=new PerActividad();
         repLegal=new PerReplegal();
         unidadRegistro=new PerUnidad();
         cargar();
@@ -220,9 +219,6 @@ public class PersonaUnidadBean implements Serializable{
         //si es falso mostrar
         mostrarBotonROE=generarReporteRoe();
         tieneROE=yaTieneROE();
-        System.out.println("=====>>>>>>>>>>> mostrarBotonROE mostrarBotonROE "+mostrarBotonROE);
-        System.out.println("=====>>>>>>>>>>> TIENE ROE tieneROE "+tieneROE);
-
     }
 
     public boolean generarReporteRoe(){
@@ -304,7 +300,7 @@ public class PersonaUnidadBean implements Serializable{
         }
 
         //vallidad actividad declarada
-        if(actividadEconomicaPrincipal.getIdActividadEconomica()==null){
+        if(actividad.getIdActividadEconomica()==null){
 
             return false;
         }
@@ -373,10 +369,6 @@ public class PersonaUnidadBean implements Serializable{
         List<PerUnidad>listaUnidadAux=iUnidadService.buscarPorPersona(persona.getIdPersona());
         //setea la unidad principal
         unidad=listaUnidadAux.get(listaUnidadAux.size()-1);
-        System.out.println("=====>>> INGRESANDO A CARGAR UNIDAD");
-        System.out.println("=====>>> INGRESANDO A CARGAR UNIDAD");
-        System.out.println("=====>>> INGRESANDO A CARGAR UNIDAD");
-        System.out.println("=====>>> INGRESANDO A CARGAR UNIDAD unidad "+unidad);
         try{
             tipoSociedadPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_SOCIEDAD,unidad.getTipoSociedad()).getDescripcion();
             tipoEmpresaPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_EMPRESA,unidad.getTipoEmpresa()).getDescripcion();
@@ -394,8 +386,6 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public void nuevo(){
-        System.out.println("===>>> INGRESANDO A NUEVO");
-        System.out.println("===>>> INGRESANDO A NUEVO tipoEmpresaPrincipal "+tipoEmpresaPrincipal);
         unidadRegistro=new PerUnidad();
         unidadRegistro.setTipoEmpresa(unidad.getTipoEmpresa());
         unidadRegistro.setActividadDeclarada(unidad.getActividadDeclarada());
@@ -628,11 +618,11 @@ public class PersonaUnidadBean implements Serializable{
             return ;
         }
 
-        direccion.setPerUnidad(unidadRegistro);
+
         direccion.setCodLocalidad(iLocalidadService.findById(idLocalidad));
-        //Cambiar por el usuario de la session
-        direccion.setRegistroBitacora(REGISTRO_BITACORA);
-            iDireccionService.save(direccion);
+/*        direccion.setPerUnidad(unidadRegistro);
+        direccion.setRegistroBitacora(REGISTRO_BITACORA);*/
+        iDireccionService.save(direccion,REGISTRO_BITACORA,unidadRegistro);
         ini();
         RequestContext.getCurrentInstance().execute("dlgDireccion.hide()");
     }
@@ -746,11 +736,9 @@ public class PersonaUnidadBean implements Serializable{
             return ;
         }
 
-        repLegal.setPerUnidad(unidadRegistro);
-        //Cambiar por el usuario de la session
-        //repLegal.setRegistroBitacora(persona.getNombreRazonSocial());
-        repLegal.setRegistroBitacora(REGISTRO_BITACORA);
-        iRepLegalService.save(repLegal);
+        System.out.println("==>>> UNIDAD REGISTRO "+unidadRegistro);
+        //repLegal.setPerUnidad(unidadRegistro);
+        iRepLegalService.save(repLegal,REGISTRO_BITACORA,unidadRegistro);
         ini();
         RequestContext.getCurrentInstance().execute("dlgRepLegal.hide()");
     }
@@ -814,19 +802,15 @@ public class PersonaUnidadBean implements Serializable{
      */
     public void procesarActividadEconomica(){
 
-
-        actividadEconomica.setCodImpuestos("NADA");
-        actividadEconomica.setDescricpionImpuestos("NADA");
-        actividadEconomica.setDescripcion("NADA");
-
-        //Cambiar por el usuario de la session
        // String registroPersona=  persona.getNombreRazonSocial();
         String registroPersona=REGISTRO_BITACORA;
+        logger.info("===>> Ingresando a cargarActividadDeclarda() idActividadEconomicaPrincipal "+idActividadEconomicaPrincipal);
        ParActividadEconomica actvEcon=iActividadEconomicaService.findByIdActividadEconomica(idActividadEconomicaPrincipal);
-        actividadEconomica.setCodActividadEconomica(actvEcon.getCodActividadEconomica());
-        actividadEconomica.setIdActividadEconomica2(actvEcon);
-        iActividadEconomicaService.save(actividadEconomica,unidad,registroPersona);
-
+        logger.info("===>> Ingresando a actvEcon() actvEcon "+actvEcon);
+        logger.info("===>> Ingresando a actividad() actividad "+actividad);
+        actividad.setIdActividadEconomica(actvEcon);
+        actividad.setRegistroBitacora(registroPersona);
+        iActividadService.save(actividad,unidad);
         ini();
         //Cerrar dialog
         RequestContext.getCurrentInstance().execute("dlgActividadDeclarada.hide()");
@@ -853,13 +837,17 @@ public class PersonaUnidadBean implements Serializable{
             cargarActividadDeclarda();
         }
 
-        actividadEconomicaPrincipal=new ParActividadEconomica();
+
         if(listaActividad!=null ){
             if(!listaActividad.isEmpty()){
                 //se obtiene el primer registro, por que una persona solo tiene
                 // una actividad declarada
-                actividadEconomicaPrincipal=listaActividad.get(0).getIdActividadEconomica();
-                codigoActividadEconomicaPrincipal= iActividadEconomicaService.findByIdActividadEconomica(actividadEconomicaPrincipal.getIdActividadEconomica2().getIdActividadEconomica()).getDescripcion();
+
+                actividadPrincipal=listaActividad.get(0);
+                logger.info("===>> actividad "+actividad);
+                codigoActividadEconomicaPrincipal=actividadPrincipal.getIdActividadEconomica().getIdActividadEconomica();
+                idActividadEconomicaPrincipal=  actividadPrincipal.getIdActividadEconomica().getIdActividadEconomica();
+                //codigoActividadEconomicaPrincipal= iActividadEconomicaService.findByIdActividadEconomica(actividadEconomicaPrincipal.getIdActividadEconomica2().getIdActividadEconomica()).getIdActividadEconomica();
               //  iActividadEconomicaService.obtenerActividadEconomicaParaRegistro()
             }
         }
@@ -1113,24 +1101,6 @@ public class PersonaUnidadBean implements Serializable{
         this.listaActividad = listaActividad;
     }
 
-    public ParActividadEconomica getActividadEconomica() {
-        return actividadEconomica;
-    }
-
-    public void setActividadEconomica(ParActividadEconomica actividadEconomica) {
-       idActividadEconomicaPrincipal= actividadEconomica.getIdActividadEconomica2().getIdActividadEconomica();
-        this.actividadEconomica = actividadEconomica;
-    }
-
-
-    public List<ParActividadEconomica> getListaActividadEconomica() {
-        return listaActividadEconomica;
-    }
-
-    public void setListaActividadEconomica(List<ParActividadEconomica> listaActividadEconomica) {
-        this.listaActividadEconomica = listaActividadEconomica;
-    }
-
     public PerUnidad getUnidadRegistro() {
         return unidadRegistro;
     }
@@ -1257,14 +1227,7 @@ public class PersonaUnidadBean implements Serializable{
     }
 
 
-    public ParActividadEconomica getActividadEconomicaPrincipal() {
-        return actividadEconomicaPrincipal;
-    }
 
-    public void setActividadEconomicaPrincipal(ParActividadEconomica actividadEconomicaPrincipal) {
-
-        this.actividadEconomicaPrincipal = actividadEconomicaPrincipal;
-    }
 
     public List<SelectItem> getListaTipoDirecciones() {
         return listaTipoDirecciones;
@@ -1314,11 +1277,11 @@ public class PersonaUnidadBean implements Serializable{
         this.listaCodActividadEconomica = listaCodActividadEconomica;
     }
 
-    public String getCodigoActividadEconomicaPrincipal() {
+    public Long getCodigoActividadEconomicaPrincipal() {
         return codigoActividadEconomicaPrincipal;
     }
 
-    public void setCodigoActividadEconomicaPrincipal(String codigoActividadEconomicaPrincipal) {
+    public void setCodigoActividadEconomicaPrincipal(Long codigoActividadEconomicaPrincipal) {
         this.codigoActividadEconomicaPrincipal = codigoActividadEconomicaPrincipal;
     }
 
@@ -1394,5 +1357,13 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setDefinicionService(IDefinicionService definicionService) {
         this.definicionService = definicionService;
+    }
+
+    public PerActividad getActividadPrincipal() {
+        return actividadPrincipal;
+    }
+
+    public void setActividadPrincipal(PerActividad actividadPrincipal) {
+        this.actividadPrincipal = actividadPrincipal;
     }
 }

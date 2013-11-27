@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
+import static bo.gob.mintrabajo.ovt.Util.Sequencias.*;
 
 /**
  *
@@ -44,15 +45,40 @@ public class RepLegalService implements IRepLegalService{
     }
 
     @Override
-    public PerReplegal save(PerReplegal replegal) {
+    public PerReplegal save(PerReplegal replegal,String registroBitacora,PerUnidad unidad) {
+
+        System.out.println("======>>> CAMBIANDO unidad "+unidad);
 
         if(replegal.getIdReplegal()==null){
             //Nuevo
-            replegal.setIdReplegal(this.obtenerSecuencia("PER_REPLEGAL_SEC"));
+            replegal.setIdReplegal(this.obtenerSecuencia(PER_REPLEGAL_SEC));
+            replegal.setPerUnidad(unidad);
+            replegal.setEstadoRepLegal(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
+            replegal.setFechaBitacora(new Date());
+            replegal.setRegistroBitacora(registroBitacora);
+            return repLegalRepository.save(replegal);
+        }else{
+            // - Cambiar el estado del repLegal
+            PerReplegal replegalAnterior=repLegalRepository.findOne(replegal.getIdReplegal());
+            replegalAnterior.setEstadoRepLegal(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_INACTIVO).getParDominioPK().getValor());
+            replegalAnterior.setFechaBitacora(new Date());
+            replegalAnterior.setRegistroBitacora(registroBitacora);
+            repLegalRepository.save(replegalAnterior);
+
+            // - Crear un nuevo registro con los nuevos cambios
+            replegal.setIdReplegal(this.obtenerSecuencia(PER_REPLEGAL_SEC));
+           // replegal.setPerUnidad(replegalAnterior.getPerUnidad());
+            replegal.setPerUnidad(unidad);
+            replegal.setEstadoRepLegal(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
+            replegal.setFechaBitacora(new Date());
+            replegal.setRegistroBitacora(registroBitacora);
+            return repLegalRepository.save(replegal);
+
         }
-        replegal.setEstadoRepLegal(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
+
+/*        replegal.setEstadoRepLegal(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
         replegal.setFechaBitacora(new Date());
-        return repLegalRepository.save(replegal);
+        return repLegalRepository.save(replegal);*/
     }
 
 //    @Override
@@ -62,6 +88,7 @@ public class RepLegalService implements IRepLegalService{
         return deleted;
     }
 
+    // Obtiene una lista con los representantes legales activos de una persona u empleador.
      public List<PerReplegal>obtenerPorIdPersona(String idPersona){
          Sort sort=new Sort(Sort.Direction.DESC,"idReplegal");
          return repLegalRepository.obtenerPorIdPersona(idPersona, new PageRequest(0, 10,sort));

@@ -31,7 +31,7 @@
                 <p:column headerText="Módulo">
                     <p:outputLabel value="#{dom.idModulo.idModulo} - #{dom.idModulo.nombre}" />
                 </p:column>
-                <p:column headerText="Operaciones">
+                <p:column headerText="Acciones">
                     <p:commandButton icon="ui-icon-pencil" oncomplete="dominioEdicion.show();" update=":dominioEdicionFrm">
                         <f:setPropertyActionListener value="#{dom}" target="#{dominioBean.dominioSelected}" />
                     </p:commandButton>

@@ -12,7 +12,6 @@ import java.util.List;
 
 public interface IActividadEconomicaService {
     public ParActividadEconomica save(ParActividadEconomica actividadEconomica);
-    public void save(ParActividadEconomica actividadEconomica,PerUnidad unidad,String registroBitacora);
     public List<BigDecimal> obtenerActividadEconomicaParaRegistro();
     public ParActividadEconomica findByIdActividadEconomica(Long idActividadEconomica);
 }

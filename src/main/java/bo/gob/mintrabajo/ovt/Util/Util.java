@@ -1,5 +1,9 @@
 package bo.gob.mintrabajo.ovt.Util;
 
+import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
+import bo.gob.mintrabajo.ovt.entities.ParDominio;
+import bo.gob.mintrabajo.ovt.entities.ParDominioPK;
+import com.google.common.cache.Cache;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.security.MessageDigest;
@@ -61,4 +65,22 @@ public class Util {
             return "cadena invalida";
         }
     }
+
+
+    public static String descripcionDominio(String idDominio, String valor){
+        try{
+            Cache<ParDominioPK,ParDominio> mapaDominio = TemplateInicioBean.mapaDominio;
+            ParDominioPK pk = new ParDominioPK();
+            pk.setIdDominio(idDominio);
+            pk.setValor(valor);
+            ParDominio parDominio = mapaDominio.asMap().get(pk);
+            return parDominio.getDescripcion();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
 }
