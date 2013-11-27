@@ -26,7 +26,7 @@ Copyright 2013 lvaldez.
                     <h:outputText value="#{transicion.docDefinicion.nombre}" />  
                 </p:column>  
                 
-                <p:column headerText="Versión" >   
+                <p:column headerText="Versión" style="width: 30px">   
                     <h:outputText value="#{transicion.docTransicionPK.version}" />  
                 </p:column>  
                 
@@ -37,12 +37,16 @@ Copyright 2013 lvaldez.
                 <p:column headerText="Estado final" >   
                     <h:outputText value="#{transicion.parDocumentoEstado1.descripcion}" />  
                 </p:column>
+                
+                <p:column headerText="Rol" >   
+                    <h:outputText value="#{transicion.idRol.nombre}" />  
+                </p:column>
 
-                <p:column headerText="Estado">  
+                <p:column headerText="Estado" style="width: 30px">  
                     <h:outputText value="#{transicion.estado}" />  
                 </p:column>
-                <p:column headerText="Acciones">
-                    <p:commandButton icon="ui-icon-pencil" title="Editar" onclick="dlgFormTransicion.show()" update=":formTransicion"> 
+                <p:column headerText="Acciones" style="width: 60px">
+                    <p:commandButton icon="ui-icon-pencil" title="Editar" onclick="dlgFormTransicion.show()" update=":formTransicion" > 
                             <f:setPropertyActionListener target="#{transicionBean.docTransicion}" value="#{transicion}" />
                             <f:setPropertyActionListener target="#{transicionBean.estadoTransicion}" value="#{transicion.estado eq 'A'? true : false}" />
                             <f:setPropertyActionListener target="#{transicionBean.evento}" value="true" />
@@ -50,6 +54,7 @@ Copyright 2013 lvaldez.
                             <f:setPropertyActionListener target="#{transicionBean.estadoInicial}" value="#{transicion.parDocumentoEstado.codEstado}" />
                             <f:setPropertyActionListener target="#{transicionBean.estadoFinal}" value="#{transicion.parDocumentoEstado1.codEstado}" />
                             <f:setPropertyActionListener target="#{transicionBean.version}" value="#{transicion.docTransicionPK.version}" />
+                            <f:setPropertyActionListener target="#{transicionBean.rol}" value="#{transicion.idRol.idRol}" />
                         </p:commandButton>
                         <p:commandButton icon="ui-icon-trash" title="Eliminar" onclick="confirmation.show()"> 
                             <f:setPropertyActionListener target="#{transicionBean.docTransicion}" value="#{transicion}" />
@@ -114,6 +119,13 @@ Copyright 2013 lvaldez.
                             <f:selectItems value="#{transicionBean.listaEstadoFinal}" var="ef" itemLabel="#{ef.descripcion}" itemValue="#{ef.codEstado}"/>
                         </p:selectOneMenu>
 
+                        <p:outputLabel for="rol" value="Rol:" style="font-weight:bold"/>
+                        <p:selectOneMenu id="rol"  value="#{transicionBean.rol}" 
+                                         required="true" requiredMessage="Debe seleccionar el rol">
+                            <f:selectItem itemLabel="-- Seleccione el rol --" itemValue="" />
+                            <f:selectItems value="#{transicionBean.listaRoles}" var="r" itemLabel="#{r.nombre}" itemValue="#{r.idRol}"/>
+                        </p:selectOneMenu>
+                        
                         <p:outputLabel for="estado" value="Estado:" style="font-weight:bold"/>  
                         <p:selectBooleanCheckbox id="estado" value="#{transicionBean.estadoTransicion}"  />
                         <h:panelGroup>

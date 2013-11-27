@@ -65,6 +65,9 @@ public class DocTransicion implements Serializable {
         @JoinColumn(name = "VERSION", referencedColumnName = "VERSION", insertable = false, updatable = false)})
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DocDefinicion docDefinicion;
+    @JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UsrRol idRol;
 
     public DocTransicion() {
     }
@@ -138,6 +141,14 @@ public class DocTransicion implements Serializable {
 
     public void setDocDefinicion(DocDefinicion docDefinicion) {
         this.docDefinicion = docDefinicion;
+    }
+
+    public UsrRol getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(UsrRol idRol) {
+        this.idRol = idRol;
     }
 
     @Override

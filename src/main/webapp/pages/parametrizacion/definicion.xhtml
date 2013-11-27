@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition template="../../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <h2 class="form-signin-heading">Documentos Definicion</h2>
+            <p:commandButton value="Nuevo" onclick="dlgFormDocDefinicion.show();" update=":formDocDefinicion" icon="ui-icon-document-b" actionListener="#{definicionBean.limpiar}" immediate="true"/>
+            <p:dataTable id="dataTableDocDefinicion" var="docDefinicion" value="#{definicionBean.listaDocDefinicion}" 
+                         paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="bottom"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados">
+                <f:facet name="header">  
+                    Definiciones
+                </f:facet>
+                
+                <p:column sortBy="nombre" headerText="Nombre" >   
+                    <h:outputText value="#{docDefinicion.nombre}" />  
+                </p:column>  
+
+                <p:column sortBy="alias" headerText="Alias">    
+                    <h:outputText value="#{docDefinicion.alias}" />  
+                </p:column>  
+
+                <p:column sortBy="tipoGrupoDocumento" headerText="Grupo de documento">  
+                    <h:outputText value="#{docDefinicion.tipoGrupoDocumento}" />  
+                </p:column>
+                
+
+                <p:column headerText="Acciones">                
+                    <p:commandButton title="Editar" onclick="dlgFormDocDefinicion.show()" update=":formDocDefinicion" icon="ui-icon-pencil" immediate="true" action="#{definicionBean.modTexto}">
+                        <f:setPropertyActionListener target="#{definicionBean.codDocumento}" value="#{docDefinicion.docDefinicionPK.codDocumento}" />
+                        <f:setPropertyActionListener target="#{definicionBean.version}" value="#{docDefinicion.docDefinicionPK.version}" />
+                        <f:setPropertyActionListener target="#{definicionBean.docDefinicion.nombre}" value="#{docDefinicion.nombre}" />
+                        <f:setPropertyActionListener target="#{definicionBean.docDefinicion.alias}" value="#{docDefinicion.alias}" />  
+                        <f:setPropertyActionListener target="#{definicionBean.docDefinicion.tipoGrupoDocumento}" value="#{docDefinicion.tipoGrupoDocumento}" />  
+                    </p:commandButton>
+                    <p:commandButton title="Eliminar" onclick="confirmation.show()" icon="ui-icon-trash">
+                        <f:setPropertyActionListener target="#{definicionBean.docDefinicion}" value="#{docDefinicion}" />
+                    </p:commandButton>
+                    
+                </p:column>  
+            </p:dataTable>
+            
+            <p:growl id="messages" showDetail="true" /> 
+             <p:confirmDialog message="Esta seguro de eliminar este registro?"  
+                showEffect="fade" hideEffect="explode"  
+                header="Confirmacion" severity="alert" widgetVar="confirmation">  
+                 <p:commandButton value="Si" update=":messages :growl formDocDefinicion :dataTableDocDefinicion" oncomplete="confirmation.hide()" actionListener="#{definicionBean.confirmaEliminarDocDefinicion}"/>  
+                 <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+            </p:confirmDialog>
+            
+            <p:dialog id="modalDialog" header="Atencion" widgetVar="dlgMensaje" width="350" modal="true">  
+                <span class="ui-icon ui-icon-alert"></span>
+                <h:outputText value="El registro esta siendo usado en otro lugar, por lo que no se puede eliminar." />  
+            </p:dialog>
+                
+            <p:dialog id="basicDialogMessage" header="Doc Definicion" widgetVar="dlgFormDocDefinicion" 
+                      width="400" closable="false" 
+                      resizable="false"
+                      modal="true" >  
+                
+                <p:growl id="growl" />
+                <h:form id="formDocDefinicion">    
+                <h:panelGrid columns="2" cellpadding="5">  
+                  
+                  
+                    <h:outputLabel for="codDocumento" value="Codigo Documento:" style="font-weight:bold"/>  
+                    <p:inputText id="codDocumento" value="#{definicionBean.codDocumento}" required="true" disabled="#{!definicionBean.sw}" 
+                                 requiredMessage="Debe ingresar el campo Descripcion" maxlength="120" style="text-transform: uppercase;" tabindex="1"/>  
+                    
+                    <h:outputLabel for="version" value="Version:" style="font-weight:bold"/>  
+                    <p:inputText id="version" value="#{definicionBean.version}" required="true" disabled="#{!definicionBean.sw}"
+                                 requiredMessage="Debe ingresar el campo Codigo" maxlength="2" style="text-transform: uppercase;" tabindex="2">
+                    <pe:keyFilter regEx="/[\d\-]/"/>
+                    </p:inputText>
+                    
+                    <h:outputLabel for="nombre" value="Nombre:" style="font-weight:bold"/>
+                    <p:inputText id="nombre" value="#{definicionBean.docDefinicion.nombre}" required="true" 
+                                 requiredMessage="Debe eleccionar el Tipo de Entidad" maxlength="20" style="text-transform: uppercase;" tabindex="3"/>  
+                    
+                    <h:outputLabel for="alias" value="Alias:" style="font-weight:bold"/>
+                    <p:inputText id="alias" value="#{definicionBean.docDefinicion.alias}" required="true" 
+                                 requiredMessage="Debe eleccionar el Tipo de Entidad" maxlength="20" style="text-transform: uppercase;" tabindex="4"/>  
+                                 
+                     <h:outputLabel for="codEstado" value="Estado" style="font-weight:bold"/>
+
+                    <p:selectOneMenu id="codEstado" value="#{definicionBean.codEstado}"
+                                     tabindex="5"
+                                     style="width: 225px;text-transform: uppercase;"
+                                     required="true"
+                                     requiredMessage="El campo Tipo de empresa es obligatorio.">
+                        <f:selectItem itemLabel="---Seleccione un estado---" noSelectionOption="true" />
+                        <f:selectItems value="#{definicionBean.listaDocumentoEstados}" var="docEstado" itemLabel="#{docEstado.descripcion}" itemValue="#{docEstado.codEstado}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel for="tipoGrupoDocumento" value="Tipo Grupo Documento" style="font-weight:bold"/>
+
+                    <p:selectOneMenu id="tipoGrupoDocumento" value="#{definicionBean.docDefinicion.tipoGrupoDocumento}"
+                                     tabindex="5"
+                                     style="width: 225px;text-transform: uppercase;"
+                                     required="true"
+                                     requiredMessage="El campo Tipo de empresa es obligatorio.">
+                         <f:selectItem itemLabel="---Seleccione una empresa---" itemValue="0" noSelectionOption="true" />
+                         <f:selectItems value="#{definicionBean.listaTipoGrupoDocumento}" />
+                    </p:selectOneMenu>
+                
+                     <p:commandButton value="Guardar" actionListener="#{definicionBean.guardarDefinicion}" update=":growl formDocDefinicion :dataTableDocDefinicion" icon="ui-icon-disk"/>
+                     <p:commandButton value="Cancelar" action="#{definicionBean.init}" update=":growl formDocDefinicion :dataTableDocDefinicion" immediate="true" onclick="dlgFormDocDefinicion.hide();" icon="ui-icon-close"/>
+                </h:panelGrid>  
+            </h:form> 
+            </p:dialog>
+
+
+        </ui:define>
+    </ui:composition>
+</html>

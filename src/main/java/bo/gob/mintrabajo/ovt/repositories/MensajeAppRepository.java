@@ -24,6 +24,7 @@ public interface MensajeAppRepository extends OpenJpaRepository<ParMensajeApp, L
             + " where "
             + " m.idRecurso.idRecurso = :idRecurso"
             + " and ((:fecha between m.fechaDesde and m.fechaHasta) or (m.fechaDesde<:fecha and m.fechaHasta is null )) "
+            + " order by m.idMensajeApp desc"
     )
     List<ParMensajeApp> listarPorRecursoYFecha(@Param("idRecurso") Long idRecurso,@Param("fecha") Date fecha);
      
@@ -32,6 +33,7 @@ public interface MensajeAppRepository extends OpenJpaRepository<ParMensajeApp, L
             + " from ParMensajeApp m"
             + " where "
             + " m.idRecurso.idRecurso = :idRecurso "
+            + " order by m.idMensajeApp desc"
     )
     List<ParMensajeApp> buscarPorRecurso(@Param("idRecurso") Long idRecurso);
 }

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="../template/templateInicio.xhtml">
+    <ui:define name="content">
+        <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                  draggable="false" closable="false">
+            <p:graphicImage value="../../images/ajax-loader.gif" />
+        </p:dialog>
+        <br/><br/>
+        <p:panel>
+            <h2 class="form-signin-heading" style="text-align: center">Envio de emails desatendido</h2>
+            <h:form id="tareaDialogoFrm">
+                <p:growl showDetail="true" id="growl" />
+                <div style="width: 100%" align="center">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel for="idEst" value="Estado: "/>
+                        <p:selectOneRadio id="idEst" value="#{tareaProgramadaBean.execEnabled}" required="true"
+                                          requiredMessage="Debe escoger el estado">
+                            <f:selectItem itemLabel="Activo" itemValue="#{true}"/>
+                            <f:selectItem itemLabel="Inactivo" itemValue="#{false}"/>
+                        </p:selectOneRadio>
+                        <p:outputLabel for="idPerdc" value="Es periodico: "/>
+                        <p:selectOneRadio id="idPerdc" value="#{tareaProgramadaBean.execPeriodic}"
+                                          required="true"
+                                          requiredMessage="Debe escoger si es periodico">
+                            <f:selectItem itemLabel="Si" itemValue="#{true}"/>
+                            <f:selectItem itemLabel="No" itemValue="#{false}"/>
+                            <p:ajax update="pn1 pn2 idFecha"/>
+                        </p:selectOneRadio>
+                        <p:outputLabel for="idFecha" value="Fecha de ejecución: "/>
+                        <p:calendar id="idFecha" value="#{tareaProgramadaBean.execDateSimple}"
+                                    timeOnly="#{tareaProgramadaBean.execPeriodic}"
+                                    required="true" requiredMessage="Debe escoger una fecha y/u hora para el evento"
+                                    pattern="#{tareaProgramadaBean.execPeriodic?'hh:mm a':'dd/MM/yyyy hh:mm a'}"
+                                    showOn="button"/>
+                        <p:outputPanel id="pn1">
+                            <p:outputLabel id="lbDia" for="pnDias" value="Dias del evento: "
+                                           rendered="#{tareaProgramadaBean.execPeriodic}"/>
+                        </p:outputPanel>
+                        <p:outputPanel id="pn2">
+                            <p:panelGrid id="pnDias" columns="10" rendered="#{tareaProgramadaBean.execPeriodic}">
+                                <p:outputLabel for="dayMon" value="Lu"/>
+                                <p:selectBooleanCheckbox id="dayMon" value="#{tareaProgramadaBean.execMon}"/>
+                                <p:outputLabel for="dayTue" value="Ma"/>
+                                <p:selectBooleanCheckbox id="dayTue" value="#{tareaProgramadaBean.execTue}"/>
+                                <p:outputLabel for="dayWed" value="Mi"/>
+                                <p:selectBooleanCheckbox id="dayWed" value="#{tareaProgramadaBean.execWed}"/>
+                                <p:outputLabel for="dayThu" value="Ju"/>
+                                <p:selectBooleanCheckbox id="dayThu" value="#{tareaProgramadaBean.execThu}"/>
+                                <p:outputLabel for="dayFri" value="Vi"/>
+                                <p:selectBooleanCheckbox id="dayFri" value="#{tareaProgramadaBean.execFri}"/>
+                                <p:outputLabel for="daySat" value="Sa"/>
+                                <p:selectBooleanCheckbox id="daySat" value="#{tareaProgramadaBean.execSat}"/>
+                                <p:outputLabel for="daySun" value="Do"/>
+                                <p:selectBooleanCheckbox id="daySun" value="#{tareaProgramadaBean.execSun}"/>
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:panelGrid>
+                    <br/>
+                    <p:commandButton value="Programar Tarea" icon="ui-icon-clock" action="#{tareaProgramadaBean.guardarTarea}"
+                                     update="tareaDialogoFrm"/>
+                </div>
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>
+</html>

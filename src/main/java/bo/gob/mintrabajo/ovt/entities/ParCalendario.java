@@ -54,12 +54,12 @@ public class ParCalendario implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(mappedBy = "parCalendario", fetch = FetchType.LAZY)
-    private List<DocGenerico> docGenericoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parCalendario", fetch = FetchType.LAZY)
-    private List<ParObligacionCalendario> parObligacionCalendarioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parCalendario", fetch = FetchType.LAZY)
-    private List<DocPlanilla> docPlanillaList;
+//    @OneToMany(mappedBy = "parCalendario", fetch = FetchType.LAZY)
+//    private List<DocGenerico> docGenericoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parCalendario", fetch = FetchType.LAZY)
+//    private List<ParObligacionCalendario> parObligacionCalendarioList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parCalendario", fetch = FetchType.LAZY)
+//    private List<DocPlanilla> docPlanillaList;
 
     public ParCalendario() {
     }
@@ -111,29 +111,29 @@ public class ParCalendario implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public List<DocGenerico> getDocGenericoList() {
-        return docGenericoList;
-    }
-
-    public void setDocGenericoList(List<DocGenerico> docGenericoList) {
-        this.docGenericoList = docGenericoList;
-    }
-
-    public List<ParObligacionCalendario> getParObligacionCalendarioList() {
-        return parObligacionCalendarioList;
-    }
-
-    public void setParObligacionCalendarioList(List<ParObligacionCalendario> parObligacionCalendarioList) {
-        this.parObligacionCalendarioList = parObligacionCalendarioList;
-    }
-
-    public List<DocPlanilla> getDocPlanillaList() {
-        return docPlanillaList;
-    }
-
-    public void setDocPlanillaList(List<DocPlanilla> docPlanillaList) {
-        this.docPlanillaList = docPlanillaList;
-    }
+//    public List<DocGenerico> getDocGenericoList() {
+//        return docGenericoList;
+//    }
+//
+//    public void setDocGenericoList(List<DocGenerico> docGenericoList) {
+//        this.docGenericoList = docGenericoList;
+//    }
+//
+//    public List<ParObligacionCalendario> getParObligacionCalendarioList() {
+//        return parObligacionCalendarioList;
+//    }
+//
+//    public void setParObligacionCalendarioList(List<ParObligacionCalendario> parObligacionCalendarioList) {
+//        this.parObligacionCalendarioList = parObligacionCalendarioList;
+//    }
+//
+//    public List<DocPlanilla> getDocPlanillaList() {
+//        return docPlanillaList;
+//    }
+//
+//    public void setDocPlanillaList(List<DocPlanilla> docPlanillaList) {
+//        this.docPlanillaList = docPlanillaList;
+//    }
 
     @Override
     public int hashCode() {

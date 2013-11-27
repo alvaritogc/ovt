@@ -276,7 +276,7 @@
                         <p style="color:#0069B1;">por una cuenta de correo electrónico válido y de su propiedad.</p>
                         <p style="color:#0069B1;">Completado este punto usted debera ingresar al sistema con el nuevo login (correo electrónico).</p>
                         <h:form id="cambioObligatorio">
-                           <!-- <p:growl showDetail="false" id="growl" autoUpdate="true" />-->
+                            <p:growl showDetail="true" id="cambioLoginGrl" autoUpdate="false" />
                             <p:panelGrid columns="2">
                                 <p:outputLabel value="Anterior login de usuario :" />
                                 <p:inputText value="#{templateInicioBean.nombreDeUsuario}" disabled="true" />
@@ -285,11 +285,11 @@
                                 <p:outputLabel value="Confirmar login de usuario" />
                                 <p:inputText value="#{templateInicioBean.loginConfirmacion}" required="true" requiredMessage="Login confirmación es requerido" />
                             </p:panelGrid>
-                            <p:commandButton value="Guardar" action="#{templateInicioBean.editarLogin}" update=":cambioObligatorio" />
+                            <p:commandButton value="Guardar" action="#{templateInicioBean.editarLogin}" update=":cambioObligatorio cambioLoginGrl" />
                         </h:form>
                     </p:dialog>
 
-                    <h:form id="cambioLoginFrm">
+                    <h:form id="cambioLoginFrm" rendered="#{!templateInicioBean.loginValido}">
                         <p:poll interval="1"   id="cambioLoginPoll"
                                 listener="#{templateInicioBean.abrirCambioLoginDlg}"
                                 update=":cambioLoginFrm:cambioLoginPoll"
@@ -311,7 +311,7 @@
                 </div>
                 <div class="span9">
                     <h:form id="idBarraDeMenu" rendered="#{!(templateInicioBean.idUsuario == null)}">
-                        <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
+                        <p:menubar model="#{templateInicioBean.model}">
                             <f:facet name="options">
                                 <p:commandLink value="Cambiar Contraseña" onclick="PF('dlgCambiarContrasenia').show();" style="color:#0069B1;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
                             </f:facet>

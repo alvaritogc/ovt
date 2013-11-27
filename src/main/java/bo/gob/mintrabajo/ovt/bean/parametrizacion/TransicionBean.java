@@ -24,10 +24,12 @@ import bo.gob.mintrabajo.ovt.api.ITransicionService;
 import bo.gob.mintrabajo.ovt.api.IDocumentoEstadoService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.api.IDefinicionService;
+import bo.gob.mintrabajo.ovt.api.IRolService;
 import bo.gob.mintrabajo.ovt.entities.DocDefinicion;
 import bo.gob.mintrabajo.ovt.entities.DocTransicion;
 import bo.gob.mintrabajo.ovt.entities.DocTransicionPK;
 import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstado;
+import bo.gob.mintrabajo.ovt.entities.UsrRol;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,8 @@ public class TransicionBean implements Serializable{
     private IDocumentoEstadoService iDocumentoEstadoService;
     @ManagedProperty(value = "#{definicionService}")
     private IDefinicionService iDefinicionService;
+    @ManagedProperty(value = "#{rolService}")
+    private IRolService iRolService;
     
     private HttpSession session;
     private UsrUsuario usuario;
@@ -63,6 +67,7 @@ public class TransicionBean implements Serializable{
     private List<ParDocumentoEstado> listaEstadoFinal;
     private List<DocDefinicion> listaDefinicion;
     private List<DocDefinicion> listaVersion;
+    private List<UsrRol> listaRoles;    
     
     private boolean evento=false;
     private boolean estadoTransicion=true;
@@ -71,6 +76,7 @@ public class TransicionBean implements Serializable{
     private short version;
     private String estadoInicial;
     private String estadoFinal;
+    private Long rol;
     
     @PostConstruct
     public void ini() {
@@ -87,6 +93,7 @@ public class TransicionBean implements Serializable{
         listaEstadoFinal= new ArrayList<ParDocumentoEstado>();
         listaDefinicion= new ArrayList<DocDefinicion>();
         listaVersion= new ArrayList<DocDefinicion>();
+        listaRoles = new ArrayList<UsrRol>();
         limpiar();
     }
     
@@ -119,7 +126,7 @@ public class TransicionBean implements Serializable{
             
             if(iTransicionService.saveTransicion(docTransicion, estadoTransicion, iDefinicionService.obtenerDefinicion(codigo, version),
                     iDocumentoEstadoService.buscarPorId(estadoInicial), iDocumentoEstadoService.buscarPorId(estadoFinal),
-                    REGISTRO_BITACORA,evento ,docTransicionPK)){
+                    REGISTRO_BITACORA,evento ,docTransicionPK, rol)){
                 context.execute("dlgFormTransicion.hide();");
                 limpiar();
             }else{
@@ -136,8 +143,9 @@ public class TransicionBean implements Serializable{
         listaTransicion= iTransicionService.listaTransicion();
         listaEstadoInicial=iDocumentoEstadoService.listarDocumentoEstados();
         listaEstadoFinal=iDocumentoEstadoService.listarDocumentoEstados();
-        listaDefinicion=iDefinicionService.getAllDefinicion();
+        listaDefinicion=iDefinicionService.listarDefiniciones();
         listaVersion=iDefinicionService.listaVersionesPorCodDocumento(listaDefinicion.get(0).getDocDefinicionPK().getCodDocumento());
+        listaRoles=iRolService.getAllRoles();
         nuevo();
     }
     
@@ -374,6 +382,48 @@ public class TransicionBean implements Serializable{
      */
     public void setListaVersion(List<DocDefinicion> listaVersion) {
         this.listaVersion = listaVersion;
+    }
+
+    /**
+     * @return the iRolService
+     */
+    public IRolService getiRolService() {
+        return iRolService;
+    }
+
+    /**
+     * @param iRolService the iRolService to set
+     */
+    public void setiRolService(IRolService iRolService) {
+        this.iRolService = iRolService;
+    }
+
+    /**
+     * @return the listaRoles
+     */
+    public List<UsrRol> getListaRoles() {
+        return listaRoles;
+    }
+
+    /**
+     * @param listaRoles the listaRoles to set
+     */
+    public void setListaRoles(List<UsrRol> listaRoles) {
+        this.listaRoles = listaRoles;
+    }
+
+    /**
+     * @return the rol
+     */
+    public Long getRol() {
+        return rol;
+    }
+
+    /**
+     * @param rol the rol to set
+     */
+    public void setRol(Long rol) {
+        this.rol = rol;
     }
     
 }
