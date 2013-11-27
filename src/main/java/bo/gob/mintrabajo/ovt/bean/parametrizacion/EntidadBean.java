@@ -7,14 +7,11 @@ import bo.gob.mintrabajo.ovt.api.IUnidadService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
-import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
 import bo.gob.mintrabajo.ovt.entities.ParDominio;
-import bo.gob.mintrabajo.ovt.entities.ParDominioPK;
 import bo.gob.mintrabajo.ovt.entities.ParEntidad;
 import bo.gob.mintrabajo.ovt.entities.PerPersona;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import bo.gob.mintrabajo.ovt.entities.UsrUsuario;
-import com.google.common.cache.Cache;
 
 import java.io.Serializable;
 import java.util.ArrayList;

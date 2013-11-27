@@ -3,6 +3,7 @@ package bo.gob.mintrabajo.ovt.services;
 //import bo.gob.mintrabajo.ovt.api.ICalendarioService;
 import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
 import bo.gob.mintrabajo.ovt.entities.ParCalendario;
+import bo.gob.mintrabajo.ovt.entities.ParCalendarioPK;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 import bo.gob.mintrabajo.ovt.repositories.CalendarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.ObligacionCalendarioRepository;
@@ -68,17 +69,16 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
 
     @Override
     public ParObligacionCalendario saveObligacionCalendario(ParObligacionCalendario obligacionCalendario,
-                                                            String gestion, String periodo,String REGISTRO_BITACORA, String parObligacion, boolean evento){
+                                                            ParCalendarioPK parCalendarioPK,String REGISTRO_BITACORA, String parObligacion, boolean evento){
         ParObligacionCalendario poc=new ParObligacionCalendario();
-        ParCalendario pc=new ParCalendario();
 
         if(obligacionCalendario.getIdObligacionCalendario()==null && !evento){
             poc.setIdObligacionCalendario(this.valorSecuencia("PAR_OBLIGACION_CAL_SEC"));
         }else{
             poc=obligacionCalendarioRepository.findOne(obligacionCalendario.getIdObligacionCalendario());
         }
-        pc=calendarioRepository.obtenerCalendarioPorGestionYPeriodo(gestion, periodo);
-        poc.setParCalendario(pc);
+
+        poc.setParCalendario(calendarioRepository.findOne(parCalendarioPK));
         poc.setCodObligacion(obligacionRepository.findOne(parObligacion));
         poc.setTipoCalendario(obligacionCalendario.getTipoCalendario());
 

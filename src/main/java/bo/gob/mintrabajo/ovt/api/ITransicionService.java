@@ -15,7 +15,7 @@ public interface ITransicionService {
             ParDocumentoEstado parDocumentoEstado1,
             ParDocumentoEstado parDocumentoEstado2,
             String REGISTRO_BITACORA,             
-            boolean evento,DocTransicionPK docTransicionPK);
+            boolean evento,DocTransicionPK docTransicionPK, Long idRol);
     public boolean deleteTransicion(DocTransicion transicion);
     public DocTransicion guardar(DocTransicion docTransicion);
 }

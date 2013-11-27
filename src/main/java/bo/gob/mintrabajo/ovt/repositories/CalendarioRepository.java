@@ -17,6 +17,7 @@
 package bo.gob.mintrabajo.ovt.repositories;
 
 import bo.gob.mintrabajo.ovt.entities.ParCalendario;
+import bo.gob.mintrabajo.ovt.entities.ParCalendarioPK;
 import java.util.List;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
@@ -28,7 +29,7 @@ import org.springframework.data.repository.query.Param;
  * @author lvaldez
  */
 @OpenJpaSettings
-public interface CalendarioRepository extends OpenJpaRepository<ParCalendario, Long>{
+public interface CalendarioRepository extends OpenJpaRepository<ParCalendario, ParCalendarioPK>{
     @Query("select p "
             + " from ParCalendario p "
             + " where p.parCalendarioPK.tipoPeriodo = :tPeriodo and "
@@ -51,9 +52,16 @@ public interface CalendarioRepository extends OpenJpaRepository<ParCalendario, L
             + " from ParCalendario p "
             + " order by p.parCalendarioPK.gestion desc, p.parCalendarioPK.tipoPeriodo asc")
     List<ParCalendario> listaCalendarioDesc();
+
+    @Query("select p "
+            + " from ParCalendario p "
+            + " group by p.parCalendarioPK.gestion "
+            + " order by p.parCalendarioPK.gestion asc")
+    List<ParCalendario> listaCalendarioPorAnio();
     
     @Query("select DISTINCT p.parCalendarioPK.gestion"
             + " from ParCalendario p "
-            + " order by p.parCalendarioPK.gestion asc")
+            + " order by p.parCalendarioPK.gestion desc")
     List<String> listarGestiones();
+
 }
