@@ -21,12 +21,12 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * User: Renato Velasquez
- * Date: 03-10-13
+ * User: Renato Velasquez Date: 03-10-13
  */
 @Named("documentoService")
 @TransactionAttribute
-public class DocumentoService implements IDocumentoService{
+public class DocumentoService implements IDocumentoService {
+
     private static final Logger logger = LoggerFactory.getLogger(DocumentoService.class);
     private final DocumentoRepository documentoRepository;
     private final DocumentoEstadoRepository documentoEstadoRepository;
@@ -118,20 +118,20 @@ public class DocumentoService implements IDocumentoService{
         return documentoRepository.save(documento);
     }
 
-    public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles){
+    public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles) {
         //guarda documento
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
 //        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento(), docDocumento.getDocDefinicion().getDocDefinicionPK().getVersion()));
-        docDocumento=documentoRepository.save(docDocumento);
-        logger.info("Guarda"+ docDocumento);
+        docDocumento = documentoRepository.save(docDocumento);
+        logger.info("Guarda" + docDocumento);
         //guarda planilla
 
-            docPlanilla.setIdDocumento(docDocumento);
+        docPlanilla.setIdDocumento(docDocumento);
 
-            docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
+        docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
 
-        logger.info("Guarda"+ planillaRepository.save(docPlanilla));
+        logger.info("Guarda" + planillaRepository.save(docPlanilla));
 
         //guardaPlanillaDetalles
 //        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
@@ -145,7 +145,7 @@ public class DocumentoService implements IDocumentoService{
         for (DocBinario elementoBinario : listaBinarios) {
             elementoBinario.setDocDocumento(docDocumento);
             elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
-            logger.info("Guarda"+ binarioRepository.save(elementoBinario));
+            logger.info("Guarda" + binarioRepository.save(elementoBinario));
         }
     }
 
@@ -203,7 +203,6 @@ public class DocumentoService implements IDocumentoService{
         }
     }
 
-
     @Override
     public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK, String registroBitacora) {
         List<DocDocumento> lista = documentoRepository.listarRoe011(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
@@ -240,33 +239,31 @@ public class DocumentoService implements IDocumentoService{
         docGenericoRepository.save(docGenerico);
         return docDocumento;
     }
-    
-    public DocDocumento guardarBajaRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora){
-        DocDefinicion docDefinicion=definicionRepository.findOne(new DocDefinicionPK("ROE012", (short) 1));
+
+    public DocDocumento guardarBajaRoe(DocDocumento docDocumento, DocGenerico docGenerico, String registroBitacora) {
+        DocDefinicion docDefinicion = definicionRepository.findOne(new DocDefinicionPK("ROE012", (short) 1));
         //
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setDocDefinicion(docDefinicion);
-        
+
         docDocumento.setCodEstado(documentoEstadoRepository.findOne(docDefinicion.getCodEstado().getCodEstado()));//Estado inicial
         docDocumento.setFechaDocumento(new Date());
         docDocumento.setFechaReferenca(new Date());
-        
+
         docDocumento.setFechaBitacora(new Date());
         docDocumento.setRegistroBitacora(registroBitacora);
         docDocumento.setTipoMedioRegistro("DDJJ");
-        
-        
+
+
         //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("ROE012", (short) 1));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getCodEstado().getCodEstado(), (short) 1));
-        docDocumento=documentoRepository.save(docDocumento);
+        docDocumento = documentoRepository.save(docDocumento);
         //
         docGenerico.setIdDocumento(docDocumento);
         docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
         docGenericoRepository.save(docGenerico);
         return docDocumento;
     }
-
-
 
     public DocDocumento guardarActualizaRoe(DocDocumento docDocumento, DocGenerico docGenerico, String registroBitacora) {
         DocDefinicion docDefinicion = definicionRepository.findOne(new DocDefinicionPK("ROE013", (short) 1));
@@ -301,12 +298,12 @@ public class DocumentoService implements IDocumentoService{
         } catch (Exception e) {
             throw new RuntimeException("DocNumeracion no encontrado");
         }
-        String codNumeroS =numeracion.getDocNumeracionPK().getCodDocumento();
+        String codNumeroS = numeracion.getDocNumeracionPK().getCodDocumento();
         String codNumero = "";
         for (int i = 2; i < codNumeroS.length(); i++) {
             codNumero = codNumero + codNumeroS.charAt(i);
         }
-        Long numero=new Long(numeracion.getUltimoNumero()+1);
+        Long numero = new Long(numeracion.getUltimoNumero() + 1);
         //
         Formatter fmt = new Formatter();
         fmt.format("%07d", numero);
@@ -332,15 +329,15 @@ public class DocumentoService implements IDocumentoService{
         Long modulo = sumatoria % 11;
         Long verificacion = 11 - modulo;
         //
-        if(verificacion>new Long(9)){
+        if (verificacion > new Long(9)) {
             //System.out.println("verificador > a 9");
-            String vAux=""+verificacion;
-            verificacion=new Long((Integer.valueOf(""+vAux.charAt(0))+Integer.valueOf(""+vAux.charAt(1))));
+            String vAux = "" + verificacion;
+            verificacion = new Long((Integer.valueOf("" + vAux.charAt(0)) + Integer.valueOf("" + vAux.charAt(1))));
             //System.out.println("verificacion: "+verificacion);
         }
-        
+
         //
-        numeracion.setUltimoNumero(numeracion.getUltimoNumero()+1);
+        numeracion.setUltimoNumero(numeracion.getUltimoNumero() + 1);
         numeracionRepository.save(numeracion);
         //
         Formatter fmtVerificacion = new Formatter();
@@ -349,11 +346,11 @@ public class DocumentoService implements IDocumentoService{
     }
 
     public String generateReport(String nomArchivo, String jasper, HashMap<String, Object> parametros) throws ClassNotFoundException, IOException, JRException {
-        List<String> lista= new ArrayList<String>();
+        List<String> lista = new ArrayList<String>();
         lista.add("asd");
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String rutaWebapp = servletContext.getRealPath("/");
-        rutaPdf= "/reportes/temp/"+ nomArchivo;
+        rutaPdf = "/reportes/temp/" + nomArchivo;
         nombrePdf = rutaWebapp + rutaPdf;
         JasperReport reporte = (JasperReport) JRLoader.loadObject(new File(rutaWebapp + jasper));
         JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(lista));
@@ -363,25 +360,24 @@ public class DocumentoService implements IDocumentoService{
         exporter.exportReport();
         return nombrePdf;
     }
-    
+
     @Override
-    public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador,Date fechaDesde,Date fechaHasta){
-        return documentoRepository.listarPlanillaALaFecha(idEmpleador,fechaDesde, fechaHasta);
+    public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador, Date fechaDesde, Date fechaHasta) {
+        return documentoRepository.listarPlanillaALaFecha(idEmpleador, fechaDesde, fechaHasta);
     }
 
-    public List<DocDocumento> listarDeclarados(String idEmpleador){
+    public List<DocDocumento> listarDeclarados(String idEmpleador) {
         return documentoRepository.listarDeclarados(idEmpleador);
     }
 
-
     @Override
-    public DocDocumento guardarDocumentoRoe(DocGenerico docGenerico, Long idDocumento,PerUnidadPK perUnidadPK, DocDefinicionPK docDefinicionPK, String registroBitacora) {
+    public DocDocumento guardarDocumentoRoe(DocGenerico docGenerico, Long idDocumento, PerUnidadPK perUnidadPK, DocDefinicionPK docDefinicionPK, String registroBitacora, boolean cambiarNroUnidad) {
         DocDefinicion docDefinicion = definicionRepository.findOne(docDefinicionPK);
         //
         DocDocumento docDocumento;
         if (idDocumento == null) {
             //Si no tiene  documento crerara un nuevo, segun su docDefinicion
-            docDocumento=new DocDocumento();
+            docDocumento = new DocDocumento();
             //
             docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
             docDocumento.setDocDefinicion(docDefinicion);
@@ -395,22 +391,30 @@ public class DocumentoService implements IDocumentoService{
             docDocumento.setRegistroBitacora(registroBitacora);
             docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
 
-            System.out.println("codEstadoDocumento: "+docDefinicion.getDocDefinicionPK().getCodDocumento());
+            System.out.println("codEstadoDocumento: " + docDefinicion.getDocDefinicionPK().getCodDocumento());
             docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
             //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
             //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getCodEstado().getCodEstado(), (short) 1));
 
             docDocumento = documentoRepository.save(docDocumento);
+            if (cambiarNroUnidad) {
+                PerUnidad unidad = unidadRepository.findOne(docDocumento.getPerUnidad().getPerUnidadPK());
+                System.out.println("========>>> UNIDAD " + unidad);
+                System.out.println("========>>> CAMBIANDO EL VALOR nro de documento" + docDocumento.getNumeroDocumento());
+                unidad.setTipoUnidad(String.valueOf(docDocumento.getNumeroDocumento()));
+                System.out.println("========>>> MODIFICADO " + unidad);
+                unidadRepository.save(unidad);
+            }
         } else {
             //Si ya tiene un documento actualizara codEstado de 010 al q tenga en docDefinicion ej 013
-            docDocumento=documentoRepository.findOne(idDocumento);
+            docDocumento = documentoRepository.findOne(idDocumento);
             docDocumento.setCodEstado(documentoEstadoRepository.findOne(docDefinicion.getCodEstado().getCodEstado()));//Estado inicial
-            docDocumento=documentoRepository.save(docDocumento);
+            docDocumento = documentoRepository.save(docDocumento);
         }
 
         //
         docGenerico.setIdDocumento(docDocumento);
-        if(docGenerico.getIdGenerico()==null){
+        if (docGenerico.getIdGenerico() == null) {
             //si el documento es nuevo creara un nuevo docGenerico
             docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
         }
@@ -419,7 +423,7 @@ public class DocumentoService implements IDocumentoService{
         return docDocumento;
     }
 
-    public List<DocDocumento> findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(String idPersona, String codEstado){
+    public List<DocDocumento> findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(String idPersona, String codEstado) {
         return documentoRepository.findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(idPersona, codEstado);
     }
 }
