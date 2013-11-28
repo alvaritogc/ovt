@@ -25,6 +25,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
@@ -301,6 +302,14 @@ public class TemplateInicioBean implements Serializable {
             session.setAttribute("idUsuario", idUsuario);
             UsrUsuario usuario = iUsuarioService.findById(idUsuario);
             session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
+
+            //Guardamos en session nombre del cliente y la ip
+            String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
+
+            Map<String,String> bitacoraMapa = new HashMap<String, String>();
+            bitacoraMapa.put("usuario", usuario.getUsuario());
+            bitacoraMapa.put("ip", ipCliente);
+            session.setAttribute("bitacoraMapa", bitacoraMapa);
 
             cargarDominio();
 
