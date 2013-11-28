@@ -83,7 +83,7 @@
             <p:outputLabel value="1.3 Nro de orden que rectifica"/>
             <p:selectOneMenu id="rectificatorio" value="#{declaracionBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="#{!declaracionBean.esRectificatorio}"> <!--disabled="# {declaracionBean.parametro!=3}"-->
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionBean.docPlanillaLista}" var="ePlanilla" itemLabel="#{ePlanilla.idDocumento.numeroDocumento}&nbsp;-&nbsp;#{ePlanilla.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{ePlanilla.idDocumento.idDocumento}"/>
+                <f:selectItems value="#{declaracionBean.docDocumentosParaRectificar}" var="ePlanilla" itemLabel="#{ePlanilla.idDocumento.numeroDocumento}&nbsp;-&nbsp;#{ePlanilla.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{ePlanilla.idDocumento.idDocumento}"/>
             </p:selectOneMenu>
         </p:panelGrid>
     </p:column>
@@ -554,7 +554,7 @@
             <h:panelGroup id="tipoEmpresa">
                 <p:outputLabel id="central" value="#{declaracionBean.central.nombreComercial}" rendered="#{declaracionBean.tipoEmpresa==1}" />
                 <p:selectOneMenu id="sucursal" style="width: 260px; height: 20px" rendered="#{declaracionBean.tipoEmpresa==2}" value="#{declaracionBean.idUnidad}">
-                    <f:selectItem itemLabel="---Seleccione---" itemDisabled="true"/>
+                    <f:selectItem itemLabel="---SELECCIONE---" itemDisabled="true"/>
                     <f:selectItems value="#{declaracionBean.sucursales}" var="sucursal" itemLabel="#{sucursal.nombreComercial}" itemValue="#{sucursal.perUnidadPK.idUnidad}"/>
                 </p:selectOneMenu>
             </h:panelGroup>

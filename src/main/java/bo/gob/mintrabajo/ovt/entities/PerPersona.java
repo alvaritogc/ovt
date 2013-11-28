@@ -71,10 +71,10 @@ public class PerPersona implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-/*    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona", fetch = FetchType.LAZY)
-    private List<UsrUsuario> usrUsuarioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perPersona", fetch = FetchType.LAZY)
-    private List<PerUnidad> perUnidadList;*/
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona", fetch = FetchType.LAZY)
+//    private List<UsrUsuario> usrUsuarioList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perPersona", fetch = FetchType.LAZY)
+//    private List<PerUnidad> perUnidadList;
     @JoinColumn(name = "COD_LOCALIDAD", referencedColumnName = "COD_LOCALIDAD")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParLocalidad codLocalidad;
@@ -168,21 +168,21 @@ public class PerPersona implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-/*    public List<UsrUsuario> getUsrUsuarioList() {
-        return usrUsuarioList;
-    }
-
-    public void setUsrUsuarioList(List<UsrUsuario> usrUsuarioList) {
-        this.usrUsuarioList = usrUsuarioList;
-    }
-
-    public List<PerUnidad> getPerUnidadList() {
-        return perUnidadList;
-    }
-
-    public void setPerUnidadList(List<PerUnidad> perUnidadList) {
-        this.perUnidadList = perUnidadList;
-    }*/
+//    public List<UsrUsuario> getUsrUsuarioList() {
+//        return usrUsuarioList;
+//    }
+//
+//    public void setUsrUsuarioList(List<UsrUsuario> usrUsuarioList) {
+//        this.usrUsuarioList = usrUsuarioList;
+//    }
+//
+//    public List<PerUnidad> getPerUnidadList() {
+//        return perUnidadList;
+//    }
+//
+//    public void setPerUnidadList(List<PerUnidad> perUnidadList) {
+//        this.perUnidadList = perUnidadList;
+//    }
 
     public ParLocalidad getCodLocalidad() {
         return codLocalidad;

@@ -8,4 +8,5 @@ public interface IPlanillaService {
     DocPlanilla findById(Long id);
     DocPlanilla buscarPorDocumento(Long idDocumento);
     List<DocPlanilla> listarporPersona(String idPersona);
+    List<DocPlanilla> listarDeclaradosPorPersona(String idPersona);
 }

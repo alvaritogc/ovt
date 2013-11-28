@@ -1,7 +1,7 @@
 package bo.gob.mintrabajo.ovt.bean.persona;
 
-import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import org.primefaces.context.RequestContext;
@@ -15,10 +15,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
-import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
@@ -28,7 +25,8 @@ import java.util.regex.Pattern;
 
 import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
 import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
-import static bo.gob.mintrabajo.ovt.Util.Sequencias.*;
+import static bo.gob.mintrabajo.ovt.Util.Sequencias.PER_PERSONA_SEC;
+import static bo.gob.mintrabajo.ovt.Util.Sequencias.USR_USUARIO_SEC;
 
 /**
  * Created with IntelliJ IDEA.
@@ -373,7 +371,7 @@ public class PersonaBean implements Serializable{
     }
 
     public boolean validarEmail(String email){
-        Pattern patron = Pattern.compile("^[\\w-\\.]+\\@[\\w\\.-]+\\.[a-z]{2,4}$");
+        Pattern patron = Pattern.compile("\\@[\\w\\.-]+\\.[a-z]{2,4}$");
         Matcher encajador = patron.matcher(email);
         if (encajador.matches()) {
             return true;

@@ -16,10 +16,25 @@
 
 package bo.gob.mintrabajo.ovt.entities;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -77,6 +92,8 @@ public class DocDocumento implements Serializable {
     private DocDefinicion docDefinicion;
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
 //    private List<DocLogEstado> docLogEstadoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
+//    private List<DocAlerta> docAlertaList;
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
 //    private List<DocGenerico> docGenericoList;
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDocumento", fetch = FetchType.LAZY)
@@ -164,6 +181,10 @@ public class DocDocumento implements Serializable {
 //        this.docLogImpresionList = docLogImpresionList;
 //    }
 
+//    public void setDocLogImpresionList(List<DocLogImpresion> docLogImpresionList) {
+//        this.docLogImpresionList = docLogImpresionList;
+//    }
+
     public PerUnidad getPerUnidad() {
         return perUnidad;
     }
@@ -212,6 +233,14 @@ public class DocDocumento implements Serializable {
 //        this.docLogEstadoList = docLogEstadoList;
 //    }
 //
+//    public List<DocAlerta> getDocAlertaList() {
+//        return docAlertaList;
+//    }
+//
+//    public void setDocAlertaList(List<DocAlerta> docAlertaList) {
+//        this.docAlertaList = docAlertaList;
+//    }
+//
 //    public List<DocGenerico> getDocGenericoList() {
 //        return docGenericoList;
 //    }
@@ -227,7 +256,7 @@ public class DocDocumento implements Serializable {
 //    public void setDocBinarioList(List<DocBinario> docBinarioList) {
 //        this.docBinarioList = docBinarioList;
 //    }
-
+//
 //    public DocPlanilla getDocPlanilla() {
 //        return docPlanilla;
 //    }

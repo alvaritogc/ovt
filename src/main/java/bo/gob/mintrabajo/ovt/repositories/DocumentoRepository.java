@@ -1,13 +1,13 @@
 package bo.gob.mintrabajo.ovt.repositories;
 
 import bo.gob.mintrabajo.ovt.entities.DocDocumento;
-import bo.gob.mintrabajo.ovt.entities.UsrRecurso;
-import java.util.Date;
-import java.util.List;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.Date;
+import java.util.List;
 
 @OpenJpaSettings
 public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Long> {
@@ -65,5 +65,14 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
             + " and d.perUnidad.perUnidadPK.idPersona = :idEmpleador  "
             )
     List<DocDocumento> listarPlanillaALaFecha(@Param("idEmpleador") String idEmpleador,@Param("fechaDesde") Date fechaDesde,@Param("fechaHasta") Date fechaHasta);
+
+    @Query(
+            "   select d "
+                    + " from DocDocumento d"
+                    + " where "
+                    + " d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
+                    + " and d.codEstado.codEstado like '110'"
+    )
+    List<DocDocumento> listarDeclarados(@Param("idEmpleador") String idPersona);
 
 }

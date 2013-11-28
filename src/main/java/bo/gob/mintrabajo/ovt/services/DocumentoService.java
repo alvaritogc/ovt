@@ -11,6 +11,8 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.TransactionAttribute;
 import javax.faces.context.FacesContext;
@@ -32,6 +34,7 @@ import java.util.*;
 @Named("documentoService")
 @TransactionAttribute
 public class DocumentoService implements IDocumentoService{
+    private static final Logger logger = LoggerFactory.getLogger(DocumentoService.class);
     private final DocumentoRepository documentoRepository;
     private final DocumentoEstadoRepository documentoEstadoRepository;
     private final PlanillaRepository planillaRepository;
@@ -122,39 +125,41 @@ public class DocumentoService implements IDocumentoService{
         return documentoRepository.save(documento);
     }
 
-    public Long[] guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles){
-        int i=0;
-        Long ids[]=new Long[10];
+    public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles){
         //guarda documento
-        docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
-        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+        Long idDocumentoRectificatorio=docDocumento.getIdDocumento();
+        if(idDocumentoRectificatorio==null)
+            docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+//        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento(), docDocumento.getDocDefinicion().getDocDefinicionPK().getVersion()));
         docDocumento=documentoRepository.save(docDocumento);
-        ids[i++]=docDocumento.getIdDocumento();
-
+        logger.info("Guarda"+ docDocumento);
         //guarda planilla
-        docPlanilla.setIdDocumento(docDocumento);
-        docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
-        docPlanilla=planillaRepository.save(docPlanilla);
-        ids[i++]=docPlanilla.getIdPlanilla();
+
+            docPlanilla.setIdDocumento(docDocumento);
+
+        if(idDocumentoRectificatorio==null)
+            docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
+        else
+            docPlanilla.setIdPlanilla(planillaRepository.findByIdDocumento_IdDocumento(docDocumento.getIdDocumento()).getIdPlanilla());
+
+        logger.info("Guarda"+ planillaRepository.save(docPlanilla));
 
         //guardaPlanillaDetalles
 //        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
 //            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
 //            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_DETALLE_SEC"));
-//            elemPlanillaDetalle=planillaDetalleRepository.save(elemPlanillaDetalle);
-//            ids=elemPlanillaDetalle.getIdPlanillaDetalle();
+//            logger.info("Guarda",planillaDetalleRepository.save(elemPlanillaDetalle));
 //        }
+//        logger.info("Guarda"+ elemPlanillaDetalle);
 
         //guarda binarios
         int idBinario= 1;
         for(DocBinario elementoBinario:listaBinarios){
             elementoBinario.setDocDocumento(docDocumento);
             elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
-            elementoBinario = binarioRepository.save(elementoBinario);
-            ids[i++]=elementoBinario.getDocBinarioPK().getIdBinario();
-            ids[i++]=elementoBinario.getDocBinarioPK().getIdDocumento();
+            logger.info("Guarda"+ binarioRepository.save(elementoBinario));
         }
-        return ids;
     }
     
     @Override
@@ -508,5 +513,9 @@ public class DocumentoService implements IDocumentoService{
     @Override
     public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador,Date fechaDesde,Date fechaHasta){
         return documentoRepository.listarPlanillaALaFecha(idEmpleador,fechaDesde, fechaHasta);
+    }
+
+    public List<DocDocumento> listarDeclarados(String idEmpleador){
+        return documentoRepository.listarDeclarados(idEmpleador);
     }
 }

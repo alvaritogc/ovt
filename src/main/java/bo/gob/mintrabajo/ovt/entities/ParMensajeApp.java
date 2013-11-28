@@ -33,7 +33,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -44,8 +43,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ParMensajeApp.findAll", query = "SELECT p FROM ParMensajeApp p")})
 public class ParMensajeApp implements Serializable {
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMensajeApp", fetch = FetchType.LAZY)
-//    private List<ParMensajeContenido> parMensajeContenidoList;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -183,14 +180,5 @@ public class ParMensajeApp implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.ParMensajeApp[ idMensajeApp=" + idMensajeApp + " ]";
     }
-
-//    @XmlTransient
-//    public List<ParMensajeContenido> getParMensajeContenidoList() {
-//        return parMensajeContenidoList;
-//    }
-//
-//    public void setParMensajeContenidoList(List<ParMensajeContenido> parMensajeContenidoList) {
-//        this.parMensajeContenidoList = parMensajeContenidoList;
-//    }
     
 }

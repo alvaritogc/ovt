@@ -78,7 +78,7 @@ public class declaracionBean implements Serializable {
     private int parametro;
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
     private List<ParEntidad> parEntidadLista;
-    private List<DocPlanilla> docPlanillaLista;
+    private List<DocPlanilla> docDocumentosParaRectificar;
     private PerPersona perPersona;
     private VperPersona vperPersona;
     private DocPlanilla docPlanilla;
@@ -131,8 +131,7 @@ public class declaracionBean implements Serializable {
             parametro = 1;
         }
 
-        if (parametro==3)
-            esRectificatorio=true;
+
         if(parametro==2)
             habilita=false;
 
@@ -173,6 +172,10 @@ public class declaracionBean implements Serializable {
 //        persona = iPersonaService.buscarPorId(idPersona);
         logger.info("persona ok");
         cargar();
+        if (parametro==3){
+            esRectificatorio=true;
+            unidadSeleccionada=central;
+        }
         valor=true;
         gestion=String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         obtenerPeriodoLista();
@@ -183,7 +186,7 @@ public class declaracionBean implements Serializable {
     }
 
     public void abrirPanel() {
-        if(valor && !estaDeclarado)
+        if(valor && !estaDeclarado && parametro!=3)
             RequestContext.getCurrentInstance().execute("seleccionEmpresa.show()");
         valor = false;
     }
@@ -191,7 +194,7 @@ public class declaracionBean implements Serializable {
     public void cargar() {
         generaDocumento();
         verEstadoPlanilla();
-        cargarListaPorNumeros();
+        cargarDocumentosParaRectificar();
         listaCentralSucursales();
     }
 
@@ -210,10 +213,9 @@ public class declaracionBean implements Serializable {
         tamañoSucursales=sucursales.size();
     }
 
-    public void cargarListaPorNumeros(){
-        docPlanillaLista= new ArrayList<DocPlanilla>();
-        docPlanillaLista= iPlanillaService.listarporPersona(idPersona);
-
+    public void cargarDocumentosParaRectificar(){
+        docDocumentosParaRectificar= new ArrayList<DocPlanilla>();
+        docDocumentosParaRectificar= iPlanillaService.listarDeclaradosPorPersona(idPersona);
     }
 
 
@@ -288,7 +290,8 @@ public class declaracionBean implements Serializable {
     public void generaPlanilla(){
         logger.info("generaPlanilla()");
         docPlanilla.setIdEntidadBanco(iEntidadService.buscaPorId(new Long("2")));
-        docPlanilla.setIdEntidadSalud(iEntidadService.buscaPorId(idEntidadSalud));
+        if(idEntidadSalud!=null)
+            docPlanilla.setIdEntidadSalud(iEntidadService.buscaPorId(idEntidadSalud));
         docPlanilla.setFechaOperacion(fechaOperacionAux);
         //nuevos atributos
         docPlanilla.setNroEmpleador(vperPersona.getNroOtro());
@@ -356,15 +359,16 @@ public class declaracionBean implements Serializable {
 
 //        if(errores.size()==0 && verificaValidacion){
         try{
+            if(parametro==3)
+                documento.setIdDocumento(idRectificatorio);
+
             logger.info("Guardando documento, binario y planilla");
             logger.info(documento.toString());
             logger.info(listaBinarios.toString());
             logger.info(docPlanilla.toString());
             generaPlanilla();
             documento.setPerUnidad(unidadSeleccionada);
-            Long ids[]=idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);
-            for(int i=0;i<ids.length; i++)
-                logger.info("ids guardados..."+ ids[i]);
+            idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);
 //                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
 
         }catch (Exception e){
@@ -1032,12 +1036,12 @@ public class declaracionBean implements Serializable {
         this.nombres = nombres;
     }
 
-    public List<DocPlanilla> getDocPlanillaLista() {
-        return docPlanillaLista;
+    public List<DocPlanilla> getDocDocumentosParaRectificar() {
+        return docDocumentosParaRectificar;
     }
 
-    public void setDocPlanillaLista(List<DocPlanilla> docPlanillaLista) {
-        this.docPlanillaLista = docPlanillaLista;
+    public void setDocDocumentosParaRectificar(List<DocPlanilla> docDocumentosParaRectificar) {
+        this.docDocumentosParaRectificar = docDocumentosParaRectificar;
     }
 
     public IDefinicionService getiDefinicionService() {

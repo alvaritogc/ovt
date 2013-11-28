@@ -64,10 +64,12 @@ public class UsrRol implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrRol", fetch = FetchType.LAZY)
-    private List<UsrRolRecurso> usrRolRecursoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrRol", fetch = FetchType.LAZY)
-    private List<UsrUsuarioRol> usrUsuarioRolList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrRol", fetch = FetchType.LAZY)
+//    private List<UsrRolRecurso> usrRolRecursoList;
+//    @OneToMany(mappedBy = "idRol", fetch = FetchType.LAZY)
+//    private List<DocTransicion> docTransicionList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrRol", fetch = FetchType.LAZY)
+//    private List<UsrUsuarioRol> usrUsuarioRolList;
     @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID_MODULO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private UsrModulo idModulo;
@@ -136,21 +138,29 @@ public class UsrRol implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public List<UsrRolRecurso> getUsrRolRecursoList() {
-        return usrRolRecursoList;
-    }
-
-    public void setUsrRolRecursoList(List<UsrRolRecurso> usrRolRecursoList) {
-        this.usrRolRecursoList = usrRolRecursoList;
-    }
-
-    public List<UsrUsuarioRol> getUsrUsuarioRolList() {
-        return usrUsuarioRolList;
-    }
-
-    public void setUsrUsuarioRolList(List<UsrUsuarioRol> usrUsuarioRolList) {
-        this.usrUsuarioRolList = usrUsuarioRolList;
-    }
+//    public List<UsrRolRecurso> getUsrRolRecursoList() {
+//        return usrRolRecursoList;
+//    }
+//
+//    public void setUsrRolRecursoList(List<UsrRolRecurso> usrRolRecursoList) {
+//        this.usrRolRecursoList = usrRolRecursoList;
+//    }
+//
+//    public List<DocTransicion> getDocTransicionList() {
+//        return docTransicionList;
+//    }
+//
+//    public void setDocTransicionList(List<DocTransicion> docTransicionList) {
+//        this.docTransicionList = docTransicionList;
+//    }
+//
+//    public List<UsrUsuarioRol> getUsrUsuarioRolList() {
+//        return usrUsuarioRolList;
+//    }
+//
+//    public void setUsrUsuarioRolList(List<UsrUsuarioRol> usrUsuarioRolList) {
+//        this.usrUsuarioRolList = usrUsuarioRolList;
+//    }
 
     public UsrModulo getIdModulo() {
         return idModulo;

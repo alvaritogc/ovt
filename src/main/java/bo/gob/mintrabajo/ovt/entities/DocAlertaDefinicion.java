@@ -18,16 +18,19 @@ package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,18 +40,19 @@ import javax.persistence.TemporalType;
  * @author rvelasquez
  */
 @Entity
-@Table(name = "PAR_MENSAJE_BINARIO")
+@Table(name = "DOC_ALERTA_DEFINICION")
 @NamedQueries({
-    @NamedQuery(name = "ParMensajeBinario.findAll", query = "SELECT p FROM ParMensajeBinario p")})
-public class ParMensajeBinario implements Serializable {
+    @NamedQuery(name = "DocAlertaDefinicion.findAll", query = "SELECT d FROM DocAlertaDefinicion d")})
+public class DocAlertaDefinicion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "ID_MENSAJE_BINARIO")
-    private Long idMensajeBinario;
-    @Lob
-    @Column(name = "BINARIO")
-    private byte[] binario;
+    @Column(name = "COD_ALERTA")
+    private String codAlerta;
+    @Column(name = "DESCRICPION")
+    private String descricpion;
+    @Column(name = "TIPO_ALERTA")
+    private String tipoAlerta;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -56,37 +60,49 @@ public class ParMensajeBinario implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-    @JoinColumn(name = "ID_MENSAJE_CONTENIDO", referencedColumnName = "ID_MENSAJE_CONTENIDO")
+    @JoinColumns({
+        @JoinColumn(name = "COD_DOCUMENTO", referencedColumnName = "COD_DOCUMENTO"),
+        @JoinColumn(name = "VERSION", referencedColumnName = "VERSION")})
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private ParMensajeContenido idMensajeContenido;
+    private DocDefinicion docDefinicion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codAlerta", fetch = FetchType.LAZY)
+    private List<DocAlerta> docAlertaList;
 
-    public ParMensajeBinario() {
+    public DocAlertaDefinicion() {
     }
 
-    public ParMensajeBinario(Long idMensajeBinario) {
-        this.idMensajeBinario = idMensajeBinario;
+    public DocAlertaDefinicion(String codAlerta) {
+        this.codAlerta = codAlerta;
     }
 
-    public ParMensajeBinario(Long idMensajeBinario, Date fechaBitacora, String registroBitacora) {
-        this.idMensajeBinario = idMensajeBinario;
+    public DocAlertaDefinicion(String codAlerta, Date fechaBitacora, String registroBitacora) {
+        this.codAlerta = codAlerta;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
     }
 
-    public Long getIdMensajeBinario() {
-        return idMensajeBinario;
+    public String getCodAlerta() {
+        return codAlerta;
     }
 
-    public void setIdMensajeBinario(Long idMensajeBinario) {
-        this.idMensajeBinario = idMensajeBinario;
+    public void setCodAlerta(String codAlerta) {
+        this.codAlerta = codAlerta;
     }
 
-    public byte[] getBinario() {
-        return binario;
+    public String getDescricpion() {
+        return descricpion;
     }
 
-    public void setBinario(byte[] binario) {
-        this.binario = binario;
+    public void setDescricpion(String descricpion) {
+        this.descricpion = descricpion;
+    }
+
+    public String getTipoAlerta() {
+        return tipoAlerta;
+    }
+
+    public void setTipoAlerta(String tipoAlerta) {
+        this.tipoAlerta = tipoAlerta;
     }
 
     public Date getFechaBitacora() {
@@ -105,29 +121,37 @@ public class ParMensajeBinario implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-    public ParMensajeContenido getIdMensajeContenido() {
-        return idMensajeContenido;
+    public DocDefinicion getDocDefinicion() {
+        return docDefinicion;
     }
 
-    public void setIdMensajeContenido(ParMensajeContenido idMensajeContenido) {
-        this.idMensajeContenido = idMensajeContenido;
+    public void setDocDefinicion(DocDefinicion docDefinicion) {
+        this.docDefinicion = docDefinicion;
+    }
+
+    public List<DocAlerta> getDocAlertaList() {
+        return docAlertaList;
+    }
+
+    public void setDocAlertaList(List<DocAlerta> docAlertaList) {
+        this.docAlertaList = docAlertaList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idMensajeBinario != null ? idMensajeBinario.hashCode() : 0);
+        hash += (codAlerta != null ? codAlerta.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ParMensajeBinario)) {
+        if (!(object instanceof DocAlertaDefinicion)) {
             return false;
         }
-        ParMensajeBinario other = (ParMensajeBinario) object;
-        if ((this.idMensajeBinario == null && other.idMensajeBinario != null) || (this.idMensajeBinario != null && !this.idMensajeBinario.equals(other.idMensajeBinario))) {
+        DocAlertaDefinicion other = (DocAlertaDefinicion) object;
+        if ((this.codAlerta == null && other.codAlerta != null) || (this.codAlerta != null && !this.codAlerta.equals(other.codAlerta))) {
             return false;
         }
         return true;
@@ -135,7 +159,7 @@ public class ParMensajeBinario implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.ParMensajeBinario[ idMensajeBinario=" + idMensajeBinario + " ]";
+        return "bo.gob.mintrabajo.ovt.entities.DocAlertaDefinicion[ codAlerta=" + codAlerta + " ]";
     }
     
 }

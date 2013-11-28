@@ -19,4 +19,15 @@ public interface PlanillaRepository extends OpenJpaRepository<DocPlanilla, Long>
     List<DocPlanilla> buscarPorDocumento(@Param("idDocumento") Long idDocumento);
 
     List<DocPlanilla> findByIdDocumento_PerUnidad_PerPersona_IdPersona(String idPersona);
+
+    DocPlanilla findByIdDocumento_IdDocumento(Long idDocumento);
+
+    @Query(
+            "select p"
+            + " from DocPlanilla p"
+            + " where"
+            + " p.idDocumento.perUnidad.perUnidadPK.idPersona=:idPersona"
+            + " and p.idDocumento.docDefinicion.codEstado.codEstado = '110'"
+    )
+    List<DocPlanilla> listarDeclaradosPorPersona(@Param("idPersona") String idPersona);
 }

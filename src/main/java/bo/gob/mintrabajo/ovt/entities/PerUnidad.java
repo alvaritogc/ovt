@@ -19,7 +19,6 @@ package bo.gob.mintrabajo.ovt.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  *
@@ -74,21 +73,23 @@ public class PerUnidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-/*    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
-    private List<PerUsuarioUnidad> perUsuarioUnidadList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
-    private List<PerDireccion> perDireccionList;*/
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
+//    private List<PerUsuarioUnidad> perUsuarioUnidadList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
+//    private List<PerDireccion> perDireccionList;
     @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerPersona perPersona;
-/*    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
-    private List<DocDocumento> docDocumentoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
-    private List<PerReplegal> perReplegalList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
-    private List<PerActividad> perActividadList;
-    @OneToMany(mappedBy = "perUnidad", fetch = FetchType.LAZY)
-    private List<ParEntidad> parEntidadList;*/
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
+//    private List<DocDocumento> docDocumentoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
+//    private List<PerReplegal> perReplegalList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
+//    private List<PerInfolaboral> perInfolaboralList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perUnidad", fetch = FetchType.LAZY)
+//    private List<PerActividad> perActividadList;
+//    @OneToMany(mappedBy = "perUnidad", fetch = FetchType.LAZY)
+//    private List<ParEntidad> parEntidadList;
 
     //Variables auxiliares
     @Transient
@@ -252,21 +253,21 @@ public class PerUnidad implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
-  /*  public List<PerUsuarioUnidad> getPerUsuarioUnidadList() {
-        return perUsuarioUnidadList;
-    }
-
-    public void setPerUsuarioUnidadList(List<PerUsuarioUnidad> perUsuarioUnidadList) {
-        this.perUsuarioUnidadList = perUsuarioUnidadList;
-    }
-
-    public List<PerDireccion> getPerDireccionList() {
-        return perDireccionList;
-    }
-
-    public void setPerDireccionList(List<PerDireccion> perDireccionList) {
-        this.perDireccionList = perDireccionList;
-    }*/
+//    public List<PerUsuarioUnidad> getPerUsuarioUnidadList() {
+//        return perUsuarioUnidadList;
+//    }
+//
+//    public void setPerUsuarioUnidadList(List<PerUsuarioUnidad> perUsuarioUnidadList) {
+//        this.perUsuarioUnidadList = perUsuarioUnidadList;
+//    }
+//
+//    public List<PerDireccion> getPerDireccionList() {
+//        return perDireccionList;
+//    }
+//
+//    public void setPerDireccionList(List<PerDireccion> perDireccionList) {
+//        this.perDireccionList = perDireccionList;
+//    }
 
     public PerPersona getPerPersona() {
         return perPersona;
@@ -308,37 +309,45 @@ public class PerUnidad implements Serializable {
         this.tipoEmpresaAuxiliar = tipoEmpresaAuxiliar;
     }
 
-   /* public List<DocDocumento> getDocDocumentoList() {
-        return docDocumentoList;
-    }
-
-    public void setDocDocumentoList(List<DocDocumento> docDocumentoList) {
-        this.docDocumentoList = docDocumentoList;
-    }
-
-    public List<PerReplegal> getPerReplegalList() {
-        return perReplegalList;
-    }
-
-    public void setPerReplegalList(List<PerReplegal> perReplegalList) {
-        this.perReplegalList = perReplegalList;
-    }
-
-    public List<PerActividad> getPerActividadList() {
-        return perActividadList;
-    }
-
-    public void setPerActividadList(List<PerActividad> perActividadList) {
-        this.perActividadList = perActividadList;
-    }
-
-    public List<ParEntidad> getParEntidadList() {
-        return parEntidadList;
-    }
-
-    public void setParEntidadList(List<ParEntidad> parEntidadList) {
-        this.parEntidadList = parEntidadList;
-    }*/
+//    public List<DocDocumento> getDocDocumentoList() {
+//        return docDocumentoList;
+//    }
+//
+//    public void setDocDocumentoList(List<DocDocumento> docDocumentoList) {
+//        this.docDocumentoList = docDocumentoList;
+//    }
+//
+//    public List<PerReplegal> getPerReplegalList() {
+//        return perReplegalList;
+//    }
+//
+//    public void setPerReplegalList(List<PerReplegal> perReplegalList) {
+//        this.perReplegalList = perReplegalList;
+//    }
+//
+//    public List<PerInfolaboral> getPerInfolaboralList() {
+//        return perInfolaboralList;
+//    }
+//
+//    public void setPerInfolaboralList(List<PerInfolaboral> perInfolaboralList) {
+//        this.perInfolaboralList = perInfolaboralList;
+//    }
+//
+//    public List<PerActividad> getPerActividadList() {
+//        return perActividadList;
+//    }
+//
+//    public void setPerActividadList(List<PerActividad> perActividadList) {
+//        this.perActividadList = perActividadList;
+//    }
+//
+//    public List<ParEntidad> getParEntidadList() {
+//        return parEntidadList;
+//    }
+//
+//    public void setParEntidadList(List<ParEntidad> parEntidadList) {
+//        this.parEntidadList = parEntidadList;
+//    }
 
     @Override
     public int hashCode() {

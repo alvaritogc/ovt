@@ -34,7 +34,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -45,16 +44,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ParMensajeContenido.findAll", query = "SELECT p FROM ParMensajeContenido p")})
 public class ParMensajeContenido implements Serializable {
-    @Lob
-    @Column(name = "BINARIO")
-    private byte[] binario;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMensajeContenido", fetch = FetchType.LAZY)
-//    private List<ParMensajeBinario> parMensajeBinarioList;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "ID_MENSAJE_CONTENIDO")
     private Long idMensajeContenido;
+    @Lob
+    @Column(name = "BINARIO")
+    private byte[] binario;
     @Lob
     @Column(name = "CONTENIDO")
     private String contenido;
@@ -72,6 +69,8 @@ public class ParMensajeContenido implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMensajeContenido", fetch = FetchType.LAZY)
+//    private List<ParMensajeBinario> parMensajeBinarioList;
     @JoinColumn(name = "ID_MENSAJE_APP", referencedColumnName = "ID_MENSAJE_APP")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParMensajeApp idMensajeApp;
@@ -96,6 +95,14 @@ public class ParMensajeContenido implements Serializable {
 
     public void setIdMensajeContenido(Long idMensajeContenido) {
         this.idMensajeContenido = idMensajeContenido;
+    }
+
+    public byte[] getBinario() {
+        return binario;
+    }
+
+    public void setBinario(byte[] binario) {
+        this.binario = binario;
     }
 
     public String getContenido() {
@@ -146,6 +153,14 @@ public class ParMensajeContenido implements Serializable {
         this.registroBitacora = registroBitacora;
     }
 
+//    public List<ParMensajeBinario> getParMensajeBinarioList() {
+//        return parMensajeBinarioList;
+//    }
+//
+//    public void setParMensajeBinarioList(List<ParMensajeBinario> parMensajeBinarioList) {
+//        this.parMensajeBinarioList = parMensajeBinarioList;
+//    }
+
     public ParMensajeApp getIdMensajeApp() {
         return idMensajeApp;
     }
@@ -178,22 +193,5 @@ public class ParMensajeContenido implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.ParMensajeContenido[ idMensajeContenido=" + idMensajeContenido + " ]";
     }
-
-    public byte[] getBinario() {
-        return binario;
-    }
-
-    public void setBinario(byte[] binario) {
-        this.binario = binario;
-    }
-
-//    @XmlTransient
-//    public List<ParMensajeBinario> getParMensajeBinarioList() {
-//        return parMensajeBinarioList;
-//    }
-//
-//    public void setParMensajeBinarioList(List<ParMensajeBinario> parMensajeBinarioList) {
-//        this.parMensajeBinarioList = parMensajeBinarioList;
-//    }
     
 }

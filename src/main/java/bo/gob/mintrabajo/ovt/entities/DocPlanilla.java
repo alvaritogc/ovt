@@ -176,7 +176,7 @@ public class DocPlanilla implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlanilla", fetch = FetchType.LAZY)
     private List<DocPlanillaDetalle> docPlanillaDetalleList;
     @JoinColumn(name = "ID_ENTIDAD_SALUD", referencedColumnName = "ID_ENTIDAD")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private ParEntidad idEntidadSalud;
     @JoinColumn(name = "ID_ENTIDAD_BANCO", referencedColumnName = "ID_ENTIDAD")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
