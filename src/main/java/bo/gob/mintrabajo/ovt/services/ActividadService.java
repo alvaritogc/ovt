@@ -46,26 +46,31 @@ public class ActividadService implements IActividadService {
 
 
     @Override
-    public PerActividad save(PerActividad actividad,PerUnidad unidad) {
+    public PerActividad save(PerActividad actividad,String registroBitacora,PerUnidad unidad) {
 
         if(actividad.getIdActividad()==null){
             //Nuevo
             actividad.setIdActividad(this.obtenerSecuencia(PER_ACTIVIDAD_SEC));
+            actividad.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
+            actividad.setFechaBitacora(new Date());
+            actividad.setRegistroBitacora(registroBitacora);
             actividad.setPerUnidad(unidad);
+            return actividadRepository.save(actividad);
+        }else{
+             // - Cambiar el estado de PerActividad
+            PerActividad actividadHistorico=actividadRepository.findOne(actividad.getIdActividad());
+            actividadHistorico.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_INACTIVO).getParDominioPK().getValor());
+            actividadHistorico.setFechaBitacora(new Date());
+            actividadHistorico.setRegistroBitacora(registroBitacora);
+            actividadRepository.save(actividadHistorico);
+            // - Crear un nuevo registro con los nuevos cambios
+            actividad.setIdActividad(this.obtenerSecuencia(PER_ACTIVIDAD_SEC));
+            actividad.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
+            actividad.setFechaBitacora(new Date());
+            actividad.setRegistroBitacora(registroBitacora);
+            actividad.setPerUnidad(unidad);
+            return actividadRepository.save(actividad);
         }
-        //preguntar q significa este valor
-        actividad.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
-        actividad.setFechaBitacora(new Date());
-        System.out.println("====>>> GUARDANDO ACTIVIDAD");
-        System.out.println("====>>> actividad "+actividad);
-        System.out.println("====>>> actividad "+actividad.getIdActividad());
-        System.out.println("====>>> actividad "+actividad.getEstado());
-        System.out.println("====>>> actividad "+actividad.getFechaBitacora());
-        System.out.println("====>>> actividad "+actividad.getIdActividadEconomica());
-        System.out.println("====>>> actividad "+actividad.getPerUnidad());
-        System.out.println("====>>> actividad "+actividad.getRegistroBitacora());
-        return actividadRepository.save(actividad);
-
     }
 
     @Override

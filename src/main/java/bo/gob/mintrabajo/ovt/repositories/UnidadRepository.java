@@ -17,12 +17,14 @@ public interface UnidadRepository extends OpenJpaRepository<PerUnidad, PerUnidad
             + " from PerUnidad u"
             + " where "
             + " u.perUnidadPK.idPersona=:idPersona"
+            + " and u.estadoUnidad = '1' "
             + " order by  u.perUnidadPK.idUnidad desc "
             )
     List<PerUnidad> buscarPorPersona(@Param("idPersona") String idPersona);
 
     @Query("select u from PerUnidad u " +
-            "where u.perUnidadPK.idPersona=:idPersona")
+            "where u.perUnidadPK.idPersona=:idPersona" +
+            "      and u.estadoUnidad = '1' ")
     PerUnidad unidadPorIdPersona(@Param("idPersona")String idPersona);
 
 
@@ -31,5 +33,11 @@ public interface UnidadRepository extends OpenJpaRepository<PerUnidad, PerUnidad
     @Query("select max (u.perUnidadPK.idUnidad) from PerUnidad u " +
             "where u.perUnidadPK.idPersona=:idPersona")
     long obtenerMaximaUnidad(@Param("idPersona")String idPersona);
+
+    @Query("select u from PerUnidad u " +
+            "where u.perUnidadPK.idPersona=:idPersona" +
+            "      and u.perUnidadPK.idUnidad=:idUnidad" +
+            "      and u.estadoUnidad = '1' ")
+    PerUnidad obtenerPorIdPersonaIdUnidad(@Param("idPersona")String idPersona,@Param("idUnidad")long idUnidad);
 
 }

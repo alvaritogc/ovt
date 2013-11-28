@@ -318,7 +318,7 @@ public class PersonaBean implements Serializable{
             unidad.setObservaciones("REGISTRO");
             unidad.setFechaNacimiento(new Date());
             unidad.setRegistroBitacora(REGISTRO_BITACORA);
-            unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO, PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
+            unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_UNIDAD, PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
             PerUnidadPK perUnidadPK = new PerUnidadPK();
             perUnidadPK.setIdPersona(persona.getIdPersona());
             //Se setea 0, para identificar a la unidad principal

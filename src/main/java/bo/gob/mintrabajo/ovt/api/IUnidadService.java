@@ -11,7 +11,7 @@ public interface IUnidadService {
     List<PerUnidad> buscarPorPersona(String idPersona);
     Long obtenerSecuencia(String nombreSecuencia);
     PerUnidad save(PerUnidad unidad);
-     PerUnidad save(PerUnidad unidad,PerPersona persona);
+    public PerUnidad save(PerUnidad unidad,PerPersona persona,String registroBitacora);
     List<PerUnidad> listarPorPersona(String idPersona);
     PerUnidad obtienePorId(PerUnidadPK perUnidadPK);
     List<PerUnidad> listarUnidadesSucursales(String idPersona);

@@ -93,6 +93,9 @@ public class PersonaUnidadBean implements Serializable{
     @ManagedProperty(value = "#{definicionService}")
     private IDefinicionService definicionService;
 
+    @ManagedProperty(value = "#{personaService}")
+    private IPersonaService personaService;
+
     private PerPersona persona=new PerPersona();
     private String idLocalidadPersona;
 
@@ -211,13 +214,13 @@ public class PersonaUnidadBean implements Serializable{
         titulo=persona.getApellidoPaterno()==null ?titulo+"":titulo+persona.getApellidoPaterno().toUpperCase()+" ";
         titulo=persona.getApellidoMaterno()==null ?titulo+"":titulo+persona.getApellidoMaterno().toUpperCase()+" ";
 
-       actividad=new PerActividad();
+        actividad=new PerActividad();
         repLegal=new PerReplegal();
         unidadRegistro=new PerUnidad();
         cargar();
 
         //si es falso mostrar
-        mostrarBotonROE=generarReporteRoe();
+//        mostrarBotonROE=generarReporteRoe();
         tieneROE=yaTieneROE();
     }
 
@@ -227,30 +230,25 @@ public class PersonaUnidadBean implements Serializable{
         //validar datos de persona
         if(persona.getIdPersona()!=null){
             if(persona.getNombreRazonSocial()==null){
-
                   return false;
             }
 
             if(persona.getApellidoPaterno()==null){
-
                 return false;
             }
 
             if(persona.getApellidoMaterno()==null){
-
                 return false;
             }
             if(persona.getNroIdentificacion()==null){
-
                 return false;
             }
 
             if(persona.getCodLocalidad()==null){
-
                 return false;
             }
-            if(persona.getTipoIdentificacion()==null){
 
+            if(persona.getTipoIdentificacion()==null){
                 return false;
             }
         }
@@ -258,11 +256,6 @@ public class PersonaUnidadBean implements Serializable{
         //validar datos de unidad
         if(unidad.getPerUnidadPK()!=null){
             if(unidad.getNombreComercial()==null) {
-
-                return false;
-            }
-
-            if(unidad.getNombreComercial()==null){
 
                 return false;
             }
@@ -292,15 +285,10 @@ public class PersonaUnidadBean implements Serializable{
                 return false;
             }
 
-            if(unidad.getNombreComercial()==null)  {
-
-                return false;
-            }
-
         }
 
         //vallidad actividad declarada
-        if(actividad.getIdActividadEconomica()==null){
+        if(actividadPrincipal.getIdActividadEconomica()==null){
 
             return false;
         }
@@ -457,8 +445,6 @@ public class PersonaUnidadBean implements Serializable{
             ini();
             return ;
         }
-
-
     }
 
     /*
@@ -469,8 +455,6 @@ public class PersonaUnidadBean implements Serializable{
     public void procesarUnidad(){
 
         if(personaRegistro!=null){
-            //Si es la unidad principal no realizar la validacion
-            //if(unidad.getPerUnidadPK().getIdUnidad()==0){
                 //Validaciones para persona
                 if(personaRegistro.getNombreRazonSocial()==null || personaRegistro.getNombreRazonSocial().trim().equals("")){
                     FacesContext.getCurrentInstance().addMessage(null,
@@ -516,7 +500,7 @@ public class PersonaUnidadBean implements Serializable{
                         }
                     }
                 }
-            System.out.println("===>> MODIFICANDO PERSONA "+personaRegistro);
+
             //Si todo esta bien, entonces
             personaRegistro.setRegistroBitacora(REGISTRO_BITACORA);
             persona=personaRegistro;
@@ -568,17 +552,67 @@ public class PersonaUnidadBean implements Serializable{
         }
 
 
+       PerPersona personaAux=personaService.findById(persona.getIdPersona());
+        System.out.println("********** ******* >>> VERSION ANTIGUA ");
+        System.out.println("********** ******* >>> idPersona "+personaAux.getIdPersona());
+        System.out.println("********** ******* >>> NombreRazonSocial "+personaAux.getNombreRazonSocial());
+        System.out.println("********** ******* >>> Paterno "+personaAux.getApellidoPaterno());
+        System.out.println("********** ******* >>> Materno "+personaAux.getApellidoMaterno());
+        System.out.println("********** ******* >>> Departamento "+personaAux.getCodLocalidad().getCodLocalidad());
 
-        //final String  REGISTRO_BITACORA="ROE";
-        unidadRegistro.setRegistroBitacora(REGISTRO_BITACORA);
+        persona.setCodLocalidad(iLocalidadService.findById(idLocalidadPersona));
+        System.out.println("********** ******* >>> VERSION NUEVA ");
+        System.out.println("********** ******* >>> persona.getIdPersona() "+persona.getIdPersona());
+        System.out.println("********** ******* >>> persona.getNombreRazonSocial() "+persona.getNombreRazonSocial());
+        System.out.println("********** ******* >>> persona.getApellidoPaterno() "+persona.getApellidoPaterno());
+        System.out.println("********** ******* >>> persona.getApellidoMaterno() "+persona.getApellidoMaterno());
+        System.out.println("********** ******* >>> Departamento "+persona.getCodLocalidad().getCodLocalidad());
 
-        unidadRegistro=iUnidadServiceModificar.save(unidadRegistro,persona);
-        ini();
+        unidadRegistro=iUnidadServiceModificar.save(unidadRegistro,persona,REGISTRO_BITACORA);
+
         if(unidadRegistro==null){
             RequestContext.getCurrentInstance().execute("dlgUnidad.show()");
         }else {
             RequestContext.getCurrentInstance().execute("dlgUnidad.hide()");
         }
+
+        // GENERAR NUEVO DOCUMENTO ROE
+        //Realizar la validacion para generar un nuevo certificado ROE
+        //Si alguno de estos datos se modifico, entonces generar nuevo certificado ROE
+
+
+        if(unidadRegistro.getPerUnidadPK().getIdUnidad()==0){
+            if(!personaAux.getNombreRazonSocial().equals(persona.getNombreRazonSocial())){
+                generarCertificadoROE2();
+            }else{
+                if(!personaAux.getCodLocalidad().getCodLocalidad().equals(persona.getCodLocalidad().getCodLocalidad())){
+                    generarCertificadoROE2();
+                }else{
+                    if(personaAux.getApellidoPaterno()!=null){
+                        if(!personaAux.getApellidoPaterno().equals(persona.getApellidoPaterno())){
+                            generarCertificadoROE2();
+                        } else{
+                            if(personaAux.getApellidoMaterno()!=null){
+                                if(!personaAux.getApellidoMaterno().equals(persona.getApellidoMaterno())){
+                                    generarCertificadoROE2();
+                                } else{
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        ini();
+
+
+
+
+
+
+
     }
 
 
@@ -618,13 +652,17 @@ public class PersonaUnidadBean implements Serializable{
             return ;
         }
 
-
         direccion.setCodLocalidad(iLocalidadService.findById(idLocalidad));
-/*        direccion.setPerUnidad(unidadRegistro);
-        direccion.setRegistroBitacora(REGISTRO_BITACORA);*/
         iDireccionService.save(direccion,REGISTRO_BITACORA,unidadRegistro);
-        ini();
+
         RequestContext.getCurrentInstance().execute("dlgDireccion.hide()");
+
+        // Verificar si tiene ROE y es la unidad principal
+        if(tieneROE && unidadRegistro.getPerUnidadPK().getIdUnidad()==0) {
+            logger.info("*********** ======== TIENE ROE ========== **********");
+            generarCertificadoROE2() ;
+        }
+        ini();
     }
 
     public void cargarDireccion(){
@@ -637,12 +675,6 @@ public class PersonaUnidadBean implements Serializable{
             if(listaUnidad.size()==0){
                 direccionPrincipal= listaDireccion.get(0);
                 tipoDireccionPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_DIRECCION,listaDireccion.get(0).getTipoDireccion()).getDescripcion();
-/*                for(int i=listaDireccion.size()-1;i>=0;i--){
-                    if(listaDireccion.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==unidad.getPerUnidadPK().getIdUnidad()){
-                        direccionPrincipal= listaDireccion.get(i);
-                        tipoDireccionPrincipal=iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_DIRECCION,listaDireccion.get(i).getTipoDireccion()).getDescripcion();
-                    }
-                }*/
             }else{
                 for (int i=listaDireccion.size()-1;i>=0;i--){
                     for (int j=listaUnidad.size()-1;j>=0;j--){
@@ -735,12 +767,16 @@ public class PersonaUnidadBean implements Serializable{
             ini();
             return ;
         }
-
-        System.out.println("==>>> UNIDAD REGISTRO "+unidadRegistro);
-        //repLegal.setPerUnidad(unidadRegistro);
         iRepLegalService.save(repLegal,REGISTRO_BITACORA,unidadRegistro);
-        ini();
+
         RequestContext.getCurrentInstance().execute("dlgRepLegal.hide()");
+
+        // Verificar si tiene ROE y es la unidad principal
+        if(tieneROE && unidadRegistro.getPerUnidadPK().getIdUnidad()==0) {
+            logger.info("*********** ======== TIENE ROE ========== **********");
+            generarCertificadoROE2() ;
+        }
+        ini();
     }
 
     public void cargarRepLegal(){
@@ -753,12 +789,6 @@ public class PersonaUnidadBean implements Serializable{
             if(listaUnidad.size()==0){
                 repLegalPrincipal= listaRepLegal.get(0);
                 departamentoDireccinoPrincipal=iLocalidadService.findById(repLegalPrincipal.getTipoProcedencia()).getDescripcion();
-/*                for(int i=listaRepLegal.size()-1;i>=0;i--){
-                    if(listaRepLegal.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==unidad.getPerUnidadPK().getIdUnidad()){
-                        repLegalPrincipal= listaRepLegal.get(i);
-                        departamentoDireccinoPrincipal=iLocalidadService.findById(repLegalPrincipal.getTipoProcedencia()).getDescripcion();
-                    }
-                }*/
             }else{
                 for (int i=listaRepLegal.size()-1;i>=0;i--){
                     for (int j=listaUnidad.size()-1;j>=0;j--){
@@ -770,7 +800,6 @@ public class PersonaUnidadBean implements Serializable{
                             if(listaRepLegal.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
                                 listaRepLegal.get(i).setDepartamento(iLocalidadService.findById(listaRepLegal.get(i).getTipoProcedencia()).getDescripcion());
                                 listaUnidad.get(j).setRepLegal(listaRepLegal.get(i));
-
                                 break;
                             }
                         }
@@ -779,7 +808,6 @@ public class PersonaUnidadBean implements Serializable{
             }
         }
     }
-
 
     //Valida si el parametro es numerico
     private static boolean esNumero(String cadena){
@@ -802,15 +830,11 @@ public class PersonaUnidadBean implements Serializable{
      */
     public void procesarActividadEconomica(){
 
-       // String registroPersona=  persona.getNombreRazonSocial();
-        String registroPersona=REGISTRO_BITACORA;
-        logger.info("===>> Ingresando a cargarActividadDeclarda() idActividadEconomicaPrincipal "+idActividadEconomicaPrincipal);
+       //String registroPersona=REGISTRO_BITACORA;
        ParActividadEconomica actvEcon=iActividadEconomicaService.findByIdActividadEconomica(idActividadEconomicaPrincipal);
-        logger.info("===>> Ingresando a actvEcon() actvEcon "+actvEcon);
-        logger.info("===>> Ingresando a actividad() actividad "+actividad);
         actividad.setIdActividadEconomica(actvEcon);
-        actividad.setRegistroBitacora(registroPersona);
-        iActividadService.save(actividad,unidad);
+        //actividad.setRegistroBitacora(registroPersona);
+        iActividadService.save(actividad,REGISTRO_BITACORA,unidad);
         ini();
         //Cerrar dialog
         RequestContext.getCurrentInstance().execute("dlgActividadDeclarada.hide()");
@@ -842,13 +866,10 @@ public class PersonaUnidadBean implements Serializable{
             if(!listaActividad.isEmpty()){
                 //se obtiene el primer registro, por que una persona solo tiene
                 // una actividad declarada
-
                 actividadPrincipal=listaActividad.get(0);
                 logger.info("===>> actividad "+actividad);
                 codigoActividadEconomicaPrincipal=actividadPrincipal.getIdActividadEconomica().getIdActividadEconomica();
                 idActividadEconomicaPrincipal=  actividadPrincipal.getIdActividadEconomica().getIdActividadEconomica();
-                //codigoActividadEconomicaPrincipal= iActividadEconomicaService.findByIdActividadEconomica(actividadEconomicaPrincipal.getIdActividadEconomica2().getIdActividadEconomica()).getIdActividadEconomica();
-              //  iActividadEconomicaService.obtenerActividadEconomicaParaRegistro()
             }
         }
     }
@@ -883,22 +904,14 @@ public class PersonaUnidadBean implements Serializable{
  * de un registro en las tablas: PAR_ACTIVIDAD_ECONOMICA y PER_ACTIVIDAD
   */
     public void procesarInfoLaboral(){
-
-
-        infolaboralRegistro.setRegistroBitacora(REGISTRO_BITACORA);
-        infolaboralRegistro.setPerUnidad(unidad);
-         iInfoLaboralService.save(infolaboralRegistro);
+         iInfoLaboralService.save(infolaboralRegistro,REGISTRO_BITACORA,unidad);
         ini();
         //Cerrar dialog
         RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
-
     }
 
     public void cargarInfoLaboral(){
         infolaboral=new PerInfolaboral();
-
-        logger.info("===>> Ingresando a cargarInfoLaboral()");
-        logger.info("===>> UNIDAD "+unidad);
         List<PerInfolaboral>listaInfoLaboral=new ArrayList<PerInfolaboral>();
         listaInfoLaboral=iInfoLaboralService.findByPerUnidad(unidad);
         if(listaInfoLaboral!=null){
@@ -906,11 +919,8 @@ public class PersonaUnidadBean implements Serializable{
                //se obtiene el primer registro, por que una persona solo tiene
                // una actividad declarada
                infolaboral=listaInfoLaboral.get(0);
-               //codigoActividadEconomicaPrincipal= iActividadEconomicaService.findByIdActividadEconomica(actividadEconomicaPrincipal.getIdActividadEconomica2().getIdActividadEconomica()).getDescripcion();
            }
         }
-
-
     }
 
     public  void sumar(){
@@ -1365,5 +1375,13 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setActividadPrincipal(PerActividad actividadPrincipal) {
         this.actividadPrincipal = actividadPrincipal;
+    }
+
+    public IPersonaService getPersonaService() {
+        return personaService;
+    }
+
+    public void setPersonaService(IPersonaService personaService) {
+        this.personaService = personaService;
     }
 }

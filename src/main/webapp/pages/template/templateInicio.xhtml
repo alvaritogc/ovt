@@ -311,7 +311,7 @@
                 </div>
                 <div class="span9">
                     <h:form id="idBarraDeMenu" rendered="#{!(templateInicioBean.idUsuario == null)}">
-                        <p:menubar model="#{templateInicioBean.model}" styleClass="nav-collapse collapse">
+                        <p:menubar model="#{templateInicioBean.model}">
                             <f:facet name="options">
                                 <p:commandLink value="Cambiar Contraseña" onclick="PF('dlgCambiarContrasenia').show();" style="color:#0069B1;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
                             </f:facet>
