@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean.declaracion;
 
+import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
@@ -96,10 +97,11 @@ public class BajaRoeBean {
         //
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
         //
-        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
-        docDefinicionPK.setCodDocumento("ROE012");
-        docDefinicionPK.setVersion((short)1);
-        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
+//        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
+//        docDefinicionPK.setCodDocumento("ROE012");
+//        docDefinicionPK.setVersion((short)1);
+//        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
+        docDefinicion=iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_BAJA);
     }
     public void cargarFechas(){
 //        listaDominioMeses=iDominioService.obtenerItemsDominio("TPERIODO");

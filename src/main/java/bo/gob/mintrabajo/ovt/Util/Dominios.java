@@ -43,4 +43,17 @@ public class Dominios {
     public static final String PAR_TIPO_DIRECCION_DOMICILIO="DOM";
     public static final String DOC_TIPO_IMPRESION="IMPRESION";
     public static final String DOC_TIPO_DOWNLOAD="DOWNLOAD";
+    
+    public static final String DOM_DOCUMENTO="DOCUMENTOS";
+    public static final String PAR_DOCUMENTO_ROE_INSCRIPCION="ROE_INSCRIPCION";
+    public static final String PAR_DOCUMENTO_ROE_MODIFICACION="ROE_MODIFICACION";
+    public static final String PAR_DOCUMENTO_ROE_BAJA="ROE_BAJA";
+    public static final String PAR_DOCUMENTO_ROE_IMPRESION="ROE_IMPRESION";
+    public static final String PAR_DOCUMENTO_ROE_REACTIVACION="ROE_REACTIVACION";
+    public static final String PAR_DOCUMENTO_PLATRI_DECLARA="PLATRI_DECLARA";
+    public static final String PAR_DOCUMENTO_PLATRI_SINMOV="PLATRI_SINMOV";
+    public static final String PAR_DOCUMENTO_PLATRI_RECTIF="PLATRI_RECTIF";
+    public static final String PAR_DOCUMENTO_PLAAGU_DECLARA="PLAAGU_DECLARA";
+    public static final String PAR_DOCUMENTO_PLAAGU_RECTIF="PLAAGU_RECTIF";
+    
 }

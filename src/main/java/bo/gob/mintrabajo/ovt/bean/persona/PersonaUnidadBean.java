@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean.persona;
 
+import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
@@ -428,12 +429,12 @@ public class PersonaUnidadBean implements Serializable{
 */
             return null;
         }
-
-
-        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
-        docDefinicionPK.setCodDocumento("ROE010");
-        docDefinicionPK.setVersion((short)1);
-        session.setAttribute("docDefinicionPK",docDefinicionPK);
+        session.setAttribute("parametroDocDefinicion", Dominios.PAR_DOCUMENTO_ROE_INSCRIPCION);
+        session.setAttribute("idDocumento", null);
+//        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
+//        docDefinicionPK.setCodDocumento("ROE010");
+//        docDefinicionPK.setVersion((short)1);
+//        session.setAttribute("docDefinicionPK",docDefinicionPK);
         return "irImpresionRoe";
     }
 

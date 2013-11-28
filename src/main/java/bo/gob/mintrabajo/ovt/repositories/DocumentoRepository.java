@@ -80,4 +80,5 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
     )
     List<DocDocumento> listarDeclarados(@Param("idEmpleador") String idPersona);
 
+    List<DocDocumento> findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(String idPersona, String codEstado);
 }
