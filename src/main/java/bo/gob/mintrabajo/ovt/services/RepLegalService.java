@@ -75,10 +75,6 @@ public class RepLegalService implements IRepLegalService{
             return repLegalRepository.save(replegal);
 
         }
-
-/*        replegal.setEstadoRepLegal(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
-        replegal.setFechaBitacora(new Date());
-        return repLegalRepository.save(replegal);*/
     }
 
 //    @Override

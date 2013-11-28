@@ -57,25 +57,66 @@ public class UnidadService implements IUnidadService{
         return perUnidadEntity;
     }
 
-    public PerUnidad save(PerUnidad unidad,PerPersona persona) {
+    public PerUnidad save(PerUnidad unidad,PerPersona persona,String registroBitacora) {
 
-        System.out.println("===>> unidad "+unidad);
         //Si es una nueva unidad
         if(unidad.getPerUnidadPK()==null){
+            //Setea clave compuesta
             PerUnidadPK perUnidadPK=new PerUnidadPK();
             perUnidadPK.setIdPersona(persona.getIdPersona());
             long idUnidad=this.obtenerMaximaUnidad(persona.getIdPersona())+1;
             perUnidadPK.setIdUnidad(idUnidad);
-          //  perUnidadPK.setIdUnidad(this.obtenerSecuencia("PER_UNIDAD_SEC"));
             unidad.setPerUnidadPK(perUnidadPK);
+
+            unidad.setEstadoUnidad(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO_UNIDAD,PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
+            unidad.setPerPersona(persona);
+            unidad.setFechaBitacora(new Date());
+            unidad.setRegistroBitacora(registroBitacora);
+            unidad = unidadRepository.save(unidad);
+            return unidad;
+
         }else{
+            //Solo para la unidad 0, se puede modifcar la tabla PerPersona
             if(unidad.getPerUnidadPK().getIdUnidad()==0){
                 if(persona.getIdPersona()!=null){
+/*
+                    PerPersona personaHistorico=personaRepository.findOne(persona.getIdPersona());
+                    personaHistorico.setRegistroBitacora(registroBitacora);
+                    personaHistorico.setFechaBitacora(new Date());
+                    personaHistorico=personaRepository.save(persona);
+*/
+                    persona.setRegistroBitacora(registroBitacora);
                     persona.setFechaBitacora(new Date());
-                    System.out.println("===>> GUARDANDO PERSONA "+persona);
                     persona=personaRepository.save(persona);
                 }
             }
+
+  /*          // - Cambiar el estado de la version anterior
+            PerUnidad unidadHistorico=unidadRepository.obtenerPorIdPersonaIdUnidad(persona.getIdPersona(),unidad.getPerUnidadPK().getIdUnidad());
+            unidadHistorico.setFechaBitacora(new Date());
+            unidadHistorico.setRegistroBitacora(registroBitacora);
+            unidadHistorico.setEstadoUnidad(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO_UNIDAD,PAR_ESTADO_UNIDAD_INACTIVO).getParDominioPK().getValor());
+            PerUnidadPK perUnidadPK=new PerUnidadPK();
+            perUnidadPK.setIdUnidad(unidad.getPerUnidadPK().getIdUnidad()*(-1));
+            perUnidadPK.setIdPersona(persona.getIdPersona());
+            unidadHistorico.setPerUnidadPK(perUnidadPK);
+            unidadRepository.save(unidadHistorico);
+
+            // - Crear un nuevo registro con los cambios
+
+            //Setea clave compuesta
+            perUnidadPK=new PerUnidadPK();
+            perUnidadPK.setIdPersona(persona.getIdPersona());
+            long idUnidad=unidadHistorico.getPerUnidadPK().getIdUnidad();
+            perUnidadPK.setIdUnidad(idUnidad);
+            unidad.setPerUnidadPK(perUnidadPK);
+
+            unidad.setEstadoUnidad(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO_UNIDAD,PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
+            unidad.setPerPersona(persona);
+            unidad.setFechaBitacora(new Date());
+            unidad.setRegistroBitacora(registroBitacora);
+            unidad = unidadRepository.save(unidad);
+            return unidad;*/
         }
 
 
@@ -85,6 +126,8 @@ public class UnidadService implements IUnidadService{
         unidad.setEstadoUnidad(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO_UNIDAD,PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
         PerUnidad perUnidadEntity;
         perUnidadEntity = unidadRepository.save(unidad);
+        System.out.println("+++++++++++++++++++++ >>> SERVICE <<<<<<<<< ++++++++++");
+        System.out.println("********** ******* >>> unidad "+perUnidadEntity);
         return perUnidadEntity;
     }
 
