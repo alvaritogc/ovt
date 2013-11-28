@@ -21,16 +21,18 @@ public class DocumentoEstadoService implements IDocumentoEstadoService {
         this.documentoEstadoRepository = documentoEstadoRepository;
     }
 
+    @Override
     public ParDocumentoEstado buscarPorId(String id){
         return documentoEstadoRepository.findOne(id);
     }
     
     @Override
-    public List<ParDocumentoEstado> listarSiguientesTransiciones(DocDocumento documento){
+    public List<ParDocumentoEstado> listarSiguientesTransiciones(DocDocumento documento, Long idUsuario){
         return documentoEstadoRepository.listarSiguientesTransiciones(
                 documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento(), 
                 documento.getDocDefinicion().getDocDefinicionPK().getVersion(), 
-                documento.getCodEstado().getCodEstado());
+                documento.getCodEstado().getCodEstado(),
+                idUsuario);
     }
     
     @Override

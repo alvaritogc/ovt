@@ -230,25 +230,38 @@ public class PersonaUnidadBean implements Serializable{
         //validar datos de persona
         if(persona.getIdPersona()!=null){
             if(persona.getNombreRazonSocial()==null){
-                  return false;
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre o Razon social no puede ser vacio."));
+                ini();
+                return false;
             }
 
-            if(persona.getApellidoPaterno()==null){
+/*            if(persona.getApellidoPaterno()==null){
                 return false;
             }
 
             if(persona.getApellidoMaterno()==null){
                 return false;
-            }
+            }*/
+
             if(persona.getNroIdentificacion()==null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de identificacion de UNIDAD no puede ser vacio."));
+                ini();
                 return false;
             }
 
             if(persona.getCodLocalidad()==null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Departamento de UNIDAD no puede ser vacio."));
+                ini();
                 return false;
             }
 
             if(persona.getTipoIdentificacion()==null){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de identificacion de UNIDAD no puede ser vacio."));
+                ini();
                 return false;
             }
         }
@@ -256,40 +269,56 @@ public class PersonaUnidadBean implements Serializable{
         //validar datos de unidad
         if(unidad.getPerUnidadPK()!=null){
             if(unidad.getNombreComercial()==null) {
-
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre comercial no puede ser vacio."));
+                ini();
                 return false;
             }
 
             if(unidad.getTipoEmpresa()==null)  {
-
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de empresa no puede ser vacio."));
+                ini();
                 return false;
             }
 
             if(unidad.getTipoSociedad()==null) {
 
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de sociedad no puede ser vacio."));
+                ini();
                 return false;
             }
 
             if(unidad.getFechaNacimiento()==null)  {
-
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Fecha de inicio de actividad no puede ser vacio."));
+                ini();
                 return false;
             }
 
             if(unidad.getNroFundaempresa()==null) {
 
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Fundempresa no puede ser vacio."));
+                ini();
                 return false;
             }
 
             if(unidad.getNroAfp()==null)  {
-
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de AFP no puede ser vacio."));
+                ini();
                 return false;
             }
 
         }
 
-        //vallidad actividad declarada
-        if(actividadPrincipal.getIdActividadEconomica()==null){
-
+        //valida actividad declarada
+        if(actividadPrincipal.getIdActividad()==null){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar el codigo de actividad declarada."));
+            ini();
             return false;
         }
 
@@ -298,30 +327,31 @@ public class PersonaUnidadBean implements Serializable{
         if(repLegalPrincipal!=null){
             //validar representante legal
             if(repLegalPrincipal.getIdReplegal()==null) {
-
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar un Representante legal para la unidad principal."));
+                ini();
                 return false;
             }
 
         }
 
-         if(direccionPrincipal!=null){
-             //validar direccion
-             if(direccionPrincipal.getIdDireccion().equals(null)) {
-
-                 return false;
-             }
-
+         //validar direccion
+         if(direccionPrincipal.getIdDireccion()==null) {
+             FacesContext.getCurrentInstance().addMessage(null,
+                   new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar la Direccion para la unidad principal."));
+             ini();
+          return false;
          }
 
            if(infolaboral!=null){
                //validar informacion laboral
                if(infolaboral.getIdInfolaboral()==null)  {
-
+                   FacesContext.getCurrentInstance().addMessage(null,
+                           new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar la Informacion laboral.."));
+                   ini();
                    return false;
                }
-
            }
-
 
         return true;
     }
@@ -381,6 +411,8 @@ public class PersonaUnidadBean implements Serializable{
         repLegal=new PerReplegal();
         actividadPrincipal=new PerActividad();
         infolaboralRegistro=new PerInfolaboral();
+        infolaboralRegistro.setNroHombres(0);
+        infolaboralRegistro.setNroMujeres(0);
         //infolaboralRegistro.setNroTotalTrabajadores(10);
 
 
@@ -391,9 +423,9 @@ public class PersonaUnidadBean implements Serializable{
 
         if(!generarReporteRoe())
         {
-            FacesContext.getCurrentInstance().addMessage(null,
+     /*       FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede generar el documento ROE, por que falta registrar datos."));
-
+*/
             return null;
         }
 
@@ -667,6 +699,7 @@ public class PersonaUnidadBean implements Serializable{
 
     public void cargarDireccion(){
         // Cargando Direccion
+        direccionPrincipal=new PerDireccion();
         listaDireccion=new ArrayList<PerDireccion>();
         listaDireccion= iDireccionService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
         if (!listaDireccion.isEmpty()){
@@ -861,7 +894,7 @@ public class PersonaUnidadBean implements Serializable{
             cargarActividadDeclarda();
         }
 
-
+        actividadPrincipal=new PerActividad();
         if(listaActividad!=null ){
             if(!listaActividad.isEmpty()){
                 //se obtiene el primer registro, por que una persona solo tiene
@@ -904,6 +937,9 @@ public class PersonaUnidadBean implements Serializable{
  * de un registro en las tablas: PAR_ACTIVIDAD_ECONOMICA y PER_ACTIVIDAD
   */
     public void procesarInfoLaboral(){
+
+
+
          iInfoLaboralService.save(infolaboralRegistro,REGISTRO_BITACORA,unidad);
         ini();
         //Cerrar dialog
@@ -924,8 +960,7 @@ public class PersonaUnidadBean implements Serializable{
     }
 
     public  void sumar(){
-        //if(infolaboral.getNroHombres()!=null)
-        infolaboral.setNroTotalTrabajadores(infolaboral.getNroHombres()+infolaboral.getNroMujeres());
+        infolaboralRegistro.setNroTotalTrabajadores(infolaboralRegistro.getNroHombres()+infolaboralRegistro.getNroMujeres());
     }
 
     /*

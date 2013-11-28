@@ -89,7 +89,7 @@
                              action="#{personaUnidadBean.generarCertificadoROE}"
                              icon="ui-icon-plus"
                              id="cmdButtonROE"
-                             update=":growlROE"
+                             update=":growlROE,:tabPersonaUnidad,:tabPersonaUnidad:tabUnidadPrincipal,:dataGrid,:frmBucarPersona:cmdButtonROE"
                              process="@this"
                              rendered="#{ personaUnidadBean.tieneROE==false}">
             </p:commandButton>

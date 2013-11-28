@@ -7,7 +7,11 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../pages/template/templateInicio.xhtml">
         <ui:define name="content">
-
+            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>  
+            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando" resizable="false"
+                      draggable="false" closable="false">
+                <p:graphicImage value="../images/ajax-loader.gif" />
+            </p:dialog>
             <h:form id="idEscritorio">
                 <h2>#{escritorioBean.empleador.nombreRazonSocial} #{escritorioBean.empleador.apellidoPaterno} #{escritorioBean.empleador.apellidoMaterno}</h2>
                 <p:panelGrid columns="2" style="border-style: hidden;">
@@ -31,32 +35,44 @@
                              var="o1"  rows="10" emptyMessage="No se encontraron resultados" 
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
                              currentPageReportTemplate="{currentPage} / {totalPages}">
-                    <p:column headerText="Código">
-                        <h:outputText value="#{o1.docDefinicion.docDefinicionPK.codDocumento}"/>
+                    <p:column headerText="Código" style="width: 45px;">
+                        <h:outputText value="#{o1.docDefinicion.alias}"/>
                     </p:column>
-                    <p:column headerText="Número de orden">
-                        <h:outputText value="#{o1.numeroDocumento}"/>
+                    <!--style="width: 140px;word-break: break-all;"-->
+                    <p:column headerText="Nombre del documento"  style="width: 140px;">
+                        <h:outputText value="#{o1.docDefinicion.nombre}"/>
                     </p:column>
-                    <p:column headerText="Fecha">
+                    <p:column headerText="Número de orden" style="width: 130px;">
+                        <h:outputText value="#{o1.docDefinicion.docDefinicionPK.codDocumento}: #{o1.numeroDocumento}"/>
+                    </p:column>
+                    <p:column headerText="Fecha" style="width: 55px;">
                         <h:outputText value="#{o1.fechaDocumento}">
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="Estado" >
-                        <h:outputText value="#{o1.codEstado.descripcion}" style="color: #{o1.codEstado.metadata}; font-weight: bold"/>
+                    <p:column headerText="Estado" style="width: 55px;">
+<!--                        <h:outputText value="# {o1.codEstado.descripcion}" style="color: # {o1.codEstado.metadata}; font-weight: bold"/>-->
+                        <p:commandLink value="#{o1.codEstado.descripcion}"
+                                       style="color: #{o1.codEstado.metadata}; font-weight: bold"
+                                        update=":idEscritorio:cambioEstadoDlg" 
+                                       action="#{escritorioBean.cargarCambioDeEstados}"
+                                       oncomplete="PF('cambioEstadoDialog').show()" 
+                                       title="Cambio de estados">
+                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
+                        </p:commandLink> 
                     </p:column>
                     <p:column headerText="Medio de registro" rendered="false">
                         <h:outputText value="#{o1.tipoMedioRegistro}"/>
                     </p:column>
                     <p:column headerText="Acciones">
-                        <p:commandButton update=":idEscritorio:cambioEstadoDlg" 
-                                         action="#{escritorioBean.cargarCambioDeEstados}"
+<!--                        <p:commandButton update=":idEscritorio:cambioEstadoDlg" 
+                                         action="# {escritorioBean.cargarCambioDeEstados}"
                                          oncomplete="PF('cambioEstadoDialog').show()" icon="ui-icon-gear" title="Cambio de estados">
-                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
-                        </p:commandButton> 
+                            <f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />
+                        </p:commandButton> -->
 
                         <p:commandButton action="#{escritorioBean.irEdicionRoe}" 
-                                         rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento == 'ROE013' and o1.codEstado.codEstado=='010'}"
+                                         rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento == 'ROE011' and o1.codEstado.codEstado=='010'}"
                                          immediate="true"
                                          icon="ui-icon-pencil" title="Editar ROE 013">  
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
@@ -131,20 +147,20 @@
                     </center>
                     <br/>
                     <center>
-                    <h:panelGrid columns="2"  rendered="#{escritorioBean.esInterno}">
-                        <p:outputLabel value="Observación: " rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                        <p:inputText value="#{escritorioBean.observacionLogEstado}" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                        <p:commandButton value="Realizar cambio de estado" 
-                                         update="idEscritorio"
-                                         rendered="#{escritorioBean.mostrarCambioDeEstados}"
-                                         action="#{escritorioBean.realizarCambioDeEstados}"/>
-                        <p:outputLabel value="No se encontraron transiciones siguientes" 
-                                       rendered="#{!escritorioBean.mostrarCambioDeEstados}"/>
-                    </h:panelGrid>
-                        </center>
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel value="Observación: " rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                            <p:inputText value="#{escritorioBean.observacionLogEstado}" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                            <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                            <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                            <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                            <p:commandButton value="Realizar cambio de estado" 
+                                             update="idEscritorio"
+                                             rendered="#{escritorioBean.mostrarCambioDeEstados}"
+                                             action="#{escritorioBean.realizarCambioDeEstados}"/>
+                            <p:outputLabel value="No se encontraron transiciones siguientes" 
+                                           rendered="#{!escritorioBean.mostrarCambioDeEstados}"/>
+                        </h:panelGrid>
+                    </center>
                     <br/>
                 </p:dialog>  
 
