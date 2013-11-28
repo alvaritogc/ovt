@@ -16,9 +16,7 @@
 </h:form>
 
 <h:form id="formularioFrm" enctype="multipart/form-data">
-<!--<h:commandButton value="QR" action="# {declaracionBean.generaQR}"/>-->
 <h:panelGrid columns="1" rendered="#{declaracionBean.estaDeclarado}">
-<!--    <h1>Usted ya realizo la declaracion jurada en este trimestre</h1>-->
 <h1>Información</h1>
 <p:outputLabel value="#{declaracionBean.estaDeclaradoMensaje}" style="font-size: 13px;"/>
     <p:commandButton ajax="false" value="Ir a inicio" action="#{declaracionBean.irInicio}"/>
@@ -55,15 +53,15 @@
         <p:graphicImage value="/assets/img/escudo-prime.png"/>
     </p:column>
     <p:column colspan="8">
-        <p align="center">
+        <p align="center"><b>
             FORMULARIO ÚNICO DE PRESENTACIÓN TRIMESTRAL DE PLANILLAS<br/>
             DE SUELDOS Y SALARIOS Y ACCIDENTES DE TRABAJO<br/>
-            DECLARACIÓN JURADA
+            DECLARACIÓN JURADA    </b>
         </p>
     </p:column>
     <p:column colspan="4">
         <p:outputLabel value="FORM :"/>
-        <b><p:outputLabel value="LC1010 Ver. 01" style="font-size: 16px"/></b>
+        <b><p:outputLabel value="#{declaracionBean.documento.docDefinicion.docDefinicionPK.codDocumento} Ver. 0#{declaracionBean.documento.docDefinicion.docDefinicionPK.version}" style="font-size: 16px"/></b>
     </p:column>
 </p:row>
 
@@ -84,6 +82,7 @@
             <p:selectOneMenu id="rectificatorio" value="#{declaracionBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="#{!declaracionBean.esRectificatorio}"> <!--disabled="# {declaracionBean.parametro!=3}"-->
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
                 <f:selectItems value="#{declaracionBean.docDocumentosParaRectificar}" var="elemDoc" itemLabel="#{elemDoc.numeroDocumento}&nbsp;-&nbsp;#{elemDoc.docPlanilla.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{elemDoc.idDocumento}"/>
+                <p:ajax listener="#{declaracionBean.seleccionaTrimestre}" update="razonSocial" />
             </p:selectOneMenu>
         </p:panelGrid>
     </p:column>
@@ -104,14 +103,15 @@
             <p:selectBooleanCheckbox value="#{true}" disabled="true"/>
         </div>
     </p:column>
-    <p:column colspan="5">
+    <p:column colspan="6">
         <p:outputLabel value="2.2 Oficina central o nro de sucursal"/>
         <p:outputLabel value="2.3 Trimestre de presentación"/>
     </p:column>
-    <p:column colspan="6">
+    <p:column id="razonSocial" colspan="5" style="width: 100%">
         <p:outputPanel id="empresaRazonSocial">
-            <h:outputText value="#{declaracionBean.unidadSeleccionada.nombreComercial}"/>
-            <p:selectOneMenu value="#{declaracionBean.periodo}" style="width: 260px; height: 20px">
+            <h:outputText value="#{declaracionBean.unidadSeleccionada.nombreComercial}" style="text-align: justify"/>
+            <h:outputText id="trimestre" value="#{declaracionBean.trimestre}" rendered="#{declaracionBean.parametro==3}"/>
+            <p:selectOneMenu value="#{declaracionBean.periodo}" style="width: 260px; height: 20px" rendered="#{declaracionBean.parametro!=3}">
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
                 <f:selectItems value="#{declaracionBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="#{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}" itemLabel="#{oCalendario.parCalendario.parCalendarioPK.gestion} - #{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>
             </p:selectOneMenu>
