@@ -123,7 +123,4 @@ public class PlanillaService implements IPlanillaService {
         return planillaRepository.findByIdDocumento_PerUnidad_PerPersona_IdPersona(idPersona);
     }
 
-    public List<DocPlanilla> listarDeclaradosPorPersona(String idPersona){
-       return planillaRepository.listarDeclaradosPorPersona(idPersona);
-    }
 }

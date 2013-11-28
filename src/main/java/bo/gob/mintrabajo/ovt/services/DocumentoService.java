@@ -1,12 +1,9 @@
 package bo.gob.mintrabajo.ovt.services;
 
-import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IDocumentoService;
 import bo.gob.mintrabajo.ovt.api.IUtilsService;
 import bo.gob.mintrabajo.ovt.entities.*;
 import bo.gob.mintrabajo.ovt.repositories.*;
-import net.glxn.qrgen.QRCode;
-import net.glxn.qrgen.image.ImageType;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -19,12 +16,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -127,9 +120,7 @@ public class DocumentoService implements IDocumentoService{
 
     public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles){
         //guarda documento
-        Long idDocumentoRectificatorio=docDocumento.getIdDocumento();
-        if(idDocumentoRectificatorio==null)
-            docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+        docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
 //        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento(), docDocumento.getDocDefinicion().getDocDefinicionPK().getVersion()));
         docDocumento=documentoRepository.save(docDocumento);
@@ -138,10 +129,7 @@ public class DocumentoService implements IDocumentoService{
 
             docPlanilla.setIdDocumento(docDocumento);
 
-        if(idDocumentoRectificatorio==null)
             docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
-        else
-            docPlanilla.setIdPlanilla(planillaRepository.findByIdDocumento_IdDocumento(docDocumento.getIdDocumento()).getIdPlanilla());
 
         logger.info("Guarda"+ planillaRepository.save(docPlanilla));
 
@@ -429,5 +417,9 @@ public class DocumentoService implements IDocumentoService{
         docGenericoRepository.save(docGenerico);
         //
         return docDocumento;
+    }
+
+    public List<DocDocumento> findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(String idPersona, String codEstado){
+        return documentoRepository.findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(idPersona, codEstado);
     }
 }
