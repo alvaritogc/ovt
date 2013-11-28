@@ -2,10 +2,8 @@ package bo.gob.mintrabajo.ovt.repositories;
 
 //import bo.gob.mintrabajo.ovt.entities.PerUsuario;
 //import bo.gob.mintrabajo.ovt.entities.PerUsuarioPK;
-import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
-
-@OpenJpaSettings
-public interface PerUsuarioRepository /*extends OpenJpaRepository<PerUsuario, PerUsuarioPK>*/{
+//@OpenJpaSettings
+public class /*interface*/ PerUsuarioRepository /*extends OpenJpaRepository<PerUsuario, PerUsuarioPK>*/{
 
 //   @Query(" select pu from PerUsuario pu " +
 //            "where pu.perUsuarioPK.idPersona in (select p.idPersona from PerPersona p where p.nroIdentificacion = :NIT)  " +
