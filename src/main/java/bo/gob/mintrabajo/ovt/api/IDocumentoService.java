@@ -16,8 +16,6 @@ public interface IDocumentoService {
     DocDocumento guardarCambioEstado(DocDocumento documento, String codEstadoFinal,String idUsuario,String observacionLogEstado);
     public DocDocumento guardarBajaRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora);
     public DocDocumento guardarImpresionRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora, DocDefinicion docDefinicion);//, VperPersona vperPersona, Long idUsuarioEmpleador);
-    String generaReporteLC1010(DocPlanilla docPlanilla, PerPersona persona , DocDocumento docDocumento, PerUnidad perUnidad, VperPersona vperPersona);
-//    String generaReporteROE(VperPersona vperPersona, String idUsuario, String idPersona);
     public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK ,String registroBitacora);
 
     public List<DocDocumento>  listarRoe013(String idPersona,long idUnidad);
