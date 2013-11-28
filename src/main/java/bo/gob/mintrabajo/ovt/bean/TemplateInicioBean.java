@@ -303,13 +303,13 @@ public class TemplateInicioBean implements Serializable {
             UsrUsuario usuario = iUsuarioService.findById(idUsuario);
             session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
 
-            //Guardamos en session nombre del cliente y la ip
-            String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
-
-            Map<String,String> bitacoraMapa = new HashMap<String, String>();
-            bitacoraMapa.put("usuario", usuario.getUsuario());
-            bitacoraMapa.put("ip", ipCliente);
-            session.setAttribute("bitacoraMapa", bitacoraMapa);
+            //Guardamos en session el login y la ip del cliente
+            String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getHeader("X-FORWARDED-FOR");
+            if(ipCliente == null){
+                ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
+            }
+            String bitacoraSession = usuario.getUsuario() + "|" + ipCliente;
+            session.setAttribute("bitacoraSession", bitacoraSession);
 
             cargarDominio();
 
