@@ -3,7 +3,9 @@ package bo.gob.mintrabajo.ovt.services;
 import bo.gob.mintrabajo.ovt.api.IDefinicionService;
 import bo.gob.mintrabajo.ovt.entities.DocDefinicion;
 import bo.gob.mintrabajo.ovt.entities.DocDefinicionPK;
+import bo.gob.mintrabajo.ovt.entities.ParParametrizacion;
 import bo.gob.mintrabajo.ovt.repositories.DefinicionRepository;
+import bo.gob.mintrabajo.ovt.repositories.ParametrizacionRepository;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -15,10 +17,12 @@ import java.util.List;
 public class DefinicionService implements IDefinicionService {
 
     private final DefinicionRepository definicionRepository;
+    private final ParametrizacionRepository parametrizacionRepository;
 
     @Inject
-    public DefinicionService(DefinicionRepository definicionRepository) {
+    public DefinicionService(DefinicionRepository definicionRepository,ParametrizacionRepository parametrizacionRepository) {
         this.definicionRepository = definicionRepository;
+        this.parametrizacionRepository= parametrizacionRepository;
     }
 
     public DocDefinicion guardarDefincion(DocDefinicion docDefinicion){
@@ -80,5 +84,15 @@ public class DefinicionService implements IDefinicionService {
         DocDefinicion entity;
         entity = definicionRepository.obtenerDocDefinicion(codigo, vesion);
         return entity;
+    }
+    
+    @Override
+    public DocDefinicion buscarActivoPorParametro(String parametroDocDefinicion) {
+        ParParametrizacion parParametrizacion =parametrizacionRepository.obtenerParametro("DOCUMENTOS", parametroDocDefinicion);
+        return definicionRepository.buscarPorCodDocumentoActivo(parParametrizacion.getDescripcion());
+    }
+    
+    public DocDefinicion buscarActivoPorCodDocumento(String codDocumento) {
+        return definicionRepository.buscarPorCodDocumentoActivo(codDocumento);
     }
 }
