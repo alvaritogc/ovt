@@ -78,7 +78,7 @@ public class declaracionBean implements Serializable {
     private int parametro;
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
     private List<ParEntidad> parEntidadLista;
-    private List<DocPlanilla> docDocumentosParaRectificar;
+    private List<DocDocumento> docDocumentosParaRectificar;
     private PerPersona perPersona;
     private VperPersona vperPersona;
     private DocPlanilla docPlanilla;
@@ -214,8 +214,8 @@ public class declaracionBean implements Serializable {
     }
 
     public void cargarDocumentosParaRectificar(){
-        docDocumentosParaRectificar= new ArrayList<DocPlanilla>();
-        docDocumentosParaRectificar= iPlanillaService.listarDeclaradosPorPersona(idPersona);
+        docDocumentosParaRectificar= new ArrayList<DocDocumento>();
+        docDocumentosParaRectificar= idDocumentoService.findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(idPersona, "110");
     }
 
 
@@ -359,8 +359,9 @@ public class declaracionBean implements Serializable {
 
 //        if(errores.size()==0 && verificaValidacion){
         try{
-            if(parametro==3)
-                documento.setIdDocumento(idRectificatorio);
+            if(parametro==3){
+                documento.setIdDocumentoRef(idDocumentoService.findById(idRectificatorio));
+            }
 
             logger.info("Guardando documento, binario y planilla");
             logger.info(documento.toString());
@@ -1036,11 +1037,11 @@ public class declaracionBean implements Serializable {
         this.nombres = nombres;
     }
 
-    public List<DocPlanilla> getDocDocumentosParaRectificar() {
+    public List<DocDocumento> getDocDocumentosParaRectificar() {
         return docDocumentosParaRectificar;
     }
 
-    public void setDocDocumentosParaRectificar(List<DocPlanilla> docDocumentosParaRectificar) {
+    public void setDocDocumentosParaRectificar(List<DocDocumento> docDocumentosParaRectificar) {
         this.docDocumentosParaRectificar = docDocumentosParaRectificar;
     }
 
