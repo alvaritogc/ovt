@@ -66,6 +66,7 @@ public class ImpresionRoeBean {
     private BigDecimal montoDeposito;
     private List<ParEntidad> listaEntidades;
     private String parametroDocDefinicion;
+    private boolean cambiarNroUnidad;
 
     @PostConstruct
     public void ini() {
@@ -92,7 +93,9 @@ public class ImpresionRoeBean {
 
     public void cargar() {
         //session.setAttribute("parametroDocDefinicion", Dominios.PAR_DOCUMENTO_ROE_INSCRIPCION);
+        //session.setAttribute("parametroDocDefinicion", Dominios.PAR_DOCUMENTO_ROE_INSCRIPCION);
         parametroDocDefinicion=(String) session.getAttribute("parametroDocDefinicion");
+        cambiarNroUnidad=false;
 //        System.out.println("============================================");
 //        System.out.println("============================================");
 //        System.out.println("============================================");
@@ -116,6 +119,7 @@ public class ImpresionRoeBean {
             //
             perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
             //
+            cambiarNroUnidad=true;
             
         } else {
             idDocumento = (Long) session.getAttribute("idDocumento");
@@ -209,7 +213,7 @@ public class ImpresionRoeBean {
         //
 
         //documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico, idUsuario.toString(), docDefinicion);//, vperPersona, idUsuarioEmpleador);
-        documento = iDocumentoService.guardarDocumentoRoe(docGenerico, idDocumento, perUnidadPK, docDefinicion.getDocDefinicionPK(), idEmpleador);
+        documento = iDocumentoService.guardarDocumentoRoe(docGenerico, idDocumento, perUnidadPK, docDefinicion.getDocDefinicionPK(), idEmpleador,cambiarNroUnidad);
         session.removeAttribute("idDocumento");
         session.removeAttribute("docDefinicionPK");
         session.removeAttribute("parametroDocDefinicion");
