@@ -115,12 +115,12 @@
                                 <p:selectOneMenu id="idCadena01" value="#{bajaRoeBean.docGenerico.cadena01}"  > 
                                     <f:selectItem itemLabel="Seleccione" itemValue="" />
                                     <f:selectItems value="#{bajaRoeBean.listaDominioMeses}" var="mes" itemLabel="#{mes.descripcion}" itemValue="#{mes.descripcion}" /> 
-                                    <p:ajax update=":formularioFrm:idCadena03 :formularioFrm:idCadena04" listener="#{bajaRoeBean.vaciarSuspencionDefinitiva()}"/> 
+                                    <p:ajax update=":formularioFrm:idCadena03 :formularioFrm:idCadena04" listener="#{bajaRoeBean.vaciarSuspencionDefinitiva}"/> 
                                 </p:selectOneMenu>
                                 <p:selectOneMenu id="idCadena02" value="#{bajaRoeBean.docGenerico.cadena02}"  > 
                                     <f:selectItem itemLabel="Seleccione" itemValue="" />
                                     <f:selectItems value="#{bajaRoeBean.listaGestiones}" var="anio" itemLabel="#{anio}" itemValue="#{anio}" /> 
-                                    <p:ajax update=":formularioFrm:idCadena03 :formularioFrm:idCadena04" listener="#{bajaRoeBean.vaciarSuspencionDefinitiva()}"/> 
+                                    <p:ajax update=":formularioFrm:idCadena03 :formularioFrm:idCadena04" listener="#{bajaRoeBean.vaciarSuspencionDefinitiva}"/> 
                                 </p:selectOneMenu>
                             </p:panelGrid>
                             <br/>
@@ -131,12 +131,12 @@
                                 <p:selectOneMenu id="idCadena03" value="#{bajaRoeBean.docGenerico.cadena03}" > 
                                 <f:selectItem itemLabel="Seleccione" itemValue="" />
                                 <f:selectItems value="#{bajaRoeBean.listaDominioMeses}" var="mes" itemLabel="#{mes.descripcion}" itemValue="#{mes.descripcion}" /> 
-                                <p:ajax update=":formularioFrm:idCadena01 :formularioFrm:idCadena02" listener="#{bajaRoeBean.vaciarSuspencionTemporal()}"/> 
+                                <p:ajax update=":formularioFrm:idCadena01 :formularioFrm:idCadena02" listener="#{bajaRoeBean.vaciarSuspencionTemporal}"/> 
                             </p:selectOneMenu>
                                 <p:selectOneMenu id="idCadena04" value="#{bajaRoeBean.docGenerico.cadena04}"  > 
                                 <f:selectItem itemLabel="Seleccione" itemValue="" />
                                 <f:selectItems value="#{bajaRoeBean.listaGestiones}" var="anio" itemLabel="#{anio}" itemValue="#{anio}" /> 
-                                <p:ajax update=":formularioFrm:idCadena01 :formularioFrm:idCadena02" listener="#{bajaRoeBean.vaciarSuspencionTemporal()}"/> 
+                                <p:ajax update=":formularioFrm:idCadena01 :formularioFrm:idCadena02" listener="#{bajaRoeBean.vaciarSuspencionTemporal}"/> 
                             </p:selectOneMenu>
                             </p:panelGrid>
                         </p:column>
