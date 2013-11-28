@@ -23,7 +23,7 @@ import java.util.List;
 public class ImpresionRoeBean {
     //
 
-    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     private Long idUsuario;
     private String idPersona;
     private String idEmpleador;
@@ -43,9 +43,14 @@ public class ImpresionRoeBean {
     private IVperPersonaService iVperPersonaService;
     @ManagedProperty(value = "#{definicionService}")
     private IDefinicionService iDefinicionService;
+    @ManagedProperty(value = "#{docGenericoService}")
+    private IDocGenericoService iDocGenericoService;
     @ManagedProperty(value = "#{entidadService}")
     private IEntidadService iEntidadService;
     //
+    private Long idDocumento;
+    private DocDefinicionPK docDefinicionPK;
+    private PerUnidadPK perUnidadPK;
     private UsrUsuario usuario;
     private boolean esFuncionario;
     //
@@ -65,31 +70,84 @@ public class ImpresionRoeBean {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
-
-
-
-        try {
-            docDefinicion = iDefinicionService.buscaPorId((DocDefinicionPK) session.getAttribute("docDefinicionPK"));
-        } catch (Exception e) {
-            DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
-            docDefinicionPK.setCodDocumento("ROE013");
-            docDefinicionPK.setVersion((short)1);
-            docDefinicion = iDefinicionService.buscaPorId(docDefinicionPK);
-        }
-        
-        usuario = iUsuarioService.findById(idUsuario);
-        esFuncionario = usuario.getEsInterno() == 1 ? true : false;
         cargar();
         cargarEntidades();
+
+//        try {
+//            docDefinicion = iDefinicionService.buscaPorId((DocDefinicionPK) session.getAttribute("docDefinicionPK"));
+//        } catch (Exception e) {
+//            DocDefinicionPK docDefinicionPK = new DocDefinicionPK();
+//            docDefinicionPK.setCodDocumento("ROE013");
+//            docDefinicionPK.setVersion((short) 1);
+//            docDefinicion = iDefinicionService.buscaPorId(docDefinicionPK);
+//        }
+//
+//        usuario = iUsuarioService.findById(idUsuario);
+//        esFuncionario = usuario.getEsInterno() == 1 ? true : false;
+//        cargar1();
+//        cargarEntidades();
     }
 
     public void cargar() {
+        docDefinicionPK = (DocDefinicionPK) session.getAttribute("docDefinicionPK");
+        if (docDefinicionPK != null) {
+            vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
+            bancoDeposito = "";
+            nroComprobanteDeposito = 0;
+            fechaDeposito = null;
+            montoDeposito = BigDecimal.ZERO;
+            //
+            docGenerico = new DocGenerico();
+            docGenerico.setCadena05(vperPersona.getRlNombre());
+            docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
+            //
+            perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
+        } else {
+            idDocumento = (Long) session.getAttribute("idDocumento");
+            if (idDocumento != null) {
+                docGenerico = iDocGenericoService.buscarPorDocumento(idDocumento);
+                docDefinicionPK = docGenerico.getIdDocumento().getDocDefinicion().getDocDefinicionPK();
+                //
+                docGenerico = iDocGenericoService.buscarPorDocumento(idDocumento);
+                //
+                vperPersona = iVperPersonaService.cargaVistaPersona(docGenerico.getIdDocumento().getPerUnidad().getPerPersona().getIdPersona());
+                bancoDeposito = docGenerico.getCadena01();
+                nroComprobanteDeposito = Integer.valueOf(docGenerico.getCadena02() != null ? docGenerico.getCadena02() : "0");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    fechaDeposito = sdf.parse(docGenerico.getCadena03());
+                } catch (Exception e) {
+                }
+                montoDeposito = new BigDecimal(docGenerico.getCadena04() != null ? docGenerico.getCadena04() : "0");
+            } else {
+                docDefinicionPK = new DocDefinicionPK();
+                docDefinicionPK.setCodDocumento("ROE013");
+                docDefinicionPK.setVersion((short) 1);
+                //
+                vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
+                bancoDeposito = "";
+                nroComprobanteDeposito = 0;
+                fechaDeposito = null;
+                montoDeposito = BigDecimal.ZERO;
+                //
+                docGenerico = new DocGenerico();
+                docGenerico.setCadena05(vperPersona.getRlNombre());
+                docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
+                //
+                perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
+            }
+
+        }
+        docDefinicion = iDefinicionService.buscaPorId(docDefinicionPK);
+    }
+
+    public void cargar1() {
         vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
-        bancoDeposito="";
-        nroComprobanteDeposito=0;
-        fechaDeposito=null;
-        montoDeposito=BigDecimal.ZERO;
-        docGenerico=new DocGenerico();
+        bancoDeposito = "";
+        nroComprobanteDeposito = 0;
+        fechaDeposito = null;
+        montoDeposito = BigDecimal.ZERO;
+        docGenerico = new DocGenerico();
         docGenerico.setCadena05(vperPersona.getRlNombre());
         docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
         //
@@ -100,37 +158,39 @@ public class ImpresionRoeBean {
         documento = new DocDocumento();
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
     }
-    
-    public void cargarEntidades(){
-        listaEntidades=iEntidadService.listarPorTipo("FINANCIERA");
+
+    public void cargarEntidades() {
+        listaEntidades = iEntidadService.listarPorTipo("FINANCIERA");
     }
 
     public String guardar() {
-        if(bancoDeposito==null || bancoDeposito.equals("")){
+        if (bancoDeposito == null || bancoDeposito.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe el campo Banco."));
             return "";
         }
-        if(nroComprobanteDeposito==0){
+        if (nroComprobanteDeposito == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe el campo nroComprobanteDeposito."));
             return "";
         }
-        if(fechaDeposito==null){
+        if (fechaDeposito == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe el campo fechaDeposito."));
             return "";
         }
-        if(montoDeposito==null || montoDeposito.equals(BigDecimal.ZERO)){
+        if (montoDeposito == null || montoDeposito.equals(BigDecimal.ZERO)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe el campo montoDeposito."));
             return "";
         }
         docGenerico.setCadena01(bancoDeposito);
-        docGenerico.setCadena02(""+nroComprobanteDeposito);
-        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+        docGenerico.setCadena02("" + nroComprobanteDeposito);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         docGenerico.setCadena03(sdf.format(fechaDeposito));
         docGenerico.setCadena04(montoDeposito.toString());
         //
 
-        documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico,idUsuario.toString(), docDefinicion);//, vperPersona, idUsuarioEmpleador);
-
+        //documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico, idUsuario.toString(), docDefinicion);//, vperPersona, idUsuarioEmpleador);
+        documento = iDocumentoService.guardarDocumentoRoe(docGenerico, idDocumento, perUnidadPK, docDefinicionPK, idEmpleador);
+        session.removeAttribute("idDocumento");
+        session.removeAttribute("docDefinicionPK");
         return "irEscritorio";
     }
 
@@ -276,5 +336,21 @@ public class ImpresionRoeBean {
 
     public void setListaEntidades(List<ParEntidad> listaEntidades) {
         this.listaEntidades = listaEntidades;
+    }
+
+    public Long getIdDocumento() {
+        return idDocumento;
+    }
+
+    public void setIdDocumento(Long idDocumento) {
+        this.idDocumento = idDocumento;
+    }
+
+    public IDocGenericoService getiDocGenericoService() {
+        return iDocGenericoService;
+    }
+
+    public void setiDocGenericoService(IDocGenericoService iDocGenericoService) {
+        this.iDocGenericoService = iDocGenericoService;
     }
 }

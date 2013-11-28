@@ -143,7 +143,7 @@ public class EscritorioBean {
             docPlanilla=null;
         }
         
-        listaDocumentoEstado=iDocumentoEstadoService.listarSiguientesTransiciones(docDocumento);
+        listaDocumentoEstado=iDocumentoEstadoService.listarSiguientesTransiciones(docDocumento,idUsuario);
         System.out.println("size: "+listaDocumentoEstado.size());
         if(!listaDocumentoEstado.isEmpty()){
             codEstadoFinal=listaDocumentoEstado.get(0).getCodEstado();
@@ -444,7 +444,8 @@ public class EscritorioBean {
     }
     public String irEdicionRoe(){
         session.setAttribute("idDocumento", docDocumento.getIdDocumento());
-        return "irEdicionRoe";
+        session.setAttribute("docDefinicionPK", null);
+        return "irImpresionRoe";
     }
 
     public IUsuarioService getiUsuarioService() {

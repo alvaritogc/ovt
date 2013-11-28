@@ -21,8 +21,13 @@ public interface DocumentoEstadoRepository extends OpenJpaRepository<ParDocument
             + "     t.parDocumentoEstado.codEstado = :codEstadoInicial"
             + "     and t.docDefinicion.docDefinicionPK.codDocumento = :codDocumento"
             + "     and t.docDefinicion.docDefinicionPK.version = :version"
+            + "     and t.idRol.idRol IN ("
+            + "         select usRol.usrUsuarioRolPK.idRol"
+            + "         from UsrUsuarioRol usRol"
+            + "         where usRol.usrUsuarioRolPK.idUsuario = :idUsuario"
+            + "         )"
             + " )"
             )
-    List<ParDocumentoEstado> listarSiguientesTransiciones(@Param("codDocumento") String codDocumento,@Param("version") short version,@Param("codEstadoInicial") String codEstadoInicial);
+    List<ParDocumentoEstado> listarSiguientesTransiciones(@Param("codDocumento") String codDocumento,@Param("version") short version,@Param("codEstadoInicial") String codEstadoInicial,@Param("idUsuario") Long idUsuario);
 
 }
