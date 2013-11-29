@@ -14,5 +14,6 @@ public interface IDefinicionService {
     List<DocDefinicion> listarDefiniciones();
     List<DocDefinicion> listaVersionesPorCodDocumento(String codDocumento);
     DocDefinicion obtenerDefinicion(String codigo, short vesion);
-  
+    public DocDefinicion buscarActivoPorParametro(String parametroDocDefinicion);
+    public DocDefinicion buscarActivoPorCodDocumento(String codDocumento);
 }

@@ -4,3 +4,4 @@ mvn install:install-file -DgroupId=name.marcelomorales.siqisiqi -DartifactId=siq
 mvn install:install-file -DgroupId=name.marcelomorales.siqisiqi -DartifactId=siqisiqi-openjpa -Dversion=0.2 -Dpackaging=jar -Dfile=LIB/openjpa-2.2.2.jar
 
 mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.3 -Dpackaging=jar -Dfile=LIB/ojdbc6-11.2.0.3.jar
+mvn install:install-file -DgroupId=bo.gob.mintrabajo.ovt -DartifactId=wsclient -Dversion=1.0 -Dpackaging=jar -Dfile=LIB/wsclient-1.0.jar

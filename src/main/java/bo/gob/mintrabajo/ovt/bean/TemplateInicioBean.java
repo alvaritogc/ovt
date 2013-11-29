@@ -6,6 +6,7 @@ import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -16,6 +17,7 @@ import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import bo.gob.mintrabajo.wsclient.*;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -297,19 +299,28 @@ public class TemplateInicioBean implements Serializable {
             logger.info("iUsuarioService.login(" + username + "," + password + ")");
             String passwordEncripted = Util.encriptaMD5(password);
             Long idUsuario = iUsuarioService.login(username, passwordEncripted);
+            boolean usuarioValido = true;
             logger.info("usuario aceptado");
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             session.setAttribute("idUsuario", idUsuario);
             UsrUsuario usuario = iUsuarioService.findById(idUsuario);
             session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
-
-            //Guardamos en session el login y la ip del cliente
             String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getHeader("X-FORWARDED-FOR");
             if(ipCliente == null){
                 ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
             }
             String bitacoraSession = usuario.getUsuario() + "|" + ipCliente;
             session.setAttribute("bitacoraSession", bitacoraSession);
+            int activarWebservice = Integer.parseInt(iParametrizacion.obtenerParametro(ID_PARAMETRO_WEBSERVICE, VALOR_ACTIVAR).getDescripcion());
+
+            if (usuario.getEsInterno() == 1 && activarWebservice == 1) {
+                usuarioValido = consumoWebservice(usuario.getIdPersona().getNroIdentificacion(), usuario.getIdPersona().getCodLocalidad().getDescripcion());
+                if(!usuarioValido){
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Atención", "El usuario no se encuentra activo!"));
+                    return null;
+                }
+            }
 
             cargarDominio();
 
@@ -338,12 +349,7 @@ public class TemplateInicioBean implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
-        /**
-         * catch (Exception e) { FacesContext context =
-         * FacesContext.getCurrentInstance(); context.addMessage(null, new
-         * FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Hello "));
-         * }
-         */
+
         password = "";
         return "";
     }
@@ -535,6 +541,55 @@ public class TemplateInicioBean implements Serializable {
             context.execute("cambioLoginObligadoDlg.show();");
             loginValido = true;
         }
+    }
+
+    public boolean consumoWebservice(String nroDocumento, String ciudadEx){
+        logger.info("Consultando a webservice el numero de documento " + nroDocumento + " " + ciudadEx);
+        String codExp = "NN";
+        if (ciudadEx.trim().toLowerCase().equals("lapaz")) {
+            codExp = "LP";
+        }
+        if (ciudadEx.trim().toLowerCase().equals("cochabamba")) {
+            codExp = "CB";
+        }
+        if (ciudadEx.trim().toLowerCase().equals("santacruz")) {
+            codExp = "SC";
+        }
+        if (ciudadEx.trim().toLowerCase().equals("oruro")) {
+            codExp = "OR";
+        }
+        if (ciudadEx.trim().toLowerCase().equals("chuquisaca")) {
+            codExp = "CH";
+        }
+        if (ciudadEx.trim().toLowerCase().equals("tarija")) {
+            codExp = "TR";
+        }
+        if (ciudadEx.trim().toLowerCase().equals("beni")) {
+            codExp = "BE";
+        }
+        if (ciudadEx.trim().toLowerCase().equals("potosi")) {
+            codExp = "PT";
+        }
+
+        try {
+            Service1 s = new Service1();
+            Service1Soap service1Soap = s.getService1Soap();          //4332051 LP
+            WSSAPWEBPARAMResponse.WSSAPWEBPARAMResult lp = service1Soap.wssapwebparam(nroDocumento, codExp);
+            ElementNSImpl element = (ElementNSImpl) lp.getAny();
+            ElementNSImpl dataSet = (ElementNSImpl) element.getElementsByTagName("NewDataSet").item(0);
+            if (dataSet != null) {
+                ElementNSImpl consulta = (ElementNSImpl) dataSet.getFirstChild();
+                if (consulta != null) {
+                    String idFuncionario = consulta.getElementsByTagName("fun_id").item(0).getTextContent();
+                    if (idFuncionario != null) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "Ocurrio un problema en webservice comuniquese con el administrador!"));
+        }
+        return false;
     }
 
 

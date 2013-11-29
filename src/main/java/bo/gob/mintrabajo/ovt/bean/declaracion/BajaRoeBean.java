@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean.declaracion;
 
+import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
@@ -27,6 +28,7 @@ public class BajaRoeBean {
     private Long idUsuario;
     private String idPersona;
     private String idEmpleador;
+    private String bitacoraSession;
     private static final Logger logger = LoggerFactory.getLogger(EscritorioBean.class);
     //
     @ManagedProperty(value = "#{usuarioService}")
@@ -69,6 +71,7 @@ public class BajaRoeBean {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
+        bitacoraSession=(String)session.getAttribute("bitacoraSession");
         usuario = iUsuarioService.findById(idUsuario);
         esFuncionario = usuario.getEsInterno() == 1 ? true : false;
         cargar();
@@ -96,10 +99,11 @@ public class BajaRoeBean {
         //
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
         //
-        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
-        docDefinicionPK.setCodDocumento("ROE012");
-        docDefinicionPK.setVersion((short)1);
-        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
+//        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
+//        docDefinicionPK.setCodDocumento("ROE012");
+//        docDefinicionPK.setVersion((short)1);
+//        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
+        docDefinicion=iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_BAJA);
     }
     public void cargarFechas(){
 //        listaDominioMeses=iDominioService.obtenerItemsDominio("TPERIODO");

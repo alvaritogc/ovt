@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -29,8 +26,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -69,14 +64,12 @@ public class DocDefinicion implements Serializable {
     @JoinColumn(name = "COD_ESTADO", referencedColumnName = "COD_ESTADO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParDocumentoEstado codEstado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
-    private List<DocAlertaDefinicion> docAlertaDefinicionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
-    private List<DocDocumento> docDocumentoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
-    private List<DocTransicion> docTransicionList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
-    private DocNumeracion docNumeracion;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
+//    private List<DocDocumento> docDocumentoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
+//    private List<DocTransicion> docTransicionList;
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "docDefinicion", fetch = FetchType.LAZY)
+//    private DocNumeracion docNumeracion;
 
     public DocDefinicion() {
     }
@@ -161,38 +154,6 @@ public class DocDefinicion implements Serializable {
 
     public void setCodEstado(ParDocumentoEstado codEstado) {
         this.codEstado = codEstado;
-    }
-
-    public List<DocAlertaDefinicion> getDocAlertaDefinicionList() {
-        return docAlertaDefinicionList;
-    }
-
-    public void setDocAlertaDefinicionList(List<DocAlertaDefinicion> docAlertaDefinicionList) {
-        this.docAlertaDefinicionList = docAlertaDefinicionList;
-    }
-
-    public List<DocDocumento> getDocDocumentoList() {
-        return docDocumentoList;
-    }
-
-    public void setDocDocumentoList(List<DocDocumento> docDocumentoList) {
-        this.docDocumentoList = docDocumentoList;
-    }
-
-    public List<DocTransicion> getDocTransicionList() {
-        return docTransicionList;
-    }
-
-    public void setDocTransicionList(List<DocTransicion> docTransicionList) {
-        this.docTransicionList = docTransicionList;
-    }
-
-    public DocNumeracion getDocNumeracion() {
-        return docNumeracion;
-    }
-
-    public void setDocNumeracion(DocNumeracion docNumeracion) {
-        this.docNumeracion = docNumeracion;
     }
 
     @Override

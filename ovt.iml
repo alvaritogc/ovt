@@ -10,6 +10,10 @@
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src/main/java" />
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+        </sourceRoots>
       </configuration>
       <facet type="jsf" name="JSF">
         <configuration />
@@ -20,7 +24,9 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="" />
         <datasource-mapping>
-          <factory-entry name="bo.gob.mintrabajo.ovt_ovt_war_1.0PU" />
+          <factory-entry name="persistence" />
+          <factory-entry name="persistenceUnit" />
+          <factory-entry name="tutor" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>
@@ -147,6 +153,7 @@
     <orderEntry type="library" name="Maven: taglibs:standard:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.1.7" level="project" />
     <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1.1" level="project" />
+    <orderEntry type="library" name="Maven: bo.gob.mintrabajo.ovt:wsclient:1.0" level="project" />
     <orderEntry type="library" name="Maven: javax.mail:mail:1.4.3" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.annotation:jsr250-api:1.0" level="project" />

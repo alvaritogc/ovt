@@ -1,10 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-  <persistence-unit name="bo.gob.mintrabajo.ovt_ovt_war_1.0PU" transaction-type="JTA">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>ovtconexion</jta-data-source>
-    <class>bo.gob.mintrabajo.ovt.entities.DocTransicion</class>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
-  </persistence-unit>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="tutor" transaction-type="RESOURCE_LOCAL">
+        <class>bo.gob.mintrabajo.ovt.entities.DocBinario</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocDefinicion</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocDocumento</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocGenerico</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocLogEstado</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocLogImpresion</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocNumeracion</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocPlanilla</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocPlanillaDetalle</class>
+        <class>bo.gob.mintrabajo.ovt.entities.DocTransicion</class>
+
+        <class>bo.gob.mintrabajo.ovt.entities.ParActividadEconomica</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParCalendario</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParDocumentoEstado</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParDominio</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParEntidad</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParLocalidad</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParMensajeApp</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParMensajeContenido</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParMulta</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParObligacion</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParParametrizacion</class>
+        <class>bo.gob.mintrabajo.ovt.entities.ParTipoCambio</class>
+
+        <class>bo.gob.mintrabajo.ovt.entities.PerActividad</class>
+        <class>bo.gob.mintrabajo.ovt.entities.PerDireccion</class>
+        <class>bo.gob.mintrabajo.ovt.entities.PerPersona</class>
+        <class>bo.gob.mintrabajo.ovt.entities.PerReplegal</class>
+        <class>bo.gob.mintrabajo.ovt.entities.PerUnidad</class>
+        <class>bo.gob.mintrabajo.ovt.entities.PerUsuario</class>
+        <class>bo.gob.mintrabajo.ovt.entities.PerUsuarioUnidad</class>
+
+        <class>bo.gob.mintrabajo.ovt.entities.UsrModulo</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrRecurso</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrRol</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrRolRecurso</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrUsuario</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrUsuarioRecurso</class>
+        <class>bo.gob.mintrabajo.ovt.entities.UsrUsuarioRol</class>
+        <properties>
+            <property name="openjpa.ConnectionURL" value="jdbc:oracle:thin:ovt/prueba@//192.168.50.7:1521/desa"/>
+            <property name="openjpa.ConnectionDriverName" value="oracle.jdbc.OracleDriver"/>
+            <property name="openjpa.ConnectionUserName" value="ovt"/>
+            <property name="openjpa.ConnectionPassword" value="prueba"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="persistenceUnit"/>
+    <persistence-unit name="persistence"/>
 </persistence>

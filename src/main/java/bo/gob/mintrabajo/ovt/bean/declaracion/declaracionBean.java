@@ -78,7 +78,7 @@ public class declaracionBean implements Serializable {
     private int parametro;
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
     private List<ParEntidad> parEntidadLista;
-    private List<DocPlanilla> docDocumentosParaRectificar;
+    private List<DocDocumento> docDocumentosParaRectificar;
     private PerPersona perPersona;
     private VperPersona vperPersona;
     private DocPlanilla docPlanilla;
@@ -117,6 +117,7 @@ public class declaracionBean implements Serializable {
 
     private List<DocPlanillaDetalle> docPlanillaDetalles;
     private String gestion;
+    private String trimestre;
 
 
     @PostConstruct
@@ -130,8 +131,6 @@ public class declaracionBean implements Serializable {
 //            e.printStackTrace();
             parametro = 1;
         }
-
-
         if(parametro==2)
             habilita=false;
 
@@ -157,8 +156,6 @@ public class declaracionBean implements Serializable {
         docPlanilla.setMontoAsegCaja(BigDecimal.ZERO);
         docPlanilla.setMontoAsegAfp(BigDecimal.ZERO);
         docPlanilla.setMontoOperacion(BigDecimal.ZERO);
-
-
 
         //** Controlamos que no puedan acceder a una fecha anterior a la actual  **//
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -214,8 +211,8 @@ public class declaracionBean implements Serializable {
     }
 
     public void cargarDocumentosParaRectificar(){
-        docDocumentosParaRectificar= new ArrayList<DocPlanilla>();
-        docDocumentosParaRectificar= iPlanillaService.listarDeclaradosPorPersona(idPersona);
+        docDocumentosParaRectificar= new ArrayList<DocDocumento>();
+        docDocumentosParaRectificar= idDocumentoService.findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(idPersona, "110");
     }
 
 
@@ -224,6 +221,10 @@ public class declaracionBean implements Serializable {
             unidadSeleccionada=central;
         else
             unidadSeleccionada=iUnidadService.obtienePorId(new PerUnidadPK(idPersona, idUnidad));
+    }
+
+    public void seleccionaTrimestre(){
+        trimestre = idDocumentoService.findById(idRectificatorio).getDocPlanilla().getParCalendario().getParCalendarioPK().getTipoPeriodo();
     }
 
     public void verEstadoPlanilla(){
@@ -282,7 +283,7 @@ public class declaracionBean implements Serializable {
         documento.setFechaDocumento(new Date());
         documento.setCodEstado(iDocumentoEstadoService.buscarPorId("110"));
         documento.setFechaReferenca(new Date());
-        documento.setTipoMedioRegistro("DDJJ");
+
         documento.setFechaBitacora(new Date());
         documento.setRegistroBitacora(usuario.getUsuario());
     }
@@ -312,12 +313,15 @@ public class declaracionBean implements Serializable {
         switch (parametro){
             case 1:
                 docPlanilla.setTipoPlanilla("DDJJ");
+                documento.setTipoMedioRegistro("DDJJ");
                 break;
             case 2:
                 docPlanilla.setTipoPlanilla("DDJJSM");
+                documento.setTipoMedioRegistro("DDJJSM");
                 break;
             case 3:
                 docPlanilla.setTipoPlanilla("DDJJRECT");
+                documento.setTipoMedioRegistro("DDJJRECT");
                 break;
             default:
                 docPlanilla.setTipoPlanilla("");
@@ -347,6 +351,12 @@ public class declaracionBean implements Serializable {
     }
 
     public String guardaDocumentoPlanillaBinario(){
+        if(parametro==3 && idRectificatorio==null)   {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Advertencia", "No puede guardarse, ya que no se pueden obtener declaraciones."));
+            return null;
+        }
+
+
 //        validaArchivo(listaBinarios);
 //        if(errores.size()>0){
 //            String e="";
@@ -359,8 +369,9 @@ public class declaracionBean implements Serializable {
 
 //        if(errores.size()==0 && verificaValidacion){
         try{
-            if(parametro==3)
-                documento.setIdDocumento(idRectificatorio);
+            if(parametro==3){
+                documento.setIdDocumentoRef(idDocumentoService.findById(idRectificatorio));
+            }
 
             logger.info("Guardando documento, binario y planilla");
             logger.info(documento.toString());
@@ -1036,11 +1047,11 @@ public class declaracionBean implements Serializable {
         this.nombres = nombres;
     }
 
-    public List<DocPlanilla> getDocDocumentosParaRectificar() {
+    public List<DocDocumento> getDocDocumentosParaRectificar() {
         return docDocumentosParaRectificar;
     }
 
-    public void setDocDocumentosParaRectificar(List<DocPlanilla> docDocumentosParaRectificar) {
+    public void setDocDocumentosParaRectificar(List<DocDocumento> docDocumentosParaRectificar) {
         this.docDocumentosParaRectificar = docDocumentosParaRectificar;
     }
 
@@ -1162,5 +1173,13 @@ public class declaracionBean implements Serializable {
 
     public void setEstaDeclaradoMensaje(String estaDeclaradoMensaje) {
         this.estaDeclaradoMensaje = estaDeclaradoMensaje;
+    }
+
+    public String getTrimestre() {
+        return trimestre;
+    }
+
+    public void setTrimestre(String trimestre) {
+        this.trimestre = trimestre;
     }
 }

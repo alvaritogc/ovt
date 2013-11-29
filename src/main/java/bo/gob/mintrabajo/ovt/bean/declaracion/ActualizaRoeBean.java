@@ -55,6 +55,7 @@ public class ActualizaRoeBean {
     private DocGenerico docGenerico;
     private DocDefinicion docDefinicion;
     //
+    private String bitacoraSession;
     //
 
     @PostConstruct
@@ -62,6 +63,7 @@ public class ActualizaRoeBean {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
+        bitacoraSession=(String) session.getAttribute("bitacoraSession");
         usuario = iUsuarioService.findById(idUsuario);
         cargar();
     }
@@ -83,7 +85,7 @@ public class ActualizaRoeBean {
         System.out.println("Guardar");
         System.out.println("==================================");
         System.out.println("==================================");
-        documento=iDocumentoService.guardarActualizaRoe(documento,docGenerico, idUsuario.toString());
+        documento=iDocumentoService.guardarActualizaRoe(documento,docGenerico, bitacoraSession);
         return "irEscritorio";
     }
 

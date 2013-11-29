@@ -310,6 +310,13 @@
         </dependency>
         <!-- End quartz -->
 
+        <!-- consumo del webservice de ovt -->
+        <dependency>
+            <groupId>bo.gob.mintrabajo.ovt</groupId>
+            <artifactId>wsclient</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <!-- Pluggin para envio de email -->
         <dependency>
             <groupId>javax.mail</groupId>
