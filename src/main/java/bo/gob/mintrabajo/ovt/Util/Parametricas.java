@@ -21,7 +21,12 @@ public class Parametricas {
     public static final String VALOR_SERVIDOR="SERVIDOR";
     public static final String VALOR_PUERTO="PUERTO";
 
-    // **** Validar  ****//
+    /// **** Validar  ****///
     public static final String ID_PARAMETRO_TIMER="TIMER";
     public static final String VALOR_TIEMPO_VALIDO="TIEMPO_VALIDO_REGISTRO";
+
+    /// **** Activar login por webservice **** ///
+    public static final String ID_PARAMETRO_WEBSERVICE="WEBSERVICE";
+    public static final String VALOR_ACTIVAR="ACTIVAR";
+
 }
