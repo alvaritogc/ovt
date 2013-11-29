@@ -66,13 +66,15 @@ public class ImpresionRoeBean {
     private BigDecimal montoDeposito;
     private List<ParEntidad> listaEntidades;
     private String parametroDocDefinicion;
-    private boolean cambiarNroUnidad;
+//    private boolean cambiarNroUnidad;
+    private String bitacoraSession;
 
     @PostConstruct
     public void ini() {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
+        bitacoraSession=(String)session.getAttribute("bitacoraSession");
         cargar();
         cargarEntidades();
 
@@ -95,7 +97,7 @@ public class ImpresionRoeBean {
         //session.setAttribute("parametroDocDefinicion", Dominios.PAR_DOCUMENTO_ROE_INSCRIPCION);
         //session.setAttribute("parametroDocDefinicion", Dominios.PAR_DOCUMENTO_ROE_INSCRIPCION);
         parametroDocDefinicion=(String) session.getAttribute("parametroDocDefinicion");
-        cambiarNroUnidad=false;
+//        cambiarNroUnidad=false;
 //        System.out.println("============================================");
 //        System.out.println("============================================");
 //        System.out.println("============================================");
@@ -104,24 +106,24 @@ public class ImpresionRoeBean {
 //        System.out.println("============================================");
 //        System.out.println("============================================");
         //docDefinicionPK = (DocDefinicionPK) session.getAttribute("docDefinicionPK");
-        if (parametroDocDefinicion != null) {
-            docDefinicion=iDefinicionService.buscarActivoPorParametro(parametroDocDefinicion);
-            
-            vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
-            bancoDeposito = "";
-            nroComprobanteDeposito = 0;
-            fechaDeposito = null;
-            montoDeposito = BigDecimal.ZERO;
-            //
-            docGenerico = new DocGenerico();
-            docGenerico.setCadena05(vperPersona.getRlNombre());
-            docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
-            //
-            perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
-            //
-            cambiarNroUnidad=true;
-            
-        } else {
+//        if (parametroDocDefinicion != null) {
+//            docDefinicion=iDefinicionService.buscarActivoPorParametro(parametroDocDefinicion);
+//            
+//            vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
+//            bancoDeposito = "";
+//            nroComprobanteDeposito = 0;
+//            fechaDeposito = null;
+//            montoDeposito = BigDecimal.ZERO;
+//            //
+//            docGenerico = new DocGenerico();
+//            docGenerico.setCadena05(vperPersona.getRlNombre());
+//            docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
+//            //
+//            perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
+//            //
+//            cambiarNroUnidad=true;
+//            
+//        } else {
             idDocumento = (Long) session.getAttribute("idDocumento");
             if (idDocumento != null) {
                 docGenerico = iDocGenericoService.buscarPorDocumento(idDocumento);
@@ -159,7 +161,7 @@ public class ImpresionRoeBean {
                 perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
             }
 
-        }
+//        }
         //docDefinicion = iDefinicionService.buscaPorId(docDefinicionPK);
 //        System.out.println("============================================");
 //        System.out.println("docDefinicion: "+docDefinicion.getNombre());
@@ -213,9 +215,10 @@ public class ImpresionRoeBean {
         //
 
         //documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico, idUsuario.toString(), docDefinicion);//, vperPersona, idUsuarioEmpleador);
-        documento = iDocumentoService.guardarDocumentoRoe(docGenerico, idDocumento, perUnidadPK, docDefinicion.getDocDefinicionPK(), idEmpleador,cambiarNroUnidad);
+        documento = iDocumentoService.guardarDocumentoRoe(docGenerico, idDocumento, perUnidadPK, docDefinicion.getDocDefinicionPK(), bitacoraSession,parametroDocDefinicion);
+        
         session.removeAttribute("idDocumento");
-        session.removeAttribute("docDefinicionPK");
+//        session.removeAttribute("docDefinicionPK");
         session.removeAttribute("parametroDocDefinicion");
         return "irEscritorio";
     }

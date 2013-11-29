@@ -145,10 +145,16 @@
                <p:panel id="pnlUsario" header="DATOS DE USUARIO DEL SISTEMA" style="height: 140px;width: 700px;" >
                    <f:facet name="footer">
                        <p:commandButton value="Guardar"
-                                        action="#{personaBean.registrar}"
-                                        tabindex="17"
-                                        process="@form"
-                                        update="growl"
+                                                           action="#{personaBean.registrar}"
+                                                           tabindex="17"
+                                                           process="@form"
+                                                           update="growl"
+                                                           icon="ui-icon-disk"
+                           />
+
+                       <p:commandButton value="Rerporte"
+                                        action="#{personaBean.crearReporte}"
+                                         process="@this"
                                         icon="ui-icon-disk"
                                />
                    </f:facet>
