@@ -27,6 +27,6 @@ public interface IDocumentoService {
     public DocDocumento guardarActualizaRoe(DocDocumento docDocumento, DocGenerico docGenerico,String registroBitacora);
     public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador,Date fechaDesde,Date fechaHasta);
     List<DocDocumento> listarDeclarados(String idEmpleador);
-    public DocDocumento guardarDocumentoRoe(DocGenerico docGenerico, Long idDocumento,PerUnidadPK perUnidadPK, DocDefinicionPK docDefinicionPK, String registroBitacora,boolean cambiarNroUnidad);
+    public DocDocumento guardarDocumentoRoe(DocGenerico docGenerico, Long idDocumento,PerUnidadPK perUnidadPK, DocDefinicionPK docDefinicionPK, String registroBitacora,String parametroDocDefinicionAdicional);
     List<DocDocumento> findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(String idPersona, String codEstado);
 }
