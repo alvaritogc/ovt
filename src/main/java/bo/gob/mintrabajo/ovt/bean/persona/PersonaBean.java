@@ -4,6 +4,7 @@ import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import com.itextpdf.text.DocumentException;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,6 +111,10 @@ public class PersonaBean implements Serializable{
         cargar();
     }
 
+    public void crearReporte()throws IOException,DocumentException,Exception{
+        ReporteDeclaracionJurada reporte=new ReporteDeclaracionJurada();
+        reporte.crearDeclaracionJurada();
+    }
     /*
      **
      * Este metodo se utliza para cargar las listas
@@ -371,7 +376,10 @@ public class PersonaBean implements Serializable{
     }
 
     public boolean validarEmail(String email){
-        Pattern patron = Pattern.compile("\\@[\\w\\.-]+\\.[a-z]{2,4}$");
+        final String EMAIL_PATTERN =
+                "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern patron = Pattern.compile(EMAIL_PATTERN);
         Matcher encajador = patron.matcher(email);
         if (encajador.matches()) {
             return true;
