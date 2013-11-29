@@ -156,7 +156,8 @@
                     </p:row>
                     <p:row rendered="#{bajaRoeBean.esFuncionario}">
                         <p:column colspan="20" >
-                            <h:panelGrid columns="6" style="width: 100%;">
+                            <center>
+                            <h:panelGrid columns="2">
                                 <p:outputLabel value="Baja Nit: "/>
                                 <p:selectBooleanCheckbox value="#{bajaRoeBean.entero03}" /> 
                                 <p:outputLabel value="Baja seguro a corto plazo (CAJA): "/>
@@ -164,6 +165,7 @@
                                 <p:outputLabel value="Baja seguro a largo plazo(AFP): "/>
                                 <p:selectBooleanCheckbox value="#{bajaRoeBean.entero05}" /> 
                             </h:panelGrid>
+                                </center>
                             <br/>
                         </p:column>
                     </p:row>

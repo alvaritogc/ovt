@@ -71,7 +71,7 @@ public class BajaRoeBean {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
-        bitacoraSession=(String)session.getAttribute("bitacoraSession");
+        bitacoraSession = (String) session.getAttribute("bitacoraSession");
         usuario = iUsuarioService.findById(idUsuario);
         esFuncionario = usuario.getEsInterno() == 1 ? true : false;
         cargar();
@@ -88,7 +88,12 @@ public class BajaRoeBean {
         docGenerico.setCadena05(vperPersona.getRlNombre());
         docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
         if (esFuncionario) {
-            docGenerico.setCadena07(usuario.getUsuario());
+            PerPersona persona = iPersonaService.obtenerPersonaPorUsuario(usuario);
+            //docGenerico.setCadena07(usuario.getUsuario());
+            docGenerico.setCadena07("" + persona.getNombreRazonSocial()
+                    + " " + (persona.getApellidoPaterno() != null ? persona.getApellidoPaterno() : "")
+                    + " " + (persona.getApellidoMaterno() != null ? persona.getApellidoMaterno() : "")
+            );
         }
         cargarDocumento();
         cargarFechas();
@@ -103,16 +108,17 @@ public class BajaRoeBean {
 //        docDefinicionPK.setCodDocumento("ROE012");
 //        docDefinicionPK.setVersion((short)1);
 //        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
-        docDefinicion=iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_BAJA);
+        docDefinicion = iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_BAJA);
     }
-    public void cargarFechas(){
+
+    public void cargarFechas() {
 //        listaDominioMeses=iDominioService.obtenerItemsDominio("TPERIODO");
-        ParDominioPK parDominioPK=new ParDominioPK();
+        ParDominioPK parDominioPK = new ParDominioPK();
         parDominioPK.setIdDominio("TCALENDARIO");
         parDominioPK.setValor("MES");
-        listaDominioMeses=iDominioService.obtenerDominioPorDominioPadreOrderByValor(parDominioPK);
-        listaCalendarioAnios=iCalendarioService.listaCalendario();
-        listaGestiones=iCalendarioService.listaGestiones();
+        listaDominioMeses = iDominioService.obtenerDominioPorDominioPadreOrderByValor(parDominioPK);
+        listaCalendarioAnios = iCalendarioService.listaCalendario();
+        listaGestiones = iCalendarioService.listaGestiones();
     }
 
     public String guardar() {
@@ -122,30 +128,30 @@ public class BajaRoeBean {
         System.out.println("==================================");
         System.out.println("==================================");
         System.out.println("docGenerico : " + docGenerico.getCadena01());
-        if ((docGenerico.getCadena01()==null || docGenerico.getCadena01().trim().equals(""))
-                && (docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals(""))
-                && (docGenerico.getCadena03()==null || docGenerico.getCadena03().trim().equals(""))
-                && (docGenerico.getCadena04()==null || docGenerico.getCadena04().trim().equals(""))) {
+        if ((docGenerico.getCadena01() == null || docGenerico.getCadena01().trim().equals(""))
+                && (docGenerico.getCadena02() == null || docGenerico.getCadena02().trim().equals(""))
+                && (docGenerico.getCadena03() == null || docGenerico.getCadena03().trim().equals(""))
+                && (docGenerico.getCadena04() == null || docGenerico.getCadena04().trim().equals(""))) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año para Indicar si la suspención es temporal o definitiva."));
             return "";
         }
-        if ((docGenerico.getCadena01()==null || docGenerico.getCadena01().trim().equals("") )
-                && (docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals(""))) {
-            if (!((!(docGenerico.getCadena03()==null||docGenerico.getCadena03().trim().equals(""))) 
-                    && (!(docGenerico.getCadena04()==null || docGenerico.getCadena04().trim().equals(""))))) {
+        if ((docGenerico.getCadena01() == null || docGenerico.getCadena01().trim().equals(""))
+                && (docGenerico.getCadena02() == null || docGenerico.getCadena02().trim().equals(""))) {
+            if (!((!(docGenerico.getCadena03() == null || docGenerico.getCadena03().trim().equals("")))
+                    && (!(docGenerico.getCadena04() == null || docGenerico.getCadena04().trim().equals(""))))) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año de la Suspención definitiva."));
                 return "";
             }
         }
-        if ((docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals("")) 
-                && (docGenerico.getCadena03()==null || docGenerico.getCadena03().trim().equals(""))) {
-            if (!((!(docGenerico.getCadena01()==null || docGenerico.getCadena01().trim().equals(""))) 
-                    && (!(docGenerico.getCadena02()==null || docGenerico.getCadena02().trim().equals(""))))) {
+        if ((docGenerico.getCadena02() == null || docGenerico.getCadena02().trim().equals(""))
+                && (docGenerico.getCadena03() == null || docGenerico.getCadena03().trim().equals(""))) {
+            if (!((!(docGenerico.getCadena01() == null || docGenerico.getCadena01().trim().equals("")))
+                    && (!(docGenerico.getCadena02() == null || docGenerico.getCadena02().trim().equals(""))))) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año de la Suspención temporal."));
                 return "";
             }
         }
-        if (docGenerico.getEntero01()==null || docGenerico.getEntero01() == 0) {
+        if (docGenerico.getEntero01() == null || docGenerico.getEntero01() == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Número de trabajadores."));
             return "";
         }
@@ -157,7 +163,7 @@ public class BajaRoeBean {
             docGenerico.setEntero05(entero05 ? 1 : 0);
         }
         //
-        documento = iDocumentoService.guardarBajaRoe(documento, docGenerico,idUsuario.toString());
+        documento = iDocumentoService.guardarBajaRoe(documento, docGenerico, idUsuario.toString());
         //RequestContext context = RequestContext.getCurrentInstance();
         //context.execute("dlgConfirmacion.show()");
         return "irEscritorio";

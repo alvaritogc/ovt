@@ -344,8 +344,30 @@ public class EscritorioBean {
                 parametros.put("nombreEmpleador", vperPersona.getRlNombre());
                 parametros.put("nroDocumento", vperPersona.getRlNroIdentidad());
                 parametros.put("lugarPresentacion", "Oficina Virtual");
-
-                String nombrePdf="ROE012-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento))))+".pdf";
+                //Adicionado por victor
+                DocGenerico docGenerico = iDocGenericoService.buscarPorDocumento(docDocumento.getIdDocumento());
+                parametros.put("stMes", docGenerico.getCadena01());
+                parametros.put("stAnio", docGenerico.getCadena02());
+                parametros.put("sdMes", docGenerico.getCadena03());
+                parametros.put("sdAnio", docGenerico.getCadena04());
+                parametros.put("nroTrabajadores", docGenerico.getEntero01());
+                if (docGenerico.getEntero03() != null && docGenerico.getEntero03() == 1) {
+                    parametros.put("bajaNit", "X");
+                } else {
+                    parametros.put("bajaNit", "");
+                }
+                if (docGenerico.getEntero04() != null && docGenerico.getEntero04() == 1) {
+                    parametros.put("bajaSeguroCortoPlazo", "X");
+                } else {
+                    parametros.put("bajaSeguroCortoPlazo", "");
+                }
+                if (docGenerico.getEntero05() != null && docGenerico.getEntero05() == 1) {
+                    parametros.put("bajaSeguroLargoPlazo", "X");
+                } else {
+                    parametros.put("bajaSeguroLargoPlazo", "");
+                }
+                parametros.put("nombreFuncionario", docGenerico.getCadena07());
+                String nombrePdf = "ROE012-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe012.jasper", parametros));
                 verificaReporte=true;
             }catch(Exception e){
@@ -447,7 +469,8 @@ public class EscritorioBean {
             }
         }
     }
-    public String irEdicionRoe(){
+
+    public String irEdicionRoe() {
         session.setAttribute("idDocumento", docDocumento.getIdDocumento());
         //session.setAttribute("docDefinicionPK", null);
         session.setAttribute("parametroDocDefinicion", null);
