@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formularioLC1010V1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="568" leftMargin="22" rightMargin="22" topMargin="36" bottomMargin="29" uuid="54ed5ff0-e063-45f1-bf51-22a9cd535eb5">
 	<property name="ireport.zoom" value="1.3636363636363635"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="145"/>
+	<property name="ireport.y" value="82"/>
 	<subDataset name="Table Dataset 1" uuid="88c88a65-992c-4a71-90ea-825f6471794f"/>
 	<parameter name="nroOrden" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
@@ -187,6 +187,8 @@
 	<parameter name="archivo1" class="java.lang.String"/>
 	<parameter name="archivo2" class="java.lang.String"/>
 	<parameter name="archivo3" class="java.lang.String"/>
+	<parameter name="formulario" class="java.lang.String"/>
+	<parameter name="version" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -209,21 +211,6 @@ DE SUELDOS Y SALARIOS Y ACCIDENTES DE TRABAJO
 DECLARACIÓN JURADA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="bcf81162-b6b9-4f36-b440-41363f898f1f" x="450" y="9" width="110" height="18" isRemoveLineWhenBlank="true"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="9" isBold="true" isUnderline="false" isStrikeThrough="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[FORM LC1010 Ver. 01]]></text>
-			</staticText>
-			<staticText>
 				<reportElement uuid="56901ffc-aebf-4b4d-aa73-ae79db19edd1" x="82" y="62" width="133" height="13"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true"/>
@@ -231,7 +218,7 @@ DECLARACIÓN JURADA]]></text>
 				<text><![CDATA[1. DATOS DEL FORMULARIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="228" y="65" width="119" height="10"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="228" y="63" width="116" height="10"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -239,7 +226,7 @@ DECLARACIÓN JURADA]]></text>
 				<text><![CDATA[1.1. Nº de orden]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="228" y="75" width="119" height="10"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="228" y="73" width="116" height="10"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -247,7 +234,7 @@ DECLARACIÓN JURADA]]></text>
 				<text><![CDATA[1.2. Rectificatoria]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="228" y="85" width="119" height="10"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="228" y="83" width="116" height="10"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -255,7 +242,7 @@ DECLARACIÓN JURADA]]></text>
 				<text><![CDATA[1.3. Nº de orden que rectifica]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="4d264578-2533-4a99-820d-8ac6c82ebb43" x="349" y="63" width="82" height="10"/>
+				<reportElement uuid="4d264578-2533-4a99-820d-8ac6c82ebb43" x="345" y="63" width="82" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -270,7 +257,7 @@ DECLARACIÓN JURADA]]></text>
 				<textFieldExpression><![CDATA[$P{nroOrden}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="c49b56f9-d7e7-44b8-9e62-29dee11db866" x="349" y="73" width="26" height="10"/>
+				<reportElement uuid="c49b56f9-d7e7-44b8-9e62-29dee11db866" x="345" y="73" width="9" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -285,7 +272,7 @@ DECLARACIÓN JURADA]]></text>
 				<textFieldExpression><![CDATA[$P{rectificatoria}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="96d7cacf-6481-4269-8d24-87dc9c57d9b0" x="349" y="83" width="82" height="10"/>
+				<reportElement uuid="96d7cacf-6481-4269-8d24-87dc9c57d9b0" x="345" y="83" width="82" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -323,7 +310,7 @@ DECLARACIÓN JURADA]]></text>
 				<text><![CDATA[2. DATOS DE LA PRESENTACIÓN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="241" y="110" width="78" height="10"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="194" y="110" width="78" height="10"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -331,7 +318,7 @@ DECLARACIÓN JURADA]]></text>
 				<text><![CDATA[2.1 Total nacional]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="df5e118b-f4c3-4e18-8a97-f52408af03dc" x="320" y="110" width="10" height="10"/>
+				<reportElement uuid="df5e118b-f4c3-4e18-8a97-f52408af03dc" x="273" y="110" width="10" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -345,7 +332,7 @@ DECLARACIÓN JURADA]]></text>
 				<textFieldExpression><![CDATA[$P{totalNacional}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="348" y="108" width="130" height="10"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="298" y="108" width="130" height="10"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -353,7 +340,7 @@ DECLARACIÓN JURADA]]></text>
 				<text><![CDATA[2.2 Oficina central o nº de sucursal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="348" y="118" width="130" height="10"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="298" y="118" width="130" height="10"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -361,7 +348,7 @@ DECLARACIÓN JURADA]]></text>
 				<text><![CDATA[2.3 Mes de presentación]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="ef5dff90-4f55-4da5-97da-13c908ce1ed8" x="480" y="108" width="77" height="10"/>
+				<reportElement uuid="ef5dff90-4f55-4da5-97da-13c908ce1ed8" x="428" y="108" width="130" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -376,7 +363,7 @@ DECLARACIÓN JURADA]]></text>
 				<textFieldExpression><![CDATA[$P{oficinaCentral}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="aa171534-2bf8-453a-8152-2b1ca3018b5d" x="480" y="118" width="77" height="10"/>
+				<reportElement uuid="aa171534-2bf8-453a-8152-2b1ca3018b5d" x="428" y="118" width="130" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -398,6 +385,20 @@ DECLARACIÓN JURADA]]></text>
 				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="6" y="12" width="115" height="65"/>
 				<imageExpression><![CDATA[$P{escudoBolivia}]]></imageExpression>
 			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="d7a99d5d-6656-4d01-b04c-4bc3f852622f" x="443" y="12" width="120" height="14"/>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+					<topPen lineWidth="0.75" lineStyle="Solid"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FORM "+ $P{formulario}+" Ver. 0"+$P{version}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -461,7 +462,7 @@ DECLARACIÓN JURADA]]></text>
 				<text><![CDATA[3.10 Teléfono]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="a4a06e8c-c887-4518-8a4c-41c200fbab85" x="123" y="7" width="94" height="20"/>
+				<reportElement uuid="a4a06e8c-c887-4518-8a4c-41c200fbab85" x="120" y="7" width="94" height="20"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -476,7 +477,7 @@ DECLARACIÓN JURADA]]></text>
 				<textFieldExpression><![CDATA[$P{empleadorMTEPS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="21a8e862-6d93-4ecc-bc68-b29495bcd737" x="123" y="38" width="224" height="10"/>
+				<reportElement uuid="21a8e862-6d93-4ecc-bc68-b29495bcd737" x="120" y="38" width="224" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -491,7 +492,7 @@ DECLARACIÓN JURADA]]></text>
 				<textFieldExpression><![CDATA[$P{razonSocial}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="cf3fd92b-7a59-4891-a636-6f6b8d2f3721" x="123" y="58" width="94" height="10"/>
+				<reportElement uuid="cf3fd92b-7a59-4891-a636-6f6b8d2f3721" x="120" y="58" width="94" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -506,7 +507,7 @@ DECLARACIÓN JURADA]]></text>
 				<textFieldExpression><![CDATA[$P{departamento}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="c343d35a-1d66-43c5-bec3-a12b16a5395c" x="123" y="78" width="316" height="10"/>
+				<reportElement uuid="c343d35a-1d66-43c5-bec3-a12b16a5395c" x="120" y="78" width="316" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -521,7 +522,7 @@ DECLARACIÓN JURADA]]></text>
 				<textFieldExpression><![CDATA[$P{direccion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="64ce508f-9e04-4e22-915b-5d77e8d24905" x="123" y="98" width="94" height="10"/>
+				<reportElement uuid="64ce508f-9e04-4e22-915b-5d77e8d24905" x="120" y="98" width="94" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -536,7 +537,7 @@ DECLARACIÓN JURADA]]></text>
 				<textFieldExpression><![CDATA[$P{telefono}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="228" y="8" width="65" height="20"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="228" y="7" width="70" height="20"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -606,7 +607,7 @@ DECLARACIÓN JURADA]]></text>
 				<textFieldExpression><![CDATA[$P{fax}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="418" y="8" width="35" height="20"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="421" y="8" width="35" height="20"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -615,7 +616,7 @@ DECLARACIÓN JURADA]]></text>
      NIT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="356" y="38" width="110" height="10"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="356" y="38" width="87" height="10"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -628,10 +629,10 @@ DECLARACIÓN JURADA]]></text>
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[3.8 Zona]]></text>
+				<text><![CDATA[3.8 Zona  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="457" y="78" width="31" height="10"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="466" y="78" width="31" height="10"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -639,7 +640,7 @@ DECLARACIÓN JURADA]]></text>
 				<text><![CDATA[3.10 Nº]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="361" y="98" width="95" height="10"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="368" y="98" width="87" height="10"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -662,7 +663,7 @@ DECLARACIÓN JURADA]]></text>
 				<textFieldExpression><![CDATA[$P{nit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="7b6808a4-c176-4f9b-8de5-50d43e58b7b9" x="466" y="38" width="91" height="10"/>
+				<reportElement uuid="7b6808a4-c176-4f9b-8de5-50d43e58b7b9" x="447" y="38" width="109" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -749,8 +750,7 @@ DECLARACIÓN JURADA]]></text>
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single" leftIndent="13"/>
 				</textElement>
-				<text><![CDATA[4.1 Nº de asegurados al ente
-gestor de salud a corto plazo]]></text>
+				<text><![CDATA[4.1 Nº de asegurados al ente gestor de salud a corto plazo]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="0" y="46" width="119" height="20"/>
@@ -790,7 +790,7 @@ gestor de salud a corto plazo]]></text>
 				<textFieldExpression><![CDATA[$P{nroAfiliados}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="168" y="10" width="55" height="20"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="178" y="10" width="55" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -799,7 +799,7 @@ gestor de salud a corto plazo]]></text>
 aportado (Bs)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="168" y="46" width="55" height="20"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="178" y="46" width="55" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -836,13 +836,12 @@ aportado (Bs)]]></text>
 				<textFieldExpression><![CDATA[$P{montoAportadoAfiliados}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="305" y="10" width="85" height="20"/>
+				<reportElement uuid="071fa9c2-2985-4fa8-a183-588cafcac9c8" x="318" y="10" width="85" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[4.3 Ente gestor de salud
-corto plazo]]></text>
+				<text><![CDATA[4.3 Ente gestor de salud corto plazo]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="cefbb03c-3f60-4da9-842f-2f3c8129f9b5" x="404" y="10" width="153" height="20"/>
@@ -2110,7 +2109,7 @@ corto plazo]]></text>
 				<text><![CDATA[FECHA DE PRESENTACIÓN]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="8210b94a-07ba-4e93-be9f-313576727efe" x="432" y="308" width="20" height="10"/>
+				<reportElement uuid="8210b94a-07ba-4e93-be9f-313576727efe" x="430" y="308" width="20" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -2124,7 +2123,7 @@ corto plazo]]></text>
 				<textFieldExpression><![CDATA[$P{diaFechaPresentacion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="60dff62d-de13-48d2-9284-55eaef9ed24c" x="452" y="308" width="20" height="10"/>
+				<reportElement uuid="60dff62d-de13-48d2-9284-55eaef9ed24c" x="450" y="308" width="20" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -2138,7 +2137,7 @@ corto plazo]]></text>
 				<textFieldExpression><![CDATA[$P{mesFechaPresentacion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="23caf63e-4627-4cdf-98b4-a58b5e3f1715" x="472" y="308" width="30" height="10"/>
+				<reportElement uuid="23caf63e-4627-4cdf-98b4-a58b5e3f1715" x="470" y="308" width="30" height="10"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>

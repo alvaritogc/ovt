@@ -224,7 +224,7 @@ public class declaracionBean implements Serializable {
     }
 
     public void seleccionaTrimestre(){
-        trimestre = idDocumentoService.findById(idRectificatorio).getDocPlanilla().getParCalendario().getParCalendarioPK().getTipoPeriodo();
+        periodo = idDocumentoService.findById(idRectificatorio).getDocPlanilla().getParCalendario().getParCalendarioPK().getTipoPeriodo();
     }
 
     public void verEstadoPlanilla(){

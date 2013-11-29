@@ -175,13 +175,17 @@ public class EscritorioBean {
         Long idUsuarioEmpleador=iUsuarioService.obtenerUsuarioPorIdPersona(idPersonaPorDocumento).getIdUsuario();
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         boolean verificaReporte = false;
-        if(codDocumento.equals("LC1010")){
+        if(codDocumento.equals("LC1010") ||codDocumento.equals("LC1011")|| codDocumento.equals("LC1012")){
             try{
                 docPlanilla=iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
                 parametros.clear();
+                parametros.put("formulario", docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento());
+                parametros.put("version", docDocumento.getDocDefinicion().getDocDefinicionPK().getVersion());
                 parametros.put("nroOrden", docDocumento.getNumeroDocumento());
-                parametros.put("rectificatoria", " ");
-                parametros.put("nroRectificatoria", " ");
+                if(codDocumento.equals("LC1012")){
+                    parametros.put("rectificatoria", "X");
+                    parametros.put("nroRectificatoria",docDocumento.getIdDocumentoRef().getNumeroDocumento());
+                }
                 parametros.put("totalNacional", "X");
                 parametros.put("oficinaCentral", docDocumento.getPerUnidad().getNombreComercial());
                 parametros.put("mesPresentacion", docPlanilla.getParCalendario().getParCalendarioPK().getTipoPeriodo());
@@ -200,7 +204,8 @@ public class EscritorioBean {
                 parametros.put("correoElectronico", vperPersona.getEmail());
                 parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
                 parametros.put("montoAportadoAsegurados",docPlanilla.getMontoAsegCaja());
-                parametros.put("gestorSalud", docPlanilla.getIdEntidadSalud().getDescripcion());
+                if(docPlanilla.getIdEntidadSalud()!=null)
+                    parametros.put("gestorSalud", docPlanilla.getIdEntidadSalud().getDescripcion());
                 parametros.put("nroAfiliados",docPlanilla.getNroAsegAfp());
                 parametros.put("montoAportadoAfiliados",docPlanilla.getMontoAsegAfp());
                 parametros.put("haberBasico",docPlanilla.getHaberBasico());

@@ -109,8 +109,8 @@
     </p:column>
     <p:column id="razonSocial" colspan="5" style="width: 100%">
         <p:outputPanel id="empresaRazonSocial">
-            <h:outputText value="#{declaracionBean.unidadSeleccionada.nombreComercial}" style="text-align: justify"/>
-            <h:outputText id="trimestre" value="#{declaracionBean.trimestre}" rendered="#{declaracionBean.parametro==3}"/>
+            <p:outputLabel value="#{declaracionBean.unidadSeleccionada.nombreComercial}" style="text-align: justify"/>
+            <p:outputLabel id="trimestre" value="#{declaracionBean.periodo}" rendered="#{declaracionBean.parametro==3}"/>
             <p:selectOneMenu value="#{declaracionBean.periodo}" style="width: 260px; height: 20px" rendered="#{declaracionBean.parametro!=3}">
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
                 <f:selectItems value="#{declaracionBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="#{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}" itemLabel="#{oCalendario.parCalendario.parCalendarioPK.gestion} - #{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>
