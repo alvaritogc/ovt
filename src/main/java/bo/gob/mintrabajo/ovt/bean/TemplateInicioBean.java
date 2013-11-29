@@ -314,7 +314,8 @@ public class TemplateInicioBean implements Serializable {
             int activarWebservice = Integer.parseInt(iParametrizacion.obtenerParametro(ID_PARAMETRO_WEBSERVICE, VALOR_ACTIVAR).getDescripcion());
 
             if (usuario.getEsInterno() == 1 && activarWebservice == 1) {
-                usuarioValido = consumoWebservice(usuario.getIdPersona().getNroIdentificacion(), usuario.getIdPersona().getCodLocalidad().getDescripcion());
+                String descSinEspacio = usuario.getIdPersona().getCodLocalidad().getDescripcion().replaceAll(" ","");
+                usuarioValido = consumoWebservice(usuario.getIdPersona().getNroIdentificacion(), descSinEspacio);
                 if(!usuarioValido){
                     FacesContext context = FacesContext.getCurrentInstance();
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Atención", "El usuario no se encuentra activo!"));
@@ -570,6 +571,8 @@ public class TemplateInicioBean implements Serializable {
         if (ciudadEx.trim().toLowerCase().equals("potosi")) {
             codExp = "PT";
         }
+
+        logger.info("Lo que se envía al webservice nroDocumento " + nroDocumento + " Expedición " + codExp);
 
         try {
             Service1 s = new Service1();
