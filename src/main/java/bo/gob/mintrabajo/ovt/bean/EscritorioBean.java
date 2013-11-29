@@ -349,7 +349,7 @@ public class EscritorioBean {
             }
         }
 
-        if(codDocumento.equals("ROE013")){
+        if(codDocumento.equals("ROE013")|| codDocumento.equals("ROE011")){
 
             DocGenerico docGenerico= iDocGenericoService.buscarPorDocumento(docDocumento.getIdDocumento());
 
@@ -444,7 +444,8 @@ public class EscritorioBean {
     }
     public String irEdicionRoe(){
         session.setAttribute("idDocumento", docDocumento.getIdDocumento());
-        session.setAttribute("docDefinicionPK", null);
+        //session.setAttribute("docDefinicionPK", null);
+        session.setAttribute("parametroDocDefinicion", null);
         return "irImpresionRoe";
     }
 

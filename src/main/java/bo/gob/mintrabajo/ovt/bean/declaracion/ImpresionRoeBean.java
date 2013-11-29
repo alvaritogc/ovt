@@ -67,12 +67,14 @@ public class ImpresionRoeBean {
     private List<ParEntidad> listaEntidades;
     private String parametroDocDefinicion;
     private boolean cambiarNroUnidad;
+    private String bitacoraSession;
 
     @PostConstruct
     public void ini() {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
+        bitacoraSession=(String)session.getAttribute("bitacoraSession");
         cargar();
         cargarEntidades();
 
@@ -213,7 +215,8 @@ public class ImpresionRoeBean {
         //
 
         //documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico, idUsuario.toString(), docDefinicion);//, vperPersona, idUsuarioEmpleador);
-        documento = iDocumentoService.guardarDocumentoRoe(docGenerico, idDocumento, perUnidadPK, docDefinicion.getDocDefinicionPK(), idEmpleador,cambiarNroUnidad);
+        documento = iDocumentoService.guardarDocumentoRoe(docGenerico, idDocumento, perUnidadPK, docDefinicion.getDocDefinicionPK(), bitacoraSession,cambiarNroUnidad);
+        
         session.removeAttribute("idDocumento");
         session.removeAttribute("docDefinicionPK");
         session.removeAttribute("parametroDocDefinicion");

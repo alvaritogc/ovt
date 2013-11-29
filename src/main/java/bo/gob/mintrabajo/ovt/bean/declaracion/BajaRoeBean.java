@@ -28,6 +28,7 @@ public class BajaRoeBean {
     private Long idUsuario;
     private String idPersona;
     private String idEmpleador;
+    private String bitacoraSession;
     private static final Logger logger = LoggerFactory.getLogger(EscritorioBean.class);
     //
     @ManagedProperty(value = "#{usuarioService}")
@@ -70,6 +71,7 @@ public class BajaRoeBean {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
+        bitacoraSession=(String)session.getAttribute("bitacoraSession");
         usuario = iUsuarioService.findById(idUsuario);
         esFuncionario = usuario.getEsInterno() == 1 ? true : false;
         cargar();
