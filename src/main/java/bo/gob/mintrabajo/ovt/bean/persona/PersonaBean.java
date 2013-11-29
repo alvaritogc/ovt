@@ -111,10 +111,10 @@ public class PersonaBean implements Serializable{
         cargar();
     }
 
-    public void crearReporte()throws IOException,DocumentException,Exception{
-        ReporteDeclaracionJurada reporte=new ReporteDeclaracionJurada();
-        reporte.crearDeclaracionJurada();
-    }
+//    public void crearReporte()throws IOException,DocumentException,Exception{
+//        ReporteDeclaracionJurada reporte=new ReporteDeclaracionJurada();
+//        reporte.crearDeclaracionJurada();
+//    }
     /*
      **
      * Este metodo se utliza para cargar las listas
