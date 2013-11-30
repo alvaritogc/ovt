@@ -84,7 +84,7 @@
 
                         <p:commandButton action="#{escritorioBean.download}"
                                          ajax="false"
-                                         rendered="#{escritorioBean.esInterno and o1.docDefinicion.docDefinicionPK.codDocumento == 'LC1010'}"
+                                         rendered="#{escritorioBean.conBinario.contains(o1.docDefinicion.docDefinicionPK.codDocumento)}"
                                          icon="ui-icon-arrowthickstop-1-s"
                                          title="Descarga documentos" >
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />

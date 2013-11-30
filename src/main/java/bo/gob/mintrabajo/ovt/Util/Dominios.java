@@ -55,5 +55,5 @@ public class Dominios {
     public static final String PAR_DOCUMENTO_PLATRI_RECTIF="PLATRI_RECTIF";
     public static final String PAR_DOCUMENTO_PLAAGU_DECLARA="PLAAGU_DECLARA";
     public static final String PAR_DOCUMENTO_PLAAGU_RECTIF="PLAAGU_RECTIF";
-    
+    public static final String PAR_DOCUMENTO_CON_BINARIOS="DOC_CON_BINARIOS";
 }

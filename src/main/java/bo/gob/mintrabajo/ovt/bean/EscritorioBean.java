@@ -61,6 +61,8 @@ public class EscritorioBean {
     private ILogImpresionService iLogImpresionService;
     @ManagedProperty(value = "#{utilsService}")
     private IUtilsService iUtilsService;
+    @ManagedProperty(value = "#{parametrizacionService}")
+    private IParametrizacionService iParametrizacionService;
 
     //
     private String textoBenvenida;
@@ -84,6 +86,7 @@ public class EscritorioBean {
 
     private HashMap<String,Object> parametros = new HashMap<String,Object>();
     private String observacionLogEstado;
+    private String conBinario;
 
     @PostConstruct
     public void ini() {
@@ -97,6 +100,7 @@ public class EscritorioBean {
         usuario = iUsuarioService.findById(idUsuario);
         persona = iPersonaService.findById(idPersona);
         empleador = iPersonaService.findById(idEmpleador);
+        conBinario= iParametrizacionService.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_CON_BINARIOS).getDescripcion();
         if (usuario.getEsInterno() == 1) {
             esInterno = true;
         } else {
@@ -153,7 +157,7 @@ public class EscritorioBean {
             codEstadoFinal="";
             mostrarCambioDeEstados=false;
         }
-        observacionLogEstado="";
+//        persisobservacionLogEstado="";
         
     }
     public String realizarCambioDeEstados(){
@@ -667,5 +671,21 @@ public class EscritorioBean {
 
     public void setiUtilsService(IUtilsService iUtilsService) {
         this.iUtilsService = iUtilsService;
+    }
+
+    public IParametrizacionService getiParametrizacionService() {
+        return iParametrizacionService;
+    }
+
+    public void setiParametrizacionService(IParametrizacionService iParametrizacionService) {
+        this.iParametrizacionService = iParametrizacionService;
+    }
+
+    public String getConBinario() {
+        return conBinario;
+    }
+
+    public void setConBinario(String conBinario) {
+        this.conBinario = conBinario;
     }
 }

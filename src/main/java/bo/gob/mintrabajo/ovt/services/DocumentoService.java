@@ -366,6 +366,7 @@ public class DocumentoService implements IDocumentoService {
 
     public String generateReport(String nomArchivo, String jasper, HashMap<String, Object> parametros) throws ClassNotFoundException, IOException, JRException {
         List<String> lista = new ArrayList<String>();
+        lista.add("nadaQueVer");
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String rutaWebapp = servletContext.getRealPath("/");
         rutaPdf = "/reportes/temp/" + nomArchivo;
