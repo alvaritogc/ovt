@@ -138,6 +138,20 @@
             <ui:include src="../persona/includeDialogo/infoLaboral.xhtml"/>
         </p:dialog>
 
+    <p:dialog id="dlgMensaje" header="Información" widgetVar="dlgMensaje" resizable="false"
+              position="300,400" modal="true" dynamic="true">
+        <h:form id="frmDlg">
+            <h:panelGrid columns="1">
+                <h:outputText value="Ud. a realizado una modificación del ROE que le obliga a realizar una reimpresión del Certificado ROE. Por favor "/>
+                <h:outputText value="complemente el documento generado en estado 'Incial Pendiente' con la boleta de depósito correspondiente "/>
+                <h:outputText value="para obtener su impresión."/>
+                <p:commandButton value="Aceptar"  onclick="dlgMensaje.hide();" />
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+
+
+
                     <!-- ********************************************* -->
                     <!-- **************   DATA GRID ***************** -->
                     <!-- ********************************************* -->

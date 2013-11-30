@@ -442,15 +442,9 @@ public class PersonaUnidadBean implements Serializable{
     public boolean yaTieneROE(){
 
         List<DocDocumento> lista = documentoService.ObtenerRoes(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad());
-        System.out.println("=====>>>>>>>>>>> TIENE ROE unidad.getPerUnidadPK().getIdPersona() "+unidad.getPerUnidadPK().getIdPersona());
-        System.out.println("=====>>>>>>>>>>> TIENE ROE unidad.getPerUnidadPK().getIdUnidad() "+unidad.getPerUnidadPK().getIdUnidad());
-        System.out.println("=====>>>>>>>>>>> TIENE ROE lista: "+lista.size());
-        System.out.println("=====>>>>>>>>>>> TIENE ROE lista es vacio: "+lista.isEmpty());
         if(lista!=null){
             if(!lista.isEmpty()){
                 if(lista.size()>=0){
-                    System.out.println("=====>>>>>>>>>>> TIENE ROE "+lista.get(0));
-                    System.out.println("=====>>>>>>>>>>> TIENE ROE "+lista.get(0).getIdDocumento());
                     return true;
                 }else{
                     return false;
@@ -458,7 +452,6 @@ public class PersonaUnidadBean implements Serializable{
             } else{
                 return false;
             }
-
         }else{
             return false;
         }
@@ -467,14 +460,16 @@ public class PersonaUnidadBean implements Serializable{
     public void generarCertificadoROE2(){
         try{
             documentoService.guardarRoeGenerico(unidad.getPerUnidadPK(),REGISTRO_BITACORA);
+/*
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO,"Exito","Se genero un nuevo documneto ROE."));
-
+*/
+            RequestContext.getCurrentInstance().execute("dlgMensaje.show()");
             ini();
             return ;
         } catch (Exception ex){
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se pudo generar documento: "+ex.getMessage()));
+/*            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se pudo generar documento: "+ex.getMessage()));*/
             ini();
             return ;
         }
@@ -685,6 +680,14 @@ public class PersonaUnidadBean implements Serializable{
             return ;
         }
 
+        PerDireccion direccionAntigua=new PerDireccion();
+        String codLocalidadAntigua="";
+        if(direccion.getIdDireccion()!=null){
+             direccionAntigua=iDireccionService.obtenerPorId(direccion.getIdDireccion());
+            codLocalidadAntigua=iLocalidadService.findById(direccionAntigua.getCodLocalidad().getCodLocalidad()).getCodLocalidad();
+        }
+
+
         direccion.setCodLocalidad(iLocalidadService.findById(idLocalidad));
         iDireccionService.save(direccion,REGISTRO_BITACORA,unidadRegistro);
 
@@ -693,7 +696,20 @@ public class PersonaUnidadBean implements Serializable{
         // Verificar si tiene ROE y es la unidad principal
         if(tieneROE && unidadRegistro.getPerUnidadPK().getIdUnidad()==0) {
             logger.info("*********** ======== TIENE ROE ========== **********");
-            generarCertificadoROE2() ;
+
+
+
+            logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getDireccion()+" NUEVA "+direccion.getDireccion());
+            logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getPisoDepOfi()+" NUEVA "+direccion.getPisoDepOfi());
+            logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getZonaUrbanizacion()+" NUEVA "+direccion.getZonaUrbanizacion());
+
+            if(!direccionAntigua.getDireccion().equals(direccion.getDireccion()) ||
+               !direccionAntigua.getPisoDepOfi().equals(direccion.getPisoDepOfi()) ||
+               !direccionAntigua.getZonaUrbanizacion().equals(direccion.getZonaUrbanizacion()) ||
+               !codLocalidadAntigua.equals(iLocalidadService.findById(idLocalidad).getCodLocalidad())){
+                generarCertificadoROE2() ;
+            }
+
         }
         ini();
     }

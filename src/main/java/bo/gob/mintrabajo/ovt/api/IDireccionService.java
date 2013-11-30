@@ -12,4 +12,5 @@ public interface IDireccionService {
     public PerDireccion save(PerDireccion direccion,String registroBitacora,PerUnidad unidad);
     public List<PerDireccion>obtenerPorIdPersonaYIdUnidad(String idPersona,long idUnidad);
     public List<PerDireccion>obtenerPorIdPersona(String idPersona);
+    public PerDireccion obtenerPorId(Long idDireccion);
 }

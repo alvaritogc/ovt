@@ -48,6 +48,11 @@
             <h:outputText value="Tipo de identificacion:"/>
             <p:inputText value="#{personaUnidadBean.repLegalPrincipal.tipoIdentificacion}" readonly="true"/>
 
+            <h:outputText value="Nro. de  identificacion:"/>
+            <p:inputText value="#{personaUnidadBean.repLegalPrincipal.nroIndentificacion}" readonly="true"/>
+
+            <h:outputText value="Departamento:"/>
+            <p:inputText value="#{personaUnidadBean.departamentoDireccinoPrincipal}" readonly="true"/>
 
             <h:outputText value="Nro. de documento: "/>
             <p:inputText id="inputTxtNroDocumento" value="#{personaUnidadBean.repLegalPrincipal.nroDocumento}"
@@ -57,9 +62,6 @@
             <p:inputText readonly="true" value="#{personaUnidadBean.repLegalPrincipal.fechaDocumento}">
                 <f:convertDateTime pattern="dd/MM/yyyy"/>
             </p:inputText>
-
-            <h:outputText value="Departamento:"/>
-            <p:inputText value="#{personaUnidadBean.departamentoDireccinoPrincipal}" readonly="true"/>
 
         </h:panelGrid>
     </p:panel>

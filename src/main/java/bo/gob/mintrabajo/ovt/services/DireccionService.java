@@ -95,6 +95,14 @@ public class DireccionService implements IDireccionService{
      }
 
     /*
+    *Obtiene una direccion por su id.
+    */
+    @Override
+    public PerDireccion obtenerPorId(Long idDireccion ){
+        return direccionRepository.findOne(idDireccion);
+    }
+
+    /*
      *Obtiene una lista con las direcciones activas de una persona
      */
     public List<PerDireccion>obtenerPorIdPersona(String idPersona ){

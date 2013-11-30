@@ -89,6 +89,16 @@
                  <f:convertNumber integerOnly="true" />
             </p:inputText>
 
+             <p:outputLabel for="slcOneMenuTipoProcedencia2" value="Departamento:"/>
+             <p:selectOneMenu id="slcOneMenuTipoProcedencia2" value="#{personaUnidadBean.repLegal.tipoProcedencia}"
+                              tabindex="6"
+                              style="text-transform: uppercase"
+                              required="true"
+                              requiredMessage="El campo Departamento es obligatorio">
+                 <f:selectItem itemLabel="---Seleccione un departamento---" itemValue="" />
+                 <f:selectItems value="#{personaUnidadBean.listaLocalidad}" />
+             </p:selectOneMenu>
+
          </h:panelGrid>
 
          <p:fieldset styleClass="myFieldset" legend="&#xA0;&#xA0;&#xA0;Poder" >
@@ -97,7 +107,7 @@
                 <p:inputText id="inputTxtNroDocumento2" value="#{personaUnidadBean.repLegal.nroDocumento}"
                              style="width: 210px;"
                              maxlength="9"
-                             tabindex="6"
+                             tabindex="7"
                              onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
                 <h:outputText value="Fecha :"/>
                 <p:calendar id="calendar" value="#{personaUnidadBean.repLegal.fechaDocumento}"
@@ -108,15 +118,6 @@
                             showOn="button"
                             navigator="true"/>
 
-                <p:outputLabel for="slcOneMenuTipoProcedencia2" value="Departamento:"/>
-                <p:selectOneMenu id="slcOneMenuTipoProcedencia2" value="#{personaUnidadBean.repLegal.tipoProcedencia}"
-                                 tabindex="8"
-                                 style="text-transform: uppercase"
-                                 required="true"
-                                 requiredMessage="El campo Departamento es obligatorio">
-                    <f:selectItem itemLabel="---Seleccione un departamento---" itemValue="" />
-                    <f:selectItems value="#{personaUnidadBean.listaLocalidad}" />
-                </p:selectOneMenu>
             </h:panelGrid>
 
          </p:fieldset>
