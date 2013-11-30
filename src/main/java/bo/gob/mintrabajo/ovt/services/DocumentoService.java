@@ -48,17 +48,17 @@ public class DocumentoService implements IDocumentoService {
 
     @Inject
     public DocumentoService(DocumentoRepository documentoRepository,
-            DocumentoEstadoRepository documentoEstadoRepository,
-            PlanillaRepository planillaRepository,
-            BinarioRepository binarioRepository,
-            UnidadRepository unidadRepository,
-            NumeracionRepository numeracionRepository,
-            LogEstadoRepository logEstadoRepository,
-            PlanillaDetalleRepository planillaDetalleRepository,
-            DocGenericoRepository docGenericoRepository,
-            DefinicionRepository definicionRepository,
-            ParametrizacionRepository parametrizacionRepository,
-            IUtilsService utils) {
+                            DocumentoEstadoRepository documentoEstadoRepository,
+                            PlanillaRepository planillaRepository,
+                            BinarioRepository binarioRepository,
+                            UnidadRepository unidadRepository,
+                            NumeracionRepository numeracionRepository,
+                            LogEstadoRepository logEstadoRepository,
+                            PlanillaDetalleRepository planillaDetalleRepository,
+                            DocGenericoRepository docGenericoRepository,
+                            DefinicionRepository definicionRepository,
+                            ParametrizacionRepository parametrizacionRepository,
+                            IUtilsService utils) {
         this.documentoRepository = documentoRepository;
         this.documentoEstadoRepository = documentoEstadoRepository;
         this.planillaRepository = planillaRepository;
@@ -153,7 +153,7 @@ public class DocumentoService implements IDocumentoService {
         }
     }
 
-//    @Override
+    //    @Override
 //    public DocDocumento guardarImpresionRoe(DocDocumento docDocumento, DocGenerico docGenerico, String registroBitacora, DocDefinicion docDefinicion) {//, VperPersona vperPersona, Long idUsuarioEmpleador){
 //        docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
 //        docDocumento.setDocDefinicion(docDefinicion);
@@ -315,7 +315,11 @@ public class DocumentoService implements IDocumentoService {
         }
         String codNumeroS = numeracion.getDocNumeracionPK().getCodDocumento();
         String codNumero = "";
-        for (int i = 2; i < codNumeroS.length(); i++) {
+        int numeroInicio = 3;
+        if (codDocumento.equals("LC1010")) {
+            numeroInicio = 2;
+        }
+        for (int i = numeroInicio; i < codNumeroS.length(); i++) {
             codNumero = codNumero + codNumeroS.charAt(i);
         }
         Long numero = new Long(numeracion.getUltimoNumero() + 1);
@@ -362,6 +366,7 @@ public class DocumentoService implements IDocumentoService {
 
     public String generateReport(String nomArchivo, String jasper, HashMap<String, Object> parametros) throws ClassNotFoundException, IOException, JRException {
         List<String> lista = new ArrayList<String>();
+        lista.add("nadaQueVer");
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String rutaWebapp = servletContext.getRealPath("/");
         rutaPdf = "/reportes/temp/" + nomArchivo;
@@ -413,7 +418,7 @@ public class DocumentoService implements IDocumentoService {
             docGenericoAdicional.setIdDocumento(docDocumentoAdicional);
             docGenericoAdicional.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
             docGenericoRepository.save(docGenericoAdicional);
-            
+
             PerUnidad unidad = unidadRepository.findOne(docDocumentoAdicional.getPerUnidad().getPerUnidadPK());
             System.out.println("========>>> UNIDAD " + unidad);
             System.out.println("========>>> CAMBIANDO EL VALOR nro de documento" + docDocumentoAdicional.getNumeroDocumento());
@@ -468,5 +473,34 @@ public class DocumentoService implements IDocumentoService {
 
     public List<DocDocumento> findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(String idPersona, String codEstado) {
         return documentoRepository.findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(idPersona, codEstado);
+    }
+
+    public DocDocumento guardarReactivacionRoe(DocGenerico docGenerico, PerUnidadPK perUnidadPK, String registroBitacora) {
+        ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_REACTIVACION);
+        DocDefinicion docDefinicion = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacion.getDescripcion());
+        //
+        DocDocumento docDocumento = new DocDocumento();
+        //
+        docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+        docDocumento.setDocDefinicion(docDefinicion);
+        //
+        docDocumento.setCodEstado(documentoEstadoRepository.findOne(docDefinicion.getCodEstado().getCodEstado()));//Estado inicial
+        docDocumento.setPerUnidad(unidadRepository.findOne(perUnidadPK));
+        docDocumento.setFechaDocumento(new Date());
+        docDocumento.setFechaReferenca(new Date());
+
+        docDocumento.setFechaBitacora(new Date());
+        docDocumento.setRegistroBitacora(registroBitacora);
+        docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
+
+        System.out.println("codEstadoDocumento: " + docDefinicion.getDocDefinicionPK().getCodDocumento());
+        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
+        docDocumento = documentoRepository.save(docDocumento);
+        //
+        docGenerico.setIdDocumento(docDocumento);
+        docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
+        docGenericoRepository.save(docGenerico);
+        //
+        return docDocumento;
     }
 }
