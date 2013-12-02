@@ -16,6 +16,7 @@
 
 package bo.gob.mintrabajo.ovt.bean.parametrizacion;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -112,6 +113,10 @@ public class TransicionBean implements Serializable{
     
     public void mostrarVersion(){
         listaVersion=iDefinicionService.listaVersionesPorCodDocumento(codigo);
+    }
+    
+    public String descripcionEstado(String valor){
+        return Util.descripcionDominio("ESTADO", valor);
     }
     
     public void guardarModificar(){

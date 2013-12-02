@@ -16,6 +16,7 @@
 
 package bo.gob.mintrabajo.ovt.bean.parametrizacion;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IObligacionService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.ParObligacion;
@@ -107,6 +108,10 @@ public class obligacionBean implements Serializable{
         obligacion=new ParObligacion();
         evento=false;
         estadoObligacion=true;
+    }
+    
+    public String descripcionEstado(String valor){
+        return Util.descripcionDominio("ESTADO", valor);
     }
     
     //GET and SET

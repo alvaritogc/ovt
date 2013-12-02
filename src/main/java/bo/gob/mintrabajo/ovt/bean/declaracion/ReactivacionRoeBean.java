@@ -80,12 +80,12 @@ public class ReactivacionRoeBean implements Serializable {
         //
         vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
         docGenerico = new DocGenerico();
-        docGenerico.setCadena05(vperPersona.getRlNombre());
-        docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
+        docGenerico.setCadena08(vperPersona.getRlNombre());
+        docGenerico.setCadena09(vperPersona.getRlNroIdentidad());
         if (esFuncionario) {
             PerPersona persona = iPersonaService.obtenerPersonaPorUsuario(usuario);
             //docGenerico.setCadena07(usuario.getUsuario());
-            docGenerico.setCadena07("" + persona.getNombreRazonSocial()
+            docGenerico.setCadena10("" + persona.getNombreRazonSocial()
                     + " " + (persona.getApellidoPaterno() != null ? persona.getApellidoPaterno() : "")
                     + " " + (persona.getApellidoMaterno() != null ? persona.getApellidoMaterno() : "")
             );
@@ -101,12 +101,12 @@ public class ReactivacionRoeBean implements Serializable {
         System.out.println("Guardar");
         System.out.println("==================================");
         System.out.println("==================================");
-        System.out.println("docGenerico : " + docGenerico.getCadena01());
-        if (nit == 0) {
+        if (nit == 0 || nit < 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el nit."));
             return "";
         }
-        docGenerico.setCadena10("" + nit);
+        //docGenerico.setCadena10("" + nit);
+        docGenerico.setCadena07("" + nit);
         //documento = iDocumentoService.guardarBajaRoe(documento, docGenerico, idUsuario.toString());
         documento = iDocumentoService.guardarReactivacionRoe(docGenerico, perUnidadPK, bitacoraSession);
         return "irEscritorio";

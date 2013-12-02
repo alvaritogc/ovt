@@ -43,7 +43,7 @@ Copyright 2013 lvaldez.
                 </p:column>
 
                 <p:column headerText="Estado" style="width: 30px">  
-                    <h:outputText value="#{transicion.estado}" />  
+                    <h:outputText value="#{transicionBean.descripcionEstado(transicion.estado)}" />  
                 </p:column>
                 <p:column headerText="Acciones" style="width: 60px">
                     <p:commandButton icon="ui-icon-pencil" title="Editar" onclick="dlgFormTransicion.show()" update=":formTransicion" > 

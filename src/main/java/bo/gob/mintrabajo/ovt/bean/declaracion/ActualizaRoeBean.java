@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean.declaracion;
 
+import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
@@ -63,7 +64,7 @@ public class ActualizaRoeBean {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
-        bitacoraSession=(String) session.getAttribute("bitacoraSession");
+        bitacoraSession = (String) session.getAttribute("bitacoraSession");
         usuario = iUsuarioService.findById(idUsuario);
         cargar();
     }
@@ -72,11 +73,16 @@ public class ActualizaRoeBean {
         vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
         documento = new DocDocumento();
         documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
-        docGenerico=new DocGenerico();
-        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
-        docDefinicionPK.setCodDocumento("ROE013");
-        docDefinicionPK.setVersion((short)1);
-        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
+        //
+        docGenerico = new DocGenerico();
+        docGenerico.setCadena08(vperPersona.getRlNombre());
+        docGenerico.setCadena09(vperPersona.getRlNroIdentidad());
+//        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
+//        docDefinicionPK.setCodDocumento("ROE013");
+//        docDefinicionPK.setVersion((short)1);
+//        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
+        //
+        docDefinicion = iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_MODIFICACION);
     }
 
     public String guardar() {
@@ -85,7 +91,7 @@ public class ActualizaRoeBean {
         System.out.println("Guardar");
         System.out.println("==================================");
         System.out.println("==================================");
-        documento=iDocumentoService.guardarActualizaRoe(documento,docGenerico, bitacoraSession);
+        documento = iDocumentoService.guardarActualizaRoe(documento, docGenerico, bitacoraSession);
         return "irEscritorio";
     }
 
@@ -181,7 +187,6 @@ public class ActualizaRoeBean {
         this.esFuncionario = esFuncionario;
     }
 
-   
 
     public IDominioService getiDominioService() {
         return iDominioService;
@@ -199,7 +204,6 @@ public class ActualizaRoeBean {
         this.iCalendarioService = iCalendarioService;
     }
 
-    
 
     public DocDefinicion getDocDefinicion() {
         return docDefinicion;
