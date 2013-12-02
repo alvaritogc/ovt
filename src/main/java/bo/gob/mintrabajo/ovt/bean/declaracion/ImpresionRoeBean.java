@@ -61,12 +61,11 @@ public class ImpresionRoeBean {
     private DocDefinicion docDefinicion;
     //
     private String bancoDeposito;
-    private int nroComprobanteDeposito;
+    private String nroComprobanteDeposito;
     private Date fechaDeposito;
     private BigDecimal montoDeposito;
     private List<ParEntidad> listaEntidades;
     private String parametroDocDefinicion;
-//    private boolean cambiarNroUnidad;
     private String bitacoraSession;
 
     @PostConstruct
@@ -74,117 +73,39 @@ public class ImpresionRoeBean {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
-        bitacoraSession=(String)session.getAttribute("bitacoraSession");
+        bitacoraSession = (String) session.getAttribute("bitacoraSession");
         cargar();
         cargarEntidades();
-
-//        try {
-//            docDefinicion = iDefinicionService.buscaPorId((DocDefinicionPK) session.getAttribute("docDefinicionPK"));
-//        } catch (Exception e) {
-//            DocDefinicionPK docDefinicionPK = new DocDefinicionPK();
-//            docDefinicionPK.setCodDocumento("ROE013");
-//            docDefinicionPK.setVersion((short) 1);
-//            docDefinicion = iDefinicionService.buscaPorId(docDefinicionPK);
-//        }
-//
-//        usuario = iUsuarioService.findById(idUsuario);
-//        esFuncionario = usuario.getEsInterno() == 1 ? true : false;
-//        cargar1();
-//        cargarEntidades();
     }
 
     public void cargar() {
-        //session.setAttribute("parametroDocDefinicion", Dominios.PAR_DOCUMENTO_ROE_INSCRIPCION);
-        //session.setAttribute("parametroDocDefinicion", Dominios.PAR_DOCUMENTO_ROE_INSCRIPCION);
-        parametroDocDefinicion=(String) session.getAttribute("parametroDocDefinicion");
-//        cambiarNroUnidad=false;
-//        System.out.println("============================================");
-//        System.out.println("============================================");
-//        System.out.println("============================================");
-//        System.out.println("parametroDocDefinicion: "+parametroDocDefinicion);
-//        System.out.println("============================================");
-//        System.out.println("============================================");
-//        System.out.println("============================================");
-        //docDefinicionPK = (DocDefinicionPK) session.getAttribute("docDefinicionPK");
-//        if (parametroDocDefinicion != null) {
-//            docDefinicion=iDefinicionService.buscarActivoPorParametro(parametroDocDefinicion);
-//            
-//            vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
-//            bancoDeposito = "";
-//            nroComprobanteDeposito = 0;
-//            fechaDeposito = null;
-//            montoDeposito = BigDecimal.ZERO;
-//            //
-//            docGenerico = new DocGenerico();
-//            docGenerico.setCadena05(vperPersona.getRlNombre());
-//            docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
-//            //
-//            perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
-//            //
-//            cambiarNroUnidad=true;
-//            
-//        } else {
-            idDocumento = (Long) session.getAttribute("idDocumento");
-            if (idDocumento != null) {
-                docGenerico = iDocGenericoService.buscarPorDocumento(idDocumento);
-                //docDefinicionPK = docGenerico.getIdDocumento().getDocDefinicion().getDocDefinicionPK();
-                //-----doc definicion----
-                docDefinicion=iDefinicionService.buscarActivoPorCodDocumento(docGenerico.getIdDocumento().getDocDefinicion().getDocDefinicionPK().getCodDocumento());
-                //-----------------------
-                docGenerico = iDocGenericoService.buscarPorDocumento(idDocumento);
-                //
-                vperPersona = iVperPersonaService.cargaVistaPersona(docGenerico.getIdDocumento().getPerUnidad().getPerPersona().getIdPersona());
-                bancoDeposito = docGenerico.getCadena01();
-                nroComprobanteDeposito = Integer.valueOf(docGenerico.getCadena02() != null ? docGenerico.getCadena02() : "0");
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                try {
-                    fechaDeposito = sdf.parse(docGenerico.getCadena03());
-                } catch (Exception e) {
-                }
-                montoDeposito = new BigDecimal(docGenerico.getCadena04() != null ? docGenerico.getCadena04() : "0");
-            } else {
-                docDefinicion=iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_IMPRESION);
-//                docDefinicionPK = new DocDefinicionPK();
-//                docDefinicionPK.setCodDocumento("ROE013");
-//                docDefinicionPK.setVersion((short) 1);
-                //
-                vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
-                bancoDeposito = "";
-                nroComprobanteDeposito = 0;
-                fechaDeposito = null;
-                montoDeposito = BigDecimal.ZERO;
-                //
-                docGenerico = new DocGenerico();
-                docGenerico.setCadena05(vperPersona.getRlNombre());
-                docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
-                //
-                perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
-            }
-
-//        }
-        //docDefinicion = iDefinicionService.buscaPorId(docDefinicionPK);
-//        System.out.println("============================================");
-//        System.out.println("docDefinicion: "+docDefinicion.getNombre());
-//        System.out.println("============================================");
+        parametroDocDefinicion = (String) session.getAttribute("parametroDocDefinicion");
+        idDocumento = (Long) session.getAttribute("idDocumento");
+        if (idDocumento != null) {
+            docGenerico = iDocGenericoService.buscarPorDocumento(idDocumento);
+            docDefinicion = iDefinicionService.buscarActivoPorCodDocumento(docGenerico.getIdDocumento().getDocDefinicion().getDocDefinicionPK().getCodDocumento());
+            docGenerico = iDocGenericoService.buscarPorDocumento(idDocumento);
+            //
+            vperPersona = iVperPersonaService.cargaVistaPersona(docGenerico.getIdDocumento().getPerUnidad().getPerPersona().getIdPersona());
+            //
+            bancoDeposito = docGenerico.getCadena01();
+            nroComprobanteDeposito = docGenerico.getCadena02();
+            fechaDeposito = docGenerico.getFecha01();
+            montoDeposito = docGenerico.getValor01();
+        } else {
+            docDefinicion = iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_IMPRESION);
+            vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
+            bancoDeposito = "";
+            nroComprobanteDeposito = "";
+            fechaDeposito = null;
+            montoDeposito = BigDecimal.ZERO;
+            //
+            docGenerico = new DocGenerico();
+            perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
+        }
+        docGenerico.setCadena08(vperPersona.getRlNombre());
+        docGenerico.setCadena09(vperPersona.getRlNroIdentidad());
     }
-
-//    public void cargar1() {
-//        vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
-//        bancoDeposito = "";
-//        nroComprobanteDeposito = 0;
-//        fechaDeposito = null;
-//        montoDeposito = BigDecimal.ZERO;
-//        docGenerico = new DocGenerico();
-//        docGenerico.setCadena05(vperPersona.getRlNombre());
-//        docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
-//        //
-//        cargarDocumento();
-//    }
-//
-//    public void cargarDocumento() {
-//        documento = new DocDocumento();
-//        documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
-//    }
 
     public void cargarEntidades() {
         listaEntidades = iEntidadService.listarPorTipo("FINANCIERA");
@@ -195,7 +116,7 @@ public class ImpresionRoeBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe el campo Banco."));
             return "";
         }
-        if (nroComprobanteDeposito == 0) {
+        if (nroComprobanteDeposito == null || nroComprobanteDeposito.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe el campo nroComprobanteDeposito."));
             return "";
         }
@@ -208,15 +129,16 @@ public class ImpresionRoeBean {
             return "";
         }
         docGenerico.setCadena01(bancoDeposito);
-        docGenerico.setCadena02("" + nroComprobanteDeposito);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        docGenerico.setCadena03(sdf.format(fechaDeposito));
-        docGenerico.setCadena04(montoDeposito.toString());
+        docGenerico.setCadena02(nroComprobanteDeposito);
+        docGenerico.setFecha01(fechaDeposito);
+        //docGenerico.setCadena03(sdf.format(fechaDeposito));
+        docGenerico.setValor01(montoDeposito);
+        //docGenerico.setCadena04(montoDeposito.toString());
         //
 
         //documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico, idUsuario.toString(), docDefinicion);//, vperPersona, idUsuarioEmpleador);
-        documento = iDocumentoService.guardarDocumentoRoe(docGenerico, idDocumento, perUnidadPK, docDefinicion.getDocDefinicionPK(), bitacoraSession,parametroDocDefinicion);
-        
+        documento = iDocumentoService.guardarDocumentoRoe(docGenerico, idDocumento, perUnidadPK, docDefinicion.getDocDefinicionPK(), bitacoraSession, parametroDocDefinicion);
+
         session.removeAttribute("idDocumento");
 //        session.removeAttribute("docDefinicionPK");
         session.removeAttribute("parametroDocDefinicion");
@@ -319,11 +241,11 @@ public class ImpresionRoeBean {
         this.bancoDeposito = bancoDeposito;
     }
 
-    public int getNroComprobanteDeposito() {
+    public String getNroComprobanteDeposito() {
         return nroComprobanteDeposito;
     }
 
-    public void setNroComprobanteDeposito(int nroComprobanteDeposito) {
+    public void setNroComprobanteDeposito(String nroComprobanteDeposito) {
         this.nroComprobanteDeposito = nroComprobanteDeposito;
     }
 

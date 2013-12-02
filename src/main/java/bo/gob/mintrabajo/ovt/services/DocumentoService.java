@@ -410,12 +410,13 @@ public class DocumentoService implements IDocumentoService {
             docDocumentoAdicional.setTipoMedioRegistro(docDefinicionAdicional.getTipoGrupoDocumento());
 
             System.out.println("codEstadoDocumento: " + docDefinicionAdicional.getDocDefinicionPK().getCodDocumento());
-            docDocumentoAdicional.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+            //docDocumentoAdicional.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+            docDocumentoAdicional.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicionAdicional.getDocDefinicionPK().getCodDocumento(), (short) 1));
             docDocumentoAdicional = documentoRepository.save(docDocumentoAdicional);
             //
             DocGenerico docGenericoAdicional = new DocGenerico();
-            docGenericoAdicional.setCadena05(docGenerico.getCadena05());
-            docGenericoAdicional.setCadena06(docGenerico.getCadena06());
+            docGenericoAdicional.setCadena08(docGenerico.getCadena08());
+            docGenericoAdicional.setCadena09(docGenerico.getCadena09());
             docGenericoAdicional.setIdDocumento(docDocumentoAdicional);
             docGenericoAdicional.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
             docGenericoRepository.save(docGenericoAdicional);
@@ -427,7 +428,6 @@ public class DocumentoService implements IDocumentoService {
             System.out.println("========>>> MODIFICADO " + unidad);
             unidadRepository.save(unidad);
         }
-
 
         DocDefinicion docDefinicion = definicionRepository.findOne(docDefinicionPK);
         //
@@ -449,9 +449,8 @@ public class DocumentoService implements IDocumentoService {
             docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
 
             System.out.println("codEstadoDocumento: " + docDefinicion.getDocDefinicionPK().getCodDocumento());
-            docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
-            //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
-            //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getCodEstado().getCodEstado(), (short) 1));
+            //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+            docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
 
             docDocumento = documentoRepository.save(docDocumento);
         } else {
