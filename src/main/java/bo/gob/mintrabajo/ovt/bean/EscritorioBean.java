@@ -415,16 +415,17 @@ public class EscritorioBean {
                 parametros.put("nroDocumento", vperPersona.getRlNroIdentidad());
                 parametros.put("lugarPresentacion", "Oficina Virtual");
 
-                parametros.put("cadena1", docGenerico.getCadena01());
-                parametros.put("cadena2", docGenerico.getCadena02());
+
+                parametros.put("cadena1", docGenerico.getCadena01() != null ? docGenerico.getCadena01() : "SIN MOVIMIENTO");
+                parametros.put("cadena2", docGenerico.getCadena02() != null ? docGenerico.getCadena02() : "SIN MOVIMIENTO");
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                String cadena3 = docGenerico.getFecha01() != null ? (sdf.format(docGenerico.getFecha01())) : "";
+                String cadena3 = docGenerico.getFecha01() != null ? (sdf.format(docGenerico.getFecha01())) : "SIN MOVIMIENTO";
                 parametros.put("cadena3", cadena3);
                 DecimalFormat df = new DecimalFormat();
                 df.setMaximumFractionDigits(2);
                 df.setMinimumFractionDigits(0);
                 df.setGroupingUsed(false);
-                String cadena4 = docGenerico.getValor01() != null ? (df.format(docGenerico.getValor01())) : "";
+                String cadena4 = docGenerico.getValor01() != null ? (df.format(docGenerico.getValor01())) : "SIN MOVIMIENTO";
                 parametros.put("cadena4", cadena4);
 
                 String nombrePdf = "ROE013-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";

@@ -391,6 +391,13 @@ public class DocumentoService implements IDocumentoService {
 
     @Override
     public DocDocumento guardarDocumentoRoe(DocGenerico docGenerico, Long idDocumento, PerUnidadPK perUnidadPK, DocDefinicionPK docDefinicionPK, String registroBitacora, String parametroDocDefinicionAdicional) {
+        System.out.println("================================");
+        System.out.println("================================");
+        System.out.println("================================");
+        System.out.println("registro: " + registroBitacora);
+        System.out.println("================================");
+        System.out.println("================================");
+        System.out.println("================================");
         if (parametroDocDefinicionAdicional != null && !parametroDocDefinicionAdicional.equals("")) {
             ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, parametroDocDefinicionAdicional);
             DocDefinicion docDefinicionAdicional = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacion.getDescripcion());
@@ -510,7 +517,7 @@ public class DocumentoService implements IDocumentoService {
         return docDocumento;
     }
 
-    public List<DocDocumento> listarDocumentosParaRectificar(String idPersona, String codDocumento){
+    public List<DocDocumento> listarDocumentosParaRectificar(String idPersona, String codDocumento) {
         return documentoRepository.listarDocumentosParaRectificar(idPersona, codDocumento);
     }
 }
