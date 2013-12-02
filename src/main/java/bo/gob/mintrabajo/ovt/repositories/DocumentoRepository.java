@@ -66,10 +66,10 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " from DocDocumento d"
                     + " where "
                     + " d.fechaDocumento between :fechaDesde and :fechaHasta"
-                    + " and d.docDefinicion.docDefinicionPK.codDocumento = 'LC1010'"
+                    + " and d.docDefinicion.docDefinicionPK.codDocumento = :codDocumento"
                     + " and d.perUnidad.perUnidadPK.idPersona = :idEmpleador  "
     )
-    List<DocDocumento> listarPlanillaALaFecha(@Param("idEmpleador") String idEmpleador, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta);
+    List<DocDocumento> listarPlanillaALaFecha(@Param("idEmpleador") String idEmpleador, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta, @Param("codDocumento") String codDocumento);
 
     @Query(
             "   select d "
@@ -93,4 +93,14 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
 
     )
     DocDocumento buscarRoe010PorUnidad(@Param("idEmpleador") String idPersona, @Param("idUnidad") long idUnidad);
+
+    @Query(
+            "   select d "
+                    + " from DocDocumento d"
+                    + " where "
+                    + " d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
+                    + " and d.codEstado.codEstado like '110' and d.docDefinicion.docDefinicionPK.codDocumento = :codDocumento"
+
+    )
+    List<DocDocumento> listarDocumentosParaRectificar(@Param("idEmpleador") String idPersona, @Param("codDocumento") String codDocumento);
 }

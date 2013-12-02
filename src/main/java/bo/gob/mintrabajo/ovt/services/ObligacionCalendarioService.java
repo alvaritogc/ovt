@@ -2,7 +2,6 @@ package bo.gob.mintrabajo.ovt.services;
 
 //import bo.gob.mintrabajo.ovt.api.ICalendarioService;
 import bo.gob.mintrabajo.ovt.api.IObligacionCalendarioService;
-import bo.gob.mintrabajo.ovt.entities.ParCalendario;
 import bo.gob.mintrabajo.ovt.entities.ParCalendarioPK;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 import bo.gob.mintrabajo.ovt.repositories.CalendarioRepository;
@@ -41,6 +40,11 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         this.obligacionCalendarioRepository = obligacionCalendarioRepository;
         this.calendarioRepository=calendarioRepository;
         this.obligacionRepository=obligacionRepository;
+    }
+
+    @Override
+    public ParObligacionCalendario buscarAguinaldoPorGestion(String gestion){
+        return obligacionCalendarioRepository.buscarAguinaldoPorGestion(gestion);
     }
 
     @Override

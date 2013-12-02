@@ -48,8 +48,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
     private IPersonaService iPersonaService;
     @ManagedProperty(value = "#{unidadService}")
     private IUnidadService iUnidadService;
-    @ManagedProperty(value = "#{documentoService}")
-    private IDocumentoService idDocumentoService;
     @ManagedProperty(value = "#{binService}")
     private IBinarioService iBinarioService;
     @ManagedProperty(value = "#{entidadService}")
@@ -72,9 +70,9 @@ public class DeclaracionAguinaldoBean implements Serializable {
     private ICalendarioService iCalendarioService;
 
     private int parametro;
-    private List<ParObligacionCalendario> listaAguinaldo;
+    private ParObligacionCalendario parObligacionCalendarioPeriodo;
     private List<ParEntidad> parEntidadLista;
-    private List<DocDocumento> docDocumentoList;
+    private List<DocPlanillaDetalle> docPlanillaDetalles;
     private PerPersona perPersona;
     private VperPersona vperPersona;
     private DocPlanilla docPlanilla;
@@ -92,14 +90,14 @@ public class DeclaracionAguinaldoBean implements Serializable {
     private String periodo;
     private DocBinario binario;
     private boolean habilita = true;
-    private List<DocBinario> listaBinarios;
+    private DocBinario archivoBinario;
     private UsrUsuario usuario;
     private UploadedFile file;
     private String nombres[]= new String[3];
     //
     private boolean estaDeclarado;
     private Long idEntidadSalud;
-
+    private String estaDeclaradoMensaje;
     private boolean verificaValidacion;
     private Long idRectificatorio;
     private List<String> errores = new ArrayList<String>();
@@ -109,8 +107,9 @@ public class DeclaracionAguinaldoBean implements Serializable {
     private List<PerUnidad> sucursales;
     private PerUnidad unidadSeleccionada;
     private int tamañoSucursales;
-    private String tipoPeriodo;
     private boolean check_tipoEmpresa;
+    private String gestion;
+    private List<DocDocumento> docDocumentosParaRectificar;
 
     @PostConstruct
     public void ini() {
@@ -123,9 +122,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
 //            e.printStackTrace();
             parametro = 1;
         }
-
-        if (parametro==3)
-            esRectificatorio=true;
         if(parametro==2)
             habilita=false;
 
@@ -175,21 +171,26 @@ public class DeclaracionAguinaldoBean implements Serializable {
         //** Controlamos que no puedan acceder a una fecha anterior a la actual  **//
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         fechaTexto = sdf.format(fechaTemp);
-        obtenerPeriodoListaAgui();
+        gestion=String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+        parObligacionCalendarioPeriodo= iObligacionCalendarioService.buscarAguinaldoPorGestion(gestion);
+        periodo =parObligacionCalendarioPeriodo.getParCalendario().getTipoCalendario();
         obtenerEntidad();
         //** Obtenemos de la Vista a la persona **//
         vperPersona = iVperPersonaService.cargaVistaPersona(perPersona.getIdPersona());
         binario= new DocBinario();
-        listaBinarios = new ArrayList<DocBinario>();
 //        idPersona = (String) session.getAttribute("idEmpleador");
 //        persona = iPersonaService.buscarPorId(idPersona);
         logger.info("persona ok");
         cargar();
+        if (parametro==3){
+            esRectificatorio=true;
+            unidadSeleccionada=central;
+        }
         valor=true;
     }
 
     public void abrirPanel() {
-        if(valor)
+        if(valor && !estaDeclarado && parametro!=3)
             RequestContext.getCurrentInstance().execute("seleccionEmpresa.show()");
         valor = false;
     }
@@ -197,10 +198,19 @@ public class DeclaracionAguinaldoBean implements Serializable {
     public void cargar() {
         generaDocumento();
         verEstadoPlanilla();
-        cargarListaPorNumeros();
+        cargarDocumentosParaRectificar();
         listaCentralSucursales();
     }
 
+
+    public void cargarDocumentosParaRectificar(){
+        docDocumentosParaRectificar= new ArrayList<DocDocumento>();
+        docDocumentosParaRectificar= iDocumentoService.listarDocumentosParaRectificar(idPersona, "LC1020");
+    }
+
+    public void seleccionaTrimestre(){
+        periodo = iDocumentoService.findById(idRectificatorio).getDocPlanilla().getParCalendario().getParCalendarioPK().getTipoPeriodo();
+    }
 
     public void listaCentralSucursales(){
         central = new PerUnidad();
@@ -216,11 +226,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
         tamañoSucursales=sucursales.size();
     }
 
-    public void cargarListaPorNumeros(){
-        docDocumentoList= new ArrayList<DocDocumento>();
-        docDocumentoList= iDocumentoService.listarPorPersona(idPersona);
-    }
-
 
     public void seleccionaEmpresa(){
         if(tipoEmpresa!=2)
@@ -230,34 +235,42 @@ public class DeclaracionAguinaldoBean implements Serializable {
     }
 
     public void verEstadoPlanilla(){
-        List<DocDocumento> listaDocumentos= new ArrayList<DocDocumento>();
+        ParObligacionCalendario parObligacionCalendario;
+        try {
+            parObligacionCalendario=iObligacionCalendarioService.buscarPorPlatriALaFecha();
+        } catch (Exception e) {
+            parObligacionCalendario=null;
+        }
+        if(parObligacionCalendario==null){
+            estaDeclaradoMensaje="Solo puede realizar la Declaración Jurada dentro del plazo establecido.";
+            estaDeclarado=true;
+            return;
+        }
+
+        List<DocDocumento> listaDocumentos;
         try{
-            System.out.println("idPersona=>>");
-            System.out.println(idPersona);
-            //todo arreglar reo
-//            listaDocumentos=iDocumentoService.listaPersonaCodigo(idPersona,"LC1020");
-//            if(listaDocumentos==null){
-//                listaDocumentos=new ArrayList<DocDocumento>();
-//            }
+            //listaDocumentos=iDocumentoService.listarPorPersona(idPersona, LC1010);
+            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1020");
+            if(listaDocumentos==null){
+                listaDocumentos=new ArrayList<DocDocumento>();
+            }
         }
         catch(Exception e){
             e.printStackTrace();
             listaDocumentos=new ArrayList<DocDocumento>();
         }
+
         estaDeclarado=false;
         for(DocDocumento documento:listaDocumentos){
-            if(documento.getCodEstado().getDescripcion().toLowerCase().equals("declarado")
+            if((documento.getCodEstado().getDescripcion().toLowerCase().equals("declarado")
                     || documento.getCodEstado().getDescripcion().toLowerCase().equals("observado")
-                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")){
+                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")) && parametro==1){
                 estaDeclarado=true;
+                estaDeclaradoMensaje="Usted ya realizo la declaracion jurada.";
             }
         }
     }
 
-     public void listaAgunaldoBean(){
-         //todo arreglar reo
-//        listaAguinaldo=iObligacionCalendarioService.listaAguinaldoService(String.valueOf(Calendar.getInstance().get(Calendar.YEAR))); // .listaDocDefinicion();//listaPorOrdenDocDefinicion
-    }
     public void habilitaTipoEmpresa(){
 
         if(tipoEmpresa==2){
@@ -286,10 +299,8 @@ public class DeclaracionAguinaldoBean implements Serializable {
         if(parametro==1)
             documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1020", (short) 1)));
         else{
-            if(parametro==2)
-                documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1020", (short) 1)));
-            else
-                documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1020", (short) 1)));
+            if(parametro==3)
+                documento.setDocDefinicion(iDefinicionService.buscaPorId(new DocDefinicionPK("LC1021", (short) 1)));
         }
 
         documento.setFechaDocumento(new Date());
@@ -305,8 +316,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
         docPlanilla.setIdEntidadBanco(iEntidadService.buscaPorId(new Long("2")));
         docPlanilla.setIdEntidadSalud(iEntidadService.buscaPorId(new Long("13")));
         docPlanilla.setFechaOperacion(fechaOperacionAux);
-
-        docPlanilla.setParCalendario(iCalendarioService.obtenerCalendarioPorGestionYPeriodo(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)), tipoPeriodo));
+        docPlanilla.setParCalendario(iCalendarioService.obtenerCalendarioPorGestionYPeriodo(gestion, periodo));
 
 
         switch (parametro){
@@ -328,7 +338,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
     public void upload(FileUploadEvent evento){
         logger.info("upload(FileUploadEvent evento)");
         file = evento.getFile();
-        nombres[listaBinarios.size()]= file.getFileName();
         try{
             binario = new DocBinario();
             binario.setTipoDocumento(file.getFileName());
@@ -336,10 +345,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
             binario.setFechaBitacora(new Timestamp(new Date().getTime()));
             binario.setRegistroBitacora(usuario.getUsuario());
             binario.setBinario(file.getContents());
-            listaBinarios.add(binario);
-
-            if(listaBinarios.size()==1)
-                habilita=false;
+            habilita=false;
         }catch (Exception e){
             habilita=true;
             e.printStackTrace();
@@ -359,21 +365,22 @@ public class DeclaracionAguinaldoBean implements Serializable {
            habilita=true;//deshabilita el boton de envio
 //        if(errores.size()==0 && verificaValidacion){
         try{
+            if(parametro==3)
+                documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
+
             logger.info("Guardando documento, binario y planilla");
             logger.info(documento.toString());
-            logger.info(listaBinarios.toString());
             logger.info(docPlanilla.toString());
             generaPlanilla();
             documento.setPerUnidad(unidadSeleccionada);
-            //todo arreglar reo
-//            idDocumentoService.guardaDocumentoPlanillaBinarioAguinaldo(documento, docPlanilla, listaBinarios);
-            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
-            return "irEscritorio";
+            List<DocBinario> listaBinarios= new ArrayList<DocBinario>();
+            listaBinarios.add(binario);
+            iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);            return "irEscritorio";
         }catch (Exception e){
             e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
-            return null;
         }
+        return "irEscritorio";
 //        }
 //        return null;
     }
@@ -387,14 +394,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
         else{
             return "irEmpleadorBusqueda";
         }
-    }
-
-    public void obtenerPeriodoListaAgui(){
-        listaAguinaldo = new ArrayList<ParObligacionCalendario>();
-        Calendar c= new GregorianCalendar();
-        c.setTime(new Date());
-        //todo reo arreglar
-//        listaAguinaldo = iObligacionCalendarioService.listaAguinaldoService(String .valueOf(c.get(Calendar.YEAR)));
     }
 
     public String mensajeError(int i, String titulo){
@@ -893,14 +892,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
         this.iObligacionCalendarioService = iObligacionCalendarioService;
     }
 
-    public List<ParObligacionCalendario> getListaAguinaldo() {
-        return listaAguinaldo;
-    }
-
-    public void setListaAguinaldo(List<ParObligacionCalendario> listaAguinaldo) {
-        this.listaAguinaldo = listaAguinaldo;
-    }
-
     public Long getNumeroOrden() {
         return numeroOrden;
     }
@@ -931,14 +922,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
     public void setiUnidadService(IUnidadService iUnidadService) {
         this.iUnidadService = iUnidadService;
-    }
-
-    public IDocumentoService getIdDocumentoService() {
-        return idDocumentoService;
-    }
-
-    public void setIdDocumentoService(IDocumentoService idDocumentoService) {
-        this.idDocumentoService = idDocumentoService;
     }
 
     public IBinarioService getiBinarioService() {
@@ -989,14 +972,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
         this.habilita = habilita;
     }
 
-    public List<DocBinario> getListaBinarios() {
-        return listaBinarios;
-    }
-
-    public void setListaBinarios(List<DocBinario> listaBinarios) {
-        this.listaBinarios = listaBinarios;
-    }
-
     public UsrUsuario getUsuario() {
         return usuario;
     }
@@ -1035,14 +1010,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
     public void setNombres(String[] nombres) {
         this.nombres = nombres;
-    }
-
-    public List<DocDocumento> getDocDocumentoList() {
-        return docDocumentoList;
-    }
-
-    public void setDocDocumentoEntityList(List<DocDocumento> docDocumentoList) {
-        this.docDocumentoList = docDocumentoList;
     }
 
     public IDefinicionService getiDefinicionService() {
@@ -1157,11 +1124,27 @@ public class DeclaracionAguinaldoBean implements Serializable {
         this.iCalendarioService = iCalendarioService;
     }
 
-    public String getTipoPeriodo() {
-        return tipoPeriodo;
+    public String getEstaDeclaradoMensaje() {
+        return estaDeclaradoMensaje;
     }
 
-    public void setTipoPeriodo(String tipoPeriodo) {
-        this.tipoPeriodo = tipoPeriodo;
+    public void setEstaDeclaradoMensaje(String estaDeclaradoMensaje) {
+        this.estaDeclaradoMensaje = estaDeclaradoMensaje;
+    }
+
+    public ParObligacionCalendario getParObligacionCalendarioPeriodo() {
+        return parObligacionCalendarioPeriodo;
+    }
+
+    public void setParObligacionCalendarioPeriodo(ParObligacionCalendario parObligacionCalendarioPeriodo) {
+        this.parObligacionCalendarioPeriodo = parObligacionCalendarioPeriodo;
+    }
+
+    public List<DocDocumento> getDocDocumentosParaRectificar() {
+        return docDocumentosParaRectificar;
+    }
+
+    public void setDocDocumentosParaRectificar(List<DocDocumento> docDocumentosParaRectificar) {
+        this.docDocumentosParaRectificar = docDocumentosParaRectificar;
     }
 }
