@@ -109,6 +109,18 @@ public class CalendarioBean implements Serializable{
             context.execute("dlgMensajeInfo.show()");
         }
     }
+     
+     public String descripcionPeriodo(String valor){
+         if(valor.equals("ANUAL")){
+             return Util.descripcionDominio("TCALENDARIO", valor);
+         }else{
+             return Util.descripcionDominio("TPERIODO", valor);
+         }
+    }
+     
+    public String descripcionCalendario(String valor){
+        return Util.descripcionDominio("TCALENDARIO", valor);
+    } 
 
     /**
      * @return the iCalendarioService
