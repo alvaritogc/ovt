@@ -32,10 +32,10 @@
                     <h:outputText value="#{usr.fechaRehabilitacion}" />
                 </p:column>
                 <p:column headerText="Estado Usuario">
-                    <h:outputText value="#{usr.estadoUsuario}"/>
+                    <h:outputText value="#{usuarioAdministracionBean.descripcionEstado(usr.estadoUsuario)}"/>
                 </p:column>
                 <p:column headerText="Acciones" style="width: 60px">
-                    <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" oncomplete="edicionDlg.show()" update=":edicionFrm" immediate="true" style="color:#0066CC">
+                    <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" onclick="edicionDlg.show()" update=":edicionFrm" immediate="true" style="color:#0066CC">
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
                     </p:commandButton>
                     <p:spacer width="5" />
