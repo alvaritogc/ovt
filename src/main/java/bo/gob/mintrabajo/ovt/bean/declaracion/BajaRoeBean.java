@@ -57,6 +57,7 @@ public class BajaRoeBean {
     private DocDocumento documento;
     private DocGenerico docGenerico;
     private DocDefinicion docDefinicion;
+    private PerUnidadPK perUnidadPK;
     //
     private boolean entero03;
     private boolean entero04;
@@ -100,15 +101,16 @@ public class BajaRoeBean {
     }
 
     public void cargarDocumento() {
-        documento = new DocDocumento();
+        perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
+        //documento = new DocDocumento();
         //
-        documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
+        //documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
         //
 //        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
 //        docDefinicionPK.setCodDocumento("ROE012");
 //        docDefinicionPK.setVersion((short)1);
 //        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
-        docDefinicion = iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_BAJA);
+        //docDefinicion = iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_BAJA);
     }
 
     public void cargarFechas() {
@@ -163,7 +165,8 @@ public class BajaRoeBean {
             docGenerico.setEntero05(entero05 ? 1 : 0);
         }
         //
-        documento = iDocumentoService.guardarBajaRoe(documento, docGenerico, idUsuario.toString());
+        //documento = iDocumentoService.guardarBajaRoe(documento, docGenerico, idUsuario.toString());
+        documento = iDocumentoService.guardarBajaRoe(perUnidadPK, docGenerico, idUsuario.toString());
         //RequestContext context = RequestContext.getCurrentInstance();
         //context.execute("dlgConfirmacion.show()");
         return "irEscritorio";
