@@ -233,9 +233,9 @@ public class DocumentoService implements IDocumentoService {
         docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
 
 
-        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("ROE012", (short) 1));
-        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getCodEstado().getCodEstado(), (short) 1));
+        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+
         docDocumento = documentoRepository.save(docDocumento);
         //
         DocGenerico docGenerico = new DocGenerico();
@@ -292,12 +292,11 @@ public class DocumentoService implements IDocumentoService {
 
         docDocumento.setFechaBitacora(new Date());
         docDocumento.setRegistroBitacora(registroBitacora);
-        docDocumento.setTipoMedioRegistro("DDJSM");
+        //docDocumento.setTipoMedioRegistro("DDJSM");
+        docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
 
-
-        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("ROE012", (short) 1));
-        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getCodEstado().getCodEstado(), (short) 1));
-        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
         docDocumento = documentoRepository.save(docDocumento);
         //
         docGenerico.setIdDocumento(docDocumento);
