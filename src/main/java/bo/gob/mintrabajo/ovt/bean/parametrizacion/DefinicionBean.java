@@ -119,6 +119,10 @@ public class DefinicionBean {
     public String descripcionDefinicion(String valor){
         return Util.descripcionDominio("TGRUPODOCUMENTO", valor);
     }
+    
+    public String descripcionEstado(String valor){
+        return Util.descripcionDominio("ESTADO", valor);
+    }
 
     public void guardarDefinicion(){
 //        codDocumento = "LC1010";

@@ -30,7 +30,7 @@ Copyright 2013 lvaldez.
                 </p:column>  
 
                 <p:column headerText="Estado">  
-                    <h:outputText value="#{parObligacion.estado}" />  
+                    <h:outputText value="#{obligacionBean.descripcionEstado(parObligacion.estado)}" />  
                 </p:column>
                 <p:column headerText="Acciones">
                     <p:commandButton icon="ui-icon-pencil" title="Editar" onclick="dlgFormObligacion.show()" update=":formObligacion" immediate="true"> 

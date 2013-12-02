@@ -13,8 +13,6 @@
             <h:form id="tabla">
                 <p:commandButton value="Nuevo" oncomplete="dlgCalendario.show()"  
                                  update="" icon="ui-icon-circle-plus" immediate="true">
-<!--                    <f:setPropertyActionListener target="# {tipoCambioBean.seleccion}" value="form" />
-                    <f:setPropertyActionListener target="# {tipoCambioBean.accion}" value="true" />-->
                 </p:commandButton>
                 
                 <p:dataTable paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="bottom" id="tabla"
@@ -26,10 +24,10 @@
                         <h:outputText value="#{calendario.parCalendarioPK.gestion}" />
                     </p:column>
                     <p:column headerText="Periodo" >
-                        <h:outputText value="#{calendario.parCalendarioPK.tipoPeriodo}" />
+                        <h:outputText value="#{calendarioBean.descripcionPeriodo(calendario.parCalendarioPK.tipoPeriodo)}" />
                     </p:column>
                     <p:column headerText="Tipo calendario" >
-                        <h:outputText value="#{calendario.tipoCalendario}" />
+                        <h:outputText value="#{calendarioBean.descripcionCalendario(calendario.tipoCalendario)}" />
                     </p:column>
                     
                 </p:dataTable>
