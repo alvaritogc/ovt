@@ -381,8 +381,8 @@ public class DocumentoService implements IDocumentoService {
     }
 
     @Override
-    public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador, Date fechaDesde, Date fechaHasta) {
-        return documentoRepository.listarPlanillaALaFecha(idEmpleador, fechaDesde, fechaHasta);
+    public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador, Date fechaDesde, Date fechaHasta, String codDocumento) {
+        return documentoRepository.listarPlanillaALaFecha(idEmpleador, fechaDesde, fechaHasta, codDocumento);
     }
 
     public List<DocDocumento> listarDeclarados(String idEmpleador) {
@@ -508,5 +508,9 @@ public class DocumentoService implements IDocumentoService {
         docDocumentoRoe010 = documentoRepository.save(docDocumentoRoe010);
         //
         return docDocumento;
+    }
+
+    public List<DocDocumento> listarDocumentosParaRectificar(String idPersona, String codDocumento){
+        return documentoRepository.listarDocumentosParaRectificar(idPersona, codDocumento);
     }
 }

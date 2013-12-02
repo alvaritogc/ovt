@@ -33,7 +33,7 @@ public interface IDocumentoService {
 
     public DocDocumento guardarActualizaRoe(DocDocumento docDocumento, DocGenerico docGenerico, String registroBitacora);
 
-    public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador, Date fechaDesde, Date fechaHasta);
+    public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador, Date fechaDesde, Date fechaHasta, String codDocumento);
 
     List<DocDocumento> listarDeclarados(String idEmpleador);
 
@@ -42,4 +42,6 @@ public interface IDocumentoService {
     List<DocDocumento> findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(String idPersona, String codEstado);
 
     public DocDocumento guardarReactivacionRoe(DocGenerico docGenerico, PerUnidadPK perUnidadPK, String registroBitacora);
+
+    List<DocDocumento> listarDocumentosParaRectificar(String idPersona, String codDocumento);
 }

@@ -51,8 +51,6 @@ public class DeclaracionTrimestralBean implements Serializable {
     private IPersonaService iPersonaService;
     @ManagedProperty(value = "#{unidadService}")
     private IUnidadService iUnidadService;
-    @ManagedProperty(value = "#{documentoService}")
-    private IDocumentoService idDocumentoService;
     @ManagedProperty(value = "#{binService}")
     private IBinarioService iBinarioService;
     @ManagedProperty(value = "#{entidadService}")
@@ -212,7 +210,7 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void cargarDocumentosParaRectificar(){
         docDocumentosParaRectificar= new ArrayList<DocDocumento>();
-        docDocumentosParaRectificar= idDocumentoService.findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(idPersona, "110");
+        docDocumentosParaRectificar= iDocumentoService.listarDocumentosParaRectificar(idPersona, "LC1010");
     }
 
 
@@ -224,7 +222,7 @@ public class DeclaracionTrimestralBean implements Serializable {
     }
 
     public void seleccionaTrimestre(){
-        periodo = idDocumentoService.findById(idRectificatorio).getDocPlanilla().getParCalendario().getParCalendarioPK().getTipoPeriodo();
+        periodo = iDocumentoService.findById(idRectificatorio).getDocPlanilla().getParCalendario().getParCalendarioPK().getTipoPeriodo();
     }
 
     public void verEstadoPlanilla(){
@@ -245,7 +243,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         List<DocDocumento> listaDocumentos;
         try{
             //listaDocumentos=iDocumentoService.listarPorPersona(idPersona);
-            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
+            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
             if(listaDocumentos==null){
                 listaDocumentos=new ArrayList<DocDocumento>();
             }
@@ -370,7 +368,7 @@ public class DeclaracionTrimestralBean implements Serializable {
 //        if(errores.size()==0 && verificaValidacion){
         try{
             if(parametro==3){
-                documento.setIdDocumentoRef(idDocumentoService.findById(idRectificatorio));
+                documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
             }
 
             logger.info("Guardando documento, binario y planilla");
@@ -379,7 +377,7 @@ public class DeclaracionTrimestralBean implements Serializable {
             logger.info(docPlanilla.toString());
             generaPlanilla();
             documento.setPerUnidad(unidadSeleccionada);
-            idDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);
+            iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);
 //                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
 
         }catch (Exception e){
@@ -941,14 +939,6 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void setiUnidadService(IUnidadService iUnidadService) {
         this.iUnidadService = iUnidadService;
-    }
-
-    public IDocumentoService getIdDocumentoService() {
-        return idDocumentoService;
-    }
-
-    public void setIdDocumentoService(IDocumentoService idDocumentoService) {
-        this.idDocumentoService = idDocumentoService;
     }
 
     public IBinarioService getiBinarioService() {
