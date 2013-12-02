@@ -1,171 +1,182 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="../pages/template/templateInicio.xhtml">
-        <ui:define name="content">
-            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>  
-            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando" resizable="false"
-                      draggable="false" closable="false">
-                <p:graphicImage value="../images/ajax-loader.gif" />
-            </p:dialog>
-            <h:form id="idEscritorio">
-                <h2>#{escritorioBean.empleador.nombreRazonSocial} #{escritorioBean.empleador.apellidoPaterno} #{escritorioBean.empleador.apellidoMaterno}</h2>
-                <p:panelGrid columns="2" style="border-style: hidden;">
-                    <p:outputLabel value="#{escritorioBean.empleador.tipoIdentificacion}: " style="size: 20px;"/>
-                    <p:outputLabel value="#{escritorioBean.empleador.nroIdentificacion}" />
-                </p:panelGrid>
-                <p:dataList value="#{escritorioBean.listaUnidades}" var="unidad" itemType="disc">
-                    #{unidad.nombreComercial} , #{unidad.nroCajaSalud}
-                </p:dataList>
-                <p:panel rendered="false">
-                    <div style="font-size: 15px" >
-                        <p>La presentación vía internet de las planillas trimestrales correspondientes al 3er trimestre de 2013 solo es hasta el 31 de octubre del presente, pasada esta fecha la presentación deberá ser de manera tradicional.</p>
-                        <p>Los empleadores de <u>La Paz</u>, <u>Cochabamba</u>, <u>Santa Cruz</u> y sus respectivas regionales deberán de manera obligatoria hacerse presentes en la oficina central de su departamento para presentar la boleta de depósito y la declaración jurada con el plazo de 1 mes a partir de realizado el deposito.</p>
-                    </div>
-                </p:panel>    
+<ui:composition template="../pages/template/templateInicio.xhtml">
+    <ui:define name="content">
+        <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando" resizable="false"
+                  draggable="false" closable="false">
+            <p:graphicImage value="../images/ajax-loader.gif"/>
+        </p:dialog>
+        <h:form id="idEscritorio">
+            <h2>#{escritorioBean.empleador.nombreRazonSocial} #{escritorioBean.empleador.apellidoPaterno} #{escritorioBean.empleador.apellidoMaterno}</h2>
+            <p:panelGrid columns="2" style="border-style: hidden;">
+                <p:outputLabel value="#{escritorioBean.empleador.tipoIdentificacion}: " style="size: 20px;"/>
+                <p:outputLabel value="#{escritorioBean.empleador.nroIdentificacion}"/>
+            </p:panelGrid>
+            <p:dataList value="#{escritorioBean.listaUnidades}" var="unidad" itemType="disc">
+                #{unidad.nombreComercial} , #{unidad.nroCajaSalud}
+            </p:dataList>
+            <p:panel rendered="false">
+                <div style="font-size: 15px">
+                    <p>La presentación vía internet de las planillas trimestrales correspondientes al 3er trimestre de 2013 solo es hasta el 31 de octubre del presente, pasada esta fecha la presentación deberá ser de manera tradicional.</p>
+
+                    <p>Los empleadores de <u>La Paz</u>, <u>Cochabamba</u>,
+                        <u>Santa Cruz</u> y sus respectivas regionales deberán de manera obligatoria hacerse presentes en la oficina central de su departamento para presentar la boleta de depósito y la declaración jurada con el plazo de 1 mes a partir de realizado el deposito.
+                    </p>
+                </div>
+            </p:panel>
+            <br/>
+
+            <h3>Lista de documentos</h3>
+
+            <p:dataTable id="idListaDocumentos"
+                         value="#{escritorioBean.listaDocumentos}" paginatorPosition="bottom" paginator="true"
+                         var="o1" rows="10" emptyMessage="No se encontraron resultados"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                         currentPageReportTemplate="{currentPage} / {totalPages}">
+                <p:column headerText="Código" style="width: 45px;">
+                    <h:outputText value="#{o1.docDefinicion.alias}"/>
+                </p:column>
+                <!--style="width: 140px;word-break: break-all;"-->
+                <p:column headerText="Nombre del documento" style="width: 140px;">
+                    <h:outputText value="#{o1.docDefinicion.nombre}"/>
+                </p:column>
+                <p:column headerText="Número de orden" style="width: 130px;">
+                    <h:outputText value="#{o1.docDefinicion.docDefinicionPK.codDocumento}: #{o1.numeroDocumento}"/>
+                </p:column>
+                <p:column headerText="Fecha" style="width: 55px;">
+                    <h:outputText value="#{o1.fechaDocumento}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Estado" style="width: 55px;">
+                    <!--                        <h:outputText value="# {o1.codEstado.descripcion}" style="color: # {o1.codEstado.metadata}; font-weight: bold"/>-->
+                    <u><p:commandLink value="#{o1.codEstado.descripcion}"
+                                      style="color: #{o1.codEstado.metadata}; font-weight: bold"
+                                      update=":idEscritorio:cambioEstadoDlg"
+                                      action="#{escritorioBean.cargarCambioDeEstados}"
+                                      oncomplete="PF('cambioEstadoDialog').show()"
+                                      title="Cambio de estados">
+                        <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}"/>
+                    </p:commandLink> </u>
+                </p:column>
+                <p:column headerText="Medio de registro" rendered="false">
+                    <h:outputText value="#{o1.tipoMedioRegistro}"/>
+                </p:column>
+                <p:column headerText="Acciones">
+                    <!--                        <p:commandButton update=":idEscritorio:cambioEstadoDlg"
+                                                             action="# {escritorioBean.cargarCambioDeEstados}"
+                                                             oncomplete="PF('cambioEstadoDialog').show()" icon="ui-icon-gear" title="Cambio de estados">
+                                                <f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />
+                                            </p:commandButton> -->
+
+                    <p:commandButton action="#{escritorioBean.irEdicionRoe}"
+                                     rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento == 'ROE011' and o1.codEstado.codEstado=='010'}"
+                                     immediate="true"
+                                     icon="ui-icon-pencil" title="Editar ROE 013">
+                        <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}"/>
+                    </p:commandButton>
+
+                    <!--<p:commandButton icon="ui-icon-print" action="# {escritorioBean.irImprimirDocumento}" title="Imprimir documento" ajax="false">-->
+                    <!--<f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />-->
+                    <!--</p:commandButton>-->
+
+                    <!--rendered="# {escritorioBean.conBinario.contains(o1.docDefinicion.docDefinicionPK.codDocumento)}"-->
+                    <p:commandButton action="#{escritorioBean.download}"
+                                     ajax="false"
+
+                                     icon="ui-icon-arrowthickstop-1-s"
+                                     title="Descarga documentos">
+                        <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}"/>
+                    </p:commandButton>
+
+                    <h:commandLink target="_blank" action="#{escritorioBean.irImprimirDocumento}"
+                                   title="Imprimir documento">
+                        <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}"/>
+                        <h:graphicImage style="float: left;width:25px;height: 23px;padding-right: 3px; "
+                                        value="/images/print.png"/>
+                    </h:commandLink>
+                </p:column>
+            </p:dataTable>
+            <p:dialog header="Cambio de estado" widgetVar="cambioEstadoDialog"
+                      width="600"
+                      resizable="false" id="cambioEstadoDlg"
+                      showEffect="fade" hideEffect="explode" modal="true">
+                <center>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="background-color: #0069B1; color: #FFFFFF">
+                                <p:outputLabel value="CAMBIO DE ESTADO"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </center>
+                <h:panelGrid columns="6"
+                             rendered="#{escritorioBean.docPlanilla!=null}"
+                             style="border: 1px solid black; height: 50px;width:100%;">
+                    <p:outputLabel value="Nº de comprobante de depósito:" style="text-align: right;"/>
+                    <p:outputLabel value="#{escritorioBean.docPlanilla.numOperacion}"
+                                   style="border: 1px solid black;width: 80px;text-align: left;padding: 3px;"/>
+
+                    <p:outputLabel value="Fecha de depósito:" style="text-align: right;margin-left: 25px;"/>
+                    <p:outputLabel value="#{escritorioBean.docPlanilla.fechaOperacion}"
+                                   style="border: 1px solid black;width: 50px;text-align: left;padding: 3px;">
+                        <f:convertDateTime pattern="dd/MM/yy"/>
+                    </p:outputLabel>
+
+                    <p:outputLabel value="Monto de depósito:" style="text-align: right;margin-left: 25px;"/>
+                    <p:outputLabel value="#{escritorioBean.docPlanilla.montoOperacion}"
+                                   style="border: 1px solid black;width: 50px;text-align: right;padding: 3px;">
+                        <f:convertNumber groupingUsed="true" minFractionDigits="2"/>
+                    </p:outputLabel>
+
+                </h:panelGrid>
                 <br/>
-                <h3>Lista de documentos</h3>
+                <center>
+                    <h:panelGrid columns="2">
 
-                <p:dataTable id="idListaDocumentos" 
-                             value="#{escritorioBean.listaDocumentos}" paginatorPosition="bottom" paginator="true"
-                             var="o1"  rows="10" emptyMessage="No se encontraron resultados" 
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
-                             currentPageReportTemplate="{currentPage} / {totalPages}">
-                    <p:column headerText="Código" style="width: 45px;">
-                        <h:outputText value="#{o1.docDefinicion.alias}"/>
-                    </p:column>
-                    <!--style="width: 140px;word-break: break-all;"-->
-                    <p:column headerText="Nombre del documento"  style="width: 140px;">
-                        <h:outputText value="#{o1.docDefinicion.nombre}"/>
-                    </p:column>
-                    <p:column headerText="Número de orden" style="width: 130px;">
-                        <h:outputText value="#{o1.docDefinicion.docDefinicionPK.codDocumento}: #{o1.numeroDocumento}"/>
-                    </p:column>
-                    <p:column headerText="Fecha" style="width: 55px;">
-                        <h:outputText value="#{o1.fechaDocumento}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputText>
-                    </p:column>
-                    <p:column headerText="Estado" style="width: 55px;">
-<!--                        <h:outputText value="# {o1.codEstado.descripcion}" style="color: # {o1.codEstado.metadata}; font-weight: bold"/>-->
-                        <p:commandLink value="#{o1.codEstado.descripcion}"
-                                       style="color: #{o1.codEstado.metadata}; font-weight: bold"
-                                        update=":idEscritorio:cambioEstadoDlg" 
-                                       action="#{escritorioBean.cargarCambioDeEstados}"
-                                       oncomplete="PF('cambioEstadoDialog').show()" 
-                                       title="Cambio de estados">
-                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
-                        </p:commandLink> 
-                    </p:column>
-                    <p:column headerText="Medio de registro" rendered="false">
-                        <h:outputText value="#{o1.tipoMedioRegistro}"/>
-                    </p:column>
-                    <p:column headerText="Acciones">
-<!--                        <p:commandButton update=":idEscritorio:cambioEstadoDlg" 
-                                         action="# {escritorioBean.cargarCambioDeEstados}"
-                                         oncomplete="PF('cambioEstadoDialog').show()" icon="ui-icon-gear" title="Cambio de estados">
-                            <f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />
-                        </p:commandButton> -->
-
-                        <p:commandButton action="#{escritorioBean.irEdicionRoe}" 
-                                         rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento == 'ROE011' and o1.codEstado.codEstado=='010'}"
-                                         immediate="true"
-                                         icon="ui-icon-pencil" title="Editar ROE 013">  
-                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
-                        </p:commandButton> 
-
-                        <!--<p:commandButton icon="ui-icon-print" action="# {escritorioBean.irImprimirDocumento}" title="Imprimir documento" ajax="false">-->
-                        <!--<f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />-->
-                        <!--</p:commandButton>-->
-
-                        <!--rendered="# {escritorioBean.conBinario.contains(o1.docDefinicion.docDefinicionPK.codDocumento)}"-->
-                        <p:commandButton action="#{escritorioBean.download}"
-                                         ajax="false"
-
-                                         icon="ui-icon-arrowthickstop-1-s"
-                                         title="Descarga documentos" >
-                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
-                        </p:commandButton>
-
-                        <h:commandLink target="_blank" action="#{escritorioBean.irImprimirDocumento}" title="Imprimir documento">
-                            <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
-                            <h:graphicImage  style="float: left;width:25px;height: 23px;padding-right: 3px; " value="/images/print.png" />
-                        </h:commandLink>
-                    </p:column>
-                </p:dataTable>
-                <p:dialog header="Cambio de estado" widgetVar="cambioEstadoDialog" 
-                          width="600"
-                          resizable="false" id="cambioEstadoDlg"  
-                          showEffect="fade" hideEffect="explode" modal="true">  
-                    <center>
-                        <p:panelGrid style="width: 100%">
-                            <p:row>
-                                <p:column  style="background-color: #0069B1; color: #FFFFFF" >
-                                    <p:outputLabel value="CAMBIO DE ESTADO" />
-                                </p:column>
-                            </p:row>
-                        </p:panelGrid>
-                    </center>
-                    <h:panelGrid columns="6" 
-                                 rendered="#{escritorioBean.docPlanilla!=null}"
-                                 style="border: 1px solid black; height: 50px;width:100%;">
-                        <p:outputLabel value="Nº de comprobante de depósito:" style="text-align: right;"/>
-                        <p:outputLabel value="#{escritorioBean.docPlanilla.numOperacion}"  style="border: 1px solid black;width: 80px;text-align: left;padding: 3px;"/>
-
-                        <p:outputLabel value="Fecha de depósito:" style="text-align: right;margin-left: 25px;"/>
-                        <p:outputLabel value="#{escritorioBean.docPlanilla.fechaOperacion}" style="border: 1px solid black;width: 50px;text-align: left;padding: 3px;">
-                            <f:convertDateTime pattern="dd/MM/yy" />
-                        </p:outputLabel>
-
-                        <p:outputLabel value="Monto de depósito:" style="text-align: right;margin-left: 25px;"/>
-                        <p:outputLabel value="#{escritorioBean.docPlanilla.montoOperacion}" style="border: 1px solid black;width: 50px;text-align: right;padding: 3px;">
-                            <f:convertNumber groupingUsed="true" minFractionDigits="2" />
-                        </p:outputLabel>
+                        <h:outputText value="#{escritorioBean.docDocumento.codEstado.descripcion}"
+                                      style="font-size: 20px"/>
+                        <p:selectOneRadio id="grid" value="#{escritorioBean.codEstadoFinal}"
+                                          layout="grid"
+                                          columns="1"
+                                          style="color: #000000; font-weight: bold;"
+                                >
+                            <f:selectItems value="#{escritorioBean.listaDocumentoEstado}"
+                                           var="docEst"
+                                           itemLabel="#{docEst.descripcion}"
+                                           itemValue="#{docEst.codEstado}"/>
+                            <p:selectOneButton value="123"/>
+                        </p:selectOneRadio>
 
                     </h:panelGrid>
-                    <br/>
-                    <center>
-                        <h:panelGrid columns="2">
+                </center>
+                <br/>
+                <center>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Observación: " rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:inputText value="#{escritorioBean.observacionLogEstado}"
+                                     rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                        <p:commandButton value="Realizar cambio de estado"
+                                         update="idEscritorio"
+                                         rendered="#{escritorioBean.mostrarCambioDeEstados}"
+                                         action="#{escritorioBean.realizarCambioDeEstados}"/>
+                        <p:outputLabel value="No se encontraron transiciones siguientes"
+                                       rendered="#{!escritorioBean.mostrarCambioDeEstados}"/>
+                    </h:panelGrid>
+                </center>
+                <br/>
+            </p:dialog>
 
-                            <h:outputText value="#{escritorioBean.docDocumento.codEstado.descripcion}" style="font-size: 20px"/>
-                            <p:selectOneRadio id="grid" value="#{escritorioBean.codEstadoFinal}" 
-                                              layout="grid" 
-                                              columns="1" 
-                                              style="color: #000000; font-weight: bold;"
-                                              >
-                                <f:selectItems value="#{escritorioBean.listaDocumentoEstado}" 
-                                               var="docEst" 
-                                               itemLabel="#{docEst.descripcion}" 
-                                               itemValue="#{docEst.codEstado}"/>
-                                <p:selectOneButton value="123"/>
-                            </p:selectOneRadio>
-
-                        </h:panelGrid>
-                    </center>
-                    <br/>
-                    <center>
-                        <h:panelGrid columns="2" >
-                            <p:outputLabel value="Observación: " rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                            <p:inputText value="#{escritorioBean.observacionLogEstado}" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                            <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                            <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                            <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
-                            <p:commandButton value="Realizar cambio de estado" 
-                                             update="idEscritorio"
-                                             rendered="#{escritorioBean.mostrarCambioDeEstados}"
-                                             action="#{escritorioBean.realizarCambioDeEstados}"/>
-                            <p:outputLabel value="No se encontraron transiciones siguientes" 
-                                           rendered="#{!escritorioBean.mostrarCambioDeEstados}"/>
-                        </h:panelGrid>
-                    </center>
-                    <br/>
-                </p:dialog>  
-
-            </h:form>
-        </ui:define>
-    </ui:composition>
+        </h:form>
+    </ui:define>
+</ui:composition>
 </html>
