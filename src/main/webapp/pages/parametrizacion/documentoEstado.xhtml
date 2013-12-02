@@ -5,34 +5,29 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="../pages/template/templateInicio.xhtml">
+        <ui:composition template="../../pages/template/templateInicio.xhtml">
         <ui:define name="content">
             <h2 class="form-signin-heading">Documento Estado</h2>
             <p:commandButton value="Nuevo" onclick="PF('dlgFormDocEstado').show();" action="#{documentoEstadoBean.cargarNuevo}"
-                             icon="ui-icon-document-b" update=":formDocEstado:pnlGridDocEstado"/>
-            <br />
-            <!--  Listado de entidades en tabla-->
-            <br/>
+                             icon="ui-icon-circle-plus" update=":formDocEstado:pnlGridDocEstado"/>
             <p:dataTable id="dataTableDocEstado" var="docEstado" value="#{documentoEstadoBean.listaParDocumentoEstado}"
                          paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="bottom"
-                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados">
-                <f:facet name="header">  
-                    Documentos Estado
-                </f:facet>
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
+                 currentPageReportTemplate="{currentPage} / {totalPages}">
 
-                <p:column sortBy="codigo" headerText="Codigo Estado">
+                <p:column headerText="Codigo Estado">
                     <h:outputText value="#{docEstado.codEstado}" />
                 </p:column>
 
-                <p:column sortBy="descripcion" headerText="Descripción" >
+                <p:column headerText="Descripción" >
                     <h:outputText value="#{docEstado.descripcion}" />
                 </p:column>
 
-                <p:column sortBy="estado" headerText="Estado">
-                    <h:outputText value="#{docEstado.estado}" />
+                <p:column headerText="Estado">
+                    <h:outputText value="#{documentoEstadoBean.descripcionEstado(docEstado.estado)}" />
                 </p:column>
 
-                <p:column sortBy="metadata" headerText="Metadata">
+                <p:column headerText="Metadata">
                     <h:outputText value="#{docEstado.metadata}" />
                 </p:column>
                 <p:column headerText="Acciones">                
