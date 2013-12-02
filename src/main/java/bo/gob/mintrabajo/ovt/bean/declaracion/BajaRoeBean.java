@@ -154,7 +154,7 @@ public class BajaRoeBean {
                 return "";
             }
         }
-        if (docGenerico.getEntero01() == null || docGenerico.getEntero01() < 0) {
+        if (docGenerico.getEntero01() == null || docGenerico.getEntero01() == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Número de trabajadores."));
             return "";
         }
