@@ -353,10 +353,10 @@ public class EscritorioBean {
                 parametros.put("lugarPresentacion", "Oficina Virtual");
                 //Adicionado por victor
                 DocGenerico docGenerico = iDocGenericoService.buscarPorDocumento(docDocumento.getIdDocumento());
-                parametros.put("stMes", docGenerico.getCadena01());
-                parametros.put("stAnio", docGenerico.getCadena02());
-                parametros.put("sdMes", docGenerico.getCadena03());
-                parametros.put("sdAnio", docGenerico.getCadena04());
+                parametros.put("stMes", docGenerico.getCadena03());
+                parametros.put("stAnio", docGenerico.getCadena04());
+                parametros.put("sdMes", docGenerico.getCadena05());
+                parametros.put("sdAnio", docGenerico.getCadena06());
                 parametros.put("nroTrabajadores", docGenerico.getEntero01());
                 if (docGenerico.getEntero03() != null && docGenerico.getEntero03() == 1) {
                     parametros.put("bajaNit", "X");
@@ -373,7 +373,7 @@ public class EscritorioBean {
                 } else {
                     parametros.put("bajaSeguroLargoPlazo", "");
                 }
-                parametros.put("nombreFuncionario", docGenerico.getCadena07());
+                parametros.put("nombreFuncionario", docGenerico.getCadena10());
                 String nombrePdf = "ROE012-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe012.jasper", parametros));
                 verificaReporte = true;
