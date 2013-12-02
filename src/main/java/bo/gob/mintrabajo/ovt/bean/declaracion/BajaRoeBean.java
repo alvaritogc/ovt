@@ -165,6 +165,12 @@ public class BajaRoeBean {
             docGenerico.setEntero04(entero04 ? 1 : 0);
             docGenerico.setEntero05(entero05 ? 1 : 0);
         }
+        if (docGenerico.getCadena05() != null && !docGenerico.getCadena05().equals("")) {
+            if (!(entero03 && entero04 && entero05)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Si es una baja definitiva debe presentar todos los respaldos."));
+                return "";
+            }
+        }
         //
         //documento = iDocumentoService.guardarBajaRoe(documento, docGenerico, idUsuario.toString());
         documento = iDocumentoService.guardarBajaRoe(perUnidadPK, docGenerico, idUsuario.toString());

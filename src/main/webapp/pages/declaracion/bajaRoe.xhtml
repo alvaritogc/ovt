@@ -122,14 +122,14 @@
                 <f:selectItem itemLabel="Seleccione" itemValue=""/>
                 <f:selectItems value="#{bajaRoeBean.listaDominioMeses}" var="mes" itemLabel="#{mes.descripcion}"
                                itemValue="#{mes.descripcion}"/>
-                <p:ajax update=":formularioFrm:idCadena03 :formularioFrm:idCadena04"
+                <p:ajax update=":formularioFrm:idCadena03 :formularioFrm:idCadena04 :formularioFrm:idBajas1 :formularioFrm:idBajas2 :formularioFrm:idBajas3"
                         listener="#{bajaRoeBean.vaciarSuspencionDefinitiva}"/>
             </p:selectOneMenu>
             <p:selectOneMenu id="idCadena02" value="#{bajaRoeBean.docGenerico.cadena04}">
                 <f:selectItem itemLabel="Seleccione" itemValue=""/>
                 <f:selectItems value="#{bajaRoeBean.listaGestiones}" var="anio" itemLabel="#{anio}"
                                itemValue="#{anio}"/>
-                <p:ajax update=":formularioFrm:idCadena03 :formularioFrm:idCadena04"
+                <p:ajax update=":formularioFrm:idCadena03 :formularioFrm:idCadena04 :formularioFrm:idBajas1 :formularioFrm:idBajas2 :formularioFrm:idBajas3"
                         listener="#{bajaRoeBean.vaciarSuspencionDefinitiva}"/>
             </p:selectOneMenu>
         </p:panelGrid>
@@ -142,14 +142,14 @@
                 <f:selectItem itemLabel="Seleccione" itemValue=""/>
                 <f:selectItems value="#{bajaRoeBean.listaDominioMeses}" var="mes" itemLabel="#{mes.descripcion}"
                                itemValue="#{mes.descripcion}"/>
-                <p:ajax update=":formularioFrm:idCadena01 :formularioFrm:idCadena02"
+                <p:ajax update=":formularioFrm:idCadena01 :formularioFrm:idCadena02 :formularioFrm:idBajas1 :formularioFrm:idBajas2 :formularioFrm:idBajas3"
                         listener="#{bajaRoeBean.vaciarSuspencionTemporal}"/>
             </p:selectOneMenu>
             <p:selectOneMenu id="idCadena04" value="#{bajaRoeBean.docGenerico.cadena06}">
                 <f:selectItem itemLabel="Seleccione" itemValue=""/>
                 <f:selectItems value="#{bajaRoeBean.listaGestiones}" var="anio" itemLabel="#{anio}"
                                itemValue="#{anio}"/>
-                <p:ajax update=":formularioFrm:idCadena01 :formularioFrm:idCadena02"
+                <p:ajax update=":formularioFrm:idCadena01 :formularioFrm:idCadena02 :formularioFrm:idBajas1 :formularioFrm:idBajas2 :formularioFrm:idBajas3"
                         listener="#{bajaRoeBean.vaciarSuspencionTemporal}"/>
             </p:selectOneMenu>
         </p:panelGrid>
@@ -163,21 +163,24 @@
     <p:column colspan="20">
     </p:column>
 </p:row>
-<p:row rendered="#{bajaRoeBean.esFuncionario}">
+<p:row>
     <p:column colspan="20" style="background-color: #2264B1; color: #FFFFFF">
-        <p:outputLabel value="2. DOCUMENTOS DE RESPALDO DE BAJA DEFINITIVA (Solo funcionarios)"/>
+        <p:outputLabel value="2. DOCUMENTOS DE RESPALDO DE BAJA DEFINITIVA "/>
     </p:column>
 </p:row>
-<p:row rendered="#{bajaRoeBean.esFuncionario}">
+<p:row>
     <p:column colspan="20">
         <center>
             <h:panelGrid columns="2">
                 <p:outputLabel value="Baja Nit: "/>
-                <p:selectBooleanCheckbox value="#{bajaRoeBean.entero03}"/>
+                <p:selectBooleanCheckbox value="#{bajaRoeBean.entero03}" id="idBajas1"
+                                         disabled="#{bajaRoeBean.docGenerico.cadena05==''}"/>
                 <p:outputLabel value="Baja seguro a corto plazo (CAJA): "/>
-                <p:selectBooleanCheckbox value="#{bajaRoeBean.entero04}"/>
+                <p:selectBooleanCheckbox value="#{bajaRoeBean.entero04}" id="idBajas2"
+                                         disabled="#{bajaRoeBean.docGenerico.cadena05==''}"/>
                 <p:outputLabel value="Baja seguro a largo plazo(AFP): "/>
-                <p:selectBooleanCheckbox value="#{bajaRoeBean.entero05}"/>
+                <p:selectBooleanCheckbox value="#{bajaRoeBean.entero05}" id="idBajas3"
+                                         disabled="#{bajaRoeBean.docGenerico.cadena05==''}"/>
             </h:panelGrid>
         </center>
         <br/>
