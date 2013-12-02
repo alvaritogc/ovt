@@ -82,9 +82,10 @@
                         <!--<f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />-->
                         <!--</p:commandButton>-->
 
+                        <!--rendered="# {escritorioBean.conBinario.contains(o1.docDefinicion.docDefinicionPK.codDocumento)}"-->
                         <p:commandButton action="#{escritorioBean.download}"
                                          ajax="false"
-                                         rendered="#{escritorioBean.conBinario.contains(o1.docDefinicion.docDefinicionPK.codDocumento)}"
+
                                          icon="ui-icon-arrowthickstop-1-s"
                                          title="Descarga documentos" >
                             <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}" />
