@@ -418,12 +418,14 @@ public class EscritorioBean {
                 parametros.put("cadena1", docGenerico.getCadena01());
                 parametros.put("cadena2", docGenerico.getCadena02());
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                parametros.put("cadena3", sdf.format(docGenerico.getFecha01()));
+                String cadena3 = docGenerico.getFecha01() != null ? (sdf.format(docGenerico.getFecha01())) : "";
+                parametros.put("cadena3", cadena3);
                 DecimalFormat df = new DecimalFormat();
                 df.setMaximumFractionDigits(2);
                 df.setMinimumFractionDigits(0);
                 df.setGroupingUsed(false);
-                parametros.put("cadena4", df.format(docGenerico.getValor01()));
+                String cadena4 = docGenerico.getValor01() != null ? (df.format(docGenerico.getValor01())) : "";
+                parametros.put("cadena4", cadena4);
 
                 String nombrePdf = "ROE013-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe013.jasper", parametros));
