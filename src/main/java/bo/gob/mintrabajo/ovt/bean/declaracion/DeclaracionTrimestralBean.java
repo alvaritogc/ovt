@@ -37,11 +37,11 @@ import java.util.List;
  */
 @ManagedBean
 @ViewScoped
-public class declaracionBean implements Serializable {
+public class DeclaracionTrimestralBean implements Serializable {
 
 
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-    private static final Logger logger = LoggerFactory.getLogger(declaracionBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(DeclaracionTrimestralBean.class);
     private Long idUsuario;
     private String idPersona;
     private Long idUnidad;
