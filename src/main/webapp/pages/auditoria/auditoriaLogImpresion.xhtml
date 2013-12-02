@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="./../template/templateInicio.xhtml">
+    <ui:define name="content">
+        <h3>Auditoría Impresiones</h3>
+        <br/><br/>
+        <h:form id="auditoriaFrm">
+            <p:growl showDetail="true" id="growl" autoUpdate="true" />
+            <h:panelGrid columns="4">
+                <p:outputLabel value="NIT" />
+                <p:inputText value="#{auditoriaImpresionBean.nroIdentificacion}" />
+                <p:outputLabel value="Código de documento" />
+                <p:inputText value="#{auditoriaImpresionBean.codDocumento}" />
+                <p:outputLabel value="Fecha Inicial"/>
+                <p:calendar value="#{auditoriaImpresionBean.fechaInicio}" showOn="button" pattern="dd/MM/yyyy" />
+                <p:outputLabel value="Fecha Final"/>
+                <p:calendar value="#{auditoriaImpresionBean.fechaFinal}" showOn="button" pattern="dd/MM/yyyy" />
+            </h:panelGrid>
+            <p:commandButton icon="ui-icon-zoomin" value="Buscar" action="#{auditoriaImpresionBean.buscarLogImpresion}" update=":auditoriaFrm:auditoriaTbl" />
+
+            <br/><br/>
+            <p:dataTable id="auditoriaTbl" value="#{auditoriaImpresionBean.docLogImpresionLista}" paginator="true" rows="30" paginatorPosition="bottom" var="logImp"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
+                         currentPageReportTemplate="{currentPage} / {totalPages}">
+                <p:column headerText="Id log impresión" sortBy="#{logImp.idDoclogimpresion}">
+                    <h:outputText value="#{logImp.idDoclogimpresion}" />
+                </p:column>
+                <p:column headerText="Id documento" sortBy="#{logImp.idDocumento}">
+                    <h:outputText value="#{logImp.idDocumento}" />
+                </p:column>
+                <p:column headerText="Tipo impresión" sortBy="#{logImp.tipoImpresion}">
+                    <h:outputText value="#{logImp.tipoImpresion}" />
+                </p:column>
+                <p:column headerText="Fecha bitácora" sortBy="#{logImp.fechaBitacora}">
+                    <h:outputText value="#{logImp.fechaBitacora}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Registro bitácora" sortBy="#{logImp.idDocumento}">
+                    <h:outputText value="#{logImp.idDocumento}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

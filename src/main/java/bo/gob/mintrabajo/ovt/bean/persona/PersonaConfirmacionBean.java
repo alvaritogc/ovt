@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.bean.persona;
 
 import bo.gob.mintrabajo.ovt.Util.Util;
+import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.api.IParametrizacionService;
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
@@ -26,6 +27,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
@@ -50,6 +52,9 @@ public class PersonaConfirmacionBean {
 
     @ManagedProperty(value="#{parametrizacionService}")
     private IParametrizacionService iParametrizacion;
+
+    @ManagedProperty(value="#{dominioService}")
+    public IDominioService iDominioService;
 
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
@@ -107,6 +112,10 @@ public class PersonaConfirmacionBean {
 
                 cambiaEstadoUsuario(usuario.getIdUsuario());
 
+                if(TemplateInicioBean.mapaDominio.size() == 0){
+                    cargarDominio();
+                }
+
                 if ((TimeUnit.MINUTES.toMillis(timer) > diferenciaLong)) {
                     session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
                     if (usuario.getEsInterno() == 1) {
@@ -146,6 +155,28 @@ public class PersonaConfirmacionBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cuidado", "El password no es correcto"));
             return null;
         }
+    }
+
+    public Cache<ParDominioPK, ParDominio> cargarDominio() {
+        List<ParDominio> todosDominioLista = iDominioService.obtenerDominioLista();
+        logger.info("El numero de dominios en base de datos " + todosDominioLista.size() + ", tamaño de objetos guardados en cache " + TemplateInicioBean.mapaDominio.size());
+        if(todosDominioLista.size() != TemplateInicioBean.mapaDominio.size()){
+
+            for (ParDominio d : todosDominioLista) {
+                ParDominio parDominio = TemplateInicioBean.mapaDominio.getIfPresent(d.getParDominioPK());
+
+                if (parDominio == null) {
+                    logger.debug("No existe en la cache este objeto es agregado a cache " + d.getParDominioPK().getIdDominio() + " " + d.getParDominioPK().getValor());
+                    TemplateInicioBean.mapaDominio.put(d.getParDominioPK(), d);
+                }else{
+                    logger.info("Este dominio existe en la cache pasamos al siguiente " + parDominio.getParDominioPK().getIdDominio() + " " + d.getParDominioPK().getValor());
+                    continue;
+                }
+            }
+        }else{
+            logger.info("El mapa esta cargado con la misma cantidad de datos en cache ");
+        }
+        return TemplateInicioBean.mapaDominio;
     }
 
     public void cambiaEstadoUsuario(Long idUsuario){
@@ -200,5 +231,13 @@ public class PersonaConfirmacionBean {
 
     public void setiPersonaService(IPersonaService iPersonaService) {
         this.iPersonaService = iPersonaService;
+    }
+
+    public IDominioService getiDominioService() {
+        return iDominioService;
+    }
+
+    public void setiDominioService(IDominioService iDominioService) {
+        this.iDominioService = iDominioService;
     }
 }
