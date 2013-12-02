@@ -10,18 +10,18 @@
 <ui:define name="content">
 <h:form id="idMensajeContenido">
     <p:poll interval="1" id="idPollParMensajeApp"
-            listener="#{declaracionBean.abrirPanel}"
+            listener="#{declaracionTrimestralBean.abrirPanel}"
             update=":idMensajeContenido:idPollParMensajeApp"
             stop="true"/>
 </h:form>
 
 <h:form id="formularioFrm" enctype="multipart/form-data">
-<h:panelGrid columns="1" rendered="#{declaracionBean.estaDeclarado}">
+<h:panelGrid columns="1" rendered="#{declaracionTrimestralBean.estaDeclarado}">
 <h1>Información</h1>
-<p:outputLabel value="#{declaracionBean.estaDeclaradoMensaje}" style="font-size: 13px;"/>
-    <p:commandButton ajax="false" value="Ir a inicio" action="#{declaracionBean.irInicio}"/>
+<p:outputLabel value="#{declaracionTrimestralBean.estaDeclaradoMensaje}" style="font-size: 13px;"/>
+    <p:commandButton ajax="false" value="Ir a inicio" action="#{declaracionTrimestralBean.irInicio}"/>
 </h:panelGrid>
-<h:panelGroup id="panelForm" rendered="#{!declaracionBean.estaDeclarado}">
+<h:panelGroup id="panelForm" rendered="#{!declaracionTrimestralBean.estaDeclarado}">
 <p:panelGrid id="gridForm">
 <f:facet name="header">
     <p:row>
@@ -61,7 +61,7 @@
     </p:column>
     <p:column colspan="4">
         <p:outputLabel value="FORM :"/>
-        <b><p:outputLabel value="#{declaracionBean.documento.docDefinicion.docDefinicionPK.codDocumento} Ver. 0#{declaracionBean.documento.docDefinicion.docDefinicionPK.version}" style="font-size: 16px"/></b>
+        <b><p:outputLabel value="#{declaracionTrimestralBean.documento.docDefinicion.docDefinicionPK.codDocumento} Ver. 0#{declaracionTrimestralBean.documento.docDefinicion.docDefinicionPK.version}" style="font-size: 16px"/></b>
     </p:column>
 </p:row>
 
@@ -72,17 +72,17 @@
     <p:column colspan="8">
         <p:panelGrid columns="2">
             <p:outputLabel value="1.1 Nro de Orden"/>
-            <p:inputText value="#{declaracionBean.numeroOrden}"
+            <p:inputText value="#{declaracionTrimestralBean.numeroOrden}"
                          style="width: 150px; height: 10px; text-align: right" disabled="true" onkeyup=""/>
             <p:outputLabel value="1.2 Rectificatoria"/>
-            <p:selectBooleanCheckbox value="#{declaracionBean.esRectificatorio}" disabled="true">
+            <p:selectBooleanCheckbox value="#{declaracionTrimestralBean.esRectificatorio}" disabled="true">
                 <p:ajax update="rectificatorio" event="change"/>
             </p:selectBooleanCheckbox>
             <p:outputLabel value="1.3 Nro de orden que rectifica"/>
-            <p:selectOneMenu id="rectificatorio" value="#{declaracionBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="#{!declaracionBean.esRectificatorio}"> <!--disabled="# {declaracionBean.parametro!=3}"-->
+            <p:selectOneMenu id="rectificatorio" value="#{declaracionTrimestralBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="#{!declaracionTrimestralBean.esRectificatorio}"> <!--disabled="# {declaracionBean.parametro!=3}"-->
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionBean.docDocumentosParaRectificar}" var="elemDoc" itemLabel="#{elemDoc.numeroDocumento}&nbsp;-&nbsp;#{elemDoc.docPlanilla.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{elemDoc.idDocumento}"/>
-                <p:ajax listener="#{declaracionBean.seleccionaTrimestre}" update="razonSocial" />
+                <f:selectItems value="#{declaracionTrimestralBean.docDocumentosParaRectificar}" var="elemDoc" itemLabel="#{elemDoc.numeroDocumento}&nbsp;-&nbsp;#{elemDoc.docPlanilla.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{elemDoc.idDocumento}"/>
+                <p:ajax listener="#{declaracionTrimestralBean.seleccionaTrimestre}" update="razonSocial" />
             </p:selectOneMenu>
         </p:panelGrid>
     </p:column>
@@ -109,11 +109,11 @@
     </p:column>
     <p:column id="razonSocial" colspan="5" style="width: 100%">
         <p:outputPanel id="empresaRazonSocial">
-            <p:outputLabel value="#{declaracionBean.unidadSeleccionada.nombreComercial}" style="text-align: justify"/>
-            <p:outputLabel id="trimestre" value="#{declaracionBean.periodo}" rendered="#{declaracionBean.parametro==3}"/>
-            <p:selectOneMenu value="#{declaracionBean.periodo}" style="width: 260px; height: 20px" rendered="#{declaracionBean.parametro!=3}">
+            <p:outputLabel value="#{declaracionTrimestralBean.unidadSeleccionada.nombreComercial}" style="text-align: justify"/>
+            <p:outputLabel id="trimestre" value="#{declaracionTrimestralBean.periodo}" rendered="#{declaracionTrimestralBean.parametro==3}"/>
+            <p:selectOneMenu value="#{declaracionTrimestralBean.periodo}" style="width: 260px; height: 20px" rendered="#{declaracionTrimestralBean.parametro!=3}">
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="#{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}" itemLabel="#{oCalendario.parCalendario.parCalendarioPK.gestion} - #{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>
+                <f:selectItems value="#{declaracionTrimestralBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="#{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}" itemLabel="#{oCalendario.parCalendario.parCalendarioPK.gestion} - #{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>
             </p:selectOneMenu>
         </p:outputPanel>
     </p:column>
@@ -129,45 +129,45 @@
     <p:column colspan="16">
         <p:panelGrid columns="6">
             <p:outputLabel value="3.1 Nro de empleador MTEPS:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.nroOtro}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.nroOtro}"/>
             <p:outputLabel value="3.2 Nro patronal del seguro social:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.nroCajaSalud}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.nroCajaSalud}"/>
             <p:outputLabel value="3.3 Nro de NIT:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.nroIdentificacion}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.nroIdentificacion}"/>
             <p:outputLabel value="3.4 Nombre o razón social:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.nombreRazonSocial}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.nombreRazonSocial}"/>
             <p:outputLabel value="3.5 Actividad Económica principal:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.actividadDeclarada}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.actividadDeclarada}"/>
             <p:outputLabel value="3.6 Departamento:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.dirDepartamento}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.dirDepartamento}"/>
             <p:outputLabel value="3.7 Ciudad o localidad:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.localidad}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.localidad}"/>
             <p:outputLabel value="3.8 Zona:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.dirZona}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.dirZona}"/>
             <p:outputLabel value="3.9 Dirección:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.dirDireccion}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.dirDireccion}"/>
             <p:outputLabel value="3.10 Nro:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.dirNroDireccion}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.dirNroDireccion}"/>
             <p:outputLabel value="3.11 Teléfono:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.telefono}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.telefono}"/>
             <p:outputLabel value="3.12 Fax:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionBean.vperPersona.fax}"/>
+            <h:outputText value="#{declaracionTrimestralBean.vperPersona.fax}"/>
         </p:panelGrid>
     </p:column>
 </p:row>
 
-<p:row rendered="#{declaracionBean.parametro!=2}">
+<p:row rendered="#{declaracionTrimestralBean.parametro!=2}">
     <p:column colspan="16" style="background-color: #2264B1; color: #FFFFFF">
         <p:outputLabel value="4. PROTECCIÓN SOCIAL A CORTO Y LARGO PLAZO Y NACIONALIDAD"/>
     </p:column>
 </p:row>
 
-<p:row rendered="#{declaracionBean.parametro!=2}">
+<p:row rendered="#{declaracionTrimestralBean.parametro!=2}">
     <p:column colspan="16">
         <p:panelGrid columns="3">
             <p:column>
                 <p:outputLabel for="cortoPlazo" value="4.1 Nro de asegurados al ente gestor de salud a corto plazo"/>
-                <p:inputText id="cortoPlazo" value="#{declaracionBean.docPlanilla.nroAsegCaja}"
+                <p:inputText id="cortoPlazo" value="#{declaracionTrimestralBean.docPlanilla.nroAsegCaja}"
                              style="width: 150px; height: 10px; text-align: right" required="true"
                              converterMessage="valor con 2 decimales" maxlength="6">
                     <pe:keyFilter regEx="/[\d\-]/"/>
@@ -175,28 +175,28 @@
             </p:column>
             <p:column>
                 <p:outputLabel for="aportado1" value="4.2 Monto aportado (Bs)"/>
-                <pe:inputNumber id="aportado1" value="#{declaracionBean.docPlanilla.montoAsegCaja}" disabled="#{declaracionBean.parametro==2}"
+                <pe:inputNumber id="aportado1" value="#{declaracionTrimestralBean.docPlanilla.montoAsegCaja}" disabled="#{declaracionTrimestralBean.parametro==2}"
                                 thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                 </pe:inputNumber>
             </p:column>
             <p:column>
                 <p:outputLabel value="4.3 Ente gestores de salud corto plazo"/>
-                <p:selectOneMenu value="#{declaracionBean.idEntidadSalud}"
+                <p:selectOneMenu value="#{declaracionTrimestralBean.idEntidadSalud}"
                                  style="width: 260px; height: 20px; font-size: 10px" required="true">
-                    <f:selectItems value="#{declaracionBean.parEntidadLista}" var="entidad"
+                    <f:selectItems value="#{declaracionTrimestralBean.parEntidadLista}" var="entidad"
                                    itemValue="#{entidad.idEntidad}" itemLabel="#{entidad.descripcion}"/>
                 </p:selectOneMenu>
             </p:column>
             <p:column>
                 <p:outputLabel for="largoPlazo" value="4.4 Nro de afiliados seguro a largo plazo"/>
-                <p:inputText id="largoPlazo" value="#{declaracionBean.docPlanilla.nroAsegAfp}"
+                <p:inputText id="largoPlazo" value="#{declaracionTrimestralBean.docPlanilla.nroAsegAfp}"
                              style="width: 150px; height: 10px; text-align: right" required="true" maxlength="6">
                     <pe:keyFilter regEx="/[\d\-]/"/>
                 </p:inputText>
             </p:column>
             <p:column>
                 <p:outputLabel for="aportado2" value="4.5 Monto aportado (Bs)"/>
-                <pe:inputNumber id="aportado2" value="#{declaracionBean.docPlanilla.montoAsegAfp}" disabled="#{declaracionBean.parametro==2}"
+                <pe:inputNumber id="aportado2" value="#{declaracionTrimestralBean.docPlanilla.montoAsegAfp}" disabled="#{declaracionTrimestralBean.parametro==2}"
                              thousandSeparator="." decimalSeparator="," style="width: 150px; height: 10px; text-align: right" required="true" maxlength="10">
                 </pe:inputNumber>
             </p:column>
@@ -204,7 +204,7 @@
     </p:column>
 </p:row>
 
-<p:row rendered="#{declaracionBean.parametro!=2}">
+<p:row rendered="#{declaracionTrimestralBean.parametro!=2}">
     <p:column colspan="8" style="background-color: #2264B1; color: #FFFFFF">
         <p:outputLabel value="5. COMPOSICIÓN SALARIAL"/>
     </p:column>
@@ -213,75 +213,75 @@
     </p:column>
 </p:row>
 
-<p:row rendered="#{declaracionBean.parametro!=2}">
+<p:row rendered="#{declaracionTrimestralBean.parametro!=2}">
 <p:column colspan="8" >
     <p:panelGrid columns="2">
         <p:outputLabel for="basico" value="5.1 Haber básico"/>
-        <pe:inputNumber id="basico" value="#{declaracionBean.docPlanilla.haberBasico}" disabled="#{declaracionBean.parametro==2}"
+        <pe:inputNumber id="basico" value="#{declaracionTrimestralBean.docPlanilla.haberBasico}" disabled="#{declaracionTrimestralBean.parametro==2}"
                         thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
             <p:ajax event="blur" update="totalGanado"/>
         </pe:inputNumber>
         <p:outputLabel for="antiguedad" value="5.2 Bono de antigüedad"/>
-        <pe:inputNumber id="antiguedad" value="#{declaracionBean.docPlanilla.bonoAntiguedad}" disabled="#{declaracionBean.parametro==2}"
+        <pe:inputNumber id="antiguedad" value="#{declaracionTrimestralBean.docPlanilla.bonoAntiguedad}" disabled="#{declaracionTrimestralBean.parametro==2}"
                         thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
             <p:ajax event="blur" update="totalGanado"/>
         </pe:inputNumber>
         <p:outputLabel for="produccion" value="5.3 Bono de producción"/>
-        <pe:inputNumber id="produccion" value="#{declaracionBean.docPlanilla.bonoProduccion}" disabled="#{declaracionBean.parametro==2}"
+        <pe:inputNumber id="produccion" value="#{declaracionTrimestralBean.docPlanilla.bonoProduccion}" disabled="#{declaracionTrimestralBean.parametro==2}"
                         thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
             <p:ajax event="blur" update="totalGanado"/>
         </pe:inputNumber>
         <p:outputLabel for="frontera" value="5.4 Subsidio de frontera"/>
-        <pe:inputNumber id="frontera" value="#{declaracionBean.docPlanilla.subsidioFrontera}" disabled="#{declaracionBean.parametro==2}"
+        <pe:inputNumber id="frontera" value="#{declaracionTrimestralBean.docPlanilla.subsidioFrontera}" disabled="#{declaracionTrimestralBean.parametro==2}"
                         thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
             <p:ajax event="blur" update="totalGanado"/>
         </pe:inputNumber>
         <p:outputLabel for="extraordinario" value="5.5 Labor extraordinaria"/>
-        <pe:inputNumber id="extraordinario" value="#{declaracionBean.docPlanilla.laborExtra}" disabled="#{declaracionBean.parametro==2}"
+        <pe:inputNumber id="extraordinario" value="#{declaracionTrimestralBean.docPlanilla.laborExtra}" disabled="#{declaracionTrimestralBean.parametro==2}"
                      thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
             <p:ajax event="blur" update="totalGanado"/>
         </pe:inputNumber>
         <p:outputLabel for="bono" value="5.6 Otros bonos"/>
-        <pe:inputNumber id="bono" value="#{declaracionBean.docPlanilla.otrosBonos}" disabled="#{declaracionBean.parametro==2}"
+        <pe:inputNumber id="bono" value="#{declaracionTrimestralBean.docPlanilla.otrosBonos}" disabled="#{declaracionTrimestralBean.parametro==2}"
                         thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
             <p:ajax event="blur" update="totalGanado"/>
         </pe:inputNumber>
         <p:outputLabel value="5.7 Total ganado" style="font-weight: bold"/>
-        <pe:inputNumber id="totalGanado" value="#{(declaracionBean.docPlanilla.haberBasico +
-                                                                                   declaracionBean.docPlanilla.bonoAntiguedad + declaracionBean.docPlanilla.bonoProduccion +
-                                                                                   declaracionBean.docPlanilla.subsidioFrontera + declaracionBean.docPlanilla.laborExtra +
-                                                                                   declaracionBean.docPlanilla.otrosBonos)}"
+        <pe:inputNumber id="totalGanado" value="#{(declaracionTrimestralBean.docPlanilla.haberBasico +
+                                                                                   declaracionTrimestralBean.docPlanilla.bonoAntiguedad + declaracionTrimestralBean.docPlanilla.bonoProduccion +
+                                                                                   declaracionTrimestralBean.docPlanilla.subsidioFrontera + declaracionTrimestralBean.docPlanilla.laborExtra +
+                                                                                   declaracionTrimestralBean.docPlanilla.otrosBonos)}"
                      disabled="true"
                      thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
         <p:outputLabel for="afp" value="5.8 Aporte a las AFPs"/>
-        <pe:inputNumber id="afp" value="#{declaracionBean.docPlanilla.aporteAfp}" disabled="#{declaracionBean.parametro==2}"
+        <pe:inputNumber id="afp" value="#{declaracionTrimestralBean.docPlanilla.aporteAfp}" disabled="#{declaracionTrimestralBean.parametro==2}"
                         thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
             <p:ajax event="blur" update="totalDescuento"/>
             <p:ajax event="blur" update="pagable"/>
         </pe:inputNumber>
         <p:outputLabel for="iva" value="5.9 RC-IVA"/>
-        <pe:inputNumber id="iva" value="#{declaracionBean.docPlanilla.rciva}" disabled="#{declaracionBean.parametro==2}"
+        <pe:inputNumber id="iva" value="#{declaracionTrimestralBean.docPlanilla.rciva}" disabled="#{declaracionTrimestralBean.parametro==2}"
                         thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
             <p:ajax event="blur" update="totalDescuento"/>
             <p:ajax event="blur" update="pagable"/>
         </pe:inputNumber>
         <p:outputLabel for="descuento" value="5.10 Otros descuentos"/>
-        <pe:inputNumber id="descuento" value="#{declaracionBean.docPlanilla.otrosDescuentos}" disabled="#{declaracionBean.parametro==2}"
+        <pe:inputNumber id="descuento" value="#{declaracionTrimestralBean.docPlanilla.otrosDescuentos}" disabled="#{declaracionTrimestralBean.parametro==2}"
                         thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
             <p:ajax event="blur" update="totalDescuento"/>
             <p:ajax event="blur" update="pagable"/>
         </pe:inputNumber>
         <p:outputLabel value="5.11 Total Descuentos" style="font-weight:bold"/>
-        <pe:inputNumber id="totalDescuento" value="#{(declaracionBean.docPlanilla.aporteAfp +
-                                                                                      declaracionBean.docPlanilla.rciva + declaracionBean.docPlanilla.otrosDescuentos)}"
+        <pe:inputNumber id="totalDescuento" value="#{(declaracionTrimestralBean.docPlanilla.aporteAfp +
+                                                                                      declaracionTrimestralBean.docPlanilla.rciva + declaracionTrimestralBean.docPlanilla.otrosDescuentos)}"
                      disabled="true"
                      thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
         <p:outputLabel value="5.12 Líquido pagable" style="font-weight:bold"/>
-        <pe:inputNumber id="pagable" value="#{(declaracionBean.docPlanilla.haberBasico +
-                                                                               declaracionBean.docPlanilla.bonoAntiguedad + declaracionBean.docPlanilla.bonoProduccion +
-                                                                               declaracionBean.docPlanilla.subsidioFrontera + declaracionBean.docPlanilla.laborExtra +
-                                                                               declaracionBean.docPlanilla.otrosBonos) - (declaracionBean.docPlanilla.aporteAfp +
-                                                                               declaracionBean.docPlanilla.rciva + declaracionBean.docPlanilla.otrosDescuentos)}"
+        <pe:inputNumber id="pagable" value="#{(declaracionTrimestralBean.docPlanilla.haberBasico +
+                                                                               declaracionTrimestralBean.docPlanilla.bonoAntiguedad + declaracionTrimestralBean.docPlanilla.bonoProduccion +
+                                                                               declaracionTrimestralBean.docPlanilla.subsidioFrontera + declaracionTrimestralBean.docPlanilla.laborExtra +
+                                                                               declaracionTrimestralBean.docPlanilla.otrosBonos) - (declaracionTrimestralBean.docPlanilla.aporteAfp +
+                                                                               declaracionTrimestralBean.docPlanilla.rciva + declaracionTrimestralBean.docPlanilla.otrosDescuentos)}"
                      disabled="true"
                      thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
     </p:panelGrid>
@@ -293,18 +293,18 @@
         <p:outputLabel for="mujer1" value="Mujeres"/>
         <p:outputLabel value="Total" style="font-weight: bold"/>
         <p:outputLabel value="6.1 Total trabajadores"/>
-        <p:inputText id="varon1" value="#{declaracionBean.docPlanilla.nroH}"
+        <p:inputText id="varon1" value="#{declaracionTrimestralBean.docPlanilla.nroH}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalTrabajadores"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
-        <p:inputText id="mujer1" value="#{declaracionBean.docPlanilla.nroM}"
+        <p:inputText id="mujer1" value="#{declaracionTrimestralBean.docPlanilla.nroM}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalTrabajadores"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
         <p:inputText id="totalTrabajadores"
-                     value="#{(declaracionBean.docPlanilla.nroH + declaracionBean.docPlanilla.nroM)}"
+                     value="#{(declaracionTrimestralBean.docPlanilla.nroH + declaracionTrimestralBean.docPlanilla.nroM)}"
                      disabled="true"
                      style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
         <p:outputLabel value="-"/><p:outputLabel value="-"/><p:outputLabel value="-"/><p:outputLabel value="-"/>
@@ -313,78 +313,78 @@
         <p:outputLabel for="mujer2" value="Mujeres"/>
         <p:outputLabel value="Total" style="font-weight: bold"/>
         <p:outputLabel value="6.2 Personas jubiladas"/>
-        <p:inputText id="varon2" value="#{declaracionBean.docPlanilla.nroJubiladosH}"
+        <p:inputText id="varon2" value="#{declaracionTrimestralBean.docPlanilla.nroJubiladosH}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalJubilados"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
-        <p:inputText id="mujer2" value="#{declaracionBean.docPlanilla.nroJubiladosM}"
+        <p:inputText id="mujer2" value="#{declaracionTrimestralBean.docPlanilla.nroJubiladosM}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalJubilados"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
         <p:inputText id="totalJubilados"
-                     value="#{(declaracionBean.docPlanilla.nroJubiladosH + declaracionBean.docPlanilla.nroJubiladosM)}"
+                     value="#{(declaracionTrimestralBean.docPlanilla.nroJubiladosH + declaracionTrimestralBean.docPlanilla.nroJubiladosM)}"
                      disabled="true"
                      style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
         <p:outputLabel value="6.3 Personas extranjeras"/>
-        <p:inputText value="#{declaracionBean.docPlanilla.nroExtranjerosH}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.nroExtranjerosH}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalExtrangeros"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
-        <p:inputText value="#{declaracionBean.docPlanilla.nroExtranjerosM}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.nroExtranjerosM}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalExtrangeros"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
         <p:inputText id="totalExtrangeros"
-                     value="#{(declaracionBean.docPlanilla.nroExtranjerosH + declaracionBean.docPlanilla.nroExtranjerosM)}"
+                     value="#{(declaracionTrimestralBean.docPlanilla.nroExtranjerosH + declaracionTrimestralBean.docPlanilla.nroExtranjerosM)}"
                      disabled="true"
                      style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
         <p:outputLabel value="6.4 Personas con discapacidad"/>
-        <p:inputText value="#{declaracionBean.docPlanilla.nroDiscapacidadH}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.nroDiscapacidadH}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalDicapacitados"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
-        <p:inputText value="#{declaracionBean.docPlanilla.nroDiscapacidadM}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.nroDiscapacidadM}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalDicapacitados"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
         <p:inputText id="totalDicapacitados"
-                     value="#{(declaracionBean.docPlanilla.nroDiscapacidadM + declaracionBean.docPlanilla.nroDiscapacidadH)}"
+                     value="#{(declaracionTrimestralBean.docPlanilla.nroDiscapacidadM + declaracionTrimestralBean.docPlanilla.nroDiscapacidadH)}"
                      disabled="true"
                      style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
         <p:outputLabel value="6.5 Personas contratadas en el trimestre"/>
-        <p:inputText value="#{declaracionBean.docPlanilla.nroContratadosH}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.nroContratadosH}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalContratados"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
-        <p:inputText value="#{declaracionBean.docPlanilla.nroContratadosM}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.nroContratadosM}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalContratados"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
         <p:inputText id="totalContratados"
-                     value="#{(declaracionBean.docPlanilla.nroContratadosM + declaracionBean.docPlanilla.nroContratadosH)}"
+                     value="#{(declaracionTrimestralBean.docPlanilla.nroContratadosM + declaracionTrimestralBean.docPlanilla.nroContratadosH)}"
                      disabled="true"
                      style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
         <p:outputLabel value="6.6 Personas retiradas en el trimestre"/>
-        <p:inputText value="#{declaracionBean.docPlanilla.nroRetiradosH}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.nroRetiradosH}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalRetirados"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
-        <p:inputText value="#{declaracionBean.docPlanilla.nroRetiradosM}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.nroRetiradosM}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <p:ajax event="keyup" update="totalRetirados"/>
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
         <p:inputText id="totalRetirados"
-                     value="#{(declaracionBean.docPlanilla.nroRetiradosH + declaracionBean.docPlanilla.nroRetiradosM)}"
+                     value="#{(declaracionTrimestralBean.docPlanilla.nroRetiradosH + declaracionTrimestralBean.docPlanilla.nroRetiradosM)}"
                      disabled="true"
                      style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
     </p:panelGrid>
@@ -394,17 +394,17 @@
                    style="background-color: #2264B1; color: #FFFFFF; line-height: 18px"/>
     <p:panelGrid columns="2">
         <p:outputLabel value="7.1 Nro total de accidentes en el trimestre"/>
-        <p:inputText value="#{declaracionBean.docPlanilla.nroAccidentes}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.nroAccidentes}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
         <p:outputLabel value="7.2 Nro de accidentes en el trimestre con muerte"/>
-        <p:inputText value="#{declaracionBean.docPlanilla.nroMuertes}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.nroMuertes}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
         <p:outputLabel value="7.3 Nro de enfermedades de trabajo"/>
-        <p:inputText value="#{declaracionBean.docPlanilla.nroEnfermedades}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.nroEnfermedades}"
                      style="width: 50px; height: 10px; text-align: right" required="true" maxlength="6">
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
@@ -421,20 +421,20 @@
 <p:row>
     <p:column colspan="7">
         <p:outputLabel value="8.1 Nro de comprobante de depósito"/>
-        <p:inputText value="#{declaracionBean.docPlanilla.numOperacion}"
+        <p:inputText value="#{declaracionTrimestralBean.docPlanilla.numOperacion}"
                      style="width: 150px; height: 10px; text-align: right" required="true" maxlength="19">
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
     </p:column>
     <p:column colspan="5">
         <p:outputLabel value="8.2 Fecha de depósito"/>
-        <p:calendar value="#{declaracionBean.fechaOperacionAux}" maxdate="#{declaracionBean.fechaTexto}"
+        <p:calendar value="#{declaracionTrimestralBean.fechaOperacionAux}" maxdate="#{declaracionTrimestralBean.fechaTexto}"
                     id="popupButtonCal" pattern="dd/MM/yyyy" style="width: 100px; height: 10px; text-align: right"
                     required="true" showOn="button"/>
     </p:column>
     <p:column colspan="4">
         <p:outputLabel value="8.3 Monto de depósito (Bs)"/>
-        <pe:inputNumber value="#{declaracionBean.docPlanilla.montoOperacion}"
+        <pe:inputNumber value="#{declaracionTrimestralBean.docPlanilla.montoOperacion}"
                         thousandSeparator="." decimalSeparator=","  style="width: 150px; height: 10px; text-align: right" maxlength="5">
         </pe:inputNumber>
     </p:column>
@@ -452,10 +452,10 @@
         <p:panelGrid columns="2">
             <p:outputLabel value="Nombre de empleador y/o representante legal" style="font-weight: bold"/>
             <p:outputLabel
-                    value="#{declaracionBean.vperPersona.rlNombre lt '1' ? declaracionBean.vperPersona.nombreRazonSocial : declaracionBean.vperPersona.rlNombre}"/>
+                    value="#{declaracionTrimestralBean.vperPersona.rlNombre lt '1' ? declaracionTrimestralBean.vperPersona.nombreRazonSocial : declaracionTrimestralBean.vperPersona.rlNombre}"/>
             <p:outputLabel value="Nro de documento de identidad" style="font-weight: bold"/>
             <p:outputLabel
-                    value="#{declaracionBean.vperPersona.rlNombre lt '1' ? declaracionBean.vperPersona.nroIdentificacion : declaracionBean.vperPersona.rlNroIdentidad}"
+                    value="#{declaracionTrimestralBean.vperPersona.rlNombre lt '1' ? declaracionTrimestralBean.vperPersona.nroIdentificacion : declaracionTrimestralBean.vperPersona.rlNroIdentidad}"
                     style="width: 150px; height: 10px; text-align: left"/>
             <p:outputLabel value="Lugar de Presentación" style="font-weight: bold"/>
             <h:outputText value="Oficina Virtual" style="width: 150px; height: 10px"/>
@@ -464,7 +464,7 @@
     <p:column colspan="6">
         <p:panelGrid columns="2">
             <p:outputLabel value="Fecha Presentación" style="font-weight: bold"/>
-            <p:outputLabel value="#{declaracionBean.fechaTemp}" style="width: 150px; height: 10px">
+            <p:outputLabel value="#{declaracionTrimestralBean.fechaTemp}" style="width: 150px; height: 10px">
                 <f:convertDateTime pattern="dd/MM/yyyy"/>
             </p:outputLabel>
         </p:panelGrid>
@@ -476,44 +476,44 @@
 
 
 <!-- Renato Codigo -->
-<h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionBean.parametro!=2}">
+<h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionTrimestralBean.parametro!=2}">
     <h:outputText style="font-weight: bold;text-align: center" value="Primer mes trimestre"
-                  rendered="#{declaracionBean.habilita}"/> &nbsp;
-    <p:fileUpload fileUploadListener="#{declaracionBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
+                  rendered="#{declaracionTrimestralBean.habilita}"/> &nbsp;
+    <p:fileUpload fileUploadListener="#{declaracionTrimestralBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
                   fileLimitMessage="Sólo se puede elegir un archivo."
                   invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
                   style="width: 500px"
                   mode="advanced" update="idArchivo1,guardarPlanillaBtn" fileLimit="1" label="Seleccione"
                   invalidSizeMessage="Archivo demasiado grande."
                   sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
-                  rendered="#{declaracionBean.habilita}"/>
-    <h:outputText id="idArchivo1" value="#{declaracionBean.nombres[0]}"
+                  rendered="#{declaracionTrimestralBean.habilita}"/>
+    <h:outputText id="idArchivo1" value="#{declaracionTrimestralBean.nombres[0]}"
                   style="font-weight: bold;text-align: center"/>
 
-    <h:outputText value="Segundo mes trimestre" style="font-weight: bold" rendered="#{declaracionBean.habilita}"/> &nbsp;
+    <h:outputText value="Segundo mes trimestre" style="font-weight: bold" rendered="#{declaracionTrimestralBean.habilita}"/> &nbsp;
 
-    <p:fileUpload fileUploadListener="#{declaracionBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
+    <p:fileUpload fileUploadListener="#{declaracionTrimestralBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
                   fileLimitMessage="Sólo se puede elegir un archivo."
                   invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
                   style="width: 500px"
                   mode="advanced" update="idArchivo2,guardarPlanillaBtn" fileLimit="1" label="Seleccione"
                   invalidSizeMessage="Archivo demasiado grande."
                   sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
-                  rendered="#{declaracionBean.habilita}"/>
-    <h:outputText id="idArchivo2" value="#{declaracionBean.nombres[1]}"
+                  rendered="#{declaracionTrimestralBean.habilita}"/>
+    <h:outputText id="idArchivo2" value="#{declaracionTrimestralBean.nombres[1]}"
                   style="font-weight: bold;text-align: center"/>
 
-    <h:outputText value="Tercer mes trimestre" style="font-weight: bold" rendered="#{declaracionBean.habilita}"/> &nbsp;
+    <h:outputText value="Tercer mes trimestre" style="font-weight: bold" rendered="#{declaracionTrimestralBean.habilita}"/> &nbsp;
 
-    <p:fileUpload fileUploadListener="#{declaracionBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
+    <p:fileUpload fileUploadListener="#{declaracionTrimestralBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
                   fileLimitMessage="Sólo se puede elegir un archivo."
                   invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
                   style="width: 500px"
                   mode="advanced" update="idArchivo3,guardarPlanillaBtn" fileLimit="1" label="Seleccione"
                   invalidSizeMessage="Archivo demasiado grande."
                   sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
-                  rendered="#{declaracionBean.habilita}"/>
-    <h:outputText id="idArchivo3" value="#{declaracionBean.nombres[2]}"
+                  rendered="#{declaracionTrimestralBean.habilita}"/>
+    <h:outputText id="idArchivo3" value="#{declaracionTrimestralBean.nombres[2]}"
                   style="font-weight: bold;text-align: center"/>
     <p:growl id="messages" showDetail="true"/>
 </h:panelGrid>
@@ -524,8 +524,8 @@
 
 <div align="CENTER">
     <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada"
-                     action="#{declaracionBean.guardaDocumentoPlanillaBinario}" update="formularioFrm messages"
-                     disabled="#{declaracionBean.habilita}">
+                     action="#{declaracionTrimestralBean.guardaDocumentoPlanillaBinario}" update="formularioFrm messages"
+                     disabled="#{declaracionTrimestralBean.habilita}">
         <p:confirm header="Declaración jurada"
                    message="Si continua, procederá a realizar una declaración jurada. Asegúrese que los datos esten correctamente llenados. Deséa continuar?"
                    icon="ui-icon-alert"/>
@@ -545,21 +545,21 @@
         <div align="CENTER">
         <p:outputLabel value="El siguiente formulario se declarará, para la Central o Sucursal." style="font-size: 12px"/>
         <p:outputPanel >
-            <p:selectOneRadio id="customRadio" value="#{declaracionBean.tipoEmpresa}" columns="2">
+            <p:selectOneRadio id="customRadio" value="#{declaracionTrimestralBean.tipoEmpresa}" columns="2">
                 <p:ajax event="change" update="tipoEmpresa"/>
                 <f:selectItem itemLabel="Central" itemValue="1" />
                 <f:selectItem itemLabel="Sucursal" itemValue="2"/>
             </p:selectOneRadio>
             <br/>
             <h:panelGroup id="tipoEmpresa">
-                <p:outputLabel id="central" value="#{declaracionBean.central.nombreComercial}" rendered="#{declaracionBean.tipoEmpresa==1}" />
-                <p:selectOneMenu id="sucursal" style="width: 260px; height: 20px" rendered="#{declaracionBean.tipoEmpresa==2}" value="#{declaracionBean.idUnidad}">
+                <p:outputLabel id="central" value="#{declaracionTrimestralBean.central.nombreComercial}" rendered="#{declaracionTrimestralBean.tipoEmpresa==1}" />
+                <p:selectOneMenu id="sucursal" style="width: 260px; height: 20px" rendered="#{declaracionTrimestralBean.tipoEmpresa==2}" value="#{declaracionTrimestralBean.idUnidad}">
                     <f:selectItem itemLabel="---SELECCIONE---" itemDisabled="true"/>
-                    <f:selectItems value="#{declaracionBean.sucursales}" var="sucursal" itemLabel="#{sucursal.nombreComercial}" itemValue="#{sucursal.perUnidadPK.idUnidad}"/>
+                    <f:selectItems value="#{declaracionTrimestralBean.sucursales}" var="sucursal" itemLabel="#{sucursal.nombreComercial}" itemValue="#{sucursal.perUnidadPK.idUnidad}"/>
                 </p:selectOneMenu>
             </h:panelGroup>
         </p:outputPanel>  <br/>
-        <p:commandButton value="Aceptar" action="#{declaracionBean.seleccionaEmpresa}" oncomplete="PF('seleccionEmpresa').hide();" update=":formularioFrm:panelForm"/>
+        <p:commandButton value="Aceptar" action="#{declaracionTrimestralBean.seleccionaEmpresa}" oncomplete="PF('seleccionEmpresa').hide();" update=":formularioFrm:panelForm"/>
 
 
 
