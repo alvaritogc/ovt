@@ -82,16 +82,18 @@ public class BajaRoeBean {
         vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
 
         docGenerico = new DocGenerico();
-        docGenerico.setCadena01("");
-        docGenerico.setCadena02("");
+
         docGenerico.setCadena03("");
         docGenerico.setCadena04("");
-        docGenerico.setCadena05(vperPersona.getRlNombre());
-        docGenerico.setCadena06(vperPersona.getRlNroIdentidad());
+        docGenerico.setCadena05("");
+        docGenerico.setCadena06("");
+        docGenerico.setEntero01(0);
+        docGenerico.setCadena08(vperPersona.getRlNombre());
+        docGenerico.setCadena09(vperPersona.getRlNroIdentidad());
         if (esFuncionario) {
             PerPersona persona = iPersonaService.obtenerPersonaPorUsuario(usuario);
             //docGenerico.setCadena07(usuario.getUsuario());
-            docGenerico.setCadena07("" + persona.getNombreRazonSocial()
+            docGenerico.setCadena10("" + persona.getNombreRazonSocial()
                     + " " + (persona.getApellidoPaterno() != null ? persona.getApellidoPaterno() : "")
                     + " " + (persona.getApellidoMaterno() != null ? persona.getApellidoMaterno() : "")
             );
@@ -129,31 +131,30 @@ public class BajaRoeBean {
         System.out.println("Guardar");
         System.out.println("==================================");
         System.out.println("==================================");
-        System.out.println("docGenerico : " + docGenerico.getCadena01());
-        if ((docGenerico.getCadena01() == null || docGenerico.getCadena01().trim().equals(""))
-                && (docGenerico.getCadena02() == null || docGenerico.getCadena02().trim().equals(""))
-                && (docGenerico.getCadena03() == null || docGenerico.getCadena03().trim().equals(""))
-                && (docGenerico.getCadena04() == null || docGenerico.getCadena04().trim().equals(""))) {
+        if ((docGenerico.getCadena03() == null || docGenerico.getCadena03().trim().equals(""))
+                && (docGenerico.getCadena04() == null || docGenerico.getCadena04().trim().equals(""))
+                && (docGenerico.getCadena05() == null || docGenerico.getCadena05().trim().equals(""))
+                && (docGenerico.getCadena06() == null || docGenerico.getCadena06().trim().equals(""))) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año para Indicar si la suspención es temporal o definitiva."));
             return "";
         }
-        if ((docGenerico.getCadena01() == null || docGenerico.getCadena01().trim().equals(""))
-                && (docGenerico.getCadena02() == null || docGenerico.getCadena02().trim().equals(""))) {
-            if (!((!(docGenerico.getCadena03() == null || docGenerico.getCadena03().trim().equals("")))
-                    && (!(docGenerico.getCadena04() == null || docGenerico.getCadena04().trim().equals(""))))) {
+        if ((docGenerico.getCadena03() == null || docGenerico.getCadena03().trim().equals(""))
+                && (docGenerico.getCadena04() == null || docGenerico.getCadena04().trim().equals(""))) {
+            if (!((!(docGenerico.getCadena05() == null || docGenerico.getCadena05().trim().equals("")))
+                    && (!(docGenerico.getCadena06() == null || docGenerico.getCadena06().trim().equals(""))))) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año de la Suspención definitiva."));
                 return "";
             }
         }
-        if ((docGenerico.getCadena02() == null || docGenerico.getCadena02().trim().equals(""))
-                && (docGenerico.getCadena03() == null || docGenerico.getCadena03().trim().equals(""))) {
-            if (!((!(docGenerico.getCadena01() == null || docGenerico.getCadena01().trim().equals("")))
-                    && (!(docGenerico.getCadena02() == null || docGenerico.getCadena02().trim().equals(""))))) {
+        if ((docGenerico.getCadena04() == null || docGenerico.getCadena04().trim().equals(""))
+                && (docGenerico.getCadena05() == null || docGenerico.getCadena05().trim().equals(""))) {
+            if (!((!(docGenerico.getCadena03() == null || docGenerico.getCadena03().trim().equals("")))
+                    && (!(docGenerico.getCadena04() == null || docGenerico.getCadena04().trim().equals(""))))) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Mes y Año de la Suspención temporal."));
                 return "";
             }
         }
-        if (docGenerico.getEntero01() == null || docGenerico.getEntero01() < 0) {
+        if (docGenerico.getEntero01() == null || docGenerico.getEntero01() == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar el Número de trabajadores."));
             return "";
         }
@@ -173,13 +174,13 @@ public class BajaRoeBean {
     }
 
     public void vaciarSuspencionTemporal() {
-        docGenerico.setCadena01("");
-        docGenerico.setCadena02("");
+        docGenerico.setCadena03("");
+        docGenerico.setCadena04("");
     }
 
     public void vaciarSuspencionDefinitiva() {
-        docGenerico.setCadena03("");
-        docGenerico.setCadena04("");
+        docGenerico.setCadena05("");
+        docGenerico.setCadena06("");
     }
 
     public String irEscritorio() {
