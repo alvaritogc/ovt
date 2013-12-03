@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.bean;
 
 import bo.gob.mintrabajo.ovt.Util.Dominios;
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IDocumentoEstadoService;
 import bo.gob.mintrabajo.ovt.api.IUsuarioService;
 import bo.gob.mintrabajo.ovt.entities.ParDocumentoEstado;
@@ -66,6 +67,10 @@ public class DocumentoEstadoBean implements Serializable{
         estado=false;
         parDocumentoEstado= new ParDocumentoEstado();
         cargar();
+    }
+    
+     public String descripcionEstado(String valor){
+        return Util.descripcionDominio("ESTADO", valor);
     }
 
     public void guardaModificaDocumentoEstado(){

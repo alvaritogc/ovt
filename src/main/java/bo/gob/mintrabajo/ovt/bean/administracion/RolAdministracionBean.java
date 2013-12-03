@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean.administracion;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.IDominioService;
 import bo.gob.mintrabajo.ovt.api.IRolService;
 import bo.gob.mintrabajo.ovt.api.IUsrModuloService;
@@ -80,6 +81,10 @@ public class RolAdministracionBean {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Cuidado", "El rol no fue eliminado"));
         }
+    }
+    
+    public String descripcionEstado(String valor){
+        return Util.descripcionDominio("ESTADO", valor);
     }
 
     public List<ParDominio> getDominioLista(){

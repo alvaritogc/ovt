@@ -1,9 +1,14 @@
 package bo.gob.mintrabajo.ovt.bean.declaracion;
 
-import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +26,7 @@ import javax.faces.application.FacesMessage;
 
 @ManagedBean
 @ViewScoped
-public class ActualizaRoeBean {
+public class LogEstadoDocumentoBean implements Serializable {
     //
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private Long idUsuario;
@@ -43,60 +48,32 @@ public class ActualizaRoeBean {
     private IVperPersonaService iVperPersonaService;
     @ManagedProperty(value = "#{definicionService}")
     private IDefinicionService iDefinicionService;
-    @ManagedProperty(value = "#{dominioService}")
-    private IDominioService iDominioService;
-    @ManagedProperty(value = "#{calendarioService}")
-    private ICalendarioService iCalendarioService;
+    @ManagedProperty(value = "#{docGenericoService}")
+    private IDocGenericoService iDocGenericoService;
+    @ManagedProperty(value = "#{entidadService}")
+    private IEntidadService iEntidadService;
+    @ManagedProperty(value = "#{logEstadoService}")
+    private ILogEstadoService iLogEstadoService;
     //
-    private UsrUsuario usuario;
-    private boolean esFuncionario;
-    //
-    private VperPersona vperPersona;
-    private DocDocumento documento;
-    private DocGenerico docGenerico;
+    private DocDocumento docDocumento;
     private DocDefinicion docDefinicion;
     //
-    private String bitacoraSession;
-    //
+    private Long idDocumento;
+    private List<DocLogEstado> listaDocLogEstado;
 
     @PostConstruct
     public void ini() {
         logger.info("BajaRoeBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
-        bitacoraSession = (String) session.getAttribute("bitacoraSession");
-        usuario = iUsuarioService.findById(idUsuario);
+        idDocumento = (Long) session.getAttribute("idDocumento");
+        docDocumento = iDocumentoService.findById(idDocumento);
+        docDefinicion = iDefinicionService.buscaPorId(docDocumento.getDocDefinicion().getDocDefinicionPK());
         cargar();
     }
 
     public void cargar() {
-        vperPersona = iVperPersonaService.cargaVistaPersona(idEmpleador);
-        documento = new DocDocumento();
-        documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
-        //
-        docGenerico = new DocGenerico();
-        docGenerico.setCadena08(vperPersona.getRlNombre());
-        docGenerico.setCadena09(vperPersona.getRlNroIdentidad());
-//        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
-//        docDefinicionPK.setCodDocumento("ROE013");
-//        docDefinicionPK.setVersion((short)1);
-//        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
-        //
-        docDefinicion = iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_MODIFICACION);
-    }
-
-    public String guardar() {
-        System.out.println("==================================");
-        System.out.println("==================================");
-        System.out.println("Guardar");
-        System.out.println("==================================");
-        System.out.println("==================================");
-        documento = iDocumentoService.guardarActualizaRoe(documento, docGenerico, bitacoraSession);
-        return "irEscritorio";
-    }
-
-    public String irEscritorio() {
-        return "irEscritorio";
+        listaDocLogEstado = iLogEstadoService.listarPorDocumento(idDocumento);
     }
 
     public IUsuarioService getiUsuarioService() {
@@ -123,36 +100,12 @@ public class ActualizaRoeBean {
         this.iDocumentoService = iDocumentoService;
     }
 
-    public VperPersona getVperPersona() {
-        return vperPersona;
-    }
-
-    public void setVperPersona(VperPersona vperPersona) {
-        this.vperPersona = vperPersona;
-    }
-
     public IVperPersonaService getiVperPersonaService() {
         return iVperPersonaService;
     }
 
     public void setiVperPersonaService(IVperPersonaService iVperPersonaService) {
         this.iVperPersonaService = iVperPersonaService;
-    }
-
-    public DocGenerico getDocGenerico() {
-        return docGenerico;
-    }
-
-    public void setDocGenerico(DocGenerico docGenerico) {
-        this.docGenerico = docGenerico;
-    }
-
-    public DocDocumento getDocumento() {
-        return documento;
-    }
-
-    public void setDocumento(DocDocumento documento) {
-        this.documento = documento;
     }
 
     public IUnidadService getiUnidadService() {
@@ -179,31 +132,53 @@ public class ActualizaRoeBean {
         this.iDefinicionService = iDefinicionService;
     }
 
-    public boolean isEsFuncionario() {
-        return esFuncionario;
+    public IDocGenericoService getiDocGenericoService() {
+        return iDocGenericoService;
     }
 
-    public void setEsFuncionario(boolean esFuncionario) {
-        this.esFuncionario = esFuncionario;
+    public void setiDocGenericoService(IDocGenericoService iDocGenericoService) {
+        this.iDocGenericoService = iDocGenericoService;
     }
 
-
-    public IDominioService getiDominioService() {
-        return iDominioService;
+    public IEntidadService getiEntidadService() {
+        return iEntidadService;
     }
 
-    public void setiDominioService(IDominioService iDominioService) {
-        this.iDominioService = iDominioService;
+    public void setiEntidadService(IEntidadService iEntidadService) {
+        this.iEntidadService = iEntidadService;
     }
 
-    public ICalendarioService getiCalendarioService() {
-        return iCalendarioService;
+    public Long getIdDocumento() {
+        return idDocumento;
     }
 
-    public void setiCalendarioService(ICalendarioService iCalendarioService) {
-        this.iCalendarioService = iCalendarioService;
+    public void setIdDocumento(Long idDocumento) {
+        this.idDocumento = idDocumento;
     }
 
+    public ILogEstadoService getiLogEstadoService() {
+        return iLogEstadoService;
+    }
+
+    public void setiLogEstadoService(ILogEstadoService iLogEstadoService) {
+        this.iLogEstadoService = iLogEstadoService;
+    }
+
+    public List<DocLogEstado> getListaDocLogEstado() {
+        return listaDocLogEstado;
+    }
+
+    public void setListaDocLogEstado(List<DocLogEstado> listaDocLogEstado) {
+        this.listaDocLogEstado = listaDocLogEstado;
+    }
+
+    public DocDocumento getDocDocumento() {
+        return docDocumento;
+    }
+
+    public void setDocDocumento(DocDocumento docDocumento) {
+        this.docDocumento = docDocumento;
+    }
 
     public DocDefinicion getDocDefinicion() {
         return docDefinicion;
@@ -212,4 +187,6 @@ public class ActualizaRoeBean {
     public void setDocDefinicion(DocDefinicion docDefinicion) {
         this.docDefinicion = docDefinicion;
     }
+
+
 }

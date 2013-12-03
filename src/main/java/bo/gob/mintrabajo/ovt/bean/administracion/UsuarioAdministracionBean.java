@@ -82,8 +82,17 @@ public class UsuarioAdministracionBean {
     }
 
     public void cargarPersonaPorUsuario(){
+        System.out.println("==>> usuarioSelected " + usuarioSelected);
         personaSelected = iPersonaService.obtenerPersonaPorUsuario(usuarioSelected);
-        unidadSelected = iUnidadService.buscarPorPersona(personaSelected.getIdPersona()).get(0);
+        System.out.println("==>> personaSelected " + personaSelected);
+        try {
+            System.out.println("------------------------------------ " + iUnidadService.buscarPorPersona(personaSelected.getIdPersona()).size());
+            unidadSelected = iUnidadService.buscarPorPersona(personaSelected.getIdPersona()).get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        System.out.println("==> unidadSelected " + unidadSelected);
         idLocalidad = personaSelected.getCodLocalidad().getCodLocalidad();
     }
 
@@ -132,6 +141,10 @@ public class UsuarioAdministracionBean {
             log.info("Error " + e.getMessage());
             e.printStackTrace();
         }
+    }
+    
+    public String descripcionEstado(String valor){
+        return Util.descripcionDominio("ESTADO", valor);
     }
 
     public void eliminarUsuario() {

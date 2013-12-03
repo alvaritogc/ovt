@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_TIPOS_GRUPO_DOCUMENTO;
+import bo.gob.mintrabajo.ovt.Util.Util;
 /**
  *
  * @author Alvaro
@@ -56,6 +57,7 @@ public class DefinicionBean {
     private PerPersona perPersona;
     private List<SelectItem>listaTipoGrupoDocumento;
     private String codEstado;
+     private boolean estadoDoc;
 
     @PostConstruct
     public void init(){
@@ -113,6 +115,14 @@ public class DefinicionBean {
         listaTipoGrupoDocumento=cargarListas(listaTipoGrupoDocumento,DOM_TIPOS_GRUPO_DOCUMENTO);
         listaDocumentoEstados = iDocumentoEstadoService.listarDocumentoEstados();
     }
+    
+    public String descripcionDefinicion(String valor){
+        return Util.descripcionDominio("TGRUPODOCUMENTO", valor);
+    }
+    
+    public String descripcionEstado(String valor){
+        return Util.descripcionDominio("ESTADO", valor);
+    }
 
     public void guardarDefinicion(){
 //        codDocumento = "LC1010";
@@ -124,23 +134,12 @@ public class DefinicionBean {
             li = llenarListaCodDocumento(codDocumento.toUpperCase(), version);
             if (li.isEmpty())
             {
-                //         DocDefinicionPK a= new DocDefinicionPK(codDocumento.toUpperCase(), version);
-
-                //         a=docDefinicion.getDocDefinicionPK();
-                //
-                //         a.setCodDocumento(codDocumento.toUpperCase());
-                //         a.setVersion(version);
-                docDefinicion.setDocDefinicionPK(new DocDefinicionPK(codDocumento.toUpperCase(), version));
-                docDefinicion.setFechaBitacora(new Date());
-                docDefinicion.setRegistroBitacora(perPersona.getNombreRazonSocial());
-                docDefinicion.setCodEstado(iDocumentoEstadoService.findById(codEstado));
-                //***************************
-                docDefinicion.setAlias(docDefinicion.getAlias().toUpperCase());
-                docDefinicion.setNombre(docDefinicion.getNombre().toUpperCase());
-                //        docDefinicion.setTipoGrupoDocumento(tipoGrupoDocumento);
-                //
-
-                iDefinicionService.guardarDefincion(docDefinicion);
+                boolean guardado = iDefinicionService.saveDefincion(docDefinicion, codDocumento, version, codEstado
+                        , "OVT", estadoDoc, tipoGrupoDocumento);
+                if(!guardado){
+                    FacesMessage msg = new FacesMessage("Error Codigo ya existente");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                }
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("dlgFormDocDefinicion.hide();");
                 init();
@@ -153,17 +152,12 @@ public class DefinicionBean {
             }
 
         } else {
-            docDefinicion.setDocDefinicionPK(new DocDefinicionPK(codDocumento.toUpperCase(), version));
-            docDefinicion.setFechaBitacora(new Date());
-            docDefinicion.setRegistroBitacora(perPersona.getNombreRazonSocial());
-
-            //***************************
-            docDefinicion.setAlias(docDefinicion.getAlias().toUpperCase());
-            docDefinicion.setNombre(docDefinicion.getNombre().toUpperCase());
-            //        docDefinicion.setTipoGrupoDocumento(tipoGrupoDocumento);
-            //
-
-            iDefinicionService.guardarDefincion(docDefinicion);
+            boolean guardado = iDefinicionService.saveDefincion(docDefinicion, codDocumento, version, codEstado
+                        , "OVT", estadoDoc,tipoGrupoDocumento);
+            if(!guardado){
+                    FacesMessage msg = new FacesMessage("Error Codigo ya existente");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                }
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("dlgFormDocDefinicion.hide();");
             init();
@@ -285,15 +279,14 @@ public class DefinicionBean {
     public void limpiar(){
         listaDocDefinicion=iDefinicionService.listaPorOrdenDocDefinicion();
         docDefinicion=new DocDefinicion();
-//        System.out.println("empezando el limpiado");
-//        for (int i=1;i<5;i++){
-//          System.out.println(listaDocDefinicion.get(i));
-//        }
+        cargar();
         codDocumento="";
+        tipoGrupoDocumento="";
+        codEstado="";
         version=0;
         System.out.println("coddefinicion => "+codDocumento+" version=> "+version);
         sw=true;
-        //evento=false;
+        estadoDoc=true;
     }
 
     public void modTexto(){
@@ -330,5 +323,19 @@ public class DefinicionBean {
 
     public void setCodEstado(String codEstado) {
         this.codEstado = codEstado;
+    }
+
+    /**
+     * @return the estadoDoc
+     */
+    public boolean isEstadoDoc() {
+        return estadoDoc;
+    }
+
+    /**
+     * @param estadoDoc the estadoDoc to set
+     */
+    public void setEstadoDoc(boolean estadoDoc) {
+        this.estadoDoc = estadoDoc;
     }
 }
