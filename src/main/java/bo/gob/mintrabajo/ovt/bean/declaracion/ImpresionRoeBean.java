@@ -67,6 +67,7 @@ public class ImpresionRoeBean {
     private List<ParEntidad> listaEntidades;
     private String parametroDocDefinicion;
     private String bitacoraSession;
+    private Date fechaDepositoMax;
 
     @PostConstruct
     public void ini() {
@@ -76,6 +77,13 @@ public class ImpresionRoeBean {
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
         cargar();
         cargarEntidades();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaMax = sdf.format(new Date());
+        try {
+            fechaDepositoMax = sdf.parse(fechaMax);
+        } catch (Exception e) {
+        }
+
     }
 
     public void cargar() {
@@ -304,5 +312,13 @@ public class ImpresionRoeBean {
 
     public void setiDocGenericoService(IDocGenericoService iDocGenericoService) {
         this.iDocGenericoService = iDocGenericoService;
+    }
+
+    public Date getFechaDepositoMax() {
+        return fechaDepositoMax;
+    }
+
+    public void setFechaDepositoMax(Date fechaDepositoMax) {
+        this.fechaDepositoMax = fechaDepositoMax;
     }
 }
