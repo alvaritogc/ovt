@@ -4,6 +4,10 @@ import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +25,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -588,6 +593,7 @@ public class PersonaUnidadBean implements Serializable{
         System.out.println("********** ******* >>> Materno "+personaAux.getApellidoMaterno());
         System.out.println("********** ******* >>> Departamento "+personaAux.getCodLocalidad().getCodLocalidad());
 
+        if(idLocalidadPersona!=null)
         persona.setCodLocalidad(iLocalidadService.findById(idLocalidadPersona));
         System.out.println("********** ******* >>> VERSION NUEVA ");
         System.out.println("********** ******* >>> persona.getIdPersona() "+persona.getIdPersona());
@@ -1435,5 +1441,69 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setPersonaService(IPersonaService personaService) {
         this.personaService = personaService;
+    }
+
+    /**
+     *  Genera un nombre para archivo PDF.
+     *  Este nombre esta compuesto del nombreRazonSocial, la fecha
+     *  y un randomico de dos dígitos.
+     */
+    static String generarNombreReporte(String nombreRazonSocial){
+        String nombreArchivo="";
+        SimpleDateFormat sdf=new SimpleDateFormat("ddMMyyyyHHmmss");
+        Date fecha=new Date();
+        Random num=new Random();
+        String nu=String.valueOf(num.nextInt(2));
+        nombreArchivo=sdf.format(fecha).toString()+nu;
+        nombreArchivo="declarionJurada-"+nombreRazonSocial+nombreArchivo+".pdf";
+        return nombreArchivo;
+    }
+
+    public void generarReporte(){
+
+        String jrxmlFileName="D:/declaracionJurada.jrxml";
+        String jasperFileName="D:/declaracionJurada.jasper";
+        String pdfFileName="D:/declaracionJurada.pdf";
+
+        String dbUrl="jdbc:oracle:thin:@192.168.50.7:1521:desa";
+        String dbDriver="oracle.jdbc.driver.OracleDriver";
+        String dbUname="ovt";
+        String dbPwd="prueba";
+
+        Connection conn=null;
+
+
+        String idPersona=(String)session.getAttribute("idEmpleador");
+        PerPersona p=iPersonaService.findById(idPersona);
+        pdfFileName="D:/"+generarNombreReporte(p.getNombreRazonSocial());
+
+        try{
+            Class.forName(dbDriver);
+        }catch(ClassNotFoundException e){
+          logger.error("ORACLE JDBC Driver no encontrado");
+        }
+
+        try{
+           conn= DriverManager.getConnection(dbUrl,dbUname,dbPwd);
+        }catch (SQLException e){
+          logger.error("Error de conexion "+e.getMessage());
+        }
+
+        try{
+            // Paramatros para el reporte
+            HashMap hm=new HashMap();
+            hm.put("idPersona",idPersona);
+
+            JasperCompileManager.compileReportToFile(jrxmlFileName,jasperFileName);
+
+            JasperPrint jprint=(JasperPrint) JasperFillManager.fillReport(jasperFileName,hm,conn);
+            JasperExportManager.exportReportToPdfFile(jprint,pdfFileName);
+
+            System.out.println("====>>>> Done exporting reports to pdf <<<<<=====");
+
+        }catch (Exception ex){
+            System.out.println("====>>>> Error exporting reports to pdf <<<<<=====");
+            ex.printStackTrace();
+        }
     }
 }

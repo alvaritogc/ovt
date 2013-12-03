@@ -169,6 +169,14 @@
                     <f:setPropertyActionListener value="Nuevo" target="#{personaUnidadBean.tituloDialog}"/>
                     <f:setPropertyActionListener value="ui-icon-disk" target="#{personaUnidadBean.iconoUnidad}"/>
                 </p:commandButton>
+
+                <p:commandButton value="Generar ROE"
+                                 action="#{personaUnidadBean.generarReporte}"
+                                 icon="ui-icon-plus"
+                                 immediate="true"
+                                >
+
+                </p:commandButton>
             </h:column>
 
         </h:panelGrid>
