@@ -25,6 +25,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
@@ -103,6 +104,13 @@ public class PersonaConfirmacionBean {
                   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "La cuenta ya esta confirmada, ingrese al sistema por el login principal del portal"));
                   return null;
                 }
+
+                String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getHeader("X-FORWARDED-FOR");
+                if(ipCliente == null){
+                    ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
+                }
+                String bitacoraSession = usuario.getUsuario() + "|" + ipCliente;
+                session.setAttribute("bitacoraSession", bitacoraSession);
 
                 long fechaBitacoraLong = usuario.getFechaBitacora().getTime();
                 long fechaActualLong = new Date().getTime();
