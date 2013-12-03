@@ -16,7 +16,7 @@
             <h:panelGrid columns="2">
                 <p:outputLabel value="Documento:"/>
                 <p:outputLabel value="#{logEstadoDocumentoBean.docDefinicion.nombre}"/>
-                <p:outputLabel value="Número:"/>
+                <p:outputLabel value="Número de orden:"/>
                 <p:outputLabel
                         value="#{logEstadoDocumentoBean.docDefinicion.alias} #{logEstadoDocumentoBean.docDocumento.numeroDocumento}"/>
             </h:panelGrid>
@@ -33,6 +33,9 @@
                 </p:column>
                 <p:column headerText="Estado final">
                     <h:outputText value="#{logEstado.codEstadoFinal.descripcion}"/>
+                </p:column>
+                <p:column headerText="Observacion">
+                    <h:outputText value="#{logEstado.observacion}"/>
                 </p:column>
                 <p:column headerText="Fecha">
                     <p:outputLabel value="#{logEstado.fechaBitacora}">
