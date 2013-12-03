@@ -85,6 +85,7 @@ public class EscritorioBean {
     private HashMap<String, Object> parametros = new HashMap<String, Object>();
     private String observacionLogEstado;
     private String conBinario;
+    private String bitacoraSession;
 
     @PostConstruct
     public void ini() {
@@ -92,6 +93,7 @@ public class EscritorioBean {
         idUsuario = (Long) session.getAttribute("idUsuario");
         idPersona = (String) session.getAttribute("idPersona");
         idEmpleador = (String) session.getAttribute("idEmpleador");
+        bitacoraSession = (String) session.getAttribute("bitacoraSession");
         System.out.println("idPersona: " + idPersona);
         System.out.println("idEmpleador: " + idEmpleador);
         //
@@ -155,6 +157,7 @@ public class EscritorioBean {
             codEstadoFinal = "";
             mostrarCambioDeEstados = false;
         }
+        observacionLogEstado = "";
 //        persisobservacionLogEstado="";
 
     }
@@ -162,7 +165,7 @@ public class EscritorioBean {
     public String realizarCambioDeEstados() {
         parDocumentoEstado = iDocumentoEstadoService.findById(codEstadoFinal);
         //
-        docDocumento = iDocumentoService.guardarCambioEstado(docDocumento, codEstadoFinal, idPersona, observacionLogEstado);
+        docDocumento = iDocumentoService.guardarCambioEstado(docDocumento, codEstadoFinal, bitacoraSession, observacionLogEstado);
         //
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("cambioEstadoDialog.hide()");
@@ -490,6 +493,11 @@ public class EscritorioBean {
         //session.setAttribute("docDefinicionPK", null);
         session.setAttribute("parametroDocDefinicion", null);
         return "irImpresionRoe";
+    }
+
+    public String irLogEstadoDocumento() {
+        session.setAttribute("idDocumento", docDocumento.getIdDocumento());
+        return "irLogEstadoDocumento";
     }
 
     public IUsuarioService getiUsuarioService() {
