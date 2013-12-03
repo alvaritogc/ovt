@@ -56,12 +56,19 @@
                 </p:column>
                 <p:column headerText="Estado" style="width: 55px;">
                     <!--                        <h:outputText value="# {o1.codEstado.descripcion}" style="color: # {o1.codEstado.metadata}; font-weight: bold"/>-->
+                    <!--                    <u><p:commandLink value="# {o1.codEstado.descripcion}"
+                                                          style="color: # {o1.codEstado.metadata}; font-weight: bold"
+                                                          update=":idEscritorio:cambioEstadoDlg"
+                                                          action="# {escritorioBean.cargarCambioDeEstados}"
+                                                          oncomplete="PF('cambioEstadoDialog').show()"
+                                                          title="Cambio de estados">
+                                            <f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}"/>
+                                        </p:commandLink> </u>-->
                     <u><p:commandLink value="#{o1.codEstado.descripcion}"
                                       style="color: #{o1.codEstado.metadata}; font-weight: bold"
-                                      update=":idEscritorio:cambioEstadoDlg"
-                                      action="#{escritorioBean.cargarCambioDeEstados}"
-                                      oncomplete="PF('cambioEstadoDialog').show()"
-                                      title="Cambio de estados">
+                                      action="#{escritorioBean.irLogEstadoDocumento}"
+                                      immediate="true"
+                                      title="Ver registro de cambio de estados">
                         <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}"/>
                     </p:commandLink> </u>
                 </p:column>
@@ -69,11 +76,12 @@
                     <h:outputText value="#{o1.tipoMedioRegistro}"/>
                 </p:column>
                 <p:column headerText="Acciones">
-                    <!--                        <p:commandButton update=":idEscritorio:cambioEstadoDlg"
-                                                             action="# {escritorioBean.cargarCambioDeEstados}"
-                                                             oncomplete="PF('cambioEstadoDialog').show()" icon="ui-icon-gear" title="Cambio de estados">
-                                                <f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}" />
-                                            </p:commandButton> -->
+                    <p:commandButton update=":idEscritorio:cambioEstadoDlg"
+                                     action="#{escritorioBean.cargarCambioDeEstados}"
+                                     oncomplete="PF('cambioEstadoDialog').show()" icon="ui-icon-gear"
+                                     title="Cambio de estados">
+                        <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}"/>
+                    </p:commandButton>
 
                     <p:commandButton action="#{escritorioBean.irEdicionRoe}"
                                      rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento == 'ROE011' and o1.codEstado.codEstado=='010'}"
@@ -101,11 +109,11 @@
                         <h:graphicImage style="float: left;width:25px;height: 23px;padding-right: 3px; "
                                         value="/images/print.png"/>
                     </h:commandLink>
-                    <p:commandButton action="#{escritorioBean.irLogEstadoDocumento}"
-                                     immediate="true"
-                                     icon="ui-icon-note" title="Ver registro de cambios de estado">
-                        <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}"/>
-                    </p:commandButton>
+                    <!--                        <p:commandButton action="# {escritorioBean.irLogEstadoDocumento}"
+                                                             immediate="true"
+                                                             icon="ui-icon-note" title="Ver registro de cambios de estado">
+                                                <f:setPropertyActionListener value="# {o1}" target="# {escritorioBean.docDocumento}"/>
+                                            </p:commandButton>-->
                 </p:column>
             </p:dataTable>
             <p:dialog header="Cambio de estado" widgetVar="cambioEstadoDialog"
@@ -166,7 +174,10 @@
                     <h:panelGrid columns="2">
                         <p:outputLabel value="Observación: " rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
                         <p:inputText value="#{escritorioBean.observacionLogEstado}"
-                                     rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
+                                     style="width: 215px;text-transform: uppercase;"
+                                     rendered="#{escritorioBean.mostrarCambioDeEstados}">
+                            <f:converter converterId="lowerConverter"/>
+                        </p:inputText>
                         <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
                         <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>
                         <p:outputLabel value="" rendered="#{escritorioBean.mostrarCambioDeEstados}"/>

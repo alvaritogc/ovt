@@ -38,13 +38,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- *
  * @author rvelasquez
  */
 @Entity
 @Table(name = "DOC_PLANILLA")
 @NamedQueries({
-    @NamedQuery(name = "DocPlanilla.findAll", query = "SELECT d FROM DocPlanilla d")})
+        @NamedQuery(name = "DocPlanilla.findAll", query = "SELECT d FROM DocPlanilla d")})
 public class DocPlanilla implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -173,8 +172,8 @@ public class DocPlanilla implements Serializable {
     private String idReplegal;
     @Column(name = "COD_LOCALIDAD_PRESENTACION")
     private String codLocalidadPresentacion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlanilla", fetch = FetchType.LAZY)
-    private List<DocPlanillaDetalle> docPlanillaDetalleList;
+    //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPlanilla", fetch = FetchType.LAZY)
+//    private List<DocPlanillaDetalle> docPlanillaDetalleList;
     @JoinColumn(name = "ID_ENTIDAD_SALUD", referencedColumnName = "ID_ENTIDAD")
     @ManyToOne(fetch = FetchType.LAZY)
     private ParEntidad idEntidadSalud;
@@ -182,8 +181,8 @@ public class DocPlanilla implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParEntidad idEntidadBanco;
     @JoinColumns({
-        @JoinColumn(name = "TIPO_PERIODO", referencedColumnName = "TIPO_PERIODO"),
-        @JoinColumn(name = "GESTION", referencedColumnName = "GESTION")})
+            @JoinColumn(name = "TIPO_PERIODO", referencedColumnName = "TIPO_PERIODO"),
+            @JoinColumn(name = "GESTION", referencedColumnName = "GESTION")})
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParCalendario parCalendario;
     @JoinColumn(name = "ID_DOCUMENTO", referencedColumnName = "ID_DOCUMENTO")
@@ -593,13 +592,13 @@ public class DocPlanilla implements Serializable {
         this.codLocalidadPresentacion = codLocalidadPresentacion;
     }
 
-    public List<DocPlanillaDetalle> getDocPlanillaDetalleList() {
-        return docPlanillaDetalleList;
-    }
-
-    public void setDocPlanillaDetalleList(List<DocPlanillaDetalle> docPlanillaDetalleList) {
-        this.docPlanillaDetalleList = docPlanillaDetalleList;
-    }
+//    public List<DocPlanillaDetalle> getDocPlanillaDetalleList() {
+//        return docPlanillaDetalleList;
+//    }
+//
+//    public void setDocPlanillaDetalleList(List<DocPlanillaDetalle> docPlanillaDetalleList) {
+//        this.docPlanillaDetalleList = docPlanillaDetalleList;
+//    }
 
     public ParEntidad getIdEntidadSalud() {
         return idEntidadSalud;
@@ -657,5 +656,5 @@ public class DocPlanilla implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.DocPlanilla[ idPlanilla=" + idPlanilla + " ]";
     }
-    
+
 }

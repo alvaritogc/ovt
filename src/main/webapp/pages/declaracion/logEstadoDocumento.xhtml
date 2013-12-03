@@ -9,10 +9,7 @@
 <ui:composition template="../../pages/template/templateInicio.xhtml">
     <ui:define name="content">
         <h:form>
-            <br/>
-            <p:outputLabel value="Registro de cambio de estados del documento"
-                           style="text-align: center;font-size: 20px;"/>
-            <br/>
+            <H2>Registro de cambio de estados del documento</H2>
             <h:panelGrid columns="2">
                 <p:outputLabel value="Documento:"/>
                 <p:outputLabel value="#{logEstadoDocumentoBean.docDefinicion.nombre}"/>
@@ -39,7 +36,7 @@
                 </p:column>
                 <p:column headerText="Fecha">
                     <p:outputLabel value="#{logEstado.fechaBitacora}">
-                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
                     </p:outputLabel>
                 </p:column>
                 <p:column headerText="Registro bitacora">
