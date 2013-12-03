@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<ui:composition template="../../pages/template/templateInicio.xhtml">
+    <ui:define name="content">
+        <h:form>
+            <br/>
+            <p:outputLabel value="Registro de cambio de estados del documento"
+                           style="text-align: center;font-size: 20px;"/>
+            <br/>
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Documento:"/>
+                <p:outputLabel value="#{logEstadoDocumentoBean.docDefinicion.nombre}"/>
+                <p:outputLabel value="Número:"/>
+                <p:outputLabel
+                        value="#{logEstadoDocumentoBean.docDefinicion.alias} #{logEstadoDocumentoBean.docDocumento.numeroDocumento}"/>
+            </h:panelGrid>
+
+            <br/>
+            <p:dataTable value="#{logEstadoDocumentoBean.listaDocLogEstado}"
+                         var="logEstado" rows="10"
+                         emptyMessage="No se encontraron resultados"
+                         paginatorPosition="bottom" paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                         currentPageReportTemplate="{currentPage} / {totalPages}">
+                <p:column headerText="Estado inicial">
+                    <h:outputText value="#{logEstado.codEstadoInicial.descripcion}"/>
+                </p:column>
+                <p:column headerText="Estado final">
+                    <h:outputText value="#{logEstado.codEstadoFinal.descripcion}"/>
+                </p:column>
+                <p:column headerText="Fecha">
+                    <p:outputLabel value="#{logEstado.fechaBitacora}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </p:outputLabel>
+                </p:column>
+                <p:column headerText="Registro bitacora">
+                    <h:outputText value="#{logEstado.registroBitacora}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>
