@@ -138,11 +138,11 @@ public class DocumentoService implements IDocumentoService {
         logger.info("Guarda" + planillaRepository.save(docPlanilla));
 
         //guardaPlanillaDetalles
-//        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
-//            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
-//            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_DETALLE_SEC"));
-//            logger.info("Guarda",planillaDetalleRepository.save(elemPlanillaDetalle));
-//        }
+        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
+            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
+            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_DETALLE_SEC"));
+            logger.info("Guarda",planillaDetalleRepository.save(elemPlanillaDetalle));
+        }
 
         //guarda binarios
         int idBinario = 1;
