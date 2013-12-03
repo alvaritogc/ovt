@@ -489,7 +489,7 @@ public class EscritorioBean {
     }
 
     public String irEdicionRoe() {
-        session.setAttribute("idDocumento", docDocumento.getIdDocumento());
+        session.setAttribute("idDocumentoImpresion", docDocumento.getIdDocumento());
         //session.setAttribute("docDefinicionPK", null);
         session.setAttribute("parametroDocDefinicion", null);
         return "irImpresionRoe";

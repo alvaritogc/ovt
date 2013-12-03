@@ -116,6 +116,7 @@
                                          style="text-align: right;"/>
                             <p:outputLabel value="FECHA DEL DEPÓSITO:" style="text-align: right;"/>
                             <p:calendar value="#{impresionRoeBean.fechaDeposito}"
+                                        maxdate="#{impresionRoeBean.fechaDepositoMax}"
                                         locale="es"
                                         pattern="dd/MM/yyyy"
                                         showOn="button">
