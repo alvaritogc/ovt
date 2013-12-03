@@ -76,6 +76,10 @@ public class LogEstadoDocumentoBean implements Serializable {
         listaDocLogEstado = iLogEstadoService.listarPorDocumento(idDocumento);
     }
 
+    public String irEscritorio() {
+        return "irEscritorio";
+    }
+
     public IUsuarioService getiUsuarioService() {
         return iUsuarioService;
     }
