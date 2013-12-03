@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ILogImpresionService {
     DocLogImpresion guarda(DocLogImpresion docLogImpresion);
-    public List<VdocLogImpresion> filtrarLogImpresion(String nroIdentificacion, String codDocumento, Date fechaInicio, Date fechaFinal);
+    public List<VdocLogImpresion> filtrarLogImpresion(String nroIdentificacion, String codDocumento, Date fechaInicio, Date fechaFinal, String tipoImpresion);
 }

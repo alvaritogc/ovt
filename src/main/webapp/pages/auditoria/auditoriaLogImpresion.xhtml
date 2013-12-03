@@ -11,7 +11,7 @@
         <h3>Auditoría Impresiones</h3>
         <br/><br/>
         <h:form id="auditoriaFrm">
-            <p:growl showDetail="true" id="growl" autoUpdate="true" />
+            <p:growl showDetail="true" id="auditoriaGrowl" />
             <h:panelGrid columns="4">
                 <p:outputLabel value="NIT" />
                 <p:inputText value="#{auditoriaImpresionBean.nroIdentificacion}" />
@@ -22,27 +22,28 @@
                 <p:outputLabel value="Fecha Final"/>
                 <p:calendar value="#{auditoriaImpresionBean.fechaFinal}" showOn="button" pattern="dd/MM/yyyy" />
             </h:panelGrid>
-            <p:commandButton icon="ui-icon-zoomin" value="Buscar" action="#{auditoriaImpresionBean.buscarLogImpresion}" update=":auditoriaFrm:auditoriaTbl" />
+            <p:commandButton icon="ui-icon-zoomin" value="Buscar" action="#{auditoriaImpresionBean.buscarLogImpresion}" update=":auditoriaFrm:auditoriaTbl auditoriaGrowl" oncomplete="auditoriaVar.clearFilters();" />
 
             <br/><br/>
             <p:dataTable id="auditoriaTbl" value="#{auditoriaImpresionBean.docLogImpresionLista}" paginator="true" rows="30" paginatorPosition="bottom" var="logImp"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
-                         currentPageReportTemplate="{currentPage} / {totalPages}">
-                <p:column headerText="Id log impresión" sortBy="#{logImp.idDoclogimpresion}">
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                         emptyMessage="No se encontraron resultados" currentPageReportTemplate="{currentPage} / {totalPages}"
+                         widgetVar="auditoriaVar" filteredValue="#{auditoriaImpresionBean.docLogImpresionFiltro}">
+                <p:column headerText="Id log impresión" sortBy="#{logImp.idDoclogimpresion}" filterBy="#{logImp.idDoclogimpresion}">
                     <h:outputText value="#{logImp.idDoclogimpresion}" />
                 </p:column>
-                <p:column headerText="Id documento" sortBy="#{logImp.idDocumento}">
+                <p:column headerText="Id documento" sortBy="#{logImp.idDocumento}" filterBy="#{logImp.idDocumento}" filterMatchMode="contains">
                     <h:outputText value="#{logImp.idDocumento}" />
                 </p:column>
-                <p:column headerText="Tipo impresión" sortBy="#{logImp.tipoImpresion}">
+                <p:column headerText="Tipo impresión" sortBy="#{logImp.tipoImpresion}" filterBy="#{logImp.tipoImpresion}" filterMatchMode="contains">
                     <h:outputText value="#{logImp.tipoImpresion}" />
                 </p:column>
-                <p:column headerText="Fecha bitácora" sortBy="#{logImp.fechaBitacora}">
+                <p:column headerText="Fecha bitácora" sortBy="#{logImp.fechaBitacora}" filterBy="#{logImp.fechaBitacora}" filterMatchMode="contains" styleClass="columnDate">
                     <h:outputText value="#{logImp.fechaBitacora}">
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Registro bitácora" sortBy="#{logImp.idDocumento}">
+                <p:column headerText="Registro bitácora" sortBy="#{logImp.idDocumento}" filterBy="#{logImp.idDocumento}" filterMatchMode="contains">
                     <h:outputText value="#{logImp.idDocumento}" />
                 </p:column>
             </p:dataTable>

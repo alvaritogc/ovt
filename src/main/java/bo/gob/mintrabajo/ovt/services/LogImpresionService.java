@@ -36,7 +36,7 @@ public class LogImpresionService implements ILogImpresionService {
         return logImpresionRepository.save(docLogImpresion);
     }
 
-    public List<VdocLogImpresion> filtrarLogImpresion(String nroIdentificacion, String codDocumento, Date fechaInicio, Date fechaFinal){
+    public List<VdocLogImpresion> filtrarLogImpresion(String nroIdentificacion, String codDocumento, Date fechaInicio, Date fechaFinal, String tipoImpresion){
         int contador = 0;
         StringBuilder queryArmado = new StringBuilder();
         queryArmado.append("select dli.* from VDOC_LOG_IMPRESION dli ");
@@ -87,6 +87,14 @@ public class LogImpresionService implements ILogImpresionService {
             }
             queryArmado.append("trunc(FECHA_BITACORA) <= '" + fechaFinalTexto + "' ");
         }
+
+        if(contador > 0){
+            queryArmado.append("AND ");
+        }else{
+            queryArmado.append("WHERE ");
+            contador++;
+        }
+        queryArmado.append("TIPO_IMPRESION like '" + tipoImpresion + "%' ");
 
         System.out.println(queryArmado);
         Query query = entityManager.createNativeQuery(queryArmado.toString());

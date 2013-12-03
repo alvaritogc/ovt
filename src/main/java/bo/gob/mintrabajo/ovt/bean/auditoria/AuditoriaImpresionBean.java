@@ -8,14 +8,17 @@ import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,16 +42,29 @@ public class AuditoriaImpresionBean {
 
     private static final Logger log = LoggerFactory.getLogger(AuditoriaImpresionBean.class);
     private List<VdocLogImpresion> docLogImpresionLista;
+    private List<VdocLogImpresion> docLogImpresionFiltro;
+    private String tipoImpresion;
     private String nroIdentificacion;
     private String codDocumento;
     private Date fechaInicio;
     private Date fechaFinal;
 
+    @PostConstruct
+    public void ini() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        Map params = ec.getRequestParameterMap();
+        String param = params.get("code").toString();
+        if (param.equals("1RXN0YSBlcyBsYSBub3RhIGRlIGVzdGEgcOFnaW5h"))
+            tipoImpresion = "DOWN";
+        else if (param.equals("R3N0YS4lcyBsY8hub3RhIxdlIGVzW244FnRTGh2"))
+            tipoImpresion = "IMPR";
+    }
+
 
     public void buscarLogImpresion() {
         try {
             if (nroIdentificacion.length() > 0 || codDocumento.length() > 1 || fechaInicio != null || fechaFinal != null) {
-                docLogImpresionLista = iLogImpresionService.filtrarLogImpresion(nroIdentificacion, codDocumento, fechaInicio, fechaFinal);
+                docLogImpresionLista = iLogImpresionService.filtrarLogImpresion(nroIdentificacion, codDocumento, fechaInicio, fechaFinal, tipoImpresion);
                 log.info("Nro de resultados " + docLogImpresionLista.size());
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "Debe seleccionar almenos un criterio de búsqueda"));
@@ -57,7 +73,6 @@ public class AuditoriaImpresionBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "Ocurrió una falla de base de datos, comuniquese con el administrador"));
         }
     }
-
 
     /// **** getters && setters **** ///
     public ILogImpresionService getiLogImpresionService() {
@@ -122,5 +137,13 @@ public class AuditoriaImpresionBean {
 
     public void setDocLogImpresionLista(List<VdocLogImpresion> docLogImpresionLista) {
         this.docLogImpresionLista = docLogImpresionLista;
+    }
+
+    public List<VdocLogImpresion> getDocLogImpresionFiltro() {
+        return docLogImpresionFiltro;
+    }
+
+    public void setDocLogImpresionFiltro(List<VdocLogImpresion> docLogImpresionFiltro) {
+        this.docLogImpresionFiltro = docLogImpresionFiltro;
     }
 }
