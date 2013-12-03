@@ -114,12 +114,16 @@
                             <p:outputLabel value="NUMERO DE COMPROBANTE DE DEPÓSITO:" style="text-align: right;"/>
                             <p:inputText value="#{impresionRoeBean.nroComprobanteDeposito}" maxlength="10"
                                          style="text-align: right;"/>
-                            <p:outputLabel value="FECHA DEL DEPÓSITO:" style="text-align: right;"/>
-                            <p:calendar value="#{impresionRoeBean.fechaDeposito}"
+                            <p:outputLabel for="idFechaDelDeposito" value="FECHA DEL DEPÓSITO:"
+                                           style="text-align: right;"/>
+                            <p:calendar id="idFechaDelDeposito" value="#{impresionRoeBean.fechaDeposito}"
                                         maxdate="#{impresionRoeBean.fechaDepositoMax}"
+                                        validatorMessage="La fecha no es valida"
                                         locale="es"
+                                        maxlength="10"
                                         pattern="dd/MM/yyyy"
                                         showOn="button">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
                             </p:calendar>
                             <p:outputLabel value="MONTO DEL DEPÓSITO:" style="text-align: right;"/>
                             <pe:inputNumber value="#{impresionRoeBean.montoDeposito}"
