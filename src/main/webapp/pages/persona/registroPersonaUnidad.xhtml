@@ -18,19 +18,11 @@
         .column2{text-align: left;width: 100px;}
 
 
-        .columna{text-align: left;width: 220px;}
+        .columna{text-align: left;width: 320px;}
         .columnb{width: 80px;height:auto;text-align: left;}
         .column3{width: 220px;height:auto;}
         .column4{width: 80px;height:auto;text-align: left;}
-        .column1-1 {
-            width: 250px;
-            height: auto;
-        }
 
-        .column1-2 {
-            width: 305px;
-            height: auto;
-        }
     </style>
 
         <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
@@ -435,7 +427,7 @@
                             <h:outputText value=" Trabajadores"/>
                         </f:facet>
 
-                        <p:panel  id="pnlInfoLaboralPrincipal" >
+                        <p:panel   >
                             <f:facet name="footer">
                                 <p:commandButton id="cmdButtonInfoLaboral"
                                                  icon="ui-icon-pencil"
@@ -461,62 +453,59 @@
                                 </p:commandButton>
 
                             </f:facet>
-                             <h:panelGrid  columns="4" columnClasses="columna,columnb,column3,column4">
+                             <h:panelGrid  columns="4" columnClasses="columna,columnb,columna,columnb">
                                  <h:outputText value="N° total de trabajadores:"/>
-                                 <p:inputText value="#{personaUnidadBean.infolaboral.nroTotalTrabajadores}" readonly="true" style="width: 40px;text-align:right;"/>
+                                 <p:inputText value="#{unidad.infolaboral.nroTotalTrabajadores}" readonly="true" style="width: 40px;text-align:right;"/>
                                 <h:outputLabel/>
                                 <h:outputLabel/>
                                 <h:outputText value="Hombres:"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.nroHombres}" readonly="true" style="width: 40px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.nroHombres}" readonly="true" style="width: 40px;text-align:right;"/>
 
                                 <h:outputText value="Mujeres:"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.nroMujeres}" readonly="true" style="width: 40px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.nroMujeres}" readonly="true" style="width: 40px;text-align:right;"/>
 
                                 <h:outputText value="Extranjeros:"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.nroExtranjeros}" readonly="true" style="width: 40px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.nroExtranjeros}" readonly="true" style="width: 40px;text-align:right;"/>
 
                                 <h:outputText value="Fijos:"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.nroFijos}" readonly="true" style="width: 40px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.nroFijos}" readonly="true" style="width: 40px;text-align:right;"/>
 
                                 <h:outputText value="Eventuales:"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.nroEventuales}" readonly="true" style="width: 40px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.nroEventuales}" readonly="true" style="width: 40px;text-align:right;"/>
 
                                 <h:outputText value="Menores de 18 años:"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.nroMenores18}" readonly="true" style="width: 40px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.nroMenores18}" readonly="true" style="width: 40px;text-align:right;"/>
 
                                 <h:outputText value="Mayores de 60 años:"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.nroMayores60}" readonly="true" style="width: 40px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.nroMayores60}" readonly="true" style="width: 40px;text-align:right;"/>
 
                                 <h:outputText value="Personal trabajando jubilado:"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.nroJubilados}" readonly="true" style="width: 40px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.nroJubilados}" readonly="true" style="width: 40px;text-align:right;"/>
 
                                 <h:outputText value="Personal con capacidades diferenciales:"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.nroCapdiferente}" readonly="true" style="width: 40px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.nroCapdiferente}" readonly="true" style="width: 40px;text-align:right;"/>
 
                             </h:panelGrid>
-                            <h:panelGrid columns="2" columnClasses="columna,columnb">
+                            <h:panelGrid columns="2" columnClasses="column1">
                                 <h:outputText value="Total ganado de la planilla (Bs.):"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.totalPlanilla}" readonly="true" style="width: 150px;text-align:right;"/>
-
-                                <h:outputLabel/>
-                                <h:outputLabel/>
+                                <p:inputText value="#{unidad.infolaboral.totalPlanilla}" readonly="true" style="width: 150px;text-align:right;"/>
 
                                 <h:outputText value="N° asegurados en Caja de salud:"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.nroAsegCaja}" readonly="true" style="width: 40px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.nroAsegCaja}" readonly="true" style="width: 40px;text-align:right;"/>
 
                                 <h:outputText value="Monto aportado (Bs):"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.montoAsegCaja}" readonly="true" style="width: 150px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.montoAsegCaja}" readonly="true" style="width: 150px;text-align:right;"/>
 
 
                                 <h:outputText value="N° asegurados AFPs (largo plazo):"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.nroAsegAfp}" readonly="true" style="width: 40px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.nroAsegAfp}" readonly="true" style="width: 40px;text-align:right;"/>
 
                                 <h:outputText value="Monto aportado (Bs):"/>
-                                <p:inputText value="#{personaUnidadBean.infolaboral.montoAsegAfp}" readonly="true" style="width: 150px;text-align:right;"/>
+                                <p:inputText value="#{unidad.infolaboral.montoAsegAfp}" readonly="true" style="width: 150px;text-align:right;"/>
 
                                 <h:outputText value="Cuenta con sindicato:"/>
                                 <p:selectBooleanCheckbox id="checkSindicatoRead"
-                                                         value="#{personaUnidadBean.infolaboral.tipoSindicato}"
+                                                         value="#{unidad.infolaboral.tipoSindicato}"
                                                          tabindex="16" disabled="true">
                                 </p:selectBooleanCheckbox>
                             </h:panelGrid>
