@@ -18,22 +18,19 @@
         .column2{text-align: left;width: 100px;}
 
 
-        .columna{text-align: left;width: 180px;}
+        .columna{text-align: left;width: 220px;}
         .columnb{width: 80px;height:auto;text-align: left;}
-        .column3{width: 180px;height:auto;}
+        .column3{width: 220px;height:auto;}
         .column4{width: 80px;height:auto;text-align: left;}
-        .column5{width: 120px;height:auto;}
-        .column6{width: 80px;height:auto;text-align: left;}
         .column1-1 {
-            width: 175px;
+            width: 250px;
             height: auto;
         }
 
-        .column1-1-1 {
-            width: 530px;
+        .column1-2 {
+            width: 305px;
             height: auto;
         }
-
     </style>
 
         <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
@@ -497,7 +494,7 @@
                                 <p:inputText value="#{personaUnidadBean.infolaboral.nroCapdiferente}" readonly="true" style="width: 40px;text-align:right;"/>
 
                             </h:panelGrid>
-                            <h:panelGrid columns="4" columnClasses="columna,column1">
+                            <h:panelGrid columns="2" columnClasses="columna,columnb">
                                 <h:outputText value="Total ganado de la planilla (Bs.):"/>
                                 <p:inputText value="#{personaUnidadBean.infolaboral.totalPlanilla}" readonly="true" style="width: 150px;text-align:right;"/>
 

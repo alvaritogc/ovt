@@ -500,7 +500,8 @@ public class EscritorioBean {
         }
 
         try{
-            conn= DriverManager.getConnection(dbUrl, dbUname, dbPwd);
+            //conn= DriverManager.getConnection(dbUrl, dbUname, dbPwd);
+            conn=Util.obtenerDatasource().getConnection();
         }catch (SQLException e){
             logger.error("Error de conexion "+e.getMessage());
         }
