@@ -2,7 +2,6 @@ package bo.gob.mintrabajo.ovt.bean.declaracion;
 
 import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.Util.UtilityData;
-import bo.gob.mintrabajo.ovt.Util.XlsToCSV;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import com.csvreader.CsvReader;
@@ -21,11 +20,16 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * User: gmercado
@@ -410,8 +414,9 @@ public class DeclaracionAguinaldoBean implements Serializable {
             for(DocBinario docBinario:listaBinarios){
                 CsvReader registro;
                 if(!FilenameUtils.getExtension(docBinario.getTipoDocumento()).toUpperCase().equals(Dominios.EXTENSION_CSV)){
-                    OutputStream output= XlsToCSV.xlsToCsv(new ByteArrayInputStream(docBinario.getBinario()));
-                    registro = new CsvReader(new InputStreamReader(new ByteArrayInputStream(((ByteArrayOutputStream) output).toByteArray())));
+                      registro = new CsvReader("sdf");
+//                      OutputStream output= XlsToCSV.xlsToCsv(new ByteArrayInputStream(docBinario.getBinario()));
+//                    registro = new CsvReader(new InputStreamReader(new ByteArrayInputStream(((ByteArrayOutputStream) output).toByteArray())));
 //                    registro =null;
                 }
                 else

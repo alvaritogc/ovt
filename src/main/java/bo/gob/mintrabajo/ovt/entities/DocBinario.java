@@ -16,21 +16,10 @@
 
 package bo.gob.mintrabajo.ovt.entities;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  *
@@ -63,6 +52,8 @@ public class DocBinario implements Serializable {
     @JoinColumn(name = "ID_DOCUMENTO", referencedColumnName = "ID_DOCUMENTO", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DocDocumento docDocumento;
+    @Transient
+    private InputStream inputStream;
 
     public DocBinario() {
     }
@@ -137,6 +128,14 @@ public class DocBinario implements Serializable {
 
     public void setDocDocumento(DocDocumento docDocumento) {
         this.docDocumento = docDocumento;
+    }
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
     }
 
     @Override

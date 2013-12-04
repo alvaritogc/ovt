@@ -1,80 +1,74 @@
 package bo.gob.mintrabajo.ovt.Util;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import au.com.bytecode.opencsv.CSVWriter;
+import bo.gob.mintrabajo.ovt.entities.DocBinario;
+import org.apache.poi.ss.usermodel.*;
 
 import javax.faces.context.FacesContext;
-import java.io.*;
-import java.sql.Timestamp;
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Iterator;
-
-
 /**
  * User: Renato Velasquez
  * Date: 11/5/13
  */
+
+
 public class XlsToCSV {
-    public static OutputStream xlsToCsv(InputStream inputFile){
-        // For storing data into CSV files
-        StringBuffer data = new StringBuffer();
-        try{
+    public static File conversion(DocBinario binario) throws Exception{
+        int columnas=0;
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        //First we read the Excel file in binary format into FileInputStream
+//        FileInputStream input_document = new FileInputStream(new File("C:\\excel_to_csv.xls"));
 
-            // Get the workbook object for XLS file
-            HSSFWorkbook workbook = new HSSFWorkbook(inputFile);
-            // Get first sheet from the workbook
-            HSSFSheet sheet = workbook.getSheetAt(0);
-            Cell cell;
-            Row row;
-
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-
-            File file = new File(facesContext.getExternalContext()+"/archivosVarios/xlsToCsv"+new Timestamp(System.currentTimeMillis()).getTime());
-            OutputStream os= new FileOutputStream(file);
-
-            // Iterate through each rows from first sheet
-            Iterator<Row> rowIterator = sheet.iterator();
-            while (rowIterator.hasNext()){
-                row = rowIterator.next();
-                // For each row, iterate through each columns
-                Iterator<Cell> cellIterator = row.cellIterator();
-                while (cellIterator.hasNext()){
-                    cell = cellIterator.next();
-                    switch (cell.getCellType()){
-                        case Cell.CELL_TYPE_BOOLEAN:
-                            data.append(cell.getBooleanCellValue() + ",");
-                            break;
-
-                        case Cell.CELL_TYPE_NUMERIC:
-                            data.append(cell.getNumericCellValue() + ",");
-                            break;
-
-                        case Cell.CELL_TYPE_STRING:
-                            data.append(cell.getStringCellValue() + ",");
-                            break;
-
-                        case Cell.CELL_TYPE_BLANK:
-                            data.append("" + ",");
-                            break;
-
-                        default:
-                            data.append(cell + ",");
-                    }
+        // Read workbook into HSSFWorkbook
+//        HSSFWorkbook my_xls_workbook = new HSSFWorkbook(binario.getInputStream());
+        Workbook wb = WorkbookFactory.create(binario.getInputStream());
+        // Read worksheet into HSSFSheet
+        Sheet my_worksheet = wb.getSheetAt(0);
+        // To iterate over the rows
+        Iterator<Row> rowIterator = my_worksheet.iterator();
+        // OpenCSV writer object to create CSV file
+        String rutaCSV=servletContext.getRealPath("/")+"/archivosVarios/"+binario.getTipoDocumento()+".csv";
+        File file= new File(rutaCSV);
+        FileWriter my_csv=new FileWriter(rutaCSV);
+        CSVWriter my_csv_output=new CSVWriter(my_csv);
+        //Loop through rows.
+        while(rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            int i=0;//String array
+            //change this depending on the length of your sheet
+            if(columnas==0)
+                columnas=row.getLastCellNum();
+            String[] csvdata = new String[columnas];
+            Iterator<Cell> cellIterator = row.iterator();
+            while(cellIterator.hasNext()) {
+                Cell cell = cellIterator.next(); //Fetch CELL
+                switch(cell.getCellType()) { //Identify CELL type
+                    //you need to add more code here based on
+                    //your requirement / transformations
+                    case Cell.CELL_TYPE_STRING:
+                        csvdata[i]= cell.getStringCellValue();
+                        break;
+                    case Cell.CELL_TYPE_NUMERIC:
+                        csvdata[i]= String.valueOf(cell.getNumericCellValue());
+                        break;
+                    case Cell.CELL_TYPE_BLANK:
+                        csvdata[i]= "-1";
+                        break;
+                    case Cell.CELL_TYPE_BOOLEAN:
+                        csvdata[i]= String.valueOf(cell.getBooleanCellValue());
+                        break;
                 }
+                i=i+1;
             }
-            os.write(data.toString().getBytes());
-            os.close();
-            return os;
+            my_csv_output.writeNext(csvdata);
         }
-        catch (FileNotFoundException e){
-            e.printStackTrace();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-        return null;
+        my_csv_output.close(); //close the CSV file
+
+        //we created our file..!!
+        binario.getInputStream().close(); //close xls
+        return file;
     }
 }
-
-

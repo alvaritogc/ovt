@@ -19,9 +19,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -38,7 +42,6 @@ import java.util.List;
 @ManagedBean
 @ViewScoped
 public class DeclaracionTrimestralBean implements Serializable {
-
 
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private static final Logger logger = LoggerFactory.getLogger(DeclaracionTrimestralBean.class);
@@ -72,7 +75,6 @@ public class DeclaracionTrimestralBean implements Serializable {
     @ManagedProperty(value = "#{calendarioService}")
     private ICalendarioService iCalendarioService;
 
-
     private int parametro;
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
     private List<ParEntidad> parEntidadLista;
@@ -98,7 +100,7 @@ public class DeclaracionTrimestralBean implements Serializable {
     private UsrUsuario usuario;
     private UploadedFile file;
     private String nombres[]= new String[3];
-    //
+
     private boolean estaDeclarado;
     private String estaDeclaradoMensaje;
     private Long idEntidadSalud;
@@ -116,7 +118,9 @@ public class DeclaracionTrimestralBean implements Serializable {
     private List<DocPlanillaDetalle> docPlanillaDetalles;
     private String gestion;
     private String trimestre;
-
+    private String e;
+    private List<String> advertencias;
+    private int tamañoAdvertencias;
 
     @PostConstruct
     public void ini() {
@@ -131,7 +135,6 @@ public class DeclaracionTrimestralBean implements Serializable {
         }
         if(parametro==2)
             habilita=false;
-
         idPersona = (String) session.getAttribute("idEmpleador");
         logger.info("buscando persona:"+idPersona);
         persona = iPersonaService.buscarPorId(idPersona);
@@ -338,6 +341,7 @@ public class DeclaracionTrimestralBean implements Serializable {
             binario.setFechaBitacora(new Timestamp(new Date().getTime()));
             binario.setRegistroBitacora(usuario.getUsuario());
             binario.setBinario(file.getContents());
+            binario.setInputStream(file.getInputstream());
             listaBinarios.add(binario);
 
             if(listaBinarios.size()==3)
@@ -348,45 +352,35 @@ public class DeclaracionTrimestralBean implements Serializable {
         }
     }
 
-    public String guardaDocumentoPlanillaBinario(){
-        if(parametro==3 && idRectificatorio==null)   {
+    public String guardaDocumentoPlanillaBinario(ActionEvent actionEvent){
+        if(parametro==3 && idRectificatorio==null){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Advertencia", "No puede guardarse, ya que no se pueden obtener declaraciones."));
             return null;
         }
 
+        validaArchivo(listaBinarios);
 
-//        validaArchivo(listaBinarios);
-//        if(errores.size()>0){
-//            String e="";
-//            for(String error:errores)
-//                e=e+ error;
-//            System.out.println(e);
-//            FacesContext.getCurrentInstance().addMessage(String.valueOf(idUsuario), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error de dato: ", e));
-//            return null;
-//        }
-
-//        if(errores.size()==0 && verificaValidacion){
-        try{
-            if(parametro==3){
-                documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
+        if(errores.size()==0 && verificaValidacion){
+            try{
+                if(parametro==3)
+                    documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
+                logger.info("Guardando documento, binario y planilla");
+                logger.info(documento.toString());
+                logger.info(listaBinarios.toString());
+                logger.info(docPlanilla.toString());
+                generaPlanilla();
+                documento.setPerUnidad(unidadSeleccionada);
+                iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);
+                return "irEscritorio";
+            }catch (Exception e){
+                e.printStackTrace();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
             }
-
-            logger.info("Guardando documento, binario y planilla");
-            logger.info(documento.toString());
-            logger.info(listaBinarios.toString());
-            logger.info(docPlanilla.toString());
-            generaPlanilla();
-            documento.setPerUnidad(unidadSeleccionada);
-            iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Guardado correctamente"));
-
-        }catch (Exception e){
-            e.printStackTrace();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
-            return null;
+        }else{
+            binario = new DocBinario();
+            listaBinarios.clear();
         }
-        return "irEscritorio";
-//        }
+        return null;
     }
 
     public String irInicio(){
@@ -406,44 +400,29 @@ public class DeclaracionTrimestralBean implements Serializable {
     }
 
     public String mensajeError(int i, String titulo){
-        return "Fila: "+i+" y Columna: "+ titulo+ ";";
+        return "Fila: \""+i+"\" y Columna: \""+ titulo+ "\"; ";
     }
 
     public void validaArchivo(List<DocBinario> listaBinarios){
-//    public void validaArchivo(){
-        verificaValidacion=false;
-        docPlanillaDetalles = new ArrayList<DocPlanillaDetalle>();
-        errores = new ArrayList<String>();
-        int valorPlanilla=0;
         try {
+            docPlanillaDetalles = new ArrayList<DocPlanillaDetalle>();
+            errores = new ArrayList<String>();
+            advertencias = new ArrayList<String>();
+            int valorPlanilla=0;
             for(DocBinario docBinario:listaBinarios){
                 CsvReader registro;
                 if(!FilenameUtils.getExtension(docBinario.getTipoDocumento()).toUpperCase().equals(Dominios.EXTENSION_CSV)){
-                    OutputStream output= XlsToCSV.xlsToCsv(new ByteArrayInputStream(docBinario.getBinario()));
-                    registro = new CsvReader(new InputStreamReader(new ByteArrayInputStream(((ByteArrayOutputStream) output).toByteArray())));
-//                    registro =null;
+                    File file = XlsToCSV.conversion(docBinario);
+                    registro = new CsvReader(file.getAbsolutePath());
                 }
                 else
                     registro = new CsvReader(new InputStreamReader(new ByteArrayInputStream(docBinario.getBinario())));
-
-//                registro= new CsvReader("/home/rvelasquez/Desktop/LC1010-10 prueba.csv");
-//                DocBinario docBinario= new DocBinario();
-//                docBinario.setTipoDocumento("dsfgsdf LC1010-10 sdfgsdfgfdsg");
-
-//                if(docBinario.getTipoDocumento().toUpperCase().contains("LC1010-10"))
-//                    valorPlanilla=1;
-//                else{
-//                    if(docBinario.getTipoDocumento().toUpperCase().contains("LC1010-20"))
-//                        valorPlanilla=2;
-//                    else
-//                        valorPlanilla=3;
-//                }
-
 
                 registro.readHeaders();
                 int c=0;
                 //TODO nombre del documento extraido del metadata
                 errores.add(docBinario.getTipoDocumento().toUpperCase());
+                advertencias.add(docBinario.getTipoDocumento().toUpperCase());
                 while (registro.readRecord()){
                     if(c==0){
                         switch (registro.getColumnCount()){
@@ -577,8 +556,11 @@ public class DeclaracionTrimestralBean implements Serializable {
                                 docPlanillaDetalle.setBonoAntiguedad(registro.get(registro.getHeader(columna)));
                                 break;
                             case 3:
-                                if(!registro.get(columna).equals(""))
+                                if(!registro.get(columna).equals("")){
+                                    if((int) Double.parseDouble(registro.get(columna))<1200)
+                                        advertencias.add("El salario en la fila \""+c+"\" y la columna "+registro.getHeader(columna) +"es menor al salirio mínimo establecido por ley");
                                     docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
+                                }
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
@@ -611,8 +593,11 @@ public class DeclaracionTrimestralBean implements Serializable {
                                 docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
                                 break;
                             case 2:
-                                if(!registro.get(columna).equals(""))
+                                if(!registro.get(columna).equals("")){
+                                    if((int) Double.parseDouble(registro.get(columna))<1200)
+                                        advertencias.add("El salario en la fila \""+c+"\" y la columna "+registro.getHeader(columna) +"es menor al salirio mínimo establecido por ley");
                                     docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
+                                }
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
@@ -736,8 +721,11 @@ public class DeclaracionTrimestralBean implements Serializable {
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //36
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna))))
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))){
+                            if((int) Double.parseDouble(registro.get(columna))<1200)
+                                advertencias.add("El salario en la fila \""+c+"\" y la columna \""+registro.getHeader(columna) +"\" es menor al salario mínimo establecido por ley");
                             docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
+                        }
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
@@ -774,21 +762,12 @@ public class DeclaracionTrimestralBean implements Serializable {
                     docPlanillaDetalles.add(docPlanillaDetalle);
                 }
             }
-//            if(errores.size()>0){
-//                for (String error:errores)
-//                    System.out.println(error);
-//            }
-//            else{
-//                for(DocPlanillaDetalle docPlanillaDetalle:docPlanillaDetalles){
-//                    System.out.println(docPlanillaDetalle);
-//                        iPlanillaDetalleService.guardar(docPlanillaDetalle);
-//                }
-//            }
+            verificaValidacion=true;
         }
         catch (Exception e){
+            verificaValidacion=false;
             e.printStackTrace();
         }
-        verificaValidacion=true;
     }
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
@@ -1171,5 +1150,45 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void setTrimestre(String trimestre) {
         this.trimestre = trimestre;
+    }
+
+    public String getE() {
+        return e;
+    }
+
+    public void setE(String e) {
+        this.e = e;
+    }
+
+    public List<String> getErrores() {
+        return errores;
+    }
+
+    public void setErrores(List<String> errores) {
+        this.errores = errores;
+    }
+
+    public List<String> getAdvertencias() {
+        return advertencias;
+    }
+
+    public void setAdvertencias(List<String> advertencias) {
+        this.advertencias = advertencias;
+    }
+
+    public int getTamañoAdvertencias() {
+        return tamañoAdvertencias;
+    }
+
+    public void setTamañoAdvertencias(int tamañoAdvertencias) {
+        this.tamañoAdvertencias = tamañoAdvertencias;
+    }
+
+    public boolean isVerificaValidacion() {
+        return verificaValidacion;
+    }
+
+    public void setVerificaValidacion(boolean verificaValidacion) {
+        this.verificaValidacion = verificaValidacion;
     }
 }

@@ -1,5 +1,7 @@
 package bo.gob.mintrabajo.ovt.auth;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
+import com.google.common.io.ByteStreams;
 import oracle.jdbc.pool.OracleDataSource;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -11,6 +13,9 @@ import org.apache.shiro.realm.jdbc.JdbcRealm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -51,23 +56,7 @@ public class AuthenticationRealm extends JdbcRealm {
 
         setAuthenticationQuery(AUTENTICACION_DE_USUARIO);
         setPermissionsLookupEnabled(true);
-
-        try {
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-
-            OracleDataSource dataSource = new OracleDataSource();
-            dataSource.setServerName("192.168.50.7");
-            dataSource.setUser("ovt");
-            dataSource.setPassword("prueba");
-            dataSource.setDatabaseName("DESA");
-            dataSource.setPortNumber(1521);
-            dataSource.setDriverType("thin");
-            setDataSource(dataSource);
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-            java.util.logging.Logger.getLogger(AuthenticationRealm.class.getName()).log(Level.SEVERE, null, se);
-        }
+        setDataSource(Util.obtenerDatasource());
     }
 
     @Override
@@ -109,6 +98,40 @@ public class AuthenticationRealm extends JdbcRealm {
     private void checkNotNull(Object reference, String message) {
         if (reference == null) {
             throw new AuthenticationException(message);
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            // read JSON file data as String
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ByteStreams.copy(AuthenticationRealm.class.getResourceAsStream("/ovt.conf"), out);
+            String fileData = new String(out.toByteArray());
+
+            String jsonFinal = "";
+            boolean tmp= false;
+
+                for (int x = 0; x < fileData.length(); x++) {
+
+                    if(fileData.charAt(x) == 'j') {
+                        tmp = true;
+                    }
+
+                    if (fileData.charAt(x) != ' ' && tmp) {
+                        jsonFinal += fileData.charAt(x);
+                    } else if(tmp){
+                        break;
+                    }
+                }
+
+            String[] token = jsonFinal.split("[/:@\"]");
+
+            for(int i = 0; i<token.length ; i++){
+                System.out.println("------ " + token[i] + " " + i);
+            }
+
+        } catch (Exception ie) {
+            ie.printStackTrace();
         }
     }
 }

@@ -138,11 +138,11 @@ public class DocumentoService implements IDocumentoService {
         logger.info("Guarda" + planillaRepository.save(docPlanilla));
 
         //guardaPlanillaDetalles
-//        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
-//            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
-//            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_DETALLE_SEC"));
-//            logger.info("Guarda",planillaDetalleRepository.save(elemPlanillaDetalle));
-//        }
+        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
+            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
+            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_DETALLE_SEC"));
+            logger.info("Guarda",planillaDetalleRepository.save(elemPlanillaDetalle));
+        }
 
         //guarda binarios
         int idBinario = 1;
@@ -462,8 +462,9 @@ public class DocumentoService implements IDocumentoService {
         } else {
             //Si ya tiene un documento actualizara codEstado de 010 al q tenga en docDefinicion ej 013
             docDocumento = documentoRepository.findOne(idDocumento);
-            docDocumento.setCodEstado(documentoEstadoRepository.findOne(docDefinicion.getCodEstado().getCodEstado()));//Estado inicial
-            docDocumento = documentoRepository.save(docDocumento);
+            guardarCambioEstado(docDocumento, docDefinicion.getCodEstado().getCodEstado(), registroBitacora, "LLENADO DEL COMPROBANTE DE DEPOSITO");
+            //docDocumento.setCodEstado(documentoEstadoRepository.findOne(docDefinicion.getCodEstado().getCodEstado()));//Estado inicial
+            //docDocumento = documentoRepository.save(docDocumento);
         }
 
         //

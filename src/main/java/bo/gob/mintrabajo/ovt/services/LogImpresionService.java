@@ -57,7 +57,7 @@ public class LogImpresionService implements ILogImpresionService {
                 queryArmado.append("WHERE ");
                 contador++;
             }
-            queryArmado.append("NRO_IDENTIFICACION like '" + codDocumento + "%' ");
+            queryArmado.append("COD_DOCUMENTO like '" + codDocumento + "%' ");
         }
 
         if(fechaInicio != null){

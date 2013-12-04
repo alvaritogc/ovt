@@ -67,6 +67,7 @@ public class ImpresionRoeBean {
     private List<ParEntidad> listaEntidades;
     private String parametroDocDefinicion;
     private String bitacoraSession;
+    private Date fechaDepositoMax;
 
     @PostConstruct
     public void ini() {
@@ -76,11 +77,18 @@ public class ImpresionRoeBean {
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
         cargar();
         cargarEntidades();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaMax = sdf.format(new Date());
+        try {
+            fechaDepositoMax = sdf.parse(fechaMax);
+        } catch (Exception e) {
+        }
+
     }
 
     public void cargar() {
         parametroDocDefinicion = (String) session.getAttribute("parametroDocDefinicion");
-        idDocumento = (Long) session.getAttribute("idDocumento");
+        idDocumento = (Long) session.getAttribute("idDocumentoImpresion");
         if (idDocumento != null) {
             docGenerico = iDocGenericoService.buscarPorDocumento(idDocumento);
             docDefinicion = iDefinicionService.buscarActivoPorCodDocumento(docGenerico.getIdDocumento().getDocDefinicion().getDocDefinicionPK().getCodDocumento());
@@ -139,9 +147,10 @@ public class ImpresionRoeBean {
         //documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico, idUsuario.toString(), docDefinicion);//, vperPersona, idUsuarioEmpleador);
         documento = iDocumentoService.guardarDocumentoRoe(docGenerico, idDocumento, perUnidadPK, docDefinicion.getDocDefinicionPK(), bitacoraSession, parametroDocDefinicion);
 
-        session.removeAttribute("idDocumento");
-//        session.removeAttribute("docDefinicionPK");
-        session.removeAttribute("parametroDocDefinicion");
+//        session.removeAttribute("idDocumentoImpresion");
+//        session.removeAttribute("parametroDocDefinicion");
+        session.setAttribute("idDocumentoImpresion", null);
+        session.setAttribute("parametroDocDefinicion", null);
         return "irEscritorio";
     }
 
@@ -303,5 +312,13 @@ public class ImpresionRoeBean {
 
     public void setiDocGenericoService(IDocGenericoService iDocGenericoService) {
         this.iDocGenericoService = iDocGenericoService;
+    }
+
+    public Date getFechaDepositoMax() {
+        return fechaDepositoMax;
+    }
+
+    public void setFechaDepositoMax(Date fechaDepositoMax) {
+        this.fechaDepositoMax = fechaDepositoMax;
     }
 }
