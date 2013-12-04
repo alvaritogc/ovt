@@ -58,6 +58,8 @@ public class ActualizaRoeBean {
     //
     private String bitacoraSession;
     //
+    private boolean mostrarFormulario;
+    private String mostrarFormularioMensaje;
 
     @PostConstruct
     public void ini() {
@@ -66,6 +68,17 @@ public class ActualizaRoeBean {
         idEmpleador = (String) session.getAttribute("idEmpleador");
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
         usuario = iUsuarioService.findById(idUsuario);
+
+        mostrarFormulario = iDocumentoService.existeRoe(idEmpleador);
+        if (mostrarFormulario) {
+            mostrarFormularioMensaje = "";
+        } else {
+            if (idEmpleador == null) {
+                mostrarFormularioMensaje = "No se encontro al empleador";
+            } else {
+                mostrarFormularioMensaje = "No se encontro un documento ROE activo para este empleador";
+            }
+        }
         cargar();
     }
 
@@ -211,5 +224,21 @@ public class ActualizaRoeBean {
 
     public void setDocDefinicion(DocDefinicion docDefinicion) {
         this.docDefinicion = docDefinicion;
+    }
+
+    public boolean isMostrarFormulario() {
+        return mostrarFormulario;
+    }
+
+    public void setMostrarFormulario(boolean mostrarFormulario) {
+        this.mostrarFormulario = mostrarFormulario;
+    }
+
+    public String getMostrarFormularioMensaje() {
+        return mostrarFormularioMensaje;
+    }
+
+    public void setMostrarFormularioMensaje(String mostrarFormularioMensaje) {
+        this.mostrarFormularioMensaje = mostrarFormularioMensaje;
     }
 }

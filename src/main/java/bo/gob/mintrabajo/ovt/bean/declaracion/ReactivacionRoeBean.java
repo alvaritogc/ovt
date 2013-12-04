@@ -63,6 +63,8 @@ public class ReactivacionRoeBean implements Serializable {
     private int nit;
     //
     //
+    private boolean mostrarFormulario;
+    private String mostrarFormularioMensaje;
 
     @PostConstruct
     public void ini() {
@@ -72,6 +74,13 @@ public class ReactivacionRoeBean implements Serializable {
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
         usuario = iUsuarioService.findById(idUsuario);
         esFuncionario = usuario.getEsInterno() == 1 ? true : false;
+        if (idEmpleador == null || idEmpleador.trim().equals("")) {
+            mostrarFormulario = false;
+            mostrarFormularioMensaje = "No se encontro al empleador";
+        } else {
+            mostrarFormulario = true;
+            mostrarFormularioMensaje = "";
+        }
         cargar();
     }
 
@@ -234,5 +243,21 @@ public class ReactivacionRoeBean implements Serializable {
 
     public void setNit(int nit) {
         this.nit = nit;
+    }
+
+    public boolean isMostrarFormulario() {
+        return mostrarFormulario;
+    }
+
+    public void setMostrarFormulario(boolean mostrarFormulario) {
+        this.mostrarFormulario = mostrarFormulario;
+    }
+
+    public String getMostrarFormularioMensaje() {
+        return mostrarFormularioMensaje;
+    }
+
+    public void setMostrarFormularioMensaje(String mostrarFormularioMensaje) {
+        this.mostrarFormularioMensaje = mostrarFormularioMensaje;
     }
 }
