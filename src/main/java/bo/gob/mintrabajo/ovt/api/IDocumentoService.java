@@ -44,4 +44,6 @@ public interface IDocumentoService {
     public DocDocumento guardarReactivacionRoe(DocGenerico docGenerico, PerUnidadPK perUnidadPK, String registroBitacora);
 
     List<DocDocumento> listarDocumentosParaRectificar(String idPersona, String codDocumento);
+
+    public boolean existeRoe(String idPersona);
 }

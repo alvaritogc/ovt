@@ -144,15 +144,15 @@ public class DocumentoService implements IDocumentoService {
         logger.info("Guarda" + docPlanilla);
 
         //guardaPlanillaDetalles
-        for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
+        for (DocPlanillaDetalle elemPlanillaDetalle : docPlanillaDetalles) {
             elemPlanillaDetalle.setIdPlanilla(docPlanilla);
             elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
-            logger.info("Guarda",planillaDetalleRepository.save(elemPlanillaDetalle));
+            logger.info("Guarda", planillaDetalleRepository.save(elemPlanillaDetalle));
         }
 
         //guardaAlertas
-        DocAlertaDefinicion docAlertaDefinicion=alertaDefinicionRepository.findByDocDefinicion_DocDefinicionPK(docDocumento.getDocDefinicion().getDocDefinicionPK());
-        for(DocAlerta docAlerta:alertas){
+        DocAlertaDefinicion docAlertaDefinicion = alertaDefinicionRepository.findByDocDefinicion_DocDefinicionPK(docDocumento.getDocDefinicion().getDocDefinicionPK());
+        for (DocAlerta docAlerta : alertas) {
             docAlerta.setEstadoAlerta("Estado Alerta");  //revisar que utilizar
             docAlerta.setCodAlerta(docAlertaDefinicion);
             docAlerta.setIdDocumento(docDocumento);
@@ -502,5 +502,15 @@ public class DocumentoService implements IDocumentoService {
 
     public List<DocDocumento> listarDocumentosParaRectificar(String idPersona, String codDocumento) {
         return documentoRepository.listarDocumentosParaRectificar(idPersona, codDocumento);
+    }
+
+    public boolean existeRoe(String idPersona) {
+        ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_INSCRIPCION);
+        DocDefinicion docDefinicion = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacion.getDescripcion());
+        List<DocDocumento> listaDocumentos = documentoRepository.listarPorDocDefinicionYCodEstado(idPersona, docDefinicion.getDocDefinicionPK().getCodDocumento(), docDefinicion.getCodEstado().getCodEstado());
+        if (listaDocumentos == null || listaDocumentos.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 }

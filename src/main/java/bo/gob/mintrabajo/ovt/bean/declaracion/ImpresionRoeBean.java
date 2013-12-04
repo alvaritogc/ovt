@@ -68,6 +68,9 @@ public class ImpresionRoeBean {
     private String parametroDocDefinicion;
     private String bitacoraSession;
     private Date fechaDepositoMax;
+    //
+    private boolean mostrarFormulario;
+    private String mostrarFormularioMensaje;
 
     @PostConstruct
     public void ini() {
@@ -88,6 +91,23 @@ public class ImpresionRoeBean {
 
     public void cargar() {
         parametroDocDefinicion = (String) session.getAttribute("parametroDocDefinicion");
+        //
+        if (parametroDocDefinicion != null && !parametroDocDefinicion.trim().equals("")) {
+            mostrarFormulario = true;
+            mostrarFormularioMensaje = "";
+        } else {
+            mostrarFormulario = iDocumentoService.existeRoe(idEmpleador);
+            if (mostrarFormulario) {
+                mostrarFormularioMensaje = "";
+            } else {
+                if (idEmpleador == null) {
+                    mostrarFormularioMensaje = "No se encontro al empleador";
+                } else {
+                    mostrarFormularioMensaje = "No se encontro un documento ROE activo para este empleador";
+                }
+            }
+        }
+        //
         idDocumento = (Long) session.getAttribute("idDocumentoImpresion");
         if (idDocumento != null) {
             docGenerico = iDocGenericoService.buscarPorDocumento(idDocumento);
@@ -95,7 +115,18 @@ public class ImpresionRoeBean {
             docGenerico = iDocGenericoService.buscarPorDocumento(idDocumento);
             //
             vperPersona = iVperPersonaService.cargaVistaPersona(docGenerico.getIdDocumento().getPerUnidad().getPerPersona().getIdPersona());
-            //
+            //==================================================================
+            mostrarFormulario = iDocumentoService.existeRoe(docGenerico.getIdDocumento().getPerUnidad().getPerPersona().getIdPersona());
+            if (mostrarFormulario) {
+                mostrarFormularioMensaje = "";
+            } else {
+                if (idEmpleador == null) {
+                    mostrarFormularioMensaje = "No se encontro al empleador";
+                } else {
+                    mostrarFormularioMensaje = "No se encontro un documento ROE activo para este empleador";
+                }
+            }
+            //==================================================================
             bancoDeposito = docGenerico.getCadena01();
             nroComprobanteDeposito = docGenerico.getCadena02();
             fechaDeposito = docGenerico.getFecha01();
@@ -320,5 +351,21 @@ public class ImpresionRoeBean {
 
     public void setFechaDepositoMax(Date fechaDepositoMax) {
         this.fechaDepositoMax = fechaDepositoMax;
+    }
+
+    public boolean isMostrarFormulario() {
+        return mostrarFormulario;
+    }
+
+    public void setMostrarFormulario(boolean mostrarFormulario) {
+        this.mostrarFormulario = mostrarFormulario;
+    }
+
+    public String getMostrarFormularioMensaje() {
+        return mostrarFormularioMensaje;
+    }
+
+    public void setMostrarFormularioMensaje(String mostrarFormularioMensaje) {
+        this.mostrarFormularioMensaje = mostrarFormularioMensaje;
     }
 }

@@ -66,6 +66,9 @@ public class BajaRoeBean {
     private List<ParDominio> listaDominioMeses;
     private List<ParCalendario> listaCalendarioAnios;
     private List<String> listaGestiones;
+    //
+    private boolean mostrarFormulario;
+    private String mostrarFormularioMensaje;
 
     @PostConstruct
     public void ini() {
@@ -75,6 +78,17 @@ public class BajaRoeBean {
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
         usuario = iUsuarioService.findById(idUsuario);
         esFuncionario = usuario.getEsInterno() == 1 ? true : false;
+        //
+        mostrarFormulario = iDocumentoService.existeRoe(idEmpleador);
+        if (mostrarFormulario) {
+            mostrarFormularioMensaje = "";
+        } else {
+            if (idEmpleador == null) {
+                mostrarFormularioMensaje = "No se encontro al empleador";
+            } else {
+                mostrarFormularioMensaje = "No se encontro un documento ROE activo para este empleador";
+            }
+        }
         cargar();
     }
 
@@ -351,5 +365,21 @@ public class BajaRoeBean {
 
     public void setDocDefinicion(DocDefinicion docDefinicion) {
         this.docDefinicion = docDefinicion;
+    }
+
+    public boolean isMostrarFormulario() {
+        return mostrarFormulario;
+    }
+
+    public void setMostrarFormulario(boolean mostrarFormulario) {
+        this.mostrarFormulario = mostrarFormulario;
+    }
+
+    public String getMostrarFormularioMensaje() {
+        return mostrarFormularioMensaje;
+    }
+
+    public void setMostrarFormularioMensaje(String mostrarFormularioMensaje) {
+        this.mostrarFormularioMensaje = mostrarFormularioMensaje;
     }
 }
