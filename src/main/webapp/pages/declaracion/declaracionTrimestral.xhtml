@@ -114,7 +114,7 @@
             <p:outputLabel id="trimestre" value="#{declaracionTrimestralBean.periodo}" rendered="#{declaracionTrimestralBean.parametro==3}"/>
             <p:selectOneMenu value="#{declaracionTrimestralBean.periodo}" style="width: 260px; height: 20px" rendered="#{declaracionTrimestralBean.parametro!=3}">
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionTrimestralBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="#{oCalendario.parCalendario.tipoCalendario}" itemLabel="#{oCalendario.parCalendario.parCalendarioPK.gestion} - #{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>
+                <f:selectItems value="#{declaracionTrimestralBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="#{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}" itemLabel="#{oCalendario.parCalendario.parCalendarioPK.gestion} - #{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>
             </p:selectOneMenu>
         </p:outputPanel>
     </p:column>

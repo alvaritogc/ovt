@@ -301,7 +301,10 @@ public class DeclaracionTrimestralBean implements Serializable {
         docPlanilla.setNroEmpleador(vperPersona.getNroOtro());
         docPlanilla.setNroPatronalss(vperPersona.getNroCajaSalud());
         docPlanilla.setNombreRazonSocial(vperPersona.getNombreRazonSocial());
-        docPlanilla.setIdActividadEconomica((UtilityData.isInteger(vperPersona.getActividadDeclarada()))? new Long(vperPersona.getActividadDeclarada()):0);
+        if(vperPersona.getActividadDeclarada()!=null && UtilityData.isInteger(vperPersona.getActividadDeclarada()))
+            docPlanilla.setIdActividadEconomica(new Long(vperPersona.getActividadDeclarada()));
+        else
+            docPlanilla.setIdActividadEconomica(0L);
         docPlanilla.setCodLocalidadCiudad(vperPersona.getCodLocalidad());
         docPlanilla.setCodLocalidadPais(vperPersona.getLocalidad());
         docPlanilla.setZona(vperPersona.getDirZona());
@@ -770,7 +773,6 @@ public class DeclaracionTrimestralBean implements Serializable {
                     }
                     if(docAlerta.getObservacion()!=null)
                         alertas.add(docAlerta);
-                    System.out.println("-----------tamañoAlerta----->"+alertas.size());
                     docPlanillaDetalles.add(docPlanillaDetalle);
                 }
             }

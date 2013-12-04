@@ -140,20 +140,17 @@ public class DocumentoService implements IDocumentoService {
         docPlanilla.setIdDocumento(docDocumento);
 
         docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
-
-        logger.info("Guarda" + planillaRepository.save(docPlanilla));
-
+        docPlanilla = planillaRepository.save(docPlanilla);
+        logger.info("Guarda" + docPlanilla);
 
         //guardaPlanillaDetalles
         for(DocPlanillaDetalle elemPlanillaDetalle:docPlanillaDetalles){
             elemPlanillaDetalle.setIdPlanilla(docPlanilla);
-            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_DETALLE_SEC"));
+            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
             logger.info("Guarda",planillaDetalleRepository.save(elemPlanillaDetalle));
         }
 
-
         //guardaAlertas
-
         DocAlertaDefinicion docAlertaDefinicion=alertaDefinicionRepository.findByDocDefinicion_DocDefinicionPK(docDocumento.getDocDefinicion().getDocDefinicionPK());
         for(DocAlerta docAlerta:alertas){
             docAlerta.setEstadoAlerta("Estado Alerta");  //revisar que utilizar
