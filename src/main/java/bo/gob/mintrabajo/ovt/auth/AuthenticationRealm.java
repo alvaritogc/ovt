@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.auth;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import com.google.common.io.ByteStreams;
 import oracle.jdbc.pool.OracleDataSource;
 import org.apache.shiro.authc.AuthenticationException;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -54,46 +56,7 @@ public class AuthenticationRealm extends JdbcRealm {
 
         setAuthenticationQuery(AUTENTICACION_DE_USUARIO);
         setPermissionsLookupEnabled(true);
-
-        try {
-
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ByteStreams.copy(AuthenticationRealm.class.getResourceAsStream("/ovt.conf"), out);
-            String fileData = new String(out.toByteArray());
-
-            String jsonFinal = "";
-            boolean tmp= false;
-
-            for (int x = 0; x < fileData.length(); x++) {
-
-                if(fileData.charAt(x) == 'j') {
-                    tmp = true;
-                }
-
-                if (fileData.charAt(x) != ' ' && tmp) {
-                    jsonFinal += fileData.charAt(x);
-                } else if(tmp){
-                    break;
-                }
-            }
-
-            String[] token = jsonFinal.split("[/:@\"]");
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            OracleDataSource dataSource = new OracleDataSource();
-            dataSource.setServerName(token[7]); //192.168.50.12
-            dataSource.setUser(token[3]);  //ovt
-            dataSource.setPassword(token[4]);   //prueba
-            dataSource.setDatabaseName(token[9]); //desa
-            dataSource.setPortNumber(Integer.parseInt(token[8])); //1521
-            dataSource.setDriverType(token[2]); // thin
-            setDataSource(dataSource);
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-            java.util.logging.Logger.getLogger(AuthenticationRealm.class.getName()).log(Level.SEVERE, null, se);
-        } catch (IOException ie){
-            java.util.logging.Logger.getLogger(AuthenticationRealm.class.getName()).log(Level.SEVERE, null, ie);
-        }
+        setDataSource(Util.obtenerDatasource());
     }
 
     @Override

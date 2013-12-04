@@ -4,6 +4,14 @@ import bo.gob.mintrabajo.ovt.bean.TemplateInicioBean;
 import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.ParDominioPK;
 import com.google.common.cache.Cache;
+import com.google.common.io.ByteStreams;
+import oracle.jdbc.pool.OracleDataSource;
+
+import javax.sql.DataSource;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.security.MessageDigest;
@@ -81,6 +89,48 @@ public class Util {
         }
     }
 
+    public static DataSource obtenerDatasource(){
+        try {
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ByteStreams.copy(Util.class.getResourceAsStream("/ovt.conf"), out);
+            String fileData = new String(out.toByteArray());
+            String jsonFinal = "";
+            boolean tmp = false;
+
+            for (int x = 0; x < fileData.length(); x++) {
+
+                if (fileData.charAt(x) == 'j') {
+                    tmp = true;
+                }
+
+                if (fileData.charAt(x) != ' ' && tmp) {
+                    jsonFinal += fileData.charAt(x);
+                } else if (tmp) {
+                    break;
+                }
+            }
+
+            String[] token = jsonFinal.split("[/:@\"]");
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            OracleDataSource dataSource = new OracleDataSource();
+            dataSource.setServerName(token[7]); //192.168.50.12
+            dataSource.setUser(token[3]);  //ovt
+            dataSource.setPassword(token[4]);   //prueba
+            dataSource.setDatabaseName(token[9]); //desa
+            dataSource.setPortNumber(Integer.parseInt(token[8])); //1521
+            dataSource.setDriverType(token[2]); // thin
+
+            return dataSource;
+
+        } catch (SQLException se) {
+            System.out.println("Error sql al obtener el dataSource " + se.getMessage());
+        } catch (IOException ie) {
+            System.out.println("Error io al obtener el dataSource " + ie.getMessage());
+        }
+
+        return null;
+    }
 
 
 }
