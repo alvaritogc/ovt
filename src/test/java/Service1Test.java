@@ -1,11 +1,11 @@
-import bo.gob.mintrabajo.wsclient.Service1;
-import bo.gob.mintrabajo.wsclient.Service1Soap;
-import bo.gob.mintrabajo.wsclient.WSSAPWEBPARAMResponse;
-import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
-import org.junit.Test;
-
-import java.net.MalformedURLException;
-import java.net.URL;
+//import bo.gob.mintrabajo.wsclient.Service1;
+//import bo.gob.mintrabajo.wsclient.Service1Soap;
+//import bo.gob.mintrabajo.wsclient.WSSAPWEBPARAMResponse;
+//import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
+//import org.junit.Test;
+//
+//import java.net.MalformedURLException;
+//import java.net.URL;
 
 /**
  * Created with IntelliJ IDEA.

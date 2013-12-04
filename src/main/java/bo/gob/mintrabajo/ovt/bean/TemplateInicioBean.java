@@ -625,6 +625,12 @@ public class TemplateInicioBean implements Serializable {
     }
 
     public String irRegistro() {
+        String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getHeader("X-FORWARDED-FOR");
+        if(ipCliente == null){
+            ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
+        }
+        String bitacoraSession = ipCliente;
+        session.setAttribute("bitacoraSession", bitacoraSession);
         return "irRegistro";
     }
 
