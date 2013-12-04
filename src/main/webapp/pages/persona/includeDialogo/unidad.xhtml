@@ -30,12 +30,17 @@
 
             <h:outputText value="Natural-Juridica:"
                           rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
-            <p:selectBooleanCheckbox id="checkEsNatural2"
-                                     value="#{personaUnidadBean.personaRegistro.esNatural}"
-                                     tabindex="1"
-                                     rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
+
+            <p:selectOneRadio id="checkEsNatural2"
+                              value="#{personaUnidadBean.personaRegistro.esNatural}"
+                              tabindex="1"
+                              rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
+                <f:selectItem itemLabel="Si   " itemValue="true" />
+                <f:selectItem itemLabel="No   " itemValue="false" />
                 <p:ajax    process="@this" update=":frmUnidad:pnlPersonaProcesar" />
-            </p:selectBooleanCheckbox>
+            </p:selectOneRadio>
+
+
 
             <p:outputLabel for="inputTxtNombre" value="Nombre o Razon social:"
                            rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
@@ -141,6 +146,7 @@
             <p:outputLabel for="calendar" value="Fecha de inicio de actividad:"/>
             <p:calendar id="calendar" value="#{personaUnidadBean.unidadRegistro.fechaNacimiento}"
                             effect="slideDown"
+                            maxlength="10"
                             size="10"
                             tabindex="11"
                             style="width:190px;"

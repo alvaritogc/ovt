@@ -140,6 +140,9 @@ public class InfoLaboralService implements IInfoLaboralService {
         return infoLaboralRepository.obtenerPorIdPersonaYIdUnidad(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad(), new PageRequest(0, 10,sort));
     }
 
+    public  List<PerInfolaboral>obtenerPorIdPersona(String idPersona){
+        return infoLaboralRepository.obtenerPorIdPersona(idPersona);
+    }
 
 //    @Override
     public boolean delete(PerInfolaboral infolaboral) {
