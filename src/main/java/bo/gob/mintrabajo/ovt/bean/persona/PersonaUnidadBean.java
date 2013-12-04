@@ -694,12 +694,14 @@ public class PersonaUnidadBean implements Serializable{
         }
 
         if(direccion.getEmail()!=null && direccion.getEmail2()!=null){
-                 if(direccion.getEmail().equals(direccion.getEmail2())){
-                     FacesContext.getCurrentInstance().addMessage(null,
-                             new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL Correo electronico 1 debe ser distinto al correo electronico 2."));
-                     ini();
-                     return ;
-                 }
+            if(!direccion.getEmail().trim().equals("") && !direccion.getEmail2().trim().equals("")){
+                if(direccion.getEmail().equals(direccion.getEmail2())){
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL Correo electronico 1 debe ser distinto al correo electronico 2."));
+                    ini();
+                    return ;
+                }
+            }
         }
 
         PerDireccion direccionAntigua=new PerDireccion();

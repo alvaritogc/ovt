@@ -111,7 +111,8 @@
                     </h:commandLink>
 
                     <h:commandLink target="_blank" action="#{escritorioBean.generarReporte}"
-                                   title="Imprimir documento Ariel">
+                                   title="Imprimir declaracion jurada"
+                            rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento=='ROE010'}">
 
                         <h:graphicImage style="float: left;width:25px;height: 23px;padding-right: 3px; "
                                         value="/images/print.png"/>
