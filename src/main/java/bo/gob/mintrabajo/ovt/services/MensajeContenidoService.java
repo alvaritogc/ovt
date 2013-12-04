@@ -79,11 +79,13 @@ public class MensajeContenidoService implements IMensajeContenidoService {
     @Override
     public boolean delete(Long idMensajeContenido) {
         try {
-            //ParMensajeBinario parMensajeBinario=mensajeBinarioRepository.buscarPorMensajeContenido(idMensajeContenido);
-            //mensajeBinarioRepository.delete(parMensajeBinario.getIdMensajeBinario());
-            //
+            ParMensajeBinario parMensajeBinario = mensajeBinarioRepository.buscarPorMensajeContenido(idMensajeContenido);
+            if (parMensajeBinario != null) {
+                mensajeBinarioRepository.delete(parMensajeBinario.getIdMensajeBinario());
+                mensajeBinarioRepository.flush();
+            }
             repository.delete(idMensajeContenido);
-            //repository.flush();
+            repository.flush();
             //
             return true;
         } catch (Exception e) {

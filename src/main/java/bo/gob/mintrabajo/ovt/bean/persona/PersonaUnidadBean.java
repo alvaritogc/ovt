@@ -215,7 +215,8 @@ public class PersonaUnidadBean implements Serializable{
         persona=new PerPersona();
         String idEmpleador=   (String)session.getAttribute("idEmpleador");
          idUsuario = (Long) session.getAttribute("idUsuario");
-        REGISTRO_BITACORA=iUsuarioService.findById(idUsuario).getUsuario();
+        //REGISTRO_BITACORA=iUsuarioService.findById(idUsuario).getUsuario();
+        REGISTRO_BITACORA=(String) session.getAttribute("bitacoraSession");
         persona=iPersonaService.findById(idEmpleador);
         titulo=persona.getNombreRazonSocial().toUpperCase()+" ";
         titulo=persona.getApellidoPaterno()==null ?titulo+"":titulo+persona.getApellidoPaterno().toUpperCase()+" ";
