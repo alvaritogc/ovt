@@ -1010,7 +1010,9 @@ public class PersonaUnidadBean implements Serializable{
                             +"Fijos, Eventuales, Menores de 18 años, Mayores de 60 años, "+"\n"
                             +" Personal jubilado o Personal con capacidades diferenciales. "+"\n"
                             + " Verfique estos datos."));
+
             ini();
+            RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
             return ;
         }
 
