@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="declaracionJurada" language="groovy" pageWidth="612" pageHeight="792" columnWidth="500" leftMargin="56" rightMargin="56" topMargin="20" bottomMargin="15" uuid="1abc3a07-2f6b-448c-bb07-7fbf6c225db1">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="903"/>
+	<property name="ireport.y" value="1150"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -354,7 +354,7 @@ order by t8.id_unidad]]>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement uuid="849428ef-8d8e-4072-91d5-d7a3d4029d5e" x="93" y="269" width="135" height="13"/>
+				<reportElement uuid="849428ef-8d8e-4072-91d5-d7a3d4029d5e" x="93" y="269" width="244" height="13"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
@@ -487,7 +487,7 @@ order by t8.id_unidad]]>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>2.8</b> Fax]]></text>
+				<text><![CDATA[<b>2.7</b> Fax]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement uuid="ef5f4d6b-6d17-4750-bd60-49e91702e7e2" x="430" y="149" width="64" height="13"/>
@@ -582,42 +582,35 @@ order by t8.id_unidad]]>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>2.4</b> Edificio]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="269702b4-6755-4b4f-a451-1d1c5252e1df" x="243" y="271" width="94" height="10"/>
-				<textElement markup="html">
-					<font size="7"/>
-				</textElement>
-				<text><![CDATA[<b>2.5</b> Piso/Depto./Of.]]></text>
+				<text><![CDATA[<b>2.4</b> Piso/Depto./Of.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="38ae6f97-0657-4b2f-9dd1-45dfa65163c5" x="9" y="287" width="100" height="11"/>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>2.6</b> Direccion]]></text>
+				<text><![CDATA[<b>2.5</b> Direccion]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="15477118-0313-4abb-8e19-b03b7a3fc083" x="9" y="303" width="100" height="10"/>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>2.7</b> Telefono]]></text>
+				<text><![CDATA[<b>2.6</b> Telefono]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="76cfb98a-25ea-44fe-a2b1-5ecf73afb884" x="9" y="319" width="100" height="10"/>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>2.9</b> Correo electronico]]></text>
+				<text><![CDATA[<b>2.8</b> Correo electronico]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="41946589-b35f-413b-b0e6-be8c8ba15ecb" x="9" y="334" width="258" height="10"/>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>2.10</b> Cantidad de ubicaciones adicionales a ser declarada en el punto 4]]></text>
+				<text><![CDATA[<b>2.9</b> Cantidad de ubicaciones adicionales a ser declarada en el punto 4]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement uuid="e95808a0-535d-45f5-985e-eb6ab18b20a0" x="93" y="221" width="244" height="13"/>
@@ -633,12 +626,6 @@ order by t8.id_unidad]]>
 			</rectangle>
 			<rectangle>
 				<reportElement uuid="95c9bcf9-11ed-4e93-9700-f3c825f26b57" x="93" y="253" width="244" height="13"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement uuid="7136b3af-8ad0-49d7-b9df-435ba14c5186" x="308" y="268" width="29" height="13"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
@@ -690,17 +677,17 @@ order by t8.id_unidad]]>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>2.11</b> Croquis]]></text>
+				<text><![CDATA[<b>2.10</b> Croquis]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="e33c88e1-bcd0-4307-a9fd-71bd6ed4debe" x="96" y="223" width="200" height="9"/>
+				<reportElement uuid="e33c88e1-bcd0-4307-a9fd-71bd6ed4debe" x="96" y="223" width="232" height="9"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{DEPTODIRECCION}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="fcc06d4f-cc46-4128-8e1d-983c38e5da64" x="96" y="240" width="200" height="9"/>
+				<reportElement uuid="fcc06d4f-cc46-4128-8e1d-983c38e5da64" x="96" y="240" width="234" height="9"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -742,7 +729,7 @@ order by t8.id_unidad]]>
 				<textFieldExpression><![CDATA[$F{CORREOELECTRONICO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="5cbc8306-24b8-4f10-9602-eb2562956213" x="312" y="269" width="25" height="12"/>
+				<reportElement uuid="5cbc8306-24b8-4f10-9602-eb2562956213" x="97" y="269" width="233" height="12"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -1360,7 +1347,7 @@ order by t8.id_unidad]]>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement uuid="699550ab-36cd-4b5f-b1a4-b025b1c5579a" x="95" y="76" width="135" height="12"/>
+				<reportElement uuid="699550ab-36cd-4b5f-b1a4-b025b1c5579a" x="95" y="76" width="236" height="12"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
@@ -1402,10 +1389,10 @@ order by t8.id_unidad]]>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>4A.10</b> Correo electronico]]></text>
+				<text><![CDATA[<b>4A.9</b> Correo electronico]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="e662e9c7-16b9-4fe8-8aea-4a491f4c27d8" x="235" y="105" width="79" height="10"/>
+				<reportElement uuid="e662e9c7-16b9-4fe8-8aea-4a491f4c27d8" x="235" y="105" width="90" height="10"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -1419,7 +1406,7 @@ order by t8.id_unidad]]>
 				<text><![CDATA[<b>2.11</b> Croquis]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="9d716731-a6c6-4762-b751-a28317f4c6c2" x="98" y="91" width="220" height="11"/>
+				<reportElement uuid="9d716731-a6c6-4762-b751-a28317f4c6c2" x="98" y="91" width="228" height="11"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -1449,10 +1436,10 @@ order by t8.id_unidad]]>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>4A.8</b> Telefono]]></text>
+				<text><![CDATA[<b>4A.7</b> Telefono]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="7e83c0e8-70ce-4aca-ba4d-658cb1d597d1" x="98" y="36" width="200" height="9"/>
+				<reportElement uuid="7e83c0e8-70ce-4aca-ba4d-658cb1d597d1" x="98" y="36" width="227" height="9"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -1464,18 +1451,12 @@ order by t8.id_unidad]]>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
-			<rectangle>
-				<reportElement uuid="2cbd4461-5ba2-4f74-a629-469060955e7e" x="310" y="76" width="21" height="12"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
 			<staticText>
 				<reportElement uuid="9114ca21-fb66-4b00-83d7-5f812afd99a6" x="8" y="77" width="100" height="10"/>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>4A.5</b> Edificio]]></text>
+				<text><![CDATA[<b>4A.5</b> Piso/Depto./Of.]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement uuid="baa46048-39dc-4380-8c8e-04656068e9c9" x="95" y="118" width="236" height="12"/>
@@ -1490,7 +1471,7 @@ order by t8.id_unidad]]>
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement uuid="a71f2f99-c4b2-4f9b-973e-09909b3e7093" x="98" y="63" width="203" height="10"/>
+				<reportElement uuid="a71f2f99-c4b2-4f9b-973e-09909b3e7093" x="98" y="63" width="227" height="10"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -1501,10 +1482,10 @@ order by t8.id_unidad]]>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>4A.11</b> Representante legal]]></text>
+				<text><![CDATA[<b>4A.10</b> Representante legal]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="a9be0d96-07f9-4acd-9ceb-7e8c04664113" x="100" y="49" width="218" height="9"/>
+				<reportElement uuid="a9be0d96-07f9-4acd-9ceb-7e8c04664113" x="100" y="49" width="225" height="9"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -1515,14 +1496,14 @@ order by t8.id_unidad]]>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>4A.9</b> Fax]]></text>
+				<text><![CDATA[<b>4A.8</b> Fax]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="6625e634-67a9-493e-b1ba-40ea38ce381a" x="8" y="91" width="79" height="11"/>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>4A.7</b> Direccion]]></text>
+				<text><![CDATA[<b>4A.6</b> Direccion]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="7b8352e6-bb20-463c-b41d-9be1572645aa" x="8" y="63" width="128" height="10"/>
@@ -1532,7 +1513,7 @@ order by t8.id_unidad]]>
 				<text><![CDATA[<b>4A.4</b> Zona/Urbanizacion]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="451e5b34-8db2-448e-b91b-e3a4a84f8ff5" x="98" y="118" width="220" height="12"/>
+				<reportElement uuid="451e5b34-8db2-448e-b91b-e3a4a84f8ff5" x="98" y="118" width="228" height="12"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -1553,18 +1534,11 @@ order by t8.id_unidad]]>
 				<textFieldExpression><![CDATA[$F{TELEFONO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="520865d2-4173-4595-9c7f-86be3f255e93" x="241" y="77" width="93" height="10"/>
-				<textElement markup="html">
-					<font size="7"/>
-				</textElement>
-				<text><![CDATA[<b>4A.6</b> Piso/Depto./Of.]]></text>
-			</staticText>
-			<staticText>
 				<reportElement uuid="8e77cb13-081d-4d26-8a7a-27a34a3258d9" x="394" y="24" width="79" height="10"/>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>4A.13</b> Croquis]]></text>
+				<text><![CDATA[<b>4A.12</b> Croquis]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="bb90b124-9e2e-4108-907b-3da8bc0bfa82" x="7" y="22" width="100" height="10"/>
@@ -1580,7 +1554,7 @@ order by t8.id_unidad]]>
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement uuid="fb81d329-4aec-4c7d-91ee-f8426e0695fb" x="98" y="22" width="216" height="10"/>
+				<reportElement uuid="fb81d329-4aec-4c7d-91ee-f8426e0695fb" x="98" y="22" width="227" height="10"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -1597,10 +1571,10 @@ order by t8.id_unidad]]>
 				<textElement markup="html">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[<b>4A.12</b> N° Doc. Identidad]]></text>
+				<text><![CDATA[<b>4A.11</b> N° Doc. Identidad]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="da2bd506-696c-45ce-9f87-c0d3ab7831bd" x="98" y="133" width="215" height="10"/>
+				<reportElement uuid="da2bd506-696c-45ce-9f87-c0d3ab7831bd" x="98" y="133" width="227" height="10"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -1796,7 +1770,7 @@ order by t8.id_unidad]]>
 				<text><![CDATA[<b>3.2</b> <br/> Hombres]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="8e09103d-2091-4403-b283-3b64c9f89831" x="313" y="76" width="15" height="12"/>
+				<reportElement uuid="8e09103d-2091-4403-b283-3b64c9f89831" x="98" y="77" width="228" height="10"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
