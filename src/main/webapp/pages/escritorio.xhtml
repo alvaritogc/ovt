@@ -101,6 +101,14 @@
                         <h:graphicImage style="float: left;width:25px;height: 23px;padding-right: 3px; "
                                         value="/images/print.png"/>
                     </h:commandLink>
+
+                    <h:commandLink target="_blank" action="#{escritorioBean.generarReporte}"
+                                   title="Imprimir documento Ariel">
+
+                        <h:graphicImage style="float: left;width:25px;height: 23px;padding-right: 3px; "
+                                        value="/images/print.png"/>
+                    </h:commandLink>
+
                     <p:commandButton action="#{escritorioBean.irLogEstadoDocumento}"
                                      immediate="true"
                                      icon="ui-icon-note" title="Ver registro de cambios de estado">

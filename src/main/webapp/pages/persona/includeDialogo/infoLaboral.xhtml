@@ -39,6 +39,16 @@
             text-align: left;
         }
 
+        .column1-1 {
+            width: 175px;
+            height: auto;
+        }
+
+        .column1-1-1 {
+            width: 225px;
+            height: auto;
+        }
+
     </style>
 
     <h:form id="frmInfoLaboral">
@@ -51,7 +61,7 @@
                                  action="#{personaUnidadBean.procesarInfoLaboral}"
                                  id="cmdButtonInfoLaboral"
                                  tabindex="17"
-                                 update=":tabPersonaUnidad,:tabPersonaUnidad:tabInfoLaboral,:dataGrid,growlInfoLaboral,:frmBucarPersona:cmdButtonROE"
+                                 update=":tabPersonaUnidad,:tabPersonaUnidad:tabInfoLaboral,:dataGrid,growlInfoLaboral,:frmBucarPersona:cmdButtonROE,:frmInfoLaboral:growlInfoLaboral"
                         />
                 &#160;&#160;
                 <p:commandButton value="Cancelar"
@@ -68,7 +78,7 @@
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroHombres}"
                                 decimalPlaces="0"
                                 tabindex="1"
-                                style="width: 40px;"
+                                style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
@@ -80,7 +90,7 @@
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroMujeres}"
                                 decimalPlaces="0"
                                 tabindex="2"
-                                style="width: 40px;"
+                                style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
@@ -91,9 +101,10 @@
                 <h:outputText value="N° total de trabajadores:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroTotalTrabajadores}"
                                 id="inputTxtNroTotalTrabajadores"
+                                disabled="true"
                                 decimalPlaces="0"
                                 tabindex="3"
-                                style="width: 40px;"
+                                style="width: 40px;background-color: blue;text-decoration-color: black;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
@@ -104,106 +115,117 @@
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroExtranjeros}"
                                 decimalPlaces="0"
                                 tabindex="4"
-                                style="width: 40px;"
+                                style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
                         >
+
                 </pe:inputNumber>
 
                 <h:outputText value="Fijos:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroFijos}"
                                 decimalPlaces="0"
                                 tabindex="5"
-                                style="width: 40px;"
+                                style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
                         >
+
                 </pe:inputNumber>
 
                 <h:outputText value="Eventuales:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroEventuales}"
                                 decimalPlaces="0"
                                 tabindex="6"
-                                style="width: 40px;"
+                                style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
                         >
+
                 </pe:inputNumber>
 
                 <h:outputText value="Menores de 18 años:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroMenores18}"
                                 decimalPlaces="0"
                                 tabindex="7"
-                                style="width: 40px;"
+                                style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
                         >
+
                 </pe:inputNumber>
 
                 <h:outputText value="Mayores de 60 años:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroMayores60}"
                                 decimalPlaces="0"
                                 tabindex="8"
-                                style="width: 40px;"
+                                style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
                         >
+
                 </pe:inputNumber>
 
                 <h:outputLabel/>
                 <h:outputLabel/>
 
-                <h:outputText value="Personal trabajando jubilado:"/>
+                <h:outputText value="Personal jubilado:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroJubilados}"
                                 decimalPlaces="0"
                                 tabindex="9"
-                                style="width: 40px;"
+                                style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="500"
                         >
+
                 </pe:inputNumber>
 
                 <h:outputText value="Personal con capacidades diferenciales:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroCapdiferente}"
                                 decimalPlaces="0"
                                 tabindex="10"
-                                style="width: 40px;"
+                                style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
                         >
+
                 </pe:inputNumber>
 
                 <h:outputLabel/>
                 <h:outputLabel/>
-
+            </h:panelGrid>
+            <h:panelGrid columns="2" columnClasses="column1-1">
                 <h:outputText value="Total ganado de la planilla (Bs.):"/>
-                <pe:inputNumber  value="#{personaUnidadBean.infolaboralRegistro.totalPlanilla}"
-                                decimalPlaces="0"
+                <pe:inputNumber id="numberPlanilla"
+                                value="#{personaUnidadBean.infolaboralRegistro.totalPlanilla}"
+                                decimalPlaces="2"
                                 tabindex="11"
-                                style="width: 40px;"
-                                thousandSeparator=" "
-                                minValue="0"
-                                maxValue="5000"
+                                style="width: 150px;text-align:right;"
+                                decimalSeparator=","
+                                thousandSeparator="."
                         >
                 </pe:inputNumber>
-
+                <p:watermark value="0,00" for="numberPlanilla"/>
+                <p:watermark value="0,00" for="numberMontoCaja"/>
+                <p:watermark value="0,00" for="numberMontoAfp"/>
+            </h:panelGrid >
                 <h:outputLabel/>
                 <h:outputLabel/>
                 <h:outputLabel/>
                 <h:outputLabel/>
-
+            <h:panelGrid columns="6" columnClasses="column1-1-1,column2,column3,column4,column5,column6">
                 <h:outputText value="N° asegurados en Caja de salud:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroAsegCaja}"
                                 decimalPlaces="0"
                                 tabindex="12"
-                                style="width: 40px;"
+                                style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
@@ -211,15 +233,16 @@
                 </pe:inputNumber>
 
                 <h:outputText value="Monto aportado (Bs):"/>
-                <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.montoAsegCaja}"
-                                decimalPlaces="0"
+                <pe:inputNumber id="numberMontoCaja"
+                                value="#{personaUnidadBean.infolaboralRegistro.montoAsegCaja}"
+                                decimalPlaces="2"
                                 tabindex="13"
-                                style="width: 40px;"
-                                thousandSeparator=" "
-                                minValue=""
-                                maxValue="5000"
+                                style="width: 150px;text-align:right;"
+                                decimalSeparator=","
+                                thousandSeparator="."
                         >
                 </pe:inputNumber>
+
 
                 <h:outputLabel/>
                 <h:outputLabel/>
@@ -230,21 +253,22 @@
                                 tabindex="14"
                                 minValue="0"
                                 maxValue="5000"
-                                style="width: 40px;"
+                                style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                         >
                 </pe:inputNumber>
 
                 <h:outputText value="Monto aportado (Bs):"/>
-                <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.montoAsegAfp}"
-                                decimalPlaces="0"
-                                minValue="0"
-                                maxValue="5000"
+                <pe:inputNumber id="numberMontoAfp"
+                                value="#{personaUnidadBean.infolaboralRegistro.montoAsegAfp}"
+                                decimalPlaces="2"
                                 tabindex="15"
-                                style="width: 40px;"
-                                thousandSeparator=" "
+                                style="width: 150px;text-align:right;"
+                                decimalSeparator=","
+                                thousandSeparator="."
                         >
                 </pe:inputNumber>
+
 
                 <h:outputLabel/>
                 <h:outputLabel/>
@@ -254,9 +278,9 @@
                                          value="#{personaUnidadBean.infolaboralRegistro.tipoSindicato}"
                                          tabindex="16">
                 </p:selectBooleanCheckbox>
-
-
             </h:panelGrid>
+
+
         </p:panel>
     </h:form>
 </ui:composition>

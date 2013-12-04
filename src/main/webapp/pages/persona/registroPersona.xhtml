@@ -73,7 +73,7 @@
                                  tabindex="7"
                                  required="true"
                                  size="15"
-                                 maxlength="9"
+                                 maxlength="15"
                                  autocomplete="false"
                                  onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"
                                  style="width: 215px;text-transform: uppercase;"
@@ -116,12 +116,16 @@
                     <p:calendar id="calendar" value="#{personaBean.unidad.fechaNacimiento}"
                                 effect="slideDown"
                                 tabindex="11"
+                                size="10"
+                                timeOnly="false"
                                 style="width:190px;"
                                 required="true"
                                 showOn="button"
                                 pattern="dd/mm/yyyy"
                                 navigator="true"
+                                converterMessage="El formato de la fecha es incorrecto. Ejemplo: dd/mm/yyyy"
                                 requiredMessage="El campo Fecha actividad es obligatorio.">
+                           <f:convertDateTime pattern="dd/mm/yyyy"/>
                      </p:calendar>
 
                     <p:outputLabel for="txtAreaActividadDeclarada" value="Actividad declarada:&nbsp;&nbsp;&nbsp;&nbsp;"/>

@@ -182,34 +182,6 @@ public class PersonaBean implements Serializable{
         }
 
 
-/*        if(unidad.getFechaNacimiento()==null){
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Fecha actividad es obligatorio."));
-            ini();
-            return ;
-        }
-
-        if(unidad.getNroFundaempresa()==null){
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de fundempresa es obligatorio."));
-            ini();
-            return ;
-        }
-
-        if(unidad.getNroAfp()==null){
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. AFP es obligatorio."));
-            ini();
-            return ;
-        }
-
-        if(unidad.getNroCajaSalud()==null){
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de Caja de salud es obligatorio."));
-            ini();
-            return ;
-        }*/
-
         if(unidad.getActividadDeclarada()==null || unidad.getActividadDeclarada().trim().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Actividad declarada es obligatorio."));
@@ -217,12 +189,6 @@ public class PersonaBean implements Serializable{
             return ;
         }
 
-/*        if(unidad.getObservaciones()==null){
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Observaciones es obligatorio."));
-            ini();
-            return ;
-        }*/
 
         if(persona.getNombreRazonSocial()==null || persona.getNombreRazonSocial().trim().equals("")){
           FacesContext.getCurrentInstance().addMessage(null,
@@ -250,13 +216,6 @@ public class PersonaBean implements Serializable{
             ini();
             return ;
         }else{
-
-            if(!esNumero(persona.getNroIdentificacion())){
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El valor del campo Nro. de identificacion debe ser numerico."));
-                ini();
-                return ;
-            }
 
             //validar que nro de identificacion sea unico
             if(iPersonaService.findByNroIdentificacion(persona.getNroIdentificacion())!=null){

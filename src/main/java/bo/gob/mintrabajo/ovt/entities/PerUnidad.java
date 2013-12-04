@@ -96,6 +96,9 @@ public class PerUnidad implements Serializable {
     private PerDireccion direccion;
     @Transient
     private PerReplegal repLegal;
+
+    @Transient
+    private PerInfolaboral infolaboral;
     @Transient
     private String tipoSociedadAuxiliar;
     @Transient
@@ -291,6 +294,14 @@ public class PerUnidad implements Serializable {
 
     public void setDireccion(PerDireccion direccion) {
         this.direccion = direccion;
+    }
+
+    public PerInfolaboral getInfolaboral() {
+        return infolaboral;
+    }
+
+    public void setInfolaboral(PerInfolaboral infolaboral) {
+        this.infolaboral = infolaboral;
     }
 
     public String getTipoSociedadAuxiliar() {

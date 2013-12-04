@@ -6,6 +6,10 @@ import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.*;
 import java.text.*;
 
@@ -444,6 +451,79 @@ public class EscritorioBean {
             DocLogImpresion docLogImpresion = new DocLogImpresion(iUtilsService.valorSecuencia("DOC_LOG_IMPRESION_SEC"), Dominios.DOC_TIPO_IMPRESION, new Date(), usuario.getUsuario());
             docLogImpresion.setIdDocumento(docDocumento);
             iLogImpresionService.guarda(docLogImpresion);
+        }
+    }
+
+
+    /**
+     *  Genera un nombre para archivo PDF.
+     *  Este nombre esta compuesto del nombreRazonSocial, la fecha
+     *  y un randomico de dos dígitos.
+     */
+    static String generarNombreReporte(String nombreRazonSocial){
+        String nombreArchivo="";
+        SimpleDateFormat sdf=new SimpleDateFormat("ddMMyyyyHHmmss");
+        Date fecha=new Date();
+        Random num=new Random();
+        String nu=String.valueOf(num.nextInt(2));
+        nombreArchivo=sdf.format(fecha).toString()+nu;
+        nombreArchivo="declaracionJurada-"+nombreRazonSocial+nombreArchivo+".pdf";
+        return nombreArchivo;
+    }
+
+    public void generarReporte(){
+
+
+        ServletContext servletContext=(ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String rutaWebApp=servletContext.getRealPath("/");
+
+        String jrxmlFileName=rutaWebApp+"/reportes/declaracionJurada.jrxml";
+        String jasperFileName=rutaWebApp+"/reportes/declaracionJurada.jasper";
+        String pdfFileName="";
+
+        String dbUrl="jdbc:oracle:thin:@192.168.50.7:1521:desa";
+        String dbDriver="oracle.jdbc.driver.OracleDriver";
+        String dbUname="ovt";
+        String dbPwd="prueba";
+
+        Connection conn=null;
+
+
+        String idPersona=(String)session.getAttribute("idEmpleador");
+        PerPersona p=iPersonaService.findById(idPersona);
+        pdfFileName=generarNombreReporte(p.getNombreRazonSocial());
+
+        try{
+            Class.forName(dbDriver);
+        }catch(ClassNotFoundException e){
+            logger.error("ORACLE JDBC Driver no encontrado");
+        }
+
+        try{
+            conn= DriverManager.getConnection(dbUrl, dbUname, dbPwd);
+        }catch (SQLException e){
+            logger.error("Error de conexion "+e.getMessage());
+        }
+
+        try{
+            // Paramatros para el reporte
+            HashMap hm=new HashMap();
+            hm.put("idPersona",idPersona);
+
+            JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
+
+            String rutaPdf="/reportes/temp/"+pdfFileName;
+            String nombrePdf=rutaWebApp+rutaPdf;
+
+            JasperPrint jprint=(JasperPrint) JasperFillManager.fillReport(jasperFileName, hm, conn);
+            JasperExportManager.exportReportToPdfFile(jprint, nombrePdf);
+
+            redirecionarReporte(nombrePdf);
+
+        }catch (Exception ex){
+            logger.error("====>>>> Error al exportar el reporte a PDF <<<<<=====");
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 

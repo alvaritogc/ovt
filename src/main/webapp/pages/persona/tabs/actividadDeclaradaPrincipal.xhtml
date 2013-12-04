@@ -45,7 +45,9 @@
             <h:outputText value="Codigo de Actividad economica:"/>
 
             <p:selectOneListbox  value="#{personaUnidadBean.codigoActividadEconomicaPrincipal}"
-                                 style="height: 250px;width: 500px;font-weight: bolder;color: #000000" disabled="false"
+
+                                 style="height: 250px;width: 500px;font-weight: bolder;color: #000000"
+                                 disabled="true"
                     >
                 <f:selectItems value="#{personaUnidadBean.listaCodActividadEconomica}"
                                var="actividad"

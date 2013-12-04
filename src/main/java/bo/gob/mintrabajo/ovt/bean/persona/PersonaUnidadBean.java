@@ -8,6 +8,7 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -515,13 +516,6 @@ public class PersonaUnidadBean implements Serializable{
                     ini();
                     return ;
                 }else{
-
-                    if(!esNumero(personaRegistro.getNroIdentificacion())){
-                        FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El valor del campo Nro. de identificacion debe ser numerico."));
-                        ini();
-                        return ;
-                    }
                        //Si es distinto, entonces se modifico el nro de identificacion
                     if(!personaRegistro.getNroIdentificacion().equals(persona.getNroIdentificacion())){
                         //validar que nro de identificacion sea unico
@@ -638,18 +632,9 @@ public class PersonaUnidadBean implements Serializable{
             }
         }
 
-
         ini();
 
-
-
-
-
-
-
     }
-
-
 
     /*
      *******************************************
@@ -686,13 +671,43 @@ public class PersonaUnidadBean implements Serializable{
             return ;
         }
 
+        if(direccion.getEmail()!=null){
+            if(!direccion.getEmail().trim().equals("")){
+                if(!validarEmail(direccion.getEmail())){
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL formato del correo electronico 1 es incorrecto."));
+                    ini();
+                    return ;
+                }
+            }
+        }
+
+        if(direccion.getEmail2()!=null){
+            if(!direccion.getEmail().trim().equals("")){
+                if(!validarEmail(direccion.getEmail2())){
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL formato del correo electronico 2 es incorrecto."));
+                    ini();
+                    return ;
+                }
+            }
+        }
+
+        if(direccion.getEmail()!=null && direccion.getEmail2()!=null){
+                 if(direccion.getEmail().equals(direccion.getEmail2())){
+                     FacesContext.getCurrentInstance().addMessage(null,
+                             new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL Correo electronico 1 debe ser distinto al correo electronico 2."));
+                     ini();
+                     return ;
+                 }
+        }
+
         PerDireccion direccionAntigua=new PerDireccion();
         String codLocalidadAntigua="";
         if(direccion.getIdDireccion()!=null){
              direccionAntigua=iDireccionService.obtenerPorId(direccion.getIdDireccion());
             codLocalidadAntigua=iLocalidadService.findById(direccionAntigua.getCodLocalidad().getCodLocalidad()).getCodLocalidad();
         }
-
 
         direccion.setCodLocalidad(iLocalidadService.findById(idLocalidad));
         iDireccionService.save(direccion,REGISTRO_BITACORA,unidadRegistro);
@@ -718,6 +733,20 @@ public class PersonaUnidadBean implements Serializable{
 
         }
         ini();
+    }
+
+
+    static private boolean validarEmail(String email){
+        final String EMAIL_PATTERN =
+                "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern patron = Pattern.compile(EMAIL_PATTERN);
+        Matcher encajador = patron.matcher(email);
+        if (encajador.matches()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void cargarDireccion(){
@@ -961,7 +990,27 @@ public class PersonaUnidadBean implements Serializable{
   */
     public void procesarInfoLaboral(){
 
+        long nroTotalTrabajadores=infolaboralRegistro.getNroTotalTrabajadores();
 
+        long extranjeros=infolaboralRegistro.getNroExtranjeros();
+        long fijos =infolaboralRegistro.getNroFijos();
+        long eventuales=infolaboralRegistro.getNroEventuales();
+        long menores18=infolaboralRegistro.getNroMenores18();
+        long mayores60=infolaboralRegistro.getNroMayores60();
+        long jubilados=infolaboralRegistro.getNroJubilados();
+        long capDiferenciales=infolaboralRegistro.getNroCapdiferente();
+
+        long total=extranjeros+fijos+eventuales+menores18+mayores60+jubilados+capDiferenciales;
+
+        if(total>nroTotalTrabajadores){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El N° total de trabajadores es menor a la cantidad de Extranjeros, "+"\n"
+                            +"Fijos, Eventuales, Menores de 18 años, Mayores de 60 años, "+"\n"
+                            +" Personal jubilado o Personal con capacidades diferenciales. "+"\n"
+                            + " Verfique estos datos."));
+            ini();
+            return ;
+        }
 
          iInfoLaboralService.save(infolaboralRegistro,REGISTRO_BITACORA,unidad);
         ini();
@@ -985,7 +1034,6 @@ public class PersonaUnidadBean implements Serializable{
     public  void sumar(){
         infolaboralRegistro.setNroTotalTrabajadores(infolaboralRegistro.getNroHombres()+infolaboralRegistro.getNroMujeres());
     }
-
     /*
      **
      * Este metodo se utliza para cargar las listas
@@ -1441,69 +1489,5 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setPersonaService(IPersonaService personaService) {
         this.personaService = personaService;
-    }
-
-    /**
-     *  Genera un nombre para archivo PDF.
-     *  Este nombre esta compuesto del nombreRazonSocial, la fecha
-     *  y un randomico de dos dígitos.
-     */
-    static String generarNombreReporte(String nombreRazonSocial){
-        String nombreArchivo="";
-        SimpleDateFormat sdf=new SimpleDateFormat("ddMMyyyyHHmmss");
-        Date fecha=new Date();
-        Random num=new Random();
-        String nu=String.valueOf(num.nextInt(2));
-        nombreArchivo=sdf.format(fecha).toString()+nu;
-        nombreArchivo="declarionJurada-"+nombreRazonSocial+nombreArchivo+".pdf";
-        return nombreArchivo;
-    }
-
-    public void generarReporte(){
-
-        String jrxmlFileName="D:/declaracionJurada.jrxml";
-        String jasperFileName="D:/declaracionJurada.jasper";
-        String pdfFileName="D:/declaracionJurada.pdf";
-
-        String dbUrl="jdbc:oracle:thin:@192.168.50.7:1521:desa";
-        String dbDriver="oracle.jdbc.driver.OracleDriver";
-        String dbUname="ovt";
-        String dbPwd="prueba";
-
-        Connection conn=null;
-
-
-        String idPersona=(String)session.getAttribute("idEmpleador");
-        PerPersona p=iPersonaService.findById(idPersona);
-        pdfFileName="D:/"+generarNombreReporte(p.getNombreRazonSocial());
-
-        try{
-            Class.forName(dbDriver);
-        }catch(ClassNotFoundException e){
-          logger.error("ORACLE JDBC Driver no encontrado");
-        }
-
-        try{
-           conn= DriverManager.getConnection(dbUrl,dbUname,dbPwd);
-        }catch (SQLException e){
-          logger.error("Error de conexion "+e.getMessage());
-        }
-
-        try{
-            // Paramatros para el reporte
-            HashMap hm=new HashMap();
-            hm.put("idPersona",idPersona);
-
-            JasperCompileManager.compileReportToFile(jrxmlFileName,jasperFileName);
-
-            JasperPrint jprint=(JasperPrint) JasperFillManager.fillReport(jasperFileName,hm,conn);
-            JasperExportManager.exportReportToPdfFile(jprint,pdfFileName);
-
-            System.out.println("====>>>> Done exporting reports to pdf <<<<<=====");
-
-        }catch (Exception ex){
-            System.out.println("====>>>> Error exporting reports to pdf <<<<<=====");
-            ex.printStackTrace();
-        }
     }
 }

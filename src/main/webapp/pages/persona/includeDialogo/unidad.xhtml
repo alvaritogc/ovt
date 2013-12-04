@@ -91,8 +91,8 @@
                          value="#{personaUnidadBean.personaRegistro.nroIdentificacion}"
                          tabindex="7"
                          required="true"
-                         size="20"
-                         maxlength="20"
+                         size="15"
+                         maxlength="15"
                          autocomplete="false"
                          style="width: 205px;text-transform: uppercase;"
                          onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"
@@ -141,15 +141,19 @@
             <p:outputLabel for="calendar" value="Fecha de inicio de actividad:"/>
             <p:calendar id="calendar" value="#{personaUnidadBean.unidadRegistro.fechaNacimiento}"
                             effect="slideDown"
+                            size="10"
                             tabindex="11"
                             style="width:190px;"
                             required="true"
                             showOn="button"
                             navigator="true"
                             pattern="dd/mm/yyyy"
-                            requiredMessage="El campo Fecha actividad es obligatorio."/>
+                            converterMessage="El formato de la fecha es incorrecto. Ejemplo: dd/mm/yyyy"
+                            requiredMessage="El campo Fecha actividad es obligatorio.">
+                <f:convertDateTime pattern="dd/mm/yyyy" />
+            </p:calendar>
 
-                <h:outputText value="Fundempresa:"/>
+                <h:outputText value="Nro. de Fundempresa:"/>
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroFundaempresa}"
                              style="width: 205px;text-transform: uppercase"
                              tabindex="12" maxlength="20"/>
