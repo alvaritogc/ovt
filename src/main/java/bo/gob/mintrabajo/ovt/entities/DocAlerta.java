@@ -50,6 +50,8 @@ public class DocAlerta implements Serializable {
     @JoinColumn(name = "COD_ALERTA", referencedColumnName = "COD_ALERTA")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DocAlertaDefinicion codAlerta;
+    @Column(name = "OBSERVACION")
+    private String observacion;
 
     public DocAlerta() {
     }
@@ -88,6 +90,14 @@ public class DocAlerta implements Serializable {
 
     public void setCodAlerta(DocAlertaDefinicion codAlerta) {
         this.codAlerta = codAlerta;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
     @Override

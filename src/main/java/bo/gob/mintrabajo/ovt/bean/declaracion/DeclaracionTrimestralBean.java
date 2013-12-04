@@ -74,6 +74,8 @@ public class DeclaracionTrimestralBean implements Serializable {
     private IPlanillaDetalleService iPlanillaDetalleService;
     @ManagedProperty(value = "#{calendarioService}")
     private ICalendarioService iCalendarioService;
+    @ManagedProperty(value = "#{parametrizacionService}")
+    private IParametrizacionService iParametrizacionService;
 
     private int parametro;
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
@@ -120,7 +122,9 @@ public class DeclaracionTrimestralBean implements Serializable {
     private String gestion;
     private String trimestre;
     private String e;
-    private List<String> advertencias;
+    private List<DocAlerta> alertas;
+    private int salarioMinimo;
+    private String nombreBinario;
 
     @PostConstruct
     public void ini() {
@@ -158,6 +162,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         docPlanilla.setMontoAsegAfp(BigDecimal.ZERO);
         docPlanilla.setMontoOperacion(BigDecimal.ZERO);
 
+        salarioMinimo= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_SALARIO, Dominios.PAR_SALARIO_MINIMO).getDescripcion());
         //** Controlamos que no puedan acceder a una fecha anterior a la actual  **//
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         fechaTexto = sdf.format(fechaTemp);
@@ -178,9 +183,6 @@ public class DeclaracionTrimestralBean implements Serializable {
         gestion=String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         obtenerPeriodoLista();
         tamanioErrores=2;
-    }
-    public void generaQR(){
-//        QRCodeScriptlet.generaQR();
     }
 
     public void abrirPanel() {
@@ -370,7 +372,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                 logger.info(docPlanilla.toString());
                 generaPlanilla();
                 documento.setPerUnidad(unidadSeleccionada);
-                iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);
+                iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas);
                 return "irEscritorio";
             }catch (Exception e){
                 e.printStackTrace();
@@ -400,14 +402,14 @@ public class DeclaracionTrimestralBean implements Serializable {
     }
 
     public String mensajeError(int i, String titulo){
-        return "Fila: \""+i+"\" y Columna: \""+ titulo+ "\"; ";
+        return nombreBinario+": Fila: \""+i+"\" y Columna: \""+ titulo+ "\"; ";
     }
 
     public void validaArchivo(List<DocBinario> listaBinarios){
         try {
             docPlanillaDetalles = new ArrayList<DocPlanillaDetalle>();
             errores = new ArrayList<String>();
-            advertencias = new ArrayList<String>();
+            alertas = new ArrayList<DocAlerta>();
             int valorPlanilla=0;
             for(DocBinario docBinario:listaBinarios){
                 CsvReader registro;
@@ -421,8 +423,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                 registro.readHeaders();
                 int c=0;
                 //TODO nombre del documento extraido del metadata
-                errores.add(docBinario.getTipoDocumento().toUpperCase());
-                advertencias.add(docBinario.getTipoDocumento().toUpperCase());
+                nombreBinario=docBinario.getTipoDocumento();
                 while (registro.readRecord()){
                     if(c==0){
                         switch (registro.getColumnCount()){
@@ -442,8 +443,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                     c++;
                     int columna=1;
                     DocPlanillaDetalle docPlanillaDetalle = new DocPlanillaDetalle();
-//                    docPlanillaDetalle.setIdPlanilla(docPlanilla);
-//                    docPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
+                    DocAlerta docAlerta = new DocAlerta();
 
                     //1
                     docPlanillaDetalle.setTipoDocumento(registro.get(registro.getHeader(columna++)));
@@ -483,7 +483,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//19
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))||registro.get(columna).equals(""))
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
                         docPlanillaDetalle.setDiasHaberBasico(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -505,7 +505,13 @@ public class DeclaracionTrimestralBean implements Serializable {
                                 docPlanillaDetalle.setHorasExtra(registro.get(registro.getHeader(columna)));
                                 break;
                             case 3:
-                                docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
+                                if(!registro.get(columna).equals("")){
+                                    if((int) Double.parseDouble(registro.get(columna))<salarioMinimo)
+                                        docAlerta.setObservacion(nombreBinario+": El registro en la fila \""+c+"\" y la columna \"Haber Básico\" es menor al salario mínimo establecido por ley.");
+                                    docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
+                                }
+                                else
+                                    errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                         }
                     }
@@ -519,7 +525,13 @@ public class DeclaracionTrimestralBean implements Serializable {
                                 docPlanillaDetalle.setDominicalTrabajado(registro.get(registro.getHeader(columna)));
                                 break;
                             case 2:
-                                docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
+                                if(!registro.get(columna).equals("")){
+                                    if((int) Double.parseDouble(registro.get(columna))<salarioMinimo)
+                                        docAlerta.setObservacion(nombreBinario + ": El registro en la fila \"" + c + "\" y la columna \"Haber Básico\" es menor al salario mínimo establecido por ley.");
+                                    docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
+                                }
+                                else
+                                    errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                             case 3:
                                 docPlanillaDetalle.setBonoAntiguedad(registro.get(registro.getHeader(columna)));
@@ -556,11 +568,8 @@ public class DeclaracionTrimestralBean implements Serializable {
                                 docPlanillaDetalle.setBonoAntiguedad(registro.get(registro.getHeader(columna)));
                                 break;
                             case 3:
-                                if(!registro.get(columna).equals("")){
-                                    if((int) Double.parseDouble(registro.get(columna))<1200)
-                                        advertencias.add("El salario en la fila \""+c+"\" y la columna "+registro.getHeader(columna) +"es menor al salirio mínimo establecido por ley");
+                                if(!registro.get(columna).equals(""))
                                     docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
-                                }
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
@@ -590,14 +599,17 @@ public class DeclaracionTrimestralBean implements Serializable {
                     if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
                         switch (valorPlanilla){
                             case 1:
-                                docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
+                                if(!registro.get(columna).equals("")){
+                                    if((int) Double.parseDouble(registro.get(columna))<salarioMinimo)
+                                        docAlerta.setObservacion(nombreBinario + ": El registro en la fila \"" + c + "\" y la columna \"Haber Básico\" es menor al salario mínimo establecido por ley.");
+                                    docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
+                                }
+                                else
+                                    errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                             case 2:
-                                if(!registro.get(columna).equals("")){
-                                    if((int) Double.parseDouble(registro.get(columna))<1200)
-                                        advertencias.add("El salario en la fila \""+c+"\" y la columna "+registro.getHeader(columna) +"es menor al salirio mínimo establecido por ley");
+                                if(!registro.get(columna).equals(""))
                                     docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
-                                }
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
@@ -721,11 +733,8 @@ public class DeclaracionTrimestralBean implements Serializable {
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //36
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))){
-                            if((int) Double.parseDouble(registro.get(columna))<1200)
-                                advertencias.add("El salario en la fila \""+c+"\" y la columna \""+registro.getHeader(columna) +"\" es menor al salario mínimo establecido por ley");
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna))))
                             docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
-                        }
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
@@ -759,6 +768,9 @@ public class DeclaracionTrimestralBean implements Serializable {
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
                     }
+                    if(docAlerta.getObservacion()!=null)
+                        alertas.add(docAlerta);
+                    System.out.println("-----------tamañoAlerta----->"+alertas.size());
                     docPlanillaDetalles.add(docPlanillaDetalle);
                 }
             }
@@ -1169,12 +1181,12 @@ public class DeclaracionTrimestralBean implements Serializable {
         this.errores = errores;
     }
 
-    public List<String> getAdvertencias() {
-        return advertencias;
+    public List<DocAlerta> getAlertas() {
+        return alertas;
     }
 
-    public void setAdvertencias(List<String> advertencias) {
-        this.advertencias = advertencias;
+    public void setAlertas(List<DocAlerta> alertas) {
+        this.alertas = alertas;
     }
 
     public boolean isVerificaValidacion() {
@@ -1191,5 +1203,13 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void setTamanioErrores(int tamanioErrores) {
         this.tamanioErrores = tamanioErrores;
+    }
+
+    public IParametrizacionService getiParametrizacionService() {
+        return iParametrizacionService;
+    }
+
+    public void setiParametrizacionService(IParametrizacionService iParametrizacionService) {
+        this.iParametrizacionService = iParametrizacionService;
     }
 }
