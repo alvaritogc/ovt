@@ -21,11 +21,12 @@
 
             <p:panel id="pnlPersona" header="DATOS GENERALES" style="height: 330px;width: 700px;">
                 <h:panelGrid id="pnlGridBuscarPersona" columns="2" >
-                    <h:outputText value="Natural-Juridica:"/>
-                    <p:selectBooleanCheckbox id="checkEsNatural" value="#{personaBean.persona.esNatural}"
-                                             tabindex="1" >
-                        <p:ajax    process="@this" update="pnlPersona" />
-                    </p:selectBooleanCheckbox>
+                    <h:outputText value="Persona :"/>
+                    <p:selectOneRadio id="checkEsNatural" value="#{personaBean.persona.esNatural}" tabindex="1">
+                        <f:selectItem itemLabel="Natural" itemValue="#{false}" />
+                        <f:selectItem itemLabel="Jurídica" itemValue="#{true}" />
+                        <p:ajax update="pnlPersona" event="valueChange" />
+                    </p:selectOneRadio>
 
                     <p:outputLabel for="inputTxtNombre" value="Nombre o Razon social:"/>
                     <p:inputText id="inputTxtNombre" value="#{personaBean.persona.nombreRazonSocial}"
