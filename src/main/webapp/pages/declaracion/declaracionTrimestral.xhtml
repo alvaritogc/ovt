@@ -478,7 +478,7 @@
         <p:dataList value="#{declaracionTrimestralBean.errores}" var="e" itemType="disc" emptyMessage="Sin errores.">#{e}</p:dataList>
     </p:scrollPanel>
     <p:scrollPanel style="width:329px;height:150px" mode="native">
-        <p:dataList value="#{declaracionTrimestralBean.advertencias}" var="a" itemType="disc" emptyMessage="Sin advertencias.">#{a}</p:dataList>
+        <p:dataList value="#{declaracionTrimestralBean.alertas}" var="a" itemType="disc" emptyMessage="Sin alertas.">#{a.observacion}</p:dataList>
     </p:scrollPanel>
 </p:panelGrid>
 

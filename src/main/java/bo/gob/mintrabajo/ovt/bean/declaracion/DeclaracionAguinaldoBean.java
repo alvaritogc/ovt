@@ -379,7 +379,8 @@ public class DeclaracionAguinaldoBean implements Serializable {
             documento.setPerUnidad(unidadSeleccionada);
             List<DocBinario> listaBinarios= new ArrayList<DocBinario>();
             listaBinarios.add(binario);
-            iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);            return "irEscritorio";
+//            iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles);
+            return "irEscritorio";
         }catch (Exception e){
             e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
