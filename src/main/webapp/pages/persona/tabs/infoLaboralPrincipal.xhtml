@@ -2,7 +2,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions">
 
     <style type="text/css">
 
@@ -65,6 +66,7 @@
                              rendered="#{personaUnidadBean.infolaboral.idInfolaboral==null}"
                              onclick="PF('dlgInfoLaboral').show()"
                              update=":frmInfoLaboral:pnlInfoLaboral,:txtDlgInfoLaboral,:frmInfoLaboral:cmdButtonInfoLaboral">
+                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
                 <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
             </p:commandButton>
@@ -110,7 +112,17 @@
             </h:panelGrid>
         <h:panelGrid columns="6" columnClasses="column1-1">
                 <h:outputText value="Total ganado de la planilla (Bs.):"/>
-                <p:inputText value="#{personaUnidadBean.infolaboral.totalPlanilla}" readonly="true" style="width: 150px;text-align:right;"/>
+            <pe:inputNumber
+                            value="#{personaUnidadBean.infolaboral.totalPlanilla}"
+                            decimalPlaces="2"
+                            tabindex="11"
+                            style="width: 150px;text-align:right;"
+                            decimalSeparator=","
+                            thousandSeparator="."
+                            disabled="true"
+                    >
+            </pe:inputNumber>
+
 
                 <h:outputLabel/>
                 <h:outputLabel/>
@@ -122,7 +134,16 @@
                 <p:inputText value="#{personaUnidadBean.infolaboral.nroAsegCaja}" readonly="true" style="width: 40px;text-align:right;"/>
 
                 <h:outputText value="Monto aportado (Bs):"/>
-                <p:inputText value="#{personaUnidadBean.infolaboral.montoAsegCaja}" readonly="true" style="width: 150px;text-align:right;"/>
+                <pe:inputNumber
+                                value="#{personaUnidadBean.infolaboral.montoAsegCaja}"
+                                decimalPlaces="2"
+                                tabindex="13"
+                                style="width: 150px;text-align:right;"
+                                decimalSeparator=","
+                                thousandSeparator="."
+                                disabled="true"
+                    >
+                </pe:inputNumber>
 
                 <h:outputLabel/>
                 <h:outputLabel/>
@@ -131,7 +152,17 @@
                 <p:inputText value="#{personaUnidadBean.infolaboral.nroAsegAfp}" readonly="true" style="width: 40px;text-align:right;"/>
 
                 <h:outputText value="Monto aportado (Bs):"/>
-                <p:inputText value="#{personaUnidadBean.infolaboral.montoAsegAfp}" readonly="true" style="width: 150px;text-align:right;"/>
+                <pe:inputNumber
+                    value="#{personaUnidadBean.infolaboral.montoAsegAfp}"
+                    decimalPlaces="2"
+                    tabindex="13"
+                    style="width: 150px;text-align:right;"
+                    decimalSeparator=","
+                    thousandSeparator="."
+                    disabled="true"
+                    >
+                </pe:inputNumber>
+
 
                 <h:outputLabel/>
                 <h:outputLabel/>

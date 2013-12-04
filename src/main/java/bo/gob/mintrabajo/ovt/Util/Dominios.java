@@ -57,4 +57,7 @@ public class Dominios {
     public static final String PAR_DOCUMENTO_PLAAGU_RECTIF = "PLAAGU_RECTIF";
     public static final String PAR_DOCUMENTO_CON_BINARIOS = "DOC_CON_BINARIOS";
     public static final String PAR_DOCUMENTO_ROE_ESTADO_BAJA = "ROE_ESTADO_BAJA";
+
+    public static final String DOM_SALARIO = "SALARIOS";
+    public static final String PAR_SALARIO_MINIMO = "SALARIO_MINIMO";
 }

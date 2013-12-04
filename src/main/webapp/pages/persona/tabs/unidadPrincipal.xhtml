@@ -47,11 +47,14 @@
         </f:facet>
 
             <h:panelGrid   columns="2"  style="width: 680px;">
-                        <h:outputText value="Natural-Juridica:"/>
-                        <p:selectBooleanCheckbox id="checkEsNatural"
-                                                 value="#{personaUnidadBean.persona.esNatural}"
-                                                 disabled="true">
-                        </p:selectBooleanCheckbox>
+                 <h:outputText value="Personeria"/>
+                <p:selectOneRadio id="checkEsNatural"
+                                  value="#{personaUnidadBean.persona.esNatural}"
+                                  disabled="true">
+                    <f:selectItem itemLabel="Natural   ." itemValue="true" />
+                    <f:selectItem itemLabel="Juridica" itemValue="false" />
+                </p:selectOneRadio>
+
 
                         <p:outputLabel  value="Nombre o Razon social:"/>
                         <p:inputText readonly="true"

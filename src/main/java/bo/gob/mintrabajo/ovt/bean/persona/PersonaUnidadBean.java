@@ -1012,7 +1012,7 @@ public class PersonaUnidadBean implements Serializable{
             return ;
         }
 
-         iInfoLaboralService.save(infolaboralRegistro,REGISTRO_BITACORA,unidad);
+         iInfoLaboralService.save(infolaboralRegistro,REGISTRO_BITACORA,unidadRegistro);
         ini();
         //Cerrar dialog
         RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
@@ -1021,12 +1021,28 @@ public class PersonaUnidadBean implements Serializable{
     public void cargarInfoLaboral(){
         infolaboral=new PerInfolaboral();
         List<PerInfolaboral>listaInfoLaboral=new ArrayList<PerInfolaboral>();
-        listaInfoLaboral=iInfoLaboralService.findByPerUnidad(unidad);
+        /*listaInfoLaboral=iInfoLaboralService.findByPerUnidad(unidad);*/
+        listaInfoLaboral=iInfoLaboralService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
         if(listaInfoLaboral!=null){
            if(!listaInfoLaboral.isEmpty()){
                //se obtiene el primer registro, por que una persona solo tiene
                // una actividad declarada
-               infolaboral=listaInfoLaboral.get(0);
+                 if(listaUnidad.size()==0){
+                     infolaboral=listaInfoLaboral.get(0);
+                 } else{
+                    for(int i=listaInfoLaboral.size()-1;i>=0;i--){
+                      for(int j=listaUnidad.size()-1;j>=0;j--){
+                          if(listaInfoLaboral.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==0){
+                             infolaboral=listaInfoLaboral.get(i);
+                              break;
+                          }else{
+                              if(listaInfoLaboral.get(i).getPerUnidad().getPerUnidadPK().getIdUnidad()==listaUnidad.get(j).getPerUnidadPK().getIdUnidad()){
+                                listaUnidad.get(j).setInfolaboral(listaInfoLaboral.get(i));
+                              }
+                          }
+                      }
+                    }
+                 }
            }
         }
     }

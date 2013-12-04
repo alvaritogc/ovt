@@ -11,4 +11,5 @@ import java.util.List;
 public interface IInfoLaboralService {
     public PerInfolaboral save(PerInfolaboral infolaboral,String registroBitacora,PerUnidad unidad);
     public List<PerInfolaboral>findByPerUnidad(PerUnidad unidad);
+    public  List<PerInfolaboral>obtenerPorIdPersona(String idPersona);
 }
