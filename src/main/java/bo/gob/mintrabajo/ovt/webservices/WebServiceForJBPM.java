@@ -67,4 +67,31 @@ public class WebServiceForJBPM {
         }
         return null;
     }
+
+    ///*** Método que retorna el login por documento de documento  ***///
+    @WebMethod(operationName = "retornaCorreoElectronico")
+    public String retornaCorreoElectronico (@WebParam(name = "nroDocumento") String nroDocumento) {
+        try{
+
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+
+            Connection conn = DriverManager.getConnection ("jdbc:oracle:thin:@192.168.50.7:1521:DESA", "ovt", "prueba");
+
+            Statement stmt = conn.createStatement();
+            ResultSet rset1 = stmt.executeQuery("select * from PER_PERSONA where NRO_IDENTIFICACION = '" + nroDocumento + "'");
+            rset1.next();
+
+            String idPersona = rset1.getString("ID_PERSONA");
+            ResultSet rset2 = stmt.executeQuery("select * from USR_USUARIO where ID_PERSONA = '" + idPersona + "'");
+            rset2.next();
+
+            String usuarioLogin = rset2.getString("USUARIO");
+
+            return usuarioLogin;
+        }catch (Exception e){
+            //e.printStackTrace();
+            logger.error("Error al ejecutar el metodo retornaCorreoElectronico() " + e.getMessage());
+        }
+        return null;
+    }
 }
