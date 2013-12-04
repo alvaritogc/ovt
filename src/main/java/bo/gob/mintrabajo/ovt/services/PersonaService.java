@@ -89,6 +89,7 @@ public class PersonaService implements IPersonaService {
     @Override
     public void editarPersona(PerPersona persona, PerUnidad unidad, String idLocalidad) {
         log.info("Editando el Usuario ...");
+        try{
         PerPersona perPersonaTmp = personaRepository.findOne(persona.getIdPersona());
         perPersonaTmp.setTipoIdentificacion(persona.getTipoIdentificacion());
         perPersonaTmp.setCodLocalidad(localidadRepository.findOne(idLocalidad));
@@ -99,14 +100,17 @@ public class PersonaService implements IPersonaService {
         PerPersona personaTmp = personaRepository.save(perPersonaTmp);
         log.info("Guardando la persona ");
 
-        PerUnidad unidadTmp = unidadRepository.buscarPorPersona(perPersonaTmp.getIdPersona()).get(0);
+        PerUnidad unidadTmp = unidadRepository.findByPerPersona_IdPersona(perPersonaTmp.getIdPersona()).get(0);
         unidadTmp.setNombreComercial(unidad.getNombreComercial());
         unidadTmp.setTipoEmpresa(unidad.getTipoEmpresa());
         unidadTmp.setTipoSociedad(unidad.getTipoSociedad());
         unidadTmp.setActividadDeclarada(unidad.getActividadDeclarada());
-        //unidadTmp.setPerPersona(personaTmp);
+        unidadTmp.setPerPersona(personaTmp);
         unidadRepository.save(unidadTmp);
         log.info("Guardada la unidad sin falla ...");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public PerPersona obtenerPersonaPorUsuario(UsrUsuario usrUsuario){

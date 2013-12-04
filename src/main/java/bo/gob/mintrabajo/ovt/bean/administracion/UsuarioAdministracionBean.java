@@ -86,8 +86,7 @@ public class UsuarioAdministracionBean {
         personaSelected = iPersonaService.obtenerPersonaPorUsuario(usuarioSelected);
         System.out.println("==>> personaSelected " + personaSelected);
         try {
-            System.out.println("------------------------------------ " + iUnidadService.buscarPorPersona(personaSelected.getIdPersona()).size());
-            unidadSelected = iUnidadService.buscarPorPersona(personaSelected.getIdPersona()).get(0);
+            unidadSelected = iUnidadService.listarUnidadesSucursales(personaSelected.getIdPersona()).get(0);
         } catch (Exception e) {
             e.printStackTrace();
         }

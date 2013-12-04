@@ -82,11 +82,14 @@ public class Util {
             pk.setIdDominio(idDominio);
             pk.setValor(valor);
             ParDominio parDominio = mapaDominio.asMap().get(pk);
-            return parDominio.getDescripcion();
+            String tmp = parDominio.getDescripcion();
+            if(tmp != null){
+                return tmp;
+            }
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            System.out.println(" error " + e.getMessage());
         }
+        return "DESCRIPCIÓN INVÁLIDA";
     }
 
     public static DataSource obtenerDatasource(){

@@ -17,9 +17,11 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.Inet4Address;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -99,6 +101,7 @@ public class PersonaBean implements Serializable{
     private String confirmarContrasenia;
 
     private  final int LONGITUD_MINIMA=7;
+     static String REGISTRO_BITACORA;
 
     @PostConstruct
     public void ini(){
@@ -270,8 +273,10 @@ public class PersonaBean implements Serializable{
         }
 
         try {
-
-            final String REGISTRO_BITACORA = "ROE";
+          /*    HttpServletRequest request;
+            request.getRemoteAddr();*/
+            REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
+            //REGISTRO_BITACORA=Inet4Address.getLocalHost().getHostAddress().toString();
             Long seq = iLocalidadService.localidadSecuencia(PER_PERSONA_SEC);
             persona.setIdPersona(seq.toString());
             persona.setCodLocalidad(iLocalidadService.findById(idLocalidad));
