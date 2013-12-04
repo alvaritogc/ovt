@@ -146,7 +146,8 @@ public class UnidadService implements IUnidadService{
     
     public List<PerUnidad> buscarPorPersona(String idPersona){
         List<PerUnidad> lista;
-        lista = unidadRepository.findByPerPersona_IdPersona(idPersona);
+        lista=unidadRepository.buscarPorPersona(idPersona);
+       // lista = unidadRepository.findByPerPersona_IdPersona(idPersona);
         return lista;
     }
     
