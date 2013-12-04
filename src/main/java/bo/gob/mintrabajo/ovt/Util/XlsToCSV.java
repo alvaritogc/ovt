@@ -37,14 +37,17 @@ public class XlsToCSV {
         //Loop through rows.
         while(rowIterator.hasNext()) {
             Row row = rowIterator.next();
+
             int i=0;//String array
             //change this depending on the length of your sheet
             if(columnas==0)
                 columnas=row.getLastCellNum();
             String[] csvdata = new String[columnas];
             Iterator<Cell> cellIterator = row.iterator();
-            while(cellIterator.hasNext()) {
-                Cell cell = cellIterator.next(); //Fetch CELL
+            while(cellIterator.hasNext() && i<columnas) {
+                Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
+//                cellIterator.next(); //Fetch CELL
+
                 switch(cell.getCellType()) { //Identify CELL type
                     //you need to add more code here based on
                     //your requirement / transformations
@@ -55,7 +58,7 @@ public class XlsToCSV {
                         csvdata[i]= String.valueOf(cell.getNumericCellValue());
                         break;
                     case Cell.CELL_TYPE_BLANK:
-                        csvdata[i]= "-1";
+                        csvdata[i]= "";
                         break;
                     case Cell.CELL_TYPE_BOOLEAN:
                         csvdata[i]= String.valueOf(cell.getBooleanCellValue());

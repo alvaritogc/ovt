@@ -483,9 +483,9 @@
 </p:panelGrid>
 
 <!-- Renato Codigo -->
-<h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionTrimestralBean.parametro!=2}">
+<h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionTrimestralBean.parametro!=2 and declaracionTrimestralBean.tamanioErrores!=3}">
     <h:outputText style="font-weight: bold;text-align: center" value="Primer mes trimestre"
-                  rendered="#{declaracionTrimestralBean.habilita and declaracionTrimestralBean.verificaValidacion==false}"/> &nbsp;
+                  rendered="#{declaracionTrimestralBean.habilita}"/> &nbsp;
     <p:fileUpload fileUploadListener="#{declaracionTrimestralBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
                   fileLimitMessage="Sólo se puede elegir un archivo."
                   invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
@@ -493,11 +493,11 @@
                   mode="advanced" update="idArchivo1,guardarPlanillaBtn" fileLimit="1" label="Seleccione"
                   invalidSizeMessage="Archivo demasiado grande."
                   sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
-                  rendered="#{declaracionTrimestralBean.habilita and declaracionTrimestralBean.verificaValidacion==false}"/>
+                  rendered="#{declaracionTrimestralBean.habilita}"/>
     <h:outputText id="idArchivo1" value="#{declaracionTrimestralBean.nombres[0]}"
                   style="font-weight: bold;text-align: center"/>
 
-    <h:outputText value="Segundo mes trimestre" style="font-weight: bold" rendered="#{declaracionTrimestralBean.habilita and declaracionTrimestralBean.verificaValidacion==false}"/> &nbsp;
+    <h:outputText value="Segundo mes trimestre" style="font-weight: bold" rendered="#{declaracionTrimestralBean.habilita}"/> &nbsp;
 
     <p:fileUpload fileUploadListener="#{declaracionTrimestralBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
                   fileLimitMessage="Sólo se puede elegir un archivo."
@@ -506,11 +506,11 @@
                   mode="advanced" update="idArchivo2,guardarPlanillaBtn" fileLimit="1" label="Seleccione"
                   invalidSizeMessage="Archivo demasiado grande."
                   sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
-                  rendered="#{declaracionTrimestralBean.habilita and declaracionTrimestralBean.verificaValidacion==false}"/>
+                  rendered="#{declaracionTrimestralBean.habilita}"/>
     <h:outputText id="idArchivo2" value="#{declaracionTrimestralBean.nombres[1]}"
                   style="font-weight: bold;text-align: center"/>
 
-    <h:outputText value="Tercer mes trimestre" style="font-weight: bold" rendered="#{declaracionTrimestralBean.habilita and declaracionTrimestralBean.verificaValidacion==false}"/> &nbsp;
+    <h:outputText value="Tercer mes trimestre" style="font-weight: bold" rendered="#{declaracionTrimestralBean.habilita}"/> &nbsp;
 
     <p:fileUpload fileUploadListener="#{declaracionTrimestralBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
                   fileLimitMessage="Sólo se puede elegir un archivo."
@@ -519,7 +519,7 @@
                   mode="advanced" update="idArchivo3,guardarPlanillaBtn" fileLimit="1" label="Seleccione"
                   invalidSizeMessage="Archivo demasiado grande."
                   sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
-                  rendered="#{declaracionTrimestralBean.habilita and declaracionTrimestralBean.verificaValidacion==false}"/>
+                  rendered="#{declaracionTrimestralBean.habilita}"/>
     <h:outputText id="idArchivo3" value="#{declaracionTrimestralBean.nombres[2]}"
                   style="font-weight: bold;text-align: center"/>
 
