@@ -1,106 +1,131 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="./../template/templateInicio.xhtml">
-        <ui:define name="content">
-            <h:form id="idContenidos">
-                <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>  
-                <br/>
-                <center>
-                    <p:outputLabel value="#{contenidoBean.mensajeApp.mensaje}" style="font-size: 30px;"/>
-                </center>
-                <br/>
-                <h:dataTable id="idListaContenidos" value="#{contenidoBean.listaMensajeContenido}" style="width: 100%;"
-                             var="mensajeContenido"  rows="10" >
-                    <h:column>
-                        <p:panelGrid columns="1" style="width: 100%;">
+<ui:composition template="./../template/templateInicio.xhtml">
+    <ui:define name="content">
+        <h:form id="idContenidos">
+            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+            <br/>
+            <center>
+                <p:outputLabel value="#{contenidoBean.mensajeApp.mensaje}" style="font-size: 30px;"/>
+            </center>
+            <br/>
+            <h:dataTable id="idListaContenidos" value="#{contenidoBean.listaMensajeContenido}" style="width: 100%;"
+                         var="mensajeContenido" rows="10">
+                <h:column>
+                    <p:panelGrid columns="1" style="width: 100%;">
 
 
-                            <h:panelGrid columns="1" style="width: 100%;"
-                                         rendered="#{mensajeContenido.esDescargable==0?true:false}">
-                                <h:outputText value="#{mensajeContenido.contenido}" escape="false"/>
-                                <h:panelGrid columns="1" style="width: 100%;text-align: center;"
-                                             rendered="#{mensajeContenido.metadata=='image/jpeg'}">
-                                    <p:graphicImage value="#{images.image}" cache="false" height="50">
-                                        <f:param name="id" value="#{mensajeContenido.idMensajeContenido}" />
-                                    </p:graphicImage>
-                                    <p:outputLabel value="#{mensajeContenido.archivo}"/>
-                                </h:panelGrid>
+                        <h:panelGrid columns="1" style="width: 100%;"
+                                     rendered="#{mensajeContenido.esDescargable==0?true:false}">
+                            <h:outputText value="#{mensajeContenido.contenido}" escape="false"/>
+                            <h:panelGrid columns="1" style="width: 100%;text-align: center;"
+                                         rendered="#{mensajeContenido.metadata=='image/jpeg'}">
+                                <p:graphicImage value="#{images.image}" cache="false" height="50">
+                                    <f:param name="id" value="#{mensajeContenido.idMensajeContenido}"/>
+                                </p:graphicImage>
+                                <p:outputLabel value="#{mensajeContenido.archivo}"/>
                             </h:panelGrid>
-                            <p:commandButton value="Descargar: #{mensajeContenido.archivo}" 
-                                             rendered="#{mensajeContenido.esDescargable==1?true:false}"
-                                             action="#{contenidoBean.descargar}" ajax="false">
-                                <f:setPropertyActionListener value="#{mensajeContenido}" target="#{contenidoBean.mensajeContenido}" />
-                            </p:commandButton>
-                            <h:panelGrid style="text-align: right;width: 100%;">
-                                <p:commandButton  action="#{contenidoBean.eliminar}" value="Eliminar contenido" 
-                                                  immediate="true"
-                                                  update=":idContenidos">
-                                    <f:setPropertyActionListener value="#{mensajeContenido}" target="#{contenidoBean.mensajeContenido}" />
-                                </p:commandButton>
-                            </h:panelGrid>
-                        </p:panelGrid>
-                    </h:column>
-                </h:dataTable>
+                        </h:panelGrid>
+                        <p:commandButton value="Descargar: #{mensajeContenido.archivo}"
+                                         rendered="#{mensajeContenido.esDescargable==1?true:false}"
+                                         action="#{contenidoBean.descargar}" ajax="false">
+                            <f:setPropertyActionListener value="#{mensajeContenido}"
+                                                         target="#{contenidoBean.mensajeContenido}"/>
+                        </p:commandButton>
+                        <h:panelGrid style="text-align: right;width: 100%;" columns="2">
+                            <p:row>
+                                <p:column>
+                                    <p:commandButton value="Editar"
+                                                     type="button"
+                                                     onclick="PF('condenidoDlg').show();"
+                                                     update=":idContenidos:contenidoDialog">
+                                        <f:setPropertyActionListener value="true" target="#{contenidoBean.edicion}"/>
+                                        <f:setPropertyActionListener value="#{mensajeContenido}"
+                                                                     target="#{contenidoBean.mensajeContenido}"/>
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton action="#{contenidoBean.eliminar}" value="Eliminar contenido"
+                                                     immediate="true"
+                                                     update=":idContenidos">
+                                        <f:setPropertyActionListener value="#{mensajeContenido}"
+                                                                     target="#{contenidoBean.mensajeContenido}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+
+
+                        </h:panelGrid>
+                    </p:panelGrid>
+                </h:column>
+            </h:dataTable>
+            <br/>
+            <br/>
+            <p:commandButton value="Nuevo contenido"
+                             action="#{contenidoBean.nuevoContenido}"
+                             oncomplete="PF('condenidoDlg').show();"
+                             update=":idContenidos:contenidoDialog"/>
+            <p:commandButton value="Nueva descarga"
+                             action="#{contenidoBean.nuevoContenidoDescarga}"
+                             oncomplete="PF('condenidoDescargaDlg').show();"
+                             update=":idContenidos:contenidoDescargaDialog"/>
+
+
+            <p:dialog id="contenidoDialog"
+                      resizable="false"
+                      header="Nuevo contenido" widgetVar="condenidoDlg">
+
+                <p:editor id="editor" value="#{contenidoBean.mensajeContenido.contenido}" width="700"
+                          controls="bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule link unlink cut copy paste pastetext outdent indent"/>
+                <!--bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule image link unlink cut copy paste pastetext print source outdent indent-->
                 <br/>
+                <p:outputLabel id="messages" value="Imagen: #{contenidoBean.mensajeContenido.archivo}"
+                               style="font-size: 20px;"/>
                 <br/>
-                <p:commandButton value="Nuevo contenido" 
-                                 action="#{contenidoBean.nuevoContenido}" 
-                                 oncomplete="PF('condenidoDlg').show();"
-                                 update=":idContenidos:contenidoDialog"/>  
-                <p:commandButton value="Nueva descarga" 
-                                 action="#{contenidoBean.nuevoContenidoDescarga}" 
-                                 oncomplete="PF('condenidoDescargaDlg').show();"
-                                 update=":idContenidos:contenidoDescargaDialog"/>  
+                <p:fileUpload id="idFileUploadContenido"
+                              fileUploadListener="#{contenidoBean.subirArchivo}" mode="advanced"
+                              uploadLabel="Subir Imagen" cancelLabel="Cancelar"
+                              label="Seleccione"
+                              style="width: 700px;"
+                              fileLimit="1"
+                              fileLimitMessage="Sólo se puede elegir un archivo."
+                              invalidFileMessage="El archivo no es válido, revise la extensión"
+                              invalidSizeMessage="Archivo demasiado grande."
+                              update="messages idFileUploadContenido" auto="true"
+                              allowTypes="/(\.|\/)(gif|jpe?g|png|txt)$/"/>
+                <p:commandButton value="Guardar" action="#{contenidoBean.guardar}"
+                                 update=":idContenidos:idListaContenidos"/>
 
-
-                <p:dialog id="contenidoDialog" 
-                          resizable="false"
-                          header="Nuevo contenido" widgetVar="condenidoDlg">  
-
-                    <p:editor id="editor" value="#{contenidoBean.mensajeContenido.contenido}" width="700"
-                              controls="bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule link unlink cut copy paste pastetext outdent indent"/> 
-                    <!--bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule image link unlink cut copy paste pastetext print source outdent indent-->
-                    <br/>
-                    <p:outputLabel id="messages" value="Imagen: #{contenidoBean.mensajeContenido.archivo}" style="font-size: 20px;"/>
-                    <br/>
-                    <p:fileUpload id="idFileUploadContenido" 
-                                  fileUploadListener="#{contenidoBean.subirArchivo}" mode="advanced"  
-                                  uploadLabel="Subir Imagen" cancelLabel="Cancelar"
-                                  label="Seleccione"
-                                  style="width: 700px;"
-                                  fileLimit="1"
-                                  fileLimitMessage="Sólo se puede elegir un archivo."
-                                  invalidFileMessage="El archivo no es válido, revise la extensión"
-                                  invalidSizeMessage="Archivo demasiado grande."
-                                  update="messages idFileUploadContenido" auto="true"  allowTypes="/(\.|\/)(gif|jpe?g|png|txt)$/"/> 
-                    <p:commandButton value="Guardar" action="#{contenidoBean.guardar}" update=":idContenidos:idListaContenidos"/>
-
-                </p:dialog>
-                <p:dialog id="contenidoDescargaDialog"
-                          resizable="false"
-                          header="Nueva descarga" widgetVar="condenidoDescargaDlg">  
-                    <br/>
-                    <p:outputLabel id="messagesDescarga" value="Archivo a descargar: #{contenidoBean.mensajeContenido.archivo}" style="font-size: 20px;"/>
-                    <br/>
-                    <p:fileUpload fileUploadListener="#{contenidoBean.subirArchivo}" mode="advanced"  
-                                  uploadLabel="Subir" cancelLabel="Cancelar"
-                                  label="Seleccione"
-                                  style="width: 500px"
-                                  fileLimit="1"
-                                  fileLimitMessage="Sólo se puede elegir un archivo."
-                                  invalidFileMessage="El archivo no es válido, revise la extensión"
-                                  sizeLimit="5242880"
-                                  invalidSizeMessage="Archivo demasiado grande."
-                                  update="messagesDescarga" auto="true"  allowTypes="/(\.|\/)(gif|jpe?g|png|txt|xls|xlsx|csv|XLS|XLSX|CSV)$/"/> 
-                    <p:commandButton value="Guardar" action="#{contenidoBean.guardar}" update=":idContenidos:idListaContenidos"/>
-                </p:dialog>
-            </h:form>
-        </ui:define>
-    </ui:composition>
+            </p:dialog>
+            <p:dialog id="contenidoDescargaDialog"
+                      resizable="false"
+                      header="Nueva descarga" widgetVar="condenidoDescargaDlg">
+                <br/>
+                <p:outputLabel id="messagesDescarga"
+                               value="Archivo a descargar: #{contenidoBean.mensajeContenido.archivo}"
+                               style="font-size: 20px;"/>
+                <br/>
+                <p:fileUpload fileUploadListener="#{contenidoBean.subirArchivo}" mode="advanced"
+                              uploadLabel="Subir" cancelLabel="Cancelar"
+                              label="Seleccione"
+                              style="width: 500px"
+                              fileLimit="1"
+                              fileLimitMessage="Sólo se puede elegir un archivo."
+                              invalidFileMessage="El archivo no es válido, revise la extensión"
+                              sizeLimit="5242880"
+                              invalidSizeMessage="Archivo demasiado grande."
+                              update="messagesDescarga" auto="true"
+                              allowTypes="/(\.|\/)(gif|jpe?g|png|txt|xls|xlsx|csv|XLS|XLSX|CSV)$/"/>
+                <p:commandButton value="Guardar" action="#{contenidoBean.guardar}"
+                                 update=":idContenidos:idListaContenidos"/>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
 </html>

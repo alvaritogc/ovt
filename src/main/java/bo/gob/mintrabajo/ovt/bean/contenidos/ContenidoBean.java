@@ -3,6 +3,7 @@ package bo.gob.mintrabajo.ovt.bean.contenidos;
 import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.URLConnection;
 import java.sql.SQLException;
+
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +30,12 @@ import javax.faces.context.ExternalContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.primefaces.event.FileUploadEvent;
 
 @ManagedBean
 @ViewScoped
-public class ContenidoBean implements Serializable{
+public class ContenidoBean implements Serializable {
     //
     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private static final Logger logger = LoggerFactory.getLogger(EscritorioBean.class);
@@ -50,11 +53,12 @@ public class ContenidoBean implements Serializable{
     private ParMensajeContenido mensajeContenido;
     //
     private Long idMensajeApp;
+    private boolean edicion;
 
     @PostConstruct
     public void ini() {
         logger.info("ContenidosBean.init()");
-        idMensajeApp = (Long)session.getAttribute("idMensajeApp");
+        idMensajeApp = (Long) session.getAttribute("idMensajeApp");
         mensajeApp = iMensajeAppService.findById(idMensajeApp);
         cargar();
     }
@@ -65,12 +69,15 @@ public class ContenidoBean implements Serializable{
     }
 
     public void nuevoContenido() {
+        edicion = false;
         mensajeContenido = new ParMensajeContenido();
         mensajeContenido.setEsDescargable(new Short("0"));
         mensajeContenido.setBinario(null);
         mensajeContenido.setMetadata("N/A");
     }
+
     public void nuevoContenidoDescarga() {
+        edicion = false;
         mensajeContenido = new ParMensajeContenido();
         mensajeContenido.setEsDescargable(new Short("1"));
         mensajeContenido.setBinario(null);
@@ -78,7 +85,7 @@ public class ContenidoBean implements Serializable{
     }
 
     public void guardar() {
-        if(mensajeContenido.getEsDescargable()==new Short("1")){
+        if (mensajeContenido.getEsDescargable() == new Short("1")) {
             mensajeContenido.setContenido("");
         }
         //
@@ -96,21 +103,19 @@ public class ContenidoBean implements Serializable{
 ////        context.execute("condenidoDlg.hide()");
 ////        context.execute("condenidoDescargaDlg.hide()");
 //        //
-        try{
+        try {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            
-        
-        
+
+
     }
-    
-    public void eliminar(){
+
+    public void eliminar() {
         iMensajeContenidoService.delete(mensajeContenido.getIdMensajeContenido());
-        mensajeContenido=new ParMensajeContenido();
+        mensajeContenido = new ParMensajeContenido();
         cargar();
     }
 
@@ -193,5 +198,13 @@ public class ContenidoBean implements Serializable{
 
     public void setMensajeContenido(ParMensajeContenido mensajeContenido) {
         this.mensajeContenido = mensajeContenido;
+    }
+
+    public boolean isEdicion() {
+        return edicion;
+    }
+
+    public void setEdicion(boolean edicion) {
+        this.edicion = edicion;
     }
 }
