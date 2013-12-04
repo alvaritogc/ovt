@@ -108,6 +108,7 @@ public class DeclaracionTrimestralBean implements Serializable {
     private boolean verificaValidacion;
     private Long idRectificatorio;
     private List<String> errores = new ArrayList<String>();
+    private int tamanioErrores;
     private boolean valor;
     private int tipoEmpresa=1;
     private PerUnidad central;
@@ -120,7 +121,6 @@ public class DeclaracionTrimestralBean implements Serializable {
     private String trimestre;
     private String e;
     private List<String> advertencias;
-    private int tamañoAdvertencias;
 
     @PostConstruct
     public void ini() {
@@ -177,7 +177,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         valor=true;
         gestion=String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         obtenerPeriodoLista();
-
+        tamanioErrores=2;
     }
     public void generaQR(){
 //        QRCodeScriptlet.generaQR();
@@ -762,6 +762,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                     docPlanillaDetalles.add(docPlanillaDetalle);
                 }
             }
+            tamanioErrores = errores.size();
             verificaValidacion=true;
         }
         catch (Exception e){
@@ -1176,19 +1177,19 @@ public class DeclaracionTrimestralBean implements Serializable {
         this.advertencias = advertencias;
     }
 
-    public int getTamañoAdvertencias() {
-        return tamañoAdvertencias;
-    }
-
-    public void setTamañoAdvertencias(int tamañoAdvertencias) {
-        this.tamañoAdvertencias = tamañoAdvertencias;
-    }
-
     public boolean isVerificaValidacion() {
         return verificaValidacion;
     }
 
     public void setVerificaValidacion(boolean verificaValidacion) {
         this.verificaValidacion = verificaValidacion;
+    }
+
+    public int getTamanioErrores() {
+        return tamanioErrores;
+    }
+
+    public void setTamanioErrores(int tamanioErrores) {
+        this.tamanioErrores = tamanioErrores;
     }
 }
