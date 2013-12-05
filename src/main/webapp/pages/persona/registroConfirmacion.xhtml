@@ -6,16 +6,57 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../template/templateInicio.xhtml">
     <ui:define name="content">
-        <h3>Confirmar registro</h3>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+
+        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                  draggable="false" closable="false">
+            <p:graphicImage value="../../images/ajax-loader.gif" />
+        </p:dialog>
+        <br/>
+        <p:growl showDetail="true" id="growl" autoUpdate="true" life="6000" />
         <h:form id="confirmaRegistroFrm">
-            <!--<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />-->
-            <h:panelGrid columns="2">
+            <p:panel>
+            <h2 class="form-signin-heading" style="text-align: center">Confirmar registro</h2>
+            <br/>
+            <center>
+            <h:panelGrid columns="3">
                 <p:outputLabel value="Login :"/>
                 <h:inputText value="#{personaConfirmacionBean.loginParameter}" readonly="true"/>
+                <br/>
                 <p:outputLabel value="Confirmar Password :"/>
-                <h:inputSecret value="#{personaConfirmacionBean.passwordConfirm}"/>
+                <p:password id="contrasenia2"
+                            value="#{personaConfirmacionBean.passwordConfirm}"
+                            feedback="true"
+                            style="width: 200px; font-size: 10px"
+                            tabindex="1"
+                            required="true"
+                            requiredMessage=" El valor del campo Nueva contraseña es obligatorio."
+                            autocomplete="off"
+                            promptLabel="Ingrese su contraseña"
+                            weakLabel="Contraseña debil"
+                            goodLabel="Contraseña media"
+                            strongLabel="Contraseña fuerte" />
+                <h:graphicImage value="/images/ayuda.png" id="grafayuda"/>
+                <p:tooltip for="grafayuda">
+                    <ol>
+                        <li>La Contrase&ntilde;a permite los siguientes caracteres
+                            especiales:<br /> <b> ` ~ ! @ # $ % ^ &amp; * ( ) _ = { }
+                                \ | : ; &prime; &Prime; &lt; &gt; , - . ? /</b>
+                        </li>
+                        <li>La Contrase&ntilde;a permite validar que ingrese al
+                            menos un caracter especial, numerico y alfabetico</li>
+                        <li>La longitud minima requerida es de
+                            #{personaBean.LONGITUD_MINIMA} caracteres</li>
+                    </ol>
+                    <b>Ejemplo:</b>
+                    <pre>admin12@</pre>
+                </p:tooltip>
             </h:panelGrid>
-            <p:commandButton value="Confirmar" action="#{personaConfirmacionBean.confirmaRegistro}" ajax="false"/>
+                <br/>
+            <p:commandButton value="Confirmar" action="#{personaConfirmacionBean.confirmaRegistro}" update="confirmaRegistroFrm growl" />
+            </center>
+            </p:panel>
         </h:form>
     </ui:define>
 </ui:composition>
