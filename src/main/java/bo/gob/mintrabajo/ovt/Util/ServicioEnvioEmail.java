@@ -125,7 +125,7 @@ public class ServicioEnvioEmail implements Serializable {
             props.put("mail.smtp.socketFactory.port", port);
             props.setProperty("mail.smtp.host", host);
             props.put("mail.smtp.port", port);
-            props.put("mail.smtp.auth", "false"); //********************* colocar en true y descomentar la linea 141 al 145
+            props.put("mail.smtp.auth", "true"); //********************* colocar en true y descomentar la linea 141 al 145
             props.put("mail.smtp.socketFactory.fallback", "false");
 
             props.put("mail.smtp.user", from);
@@ -136,13 +136,12 @@ public class ServicioEnvioEmail implements Serializable {
             props.put("mail.smtp.time", "11000");
             props.put("mail.debug", "true");
 
-            Session session = Session.getDefaultInstance(props, null);
-
-//            Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
-//                protected PasswordAuthentication getPasswordAuthentication() {
-//                    return new PasswordAuthentication(from, password);
-//                }
-//            });
+            //Session session = Session.getDefaultInstance(props, null);
+            Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(from, password);
+                }
+            });
 
             logger.info("Autenticando usuario .... ");
             MimeMessage message = new MimeMessage(session);
