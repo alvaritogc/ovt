@@ -794,7 +794,7 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
     public void obtenerEntidad() {
-        parEntidadLista = iEntidadService.listaEntidad();
+        parEntidadLista = iEntidadService.listarPorTipoEntidad("SEGSALUD");
     }
 
     //** Getters and Setters **//

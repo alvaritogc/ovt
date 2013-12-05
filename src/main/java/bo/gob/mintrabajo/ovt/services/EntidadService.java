@@ -4,15 +4,15 @@ import bo.gob.mintrabajo.ovt.api.IEntidadService;
 import bo.gob.mintrabajo.ovt.entities.ParEntidad;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import bo.gob.mintrabajo.ovt.repositories.EntidadRepository;
-import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 @Named("entidadService")
 @TransactionAttribute
@@ -104,4 +104,9 @@ public class EntidadService implements IEntidadService {
     public List<ParEntidad> listarPorTipo(String tipoEntidad){
         return entidadRepository.findByAttribute("tipoEntidad", tipoEntidad, -1, -1);
     }
+
+    public List<ParEntidad> listarPorTipoEntidad(String tipoEntidad){
+        return entidadRepository.findByTipoEntidad(tipoEntidad);
+    }
+
 }

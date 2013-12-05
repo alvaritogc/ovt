@@ -18,7 +18,7 @@
 
 <h:panelGroup rendered="#{declaracionAguinaldoBean.estaDeclarado}">
     <h1>Usted ya realizo la declaracion jurada de aguinaldo</h1>
-    <p:commandButton ajax="false" value="Ir a inicio" action="#{declaracionAguinaldoBean.irInicio}"/>
+    <!--<p:commandButton ajax="false" value="Ir a inicio" action="# {declaracionAguinaldoBean.irInicio}"/>-->
 </h:panelGroup>
 <h:panelGroup id="panelForm" rendered="#{!declaracionAguinaldoBean.estaDeclarado}">
 <p:panelGrid id="gridForm">
@@ -374,7 +374,7 @@
 
 <div align="CENTER">
     <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada"
-                     actionListener="#{declaracionAguinaldoBean.guardaDocumentoPlanillaBinarioAgunaldoBean}" update="formularioFrm messages"
+                     action="#{declaracionAguinaldoBean.guardaDocumentoPlanillaBinarioAgunaldoBean}" update="formularioFrm messages"
                      disabled="#{declaracionAguinaldoBean.habilita}">
         <p:confirm header="Declaración jurada"
                    message="Si continua, procederá a realizar una declaración jurada. Asegúrese que los datos esten correctamente llenados. Deséa continuar?"
@@ -388,9 +388,7 @@
 </p:confirmDialog>
 </h:panelGroup>
 </h:form>
-<h:form>
-<p:commandButton action="irEscritorio" value="Volver" ajax="false"/>
-</h:form>
+
 <p:dialog widgetVar="seleccionEmpresa" id="seleccionEmpresa" header="Seleccione" modal="true" closable="false" resizable="false">
     <h:form id="form2">
         <div align="CENTER">
