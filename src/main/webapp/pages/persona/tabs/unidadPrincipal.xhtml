@@ -91,8 +91,9 @@
 
 
                 <h:outputText value="Fecha de inicio de actividad:"/>
-                <p:inputText value="#{personaUnidadBean.unidad.fechaNacimiento}" readonly="true" style="width: 150px;">
-                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+
+                <p:inputText id="aa" value="#{personaUnidadBean.unidad.fechaNacimiento}" readonly="true" style="width: 150px;">
+                    <f:convertDateTime pattern="dd/MM/yyyy" for="aa"/>
                 </p:inputText>
                 <h:outputText value="Nro. de Fundempresa:"/>
                 <h:panelGrid columns="3" columnClasses="column2,column3">
