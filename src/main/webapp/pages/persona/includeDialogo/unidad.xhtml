@@ -35,8 +35,8 @@
                               value="#{personaUnidadBean.personaRegistro.esNatural}"
                               tabindex="1"
                               rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
-                <f:selectItem itemLabel="Natural   ." itemValue="true" />
-                <f:selectItem itemLabel="Juridica   " itemValue="false" />
+                <f:selectItem itemLabel="Natural   ." itemValue="false" />
+                <f:selectItem itemLabel="Juridica   " itemValue="true" />
                 <p:ajax    process="@this" update=":frmUnidad:pnlPersonaProcesar" />
             </p:selectOneRadio>
 
