@@ -280,7 +280,7 @@ public class UsuarioService implements IUsuarioService{
         return mensaje;
     }
 
-    public UsrUsuario obtenerUsuarioPorIdPersona(String idPersona){
+    public List<UsrUsuario> obtenerUsuarioPorIdPersona(String idPersona){
         return usuarioRepository.findByIdPersona_IdPersona(idPersona);
     }
 }

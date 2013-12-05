@@ -141,18 +141,6 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
     }
 
     @Override
-    public List<ParObligacionCalendario> listaObligacionCalendarioPorGestion(String gestionActual){
-        List<ParObligacionCalendario> lista;
-        try {
-            lista = obligacionCalendarioRepository.listarPorGestion(gestionActual);
-        } catch (Exception e) {
-            e.printStackTrace();
-            lista = null;
-        }
-        return lista;
-    }
-
-    @Override
     public ParObligacionCalendario findById(Long id){
         return obligacionCalendarioRepository.findOne(id);
     }
@@ -162,4 +150,8 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         return obligacionCalendarioRepository.listarPlanillaTrimPorFechaHastaFechaPlazo(new Date());
     }
 
+    @Override
+    public List<ParObligacionCalendario> buscarPorPlatriPorFecha(Date fechaActual){
+        return obligacionCalendarioRepository.listarPlanillaTrimEntreFecha(fechaActual);
+    }
 }
