@@ -226,6 +226,10 @@ public class CotizacionMultasBean implements Serializable {
         long diferenciaFechas = fechaPresentacionPlanillaTrimestral.getTime() - fechaLimitePlazoPlanillaTrimestral.getTime();
         diasTranscurridosPlanillaTrimestral = (int) (diferenciaFechas / (1000 * 60 * 60 * 24));
 
+        if (diasTranscurridosPlanillaTrimestral < 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usted todavia tiene " + ((-1) * diasTranscurridosPlanillaTrimestral) + " días en ese trimestre para presentar la planilla trimestral."));
+            return "";
+        }
         //
         multa = iMultaService.buscarTipoMulta(Dominios.PAR_MULTAS_DIAS_TRANSCURRIDOS_PLATRI);
         multaRangoDiasTranscurridos = iMultaRangoService.buscarPorRango(multa.getIdMulta(), new BigDecimal(diasTranscurridosPlanillaTrimestral));
