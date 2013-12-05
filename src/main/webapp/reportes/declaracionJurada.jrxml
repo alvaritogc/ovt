@@ -83,7 +83,7 @@ RIGHT OUTER JOIN
                                                           coalesce(p.apellido_paterno,' ') || ' ' || coalesce(p.apellido_materno,' ') nombreRazonSocial,
                                                           p.nro_identificacion NIT,
                                                           u.id_unidad ,
-                                                          u.nombre_comercial nombreComercial,u.fecha_nacimiento fechaActividades,
+                                                          u.nombre_comercial nombreComercial,to_date(u.fecha_nacimiento,'dd/MM/yyyy') fechaActividades,
                                                           coalesce(u.nro_caja_salud,' ') cajaSalud,
                                                           u.tipo_sociedad ,d.descripcion tipoEmpleador
                                                   FROM per_persona p

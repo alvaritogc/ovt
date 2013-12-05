@@ -230,6 +230,7 @@ public class PersonaUnidadBean implements Serializable{
         //si es falso mostrar
 //        mostrarBotonROE=generarReporteRoe();
         tieneROE=yaTieneROE();
+        System.out.println("T=====>>>>>> INI-TIENE ROE; "+tieneROE);
     }
 
     public boolean generarReporteRoe(){
@@ -421,9 +422,19 @@ public class PersonaUnidadBean implements Serializable{
         infolaboralRegistro=new PerInfolaboral();
         infolaboralRegistro.setNroHombres(0);
         infolaboralRegistro.setNroMujeres(0);
-        //infolaboralRegistro.setNroTotalTrabajadores(10);
-
-
+        infolaboralRegistro.setNroTotalTrabajadores(0);
+        infolaboralRegistro.setNroExtranjeros(0);
+        infolaboralRegistro.setNroFijos(0);
+        infolaboralRegistro.setNroEventuales(0);
+        infolaboralRegistro.setNroMenores18(0);
+        infolaboralRegistro.setNroMayores60(0);
+        infolaboralRegistro.setNroJubilados(0);
+        infolaboralRegistro.setNroCapdiferente(0);
+        infolaboralRegistro.setTotalPlanilla(BigDecimal.ZERO);
+        infolaboralRegistro.setNroAsegCaja(0);
+        infolaboralRegistro.setMontoAsegAfp(BigDecimal.ZERO);
+        infolaboralRegistro.setNroAsegAfp(0);
+        infolaboralRegistro.setMontoAsegCaja(BigDecimal.ZERO);
     }
 
     //PRIMERA VEZ
@@ -448,7 +459,14 @@ public class PersonaUnidadBean implements Serializable{
     //
     public boolean yaTieneROE(){
 
+        System.out.println("//////// ========>>>> YA_TIENE_ROE ");
+        System.out.println("//////// ========>>>> YA_TIENE_ROE ");
         List<DocDocumento> lista = documentoService.ObtenerRoes(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad());
+        System.out.println("//////// ========>>>> lista"+lista.size());
+        for(DocDocumento a:lista){
+            System.out.println("//////// ========>>>> a"+a.getIdDocumento()+" dcoDefinicion"+a.getDocDefinicion().getNombre());
+        }
+
         if(lista!=null){
             if(!lista.isEmpty()){
                 if(lista.size()>=0){
@@ -528,11 +546,16 @@ public class PersonaUnidadBean implements Serializable{
                         }
                     }
                 }
-
+            //Si el tipo de personeria es: Juridica,entonces no debe tener peterno ni materno
+            if(personaRegistro.getEsNatural()){
+                logger.info("====================>>>>>>> PERSONERIA: JURIDICA");
+                personaRegistro.setApellidoPaterno(" ");
+                personaRegistro.setApellidoMaterno(" ");
+            }
             //Si todo esta bien, entonces
             personaRegistro.setRegistroBitacora(REGISTRO_BITACORA);
             persona=personaRegistro;
-            //}
+
         }
 
 
@@ -608,9 +631,11 @@ public class PersonaUnidadBean implements Serializable{
         // GENERAR NUEVO DOCUMENTO ROE
         //Realizar la validacion para generar un nuevo certificado ROE
         //Si alguno de estos datos se modifico, entonces generar nuevo certificado ROE
+        // Verificar si tiene ROE y es la unidad principal
 
-
-        if(unidadRegistro.getPerUnidadPK().getIdUnidad()==0){
+        System.out.println("********* ======>>>> TIENE ROE<<<<====== ******* ");
+        System.out.println("********* ======>>>> TIENE ROE= "+tieneROE);
+        if(unidadRegistro.getPerUnidadPK().getIdUnidad()==0 && tieneROE){
             if(!personaAux.getNombreRazonSocial().equals(persona.getNombreRazonSocial())){
                 generarCertificadoROE2();
             }else{
@@ -684,7 +709,7 @@ public class PersonaUnidadBean implements Serializable{
         }
 
         if(direccion.getEmail2()!=null){
-            if(!direccion.getEmail().trim().equals("")){
+            if(!direccion.getEmail2().trim().equals("")){
                 if(!validarEmail(direccion.getEmail2())){
                     FacesContext.getCurrentInstance().addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL formato del correo electronico 2 es incorrecto."));
@@ -720,9 +745,6 @@ public class PersonaUnidadBean implements Serializable{
         // Verificar si tiene ROE y es la unidad principal
         if(tieneROE && unidadRegistro.getPerUnidadPK().getIdUnidad()==0) {
             logger.info("*********** ======== TIENE ROE ========== **********");
-
-
-
             logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getDireccion()+" NUEVA "+direccion.getDireccion());
             logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getPisoDepOfi()+" NUEVA "+direccion.getPisoDepOfi());
             logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getZonaUrbanizacion()+" NUEVA "+direccion.getZonaUrbanizacion());

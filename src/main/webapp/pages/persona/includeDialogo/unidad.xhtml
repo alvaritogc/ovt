@@ -40,8 +40,6 @@
                 <p:ajax    process="@this" update=":frmUnidad:pnlPersonaProcesar" />
             </p:selectOneRadio>
 
-
-
             <p:outputLabel for="inputTxtNombre" value="Nombre o Razon social:"
                            rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
             <p:inputText id="inputTxtNombre" value="#{personaUnidadBean.personaRegistro.nombreRazonSocial}"
@@ -54,19 +52,19 @@
             </p:inputText>
 
             <h:outputText value="Apellido paterno:"
-                          rendered="#{personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
+                          rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
             <p:inputText id="inputTxtPaterno" value="#{personaUnidadBean.personaRegistro.apellidoPaterno}"
                          style="width: 205px;text-transform: uppercase;"
                          tabindex="3"
-                         rendered="#{personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
+                         rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
                 <f:converter converterId="lowerConverter"/>
             </p:inputText>
 
-            <h:outputText value="Apellido materno:" rendered="#{personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
+            <h:outputText value="Apellido materno:" rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
             <p:inputText id="inputTxtMaterno" value="#{personaUnidadBean.personaRegistro.apellidoMaterno}"
                          tabindex="4"
                          style="width: 205px;text-transform: uppercase;"
-                         rendered="#{personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}" >
+                         rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}" >
                 <f:converter converterId="lowerConverter"/>
             </p:inputText>
 
@@ -75,6 +73,8 @@
             <p:selectOneMenu id="slcOneMenuTipoIdentificacion"
                              value="#{personaUnidadBean.personaRegistro.tipoIdentificacion}"
                              tabindex="5"
+                             required="true"
+                             requiredMessage="El campo Identificacion es obligatorio."
                              style="width: 215px;text-transform: uppercase;"
                              rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
                 <f:selectItem itemLabel="---Seleccione una identificacion---" itemValue="" />
@@ -85,6 +85,8 @@
                            rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
             <p:selectOneMenu id="slcOneMenuLocalidad" value="#{personaUnidadBean.idLocalidadPersona}"
                              tabindex="6"
+                             requiredMessage="El campo Lugar de emision es obligatorio."
+                             required="true"
                              style="width: 215px;text-transform: uppercase;"
                              rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
                 <f:selectItem itemLabel="---Seleccione un departamento---" itemValue="0L" />
@@ -154,10 +156,10 @@
                             required="true"
                             showOn="button"
                             navigator="true"
-                            pattern="dd/mm/yyyy"
+                            pattern="dd/MM/yyyy"
                             converterMessage="El formato de la fecha es incorrecto. Ejemplo: dd/mm/yyyy"
                             requiredMessage="El campo Fecha actividad es obligatorio.">
-                <f:convertDateTime pattern="dd/mm/yyyy" />
+
             </p:calendar>
 
                 <h:outputText value="Nro. de Fundempresa:"/>
