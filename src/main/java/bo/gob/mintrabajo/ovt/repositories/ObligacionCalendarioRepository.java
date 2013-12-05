@@ -31,13 +31,6 @@ public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObl
             "   select a "
             + " from ParObligacionCalendario a"
             + " where "
-            + " a.parCalendario.parCalendarioPK.gestion like :gestion")
-    List<ParObligacionCalendario> listarPorGestion(@Param("gestion") String gestion);
-
-    @Query(
-            "   select a "
-            + " from ParObligacionCalendario a"
-            + " where "
             + " a.codObligacion.codObligacion= 'PLATRI' "
             + " and :fecha between a.fechaHasta and a.fechaPlazo")
     ParObligacionCalendario listarPlanillaTrimPorFechaHastaFechaPlazo(@Param("fecha") Date fecha);
@@ -49,4 +42,12 @@ public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObl
                     + " a.parCalendario.parCalendarioPK.gestion= :gestion "
                     + " and a.codObligacion.codObligacion like 'PLAAGU' and a.tipoCalendario like 'ANUAL'")
     ParObligacionCalendario buscarAguinaldoPorGestion(@Param("gestion") String gestion);
+
+    @Query(
+            "   select a "
+                    + " from ParObligacionCalendario a"
+                    + " where "
+                    + " a.codObligacion.codObligacion= 'PLATRI' "
+                    + " and :fecha between a.fechaDesde and a.fechaPlazo")
+    List<ParObligacionCalendario> listarPlanillaTrimEntreFecha(@Param("fecha") Date fecha);
 }

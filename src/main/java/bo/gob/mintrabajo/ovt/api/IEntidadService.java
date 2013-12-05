@@ -12,5 +12,5 @@ public interface IEntidadService {
     public boolean deleteEntidad(ParEntidad entidad);
     public ParEntidad buscaPorId(Long idEntidad);
     public List<ParEntidad> listarPorTipo(String tipoEntidad);
-
+    public List<ParEntidad> listarPorTipoEntidad(String tipoEntidad);
 }

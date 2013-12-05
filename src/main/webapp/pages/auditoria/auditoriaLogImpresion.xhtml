@@ -18,9 +18,21 @@
                 <p:outputLabel value="Código de documento" />
                 <p:inputText value="#{auditoriaImpresionBean.codDocumento}" />
                 <p:outputLabel value="Fecha Inicial"/>
-                <p:calendar value="#{auditoriaImpresionBean.fechaInicio}" showOn="button" pattern="dd/MM/yyyy" />
+                <p:calendar value="#{auditoriaImpresionBean.fechaInicio}"
+                            showOn="button" pattern="dd/MM/yyyy"
+                            maxlength="10"
+                            converterMessage="El formato de la Fecha inicial es incorrecto. Ejemplo: dd/mm/yyyy">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </p:calendar>
                 <p:outputLabel value="Fecha Final"/>
-                <p:calendar value="#{auditoriaImpresionBean.fechaFinal}" showOn="button" pattern="dd/MM/yyyy" />
+                <p:calendar value="#{auditoriaImpresionBean.fechaFinal}"
+                            showOn="button"
+                            pattern="dd/MM/yyyy"
+                            converterMessage="El formato de la Fecha final es incorrecto. Ejemplo: dd/mm/yyyy"
+                            maxlength="10">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </p:calendar>
+
             </h:panelGrid>
             <p:commandButton icon="ui-icon-zoomin" value="Buscar" action="#{auditoriaImpresionBean.buscarLogImpresion}" update=":auditoriaFrm:auditoriaTbl auditoriaGrowl" oncomplete="auditoriaVar.clearFilters();" />
 

@@ -3,6 +3,7 @@ package bo.gob.mintrabajo.ovt.api;
 import bo.gob.mintrabajo.ovt.entities.ParCalendarioPK;
 import bo.gob.mintrabajo.ovt.entities.ParObligacionCalendario;
 
+import java.util.Date;
 import java.util.List;
 
 public interface IObligacionCalendarioService {
@@ -15,9 +16,7 @@ public interface IObligacionCalendarioService {
     public List<ParObligacionCalendario> listaObligacionCalendarioOrdenadoPorDescripcionDeObligacion();
 
     //List<ParObligacionCalendario> listaObligacionCalendarioPorGestion(String gestionActual);
-
-    public List<ParObligacionCalendario> listaObligacionCalendarioPorGestion(String gestionActual);
     public ParObligacionCalendario findById(Long id);
     public ParObligacionCalendario buscarPorPlatriALaFecha();
-
+    public List<ParObligacionCalendario> buscarPorPlatriPorFecha(Date fechaActual);
 }

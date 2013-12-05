@@ -35,8 +35,8 @@
                               value="#{personaUnidadBean.personaRegistro.esNatural}"
                               tabindex="1"
                               rendered="#{personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
-                <f:selectItem itemLabel="Natural   ." itemValue="true" />
-                <f:selectItem itemLabel="Juridica   " itemValue="false" />
+                <f:selectItem itemLabel="Natural   ." itemValue="false" />
+                <f:selectItem itemLabel="Juridica   " itemValue="true" />
                 <p:ajax    process="@this" update=":frmUnidad:pnlPersonaProcesar" />
             </p:selectOneRadio>
 
@@ -53,19 +53,20 @@
                 <f:converter converterId="lowerConverter"/>
             </p:inputText>
 
-            <h:outputText value="Apellido paterno:" rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
+            <h:outputText value="Apellido paterno:"
+                          rendered="#{personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
             <p:inputText id="inputTxtPaterno" value="#{personaUnidadBean.personaRegistro.apellidoPaterno}"
                          style="width: 205px;text-transform: uppercase;"
                          tabindex="3"
-                         rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
+                         rendered="#{personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}">
                 <f:converter converterId="lowerConverter"/>
             </p:inputText>
 
-            <h:outputText value="Apellido materno:" rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
+            <h:outputText value="Apellido materno:" rendered="#{personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}"/>
             <p:inputText id="inputTxtMaterno" value="#{personaUnidadBean.personaRegistro.apellidoMaterno}"
                          tabindex="4"
                          style="width: 205px;text-transform: uppercase;"
-                         rendered="#{!personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}" >
+                         rendered="#{personaUnidadBean.personaRegistro.esNatural and personaUnidadBean.unidadRegistro.perUnidadPK.idUnidad==0}" >
                 <f:converter converterId="lowerConverter"/>
             </p:inputText>
 

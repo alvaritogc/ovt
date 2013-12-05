@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -8,366 +7,337 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Oficina Virtual de Trámites</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Oficina Virtual de Trámites</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
 
-    <!-- Le styles -->
-    <link href="#{facesContext.externalContext.requestContextPath}/assets/css/bootstrap.css" rel="stylesheet"/>
-    <link href="#{facesContext.externalContext.requestContextPath}/assets/css/bootstrap-responsive.css"
-          rel="stylesheet"/>
-    <link href="#{facesContext.externalContext.requestContextPath}/assets/css/docs.css" rel="stylesheet"/>
-    <link href="#{facesContext.externalContext.requestContextPath}/assets/js/google-code-prettify/prettify.css"
-          rel="stylesheet"/>
+        <!-- Le styles -->
+        <link href="#{facesContext.externalContext.requestContextPath}/assets/css/bootstrap.css" rel="stylesheet"/>
+        <link href="#{facesContext.externalContext.requestContextPath}/assets/css/bootstrap-responsive.css" rel="stylesheet"/>
+        <link href="#{facesContext.externalContext.requestContextPath}/assets/css/docs.css" rel="stylesheet"/>
+        <link href="#{facesContext.externalContext.requestContextPath}/assets/js/google-code-prettify/prettify.css" rel="stylesheet"/>
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="assets/js/html5shiv.js"></script>
-    <![endif]-->
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="assets/js/html5shiv.js"></script>
+        <![endif]-->
 
-    <!-- Le fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144"
-          href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-144-precomposed.png"/>
-    <link rel="apple-touch-icon-precomposed" sizes="114x114"
-          href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-114-precomposed.png"/>
-    <link rel="apple-touch-icon-precomposed" sizes="72x72"
-          href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-72-precomposed.png"/>
-    <link rel="apple-touch-icon-precomposed"
-          href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-57-precomposed.png"/>
-    <link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/assets/ico/teclado_icono.png"/>
-    <style type="text/css">
-        .ui-menu.ui-menu-dynamic {
-            position: static;
-            display: none;
-            z-index: 100000;
-            top: -470px;
-            left: 76%;
-        }
+        <!-- Le fav and touch icons -->
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-144-precomposed.png"/>
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-114-precomposed.png"/>
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-72-precomposed.png"/>
+        <link rel="apple-touch-icon-precomposed" href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-57-precomposed.png"/>
+        <link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/assets/ico/teclado_icono.png"/>
+        <style type="text/css">
+            .ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield {
+                background: none repeat scroll 0 0 #FFFFFF;
+                box-shadow: 0 2px 2px #8F8F8F inset;
+                color: #313131;
+                width: -moz-fit-content;
+            }
+            .ui-menu.ui-menu-dynamic{
+                position: static;
+                display: none;
+                z-index: 100000;
+                top: -470px;
+                left: 76%;
+            }
+            .navbar {
+                background: none repeat scroll 0 0 transparent;
+                margin-bottom: 0;
+                opacity: 0.9;
+                overflow: visible;
+            }
+            .ui-panelgrid td{
+                border-style: none;
+            }
 
-        .navbar {
-            background: none repeat scroll 0 0 transparent;
-            margin-bottom: 0;
-            opacity: 0.9;
-            overflow: visible;
-        }
-
-        .ui-panelgrid td {
-            border-style: none;
-        }
-
-        .ui-menu .ui-menu-parent .ui-menu-child {
-            width: 13.5em;
-        }
+            .ui-menu .ui-menu-parent .ui-menu-child{
+                width: 13.5em;
+            }
 
             /*.ui-widget-content {*/
             /*border: none;*/
             /*}*/
-        .hPanelGridCentro {
-            text-align: center;
-            width: 100%;
-        }
+            .hPanelGridCentro {
+                text-align: center;
+                width: 100%;
+            }
+            .hPanelGridRight {
+                text-align: right;
+                width: 100%;
+            }
 
-        .hPanelGridRight {
-            text-align: right;
-            width: 100%;
-        }
+        </style>
+    </h:head>
+    <h:body>
+        <!-- Navbar
+    ================================================== -->
 
-        .botonAnchoAlto {
-            height: 20px;
-            width: 90px;
-            vertical-align: central;
-        }
 
-    </style>
-</h:head>
-<h:body>
-<!-- Navbar
+
+        <!-- Subhead
 ================================================== -->
+        <header class="jumbotron subhead" id="overview">
+            <div class="container">
+                <h1>Oficina Virtual de Trámites</h1>
+                <p class="">Ministerio de Trabajo, Empleo y Previsión Social.</p>
+            </div>
+        </header>
 
 
-<!-- Subhead
-================================================== -->
-<header class="jumbotron subhead" id="overview">
-    <div class="container">
-        <h1>Oficina Virtual de Trámites</h1>
-
-        <p class="">Ministerio de Trabajo, Empleo y Previsión Social.</p>
-    </div>
-</header>
 
 
-<div class="container">
+        <div class="container">
 
-<!-- Docs nav
-================================================== -->
-<div class="row">
-<div class="span3 bs-docs-sidebar">
+            <!-- Docs nav
+            ================================================== -->
+            <div class="row">
+                <div class="span3 bs-docs-sidebar">
 
-<h:form>
-    <p:commandButton value="Inicio" action="#{templateInicioBean.irInicio}" style="width: 100%"/>
-</h:form>
-<h:form rendered="#{templateInicioBean.idUsuario !=null}">
-    <p:outputLabel value="Usuario: "/>
-    <p:outputLabel value="#{templateInicioBean.nombreDeUsuario}" style="color: #0069B1;"/>
-    <br/>
-    <p:outputLabel value="Empleador:"/>
-    <p:commandLink action="#{templateInicioBean.irUnidad}" style="color: #0069B1;"
-                   rendered="#{templateInicioBean.nombreDeUnidad!='N/A'}">
-        <h:outputText value="#{templateInicioBean.nombreDeUnidad}"
-                />
-    </p:commandLink>
-    <p:outputLabel value="#{templateInicioBean.nombreDeUnidad}"
-                   rendered="#{templateInicioBean.nombreDeUnidad=='N/A'}"
-                   style="color: #0069B1;"/>
-</h:form>
+                    <h:form>
+                        <p:commandButton value="Inicio" action="#{templateInicioBean.irInicio}" style="width: 100%"/>
+                    </h:form>
+                    <h:form rendered="#{templateInicioBean.idUsuario !=null}">
+                        <p:outputLabel value="Usuario: "/>
+                        <p:outputLabel value="#{templateInicioBean.nombreDeUsuario}" style="color: #0069B1;"/>
+                        <br/>
+                        <p:outputLabel value="Empleador:" />
+                        <p:commandLink  action="#{templateInicioBean.irUnidad}" style="color: #0069B1;"
+                                rendered="#{templateInicioBean.nombreDeUnidad!='N/A'}">
+                            <h:outputText value="#{templateInicioBean.nombreDeUnidad}"
+                                          />
+                        </p:commandLink>
+                        <p:outputLabel value="#{templateInicioBean.nombreDeUnidad}"
+                                       rendered="#{templateInicioBean.nombreDeUnidad=='N/A'}"
+                                       style="color: #0069B1;"/>
+                    </h:form>
 
-<h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario ==null}">
-    <p:growl id="grwLogin" showDetail="false" life="6000" globalOnly="false" sticky="false"/>
-    <p:panel>
-        <h:panelGrid columns="2">
-            <h2 class="form-signin-heading">Conéctate</h2>
-            <p:commandLink value="Ayuda" onclick="PF('dlg1').show();" style="color:red;"></p:commandLink>
-        </h:panelGrid>
+                    <h:form id="formLogin" class="form-signin" rendered="#{templateInicioBean.idUsuario ==null}">
+                        <p:growl id="grwLogin" showDetail="false" life="6000" globalOnly="false"  sticky="false"/>
+                        <p:panel  >
+                            <h:panelGrid columns="2">
+                            <h2 class="form-signin-heading">Conéctate</h2>
+                            <p:commandLink value="Ayuda" onclick="PF('dlg1').show();" style="color:red;"></p:commandLink>
+                            </h:panelGrid>
+                            <div class="input-prepend"><span class="add-on"><i class="icon-white icon-user"></i></span>
+                                <h:inputText id="userName" value="#{templateInicioBean.username}" required="true" style="width: 104px; font-size: 10px"
+                                             requiredMessage=" * Debe ingresar el usuario" />
+                                <p:watermark for="userName" value="NIT-NRO REGISTRO" />
 
-        <div class="input-prepend"><span class="add-on"><i class="icon-white icon-user"></i></span>
-            <h:inputText id="userName" value="#{templateInicioBean.username}" required="true"
-                         style="width: 104px; font-size: 10px"
-                         requiredMessage=" * Debe ingresar el usuario"/>
-            <p:watermark for="userName" value="NIT-NRO REGISTRO"/>
-
-        </div>
-        <h:message for="userName" style="color:red;font-family: Arial; font-size: 10px"/>
-
-        <div class="input-prepend"><span class="add-on"><i class="icon-white icon-lock"></i>
+                            </div>
+                            <h:message for="userName" style="color:red;font-family: Arial; font-size: 10px"/>
+                            <div class="input-prepend"><span class="add-on"><i class="icon-white icon-lock"></i>
                                 </span>
-            <h:inputSecret id="password" value="#{templateInicioBean.password}" required="true"
-                           requiredMessage=" * Debe ingresar el Password" style="width: 104px; font-size: 9px"/>
-            <p:watermark for="password" value="NRO-SEGURO-SOCIAL"/>
+                                <h:inputSecret id="password" value="#{templateInicioBean.password}" required="true" requiredMessage=" * Debe ingresar el Password" style="width: 104px; font-size: 9px" />
+                                <p:watermark for="password" value="NRO-SEGURO-SOCIAL" />
+                            </div>
+                            <h:message for="password"   style="color:red;font-family: Arial; font-size: 10px"/>
+                            <!--<p:captcha label="Captcha" publicKey="6LerTMYSAAAAAGUfbsXu2tf-H8flrPVM1fDUecvi" language="es"-->
+                            <!--validatorMessage="Texto no coincide, intente de nuevo." requiredMessage="Ingrese 2 palabras" />-->
+                            <p:commandButton styleClass="btn btn-large btn-primary" value="Entrar"
+                                             action="#{templateInicioBean.login}"
+                                             ajax="false"
+                                             process="@this"
+                                             update=":formLogin:grwLogin" />
+                            <div class="teclado"></div>
+                            <!-- Se comento esta linea, por que se cambio la validacion.-->
+                            <!--  <p:messages id="messages" /> -->
+                            <br/>
+                            <br/>
+                            <u><p:commandLink value="Olvido su contraseña?" onclick="PF('dlg2').show();" style="color:#00079C;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/></u>
+                            <br/>
+                            <u><p:commandLink value="Regístrate a la oficina vitual" action="#{templateInicioBean.irRegistro}" style="color:#00079C;" immediate="true" /></u>
+                        </p:panel>
+                        <br/><br/>
+                    </h:form>
+
+                    <!-- Dialogos -->
+                    <p:dialog id="basicDialog" header="Acceso al Sistema" widgetVar="dlg1" width="700" height="470" resizable="false">  
+                        <ui:include src="/mensajes/informacion.xhtml"/>
+                    </p:dialog>
+                    <!-- ***********  DIALOG OLVIDO SU CONTRASENIA ************* -->
+                    <p:dialog id="basicDialog2" header="Olvido su contraseña" modal="true" widgetVar="dlg2" width="420" height="200" resizable="false" closable="false">
+                        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                                  draggable="false" closable="false">
+                            <p:graphicImage value="../../images/ajax-loader.gif" />
+                        </p:dialog>
+                        <h:form id="frmOlvidoContrasenia">
+                            <p:growl showDetail="true" id="growlOlvidoContrasenia" life="6000" />
+                            <br/>
+                            <p style="font-size: 12px;">Para recuperar su contraseña, ingrese su Nro. de documento con el que se registro (CI,NIT) y dirección de correo electronico asociada al Sistema.</p>
+
+                            <h:panelGrid columns="1" id="pnlGridContrasenia">
+                                <h:outputText value="Nro de documento (NIT,CI):"/>
+                                <p:inputText id="txtOlvidoNIT" value="#{templateInicioBean.nit}"></p:inputText>
+                                <p:watermark for="txtOlvidoNIT" value="Nro de identificación (NIT)" />
+                                <h:outputText value="Correo electronico:"/>
+                                <p:inputText id="txtOlvidoEmail" value="#{templateInicioBean.email}"></p:inputText>
+                                <p:watermark for="txtOlvidoEmail" value="Correo electronico" />
+                            </h:panelGrid>
+                            <br/>
+                            <p:commandButton value="Enviar"
+                                             action="#{templateInicioBean.olvidoContrasenia}"
+                                             tabindex="2"
+                                             icon="ui-icon-check"
+                                             process="@form"
+                                             update=":frmOlvidoContrasenia" onstart="statusDialog.show();" oncomplete="statusDialog.hide();">
+                            </p:commandButton>
+                            &nbsp;&nbsp;
+                            <p:commandButton value="Cancelar" onclick="dlg2.hide();" immediate="true"
+                                             icon="ui-icon-close" />
+
+                        </h:form>
+                    </p:dialog>
+
+                    <!-- ***********  DIALOG CAMBIAR CONTRASENIA ************* -->
+                    <p:dialog id="dlgCambiarContrasenia" header="Cambiar Contraseña" modal="true" widgetVar="dlgCambiarContrasenia" resizable="true" closable="false">
+
+                        <h:form id="frmCambiarContrasenia">
+                            <p:growl showDetail="true" id="growlCambiarContrasenia" widgetVar="growlCambiarContrasenia"/>
+                            <br/>
+                            <h:panelGrid columns="2" id="pnlGridCambiarContrasenia">
+                                <h:outputText value="Contraseña:"/>
+                                <p:password id="txtContrasenia" value="#{templateInicioBean.contrasenia}"
+                                            feedback="true"
+                                            tabindex="1"
+                                            required="true"
+                                            requiredMessage="EL campo Contrasenia es obligatorio"
+                                            autocomplete="off"
+                                            promptLabel="Ingrese su contrasenia"
+                                            weakLabel="Contrasenia debil"
+                                            goodLabel="Contrasenia media"
+                                            strongLabel="Contrasenia fuerte"
+                                        />
+
+                                <h:outputText value="Nueva contraseña:"/>
+                                <h:panelGrid columns="3">
+                                    <p:password id="txtNuevaContrasenia" value="#{templateInicioBean.nuevaContrasenia}"
+                                                feedback="true"
+                                                tabindex="2"
+                                                required="true"
+                                                requiredMessage="EL campo Nueva Contraseñia es obligatorio"
+                                                autocomplete="off"
+                                                promptLabel="Ingrese su contrasenia"
+                                                weakLabel="Contrasenia debil"
+                                                goodLabel="Contrasenia media"
+                                                strongLabel="Contrasenia fuerte"
+                                            />
+                                    <h:graphicImage value="/images/ayuda.png" id="grafayuda"/>
+                                    <p:tooltip for="grafayuda">
+                                        <ol>
+                                            <li>La Contrase&ntilde;a permite los siguientes caracteres
+                                                especiales:<br /> <b> ` ~ ! @ # $ % ^ &amp; * ( ) _ = { }
+                                                    \ | : ; &prime; &Prime; &lt; &gt; , - . ? /</b>
+                                            </li>
+                                            <li>La Contrase&ntilde;a permite validar que ingrese al
+                                                menos un caracter especial, numerico y alfabetico</li>
+                                            <li>La longitud minima requerida es de
+                                                #{templateInicioBean.LONGITUD_MINIMA} caracteres</li>
+                                        </ol>
+                                        <b>Ejemplo:</b>
+                                        <pre>admin12@</pre>
+                                    </p:tooltip>
+                                </h:panelGrid>
+                                <h:outputText value="Confirmar nueva contraseña:"/>
+                                <p:password id="txtConfirmarContrasenia" value="#{templateInicioBean.confirmarContrasenia}"
+                                            feedback="true"
+                                            tabindex="3"
+                                            required="true"
+                                            requiredMessage="EL campo Confirmar nueva Contraseñia es obligatorio"
+                                            autocomplete="off"
+                                            promptLabel="Ingrese su contrasenia"
+                                            weakLabel="Contrasenia debil"
+                                            goodLabel="Contrasenia media"
+                                            strongLabel="Contrasenia fuerte"
+                                        />
+
+                            </h:panelGrid>
+                            <br/>
+                            <p:commandButton value="Enviar"
+                                             action="#{templateInicioBean.cambiarContrasenia}"
+                                             tabindex="4"
+                                             update=":frmCambiarContrasenia"
+                                             process="@form"
+                                             icon="ui-icon-check"
+                                             >
+                            </p:commandButton>
+                            &nbsp;&nbsp;
+                            <p:commandButton value="Cancelar"
+                                             tabindex="5"
+                                             immediate="true"
+                                             icon="ui-icon-close"
+                                             onclick="dlgCambiarContrasenia.hide();"
+                                    />
+                        </h:form>
+                    </p:dialog>
+
+                    <!-- Dialogo para el cambio obligatorio de login -->
+                    <p:dialog header="Cambio obligatorio de login" modal="true" widgetVar="cambioLoginObligadoDlg" closable="false">
+                        <p style="color:RED;">LEA CON ATENCIÓN:</p>
+                        <p style="color:#0069B1;">La cuenta con la que ingresó ya no es válida, usted debe cambiar el login</p>
+                        <p style="color:#0069B1;">por una cuenta de correo electrónico válido y de su propiedad.</p>
+                        <p style="color:#0069B1;">Completado este punto usted debera ingresar al sistema con el nuevo login (correo electrónico).</p>
+                        <h:form id="cambioObligatorio">
+                            <p:growl showDetail="true" id="cambioLoginGrl" autoUpdate="false" />
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="Anterior login de usuario :" />
+                                <p:inputText value="#{templateInicioBean.nombreDeUsuario}" disabled="true" />
+                                <p:outputLabel value="Nuevo login de usuario" />
+                                <p:inputText value="#{templateInicioBean.loginNuevo}" required="true" requiredMessage="Login nuevo es requerido" />
+                                <p:outputLabel value="Confirmar login de usuario" />
+                                <p:inputText value="#{templateInicioBean.loginConfirmacion}" required="true" requiredMessage="Login confirmación es requerido" />
+                            </p:panelGrid>
+                            <p:commandButton value="Guardar" action="#{templateInicioBean.editarLogin}" update=":cambioObligatorio cambioLoginGrl" />
+                        </h:form>
+                    </p:dialog>
+
+                    <h:form id="cambioLoginFrm" rendered="#{!templateInicioBean.loginValido}">
+                        <p:poll interval="1"   id="cambioLoginPoll"
+                                listener="#{templateInicioBean.abrirCambioLoginDlg}"
+                                update=":cambioLoginFrm:cambioLoginPoll"
+                                stop="#{templateInicioBean.loginValido}"/>
+                    </h:form>
+
+
+                    <h:form>
+                        <p:dataTable var="mensajeApp" value="#{templateInicioBean.listaMensajeApp}"
+                                     emptyMessage="No se encontraron servicios públicos">  
+                            <p:column headerText="Servicios públicos">
+                                <p:commandLink value="#{mensajeApp.mensaje}" action="#{templateInicioBean.verMensajeApp}">
+                                    <f:setPropertyActionListener value="#{mensajeApp}" target="#{templateInicioBean.mensajeApp}" />  
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+
+                </div>
+                <div class="span9">
+                    <h:form id="idBarraDeMenu" rendered="#{!(templateInicioBean.idUsuario == null)}">
+                        <p:menubar model="#{templateInicioBean.model}">
+                            <f:facet name="options">
+                                <p:commandLink value="Cambiar Contraseña" onclick="PF('dlgCambiarContrasenia').show();" style="color:#0069B1;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail :frmCambiarContrasenia" process="@this"/>
+                            </f:facet>
+                        </p:menubar> 
+                    </h:form>
+                    <ui:insert name="content">
+                        Content
+                    </ui:insert>
+                </div>
+            </div>
+
         </div>
-        <h:message for="password" style="color:red;font-family: Arial; font-size: 10px"/>
-        <!--<p:captcha label="Captcha" publicKey="6LerTMYSAAAAAGUfbsXu2tf-H8flrPVM1fDUecvi" language="es"-->
-        <!--validatorMessage="Texto no coincide, intente de nuevo." requiredMessage="Ingrese 2 palabras" />-->
-        <p:commandButton styleClass="btn btn-large btn-primary" value="Entrar"
-                         action="#{templateInicioBean.login}"
-                         ajax="false"
-                         process="@this"
-                         update=":formLogin:grwLogin"/>
 
-        <div class="teclado"></div>
-        <!-- Se comento esta linea, por que se cambio la validacion.-->
-        <!--  <p:messages id="messages" /> -->
-        <br/>
-        <br/>
-        <u><p:commandLink value="Olvido su contraseña?" onclick="PF('dlg2').show();" style="color:#00079C;"
-                          actionListener="#{templateInicioBean.limpiar}"
-                          update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/></u>
-        <br/>
-        <u><p:commandLink value="Regístrate a la oficina vitual" action="#{templateInicioBean.irRegistro}"
-                          style="color:#00079C;" immediate="true"/></u>
-    </p:panel>
-    <br/><br/>
-</h:form>
-
-<!-- Dialogos -->
-<p:dialog id="basicDialog" header="Acceso al Sistema" widgetVar="dlg1" width="700" height="470" resizable="false">
-    <ui:include src="/mensajes/informacion.xhtml"/>
-</p:dialog>
-<!-- ***********  DIALOG OLVIDO SU CONTRASENIA ************* -->
-<p:dialog id="basicDialog2" header="Olvido su contraseña" modal="true" widgetVar="dlg2" width="420" height="200"
-          resizable="false" closable="false">
-    <p:growl id="olvidoContraseniaGrowl" showDetail="false" life="6000" globalOnly="true" sticky="false"/>
-    <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
-              draggable="false" closable="false">
-        <p:graphicImage value="../../images/ajax-loader.gif"/>
-    </p:dialog>
-    <h:form id="frmOlvidoContrasenia">
-        <p:growl showDetail="true" id="growlOlvidoContrasenia"/>
-        <br/>
-
-        <p style="font-size: 12px;">Para recuperar su contraseña, ingrese su Nro. de documento con el que se registro (CI,NIT) y dirección de correo electronico asociada al Sistema.</p>
-
-        <h:panelGrid columns="1" id="pnlGridContrasenia">
-            <h:outputText value="Nro de documento (NIT,CI):"/>
-            <p:inputText id="txtOlvidoNIT" value="#{templateInicioBean.nit}"></p:inputText>
-            <p:watermark for="txtOlvidoNIT" value="Nro de identificación (NIT)"/>
-            <h:outputText value="Correo electronico:"/>
-            <p:inputText id="txtOlvidoEmail" value="#{templateInicioBean.email}"></p:inputText>
-            <p:watermark for="txtOlvidoEmail" value="Correo electronico"/>
-        </h:panelGrid>
-        <br/>
-        <p:commandButton value="Enviar"
-                         action="#{templateInicioBean.olvidoContrasenia}"
-                         tabindex="2"
-                         icon="ui-icon-check"
-                         process="@form"
-                         update=":frmOlvidoContrasenia" onstart="statusDialog.show();"
-                         oncomplete="statusDialog.hide();">
-        </p:commandButton>
-        &nbsp;&nbsp;
-        <p:commandButton value="Cancelar" onclick="dlg2.hide();" immediate="true"
-                         icon="ui-icon-close"/>
-
-    </h:form>
-</p:dialog>
-
-<!-- ***********  DIALOG CAMBIAR CONTRASENIA ************* -->
-<p:dialog id="dlgCambiarContrasenia" header="Cambiar Contraseña" modal="true" widgetVar="dlgCambiarContrasenia"
-          resizable="true" closable="false">
-
-    <h:form id="frmCambiarContrasenia">
-        <p:growl showDetail="true" id="growlCambiarContrasenia" widgetVar="growlCambiarContrasenia"/>
-        <br/>
-        <h:panelGrid columns="2" id="pnlGridCambiarContrasenia">
-            <h:outputText value="Contraseña:"/>
-            <p:password id="txtContrasenia" value="#{templateInicioBean.contrasenia}"
-                        feedback="true"
-                        tabindex="1"
-                        required="true"
-                        requiredMessage="EL campo Contrasenia es obligatorio"
-                        autocomplete="off"
-                        promptLabel="Ingrese su contrasenia"
-                        weakLabel="Contrasenia debil"
-                        goodLabel="Contrasenia media"
-                        strongLabel="Contrasenia fuerte"
-                    />
-
-            <h:outputText value="Nueva contraseña:"/>
-            <h:panelGrid columns="3">
-                <p:password id="txtNuevaContrasenia" value="#{templateInicioBean.nuevaContrasenia}"
-                            feedback="true"
-                            tabindex="2"
-                            required="true"
-                            requiredMessage="EL campo Nueva Contraseñia es obligatorio"
-                            autocomplete="off"
-                            promptLabel="Ingrese su contrasenia"
-                            weakLabel="Contrasenia debil"
-                            goodLabel="Contrasenia media"
-                            strongLabel="Contrasenia fuerte"
-                        />
-                <h:graphicImage value="/images/ayuda.png" id="grafayuda"/>
-                <p:tooltip for="grafayuda">
-                    <ol>
-                        <li>La Contrase&ntilde;a permite los siguientes caracteres
-                            especiales:<br/> <b> ` ~ ! @ # $ % ^ &amp; * ( ) _ = { }
-                                + \ | : ; &prime; &Prime; &lt; &gt; , - . ? /</b>
-                        </li>
-                        <li>La Contrase&ntilde;a permite validar que ingrese al
-                            menos un caracter especial, numerico y alfabetico
-                        </li>
-                        <li>La longitud minima requerida es de
-                            #{templateInicioBean.LONGITUD_MINIMA} caracteres
-                        </li>
-                    </ol>
-                    <b>Ejemplo:</b>
-                    <pre>admin12@</pre>
-                </p:tooltip>
-            </h:panelGrid>
-            <h:outputText value="Confirmar nueva contraseña:"/>
-            <p:password id="txtConfirmarContrasenia" value="#{templateInicioBean.confirmarContrasenia}"
-                        feedback="true"
-                        tabindex="3"
-                        required="true"
-                        requiredMessage="EL campo Confirmar nueva Contraseñia es obligatorio"
-                        autocomplete="off"
-                        promptLabel="Ingrese su contrasenia"
-                        weakLabel="Contrasenia debil"
-                        goodLabel="Contrasenia media"
-                        strongLabel="Contrasenia fuerte"
-                    />
-
-        </h:panelGrid>
-        <br/>
-        <p:commandButton value="Enviar"
-                         action="#{templateInicioBean.cambiarContrasenia}"
-                         tabindex="4"
-                         process="@form"
-                         icon="ui-icon-check"
-                >
-        </p:commandButton>
-        &nbsp;&nbsp;
-        <p:commandButton value="Cancelar"
-                         tabindex="5"
-                         immediate="true"
-                         icon="ui-icon-close"
-                         onclick="dlgCambiarContrasenia.hide();"
-                />
-    </h:form>
-</p:dialog>
-
-<!-- Dialogo para el cambio obligatorio de login -->
-<p:dialog header="Cambio obligatorio de login" modal="true" widgetVar="cambioLoginObligadoDlg" closable="false">
-    <p style="color:RED;">LEA CON ATENCIÓN:</p>
-
-    <p style="color:#0069B1;">La cuenta con la que ingresó ya no es válida, usted debe cambiar el login</p>
-
-    <p style="color:#0069B1;">por una cuenta de correo electrónico válido y de su propiedad.</p>
-
-    <p style="color:#0069B1;">Completado este punto usted debera ingresar al sistema con el nuevo login (correo electrónico).</p>
-    <h:form id="cambioObligatorio">
-        <p:growl showDetail="true" id="cambioLoginGrl" autoUpdate="false"/>
-        <p:panelGrid columns="2">
-            <p:outputLabel value="Anterior login de usuario :"/>
-            <p:inputText value="#{templateInicioBean.nombreDeUsuario}" disabled="true"/>
-            <p:outputLabel value="Nuevo login de usuario"/>
-            <p:inputText value="#{templateInicioBean.loginNuevo}" required="true"
-                         requiredMessage="Login nuevo es requerido"/>
-            <p:outputLabel value="Confirmar login de usuario"/>
-            <p:inputText value="#{templateInicioBean.loginConfirmacion}" required="true"
-                         requiredMessage="Login confirmación es requerido"/>
-        </p:panelGrid>
-        <p:commandButton value="Guardar" action="#{templateInicioBean.editarLogin}"
-                         update=":cambioObligatorio cambioLoginGrl"/>
-    </h:form>
-</p:dialog>
-
-<h:form id="cambioLoginFrm" rendered="#{!templateInicioBean.loginValido}">
-    <p:poll interval="1" id="cambioLoginPoll"
-            listener="#{templateInicioBean.abrirCambioLoginDlg}"
-            update=":cambioLoginFrm:cambioLoginPoll"
-            stop="#{templateInicioBean.loginValido}"/>
-</h:form>
-
-
-<h:form>
-    <p:dataTable var="mensajeApp" value="#{templateInicioBean.listaMensajeApp}"
-                 emptyMessage="No se encontraron servicios públicos">
-        <p:column headerText="Servicios públicos">
-            <p:commandLink value="#{mensajeApp.mensaje}" action="#{templateInicioBean.verMensajeApp}">
-                <f:setPropertyActionListener value="#{mensajeApp}" target="#{templateInicioBean.mensajeApp}"/>
-            </p:commandLink>
-        </p:column>
-    </p:dataTable>
-</h:form>
-
-</div>
-<div class="span9">
-    <h:form id="idBarraDeMenu" rendered="#{!(templateInicioBean.idUsuario == null)}">
-        <p:menubar model="#{templateInicioBean.model}">
-            <f:facet name="options">
-                <p:commandLink value="Cambiar Contraseña" onclick="PF('dlgCambiarContrasenia').show();"
-                               style="color:#0069B1;" actionListener="#{templateInicioBean.limpiar}"
-                               update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
-            </f:facet>
-        </p:menubar>
-    </h:form>
-    <ui:insert name="content">
-        Content
-    </ui:insert>
-</div>
-</div>
-
-</div>
-
-<!-- Footer
-================================================== -->
-<footer class="footer">
-    <div class="container" align="center">
-        <p><b>Navegadores Soportados: Google Chrome - Firefox</b></p>
-        <p:graphicImage value="/images/browser-prime.png"/>
-    </div>
-</footer>
-</h:body>
+        <!-- Footer
+        ================================================== -->
+        <footer class="footer">
+            <div class="container" align="center">
+                <p><b>Navegadores Soportados: Google Chrome - Firefox</b></p>
+                <p:graphicImage value="/images/browser-prime.png"/>
+            </div>
+        </footer>
+    </h:body>
 </html>

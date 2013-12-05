@@ -139,7 +139,7 @@ public class OlvidoContraseniaBean implements Serializable {
 
         if(mensaje.equalsIgnoreCase("OK")){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO,"Exito","Se cambio la contrasenia."));
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,"Exito","Se cambio la contraseña correctamente."));
             //ini();
             ctx.redirect(ctxPath + "/faces/pages/inicio.xhtml");
             return "";

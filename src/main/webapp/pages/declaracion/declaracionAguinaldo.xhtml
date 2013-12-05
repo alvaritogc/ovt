@@ -18,7 +18,7 @@
 
 <h:panelGroup rendered="#{declaracionAguinaldoBean.estaDeclarado}">
     <h1>Usted ya realizo la declaracion jurada de aguinaldo</h1>
-    <p:commandButton ajax="false" value="Ir a inicio" action="#{declaracionAguinaldoBean.irInicio}"/>
+    <!--<p:commandButton ajax="false" value="Ir a inicio" action="# {declaracionAguinaldoBean.irInicio}"/>-->
 </h:panelGroup>
 <h:panelGroup id="panelForm" rendered="#{!declaracionAguinaldoBean.estaDeclarado}">
 <p:panelGrid id="gridForm">
@@ -78,7 +78,7 @@
             <p:outputLabel value="1.3 Nro de orden que rectifica"/>
             <p:selectOneMenu id="rectificatorio" value="#{declaracionAguinaldoBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="#{!declaracionTrimestralBean.esRectificatorio}"> <!--disabled="# {declaracionBean.parametro!=3}"-->
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionAguinaldoBean.docDocumentosParaRectificar}" var="elemDoc" itemLabel="#{elemDoc.numeroDocumento}&nbsp;-&nbsp;#{elemDoc.docPlanilla.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{elemDoc.idDocumento}"/>
+                <f:selectItems value="#{declaracionAguinaldoBean.docDocumentosParaRectificar}" var="elemDoc" itemLabel="#{elemDoc.docDefinicion.docDefinicionPK.codDocumento}&nbsp;-&nbsp;#{elemDoc.numeroDocumento}&nbsp;-&nbsp;#{elemDoc.docPlanilla.parCalendario.parCalendarioPK.gestion}" itemValue="#{elemDoc.idDocumento}"/>
                 <p:ajax listener="#{declaracionAguinaldoBean.seleccionaTrimestre}" update="razonSocial" />
             </p:selectOneMenu>
         </p:panelGrid>
@@ -107,7 +107,7 @@
     <p:column id="razonSocial" colspan="6">
         <p:outputPanel id="empresaRazonSocial">
             <h:outputLabel value="#{declaracionAguinaldoBean.unidadSeleccionada.nombreComercial}"/>
-            <h:outputLabel value="#{declaracionAguinaldoBean.periodo}" />
+            <h:outputLabel value="#{declaracionAguinaldoBean.periodo}&nbsp;-&nbsp;#{declaracionAguinaldoBean.gestion}" />
         </p:outputPanel>
     </p:column>
 </p:row>
@@ -367,41 +367,14 @@
     <h:outputText id="idArchivo1" value="#{declaracionAguinaldoBean.nombres[0]}"
                   style="font-weight: bold;text-align: center"/>
 
-<!--    <h:outputText value="AGOSTO" style="font-weight: bold" rendered="# {declaracionAguinaldoBean.habilita}"/> &nbsp;
-
-    <p:fileUpload fileUploadListener="# {declaracionAguinaldoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
-                  fileLimitMessage="Sólo se puede elegir un archivo."
-                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
-                  style="width: 500px"
-                  mode="advanced" update="idArchivo2,guardarPlanillaBtn" fileLimit="1" label="Seleccione"
-                  invalidSizeMessage="Archivo demasiado grande."
-                  sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv|XLS|XLSX|CSV)$/"
-                  rendered="# {declaracionAguinaldoBean.habilita}"/>
-    <h:outputText id="idArchivo2" value="# {declaracionAguinaldoBean.nombres[1]}"
-                  style="font-weight: bold;text-align: center"/>
-
-    <h:outputText value="SEPTIEMBRE" style="font-weight: bold" rendered="# {declaracionAguinaldoBean.habilita}"/> &nbsp;
-
-    <p:fileUpload fileUploadListener="# {declaracionAguinaldoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
-                  fileLimitMessage="Sólo se puede elegir un archivo."
-                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
-                  style="width: 500px"
-                  mode="advanced" update="idArchivo3,guardarPlanillaBtn" fileLimit="1" label="Seleccione"
-                  invalidSizeMessage="Archivo demasiado grande."
-                  sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv|XLS|XLSX|CSV)$/"
-                  rendered="# {declaracionAguinaldoBean.habilita}"/>
-    <h:outputText id="idArchivo3" value="# {declaracionAguinaldoBean.nombres[2]}"
-                  style="font-weight: bold;text-align: center"/>-->
     <p:growl id="messages" showDetail="true"/>
 </h:panelGrid>
-
 <p:messages id="mensajes" showDetail="true" autoUpdate="true" closable="true" />
-
 <br/>
 
 <div align="CENTER">
     <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada"
-                     actionListener="#{declaracionAguinaldoBean.guardaDocumentoPlanillaBinarioAgunaldoBean}" update="formularioFrm messages"
+                     action="#{declaracionAguinaldoBean.guardaDocumentoPlanillaBinarioAgunaldoBean}" update="formularioFrm messages"
                      disabled="#{declaracionAguinaldoBean.habilita}">
         <p:confirm header="Declaración jurada"
                    message="Si continua, procederá a realizar una declaración jurada. Asegúrese que los datos esten correctamente llenados. Deséa continuar?"
@@ -414,7 +387,6 @@
     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
 </p:confirmDialog>
 </h:panelGroup>
-
 </h:form>
 
 <p:dialog widgetVar="seleccionEmpresa" id="seleccionEmpresa" header="Seleccione" modal="true" closable="false" resizable="false">

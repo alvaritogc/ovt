@@ -99,8 +99,8 @@ public class DocDocumento implements Serializable {
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docDocumento", fetch = FetchType.LAZY)
 //    private List<DocBinario> docBinarioList;
 
-    //no quitar esta relación OneToOne
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
+    //no quitar esta relación OneToOne dejar como esta...
+    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "idDocumento", fetch = FetchType.EAGER)
     private DocPlanilla docPlanilla;
 
     public DocDocumento() {

@@ -52,7 +52,7 @@
     </style>
 
     <h:form id="frmInfoLaboral">
-        <p:growl showDetail="true" id="growlInfoLaboral"/>
+        <p:growl showDetail="true" id="growlInfoLaboral" life="9000"/>
         <p:panel id="pnlInfoLaboral">
 
             <f:facet name="footer">
@@ -99,17 +99,16 @@
                 </pe:inputNumber>
 
                 <h:outputText value="N° total de trabajadores:"/>
-                <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroTotalTrabajadores}"
-                                id="inputTxtNroTotalTrabajadores"
-                                disabled="true"
-                                decimalPlaces="0"
-                                tabindex="3"
-                                style="width: 40px;background-color: blue;text-decoration-color: black;text-align:right;"
-                                thousandSeparator=" "
-                                minValue="0"
-                                maxValue="5000"
+
+
+                <h:inputText value="#{personaUnidadBean.infolaboralRegistro.nroTotalTrabajadores}"
+                                 id="inputTxtNroTotalTrabajadores"
+                                    readonly="true"
+                                    tabindex="3"
+                                    style="width: 40px;background-color: #5F95D3;text-decoration-color: white;text-align:right;color: #ffffff;"
                         >
-                </pe:inputNumber>
+                </h:inputText>
+
 
                 <h:outputText value="Extranjeros:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroExtranjeros}"
@@ -274,10 +273,13 @@
                 <h:outputLabel/>
 
                 <h:outputText value="Cuenta con sindicato:"/>
-                <p:selectBooleanCheckbox id="checkSindicato"
-                                         value="#{personaUnidadBean.infolaboralRegistro.tipoSindicato}"
-                                         tabindex="16">
-                </p:selectBooleanCheckbox>
+                <p:selectOneRadio id="checkSindicato"
+                                  tabindex="16"
+                                  value="#{personaUnidadBean.infolaboralRegistro.tipoSindicato}"                                                 >
+                    <f:selectItem itemLabel="Si   ." itemValue="true" />
+                    <f:selectItem itemLabel="No   " itemValue="false" />
+                </p:selectOneRadio>
+
             </h:panelGrid>
 
 

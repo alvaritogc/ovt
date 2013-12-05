@@ -19,7 +19,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
@@ -198,7 +197,6 @@ public class DeclaracionTrimestralBean implements Serializable {
         listaCentralSucursales();
     }
 
-
     public void listaCentralSucursales(){
         central = new PerUnidad();
         sucursales = new ArrayList<PerUnidad>();
@@ -207,8 +205,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         for(PerUnidad sucursal:listaUnidades)  {
             if(sucursal.getPerUnidadPK().getIdUnidad()==0)
                 central=sucursal;
-            else
-                sucursales.add(sucursal);
+            sucursales.add(sucursal);
         }
         tamañoSucursales=sucursales.size();
     }
@@ -237,18 +234,18 @@ public class DeclaracionTrimestralBean implements Serializable {
         } catch (Exception e) {
             parObligacionCalendario=null;
         }
-        if(parObligacionCalendario==null){
-            estaDeclaradoMensaje="Solo puede realizar la Declaración Jurada dentro del plazo establecido.";
-            estaDeclarado=true;
-            return;
-        }
 
-
+//        if(parObligacionCalendario==null){
+//            estaDeclaradoMensaje="Solo puede realizar la Declaración Jurada dentro del plazo establecido.";
+//            estaDeclarado=true;
+//            return;
+//        }
 
         List<DocDocumento> listaDocumentos;
         try{
-            //listaDocumentos=iDocumentoService.listarPorPersona(idPersona);
-            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
+            //TODO cabiar el metodo, temporalmente habilitado para pruebas...
+            listaDocumentos=iDocumentoService.listarPlanillasTrimestralesPorCodDoc(idPersona, "LC1010");
+//            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
             if(listaDocumentos==null){
                 listaDocumentos=new ArrayList<DocDocumento>();
             }
@@ -259,11 +256,18 @@ public class DeclaracionTrimestralBean implements Serializable {
         }
         estaDeclarado=false;
         for(DocDocumento documento:listaDocumentos){
+            if(parametro==2 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
+                estaDeclaradoMensaje="Solo se puede realizar o la Declaración Jurada Trimestral o la Declaración Jurada Sin Movimiento.";
+                estaDeclarado=true;
+                return;
+            }
+
             if((documento.getCodEstado().getDescripcion().toLowerCase().equals("declarado")
                     || documento.getCodEstado().getDescripcion().toLowerCase().equals("observado")
-                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")) && parametro==1){
+                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")) && parametro==1 ){
                 estaDeclarado=true;
                 estaDeclaradoMensaje="Usted ya realizo la declaracion jurada.";
+                return;
             }
         }
     }
@@ -357,15 +361,15 @@ public class DeclaracionTrimestralBean implements Serializable {
         }
     }
 
-    public String guardaDocumentoPlanillaBinario(ActionEvent actionEvent){
+    public String guardaDocumentoPlanillaBinario(){
         if(parametro==3 && idRectificatorio==null){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Advertencia", "No puede guardarse, ya que no se pueden obtener declaraciones."));
             return null;
         }
 
-        validaArchivo(listaBinarios);
-
-        if(errores.size()==0 && verificaValidacion){
+//        validaArchivo(listaBinarios);
+//        if(errores.size()==0 && verificaValidacion){
+        if(true){
             try{
                 if(parametro==3)
                     documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
@@ -375,7 +379,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                 logger.info(docPlanilla.toString());
                 generaPlanilla();
                 documento.setPerUnidad(unidadSeleccionada);
-                iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas);
+                String msj= iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas);
                 return "irEscritorio";
             }catch (Exception e){
                 e.printStackTrace();
@@ -385,6 +389,7 @@ public class DeclaracionTrimestralBean implements Serializable {
             binario = new DocBinario();
             listaBinarios.clear();
         }
+        logger.info("retorno final");
         return null;
     }
 
@@ -401,7 +406,7 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void obtenerPeriodoLista(){
         parObligacionCalendarioLista = new ArrayList<ParObligacionCalendario>();
-        parObligacionCalendarioLista = iObligacionCalendarioService.listaObligacionCalendarioPorGestion(gestion);
+        parObligacionCalendarioLista = iObligacionCalendarioService.buscarPorPlatriPorFecha(new Date());
     }
 
     public String mensajeError(int i, String titulo){
@@ -509,7 +514,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                                 break;
                             case 3:
                                 if(!registro.get(columna).equals("")){
-                                    if((int) Double.parseDouble(registro.get(columna))<salarioMinimo)
+                                    if((int) Double.parseDouble(registro.get(columna).replace(",","."))<salarioMinimo)
                                         docAlerta.setObservacion(nombreBinario+": El registro en la fila \""+c+"\" y la columna \"Haber Básico\" es menor al salario mínimo establecido por ley.");
                                     docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
                                 }
@@ -529,7 +534,8 @@ public class DeclaracionTrimestralBean implements Serializable {
                                 break;
                             case 2:
                                 if(!registro.get(columna).equals("")){
-                                    if((int) Double.parseDouble(registro.get(columna))<salarioMinimo)
+                                    int numero=(int) Double.parseDouble(registro.get(columna).replace(",","."));
+                                    if(numero<salarioMinimo)
                                         docAlerta.setObservacion(nombreBinario + ": El registro en la fila \"" + c + "\" y la columna \"Haber Básico\" es menor al salario mínimo establecido por ley.");
                                     docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
                                 }
@@ -603,7 +609,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                         switch (valorPlanilla){
                             case 1:
                                 if(!registro.get(columna).equals("")){
-                                    if((int) Double.parseDouble(registro.get(columna))<salarioMinimo)
+                                    if((int) Double.parseDouble(registro.get(columna).replace(",","."))<salarioMinimo)
                                         docAlerta.setObservacion(nombreBinario + ": El registro en la fila \"" + c + "\" y la columna \"Haber Básico\" es menor al salario mínimo establecido por ley.");
                                     docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
                                 }
@@ -611,7 +617,8 @@ public class DeclaracionTrimestralBean implements Serializable {
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                             case 2:
-                                if(!registro.get(columna).equals(""))
+                                String a=registro.get(columna);
+                                if(!a.equals(""))
                                     docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -787,7 +794,7 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
     public void obtenerEntidad() {
-        parEntidadLista = iEntidadService.listaEntidad();
+        parEntidadLista = iEntidadService.listarPorTipoEntidad("SEGSALUD");
     }
 
     //** Getters and Setters **//
@@ -1214,4 +1221,6 @@ public class DeclaracionTrimestralBean implements Serializable {
     public void setiParametrizacionService(IParametrizacionService iParametrizacionService) {
         this.iParametrizacionService = iParametrizacionService;
     }
+
+
 }
