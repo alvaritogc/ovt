@@ -684,7 +684,7 @@ public class PersonaUnidadBean implements Serializable{
         }
 
         if(direccion.getEmail2()!=null){
-            if(!direccion.getEmail().trim().equals("")){
+            if(!direccion.getEmail2().trim().equals("")){
                 if(!validarEmail(direccion.getEmail2())){
                     FacesContext.getCurrentInstance().addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL formato del correo electronico 2 es incorrecto."));
@@ -720,9 +720,6 @@ public class PersonaUnidadBean implements Serializable{
         // Verificar si tiene ROE y es la unidad principal
         if(tieneROE && unidadRegistro.getPerUnidadPK().getIdUnidad()==0) {
             logger.info("*********** ======== TIENE ROE ========== **********");
-
-
-
             logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getDireccion()+" NUEVA "+direccion.getDireccion());
             logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getPisoDepOfi()+" NUEVA "+direccion.getPisoDepOfi());
             logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getZonaUrbanizacion()+" NUEVA "+direccion.getZonaUrbanizacion());
