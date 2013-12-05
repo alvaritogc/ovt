@@ -44,20 +44,18 @@
         <h:panelGrid columns="2">
             <h:outputText value="Codigo de Actividad economica:"/>
 
-            <p:selectOneListbox  value="#{personaUnidadBean.codigoActividadEconomicaPrincipal}"
-
+            <h:selectOneListbox value="#{personaUnidadBean.codigoActividadEconomicaPrincipal}"
+                                   readonly="true"
                                  style="height: 250px;width: 500px;font-weight: bolder;color: #000000"
-                                 disabled="true"
+
                     >
                 <f:selectItems value="#{personaUnidadBean.listaCodActividadEconomica}"
                                var="actividad"
                                itemLabel="#{actividad.label}"
                                itemValue="#{actividad.value}"/>
 
-                <p:column>
-                    #{actividad.label}
-                </p:column>
-            </p:selectOneListbox >
+
+            </h:selectOneListbox >
 
 
         </h:panelGrid>
