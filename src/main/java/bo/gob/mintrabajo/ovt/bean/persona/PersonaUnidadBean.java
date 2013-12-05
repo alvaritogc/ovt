@@ -1005,9 +1005,9 @@ public class PersonaUnidadBean implements Serializable{
 
         long total=extranjeros+fijos+eventuales+menores18+mayores60+jubilados+capDiferenciales;
 
-        if(total>nroTotalTrabajadores){
+        if(total!=nroTotalTrabajadores ){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El N° total de trabajadores es menor a la cantidad de Extranjeros, "+"\n"
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","El N° total de trabajadores es menor  o mayor a la cantidad de Extranjeros, "+"\n"
                             +"Fijos, Eventuales, Menores de 18 años, Mayores de 60 años, "+"\n"
                             +" Personal jubilado o Personal con capacidades diferenciales. "+"\n"
                             + " Verfique estos datos."));

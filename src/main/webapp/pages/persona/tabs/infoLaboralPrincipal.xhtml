@@ -166,10 +166,12 @@
                 <h:outputLabel/>
 
                 <h:outputText value="Cuenta con sindicato:"/>
-                <p:selectBooleanCheckbox id="checkSindicatoRead"
-                                         value="#{personaUnidadBean.infolaboral.tipoSindicato}"
-                                         tabindex="16" disabled="true">
-                </p:selectBooleanCheckbox>
+            <p:selectOneRadio id="checkSindicatoRead"
+                              disabled="true"
+                              value="#{personaUnidadBean.infolaboral.tipoSindicato}"                                                 >
+                <f:selectItem itemLabel="Si   ." itemValue="true" />
+                <f:selectItem itemLabel="No   " itemValue="false" />
+            </p:selectOneRadio>
             </h:panelGrid>
 
     </p:panel>

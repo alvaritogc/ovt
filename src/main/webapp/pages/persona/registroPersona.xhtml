@@ -14,12 +14,21 @@
                   draggable="false" closable="false">
             <p:graphicImage value="../../images/ajax-loader.gif" />
         </p:dialog>
+        <style type="text/css">
+            .ui-panel-title, .ui-panel-titlebar {
+                background-color: #2264B1;
+                color: #FFFFFF
+            }
+        </style>
 
     <h:form id="frmBucarPersona">
         <p:growl showDetail="true" id="growl" />
         <h:panelGrid columns="1" >
 
-            <p:panel id="pnlPersona" header="DATOS GENERALES" style="height: 330px;width: 700px;">
+            <p:panel id="pnlPersona"  style="height: 330px;width: 700px;"  >
+                <f:facet name="header">
+                    <p:outputLabel value="DATOS GENERALES"/>
+                </f:facet>
                 <h:panelGrid id="pnlGridBuscarPersona" columns="2" >
                     <h:outputText value="Persona :"/>
                     <p:selectOneRadio id="checkEsNatural" value="#{personaBean.persona.esNatural}" tabindex="1">
@@ -147,7 +156,11 @@
 
            <h:panelGrid columns="2" id="pnlGridDoble" >
 
-               <p:panel id="pnlUsario" header="DATOS DE USUARIO DEL SISTEMA" style="height: 140px;width: 700px;" >
+               <p:panel id="pnlUsario"
+                        style="height: 140px;width: 700px;" >
+                   <f:facet name="header">
+                       <p:outputLabel value="DATOS DE USUARIO DEL SISTEMA"/>
+                   </f:facet>
                    <f:facet name="footer">
                        <p:commandButton value="Guardar"
                                                            action="#{personaBean.registrar}"
