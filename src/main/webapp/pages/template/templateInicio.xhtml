@@ -155,13 +155,12 @@
                     </p:dialog>
                     <!-- ***********  DIALOG OLVIDO SU CONTRASENIA ************* -->
                     <p:dialog id="basicDialog2" header="Olvido su contraseña" modal="true" widgetVar="dlg2" width="420" height="200" resizable="false" closable="false">
-                        <p:growl id="olvidoContraseniaGrowl" showDetail="false" life="6000" globalOnly="true"  sticky="false"/>
                         <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
                                   draggable="false" closable="false">
                             <p:graphicImage value="../../images/ajax-loader.gif" />
                         </p:dialog>
                         <h:form id="frmOlvidoContrasenia">
-                            <p:growl showDetail="true" id="growlOlvidoContrasenia" />
+                            <p:growl showDetail="true" id="growlOlvidoContrasenia" life="6000" />
                             <br/>
                             <p style="font-size: 12px;">Para recuperar su contraseña, ingrese su Nro. de documento con el que se registro (CI,NIT) y dirección de correo electronico asociada al Sistema.</p>
 
@@ -313,7 +312,7 @@
                     <h:form id="idBarraDeMenu" rendered="#{!(templateInicioBean.idUsuario == null)}">
                         <p:menubar model="#{templateInicioBean.model}">
                             <f:facet name="options">
-                                <p:commandLink value="Cambiar Contraseña" onclick="PF('dlgCambiarContrasenia').show();" style="color:#0069B1;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/>
+                                <p:commandLink value="Cambiar Contraseña" onclick="PF('dlgCambiarContrasenia').show();" style="color:#0069B1;" actionListener="#{templateInicioBean.limpiar}" update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail :frmCambiarContrasenia" process="@this"/>
                             </f:facet>
                         </p:menubar> 
                     </h:form>
