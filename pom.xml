@@ -302,14 +302,6 @@
         </dependency>
         <!--End Security-->
 
-        <!-- Dependencia para quartz -->
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-            <version>2.1.7</version>
-        </dependency>
-        <!-- End quartz -->
-
         <!-- consumo del webservice de ovt -->
         <dependency>
             <groupId>bo.gob.mintrabajo.ovt</groupId>
