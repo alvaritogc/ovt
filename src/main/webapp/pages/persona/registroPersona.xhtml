@@ -62,10 +62,12 @@
                         <f:converter converterId="lowerConverter"/>
                     </p:inputText>
 
-                    <p:outputLabel for="slcOneMenuTipoIdentificacion" value="Identificación:"/>
+                    <p:outputLabel for="slcOneMenuTipoIdentificacion" value="Tipo de identificación:"/>
                     <p:selectOneMenu id="slcOneMenuTipoIdentificacion" value="#{personaBean.persona.tipoIdentificacion}"
                                      tabindex="5"
-                                    style="text-transform: uppercase;">
+                                    style="text-transform: uppercase;"
+                                    required="true"
+                                    requiredMessage="El campo Tipo de identificacion es obligatorio.">
                         <f:selectItem itemLabel="---Seleccione una identificación---" itemValue="" />
                         <f:selectItems value="#{personaBean.listaTipoIdentificacion}" />
                     </p:selectOneMenu>
@@ -73,6 +75,8 @@
                     <p:outputLabel for="slcOneMenuLocalidad" value="Lugar de emisión:"/>
                     <p:selectOneMenu id="slcOneMenuLocalidad" value="#{personaBean.idLocalidad}"
                                      tabindex="6"
+                                     required="true"
+                                     requiredMessage="El campo Lugar de emisión es obligatorio."
                                      style="text-transform: uppercase;">
                         <f:selectItem itemLabel="---Seleccione un departamento---" itemValue="0L" />
                         <f:selectItems value="#{personaBean.listaLocalidad}" />

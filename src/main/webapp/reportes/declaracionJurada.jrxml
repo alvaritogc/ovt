@@ -83,7 +83,7 @@ RIGHT OUTER JOIN
                                                           coalesce(p.apellido_paterno,' ') || ' ' || coalesce(p.apellido_materno,' ') nombreRazonSocial,
                                                           p.nro_identificacion NIT,
                                                           u.id_unidad ,
-                                                          u.nombre_comercial nombreComercial,to_date(u.fecha_nacimiento,'dd/MM/yyyy') fechaActividades,
+                                                          u.nombre_comercial nombreComercial,TO_CHAR(u.fecha_nacimiento,'DD/MM/YYYY') fechaActividades,
                                                           coalesce(u.nro_caja_salud,' ') cajaSalud,
                                                           u.tipo_sociedad ,d.descripcion tipoEmpleador
                                                   FROM per_persona p
@@ -117,7 +117,7 @@ order by t8.id_unidad]]>
 	<field name="NIT" class="java.lang.String"/>
 	<field name="ID_UNIDAD" class="java.math.BigDecimal"/>
 	<field name="NOMBRECOMERCIAL" class="java.lang.String"/>
-	<field name="FECHAACTIVIDADES" class="java.sql.Timestamp"/>
+	<field name="FECHAACTIVIDADES" class="java.lang.String"/>
 	<field name="CAJASALUD" class="java.lang.String"/>
 	<field name="TIPO_SOCIEDAD" class="java.lang.String"/>
 	<field name="TIPOEMPLEADOR" class="java.lang.String"/>
