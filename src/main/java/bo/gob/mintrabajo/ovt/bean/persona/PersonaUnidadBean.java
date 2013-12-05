@@ -696,7 +696,8 @@ public class PersonaUnidadBean implements Serializable{
             ini();
             return ;
         }
-
+         logger.info("====>>> EMAIL DE PERSONA1 "+direccion.getEmail());
+        logger.info("====>>> EMAIL DE PERSONA2 "+direccion.getEmail2());
         if(direccion.getEmail()!=null){
             if(!direccion.getEmail().trim().equals("")){
                 if(!validarEmail(direccion.getEmail())){
