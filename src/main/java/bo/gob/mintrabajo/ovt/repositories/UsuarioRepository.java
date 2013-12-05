@@ -6,6 +6,8 @@ import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 @OpenJpaSettings
 public interface UsuarioRepository extends OpenJpaRepository<UsrUsuario, Long>{
 
@@ -18,5 +20,5 @@ public interface UsuarioRepository extends OpenJpaRepository<UsrUsuario, Long>{
             "where u.idPersona = :idPersona" )
     void eliminarUsuario(@Param("idPersona")String idPersona);
 
-    UsrUsuario findByIdPersona_IdPersona(String idPersona);
+    List<UsrUsuario> findByIdPersona_IdPersona(String idPersona);
 }

@@ -71,6 +71,12 @@
             <redirect>
             </redirect>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>irEscritorio1</from-outcome>
+            <to-view-id>/pages/escritorio.xhtml</to-view-id>
+            <redirect include-view-params="false">
+            </redirect>
+        </navigation-case>
     </navigation-rule>
     /pages/declaracion/impresionRoe.jsf
 </faces-config>
