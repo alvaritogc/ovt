@@ -24,6 +24,9 @@ import java.sql.Statement;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,11 +74,14 @@ public class WebServiceForJBPM {
     ///*** Método que retorna el login por documento de documento  ***///
     @WebMethod(operationName = "retornaCorreoElectronico")
     public String retornaCorreoElectronico (@WebParam(name = "nroDocumento") String nroDocumento) {
+        Connection conn = null;
         try{
+            InitialContext initialContext = new InitialContext();
+            DataSource ds = (DataSource) initialContext.lookup("java:jboss/datasources/ovtDS");
 
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-
-            Connection conn = DriverManager.getConnection ("jdbc:oracle:thin:@192.168.50.7:1521:DESA", "ovt", "prueba");
+            //DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            //Connection conn = DriverManager.getConnection ("jdbc:oracle:thin:@192.168.50.7:1521:DESA", "ovt", "prueba");
+            conn = ds.getConnection();
 
             Statement stmt = conn.createStatement();
             ResultSet rset1 = stmt.executeQuery("select * from PER_PERSONA where NRO_IDENTIFICACION = '" + nroDocumento + "'");
