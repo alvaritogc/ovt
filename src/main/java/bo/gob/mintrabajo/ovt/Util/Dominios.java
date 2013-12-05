@@ -60,4 +60,11 @@ public class Dominios {
 
     public static final String DOM_SALARIO = "SALARIOS";
     public static final String PAR_SALARIO_MINIMO = "SALARIO_MINIMO";
+    //
+    public static final String DOM_MULTAS = "MULTAS";
+    public static final String PAR_MULTAS_MESES_TOLERANCIA_ROE = "MESES_TOLERANCIA_ROE";
+    public static final String PAR_MULTAS_NUMERO_TRABAJADORES_ROE = "NT_ROE";
+    public static final String PAR_MULTAS_DIAS_TRANSCURRIDOS_ROE = "DT_ROE";
+    public static final String PAR_MULTAS_NUMERO_TRABAJADORES_PLATRI = "NT_PLATRI";
+    public static final String PAR_MULTAS_DIAS_TRANSCURRIDOS_PLATRI = "DT_PLATRI";
 }
