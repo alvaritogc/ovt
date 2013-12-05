@@ -38,6 +38,7 @@
     <link rel="apple-touch-icon-precomposed"
           href="#{facesContext.externalContext.requestContextPath}/assets/ico/apple-touch-icon-57-precomposed.png"/>
     <link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/assets/ico/teclado_icono.png"/>
+
     <style type="text/css">
         .ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield {
             background: none repeat scroll 0 0 #FFFFFF;
@@ -347,6 +348,11 @@
             </p:commandLink>
         </p:column>
     </p:dataTable>
+    <br/>
+    <p:panel header="Herramientas">
+        <p:commandLink value="Cotización multas"
+                       action="/pages/multasRoe/cotizacionMultas.xhtml?faces-redirect=true&amp;includeViewParams=true"/>
+    </p:panel>
 </h:form>
 
 </div>
