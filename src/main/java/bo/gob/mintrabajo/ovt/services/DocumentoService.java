@@ -144,6 +144,8 @@ public class DocumentoService implements IDocumentoService {
         logger.info("Guarda" + docPlanilla);
 
         //guardaPlanillaDetalles
+        if(docPlanillaDetalles==null)
+            docPlanillaDetalles= new ArrayList<DocPlanillaDetalle>();
         for (DocPlanillaDetalle elemPlanillaDetalle : docPlanillaDetalles) {
             elemPlanillaDetalle.setIdPlanilla(docPlanilla);
             elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
@@ -151,7 +153,11 @@ public class DocumentoService implements IDocumentoService {
         }
 
         //guardaAlertas
-        DocAlertaDefinicion docAlertaDefinicion = alertaDefinicionRepository.findByDocDefinicion_DocDefinicionPK(docDocumento.getDocDefinicion().getDocDefinicionPK());
+        DocAlertaDefinicion docAlertaDefinicion= new DocAlertaDefinicion();
+        if(alertas==null)
+            alertas= new ArrayList<DocAlerta>();
+        else
+            docAlertaDefinicion = alertaDefinicionRepository.findByDocDefinicion_DocDefinicionPK(docDocumento.getDocDefinicion().getDocDefinicionPK());
         for (DocAlerta docAlerta : alertas) {
             docAlerta.setEstadoAlerta("Estado Alerta");  //revisar que utilizar
             docAlerta.setCodAlerta(docAlertaDefinicion);
@@ -365,6 +371,11 @@ public class DocumentoService implements IDocumentoService {
     @Override
     public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador, Date fechaDesde, Date fechaHasta, String codDocumento) {
         return documentoRepository.listarPlanillaALaFecha(idEmpleador, fechaDesde, fechaHasta, codDocumento);
+    }
+
+    @Override
+    public List<DocDocumento> listarPlanillasTrimestralesPorCodDoc(String idEmpleador, String codDocumento){
+        return documentoRepository.listarPorDocDefinicionYCodDocumento(idEmpleador, codDocumento);
     }
 
     public List<DocDocumento> listarDeclarados(String idEmpleador) {

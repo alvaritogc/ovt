@@ -25,10 +25,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.text.*;
 
 //import bo.gob.mintrabajo.ovt.envano.DobleTrabajoConexion;
 //import java.util.Collection;
@@ -185,7 +185,8 @@ public class EscritorioBean {
         String codDocumento = docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento();
         String idPersonaPorDocumento = docDocumento.getPerUnidad().getPerPersona().getIdPersona();
         vperPersona = iVperPersonaService.cargaVistaPersona(idPersonaPorDocumento);
-        Long idUsuarioEmpleador = iUsuarioService.obtenerUsuarioPorIdPersona(idPersonaPorDocumento).getIdUsuario();
+        //TODO corregir en la BD la llamda de 2 o mas centrales en lugar de sucursales.
+        Long idUsuarioEmpleador = iUsuarioService.obtenerUsuarioPorIdPersona(idPersonaPorDocumento).get(0).getIdUsuario();
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         boolean verificaReporte = false;
         if (codDocumento.equals("LC1010") || codDocumento.equals("LC1011") || codDocumento.equals("LC1012")) {
@@ -444,6 +445,82 @@ public class EscritorioBean {
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("ERROR al generar el reporte: " + e.getMessage());
+            }
+        }
+
+        if (codDocumento.equals("LC1020") || codDocumento.equals("LC1021")) {
+            try {
+                docPlanilla = iPlanillaService.buscarPorDocumento(docDocumento.getIdDocumento());
+                parametros.clear();
+                parametros.put("formulario", docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento());
+                parametros.put("version", docDocumento.getDocDefinicion().getDocDefinicionPK().getVersion());
+                parametros.put("nroOrden", docDocumento.getNumeroDocumento());
+                if (codDocumento.equals("LC1021")) {
+                    parametros.put("rectificatoria", "X");
+                    parametros.put("nroRectificatoria", docDocumento.getIdDocumentoRef().getNumeroDocumento());
+                }
+                parametros.put("totalNacional", "X");
+                parametros.put("oficinaCentral", docDocumento.getPerUnidad().getNombreComercial());
+                parametros.put("mesPresentacion", docPlanilla.getParCalendario().getParCalendarioPK().getTipoPeriodo());
+                parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
+                parametros.put("razonSocial", persona.getNombreRazonSocial());
+                parametros.put("departamento", vperPersona.getDirDepartamento());
+                parametros.put("direccion", vperPersona.getDirDireccion());
+                parametros.put("telefono", vperPersona.getTelefono());
+                parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
+                parametros.put("ciudadLocalidad", vperPersona.getLocalidad());
+                parametros.put("fax", vperPersona.getFax());
+                parametros.put("nit", vperPersona.getNroIdentificacion() + "");
+                parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
+                parametros.put("zona", vperPersona.getDirZona());
+                parametros.put("numero", vperPersona.getDirNroDireccion());
+                parametros.put("correoElectronico", vperPersona.getEmail());
+                parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
+                parametros.put("montoAportadoAsegurados", docPlanilla.getMontoAsegCaja());
+                if (docPlanilla.getIdEntidadSalud() != null) {
+                    parametros.put("gestorSalud", docPlanilla.getIdEntidadSalud().getDescripcion());
+                }
+                parametros.put("nroAfiliados", docPlanilla.getNroAsegAfp());
+                parametros.put("montoAportadoAfiliados", docPlanilla.getMontoAsegAfp());
+                parametros.put("haberBasico", docPlanilla.getHaberBasico());
+                parametros.put("bonoAntiguedad", docPlanilla.getBonoAntiguedad());
+                parametros.put("bonoProduccion", docPlanilla.getBonoProduccion());
+                parametros.put("subsidioFrontera", docPlanilla.getSubsidioFrontera());
+                parametros.put("laborExtraordinaria", docPlanilla.getLaborExtra());
+                parametros.put("otrosBono", docPlanilla.getOtrosBonos());
+
+                parametros.put("totalMujeres", docPlanilla.getNroM());
+                parametros.put("totalVarones", docPlanilla.getNroH());
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(docPlanilla.getFechaOperacion());
+                parametros.put("diaDeposito", cal.get(Calendar.DAY_OF_MONTH));
+                cal.add(Calendar.MONTH, 1);
+                parametros.put("mesDeposito", cal.get(Calendar.MONTH));
+                parametros.put("anioDeposito", cal.get(Calendar.YEAR));
+                cal = Calendar.getInstance();
+                cal.setTime(docDocumento.getFechaDocumento());
+                parametros.put("diaFechaPresentacion", cal.get(Calendar.DAY_OF_MONTH));
+                cal.add(Calendar.MONTH, 1);
+                parametros.put("mesFechaPresentacion", cal.get(Calendar.MONTH));
+                parametros.put("anioFechaPresentacion", cal.get(Calendar.YEAR));
+                parametros.put("montoDeposito", docPlanilla.getMontoOperacion());
+                parametros.put("nroComprobante", docPlanilla.getNumOperacion());
+                parametros.put("nombreEmpleador", vperPersona.getRlNombre());
+                parametros.put("nroDocumento", vperPersona.getRlNroIdentidad());
+                parametros.put("lugarPresentacion", "Oficina Virtual");
+                List<DocBinario> lista = iBinarioService.listarPorIdDocumento(docDocumento.getIdDocumento());
+
+                parametros.put("archivo1", lista.get(0));
+                parametros.put("escudoBolivia", servletContext.getRealPath("/") + "/images/escudo.jpg");
+                parametros.put("logo", servletContext.getRealPath("/") + "/images/logoMIN.jpg");
+
+                String nombrePdf = "LC1010-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+
+                redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC2010V1.jasper", parametros));
+                verificaReporte = true;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
