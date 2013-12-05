@@ -1,202 +1,235 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
-    <ui:composition template="../template/templateInicio.xhtml">
-        <ui:define name="content">
-            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+<ui:composition template="../template/templateInicio.xhtml">
+<ui:define name="content">
+<p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
 
 
-            <h3>Empleador o Empresa:  </h3>
-            <h:form id="idCotizacionMultas">
-                <p:tabView  effect="fade" effectDuration="normal" orientation="top" >
+<h3>Empleador o Empresa: </h3>
+<h:form id="idCotizacionMultas">
+<p:tabView effect="fade" effectDuration="normal" orientation="top">
 
-                    <p:tab  id="idTabRoe">
-                        <f:facet name="title">
-                            <p:graphicImage value="/images/cajaRegistradora.png"/>
-                            <h:outputText value=" ROE"/>
-                        </f:facet>
-                        <br/>
-                        <p:outputLabel value="Los empleadores que no cuenten con el Registro Obligatorio de Emperadores (ROE), serán sancionados con multa por infracción a la Ley Social de acuerdo al número de empleadores y los días de retraso." />
-                        <br/>
-                        <p:outputLabel value="Calculo de la multa a partir de la fecha #{cotizacionMultasBean.fechaLimiteRoe}" />
-                        <br/>
+<p:tab id="idTabRoe">
+    <f:facet name="title">
+        <p:graphicImage value="/images/cajaRegistradora.png"/>
+        <h:outputText value=" ROE"/>
+    </f:facet>
+    <br/>
+    <p:outputLabel
+            value="Los empleadores que no cuenten con el Registro Obligatorio de Emperadores (ROE), serán sancionados con multa por infracción a la Ley Social de acuerdo al número de empleadores y los días de retraso."/>
+    <br/>
+    <p:outputLabel value="Calculo de la multa a partir de la fecha #{cotizacionMultasBean.fechaLimiteRoe}"/>
+    <br/>
 
-                        <p:growl id="messages1" showDetail="true"/>
-                        <p:panel id="pnlRoe1">
-                            <h:panelGrid columns="3" style="width: 100%;">
-                                <p:outputLabel for="idFechaInicioActividadesRoe" value="Fecha Inicio actividades :"/>
-                                <p:calendar value="#{cotizacionMultasBean.fechaInicioActividades}" 
-                                            id="idFechaInicioActividadesRoe"
-                                            locale="es"
-                                            pattern="dd/MM/yyyy"
-                                            showOn="button">
-                                    <p:ajax event="dateSelect" listener="#{cotizacionMultasBean.calcularFechaLimiteRoe}" 
-                                            update="pnlRoe1"/>
-                                </p:calendar>  
-                                <p:outputLabel value=""/>
+    <p:growl id="messages1" showDetail="true"/>
+    <p:panel id="pnlRoe1">
+        <h:panelGrid columns="3" style="width: 100%;">
+            <p:outputLabel for="idFechaInicioActividadesRoe" value="Fecha Inicio actividades :"/>
+            <h:panelGrid columns="2">
+                <p:calendar value="#{cotizacionMultasBean.fechaInicioActividades}"
+                            id="idFechaInicioActividadesRoe"
+                            locale="es"
+                            maxdate="#{cotizacionMultasBean.fechaHoy}"
+                            validatorMessage="La fecha no es valida"
+                            maxlength="10"
+                            pattern="dd/MM/yyyy"
+                            showOn="button">
 
-                                <p:outputLabel value="Fecha límite plazo :"/>
-                                <p:outputLabel value="#{cotizacionMultasBean.fechaLimitePlazo}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                </p:outputLabel>
-                                <p:outputLabel value=""/>
+                    <p:ajax event="dateSelect" listener="#{cotizacionMultasBean.calcularFechaLimiteRoe}"
+                            update="pnlRoe1"/>
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </p:calendar>
+                <h:graphicImage value="/images/ayuda.png" id="grafayuda"/>
+                <p:tooltip for="grafayuda">
+                    <ol>
+                        <li>La “Fecha de inicio de actividades” determinara la “Fecha límite plazo”, siendo esta 3 meses de haber iniciado sus actividades</li>
+                        <li>La “Fecha limite plazo” es la fecha máxima en la cual usted debió haber registrado su ROE, posteriormente existirá una penalización</li>
+                    </ol>
+                </p:tooltip>
+            </h:panelGrid>
+            <p:outputLabel value=""/>
 
-                                <p:outputLabel value="Fecha inscripción del roe"/>
-                                <p:outputLabel value="#{cotizacionMultasBean.fechaPresentacionRoe}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                </p:outputLabel>
-                                <p:outputLabel value=""/>
+            <p:outputLabel value="Fecha límite plazo :"/>
+            <p:outputLabel value="#{cotizacionMultasBean.fechaLimitePlazo}">
+                <f:convertDateTime pattern="dd/MM/yyyy"/>
+            </p:outputLabel>
+            <p:outputLabel value=""/>
 
-                                <p:outputLabel for="idNumeroTrabajadoresRoe" value="Número de trabajadores: "/>    
-                                <p:inputText id="idNumeroTrabajadoresRoe" 
-                                             required="true"
-                                             style="text-align: right;"
-                                             maxlength="10"
-                                             value="#{cotizacionMultasBean.numeroTrabajadores}"/>
-                                <p:outputLabel value=""/>
+            <p:outputLabel value="Fecha inscripción del roe"/>
+            <p:outputLabel value="#{cotizacionMultasBean.fechaPresentacionRoe}">
+                <f:convertDateTime pattern="dd/MM/yyyy"/>
+            </p:outputLabel>
+            <p:outputLabel value=""/>
 
-                                <p:outputLabel for="idTotalGanadoDeLaPlanillaRoe" value="Total ganado de la planilla: "/>    
-                                <pe:inputNumber id="idTotalGanadoDeLaPlanillaRoe" 
-                                                thousandSeparator="." decimalSeparator="," style="width: 205px; height: 10px; text-align: right" required="true" maxlength="10"
-                                                value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaRoe}">
-                                </pe:inputNumber>
-                                <p:outputLabel value=""/>  
-                            </h:panelGrid>
-                        </p:panel>
-                        <br/>
-                        <p:panel>
-                            <h:panelGrid columns="2" >    
-                                <p:outputLabel value="Días de retraso:"/>
-                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridos}" style="text-align: right;"/>
-                            </h:panelGrid>
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Penalización por el número de trabajadores: "/>
-                                <pe:inputNumber value="#{cotizacionMultasBean.multaPorNoContarConElRoe}"
-                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
-                                                disabled="true"
-                                                maxlength="10">
-                                </pe:inputNumber>
+            <p:outputLabel for="idNumeroTrabajadoresRoe" value="Número de trabajadores: "/>
+            <p:inputText id="idNumeroTrabajadoresRoe"
+                         required="true"
+                         style="text-align: right;"
+                         maxlength="6"
+                         value="#{cotizacionMultasBean.numeroTrabajadores}"/>
+            <p:outputLabel value=""/>
 
-                                <p:outputLabel value="Penalización por los días de retraso: "/>
-                                <pe:inputNumber value="#{cotizacionMultasBean.multaRoeDiasDeRetraso}"
-                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
-                                                disabled="true"
-                                                maxlength="10">
-                                </pe:inputNumber>
+            <p:outputLabel for="idTotalGanadoDeLaPlanillaRoe" value="Total ganado de la planilla: "/>
+            <pe:inputNumber id="idTotalGanadoDeLaPlanillaRoe"
+                            thousandSeparator="." decimalSeparator=","
+                            style="width: 205px; height: 10px; text-align: right" required="true" maxlength="10"
+                            value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaRoe}">
+            </pe:inputNumber>
+            <p:outputLabel value=""/>
+        </h:panelGrid>
+    </p:panel>
+    <br/>
+    <p:panel>
+        <h:panelGrid columns="2">
+            <p:outputLabel value="Días de retraso:"/>
+            <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridos}" style="text-align: right;"/>
+        </h:panelGrid>
+        <p:panelGrid columns="2">
+            <p:outputLabel value="Penalización por el número de trabajadores: "/>
+            <pe:inputNumber value="#{cotizacionMultasBean.multaPorNoContarConElRoe}"
+                            thousandSeparator="." decimalSeparator=","
+                            style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;"
+                            required="true"
+                            disabled="true"
+                            maxlength="10">
+            </pe:inputNumber>
+
+            <p:outputLabel value="Penalización por los días de retraso: "/>
+            <pe:inputNumber value="#{cotizacionMultasBean.multaRoeDiasDeRetraso}"
+                            thousandSeparator="." decimalSeparator=","
+                            style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;"
+                            required="true"
+                            disabled="true"
+                            maxlength="10">
+            </pe:inputNumber>
 
 
-                                <p:outputLabel value="Total a pagar para obtener su ROE:" style="font: bold;font-size: 13px;"/>
-                                <pe:inputNumber value="#{cotizacionMultasBean.totalAPagarParaObtenerRoe}"
-                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
-                                                disabled="true"
-                                                maxlength="10">
-                                </pe:inputNumber>
-                            </p:panelGrid>
-                        </p:panel>
-                        <br/>
-                        <p:commandButton value="Calcular con multa por días de retraso " 
-                                         action="#{cotizacionMultasBean.calcularMultaPorMora}" 
-                                         update=":idCotizacionMultas:idTabRoe"
-                                         ajax="false" />
-                        <br/>
-                    </p:tab>
-                    <p:tab  id="idTabPlanilla">
-                        <f:facet name="title">
-                            <p:graphicImage value="/images/libreta.png"/>
-                            <h:outputText value=" Planilla trimestral"/>
-                        </f:facet>
-                        <br/>
-                        <p:outputLabel value="Calculo de la multa de la planilla trimestral." />
-                        <br/>
+            <p:outputLabel value="Total a pagar para obtener su ROE:" style="font: bold;font-size: 13px;"/>
+            <pe:inputNumber value="#{cotizacionMultasBean.totalAPagarParaObtenerRoe}"
+                            thousandSeparator="." decimalSeparator=","
+                            style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;"
+                            required="true"
+                            disabled="true"
+                            maxlength="10">
+            </pe:inputNumber>
+        </p:panelGrid>
+    </p:panel>
+    <br/>
+    <p:commandButton value="Calcular con multa por días de retraso "
+                     action="#{cotizacionMultasBean.calcularMultaPorMora}"
+                     update=":idCotizacionMultas:idTabRoe"
+                     ajax="false"/>
+    <br/>
+</p:tab>
+<p:tab id="idTabPlanilla">
+    <f:facet name="title">
+        <p:graphicImage value="/images/libreta.png"/>
+        <h:outputText value=" Planilla trimestral"/>
+    </f:facet>
+    <br/>
+    <p:outputLabel value="Calculo de la multa de la planilla trimestral."/>
+    <br/>
 
-                        <p:growl id="messages2" showDetail="true"/>
-                        <p:panel>
-                            <h:panelGrid columns="3" style="width: 100%;">
-                                <p:outputLabel for="idSomObligacionCalendario" value="Trimestre: "/>
-                                <p:selectOneMenu id="idSomObligacionCalendario" 
-                                                 value="#{cotizacionMultasBean.idObligacionCalendario}" style="text-transform: uppercase; width: 245px">  
-                                    <f:selectItem itemLabel="Seleccione"/>
-                                    <f:selectItems value="#{cotizacionMultasBean.listaObligacionCalendario}" var="oc" 
-                                                   itemLabel="#{oc.parCalendario.parCalendarioPK.gestion} / #{oc.parCalendario.parCalendarioPK.tipoPeriodo}" 
-                                                   itemValue="#{oc.idObligacionCalendario}" />
-                                    <p:ajax update="idTabPlanilla"  listener="#{cotizacionMultasBean.calcularFechaLimitePlanillaTrimestral}" />  
-                                </p:selectOneMenu>
-                                <p:outputLabel value=""/>
+    <p:growl id="messages2" showDetail="true"/>
+    <p:panel>
+        <h:panelGrid columns="3" style="width: 100%;">
+            <p:outputLabel for="idSomObligacionCalendario" value="Trimestre: "/>
+            <p:selectOneMenu id="idSomObligacionCalendario"
+                             value="#{cotizacionMultasBean.idObligacionCalendario}"
+                             style="text-transform: uppercase; width: 245px">
+                <f:selectItem itemLabel="Seleccione"/>
+                <f:selectItems value="#{cotizacionMultasBean.listaObligacionCalendario}" var="oc"
+                               itemLabel="#{oc.parCalendario.parCalendarioPK.gestion} / #{oc.parCalendario.parCalendarioPK.tipoPeriodo}"
+                               itemValue="#{oc.idObligacionCalendario}"/>
+                <p:ajax update="idTabPlanilla"
+                        listener="#{cotizacionMultasBean.calcularFechaLimitePlanillaTrimestral}"/>
+            </p:selectOneMenu>
+            <p:outputLabel value=""/>
 
-                                <p:outputLabel value="Fecha límite plazo :"/>
-                                <p:outputLabel id="idFechaLimitePlazoPT" value="#{cotizacionMultasBean.fechaLimitePlazoPlanillaTrimestral}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                </p:outputLabel>
-                                <p:outputLabel value=""/>
+            <p:outputLabel value="Fecha límite plazo :"/>
+            <p:outputLabel id="idFechaLimitePlazoPT"
+                           value="#{cotizacionMultasBean.fechaLimitePlazoPlanillaTrimestral}">
+                <f:convertDateTime pattern="dd/MM/yyyy"/>
+            </p:outputLabel>
+            <p:outputLabel value=""/>
 
-                                <p:outputLabel value="Fecha presentación planilla Trimestral"/>
-                                <p:outputLabel value="#{cotizacionMultasBean.fechaPresentacionPlanillaTrimestral}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                </p:outputLabel>
-                                <p:outputLabel value=""/>
+            <p:outputLabel value="Fecha presentación planilla Trimestral"/>
+            <p:outputLabel value="#{cotizacionMultasBean.fechaPresentacionPlanillaTrimestral}">
+                <f:convertDateTime pattern="dd/MM/yyyy"/>
+            </p:outputLabel>
+            <p:outputLabel value=""/>
 
-                                <p:outputLabel for="idNumeroTrabajadoresPlanillaTrimestral" value="Número de trabajadores: "/>    
-                                <p:inputText id="idNumeroTrabajadoresPlanillaTrimestral" 
-                                             required="true"
-                                             maxlength="10"
-                                             style="text-align: right;"
-                                             value="#{cotizacionMultasBean.numeroTrabajadoresPlanillaTrimestral}"/>
-                                <p:outputLabel value=""/>
+            <p:outputLabel for="idNumeroTrabajadoresPlanillaTrimestral" value="Número de trabajadores: "/>
+            <p:inputText id="idNumeroTrabajadoresPlanillaTrimestral"
+                         required="true"
+                         maxlength="6"
+                         style="text-align: right;"
+                         value="#{cotizacionMultasBean.numeroTrabajadoresPlanillaTrimestral}"/>
+            <p:outputLabel value=""/>
 
-                                <p:outputLabel for="idTotalGanadoDeLaPlanillaTrimestral" value="Total ganado de la planilla: "/>    
-                                <pe:inputNumber id="idTotalGanadoDeLaPlanillaTrimestral" 
-                                                thousandSeparator="." decimalSeparator="," style="width: 205px; height: 10px; text-align: right" required="true" maxlength="10"
-                                                value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaTrimestral}">
-                                </pe:inputNumber>
-                                <p:outputLabel value=""/>
+            <p:outputLabel for="idTotalGanadoDeLaPlanillaTrimestral" value="Total ganado de la planilla: "/>
+            <pe:inputNumber id="idTotalGanadoDeLaPlanillaTrimestral"
+                            thousandSeparator="." decimalSeparator=","
+                            style="width: 205px; height: 10px; text-align: right" required="true" maxlength="10"
+                            value="#{cotizacionMultasBean.totalGanadoDeLaPlanillaTrimestral}">
+            </pe:inputNumber>
+            <p:outputLabel value=""/>
 
-                            </h:panelGrid>
+        </h:panelGrid>
 
-                        </p:panel>
-                        <br/>
-                        <p:panel>
-                            <h:panelGrid columns="2">
-                                <p:outputLabel value="Días de retraso:"/>
-                                <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridosPlanillaTrimestral}" style="text-align: right;"/>
-                                </h:panelGrid>
-                            <p:panelGrid columns="2">
-                                <p:outputLabel value="Penalizacion por el número de trabajadores:"/>
-                                <pe:inputNumber value="#{cotizacionMultasBean.multaPlanillaTrimestral}"
-                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
-                                                disabled="true"
-                                                maxlength="10">
-                                </pe:inputNumber>
+    </p:panel>
+    <br/>
+    <p:panel>
+        <h:panelGrid columns="2">
+            <p:outputLabel value="Días de retraso:"/>
+            <p:outputLabel value="#{cotizacionMultasBean.diasTranscurridosPlanillaTrimestral}"
+                           style="text-align: right;"/>
+        </h:panelGrid>
+        <p:panelGrid columns="2">
+            <p:outputLabel value="Penalizacion por el número de trabajadores:"/>
+            <pe:inputNumber value="#{cotizacionMultasBean.multaPlanillaTrimestral}"
+                            thousandSeparator="." decimalSeparator=","
+                            style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;"
+                            required="true"
+                            disabled="true"
+                            maxlength="10">
+            </pe:inputNumber>
 
-                                <p:outputLabel value="Penalización por los días de retraso: "/>
-                                <pe:inputNumber value="#{cotizacionMultasBean.multaPlanillaTrimestralDiasDeRetraso}"
-                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
-                                                disabled="true"
-                                                maxlength="10">
-                                </pe:inputNumber>
+            <p:outputLabel value="Penalización por los días de retraso: "/>
+            <pe:inputNumber value="#{cotizacionMultasBean.multaPlanillaTrimestralDiasDeRetraso}"
+                            thousandSeparator="." decimalSeparator=","
+                            style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;"
+                            required="true"
+                            disabled="true"
+                            maxlength="10">
+            </pe:inputNumber>
 
-                                <p:outputLabel value="Total a pagar:" style="font: bold;font-size: 13px;"/>
-                                <pe:inputNumber value="#{cotizacionMultasBean.montoTotalPlanillaTrimestral}"
-                                                thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;" required="true" 
-                                                disabled="true"
-                                                maxlength="10">
-                                </pe:inputNumber>
-                            </p:panelGrid>
-                        </p:panel>    
-                        <br/>
-                        <p:commandButton value="Calcular con multa por días de retraso " 
-                                         action="#{cotizacionMultasBean.calcularMultaPlanillaTrimestral}" 
-                                         update=":idCotizacionMultas:idTabPlanilla"
-                                         ajax="false"/>
-                        <br/>
-                    </p:tab>
+            <p:outputLabel value="Total a pagar:" style="font: bold;font-size: 13px;"/>
+            <pe:inputNumber value="#{cotizacionMultasBean.montoTotalPlanillaTrimestral}"
+                            thousandSeparator="." decimalSeparator=","
+                            style="width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35; background-color: transparent; height: 13px;"
+                            required="true"
+                            disabled="true"
+                            maxlength="10">
+            </pe:inputNumber>
+        </p:panelGrid>
+    </p:panel>
+    <br/>
+    <p:commandButton value="Calcular con multa por días de retraso "
+                     action="#{cotizacionMultasBean.calcularMultaPlanillaTrimestral}"
+                     update=":idCotizacionMultas:idTabPlanilla"
+                     ajax="false"/>
+    <br/>
+</p:tab>
 
-                </p:tabView>
-            </h:form>
-        </ui:define>
-    </ui:composition>
+</p:tabView>
+</h:form>
+</ui:define>
+</ui:composition>
 </html>
