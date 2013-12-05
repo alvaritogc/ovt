@@ -27,7 +27,7 @@ import java.util.List;
 public class LocalidadService implements ILocalidadService {
 
     private static final Logger logger = LoggerFactory.getLogger(LocalidadService.class);
-    private  final LocalidadRepository localidadRepository;
+    private final LocalidadRepository localidadRepository;
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
@@ -37,21 +37,26 @@ public class LocalidadService implements ILocalidadService {
         this.localidadRepository = localidadRepository;
     }
 
-    public List<ParLocalidad> getAllLocalidades(){
+
+    public List<ParLocalidad> getAllLocalidades() {
 
         return localidadRepository.findAll();
     }
 
     @Override
-    public Long localidadSecuencia(String nombreSecuencia){
+    public Long localidadSecuencia(String nombreSecuencia) {
         BigDecimal rtn;
-        rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
+        rtn = (BigDecimal) entityManager.createNativeQuery("SELECT " + nombreSecuencia + ".nextval FROM DUAL").getSingleResult();
         return rtn.longValue();
     }
 
     @Override
-    public ParLocalidad findById(String idLocalidad){
+    public ParLocalidad findById(String idLocalidad) {
         return localidadRepository.findOne(idLocalidad);
+    }
+
+    public List<ParLocalidad> listarDepartamentos() {
+        return localidadRepository.listarDepartamentos();
     }
 
 }
