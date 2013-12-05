@@ -48,7 +48,7 @@
          <p:tab id="tabUnidadPrincipal" >
              <f:facet name="title">
                  <p:graphicImage value="/images/unidad.png"/>
-                 <h:outputText value="UNIDAD PRINCIPAL" />
+                 <h:outputText value="Unidad Principal" />
              </f:facet>
              <ui:include src="../persona/tabs/unidadPrincipal.xhtml"/>
          </p:tab>
@@ -57,7 +57,7 @@
          <p:tab id="tabActividad"  >
              <f:facet name="title">
                  <p:graphicImage value="/images/actividadDeclarada.png"/>
-                 <h:outputText value=" ACTIVIDAD DECLARADA"/>
+                 <h:outputText value=" Actividad Declarada"/>
              </f:facet>
              <ui:include src="../persona/tabs/actividadDeclaradaPrincipal.xhtml"/>
          </p:tab>
@@ -65,7 +65,7 @@
          <p:tab id="tabRepLegal" >
              <f:facet name="title">
                  <p:graphicImage value="/images/repLegal.png"/>
-                 <h:outputText value=" REPRESENTANTE LEGAL"/>
+                 <h:outputText value=" Representante Legal"/>
              </f:facet>
              <ui:include src="../persona/tabs/representanteLegalPrincipal.xhtml"/>
          </p:tab>
@@ -73,7 +73,7 @@
          <p:tab id="tabDireccion" >
              <f:facet name="title">
                  <p:graphicImage value="/images/direccion.png"/>
-                 <h:outputText value=" DIRECCION"/>
+                 <h:outputText value=" Direccion"/>
              </f:facet>
                 <ui:include src="../persona/tabs/direccionPrincipal.xhtml"/>
          </p:tab>
@@ -81,7 +81,7 @@
          <p:tab id="tabInfoLaboral" >
              <f:facet name="title">
                  <p:graphicImage value="/images/personas.png"/>
-                 <h:outputText value=" TRABAJADORES&#xA0;&#xA0;&#xA0;"/>
+                 <h:outputText value="Trabajadores"/>
              </f:facet>
              <ui:include src="../persona/tabs/infoLaboralPrincipal.xhtml"/>
          </p:tab>
@@ -149,7 +149,7 @@
         </p:dialog>
 
     <p:dialog id="dlgMensaje" header="Información" widgetVar="dlgMensaje" resizable="false"
-              position="300,400" modal="true" dynamic="true">
+              position="300,400" modal="true" dynamic="true" >
         <h:form id="frmDlg">
             <h:panelGrid columns="1">
                 <h:outputText value="Ud. a realizado una modificación del ROE que le obliga a realizar una reimpresión del Certificado ROE. Por favor "/>
@@ -227,7 +227,7 @@
 
                                 <h:outputText value="Fecha actividad:"/>
                                 <p:inputText value="#{unidad.fechaNacimiento}" readonly="true" style="width: 190px;">
-                                    <f:convertDateTime pattern="dd/MM/yyyy hh:mm a"/>
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
                                 </p:inputText>
                                 <h:outputText value="Fundempresa:"/>
                                 <p:inputText value="#{unidad.nroFundaempresa}" readonly="true" style="width: 190px;"/>
@@ -238,10 +238,6 @@
                                 <p:inputText value="#{unidad.tipoSociedadAuxiliar}" readonly="true" style="width: 190px;text-transform: uppercase"/>
                                 <h:outputText value="Caja de salud: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
                                 <p:inputText value="#{unidad.nroCajaSalud}" readonly="true" style="width: 190px;"/>
-                                <h:outputText value="Nro. referencial:"/>
-                                <p:inputText value="#{unidad.nroReferencial}" readonly="true" style="width: 190px;"/>
-                                <h:outputText value="Nro. otro:"/>
-                                <p:inputText value="#{unidad.nroOtro}" readonly="true" style="width: 190px;"/>
 
                                 <h:outputText value="Observaciones:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
                                 <p:inputTextarea id="txtAreaObservacion" value="#{unidad.observaciones}"
@@ -415,9 +411,11 @@
                                 <h:outputText value="Nro. de celular(es): "/>
                                 <p:inputText value="#{unidad.direccion.celular} &nbsp;&nbsp;&nbsp; #{unidad.direccion.celular2}" readonly="true" style="width: 220px;"/>
 
-                                <h:outputText value="Correo(s) electronico(s):"/>
-                                <p:inputText value="#{unidad.direccion.email} &nbsp;&nbsp;&nbsp; #{unidad.direccion.email2} " readonly="true" style="width: 220px;"/>
+                                <h:outputText value="Correo electronico 1:"/>
+                                <p:inputText value="#{unidad.direccion.email} " readonly="true" style="width: 220px;"/>
 
+                                <h:outputText value="Correo electronico 2:"/>
+                                <p:inputText value="#{unidad.direccion.email2} " readonly="true" style="width: 220px;"/>
                                 <h:outputText value="Fax: "/>
                                 <p:inputText value="#{unidad.direccion.fax}" readonly="true" style="width: 60px;"/>
 
