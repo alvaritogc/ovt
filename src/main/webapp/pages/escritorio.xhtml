@@ -104,6 +104,7 @@
                     </p:commandButton>
 
                     <h:commandLink target="_blank" action="#{escritorioBean.irImprimirDocumento}"
+                                   rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento!='ROE014'}"
                                    title="Imprimir documento">
                         <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}"/>
                         <h:graphicImage style="float: left;width:25px;height: 23px;padding-right: 3px; "
