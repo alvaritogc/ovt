@@ -128,7 +128,7 @@ public class DocumentoService implements IDocumentoService {
         return documentoRepository.save(documento);
     }
 
-    public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas) {
+    public String guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas) {
         //guarda documento
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
 //        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
@@ -173,6 +173,7 @@ public class DocumentoService implements IDocumentoService {
             elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
             logger.info("Guarda" + binarioRepository.save(elementoBinario));
         }
+        return "guardado correctamente";
     }
 
     @Override

@@ -100,7 +100,7 @@ public class DocDocumento implements Serializable {
 //    private List<DocBinario> docBinarioList;
 
     //no quitar esta relación OneToOne
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idDocumento", fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.REFRESH, mappedBy = "idDocumento", fetch = FetchType.LAZY)
     private DocPlanilla docPlanilla;
 
     public DocDocumento() {

@@ -19,7 +19,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
@@ -198,7 +197,6 @@ public class DeclaracionTrimestralBean implements Serializable {
         listaCentralSucursales();
     }
 
-
     public void listaCentralSucursales(){
         central = new PerUnidad();
         sucursales = new ArrayList<PerUnidad>();
@@ -207,8 +205,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         for(PerUnidad sucursal:listaUnidades)  {
             if(sucursal.getPerUnidadPK().getIdUnidad()==0)
                 central=sucursal;
-            else
-                sucursales.add(sucursal);
+            sucursales.add(sucursal);
         }
         tamañoSucursales=sucursales.size();
     }
@@ -364,14 +361,13 @@ public class DeclaracionTrimestralBean implements Serializable {
         }
     }
 
-    public String guardaDocumentoPlanillaBinario(ActionEvent actionEvent){
+    public String guardaDocumentoPlanillaBinario(){
         if(parametro==3 && idRectificatorio==null){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Advertencia", "No puede guardarse, ya que no se pueden obtener declaraciones."));
             return null;
         }
 
 //        validaArchivo(listaBinarios);
-
 //        if(errores.size()==0 && verificaValidacion){
         if(true){
             try{
@@ -383,7 +379,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                 logger.info(docPlanilla.toString());
                 generaPlanilla();
                 documento.setPerUnidad(unidadSeleccionada);
-                iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas);
+                String msj= iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas);
                 return "irEscritorio";
             }catch (Exception e){
                 e.printStackTrace();
@@ -393,6 +389,7 @@ public class DeclaracionTrimestralBean implements Serializable {
             binario = new DocBinario();
             listaBinarios.clear();
         }
+        logger.info("retorno final");
         return null;
     }
 
@@ -620,7 +617,8 @@ public class DeclaracionTrimestralBean implements Serializable {
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                             case 2:
-                                if(!registro.get(columna).equals(""))
+                                String a=registro.get(columna);
+                                if(!a.equals(""))
                                     docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -1223,4 +1221,6 @@ public class DeclaracionTrimestralBean implements Serializable {
     public void setiParametrizacionService(IParametrizacionService iParametrizacionService) {
         this.iParametrizacionService = iParametrizacionService;
     }
+
+
 }

@@ -225,12 +225,10 @@ public class DeclaracionAguinaldoBean implements Serializable {
         for(PerUnidad sucursal:listaUnidades)  {
             if(sucursal.getPerUnidadPK().getIdUnidad()==0)
                 central=sucursal;
-            else
-                sucursales.add(sucursal);
+            sucursales.add(sucursal);
         }
         tamañoSucursales=sucursales.size();
     }
-
 
     public void seleccionaEmpresa(){
         if(tipoEmpresa!=2)

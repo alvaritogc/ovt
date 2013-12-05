@@ -430,7 +430,7 @@
     <p:column colspan="5">
         <p:outputLabel value="8.2 Fecha de depósito"/>
         <p:calendar value="#{declaracionTrimestralBean.fechaOperacionAux}" maxdate="#{declaracionTrimestralBean.fechaTexto}"
-                    id="popupButtonCal" pattern="dd/MM/yyyy" style="width: 100px; height: 10px; text-align: right"
+                    id="popupButtonCal" pattern="dd/MM/yyyy" style="width: 50px; height: 10px; text-align: right"
                     required="true" showOn="button"/>
     </p:column>
     <p:column colspan="4">
@@ -529,7 +529,7 @@
 
 <div align="CENTER">
     <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada" update="formularioFrm"
-                     actionListener="#{declaracionTrimestralBean.guardaDocumentoPlanillaBinario}"
+                     action="#{declaracionTrimestralBean.guardaDocumentoPlanillaBinario}"
                      disabled="#{declaracionTrimestralBean.habilita}">
         <p:confirm header="Declaración jurada"
                    message="Si continua, procederá a realizar una declaración jurada. Asegúrese que los datos esten correctamente llenados. Deséa continuar?"
@@ -553,8 +553,8 @@
         <p:outputPanel >
             <p:selectOneRadio id="customRadio" value="#{declaracionTrimestralBean.tipoEmpresa}" columns="2">
                 <p:ajax event="change" update="tipoEmpresa"/>
-                <f:selectItem itemLabel="Central" itemValue="1" />
-                <f:selectItem itemLabel="Sucursal" itemValue="2"/>
+                <f:selectItem itemLabel="Declaración Consolidada de todas las sucursales" itemValue="1" />
+                <f:selectItem itemLabel="Declaracion por sucursal" itemValue="2"/>
             </p:selectOneRadio>
             <br/>
             <h:panelGroup id="tipoEmpresa">
