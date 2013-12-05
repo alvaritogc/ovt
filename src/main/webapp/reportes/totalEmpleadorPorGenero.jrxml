@@ -140,18 +140,18 @@ order by cod_localidad_direccion]]>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{COD_LOCALIDAD_DIRECCION}==null?'SIN LOCALIDAD':$F{COD_LOCALIDAD_DIRECCION}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{COD_LOCALIDAD_DIRECCION}==null?'S/L':$F{COD_LOCALIDAD_DIRECCION}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement uuid="62545004-422f-41f6-8b1e-28c30a93913c" x="437" y="2" width="50" height="15"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font size="9"/>
 					</textElement>
 					<text><![CDATA[Mujeres]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="371" y="2" width="50" height="15"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font size="9"/>
 					</textElement>
 					<text><![CDATA[Hombres]]></text>
@@ -159,7 +159,7 @@ order by cod_localidad_direccion]]>
 				<textField>
 					<reportElement uuid="c3cb4371-34aa-4b57-b3a5-47afd046abe3" x="83" y="2" width="220" height="20"/>
 					<textElement/>
-					<textFieldExpression><![CDATA[$F{LOCALIDAD_DIRECCION}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{LOCALIDAD_DIRECCION}==null?'SIN LOCALIDAD':$F{LOCALIDAD_DIRECCION}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -205,7 +205,7 @@ order by cod_localidad_direccion]]>
 				<text><![CDATA[Nº de trabajadores dependientes]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="8eed97fb-db0d-4022-bb0a-f170060c2348" x="36" y="94" width="501" height="15"/>
+				<reportElement uuid="8eed97fb-db0d-4022-bb0a-f170060c2348" x="36" y="92" width="501" height="26"/>
 				<textElement/>
 				<text><![CDATA[Reporte del número de trabajadores dependientes en la agencia central y sucursales, agrupado por departamento y región ]]></text>
 			</staticText>
