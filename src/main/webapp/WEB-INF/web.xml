@@ -15,7 +15,7 @@
         <param-value>bo.gob.mintrabajo.ovt.Cableado</param-value>
     </context-param>
 
-            <!-- ************  CAPCHA ***************** -->
+    <!-- ************  CAPCHA ***************** -->
     <context-param>
         <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
         <param-value>6Le2TuYSAAAAABAxapY1FIZpUnccoay80Z34rXRM</param-value>
@@ -26,7 +26,12 @@
         <param-value>6Le2TuYSAAAAANHtiG5vAAP2GUODF29WGqtTAXVm</param-value>
     </context-param>
 
-     <!--Start Security Shiro-->
+    <context-param>
+        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <!--Start Security Shiro-->
     <listener>
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
     </listener>
@@ -107,7 +112,7 @@
     </session-config>
     <!-- Para JBOSS -->
     <!--<welcome-file-list>-->
-        <!--<welcome-file>faces/pages/inicio.xhtml</welcome-file>-->
+    <!--<welcome-file>faces/pages/inicio.xhtml</welcome-file>-->
     <!--</welcome-file-list>-->
 
 </web-app>
