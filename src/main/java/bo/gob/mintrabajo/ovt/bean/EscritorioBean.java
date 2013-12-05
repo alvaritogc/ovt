@@ -585,9 +585,13 @@ public class EscritorioBean {
         }
 
         try{
+            String rutaEscudoIzquierda=rutaWebApp+"/images/escudo.jpg";
+            String rutaEscudoDerecha=rutaWebApp+"/images/escudo.jpg";
             // Paramatros para el reporte
             HashMap hm=new HashMap();
             hm.put("idPersona",idPersona);
+            hm.put("escudoIzquierda",rutaEscudoIzquierda);
+            hm.put("escudoDerecha",rutaEscudoDerecha);
 
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
 

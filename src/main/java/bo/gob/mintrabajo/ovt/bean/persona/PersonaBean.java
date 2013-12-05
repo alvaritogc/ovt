@@ -283,7 +283,7 @@ public class PersonaBean implements Serializable{
             persona.setRegistroBitacora(REGISTRO_BITACORA);
             //Se setea por defecto este valor por que en BD es not null.
             unidad.setObservaciones("REGISTRO");
-            unidad.setFechaNacimiento(new Date());
+            unidad.setFechaBitacora(new Date());
             unidad.setRegistroBitacora(REGISTRO_BITACORA);
             unidad.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_UNIDAD, PAR_ESTADO_UNIDAD_ACTIVO).getParDominioPK().getValor());
             PerUnidadPK perUnidadPK = new PerUnidadPK();

@@ -239,7 +239,7 @@ public class PersonaUnidadBean implements Serializable{
         if(persona.getIdPersona()!=null){
             if(persona.getNombreRazonSocial()==null){
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre o Razon social no puede ser vacio."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Nombre o Razon social no puede ser vacio."));
                 ini();
                 return false;
             }
@@ -254,21 +254,21 @@ public class PersonaUnidadBean implements Serializable{
 
             if(persona.getNroIdentificacion()==null){
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de identificacion de UNIDAD no puede ser vacio."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Nro. de identificacion no puede ser vacio."));
                 ini();
                 return false;
             }
 
             if(persona.getCodLocalidad()==null){
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Departamento de UNIDAD no puede ser vacio."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Departamento no puede ser vacio."));
                 ini();
                 return false;
             }
 
             if(persona.getTipoIdentificacion()==null){
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de identificacion de UNIDAD no puede ser vacio."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Tipo de identificacion no puede ser vacio."));
                 ini();
                 return false;
             }
@@ -278,14 +278,14 @@ public class PersonaUnidadBean implements Serializable{
         if(unidad.getPerUnidadPK()!=null){
             if(unidad.getNombreComercial()==null) {
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre comercial no puede ser vacio."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Nombre comercial no puede ser vacio."));
                 ini();
                 return false;
             }
 
             if(unidad.getTipoEmpresa()==null)  {
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de empresa no puede ser vacio."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Tipo de empresa no puede ser vacio."));
                 ini();
                 return false;
             }
@@ -293,14 +293,14 @@ public class PersonaUnidadBean implements Serializable{
             if(unidad.getTipoSociedad()==null) {
 
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de sociedad no puede ser vacio."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Tipo de sociedad no puede ser vacio."));
                 ini();
                 return false;
             }
 
             if(unidad.getFechaNacimiento()==null)  {
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Fecha de inicio de actividad no puede ser vacio."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Fecha de inicio de actividad no puede ser vacio."));
                 ini();
                 return false;
             }
@@ -308,14 +308,14 @@ public class PersonaUnidadBean implements Serializable{
             if(unidad.getNroFundaempresa()==null) {
 
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Fundempresa no puede ser vacio."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Nro. de Fundempresa no puede ser vacio."));
                 ini();
                 return false;
             }
 
             if(unidad.getNroAfp()==null)  {
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de AFP no puede ser vacio."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Nro. de AFP no puede ser vacio."));
                 ini();
                 return false;
             }
@@ -325,7 +325,7 @@ public class PersonaUnidadBean implements Serializable{
         //valida actividad declarada
         if(actividadPrincipal.getIdActividad()==null){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar el codigo de actividad declarada."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar el Codigo de actividad declarada para la Unidad principal."));
             ini();
             return false;
         }
@@ -336,7 +336,7 @@ public class PersonaUnidadBean implements Serializable{
             //validar representante legal
             if(repLegalPrincipal.getIdReplegal()==null) {
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar un Representante legal para la unidad principal."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar un Representante legal para la Unidad principal."));
                 ini();
                 return false;
             }
@@ -346,7 +346,7 @@ public class PersonaUnidadBean implements Serializable{
          //validar direccion
          if(direccionPrincipal.getIdDireccion()==null) {
              FacesContext.getCurrentInstance().addMessage(null,
-                   new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar la Direccion para la unidad principal."));
+                   new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar la Direccion para la Unidad principal."));
              ini();
           return false;
          }
@@ -355,7 +355,7 @@ public class PersonaUnidadBean implements Serializable{
                //validar informacion laboral
                if(infolaboral.getIdInfolaboral()==null)  {
                    FacesContext.getCurrentInstance().addMessage(null,
-                           new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar la Informacion laboral.."));
+                           new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar la Informacion laboral para la Unidad principal."));
                    ini();
                    return false;
                }
@@ -684,7 +684,7 @@ public class PersonaUnidadBean implements Serializable{
         }
 
         if(direccion.getEmail2()!=null){
-            if(!direccion.getEmail().trim().equals("")){
+            if(!direccion.getEmail2().trim().equals("")){
                 if(!validarEmail(direccion.getEmail2())){
                     FacesContext.getCurrentInstance().addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL formato del correo electronico 2 es incorrecto."));
@@ -720,9 +720,6 @@ public class PersonaUnidadBean implements Serializable{
         // Verificar si tiene ROE y es la unidad principal
         if(tieneROE && unidadRegistro.getPerUnidadPK().getIdUnidad()==0) {
             logger.info("*********** ======== TIENE ROE ========== **********");
-
-
-
             logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getDireccion()+" NUEVA "+direccion.getDireccion());
             logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getPisoDepOfi()+" NUEVA "+direccion.getPisoDepOfi());
             logger.info("*********** ======== ANTIGUA : "+direccionAntigua.getZonaUrbanizacion()+" NUEVA "+direccion.getZonaUrbanizacion());

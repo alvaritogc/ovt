@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="declaracionJurada" language="groovy" pageWidth="612" pageHeight="792" columnWidth="500" leftMargin="56" rightMargin="56" topMargin="20" bottomMargin="15" uuid="1abc3a07-2f6b-448c-bb07-7fbf6c225db1">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1150"/>
+	<property name="ireport.y" value="384"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -27,6 +27,8 @@
 	<parameter name="idPersona" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="escudoIzquierda" class="java.lang.String"/>
+	<parameter name="escudoDerecha" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT t8.*,coalesce(dom.descripcion,' ') tipoDireccionDominio
 FROM par_dominio dom
@@ -298,8 +300,8 @@ order by t8.id_unidad]]>
 				<text><![CDATA[1.- DATOS GENERALES DE LA EMPRESA]]></text>
 			</staticText>
 			<image>
-				<reportElement uuid="bec99b33-46dc-4a62-9f10-d1a685164ef4" x="416" y="5" width="83" height="54"/>
-				<imageExpression><![CDATA["C:\\Users\\ariel.quiroz\\Desktop\\escudo.jpg"]]></imageExpression>
+				<reportElement uuid="bec99b33-46dc-4a62-9f10-d1a685164ef4" x="416" y="5" width="78" height="54"/>
+				<imageExpression><![CDATA[$P{escudoDerecha}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement uuid="647b6b61-fc41-4584-a4ea-b0a208adedb5" x="70" y="113" width="66" height="13"/>
@@ -310,7 +312,7 @@ order by t8.id_unidad]]>
 			</textField>
 			<image>
 				<reportElement uuid="77335033-ae78-4c7f-8efc-df4e38d25c54" x="13" y="5" width="81" height="54"/>
-				<imageExpression><![CDATA["C:\\Users\\ariel.quiroz\\Desktop\\escudo.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{escudoIzquierda}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement uuid="c9ae1185-ca4c-4598-bb77-b3396680f698" x="93" y="33" width="323" height="14"/>
@@ -967,7 +969,7 @@ order by t8.id_unidad]]>
 			</textField>
 			<textField>
 				<reportElement uuid="9afc9142-cbc1-49fb-9c7a-98be55f9c777" x="190" y="410" width="33" height="9"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{FIJOS}]]></textFieldExpression>
@@ -1244,6 +1246,20 @@ order by t8.id_unidad]]>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
+			<textField>
+				<reportElement uuid="b382907b-4f3c-4d0b-b6e5-50c2f62b673e" x="13" y="526" width="196" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REPRESENTANTELEGAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dcd854ff-d547-419c-a61a-0009fe20969e" x="13" y="570" width="196" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NROIDENTIFICACIONREPLEGAL}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
