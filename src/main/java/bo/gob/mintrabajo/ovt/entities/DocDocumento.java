@@ -100,8 +100,8 @@ public class DocDocumento implements Serializable {
 //    private List<DocBinario> docBinarioList;
 
     //no quitar esta relación OneToOne dejar como esta...
-    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "idDocumento", fetch = FetchType.EAGER)
-    private DocPlanilla docPlanilla;
+//    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "idDocumento", fetch = FetchType.EAGER)
+//    private DocPlanilla docPlanilla;
 
     public DocDocumento() {
     }
@@ -259,13 +259,13 @@ public class DocDocumento implements Serializable {
 //        this.docBinarioList = docBinarioList;
 //    }
 //
-    public DocPlanilla getDocPlanilla() {
-        return docPlanilla;
-    }
-
-    public void setDocPlanilla(DocPlanilla docPlanilla) {
-        this.docPlanilla = docPlanilla;
-    }
+//    public DocPlanilla getDocPlanilla() {
+//        return docPlanilla;
+//    }
+//
+//    public void setDocPlanilla(DocPlanilla docPlanilla) {
+//        this.docPlanilla = docPlanilla;
+//    }
 
     @Override
     public int hashCode() {

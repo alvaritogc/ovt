@@ -80,6 +80,7 @@ public class DeclaracionTrimestralBean implements Serializable {
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
     private List<ParEntidad> parEntidadLista;
     private List<DocDocumento> docDocumentosParaRectificar;
+    private List<DocPlanilla> docPlanillasParaRectificar;
     private PerPersona perPersona;
     private VperPersona vperPersona;
     private DocPlanilla docPlanilla;
@@ -211,8 +212,11 @@ public class DeclaracionTrimestralBean implements Serializable {
     }
 
     public void cargarDocumentosParaRectificar(){
-        docDocumentosParaRectificar= new ArrayList<DocDocumento>();
-        docDocumentosParaRectificar= iDocumentoService.listarDocumentosParaRectificar(idPersona, "LC1010");
+//        docDocumentosParaRectificar= new ArrayList<DocDocumento>();
+//        docDocumentosParaRectificar= iDocumentoService.listarDocumentosParaRectificar(idPersona, "LC1010");
+        
+        docPlanillasParaRectificar= new ArrayList<DocPlanilla>();
+        docPlanillasParaRectificar= iPlanillaService.listarPlanillasParaRectificar(idPersona, "LC1010");
     }
 
 
@@ -224,7 +228,7 @@ public class DeclaracionTrimestralBean implements Serializable {
     }
 
     public void seleccionaTrimestre(){
-        periodo = iDocumentoService.findById(idRectificatorio).getDocPlanilla().getParCalendario().getParCalendarioPK().getTipoPeriodo();
+        periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
     }
 
     public void verEstadoPlanilla(){
@@ -1222,5 +1226,11 @@ public class DeclaracionTrimestralBean implements Serializable {
         this.iParametrizacionService = iParametrizacionService;
     }
 
+    public List<DocPlanilla> getDocPlanillasParaRectificar() {
+        return docPlanillasParaRectificar;
+    }
 
+    public void setDocPlanillasParaRectificar(List<DocPlanilla> docPlanillasParaRectificar) {
+        this.docPlanillasParaRectificar = docPlanillasParaRectificar;
+}
 }
