@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IPlanillaService;
+import bo.gob.mintrabajo.ovt.entities.DocDocumento;
 import bo.gob.mintrabajo.ovt.entities.DocPlanilla;
 import bo.gob.mintrabajo.ovt.repositories.BinarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.EntidadRepository;
@@ -122,5 +123,9 @@ public class PlanillaService implements IPlanillaService {
     public List<DocPlanilla> listarporPersona(String idPersona){
         return planillaRepository.findByIdDocumento_PerUnidad_PerPersona_IdPersona(idPersona);
     }
+
+    public List<DocPlanilla> listarPlanillasParaRectificar(String idPersona, String codDocumento) {
+        return planillaRepository.listarPlanillasParaRectificar(idPersona, codDocumento);
+}
 
 }

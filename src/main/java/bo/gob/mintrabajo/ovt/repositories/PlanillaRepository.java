@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.repositories;
 
+import bo.gob.mintrabajo.ovt.entities.DocDocumento;
 import bo.gob.mintrabajo.ovt.entities.DocPlanilla;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
@@ -22,4 +23,12 @@ public interface PlanillaRepository extends OpenJpaRepository<DocPlanilla, Long>
 
     DocPlanilla findByIdDocumento_IdDocumento(Long idDocumento);
 
+        @Query(
+            "   select d "
+                    + " from DocPlanilla d"
+                    + " where "
+                    + " d.idDocumento.perUnidad.perUnidadPK.idPersona=:idEmpleador "
+                    + " and d.idDocumento.codEstado.codEstado like '110' and d.idDocumento.docDefinicion.docDefinicionPK.codDocumento = :codDocumento"
+    )
+    List<DocPlanilla> listarPlanillasParaRectificar(@Param("idEmpleador") String idPersona, @Param("codDocumento") String codDocumento);
 }
