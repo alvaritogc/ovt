@@ -201,7 +201,7 @@ public class CotizacionMultasBean implements Serializable {
     public String calcularFechaLimitePlanillaTrimestral() {
         if (idObligacionCalendario != null) {
             obligacionCalendario = iObligacionCalendarioService.findById(idObligacionCalendario);
-            fechaLimitePlazoPlanillaTrimestral = obligacionCalendario.getFechaHasta();
+            fechaLimitePlazoPlanillaTrimestral = obligacionCalendario.getFechaPlazo();
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar el trimestre."));
             fechaLimitePlazoPlanillaTrimestral = null;
@@ -223,6 +223,10 @@ public class CotizacionMultasBean implements Serializable {
         }
         multaPlanillaTrimestral = multaRangoNumeroTrabajadores.getFactor();
         //
+//        if(!fechaLimitePlazoPlanillaTrimestral.before(fechaPresentacionPlanillaTrimestral)){
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usted todavia no sobrepaso la fecha para ese trimestre."));
+//            return "";
+//        }
         long diferenciaFechas = fechaPresentacionPlanillaTrimestral.getTime() - fechaLimitePlazoPlanillaTrimestral.getTime();
         diasTranscurridosPlanillaTrimestral = (int) (diferenciaFechas / (1000 * 60 * 60 * 24));
 
