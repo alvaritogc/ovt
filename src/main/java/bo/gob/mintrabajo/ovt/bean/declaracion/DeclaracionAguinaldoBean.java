@@ -115,7 +115,8 @@ public class DeclaracionAguinaldoBean implements Serializable {
     private String gestion;
     private List<DocDocumento> docDocumentosParaRectificar;
     private List<DocAlerta> alertas;
-
+    private List<DocPlanilla> docPlanillasParaRectificar;
+    
     @PostConstruct
     public void ini() {
         try {
@@ -209,12 +210,15 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
 
     public void cargarDocumentosParaRectificar(){
-        docDocumentosParaRectificar= new ArrayList<DocDocumento>();
-        docDocumentosParaRectificar= iDocumentoService.listarDocumentosParaRectificar(idPersona, "LC1020");
+//        docDocumentosParaRectificar= new ArrayList<DocDocumento>();
+//        docDocumentosParaRectificar= iDocumentoService.listarDocumentosParaRectificar(idPersona, "LC1020");
+        
+                docPlanillasParaRectificar= new ArrayList<DocPlanilla>();
+        docPlanillasParaRectificar= iPlanillaService.listarPlanillasParaRectificar(idPersona, "LC1020");
     }
 
     public void seleccionaTrimestre(){
-        periodo = iDocumentoService.findById(idRectificatorio).getDocPlanilla().getParCalendario().getParCalendarioPK().getTipoPeriodo();
+        periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
     }
 
     public void listaCentralSucursales(){
@@ -266,7 +270,12 @@ public class DeclaracionAguinaldoBean implements Serializable {
         }
         estaDeclarado=false;
         for(DocDocumento documento:listaDocumentos){
-
+            if((documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
+                estaDeclaradoMensaje="Solo se puede realizar o la Declaración Jurada Trimestral o la Declaración Jurada Sin Movimiento.";
+                estaDeclarado=true;
+                return;
+            }
+            
             if((documento.getCodEstado().getDescripcion().toLowerCase().equals("declarado")
                     || documento.getCodEstado().getDescripcion().toLowerCase().equals("observado")
                     || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")) && parametro==1 ){
@@ -1162,5 +1171,13 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
     public void setGestion(String gestion) {
         this.gestion = gestion;
+    }
+
+    public List<DocPlanilla> getDocPlanillasParaRectificar() {
+        return docPlanillasParaRectificar;
+    }
+
+    public void setDocPlanillasParaRectificar(List<DocPlanilla> docPlanillasParaRectificar) {
+        this.docPlanillasParaRectificar = docPlanillasParaRectificar;
     }
 }
