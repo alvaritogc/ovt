@@ -248,7 +248,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         List<DocDocumento> listaDocumentos;
         try{
             //TODO cabiar el metodo, temporalmente habilitado para pruebas...
-            listaDocumentos=iDocumentoService.listarPlanillasTrimestralesPorCodDoc(idPersona, "LC1010");
+            listaDocumentos=iDocumentoService.listarPlanillasTrimestralesPorCodDoc(idPersona, documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento());
 //            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
             if(listaDocumentos==null){
                 listaDocumentos=new ArrayList<DocDocumento>();
@@ -260,7 +260,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         }
         estaDeclarado=false;
         for(DocDocumento documento:listaDocumentos){
-            if(parametro==2 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
+            if(parametro!=3 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
                 estaDeclaradoMensaje="Solo se puede realizar o la Declaración Jurada Trimestral o la Declaración Jurada Sin Movimiento.";
                 estaDeclarado=true;
                 return;
