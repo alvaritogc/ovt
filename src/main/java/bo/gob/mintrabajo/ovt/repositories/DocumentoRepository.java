@@ -90,9 +90,10 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " d.docDefinicion.docDefinicionPK.codDocumento = 'ROE010'"
                     + " and d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
                     + " and d.perUnidad.perUnidadPK.idUnidad=:idUnidad "
+                    + " and d.codEstado.codEstado <> :codigoBaja "
 
     )
-    DocDocumento buscarRoe010PorUnidad(@Param("idEmpleador") String idPersona, @Param("idUnidad") long idUnidad);
+    DocDocumento buscarRoe010PorUnidad(@Param("idEmpleador") String idPersona, @Param("idUnidad") long idUnidad, @Param("codigoBaja") String codigoBaja);
 
     @Query(
             "   select d "
