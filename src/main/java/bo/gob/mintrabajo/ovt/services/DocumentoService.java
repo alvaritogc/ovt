@@ -349,7 +349,7 @@ public class DocumentoService implements IDocumentoService {
         numeracionRepository.save(numeracion);
         //
         Formatter fmtVerificacion = new Formatter();
-        fmtVerificacion.format("%02d", verificacion);
+        fmtVerificacion.format("%01d", verificacion);
         return (new Long("" + codNumero + numeroFormato + fmtVerificacion.toString()));
     }
 
@@ -536,6 +536,35 @@ public class DocumentoService implements IDocumentoService {
         docGenericoAdicional.setIdDocumento(docDocumentoAdicional);
         docGenericoAdicional.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
         docGenericoRepository.save(docGenericoAdicional);
+        //
+        System.out.println("============================");
+        System.out.println("============================");
+        System.out.println("roe impresion");
+        System.out.println("============================");
+        System.out.println("============================");
+        ParParametrizacion parParametrizacionImpresion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_IMPRESION);
+        DocDefinicion docDefinicionImpresion = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacionImpresion.getDescripcion());
+
+        DocDocumento docDocumentoImpresion = new DocDocumento();
+        docDocumentoImpresion.setPerUnidad(unidadRepository.findOne(perUnidadPK));
+        //
+        docDocumentoImpresion.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+        docDocumentoImpresion.setDocDefinicion(docDefinicionImpresion);
+        docDocumentoImpresion.setCodEstado(documentoEstadoRepository.findOne("010"));//Estado inicial pendiente
+        docDocumentoImpresion.setFechaDocumento(new Date());
+        docDocumentoImpresion.setFechaReferenca(new Date());
+
+        docDocumentoImpresion.setFechaBitacora(new Date());
+        docDocumentoImpresion.setRegistroBitacora(registroBitacora);
+        docDocumentoImpresion.setTipoMedioRegistro(docDefinicionImpresion.getTipoGrupoDocumento());
+
+        docDocumentoImpresion.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicionImpresion.getDocDefinicionPK().getCodDocumento(), (short) 1));
+        docDocumentoImpresion = documentoRepository.save(docDocumentoImpresion);
+        //
+        DocGenerico docGenericoImpresion = new DocGenerico();
+        docGenericoImpresion.setIdDocumento(docDocumentoImpresion);
+        docGenericoImpresion.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
+        docGenericoRepository.save(docGenericoImpresion);
         //
         return docDocumento;
     }
