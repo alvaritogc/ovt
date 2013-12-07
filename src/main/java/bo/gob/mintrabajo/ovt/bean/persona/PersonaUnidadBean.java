@@ -306,27 +306,12 @@ public class PersonaUnidadBean implements Serializable{
                 return false;
             }
 
-            if(unidad.getNroFundaempresa()==null) {
-
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Nro. de Fundempresa no puede ser vacio."));
-                ini();
-                return false;
-            }
-
-            if(unidad.getNroAfp()==null)  {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE por que el campo de la Unidad Principal: Nro. de AFP no puede ser vacio."));
-                ini();
-                return false;
-            }
-
         }
 
         //valida actividad declarada
         if(actividadPrincipal.getIdActividad()==null){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","Debe registrar el Codigo de actividad declarada para la Unidad principal."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se puede crear el certificado ROE. En el panel de Actividad declarada debe registrar el Codigo de actividad declarada para la Unidad principal."));
             ini();
             return false;
         }
@@ -435,6 +420,7 @@ public class PersonaUnidadBean implements Serializable{
         infolaboralRegistro.setMontoAsegAfp(BigDecimal.ZERO);
         infolaboralRegistro.setNroAsegAfp(0);
         infolaboralRegistro.setMontoAsegCaja(BigDecimal.ZERO);
+        infolaboralRegistro.setTipoSindicato("false");
     }
 
     //PRIMERA VEZ
@@ -879,6 +865,7 @@ public class PersonaUnidadBean implements Serializable{
             ini();
             return ;
         }
+        unidadRegistro= iUnidadService.obtienePorId(unidadRegistro.getPerUnidadPK());
         iRepLegalService.save(repLegal,REGISTRO_BITACORA,unidadRegistro);
 
         RequestContext.getCurrentInstance().execute("dlgRepLegal.hide()");
@@ -1027,35 +1014,89 @@ public class PersonaUnidadBean implements Serializable{
         long jubilados=infolaboralRegistro.getNroJubilados();
         long capDiferenciales=infolaboralRegistro.getNroCapdiferente();
 
-        long total=extranjeros+fijos+eventuales+menores18+mayores60+jubilados+capDiferenciales;
 
-        if(total!=nroTotalTrabajadores ){
+        //Validacion  para extranjeros, fijos y eventuales
+        if(extranjeros>nroTotalTrabajadores){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," No se pudo guardar los datos. La suma entre la cantidad de Extranjeros, "+"\n"
-                            +"Fijos, Eventuales, Menores de 18 años, Mayores de 60 años, "+"\n"
-                            +" Personal jubilado y Personal con capacidades diferenciales deber igual al N° total de trabajadores. "+"\n"
-                            + " Verfique estos datos."));
-
-            ini();
-            RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores extranjeros no debe ser mayor al nro. total de trabajadores. "));
             return ;
         }
 
+        if(fijos>nroTotalTrabajadores){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores fijos no debe ser mayor al nro. total de trabajadores. "));
+            return ;
+        }
+
+        if(eventuales>nroTotalTrabajadores){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores extranjeros no debe ser mayor al nro. total de trabajadores. "));
+            return ;
+        }
+
+        if((extranjeros+fijos+eventuales)>nroTotalTrabajadores ){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error.","La suma entre la cantidad de trabajadores Extranjeros, "+"\n"
+                            +"Fijos y  Eventuales deber igual al N° total de trabajadores. "));
+           return ;
+        }
+
+        // Val;idacion para menores de 18 y mayores de 60
+        if(menores18>nroTotalTrabajadores){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores menores de 18 años no debe ser mayor al nro. total de trabajadores. "));
+            return ;
+        }
+
+        if(mayores60>nroTotalTrabajadores){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores mayores de 60 años no debe ser mayor al nro. total de trabajadores. "));
+            return ;
+        }
+
+        if((menores18+mayores60)>nroTotalTrabajadores ){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error.","La suma entre la cantidad de trabajadores menores de 18 años "+"\n"
+                            +"y  mayores de 60 años no debe ser mayor al nro. total de trabajadores. "));
+            return ;
+        }
+
+        //validacion para personar jubilado y personal con capacidades diferenciales
+        if(jubilados>nroTotalTrabajadores){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores mayores de 60 años no debe ser mayor al nro. total de trabajadores. "));
+            return ;
+        }
+
+        if(capDiferenciales>nroTotalTrabajadores){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores mayores de 60 años no debe ser mayor al nro. total de trabajadores. "));
+            return ;
+        }
+
+        //Validacion para nro de asegurados y en asegurados en afp
         long nroAsegCaja=infolaboralRegistro.getNroAsegCaja();
         long nroAsegAfp=infolaboralRegistro.getNroAsegAfp();
-        long nroTotalAseg=nroAsegCaja+nroAsegAfp;
 
-        if(total!=nroTotalAseg ){
+        if(nroAsegCaja>nroTotalTrabajadores){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," No se pudo guardar los datos. La suma entre el N° asegurados en Caja de salud y "+"\n"
-                            +"N° asegurados AFPs (largo plazo) "+"\n"
-                            +" deber igual al N° total de trabajadores. "+"\n"
-                            + " Verfique estos datos."));
-
-            ini();
-            RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de asegurados en caja de salud no debe ser mayor al nro. total de trabajadores. "));
             return ;
         }
+
+        if(nroAsegAfp>nroTotalTrabajadores){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de asegurados en AFP no debe ser mayor al nro. total de trabajadores. "));
+            return ;
+        }
+
+
+        if(infolaboralRegistro.getTipoSindicato().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El campo Cuenta con sindicato es obligatorio."));
+            return ;
+        }
+
 
          iInfoLaboralService.save(infolaboralRegistro,REGISTRO_BITACORA,unidadRegistro);
         ini();
