@@ -173,7 +173,7 @@
                           actionListener="#{templateInicioBean.limpiar}"
                           update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/></u>
         <br/>
-        <u><p:commandLink value="Regístrate a la oficina vitual" action="#{templateInicioBean.irRegistro}"
+        <u><p:commandLink value="Regístrate a la oficina virtual" action="#{templateInicioBean.irRegistro}"
                           style="color:#00079C;" immediate="true"/></u>
     </p:panel>
     <br/><br/>
@@ -311,27 +311,28 @@
 
     <p style="color:#0069B1; font-size: 14px">La cuenta con la que ingresó debe cambiarla por una cuenta de correo electrónico,</p>
 
-    <p style="color:#0069B1; font-size: 14px" >éste correo debe ser válido y de su propiedad, no utilice un correo al que no tenga acceso</p>
+    <p style="color:#0069B1; font-size: 14px">éste correo debe ser válido y de su propiedad, no utilice un correo al que no tenga acceso</p>
 
     <p style="color:#0069B1; font-size: 14px">o control el titular de la empresa.</p>
 
     <p style="color:#0069B1; font-size: 14px">Al finalizar el llenado del formulario se le enviará un mensaje de correo electrónico.</p>
     <h:form id="cambioObligatorio">
         <p:growl showDetail="true" id="cambioLoginGrl" autoUpdate="false" life="10000"/>
+
         <div align="center">
-        <p:panelGrid columns="3">
-            <p:outputLabel value="Anterior login de usuario :"/>
-            <p:inputText value="#{templateInicioBean.nombreDeUsuario}" disabled="true" style="width: 215px;"/>
-            <br/>
-            <p:outputLabel value="Nuevo login de usuario"/>
-            <p:inputText id="loginNuevo" value="#{templateInicioBean.loginNuevo}" required="true"
-                         requiredMessage="Login nuevo es requerido" style="width: 215px;" />
-            <p:watermark for="loginNuevo" value="Correo electrónico"/>
-            <p:outputLabel value="Confirmar login de usuario"/>
-            <p:inputText id="loginConfirmacion" value="#{templateInicioBean.loginConfirmacion}" required="true"
-                         requiredMessage="Login confirmación es requerido" style="width: 215px;" />
-            <p:watermark for="loginConfirmacion" value="Correo electrónico"/>
-        </p:panelGrid>
+            <p:panelGrid columns="3">
+                <p:outputLabel value="Anterior login de usuario :"/>
+                <p:inputText value="#{templateInicioBean.nombreDeUsuario}" disabled="true" style="width: 215px;"/>
+                <br/>
+                <p:outputLabel value="Nuevo login de usuario"/>
+                <p:inputText id="loginNuevo" value="#{templateInicioBean.loginNuevo}" required="true"
+                             requiredMessage="Login nuevo es requerido" style="width: 215px;"/>
+                <p:watermark for="loginNuevo" value="Correo electrónico"/>
+                <p:outputLabel value="Confirmar login de usuario"/>
+                <p:inputText id="loginConfirmacion" value="#{templateInicioBean.loginConfirmacion}" required="true"
+                             requiredMessage="Login confirmación es requerido" style="width: 215px;"/>
+                <p:watermark for="loginConfirmacion" value="Correo electrónico"/>
+            </p:panelGrid>
         </div>
         <p:commandButton value="Guardar" action="#{templateInicioBean.editarLogin}"
                          update=":cambioObligatorio cambioLoginGrl"/>
