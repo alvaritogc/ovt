@@ -3,12 +3,14 @@ package bo.gob.mintrabajo.ovt.bean.contenidos;
 import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLConnection;
 import java.sql.SQLException;
+
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,7 @@ import javax.faces.context.ExternalContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.primefaces.event.FileUploadEvent;
 
 @ManagedBean
@@ -39,6 +42,8 @@ public class ContenidoPublicoBean {
     private IMensajeAppService iMensajeAppService;
     @ManagedProperty(value = "#{mensajeContenidoService}")
     private IMensajeContenidoService iMensajeContenidoService;
+    @ManagedProperty(value = "#{mensajeBinarioService}")
+    private IMensajeBinarioService iMensajeBinarioService;
     //
     private ParMensajeApp mensajeApp;
     //
@@ -53,9 +58,9 @@ public class ContenidoPublicoBean {
         //
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         Map params = ec.getRequestParameterMap();
-        String parametro= params.get("p").toString();
-        System.out.println("parametro: "+parametro);
-        idMensajeApp=parametro!=null?new Long(parametro):null;
+        String parametro = params.get("p").toString();
+        System.out.println("parametro: " + parametro);
+        idMensajeApp = parametro != null ? new Long(parametro) : null;
         //
         mensajeApp = iMensajeAppService.findById(idMensajeApp);
         cargar();
@@ -65,7 +70,7 @@ public class ContenidoPublicoBean {
         mensajeContenido = new ParMensajeContenido();
         listaMensajeContenido = iMensajeContenidoService.listarPorMensajeApp(idMensajeApp);
     }
-    
+
     public void descargar() {
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -80,7 +85,8 @@ public class ContenidoPublicoBean {
             response.setContentType(mimeDocumentoDigital);
             response.setHeader("Content-disposition", "attachment; filename=\"" + nombreDocumentoDigital + "\"");
             OutputStream output = response.getOutputStream();
-            output.write(mensajeContenido.getBinario());
+            //output.write(mensajeContenido.getBinario());
+            output.write(iMensajeBinarioService.buscarPorMensajeContenido(mensajeContenido.getIdMensajeContenido()).getBinario());
             output.close();
             facesContext.responseComplete();
         } catch (IOException e) {
@@ -127,5 +133,13 @@ public class ContenidoPublicoBean {
 
     public void setMensajeContenido(ParMensajeContenido mensajeContenido) {
         this.mensajeContenido = mensajeContenido;
+    }
+
+    public IMensajeBinarioService getiMensajeBinarioService() {
+        return iMensajeBinarioService;
+    }
+
+    public void setiMensajeBinarioService(IMensajeBinarioService iMensajeBinarioService) {
+        this.iMensajeBinarioService = iMensajeBinarioService;
     }
 }

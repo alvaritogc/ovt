@@ -46,14 +46,18 @@ public class ContenidoBean implements Serializable {
     private IMensajeAppService iMensajeAppService;
     @ManagedProperty(value = "#{mensajeContenidoService}")
     private IMensajeContenidoService iMensajeContenidoService;
+    @ManagedProperty(value = "#{mensajeBinarioService}")
+    private IMensajeBinarioService iMensajeBinarioService;
     //
     private ParMensajeApp mensajeApp;
     //
     private List<ParMensajeContenido> listaMensajeContenido;
     private ParMensajeContenido mensajeContenido;
+    private byte[] binario;
     //
     private Long idMensajeApp;
     private boolean edicion;
+    private boolean tieneImagenes;
 
     @PostConstruct
     public void ini() {
@@ -72,16 +76,19 @@ public class ContenidoBean implements Serializable {
         edicion = false;
         mensajeContenido = new ParMensajeContenido();
         mensajeContenido.setEsDescargable(new Short("0"));
-        mensajeContenido.setBinario(null);
+        //mensajeContenido.setBinario(null);
         mensajeContenido.setMetadata("N/A");
+        binario = null;
+        tieneImagenes = iMensajeContenidoService.tieneImagenes(mensajeApp.getIdMensajeApp());
     }
 
     public void nuevoContenidoDescarga() {
         edicion = false;
         mensajeContenido = new ParMensajeContenido();
         mensajeContenido.setEsDescargable(new Short("1"));
-        mensajeContenido.setBinario(null);
+        //mensajeContenido.setBinario(null);
         mensajeContenido.setMetadata("N/A");
+        binario = null;
     }
 
     public void guardar() {
@@ -90,7 +97,7 @@ public class ContenidoBean implements Serializable {
         }
         //
         mensajeContenido.setIdMensajeApp(mensajeApp);
-        mensajeContenido = iMensajeContenidoService.save(mensajeContenido);
+        mensajeContenido = iMensajeContenidoService.save(mensajeContenido, binario);
 //        mensajeContenido = new ParMensajeContenido();
 //        cargar();
 //        //
@@ -133,7 +140,8 @@ public class ContenidoBean implements Serializable {
             response.setContentType(mimeDocumentoDigital);
             response.setHeader("Content-disposition", "attachment; filename=\"" + nombreDocumentoDigital + "\"");
             OutputStream output = response.getOutputStream();
-            output.write(mensajeContenido.getBinario());
+            //output.write(mensajeContenido.getBinario());
+            output.write(iMensajeBinarioService.buscarPorMensajeContenido(mensajeContenido.getIdMensajeContenido()).getBinario());
             output.close();
             facesContext.responseComplete();
         } catch (IOException e) {
@@ -144,7 +152,8 @@ public class ContenidoBean implements Serializable {
 
     public void subirArchivo(FileUploadEvent event) {
         mensajeContenido.setArchivo(event.getFile().getFileName());
-        mensajeContenido.setBinario(event.getFile().getContents());
+        binario = event.getFile().getContents();
+        //mensajeContenido.setBinario(event.getFile().getContents());
         mensajeContenido.setMetadata(event.getFile().getContentType());
     }
 
@@ -206,5 +215,29 @@ public class ContenidoBean implements Serializable {
 
     public void setEdicion(boolean edicion) {
         this.edicion = edicion;
+    }
+
+    public IMensajeBinarioService getiMensajeBinarioService() {
+        return iMensajeBinarioService;
+    }
+
+    public void setiMensajeBinarioService(IMensajeBinarioService iMensajeBinarioService) {
+        this.iMensajeBinarioService = iMensajeBinarioService;
+    }
+
+    public byte[] getBinario() {
+        return binario;
+    }
+
+    public void setBinario(byte[] binario) {
+        this.binario = binario;
+    }
+
+    public boolean isTieneImagenes() {
+        return tieneImagenes;
+    }
+
+    public void setTieneImagenes(boolean tieneImagenes) {
+        this.tieneImagenes = tieneImagenes;
     }
 }

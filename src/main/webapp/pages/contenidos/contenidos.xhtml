@@ -85,10 +85,13 @@
                           controls="bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule link unlink cut copy paste pastetext outdent indent"/>
                 <!--bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule image link unlink cut copy paste pastetext print source outdent indent-->
                 <br/>
+                <p:outputLabel value="tieneImagenes: #{contenidoBean.tieneImagenes}"/>
                 <p:outputLabel id="messages" value="Imagen: #{contenidoBean.mensajeContenido.archivo}"
+                               rendered="#{!contenidoBean.tieneImagenes}"
                                style="font-size: 20px;"/>
                 <br/>
                 <p:fileUpload id="idFileUploadContenido"
+                              rendered="#{!contenidoBean.tieneImagenes}"
                               fileUploadListener="#{contenidoBean.subirArchivo}" mode="advanced"
                               uploadLabel="Subir Imagen" cancelLabel="Cancelar"
                               label="Seleccione"

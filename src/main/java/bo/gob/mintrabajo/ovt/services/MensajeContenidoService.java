@@ -56,7 +56,7 @@ public class MensajeContenidoService implements IMensajeContenidoService {
     }
 
     @Override
-    public ParMensajeContenido save(ParMensajeContenido mensajeContenido) {
+    public ParMensajeContenido save(ParMensajeContenido mensajeContenido, byte[] binario) {
         System.out.println("Metadata service: " + mensajeContenido.getMetadata());
 
         //mensajeContenido.setIdMensajeContenido(new Long(repository.findAll().size()+1));
@@ -67,7 +67,7 @@ public class MensajeContenidoService implements IMensajeContenidoService {
         //
         ParMensajeBinario parMensajeBinario = new ParMensajeBinario();
         parMensajeBinario.setIdMensajeBinario(utils.valorSecuencia("PAR_MENSAJE_BINARIO_SEC"));
-        parMensajeBinario.setBinario(mensajeContenido.getBinario());
+        parMensajeBinario.setBinario(binario);
         parMensajeBinario.setIdMensajeContenido(mensajeContenido);
         parMensajeBinario.setFechaBitacora(new Date());
         parMensajeBinario.setRegistroBitacora("OVt");
@@ -94,5 +94,12 @@ public class MensajeContenidoService implements IMensajeContenidoService {
         return false;
     }
 
-
+    @Override
+    public boolean tieneImagenes(Long idMensajeApp) {
+        List<ParMensajeContenido> listaMensajeContenido = repository.tieneImagenes(idMensajeApp);
+        if (listaMensajeContenido != null && listaMensajeContenido.size() > 0) {
+            return true;
+        }
+        return false;
+    }
 }

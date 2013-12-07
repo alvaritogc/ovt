@@ -1,89 +1,84 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="./../template/templateInicio.xhtml">
-        <ui:define name="content">
-            <h:form id="idContenidoRecurso">
-                <h3>Contenido recurso</h3>
-                <p:dataTable id="idListaMensajeApp" value="#{contenidoRecursoBean.listaMensajeApp}" paginatorPosition="bottom" paginator="true"
-                             var="mensajeApp"  rows="10" emptyMessage="No se encontraron resultados" >
-                    <p:column headerText="Mensaje">
-                        <h:outputText value="#{mensajeApp.mensaje}"/>
-                    </p:column>
-                    <p:column headerText="Referencia">
-                        <h:outputText value="#{mensajeApp.referencia}"/>
-                    </p:column>
-                    <p:column headerText="Fecha desde">
-                        <h:outputText value="#{mensajeApp.fechaDesde}">
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </h:outputText>
-                    </p:column>
-                    <p:column headerText="Fecha hasta">
-                        <h:outputText value="#{mensajeApp.fechaHasta}">
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </h:outputText>
-                    </p:column>
-                    <p:column headerText="Acciones" style="width: 90px;">
-                        <p:commandButton icon="ui-icon-pencil" 
-                                         update=":idDlgExterno"
-                                         oncomplete="PF('contenidoRecursoDlg').show();" 
-                                         title="Editar mensaje" >
-                            <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}" />
-                            <f:setPropertyActionListener value="true" target="#{contenidoRecursoBean.edicion}" />
-                        </p:commandButton>
+<ui:composition template="./../template/templateInicio.xhtml">
+    <ui:define name="content">
+        <h:form id="idContenidoRecurso">
+            <h3>Contenido recurso</h3>
+            <p:dataTable id="idListaMensajeApp" value="#{contenidoRecursoBean.listaMensajeApp}"
+                         paginatorPosition="bottom" paginator="true"
+                         var="mensajeApp" rows="10" emptyMessage="No se encontraron resultados">
+                <p:column headerText="Mensaje">
+                    <h:outputText value="#{mensajeApp.mensaje}"/>
+                </p:column>
+                <p:column headerText="Referencia">
+                    <h:outputText value="#{mensajeApp.referencia}"/>
+                </p:column>
+                <p:column headerText="Fecha desde">
+                    <h:outputText value="#{mensajeApp.fechaDesde}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Fecha hasta">
+                    <h:outputText value="#{mensajeApp.fechaHasta}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Acciones" style="width: 90px;">
+                    <p:commandButton icon="ui-icon-pencil"
+                                     update=":idDlgExterno"
+                                     oncomplete="PF('contenidoRecursoDlg').show();"
+                                     title="Editar mensaje">
+                        <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}"/>
+                        <f:setPropertyActionListener value="true" target="#{contenidoRecursoBean.edicion}"/>
+                    </p:commandButton>
 
-                        <p:commandButton icon="ui-icon-image" 
-                                         action="#{contenidoRecursoBean.editar}" title="Editar Contenido" immediate="true">
-                            <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}" />
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" 
-                                         update=":idContenidoRecurso:idListaMensajeApp"
-                                         action="#{contenidoRecursoBean.eliminar}" title="Eliminar" immediate="true">
-                            <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}" />
-                        </p:commandButton>
-                    </p:column>
-                </p:dataTable>
-                <br/>
-                <p:commandButton value="Nuevo contenido" 
-                                 action="#{contenidoRecursoBean.nuevo}"
-                                 oncomplete="PF('contenidoRecursoDlg').show();"
-                                 immediate="true"
-                                 update=":idDlgExterno"/>  
+                    <p:commandButton icon="ui-icon-image"
+                                     action="#{contenidoRecursoBean.editar}" title="Editar Contenido" immediate="true">
+                        <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}"/>
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-trash"
+                                     update=":idContenidoRecurso:idListaMensajeApp"
+                                     action="#{contenidoRecursoBean.eliminar}" title="Eliminar" immediate="true">
+                        <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <p:commandButton value="Nuevo contenido"
+                             action="#{contenidoRecursoBean.nuevo}"
+                             oncomplete="PF('contenidoRecursoDlg').show();"
+                             immediate="true"
+                             update=":idDlgExterno"/>
 
+        </h:form>
+
+        <p:dialog id="contenidoRecursoDialog" header="Nuevo contenido" widgetVar="contenidoRecursoDlg">
+            <h:form id="idDlgExterno">
+                <h:panelGrid columns="2">
+                    <p:outputLabel for="idMensaje" value="Mensaje:"/>
+                    <p:inputText id="idMensaje" value="#{contenidoRecursoBean.mensajeApp.mensaje}"
+                                 required="true">
+                    </p:inputText>
+                    <p:outputLabel value="Referencia:"/>
+                    <p:inputText value="#{contenidoRecursoBean.mensajeApp.referencia}"/>
+                    <p:outputLabel value="Fecha desde:"/>
+                    <p:calendar value="#{contenidoRecursoBean.mensajeApp.fechaDesde}" showOn="button"/>
+                    <p:outputLabel value="Fecha hasta:"/>
+                    <p:calendar value="#{contenidoRecursoBean.mensajeApp.fechaHasta}" showOn="button"/>
+                </h:panelGrid>
+                <p:commandButton value="Guardar"
+                                 action="#{contenidoRecursoBean.guardar}"
+                                 update=":idContenidoRecurso:idListaMensajeApp"/>
             </h:form>
-
-            <p:dialog id="contenidoRecursoDialog" header="Nuevo contenido" widgetVar="contenidoRecursoDlg">  
-                <h:form id="idDlgExterno">
-                    <p:outputLabel value="#{contenidoRecursoBean.edicion}"/>
-                    <h:panelGrid columns="2">
-                        <p:outputLabel for="idMensaje" value="Mensaje:"/>
-<!--                        <p:inputText id="idMensaje" value="# {contenidoRecursoBean.mensajeApp.mensaje}"
-                                     required="true"
-                                     style="width: 215px;text-transform: uppercase;">
-                            <f:converter converterId="lowerConverter" />
-                        </p:inputText>-->
-                        <p:inputText id="idMensaje" value="#{contenidoRecursoBean.mensajeApp.mensaje}"
-                                     required="true">
-                        </p:inputText>
-                        <p:outputLabel value="Referencia:"/>
-                        <p:inputText value="#{contenidoRecursoBean.mensajeApp.referencia}"/>
-                        <p:outputLabel value="Fecha desde:"/>
-                        <p:calendar value="#{contenidoRecursoBean.mensajeApp.fechaDesde}" showOn="button" />  
-                        <p:outputLabel value="Fecha hasta:"/>
-                        <p:calendar value="#{contenidoRecursoBean.mensajeApp.fechaHasta}" showOn="button" />  
-                    </h:panelGrid>
-                    <p:commandButton value="Guardar" 
-                                     action="#{contenidoRecursoBean.guardar}" 
-                                     update=":idContenidoRecurso:idListaMensajeApp"/>
-                </h:form>
-            </p:dialog>
+        </p:dialog>
 
 
-        </ui:define>
-    </ui:composition>
+    </ui:define>
+</ui:composition>
 </html>

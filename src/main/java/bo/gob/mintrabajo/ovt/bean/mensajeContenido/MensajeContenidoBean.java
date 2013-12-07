@@ -25,6 +25,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
@@ -38,6 +39,8 @@ public class MensajeContenidoBean {
     private IMensajeAppService iMensajeAppService;
     @ManagedProperty(value = "#{mensajeContenidoService}")
     private IMensajeContenidoService iMensajeContenidoService;
+    @ManagedProperty(value = "#{mensajeBinarioService}")
+    private IMensajeBinarioService iMensajeBinarioService;
     //
     private Long idRecurso;
     private ParMensajeApp mensajeApp;
@@ -92,7 +95,7 @@ public class MensajeContenidoBean {
         }
         detenerFacesMessages = true;
     }
-    
+
     public void descargar() {
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -107,7 +110,8 @@ public class MensajeContenidoBean {
             response.setContentType(mimeDocumentoDigital);
             response.setHeader("Content-disposition", "attachment; filename=\"" + nombreDocumentoDigital + "\"");
             OutputStream output = response.getOutputStream();
-            output.write(mensajeContenido.getBinario());
+            //output.write(mensajeContenido.getBinario());
+            output.write(iMensajeBinarioService.buscarPorMensajeContenido(mensajeContenido.getIdMensajeContenido()).getBinario());
             output.close();
             facesContext.responseComplete();
         } catch (IOException e) {
