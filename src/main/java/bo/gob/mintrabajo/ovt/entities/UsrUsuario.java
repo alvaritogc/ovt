@@ -82,12 +82,12 @@ public class UsrUsuario implements Serializable {
     @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerPersona idPersona;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrUsuario", fetch = FetchType.LAZY)
-    private List<PerUsuarioUnidad> perUsuarioUnidadList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrUsuario", fetch = FetchType.LAZY)
-    private List<UsrUsuarioRecurso> usrUsuarioRecursoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrUsuario", fetch = FetchType.LAZY)
-    private List<UsrUsuarioRol> usrUsuarioRolList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrUsuario", fetch = FetchType.LAZY)
+//    private List<PerUsuarioUnidad> perUsuarioUnidadList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrUsuario", fetch = FetchType.LAZY)
+//    private List<UsrUsuarioRecurso> usrUsuarioRecursoList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrUsuario", fetch = FetchType.LAZY)
+//    private List<UsrUsuarioRol> usrUsuarioRolList;
 
     public UsrUsuario() {
     }
@@ -204,29 +204,29 @@ public class UsrUsuario implements Serializable {
         this.idPersona = idPersona;
     }
 
-    public List<PerUsuarioUnidad> getPerUsuarioUnidadList() {
-        return perUsuarioUnidadList;
-    }
-
-    public void setPerUsuarioUnidadList(List<PerUsuarioUnidad> perUsuarioUnidadList) {
-        this.perUsuarioUnidadList = perUsuarioUnidadList;
-    }
-
-    public List<UsrUsuarioRecurso> getUsrUsuarioRecursoList() {
-        return usrUsuarioRecursoList;
-    }
-
-    public void setUsrUsuarioRecursoList(List<UsrUsuarioRecurso> usrUsuarioRecursoList) {
-        this.usrUsuarioRecursoList = usrUsuarioRecursoList;
-    }
-
-    public List<UsrUsuarioRol> getUsrUsuarioRolList() {
-        return usrUsuarioRolList;
-    }
-
-    public void setUsrUsuarioRolList(List<UsrUsuarioRol> usrUsuarioRolList) {
-        this.usrUsuarioRolList = usrUsuarioRolList;
-    }
+//    public List<PerUsuarioUnidad> getPerUsuarioUnidadList() {
+//        return perUsuarioUnidadList;
+//    }
+//
+//    public void setPerUsuarioUnidadList(List<PerUsuarioUnidad> perUsuarioUnidadList) {
+//        this.perUsuarioUnidadList = perUsuarioUnidadList;
+//    }
+//
+//    public List<UsrUsuarioRecurso> getUsrUsuarioRecursoList() {
+//        return usrUsuarioRecursoList;
+//    }
+//
+//    public void setUsrUsuarioRecursoList(List<UsrUsuarioRecurso> usrUsuarioRecursoList) {
+//        this.usrUsuarioRecursoList = usrUsuarioRecursoList;
+//    }
+//
+//    public List<UsrUsuarioRol> getUsrUsuarioRolList() {
+//        return usrUsuarioRolList;
+//    }
+//
+//    public void setUsrUsuarioRolList(List<UsrUsuarioRol> usrUsuarioRolList) {
+//        this.usrUsuarioRolList = usrUsuarioRolList;
+//    }
 
     @Override
     public int hashCode() {

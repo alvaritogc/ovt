@@ -13,11 +13,21 @@
             <p:growl showDetail="true" id="auditoriaGrowl" autoUpdate="true" life="8000" />
 
             <p:commandButton value="Nuevo" icon="ui-icon-circle-plus" action="#{usuarioAdministracionBean.instanciarUsuario}" oncomplete="nuevoDlg.show();" update=":nuevoFrm" immediate="true" />
-            <p:dataTable id="usuarioTbl" value="#{usuarioAdministracionBean.usuarioLista}" var="usr" paginator="true"
+            <p:dataTable id="usuarioTbl" value="#{usuarioAdministracionBean.usuarioSecundariaLista}" var="usr" paginator="true"
                          rows="15" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
-                 currentPageReportTemplate="{currentPage} / {totalPages}">
-                <p:column headerText="Usuario">
+                 currentPageReportTemplate="{currentPage} / {totalPages}" filteredValue="#{usuarioAdministracionBean.usuarioFiltroLista}">
+                <p:column headerText="Usuario" sortBy="#{usr.usuario}" filterMatchMode="contains">
                     <h:outputText value="#{usr.usuario}"/>
+                </p:column>
+                <p:column headerText="Fecha Inhabilitación" sortBy="#{usr.fechaInhabilitacion}" filterMatchMode="contains" styleClass="columnDate">
+                    <h:outputText value="#{usr.fechaInhabilitacion}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Fecha Reabilitación" sortBy="#{usr.fechaRehabilitacion}" filterMatchMode="contains" styleClass="columnDate">
+                    <h:outputText value="#{usr.fechaRehabilitacion}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                    </h:outputText>
                 </p:column>
                 <p:column headerText="Es Interno">
                     <h:outputText value="#{usr.esInterno eq 1 ? 'SI' : 'NO'}"/>
@@ -25,21 +35,17 @@
                 <p:column headerText="Es delegado">
                     <h:outputText value="#{usr.esDelegado eq 1 ? 'SI' : 'NO'}"/>
                 </p:column>
-                <p:column headerText="Fecha Inhabilitación">
-                    <h:outputText value="#{usr.fechaInhabilitacion}"/>
+                <p:column headerText="Estado Usuario">
+                    <h:outputText value="#{usuarioAdministracionBean.descripcionEstado(usr.estadoUsuario)}"/>
                 </p:column>
-                <p:column headerText="Fecha Reabilitación">
-                    <h:outputText value="#{usr.fechaRehabilitacion}" />
-                </p:column>
-                <!--<p:column headerText="Estado Usuario">-->
-                    <!--<h:outputText value="# {usuarioAdministracionBean.descripcionEstado(usr.estadoUsuario)}"/>-->
-                <!--</p:column>-->
-                <p:column headerText="Acciones" style="width: 60px">
+                <p:column headerText="Acciones">
                     <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" onclick="edicionDlg.show()" update=":edicionFrm" immediate="true" style="color:#0066CC">
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
                     </p:commandButton>
-                    <p:spacer width="5" />
-                    <p:commandButton icon="ui-icon-trash" title="Eliminar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" oncomplete="eliminarDlg.show()" immediate="true" style="color:#0066CC">
+                    <p:commandButton icon="ui-icon-unlocked" title="habilitar usuario" oncomplete="habilitarDlg.show()" immediate="true" style="color:#0066CC;" >
+                        <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-locked" title="Inhabilitar usuario" oncomplete="eliminarDlg.show()" immediate="true" style="color:#0066CC">
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
                     </p:commandButton>
                 </p:column>
@@ -293,9 +299,15 @@
             </h:form>
         </p:dialog>
 
-        <!-- Dialgo de confirmacion para la eliminación -->
-        <p:confirmDialog widgetVar="eliminarDlg" global="true" showEffect="fade" hideEffect="explode" message="Está segúro de eliminar este usuario?" header="Confirmar la eliminación" closable="false">
-            <p:commandButton value="Si" action="#{usuarioAdministracionBean.eliminarUsuario}" oncomplete="eliminarDlg.hide();" update=":usuarioFrm:usuarioTbl" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+        <!-- Dialgo de confirmacion para la inhabilitacion de usuario -->
+        <p:confirmDialog widgetVar="eliminarDlg" global="true" showEffect="fade" hideEffect="explode" message="Está segúro de inhabilitar éste usuario?" header="Confirmar inhabilitación" closable="false">
+            <p:commandButton value="Si" action="#{usuarioAdministracionBean.inhabilitarUsuario}" oncomplete="eliminarDlg.hide();" update=":usuarioFrm:usuarioTbl" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+            <p:commandButton value="No" type="button"  styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        </p:confirmDialog>
+
+        <!-- Dialgo de confirmacion para la habilitacion de usuario -->
+        <p:confirmDialog widgetVar="habilitarDlg" global="true" showEffect="fade" hideEffect="explode" message="Está segúro de habilitar éste usuario?" header="Confirmar habilitación" closable="false">
+            <p:commandButton value="Si" action="#{usuarioAdministracionBean.habilitarUsuario}" oncomplete="habilitarDlg.hide();" update=":usuarioFrm:usuarioTbl" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
             <p:commandButton value="No" type="button"  styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
         </p:confirmDialog>
 

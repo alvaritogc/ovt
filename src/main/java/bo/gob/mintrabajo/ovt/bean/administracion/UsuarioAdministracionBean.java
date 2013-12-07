@@ -14,6 +14,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -59,17 +61,20 @@ public class UsuarioAdministracionBean {
     private PerPersona personaSelected;
     private PerUnidad unidadSelected;
 
-    private List<UsrUsuario> usuarioLista;
+    private List<UsrUsuario> usuarioFiltroLista;
+    private List<UsrUsuario> usuarioSecundariaLista;
     private List<SelectItem> tipoDocumentoLista;
     private List<SelectItem> tipoSociedadLista;
     private List<SelectItem> tipoEmpresaLista;
     private List<SelectItem> localidadLista;
 
     private static final Logger log = LoggerFactory.getLogger(UsuarioAdministracionBean.class);
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 
     @PostConstruct
     public void cargarUsuario() {
-        usuarioLista = iUsuarioService.obtenerUsuariosIntenos();
+        usuarioSecundariaLista = new ArrayList<UsrUsuario>();
+        usuarioSecundariaLista.addAll(iUsuarioService.obtenerUsuariosIntenos());
         cargar();
     }
 
@@ -146,16 +151,34 @@ public class UsuarioAdministracionBean {
         return Util.descripcionDominio("ESTADO", valor);
     }
 
-    public void eliminarUsuario() {
+    public void inhabilitarUsuario() {
         log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo eliminarUsuario()");
         try {
-            iPersonaService.eliminarRegistro(personaSelected.getIdPersona(), usuarioSelected);
+            usuarioSelected.setFechaRehabilitacion(null);
+            usuarioSelected.setFechaInhabilitacion(new Timestamp(new Date().getTime()));
+            usuarioSelected.setFechaBitacora(new Timestamp(new Date().getTime()));
+            usuarioSelected.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
+            iUsuarioService.save(usuarioSelected);
             cargarUsuario();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "El usuario fue eliminado correctamente"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "El usuario fue inhabilitado correctamente"));
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El usuario no pudo ser eliminado por un relación que no debería existir, comuníquese con el administrador de base de datos"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El usuario no inhabilitado!"));
             log.info("Error " + e.getMessage());
-            e.printStackTrace();
+        }
+    }
+
+    public void habilitarUsuario() {
+        log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo habilitarUsuario()");
+        try {
+            usuarioSelected.setFechaRehabilitacion(new Timestamp(new Date().getTime()));
+            usuarioSelected.setFechaInhabilitacion(null);
+            usuarioSelected.setFechaBitacora(new Timestamp(new Date().getTime()));
+            usuarioSelected.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
+            iUsuarioService.save(usuarioSelected);
+            cargarUsuario();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "El usuario fue habilitado"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El usuario no pudo ser habilitado!"));
         }
     }
 
@@ -195,14 +218,6 @@ public class UsuarioAdministracionBean {
 
     public void setiUsuarioService(IUsuarioService iUsuarioService) {
         this.iUsuarioService = iUsuarioService;
-    }
-
-    public List<UsrUsuario> getUsuarioLista() {
-        return usuarioLista;
-    }
-
-    public void setUsuarioLista(List<UsrUsuario> usuarioLista) {
-        this.usuarioLista = usuarioLista;
     }
 
     public UsrUsuario getUsuarioSelected() {
@@ -323,5 +338,21 @@ public class UsuarioAdministracionBean {
 
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public List<UsrUsuario> getUsuarioSecundariaLista() {
+        return usuarioSecundariaLista;
+    }
+
+    public void setUsuarioSecundariaLista(List<UsrUsuario> usuarioSecundariaLista) {
+        this.usuarioSecundariaLista = usuarioSecundariaLista;
+    }
+
+    public List<UsrUsuario> getUsuarioFiltroLista() {
+        return usuarioFiltroLista;
+    }
+
+    public void setUsuarioFiltroLista(List<UsrUsuario> usuarioFiltroLista) {
+        this.usuarioFiltroLista = usuarioFiltroLista;
     }
 }
