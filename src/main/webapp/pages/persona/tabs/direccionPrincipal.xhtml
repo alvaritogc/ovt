@@ -5,32 +5,7 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <p:panel id="pnlDireccion1">
-        <f:facet name="footer">
-            <p:commandButton value="Adicionar"
-                             icon="ui-icon-plus"
-                             actionListener="#{personaUnidadBean.nuevo}"
-                             onclick="PF('dlgDireccion').show()"
-                             id="cmdButtonDireccion1"
-                             update=":frmDireccion:pnlDireccion,:txtDlgDireccion"
-                             rendered="#{personaUnidadBean.direccionPrincipal.idDireccion==null}">
-                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
-                <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
-                <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
-            </p:commandButton>
 
-            <p:commandButton value="Modificar"
-                             icon="ui-icon-pencil"
-                             onclick="PF('dlgDireccion').show()"
-                             id="cmdButtonDireccion2"
-                             update=":frmDireccion:pnlDireccion,:txtDlgDireccion"
-                             rendered="#{personaUnidadBean.direccionPrincipal.idDireccion!=null}">
-                <f:setPropertyActionListener value="#{personaUnidadBean.direccionPrincipal.perUnidad}" target="#{personaUnidadBean.unidadRegistro}"/>
-                <f:setPropertyActionListener value="#{personaUnidadBean.direccionPrincipal}" target="#{personaUnidadBean.direccion}"/>
-                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
-                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
-            </p:commandButton>
-
-        </f:facet>
 
         <h:panelGrid columns="2">
             <h:outputText value="Zona:" style="width: 250px;" />

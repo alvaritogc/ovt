@@ -52,11 +52,11 @@
                 </p:column>
                 <p:column headerText="Fecha bitácora" sortBy="#{logImp.fechaBitacora}" filterBy="#{logImp.fechaBitacora}" filterMatchMode="contains" styleClass="columnDate">
                     <h:outputText value="#{logImp.fechaBitacora}">
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Registro bitácora" sortBy="#{logImp.idDocumento}" filterBy="#{logImp.idDocumento}" filterMatchMode="contains">
-                    <h:outputText value="#{logImp.idDocumento}" />
+                <p:column headerText="Registro bitácora" sortBy="#{logImp.registroBitacora}" filterBy="#{logImp.registroBitacora}" filterMatchMode="contains">
+                    <h:outputText value="#{logImp.registroBitacora}" />
                 </p:column>
             </p:dataTable>
         </h:form>
