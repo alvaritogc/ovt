@@ -61,6 +61,8 @@
                                  action="#{personaUnidadBean.procesarInfoLaboral}"
                                  id="cmdButtonInfoLaboral"
                                  tabindex="17"
+                                 process="@this"
+                                   ajax="false"
                                  update=":tabPersonaUnidad,:tabPersonaUnidad:tabInfoLaboral,:dataGrid,growlInfoLaboral,:frmBucarPersona:cmdButtonROE,:frmInfoLaboral:growlInfoLaboral,:frmInfoLaboral:pnlInfoLaboral"
                         />
                 &#160;&#160;
@@ -125,8 +127,6 @@
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
-                                required="true"
-                                requiredMessage="El valor del campo Extranjeros es obligatorio."                                
                         >
 
                 </pe:inputNumber>
