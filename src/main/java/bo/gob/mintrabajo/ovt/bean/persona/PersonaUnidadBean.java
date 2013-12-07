@@ -435,6 +435,7 @@ public class PersonaUnidadBean implements Serializable{
         infolaboralRegistro.setMontoAsegAfp(BigDecimal.ZERO);
         infolaboralRegistro.setNroAsegAfp(0);
         infolaboralRegistro.setMontoAsegCaja(BigDecimal.ZERO);
+        infolaboralRegistro.setTipoSindicato("false");
     }
 
     //PRIMERA VEZ
@@ -879,6 +880,7 @@ public class PersonaUnidadBean implements Serializable{
             ini();
             return ;
         }
+        unidadRegistro= iUnidadService.obtienePorId(unidadRegistro.getPerUnidadPK());
         iRepLegalService.save(repLegal,REGISTRO_BITACORA,unidadRegistro);
 
         RequestContext.getCurrentInstance().execute("dlgRepLegal.hide()");
@@ -1027,7 +1029,10 @@ public class PersonaUnidadBean implements Serializable{
         long jubilados=infolaboralRegistro.getNroJubilados();
         long capDiferenciales=infolaboralRegistro.getNroCapdiferente();
 
-        long total=extranjeros+fijos+eventuales+menores18+mayores60+jubilados+capDiferenciales;
+        long total=(extranjeros+fijos+eventuales+menores18+mayores60+jubilados+capDiferenciales);
+        System.out.println("=======>>>>> INFO LABORAL <<<<======");
+        System.out.println("=======>>>>> INFO LABORAL <<<<====== total "+total);
+        System.out.println("=======>>>>> INFO LABORAL <<<<====== nroTotalTrabajadores "+nroTotalTrabajadores);
 
         if(total!=nroTotalTrabajadores ){
             FacesContext.getCurrentInstance().addMessage(null,
@@ -1056,6 +1061,15 @@ public class PersonaUnidadBean implements Serializable{
             RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
             return ;
         }
+
+        if(infolaboralRegistro.getTipoSindicato().equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El campo Cuenta con sindicato es obligatorio."));
+
+            ini();
+            return ;
+        }
+
 
          iInfoLaboralService.save(infolaboralRegistro,REGISTRO_BITACORA,unidadRegistro);
         ini();

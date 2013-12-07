@@ -53,7 +53,7 @@
                              rendered="#{personaUnidadBean.infolaboral.idInfolaboral!=null}"
                              update=":frmInfoLaboral:pnlInfoLaboral,:txtDlgInfoLaboral,:frmInfoLaboral:cmdButtonInfoLaboral"
                              onclick="PF('dlgInfoLaboral').show()">
-                <f:setPropertyActionListener value="#{personaUnidadBean.persona}" target="#{personaUnidadBean.personaRegistro}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.infolaboral.perUnidad}" target="#{personaUnidadBean.unidadRegistro}"/>
                 <f:setPropertyActionListener value="#{personaUnidadBean.infolaboral}" target="#{personaUnidadBean.infolaboralRegistro}"/>
                 <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
                 <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
