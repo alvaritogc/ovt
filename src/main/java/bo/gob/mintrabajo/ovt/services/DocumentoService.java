@@ -219,11 +219,12 @@ public class DocumentoService implements IDocumentoService {
 
         docDocumento.setFechaBitacora(new Date());
         docDocumento.setRegistroBitacora(registroBitacora);
-        docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
+        //docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
+        docDocumento.setTipoMedioRegistro("MODIFICACION");//MODIFICACION DEL ROE
 
 
-        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
-        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
+        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
+        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
 
         docDocumento = documentoRepository.save(docDocumento);
         //
@@ -249,7 +250,14 @@ public class DocumentoService implements IDocumentoService {
 
         docDocumento.setFechaBitacora(new Date());
         docDocumento.setRegistroBitacora(registroBitacora);
-        docDocumento.setTipoMedioRegistro("DDJJ");
+
+        //docDocumento.setTipoMedioRegistro("DDJJ");
+        if (docGenerico.getCadena03() == null || docGenerico.getCadena03().equals("")) {
+            docDocumento.setTipoMedioRegistro("DEFINITIVA");//BAJA DEFINITIVA
+        } else {
+            docDocumento.setTipoMedioRegistro("TEMPORAL");//BAJA TEMPORAL
+        }
+
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
         docDocumento = documentoRepository.save(docDocumento);
         //
@@ -446,7 +454,12 @@ public class DocumentoService implements IDocumentoService {
 
             docDocumento.setFechaBitacora(new Date());
             docDocumento.setRegistroBitacora(registroBitacora);
-            docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
+            //docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
+            if (parametroDocDefinicionAdicional != null && !parametroDocDefinicionAdicional.equals("")) {
+                docDocumento.setTipoMedioRegistro("REGISTRO");//SOLICITUD DE IMPRESION DEL ROE
+            } else {
+                docDocumento.setTipoMedioRegistro("SOLICITUD");//SOLICITUD DE IMPRESION DEL ROE
+            }
 
             System.out.println("codEstadoDocumento: " + docDefinicion.getDocDefinicionPK().getCodDocumento());
             //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
@@ -491,7 +504,8 @@ public class DocumentoService implements IDocumentoService {
         //
         docDocumento.setFechaBitacora(new Date());
         docDocumento.setRegistroBitacora(registroBitacora);
-        docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
+        //docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
+        docDocumento.setTipoMedioRegistro("N/A");//SIN TIPO
 
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
         docDocumento = documentoRepository.save(docDocumento);
@@ -525,7 +539,8 @@ public class DocumentoService implements IDocumentoService {
 
         docDocumentoAdicional.setFechaBitacora(new Date());
         docDocumentoAdicional.setRegistroBitacora(registroBitacora);
-        docDocumentoAdicional.setTipoMedioRegistro(docDefinicionAdicional.getTipoGrupoDocumento());
+        //docDocumentoAdicional.setTipoMedioRegistro(docDefinicionAdicional.getTipoGrupoDocumento());
+        docDocumentoAdicional.setTipoMedioRegistro("REACTIVACION");//MODIFICACION DEL ROE
         //
         docDocumentoAdicional.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicionAdicional.getDocDefinicionPK().getCodDocumento(), (short) 1));
         docDocumentoAdicional = documentoRepository.save(docDocumentoAdicional);
@@ -556,7 +571,8 @@ public class DocumentoService implements IDocumentoService {
 
         docDocumentoImpresion.setFechaBitacora(new Date());
         docDocumentoImpresion.setRegistroBitacora(registroBitacora);
-        docDocumentoImpresion.setTipoMedioRegistro(docDefinicionImpresion.getTipoGrupoDocumento());
+        //docDocumentoImpresion.setTipoMedioRegistro(docDefinicionImpresion.getTipoGrupoDocumento());
+        docDocumentoImpresion.setTipoMedioRegistro("REACTIVACION");//MODIFICACION DEL ROE
 
         docDocumentoImpresion.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicionImpresion.getDocDefinicionPK().getCodDocumento(), (short) 1));
         docDocumentoImpresion = documentoRepository.save(docDocumentoImpresion);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 rvelasquez.
+ * Copyright 2013 pc01.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -34,13 +33,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- *
- * @author rvelasquez
+ * @author pc01
  */
 @Entity
 @Table(name = "DOC_GENERICO")
 @NamedQueries({
-    @NamedQuery(name = "DocGenerico.findAll", query = "SELECT d FROM DocGenerico d")})
+        @NamedQuery(name = "DocGenerico.findAll", query = "SELECT d FROM DocGenerico d")})
 public class DocGenerico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -110,12 +108,12 @@ public class DocGenerico implements Serializable {
     @Column(name = "VALOR_05")
     private BigDecimal valor05;
     @JoinColumns({
-        @JoinColumn(name = "TIPO_PERIODO", referencedColumnName = "TIPO_PERIODO"),
-        @JoinColumn(name = "GESTION", referencedColumnName = "GESTION")})
-    @ManyToOne(fetch = FetchType.LAZY)
+            @JoinColumn(name = "TIPO_PERIODO", referencedColumnName = "TIPO_PERIODO"),
+            @JoinColumn(name = "GESTION", referencedColumnName = "GESTION")})
+    @ManyToOne(fetch = FetchType.EAGER)
     private ParCalendario parCalendario;
     @JoinColumn(name = "ID_DOCUMENTO", referencedColumnName = "ID_DOCUMENTO")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private DocDocumento idDocumento;
 
     public DocGenerico() {
@@ -405,5 +403,5 @@ public class DocGenerico implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.DocGenerico[ idGenerico=" + idGenerico + " ]";
     }
-    
+
 }
