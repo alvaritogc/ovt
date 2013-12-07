@@ -62,17 +62,6 @@ public class PersonaUnidadBean implements Serializable{
     @ManagedProperty(value = "#{unidadService}")
     private IUnidadService iUnidadService;
 
-    public IUnidadService getiUnidadService2() {
-        return iUnidadService2;
-    }
-
-    public void setiUnidadService2(IUnidadService iUnidadService2) {
-        this.iUnidadService2 = iUnidadService2;
-    }
-
-    @ManagedProperty(value = "#{unidadService}")
-    private IUnidadService iUnidadService2;
-
     @ManagedProperty(value = "#{unidadService}")
     private IUnidadService iUnidadServiceModificar;
 
@@ -103,6 +92,9 @@ public class PersonaUnidadBean implements Serializable{
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService personaService;
 
+    @ManagedProperty(value = "#{documentoService}")
+    private IDocumentoService documentoService;
+
     private PerPersona persona=new PerPersona();
     private String idLocalidadPersona;
 
@@ -114,10 +106,7 @@ public class PersonaUnidadBean implements Serializable{
     private PerUnidad unidad;
     private List<PerUnidad>listaUnidad;
 
-
-
     private ExternalContext externalContext= FacesContext.getCurrentInstance().getExternalContext();
-
     private static final Logger logger = LoggerFactory.getLogger(PersonaUnidadBean.class);
 
     List<SelectItem>listaTipoEmpresa;
@@ -129,8 +118,6 @@ public class PersonaUnidadBean implements Serializable{
     private List<PerDireccion>listaDireccion;
     private PerDireccion direccionPrincipal;
     private List<SelectItem>listaTipoDirecciones;
-
-
 
     //Sirve para mostrar
     //DIRECCCION
@@ -144,22 +131,14 @@ public class PersonaUnidadBean implements Serializable{
     private List<PerReplegal> listaRepLegal;
     private PerReplegal repLegalPrincipal;
 
-
-
-
-
     private List<SelectItem>listaCodActividadEconomica;
 
     private Long codigoActividadEconomicaPrincipal;
     private PerActividad actividad;
     private List<PerActividad> listaActividad;
 
-
-
     private PerActividad actividadPrincipal;
     private Long idActividadEconomicaPrincipal;
-
-
 
     private PerUnidad unidadRegistro;
 
@@ -174,40 +153,11 @@ public class PersonaUnidadBean implements Serializable{
     private PerInfolaboral infolaboral;
     private PerInfolaboral infolaboralRegistro;
 
-
-    public boolean isMostrarBotonROE() {
-        return mostrarBotonROE;
-    }
-
-    public void setMostrarBotonROE(boolean mostrarBotonROE) {
-        this.mostrarBotonROE = mostrarBotonROE;
-    }
-
-    //sw para mostrar el boton de impresion de ROE1
-    private boolean mostrarBotonROE;
-
-    public boolean isTieneROE() {
-        return tieneROE;
-    }
-
-    public void setTieneROE(boolean tieneROE) {
-        this.tieneROE = tieneROE;
-    }
-
     //Sirve para mostrar boton de impresion ROE2
     private boolean tieneROE=false;
 
+    UsrUsuario empleador;
 
-    public IDocumentoService getDocumentoService() {
-        return documentoService;
-    }
-
-    public void setDocumentoService(IDocumentoService documentoService) {
-        this.documentoService = documentoService;
-    }
-
-    @ManagedProperty(value = "#{documentoService}")
-    private IDocumentoService documentoService;
 
     @PostConstruct
     public void ini(){
@@ -226,11 +176,9 @@ public class PersonaUnidadBean implements Serializable{
         repLegal=new PerReplegal();
         unidadRegistro=new PerUnidad();
         cargar();
-
-        //si es falso mostrar
-//        mostrarBotonROE=generarReporteRoe();
         tieneROE=yaTieneROE();
-        System.out.println("T=====>>>>>> INI-TIENE ROE; "+tieneROE);
+
+        empleador=iUsuarioService.obtenerUsuarioPorIdPersona(idEmpleador).get(0);
     }
 
     public boolean generarReporteRoe(){
@@ -1591,5 +1539,29 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setPersonaService(IPersonaService personaService) {
         this.personaService = personaService;
+    }
+
+    public boolean isTieneROE() {
+        return tieneROE;
+    }
+
+    public void setTieneROE(boolean tieneROE) {
+        this.tieneROE = tieneROE;
+    }
+
+    public IDocumentoService getDocumentoService() {
+        return documentoService;
+    }
+
+    public void setDocumentoService(IDocumentoService documentoService) {
+        this.documentoService = documentoService;
+    }
+
+    public UsrUsuario getEmpleador() {
+        return empleador;
+    }
+
+    public void setEmpleador(UsrUsuario empleador) {
+        this.empleador = empleador;
     }
 }

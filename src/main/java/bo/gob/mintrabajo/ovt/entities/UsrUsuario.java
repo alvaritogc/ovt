@@ -18,9 +18,7 @@ package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +27,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -72,6 +69,8 @@ public class UsrUsuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "ESTADO_USUARIO")
     private String estadoUsuario;
+    @Column(name = "OBSERVACION")
+    private String observacion;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -82,12 +81,6 @@ public class UsrUsuario implements Serializable {
     @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PerPersona idPersona;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrUsuario", fetch = FetchType.LAZY)
-//    private List<PerUsuarioUnidad> perUsuarioUnidadList;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrUsuario", fetch = FetchType.LAZY)
-//    private List<UsrUsuarioRecurso> usrUsuarioRecursoList;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usrUsuario", fetch = FetchType.LAZY)
-//    private List<UsrUsuarioRol> usrUsuarioRolList;
 
     public UsrUsuario() {
     }
@@ -180,6 +173,14 @@ public class UsrUsuario implements Serializable {
         this.estadoUsuario = estadoUsuario;
     }
 
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
     public Date getFechaBitacora() {
         return fechaBitacora;
     }
@@ -203,30 +204,6 @@ public class UsrUsuario implements Serializable {
     public void setIdPersona(PerPersona idPersona) {
         this.idPersona = idPersona;
     }
-
-//    public List<PerUsuarioUnidad> getPerUsuarioUnidadList() {
-//        return perUsuarioUnidadList;
-//    }
-//
-//    public void setPerUsuarioUnidadList(List<PerUsuarioUnidad> perUsuarioUnidadList) {
-//        this.perUsuarioUnidadList = perUsuarioUnidadList;
-//    }
-//
-//    public List<UsrUsuarioRecurso> getUsrUsuarioRecursoList() {
-//        return usrUsuarioRecursoList;
-//    }
-//
-//    public void setUsrUsuarioRecursoList(List<UsrUsuarioRecurso> usrUsuarioRecursoList) {
-//        this.usrUsuarioRecursoList = usrUsuarioRecursoList;
-//    }
-//
-//    public List<UsrUsuarioRol> getUsrUsuarioRolList() {
-//        return usrUsuarioRolList;
-//    }
-//
-//    public void setUsrUsuarioRolList(List<UsrUsuarioRol> usrUsuarioRolList) {
-//        this.usrUsuarioRolList = usrUsuarioRolList;
-//    }
 
     @Override
     public int hashCode() {

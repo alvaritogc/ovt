@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 rvelasquez.
+ * Copyright 2013 pc01.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.Serializable;
@@ -34,13 +33,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- *
- * @author rvelasquez
+ * @author pc01
  */
 @Entity
 @Table(name = "DOC_GENERICO")
 @NamedQueries({
-    @NamedQuery(name = "DocGenerico.findAll", query = "SELECT d FROM DocGenerico d")})
+        @NamedQuery(name = "DocGenerico.findAll", query = "SELECT d FROM DocGenerico d")})
 public class DocGenerico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -78,6 +76,16 @@ public class DocGenerico implements Serializable {
     private String cadena09;
     @Column(name = "CADENA_10")
     private String cadena10;
+    @Column(name = "CADENA_11")
+    private String cadena11;
+    @Column(name = "CADENA_12")
+    private String cadena12;
+    @Column(name = "CADENA_13")
+    private String cadena13;
+    @Column(name = "CADENA_14")
+    private String cadena14;
+    @Column(name = "CADENA_15")
+    private String cadena15;
     @Column(name = "ENTERO_01")
     private Integer entero01;
     @Column(name = "ENTERO_02")
@@ -100,12 +108,12 @@ public class DocGenerico implements Serializable {
     @Column(name = "VALOR_05")
     private BigDecimal valor05;
     @JoinColumns({
-        @JoinColumn(name = "TIPO_PERIODO", referencedColumnName = "TIPO_PERIODO"),
-        @JoinColumn(name = "GESTION", referencedColumnName = "GESTION")})
-    @ManyToOne(fetch = FetchType.LAZY)
+            @JoinColumn(name = "TIPO_PERIODO", referencedColumnName = "TIPO_PERIODO"),
+            @JoinColumn(name = "GESTION", referencedColumnName = "GESTION")})
+    @ManyToOne(fetch = FetchType.EAGER)
     private ParCalendario parCalendario;
     @JoinColumn(name = "ID_DOCUMENTO", referencedColumnName = "ID_DOCUMENTO")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private DocDocumento idDocumento;
 
     public DocGenerico() {
@@ -235,6 +243,46 @@ public class DocGenerico implements Serializable {
         this.cadena10 = cadena10;
     }
 
+    public String getCadena11() {
+        return cadena11;
+    }
+
+    public void setCadena11(String cadena11) {
+        this.cadena11 = cadena11;
+    }
+
+    public String getCadena12() {
+        return cadena12;
+    }
+
+    public void setCadena12(String cadena12) {
+        this.cadena12 = cadena12;
+    }
+
+    public String getCadena13() {
+        return cadena13;
+    }
+
+    public void setCadena13(String cadena13) {
+        this.cadena13 = cadena13;
+    }
+
+    public String getCadena14() {
+        return cadena14;
+    }
+
+    public void setCadena14(String cadena14) {
+        this.cadena14 = cadena14;
+    }
+
+    public String getCadena15() {
+        return cadena15;
+    }
+
+    public void setCadena15(String cadena15) {
+        this.cadena15 = cadena15;
+    }
+
     public Integer getEntero01() {
         return entero01;
     }
@@ -355,5 +403,5 @@ public class DocGenerico implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.DocGenerico[ idGenerico=" + idGenerico + " ]";
     }
-    
+
 }
