@@ -10,7 +10,7 @@
         <h3>Gestión del funcionario</h3>
 
         <h:form id="usuarioFrm">
-            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <p:growl showDetail="true" id="auditoriaGrowl" autoUpdate="true" life="8000" />
 
             <p:commandButton value="Nuevo" icon="ui-icon-circle-plus" action="#{usuarioAdministracionBean.instanciarUsuario}" oncomplete="nuevoDlg.show();" update=":nuevoFrm" immediate="true" />
             <p:dataTable id="usuarioTbl" value="#{usuarioAdministracionBean.usuarioLista}" var="usr" paginator="true"
@@ -31,9 +31,9 @@
                 <p:column headerText="Fecha Reabilitación">
                     <h:outputText value="#{usr.fechaRehabilitacion}" />
                 </p:column>
-                <p:column headerText="Estado Usuario">
-                    <h:outputText value="#{usuarioAdministracionBean.descripcionEstado(usr.estadoUsuario)}"/>
-                </p:column>
+                <!--<p:column headerText="Estado Usuario">-->
+                    <!--<h:outputText value="# {usuarioAdministracionBean.descripcionEstado(usr.estadoUsuario)}"/>-->
+                <!--</p:column>-->
                 <p:column headerText="Acciones" style="width: 60px">
                     <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" onclick="edicionDlg.show()" update=":edicionFrm" immediate="true" style="color:#0066CC">
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />

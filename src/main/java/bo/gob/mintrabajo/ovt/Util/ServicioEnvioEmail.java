@@ -37,9 +37,9 @@ public class ServicioEnvioEmail implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(ServicioEnvioEmail.class);
 
-    public void envioEmail(PersonaBean bean) {
+    public void envioEmail(String destinatario, Map<String,String>configuracion) {
 
-        armadoEmail(bean);
+        armadoEmail(destinatario, configuracion);
         try {
             Properties props = new Properties();
             props.put("mail.smtp.socketFactory.port", port);
@@ -62,7 +62,6 @@ public class ServicioEnvioEmail implements Serializable {
                 }
             });
 
-            logger.info("Autenticando usuario .... ");
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
             for (int i = 0; i < getTo().size(); i++) {
@@ -70,7 +69,7 @@ public class ServicioEnvioEmail implements Serializable {
             }
 
             // *** Esto crea el cuerpo del mensaje *** //
-            message.setSubject(subject);
+            message.setSubject("Cambio de login");
             message.setText(cuerpoMensaje.concat("\n\nNotificación mail - Oficina Virtual: ").concat("\n\n\natte. \nAdministración Oficina Virtual"));
 
             // *** Enviamos el mensaje *** //
@@ -87,23 +86,16 @@ public class ServicioEnvioEmail implements Serializable {
         }
     }
 
-    public void armadoEmail(PersonaBean bean) {
+    public void armadoEmail(String destinatario, Map<String,String>configuracion) {
 
-        from = bean.getFrom();
-        subject = bean.getSubject();
-        urlRedireccion = bean.getUrlRedireccion();
-        urlRedireccion = urlRedireccion.concat("/registroConfirmacion.xhtml?codeUnic=#codeUnic&codeNam=#codeNam");
+        from = configuracion.get("from");
+        subject = configuracion.get("Cambio de login");
+        cuerpoMensaje = "El cambio de login fue exitoso";
+        password = configuracion.get("password");
+        host = configuracion.get("host");
+        port = configuracion.get("port");
 
-        String usuPassword = Util.crypt(bean.getUsuario().getClave());
-        urlRedireccion = urlRedireccion.replace("#codeNam", bean.getUsuario().getUsuario());
-        urlRedireccion = urlRedireccion.replace("#codeUnic", usuPassword);
-
-        cuerpoMensaje = bean.getCuerpoMensaje() + " " + urlRedireccion;
-        password = bean.getPassword();
-        host = bean.getHost();
-        port = bean.getPort();
-
-        getTo().add(bean.getUsuario().getUsuario());
+        getTo().add(destinatario);
     }
 
 

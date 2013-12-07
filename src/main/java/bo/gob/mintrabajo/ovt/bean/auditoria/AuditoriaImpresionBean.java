@@ -70,7 +70,8 @@ public class AuditoriaImpresionBean {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "Debe seleccionar almenos un criterio de búsqueda"));
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "Ocurrió una falla de base de datos, comuniquese con el administrador"));
+            e.printStackTrace();
+            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "Ocurrió una falla de base de datos, comuniquese con el administrador"));
         }
     }
 
