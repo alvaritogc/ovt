@@ -423,6 +423,30 @@ public class TemplateInicioBean implements Serializable {
         }
     }
 
+    public Map<String, String> cargaParametricasEmailLogin() {
+        Map<String, String> configuracionEmail = new HashMap<String, String>();
+        try {
+            String from = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_CUENTA_EMAIL).getDescripcion();
+            String subject = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_ASUNTO_RECUPERAR).getDescripcion();
+            String urlRedireccion = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_URL).getDescripcion();
+            String cuerpoMensaje = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_MENSAJE_RECUPERAR).getDescripcion();
+            String password = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PASSWORD).getDescripcion();
+            String host = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_SERVIDOR).getDescripcion();
+            String port = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PUERTO).getDescripcion();
+            configuracionEmail.put("from", from);
+            configuracionEmail.put("subject", subject);
+            configuracionEmail.put("urlRedireccion", urlRedireccion);
+            configuracionEmail.put("cuerpoMensaje", cuerpoMensaje);
+            configuracionEmail.put("password", password);
+            configuracionEmail.put("host", host);
+            configuracionEmail.put("port", port);
+            return configuracionEmail;
+        } catch (NullPointerException ne) {
+            logger.info("El parámetro no existe en base de datos ...");
+            return null;
+        }
+    }
+
     public void cambiarContrasenia() {
         logger.info("=======>>>> CAMBIAR CONTRASENIA ");
         logger.info("==============>>>>  contrasenia: " + contrasenia + " nueva contrasenia: " + nuevaContrasenia + " confirmar Contrasenia: " + confirmarContrasenia);
@@ -457,10 +481,21 @@ public class TemplateInicioBean implements Serializable {
         try {
             if (Util.validaCorreo(loginNuevo)) {
                 if (loginConfirmacion.equals(loginNuevo)) {
-                    iUsuarioService.cambiarLogin(idUsuario, loginNuevo);
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", " El lógin se actualizó correctamente"));
-                    RequestContext context = RequestContext.getCurrentInstance();
-                    context.execute("cambioLoginObligadoDlg.hide();");
+
+                    if(iUsuarioService.obtenerUsuarioPorNombreUsuario(loginNuevo) == null){
+
+                        iUsuarioService.cambiarLogin(idUsuario, loginNuevo);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", " El lógin se actualizó correctamente"));
+                        RequestContext context = RequestContext.getCurrentInstance();
+                        context.execute("cambioLoginObligadoDlg.hide();");
+
+                        ServicioEnvioEmail envioEmail = new ServicioEnvioEmail();
+                        Map<String, String> configuracionEmail= cargaParametricasEmailLogin();
+                        envioEmail.envioEmail(loginNuevo, configuracionEmail);
+
+                    } else {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Atención","Esta cuenta de correo ya existe, intente otro correo electrónico"));
+                    }
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El login nuevo no coincide con el login de confirmación!"));
                 }

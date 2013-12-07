@@ -123,16 +123,16 @@ public class LogImpresionService implements ILogImpresionService {
                         impresion.setNroCajaSalud(obj[10].toString());
                     if (obj[11] != null)
                         impresion.setNroAfp(obj[11].toString());
-                    if (obj[12].toString() != null)
+                    if (obj[12] != null)
                         impresion.setNroFundaempresa(obj[12].toString());
-                    if (obj[13].toString() != null)
+                    if (obj[13] != null)
                         impresion.setNroOtro(obj[13].toString());
                     impresion.setObservaciones(obj[14].toString());
                     impresion.setTipoSociedad(obj[15].toString());
                     impresion.setTipoEmpresa(obj[16].toString());
                     impresion.setActividadDeclarada(obj[17].toString());
                     impresion.setEstadoUnidad(obj[18].toString());
-                    if (obj[19]!= null)
+                    if (obj[19] != null)
                         impresion.setNroReferencial(obj[19].toString());
                     if (obj[20] != null)
                     impresion.setTipoUnidad(obj[20].toString());
