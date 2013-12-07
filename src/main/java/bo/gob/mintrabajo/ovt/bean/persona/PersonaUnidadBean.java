@@ -982,12 +982,6 @@ public class PersonaUnidadBean implements Serializable{
             return ;
         }
 
-        if((extranjeros+fijos+eventuales)>nroTotalTrabajadores ){
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error.","La suma entre la cantidad de trabajadores Extranjeros, "+"\n"
-                            +"Fijos y  Eventuales deber igual al N° total de trabajadores. "));
-           return ;
-        }
 
         // Val;idacion para menores de 18 y mayores de 60
         if(menores18>nroTotalTrabajadores){

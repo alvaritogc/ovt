@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="declaracionJurada" language="groovy" pageWidth="612" pageHeight="792" columnWidth="500" leftMargin="56" rightMargin="56" topMargin="20" bottomMargin="15" uuid="1abc3a07-2f6b-448c-bb07-7fbf6c225db1">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="384"/>
+	<property name="ireport.y" value="218"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -29,6 +29,7 @@
 	</parameter>
 	<parameter name="escudoIzquierda" class="java.lang.String"/>
 	<parameter name="escudoDerecha" class="java.lang.String"/>
+	<parameter name="nro_unidades" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT t8.*,coalesce(dom.descripcion,' ') tipoDireccionDominio
 FROM par_dominio dom
@@ -92,6 +93,7 @@ RIGHT OUTER JOIN
                                                        JOIN par_dominio d
                                                        ON (d.valor =u.tipo_empresa )
                                                   WHERE p.id_persona = $P{idPersona}
+					     and u.id_unidad!=0
                                                   ) t1
                                            ON d2.id_dominio = 'TSOCIEDAD' and d2.valor = t1. tipo_sociedad
                                        ) t2
@@ -1259,6 +1261,13 @@ order by t8.id_unidad]]>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{NROIDENTIFICACIONREPLEGAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8ea24fb0-6669-423e-b360-599c446037c8" x="253" y="333" width="75" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nro_unidades}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

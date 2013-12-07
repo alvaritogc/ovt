@@ -10,31 +10,31 @@
     <ui:define name="content">
 
 
-    <style type="text/css">
+        <style type="text/css">
 
 
 
-        .column1{text-align: left;width: 700px;}
-        .column2{text-align: left;width: 100px;}
+            .column1{text-align: left;width: 700px;}
+            .column2{text-align: left;width: 100px;}
 
 
-        .columna{text-align: left;width: 320px;}
-        .columnb{width: 80px;height:auto;text-align: left;}
-        .column3{width: 220px;height:auto;}
-        .column4{width: 80px;height:auto;text-align: left;}
+            .columna{text-align: left;width: 320px;}
+            .columnb{width: 80px;height:auto;text-align: left;}
+            .column3{width: 220px;height:auto;}
+            .column4{width: 80px;height:auto;text-align: left;}
 
-        .columnd{width: 580px;height:auto;text-align: left;color: #0069B1}
-        .columnc{width: 180px;height:auto;text-align: left;}
+            .columnd{width: 580px;height:auto;text-align: left;color: #0069B1}
+            .columnc{width: 180px;height:auto;text-align: left;}
 
-        div.ui-tabs ul.ui-tabs-nav li.ui-tabs-selected {
-            padding-bottom: 0;
-            border-bottom: 1px solid #A8A8A8 !important;
-            background-color: #5F95D3;
-            color: #FFFFFF;
-            box-shadow: 4px 4px 4px #CCCCCC;
-        }
+            div.ui-tabs ul.ui-tabs-nav li.ui-tabs-selected {
+                padding-bottom: 0;
+                border-bottom: 1px solid #A8A8A8 !important;
+                background-color: #5F95D3;
+                color: #FFFFFF;
+                box-shadow: 4px 4px 4px #CCCCCC;
+            }
 
-    </style>
+        </style>
 
         <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
 
@@ -43,58 +43,60 @@
             <p:graphicImage value="../../images/ajax-loader.gif" />
         </p:dialog>
 
-    <p:growl showDetail="true" id="growlROE" />
-    <h:panelGrid columns="3" columnClasses="columnd,columnc">
-        <h2>Registro Unico de Empleador - ROE </h2>
+        <p:growl showDetail="true" id="growlROE" />
+        <h:panelGrid columns="3" columnClasses="columnd,columnc">
+            <h2>Registro Unico de Empleador - ROE </h2>
+            <p:outputLabel value="#{personaUnidadBean.empleador.usuario}" style="color: #0069B1"/>
+        </h:panelGrid>
+        <h:panelGrid columns="3" columnClasses="columnd,columnc">
+            <p:outputLabel/>
+            <p:outputLabel value="#{personaUnidadBean.empleador.observacion}" style=";font-size: 12px;color: #ffffff"/>
+        </h:panelGrid>
 
 
-        <p:outputLabel value="#{personaUnidadBean.empleador.usuario}" style="color: #0069B1"/>
-    </h:panelGrid>
-    <h:outputLabel value="#{personaUnidadBean.empleador.observacion}" style=";font-size: 12px;color: #ffffff"/>
-
-     <p:tabView id="tabPersonaUnidad"   effect="fade" effectDuration="normal" scrollable="true">
-         <p:tab id="tabUnidadPrincipal" >
-             <f:facet name="title">
-                 <p:graphicImage value="/images/unidad.png"/>
-                 <h:outputText value="Unidad Principal" />
-             </f:facet>
-             <ui:include src="../persona/tabs/unidadPrincipal.xhtml"/>
-         </p:tab>
+        <p:tabView id="tabPersonaUnidad"   effect="fade" effectDuration="normal" scrollable="true">
+            <p:tab id="tabUnidadPrincipal" >
+                <f:facet name="title">
+                    <p:graphicImage value="/images/unidad.png"/>
+                    <h:outputText value="Unidad Principal" />
+                </f:facet>
+                <ui:include src="../persona/tabs/unidadPrincipal.xhtml"/>
+            </p:tab>
 
 
-         <p:tab id="tabActividad"  >
-             <f:facet name="title">
-                 <p:graphicImage value="/images/actividadDeclarada.png"/>
-                 <h:outputText value=" Actividad Declarada"/>
-             </f:facet>
-             <ui:include src="../persona/tabs/actividadDeclaradaPrincipal.xhtml"/>
-         </p:tab>
+            <p:tab id="tabActividad"  >
+                <f:facet name="title">
+                    <p:graphicImage value="/images/actividadDeclarada.png"/>
+                    <h:outputText value=" Actividad Declarada"/>
+                </f:facet>
+                <ui:include src="../persona/tabs/actividadDeclaradaPrincipal.xhtml"/>
+            </p:tab>
 
-         <p:tab id="tabRepLegal" >
-             <f:facet name="title">
-                 <p:graphicImage value="/images/repLegal.png"/>
-                 <h:outputText value=" Representante Legal"/>
-             </f:facet>
-             <ui:include src="../persona/tabs/representanteLegalPrincipal.xhtml"/>
-         </p:tab>
+            <p:tab id="tabRepLegal" >
+                <f:facet name="title">
+                    <p:graphicImage value="/images/repLegal.png"/>
+                    <h:outputText value=" Representante Legal"/>
+                </f:facet>
+                <ui:include src="../persona/tabs/representanteLegalPrincipal.xhtml"/>
+            </p:tab>
 
-         <p:tab id="tabDireccion" >
-             <f:facet name="title">
-                 <p:graphicImage value="/images/direccion.png"/>
-                 <h:outputText value=" Direccion"/>
-             </f:facet>
+            <p:tab id="tabDireccion" >
+                <f:facet name="title">
+                    <p:graphicImage value="/images/direccion.png"/>
+                    <h:outputText value=" Direccion"/>
+                </f:facet>
                 <ui:include src="../persona/tabs/direccionPrincipal.xhtml"/>
-         </p:tab>
+            </p:tab>
 
-         <p:tab id="tabInfoLaboral" >
-             <f:facet name="title">
-                 <p:graphicImage value="/images/personas.png"/>
-                 <h:outputText value="Trabajadores"/>
-             </f:facet>
-             <ui:include src="../persona/tabs/infoLaboralPrincipal.xhtml"/>
-         </p:tab>
+            <p:tab id="tabInfoLaboral" >
+                <f:facet name="title">
+                    <p:graphicImage value="/images/personas.png"/>
+                    <h:outputText value="Trabajadores"/>
+                </f:facet>
+                <ui:include src="../persona/tabs/infoLaboralPrincipal.xhtml"/>
+            </p:tab>
 
-     </p:tabView>
+        </p:tabView>
 
 
 
