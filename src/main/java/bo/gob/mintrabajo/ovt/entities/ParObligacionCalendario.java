@@ -61,6 +61,9 @@ public class ParObligacionCalendario implements Serializable {
     @Column(name = "FECHA_PLAZO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaPlazo;
+    @Column(name = "FECHA_PLAZO2")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaPlazo2;
     @Basic(optional = false)
     @Column(name = "FECHA_BITACORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -132,6 +135,14 @@ public class ParObligacionCalendario implements Serializable {
 
     public void setFechaPlazo(Date fechaPlazo) {
         this.fechaPlazo = fechaPlazo;
+    }
+
+    public Date getFechaPlazo2() {
+        return fechaPlazo2;
+    }
+
+    public void setFechaPlazo2(Date fechaPlazo2) {
+        this.fechaPlazo2 = fechaPlazo2;
     }
 
     public Date getFechaBitacora() {
