@@ -52,6 +52,7 @@ public class RepLegalService implements IRepLegalService{
         if(replegal.getIdReplegal()==null){
             //Nuevo
             replegal.setIdReplegal(this.obtenerSecuencia(PER_REPLEGAL_SEC));
+
             replegal.setPerUnidad(unidad);
             replegal.setEstadoRepLegal(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
             replegal.setFechaBitacora(new Date());

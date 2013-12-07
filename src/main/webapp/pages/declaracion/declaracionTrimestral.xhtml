@@ -82,7 +82,7 @@
             <p:outputLabel value="1.3 Nro de orden que rectifica"/>
             <p:selectOneMenu id="rectificatorio" value="#{declaracionTrimestralBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="#{!declaracionTrimestralBean.esRectificatorio}"> <!--disabled="# {declaracionBean.parametro!=3}"-->
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionTrimestralBean.docPlanillasParaRectificar}" var="elemDoc" itemLabel="#{elemDoc.idDocumento.numeroDocumento}&nbsp;-&nbsp;#{elemDoc.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{elemDoc.idDocumento}"/>
+                <f:selectItems value="#{declaracionTrimestralBean.docPlanillasParaRectificar}" var="elemDoc" itemLabel="#{elemDoc.idDocumento.numeroDocumento}&nbsp;-&nbsp;#{elemDoc.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{elemDoc.idDocumento.idDocumento}"/>
                 <p:ajax listener="#{declaracionTrimestralBean.seleccionaTrimestre}" update="razonSocial" />
             </p:selectOneMenu>
         </p:panelGrid>
