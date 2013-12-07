@@ -80,6 +80,7 @@ public class DeclaracionTrimestralBean implements Serializable {
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
     private List<ParEntidad> parEntidadLista;
     private List<DocDocumento> docDocumentosParaRectificar;
+    private List<DocPlanilla> docPlanillasParaRectificar;
     private PerPersona perPersona;
     private VperPersona vperPersona;
     private DocPlanilla docPlanilla;
@@ -211,8 +212,11 @@ public class DeclaracionTrimestralBean implements Serializable {
     }
 
     public void cargarDocumentosParaRectificar(){
-        docDocumentosParaRectificar= new ArrayList<DocDocumento>();
-        docDocumentosParaRectificar= iDocumentoService.listarDocumentosParaRectificar(idPersona, "LC1010");
+//        docDocumentosParaRectificar= new ArrayList<DocDocumento>();
+//        docDocumentosParaRectificar= iDocumentoService.listarDocumentosParaRectificar(idPersona, "LC1010");
+        
+        docPlanillasParaRectificar= new ArrayList<DocPlanilla>();
+        docPlanillasParaRectificar= iPlanillaService.listarPlanillasParaRectificar(idPersona, "LC1010");
     }
 
 
@@ -224,7 +228,7 @@ public class DeclaracionTrimestralBean implements Serializable {
     }
 
     public void seleccionaTrimestre(){
-        periodo = iDocumentoService.findById(idRectificatorio).getDocPlanilla().getParCalendario().getParCalendarioPK().getTipoPeriodo();
+        periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
     }
 
     public void verEstadoPlanilla(){
@@ -244,7 +248,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         List<DocDocumento> listaDocumentos;
         try{
             //TODO cabiar el metodo, temporalmente habilitado para pruebas...
-            listaDocumentos=iDocumentoService.listarPlanillasTrimestralesPorCodDoc(idPersona, "LC1010");
+            listaDocumentos=iDocumentoService.listarPlanillasTrimestralesPorCodDoc(idPersona, documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento());
 //            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
             if(listaDocumentos==null){
                 listaDocumentos=new ArrayList<DocDocumento>();
@@ -256,7 +260,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         }
         estaDeclarado=false;
         for(DocDocumento documento:listaDocumentos){
-            if(parametro==2 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
+            if(parametro!=3 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
                 estaDeclaradoMensaje="Solo se puede realizar o la Declaración Jurada Trimestral o la Declaración Jurada Sin Movimiento.";
                 estaDeclarado=true;
                 return;
@@ -1222,5 +1226,11 @@ public class DeclaracionTrimestralBean implements Serializable {
         this.iParametrizacionService = iParametrizacionService;
     }
 
+    public List<DocPlanilla> getDocPlanillasParaRectificar() {
+        return docPlanillasParaRectificar;
+    }
 
+    public void setDocPlanillasParaRectificar(List<DocPlanilla> docPlanillasParaRectificar) {
+        this.docPlanillasParaRectificar = docPlanillasParaRectificar;
+}
 }

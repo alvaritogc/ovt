@@ -84,7 +84,7 @@
                     </p:commandButton>
 
                     <p:commandButton action="#{escritorioBean.irEdicionRoe}"
-                                     rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento == 'ROE011' and o1.codEstado.codEstado=='010'}"
+                                     rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento == 'ROE013' and o1.codEstado.codEstado=='010'}"
                                      immediate="true"
                                      icon="ui-icon-pencil" title="Editar ROE 013">
                         <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}"/>
@@ -104,6 +104,7 @@
                     </p:commandButton>
 
                     <h:commandLink target="_blank" action="#{escritorioBean.irImprimirDocumento}"
+                                   rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento!='ROE014'}"
                                    title="Imprimir documento">
                         <f:setPropertyActionListener value="#{o1}" target="#{escritorioBean.docDocumento}"/>
                         <h:graphicImage style="float: left;width:25px;height: 23px;padding-right: 3px; "

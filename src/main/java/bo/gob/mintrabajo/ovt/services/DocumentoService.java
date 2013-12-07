@@ -144,8 +144,8 @@ public class DocumentoService implements IDocumentoService {
         logger.info("Guarda" + docPlanilla);
 
         //guardaPlanillaDetalles
-        if(docPlanillaDetalles==null)
-            docPlanillaDetalles= new ArrayList<DocPlanillaDetalle>();
+        if (docPlanillaDetalles == null)
+            docPlanillaDetalles = new ArrayList<DocPlanillaDetalle>();
         for (DocPlanillaDetalle elemPlanillaDetalle : docPlanillaDetalles) {
             elemPlanillaDetalle.setIdPlanilla(docPlanilla);
             elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
@@ -153,9 +153,9 @@ public class DocumentoService implements IDocumentoService {
         }
 
         //guardaAlertas
-        DocAlertaDefinicion docAlertaDefinicion= new DocAlertaDefinicion();
-        if(alertas==null)
-            alertas= new ArrayList<DocAlerta>();
+        DocAlertaDefinicion docAlertaDefinicion = new DocAlertaDefinicion();
+        if (alertas == null)
+            alertas = new ArrayList<DocAlerta>();
         else
             docAlertaDefinicion = alertaDefinicionRepository.findByDocDefinicion_DocDefinicionPK(docDocumento.getDocDefinicion().getDocDefinicionPK());
         for (DocAlerta docAlerta : alertas) {
@@ -202,7 +202,7 @@ public class DocumentoService implements IDocumentoService {
             throw new RuntimeException("Ya se registro el roe para ese documento");
         }
 
-        ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_MODIFICACION);
+        ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_IMPRESION);
         DocDefinicion docDefinicion = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacion.getDescripcion());
 
         DocDocumento docDocumento = new DocDocumento();
@@ -213,7 +213,7 @@ public class DocumentoService implements IDocumentoService {
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setDocDefinicion(docDefinicion);
 
-        docDocumento.setCodEstado(documentoEstadoRepository.findOne("010"));//Estado inicial
+        docDocumento.setCodEstado(documentoEstadoRepository.findOne("010"));//Estado inicial pendiente
         docDocumento.setFechaDocumento(new Date());
         docDocumento.setFechaReferenca(new Date());
 
@@ -375,7 +375,7 @@ public class DocumentoService implements IDocumentoService {
     }
 
     @Override
-    public List<DocDocumento> listarPlanillasTrimestralesPorCodDoc(String idEmpleador, String codDocumento){
+    public List<DocDocumento> listarPlanillasTrimestralesPorCodDoc(String idEmpleador, String codDocumento) {
         return documentoRepository.listarPorDocDefinicionYCodDocumento(idEmpleador, codDocumento);
     }
 

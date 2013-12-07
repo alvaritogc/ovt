@@ -76,26 +76,32 @@
 
             <h:panelGrid cellpadding="2" columns="6" columnClasses="column1,column2,column3,column4,column5,column6">
 
-                <h:outputText value="Hombres:"/>
+                <p:outputLabel for="hombres" value="Hombres:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroHombres}"
                                 decimalPlaces="0"
                                 tabindex="1"
+                                id="hombres"
                                 style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
+                                required="true"
+                                requiredMessage="El valor del campo Hombres es obligatorio."                                
                         >
                     <p:ajax event="blur"  listener="#{personaUnidadBean.sumar}" process="@this" update=":frmInfoLaboral:inputTxtNroTotalTrabajadores"/>
                 </pe:inputNumber>
 
-                <h:outputText value="Mujeres:"/>
+                <p:outputLabel for="mujeres" value="Mujeres:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroMujeres}"
                                 decimalPlaces="0"
                                 tabindex="2"
+                                id="mujeres"
                                 style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
+                                required="true"
+                                requiredMessage="El valor del campo Mujeres es obligatorio."
                         >
                     <p:ajax event="blur"  listener="#{personaUnidadBean.sumar}" update=":frmInfoLaboral:inputTxtNroTotalTrabajadores"/>
                 </pe:inputNumber>
@@ -112,61 +118,75 @@
                 </h:inputText>
 
 
-                <h:outputText value="Extranjeros:"/>
+                <p:outputLabel for="eee" value="Extranjeros:" />
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroExtranjeros}"
+                                id="eee"
                                 decimalPlaces="0"
                                 tabindex="4"
                                 style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
-
+                                minValue="0"
+                                maxValue="5000"
                         >
 
                 </pe:inputNumber>
 
-                <h:outputText value="Fijos:"/>
+                <p:outputLabel for="fijos" value="Fijos:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroFijos}"
                                 decimalPlaces="0"
+                                id="fijos"
                                 tabindex="5"
                                 style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
+                                required="true"
+                                requiredMessage="El valor del campo Fijos es obligatorio."                                
                         >
 
                 </pe:inputNumber>
 
-                <h:outputText value="Eventuales:"/>
+                <p:outputLabel for="eventuales" value="Eventuales:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroEventuales}"
                                 decimalPlaces="0"
+                                id="eventuales"
                                 tabindex="6"
                                 style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
+                                required="true"
+                                requiredMessage="El valor del campo Eventuales es obligatorio."                                
                         >
 
                 </pe:inputNumber>
 
-                <h:outputText value="Menores de 18 años:"/>
+                <p:outputLabel for="menores" value="Menores de 18 años:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroMenores18}"
                                 decimalPlaces="0"
+                                id="menores"
                                 tabindex="7"
                                 style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
+                                required="true"
+                                requiredMessage="El valor del campo Menores de 18 años  es obligatorio."                                
                         >
 
                 </pe:inputNumber>
 
-                <h:outputText value="Mayores de 60 años:"/>
+                <p:outputLabel for="mayores" value="Mayores de 60 años:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroMayores60}"
+                                id="mayores"
                                 decimalPlaces="0"
                                 tabindex="8"
                                 style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
+                                required="true"
+                                requiredMessage="El valor del campo Mayores de 60 años  es obligatorio."                                
                         >
 
                 </pe:inputNumber>
@@ -174,26 +194,32 @@
                 <h:outputLabel/>
                 <h:outputLabel/>
 
-                <h:outputText value="Personal jubilado:"/>
+                <p:outputLabel  for="personalJubilado" value="Personal jubilado:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroJubilados}"
                                 decimalPlaces="0"
+                                id="personalJubilado"
                                 tabindex="9"
                                 style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="500"
+                                required="true"
+                                requiredMessage="El valor del campo Personal jubilado  es obligatorio."                                
                         >
 
                 </pe:inputNumber>
 
-                <h:outputText value="Personal con capacidades diferenciales:"/>
+                <p:outputLabel for="capDiferenciales" value="Personal con capacidades diferenciales:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroCapdiferente}"
+                                id="capDiferenciales"
                                 decimalPlaces="0"
                                 tabindex="10"
                                 style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
+                                required="true"
+                                requiredMessage="El valor del campo Personal con capacidades diferenciales  es obligatorio."                                
                         >
 
                 </pe:inputNumber>
@@ -202,7 +228,7 @@
                 <h:outputLabel/>
             </h:panelGrid>
             <h:panelGrid columns="2" columnClasses="column1-1">
-                <h:outputText value="Total ganado de la planilla (Bs.):"/>
+                <p:outputLabel for="numberPlanilla" value="Total ganado de la planilla (Bs.):"/>
                 <pe:inputNumber id="numberPlanilla"
                                 value="#{personaUnidadBean.infolaboralRegistro.totalPlanilla}"
                                 decimalPlaces="2"
@@ -210,6 +236,8 @@
                                 style="width: 150px;text-align:right;"
                                 decimalSeparator=","
                                 thousandSeparator="."
+                                required="true"
+                                requiredMessage="El valor del campo Total de la planilla (Bs.)  es obligatorio."                                
                         >
                 </pe:inputNumber>
                 <p:watermark value="0,00" for="numberPlanilla"/>
@@ -221,18 +249,21 @@
                 <h:outputLabel/>
                 <h:outputLabel/>
             <h:panelGrid columns="6" columnClasses="column1-1-1,column2,column3,column4,column5,column6">
-                <h:outputText value="N° asegurados en Caja de salud:"/>
+                <p:outputLabel for="aseguradosCajaSalud" value="N° asegurados en Caja de salud:"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroAsegCaja}"
                                 decimalPlaces="0"
                                 tabindex="12"
+                                id="aseguradosCajaSalud"
                                 style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
                                 minValue="0"
                                 maxValue="5000"
+                                required="true"
+                                requiredMessage="El valor del campo N° asegurados en Caja de salud  es obligatorio."                                
                         >
                 </pe:inputNumber>
 
-                <h:outputText value="Monto aportado (Bs):"/>
+                <p:outputLabel for="numberMontoCaja" value="Monto aportado (Bs):"/>
                 <pe:inputNumber id="numberMontoCaja"
                                 value="#{personaUnidadBean.infolaboralRegistro.montoAsegCaja}"
                                 decimalPlaces="2"
@@ -240,6 +271,8 @@
                                 style="width: 150px;text-align:right;"
                                 decimalSeparator=","
                                 thousandSeparator="."
+                                required="true"
+                                requiredMessage="El valor del campo monto aportado (Bs)  es obligatorio."                                                                
                         >
                 </pe:inputNumber>
 
@@ -247,18 +280,21 @@
                 <h:outputLabel/>
                 <h:outputLabel/>
 
-                <h:outputText value="N° asegurados AFPs (largo plazo):"/>
+                <p:outputLabel for="montoAfp" value="N° asegurados AFPs (largo plazo):"/>
                 <pe:inputNumber value="#{personaUnidadBean.infolaboralRegistro.nroAsegAfp}"
                                 decimalPlaces="0"
                                 tabindex="14"
                                 minValue="0"
                                 maxValue="5000"
+                                id="montoAfp"
                                 style="width: 40px;text-align:right;"
                                 thousandSeparator=" "
+                                required="true"
+                                requiredMessage="El valor del campo N° de asegurados AFPs (largo plazo) es obligatorio."                                                                
                         >
                 </pe:inputNumber>
 
-                <h:outputText value="Monto aportado (Bs):"/>
+                <p:outputLabel for="numberMontoAfp" value="Monto aportado (Bs):"/>
                 <pe:inputNumber id="numberMontoAfp"
                                 value="#{personaUnidadBean.infolaboralRegistro.montoAsegAfp}"
                                 decimalPlaces="2"
@@ -266,6 +302,8 @@
                                 style="width: 150px;text-align:right;"
                                 decimalSeparator=","
                                 thousandSeparator="."
+                                required="true"
+                                requiredMessage="El valor del campo monto aportado (Bs) es obligatorio."                                                                
                         >
                 </pe:inputNumber>
 

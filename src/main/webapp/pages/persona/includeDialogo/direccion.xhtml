@@ -121,18 +121,14 @@
          <p:inputText id="inputTxtEmail1" value="#{personaUnidadBean.direccion.email}"
                       style="width: 215px;"
                       tabindex="12"
-                      validatorMessage="El formato del correo electronico 1 es invalido">
-             <f:validateRegex
-                     pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                      >
          </p:inputText>
 
          <h:outputText value="Correo electronico 2: "/>
          <p:inputText id="inputTxtEmail2" value="#{personaUnidadBean.direccion.email2}"
                       style="width: 215px;"
                       tabindex="13"
-                      validatorMessage="El formato del correo electronico 2 es invalido">
-             <f:validateRegex
-                     pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                      >
          </p:inputText>
      </h:panelGrid>
 

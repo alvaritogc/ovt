@@ -1034,33 +1034,33 @@ public class PersonaUnidadBean implements Serializable{
         System.out.println("=======>>>>> INFO LABORAL <<<<====== total "+total);
         System.out.println("=======>>>>> INFO LABORAL <<<<====== nroTotalTrabajadores "+nroTotalTrabajadores);
 
-        if(total!=nroTotalTrabajadores ){
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," No se pudo guardar los datos. La suma entre la cantidad de Extranjeros, "+"\n"
-                            +"Fijos, Eventuales, Menores de 18 años, Mayores de 60 años, "+"\n"
-                            +" Personal jubilado y Personal con capacidades diferenciales deber igual al N° total de trabajadores. "+"\n"
-                            + " Verfique estos datos."));
-
-            ini();
-            RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
-            return ;
-        }
+//        if(total!=nroTotalTrabajadores ){
+//            FacesContext.getCurrentInstance().addMessage(null,
+//                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," No se pudo guardar los datos. La suma entre la cantidad de Extranjeros, "+"\n"
+//                            +"Fijos, Eventuales, Menores de 18 años, Mayores de 60 años, "+"\n"
+//                            +" Personal jubilado y Personal con capacidades diferenciales deber igual al N° total de trabajadores. "+"\n"
+//                            + " Verfique estos datos."));
+//
+//            ini();
+//            RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
+//            return ;
+//        }
 
         long nroAsegCaja=infolaboralRegistro.getNroAsegCaja();
         long nroAsegAfp=infolaboralRegistro.getNroAsegAfp();
         long nroTotalAseg=nroAsegCaja+nroAsegAfp;
 
-        if(total!=nroTotalAseg ){
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," No se pudo guardar los datos. La suma entre el N° asegurados en Caja de salud y "+"\n"
-                            +"N° asegurados AFPs (largo plazo) "+"\n"
-                            +" deber igual al N° total de trabajadores. "+"\n"
-                            + " Verfique estos datos."));
-
-            ini();
-            RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
-            return ;
-        }
+//        if(total!=nroTotalAseg ){
+//            FacesContext.getCurrentInstance().addMessage(null,
+//                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," No se pudo guardar los datos. La suma entre el N° asegurados en Caja de salud y "+"\n"
+//                            +"N° asegurados AFPs (largo plazo) "+"\n"
+//                            +" deber igual al N° total de trabajadores. "+"\n"
+//                            + " Verfique estos datos."));
+//
+//            ini();
+//            RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
+//            return ;
+//        }
 
         if(infolaboralRegistro.getTipoSindicato().equals("")){
             FacesContext.getCurrentInstance().addMessage(null,
