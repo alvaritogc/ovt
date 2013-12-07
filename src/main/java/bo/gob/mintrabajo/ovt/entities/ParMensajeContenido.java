@@ -36,22 +36,21 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- *
  * @author rvelasquez
  */
 @Entity
 @Table(name = "PAR_MENSAJE_CONTENIDO")
 @NamedQueries({
-    @NamedQuery(name = "ParMensajeContenido.findAll", query = "SELECT p FROM ParMensajeContenido p")})
+        @NamedQuery(name = "ParMensajeContenido.findAll", query = "SELECT p FROM ParMensajeContenido p")})
 public class ParMensajeContenido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "ID_MENSAJE_CONTENIDO")
     private Long idMensajeContenido;
-    @Lob
-    @Column(name = "BINARIO")
-    private byte[] binario;
+    //    @Lob
+//    @Column(name = "BINARIO")
+//    private byte[] binario;
     @Lob
     @Column(name = "CONTENIDO")
     private String contenido;
@@ -69,7 +68,7 @@ public class ParMensajeContenido implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMensajeContenido", fetch = FetchType.LAZY)
+    //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMensajeContenido", fetch = FetchType.LAZY)
 //    private List<ParMensajeBinario> parMensajeBinarioList;
     @JoinColumn(name = "ID_MENSAJE_APP", referencedColumnName = "ID_MENSAJE_APP")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -97,13 +96,13 @@ public class ParMensajeContenido implements Serializable {
         this.idMensajeContenido = idMensajeContenido;
     }
 
-    public byte[] getBinario() {
-        return binario;
-    }
-
-    public void setBinario(byte[] binario) {
-        this.binario = binario;
-    }
+//    public byte[] getBinario() {
+//        return binario;
+//    }
+//
+//    public void setBinario(byte[] binario) {
+//        this.binario = binario;
+//    }
 
     public String getContenido() {
         return contenido;
@@ -193,5 +192,5 @@ public class ParMensajeContenido implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.ParMensajeContenido[ idMensajeContenido=" + idMensajeContenido + " ]";
     }
-    
+
 }
