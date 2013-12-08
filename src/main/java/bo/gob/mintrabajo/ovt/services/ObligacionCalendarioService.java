@@ -154,4 +154,12 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
     public List<ParObligacionCalendario> buscarPorPlatriPorFecha(Date fechaActual){
         return obligacionCalendarioRepository.listarPlanillaTrimEntreFecha(fechaActual);
     }
+
+    public List<ParObligacionCalendario> listarPlanillaAguiPorFechaHastaFechaPlazo(Date fechaActual){
+        return obligacionCalendarioRepository.listarPlanillaAguiPorFechaHastaFechaPlazo(fechaActual);
+    }
+
+    public List<ParObligacionCalendario> listarPlanillaAguiPorFechaHastaFechaPlazo2(Date fechaActual){
+        return obligacionCalendarioRepository.listarPlanillaAguiPorFechaHastaFechaPlazo2(fechaActual);
+    }
 }

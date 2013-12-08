@@ -19,4 +19,6 @@ public interface IObligacionCalendarioService {
     public ParObligacionCalendario findById(Long id);
     public ParObligacionCalendario buscarPorPlatriALaFecha();
     public List<ParObligacionCalendario> buscarPorPlatriPorFecha(Date fechaActual);
+    List<ParObligacionCalendario> listarPlanillaAguiPorFechaHastaFechaPlazo(Date fechaActual);
+    List<ParObligacionCalendario> listarPlanillaAguiPorFechaHastaFechaPlazo2(Date fechaActual);
 }

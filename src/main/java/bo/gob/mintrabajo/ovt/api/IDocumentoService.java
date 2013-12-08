@@ -34,7 +34,7 @@ public interface IDocumentoService {
     public DocDocumento guardarActualizaRoe(DocDocumento docDocumento, DocGenerico docGenerico, String registroBitacora);
 
     public List<DocDocumento> listarPlanillasTrimestrales(String idEmpleador, Date fechaDesde, Date fechaHasta, String codDocumento);
-    public List<DocDocumento> listarPlanillasTrimestralesPorCodDoc(String idEmpleador, String codDocumento);
+//    public List<DocDocumento> listarPlanillasTrimestralesPorCodDoc(String idEmpleador, String codDocumento);
 
     List<DocDocumento> listarDeclarados(String idEmpleador);
 
@@ -47,4 +47,8 @@ public interface IDocumentoService {
     List<DocDocumento> listarDocumentosParaRectificar(String idPersona, String codDocumento);
 
     public boolean existeRoe(String idPersona);
+
+    List<DocDocumento> listarDocumentosPorPersonaUnidad(PerUnidadPK perUnidadPK, Date fechaHasta, Date fechaPlazo);
+
+    List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumento(String idPersona, Date fechaHasta, Date fechaPlazo, String codDocumento);
 }

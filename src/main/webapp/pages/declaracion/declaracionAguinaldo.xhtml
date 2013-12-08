@@ -7,19 +7,8 @@
       xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions">
 <ui:composition template="../../pages/template/templateInicio.xhtml">
 <ui:define name="content">
-<h:form id="idMensajeContenido">
-    <p:poll interval="1" id="idPollParMensajeApp"
-            listener="#{declaracionAguinaldoBean.abrirPanel}"
-            update=":idMensajeContenido:idPollParMensajeApp"
-            stop="true"/>
-</h:form>
 
 <h:form id="formularioFrm" enctype="multipart/form-data">
-
-<h:panelGroup rendered="#{declaracionAguinaldoBean.estaDeclarado}">
-    <h1>Usted ya realizo la declaracion jurada de aguinaldo</h1>
-    <!--<p:commandButton ajax="false" value="Ir a inicio" action="# {declaracionAguinaldoBean.irInicio}"/>-->
-</h:panelGroup>
 <h:panelGroup id="panelForm" rendered="#{!declaracionAguinaldoBean.estaDeclarado}">
 <p:panelGrid id="gridForm">
 <f:facet name="header">
@@ -388,30 +377,6 @@
 </p:confirmDialog>
 </h:panelGroup>
 </h:form>
-
-<p:dialog widgetVar="seleccionEmpresa" id="seleccionEmpresa" header="Seleccione" modal="true" closable="false" resizable="false">
-    <h:form id="form2">
-        <div align="CENTER">
-        <p:outputLabel value="El siguiente formulario se declarará, para la Central o Sucursal." style="font-size: 12px"/>
-        <p:outputPanel >
-            <p:selectOneRadio id="customRadio" value="#{declaracionAguinaldoBean.tipoEmpresa}" columns="2">
-                <p:ajax event="change" update="tipoEmpresa"/>
-                <f:selectItem itemLabel="Declaración consolidada de todas las sucursales" itemValue="1" />
-                <f:selectItem itemLabel="Declaración por sucursal" itemValue="2"/>
-            </p:selectOneRadio>
-            <br/>
-            <h:panelGroup id="tipoEmpresa">
-                <p:outputLabel id="central" value="#{declaracionAguinaldoBean.central.nombreComercial}" rendered="#{declaracionAguinaldoBean.tipoEmpresa==1}" />
-                <p:selectOneMenu id="sucursal" style="width: 260px; height: 20px" rendered="#{declaracionAguinaldoBean.tipoEmpresa==2}" value="#{declaracionAguinaldoBean.idUnidad}">
-                    <f:selectItem itemLabel="---Seleccione---" itemDisabled="true"/>
-                    <f:selectItems value="#{declaracionAguinaldoBean.sucursales}" var="sucursal" itemLabel="#{sucursal.nombreComercial}" itemValue="#{sucursal.perUnidadPK.idUnidad}"/>
-                </p:selectOneMenu>
-            </h:panelGroup>
-        </p:outputPanel>  <br/>
-        <p:commandButton value="Aceptar" action="#{declaracionAguinaldoBean.seleccionaEmpresa}" actionListener="#{declaracionAguinaldoBean.habilitaTipoEmpresa}" oncomplete="PF('seleccionEmpresa').hide();" update=":formularioFrm:panelForm"/>
-        </div>
-    </h:form>
-</p:dialog>
 
 </ui:define>
 </ui:composition>

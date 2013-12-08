@@ -193,7 +193,7 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void cargar() {
         generaDocumento();
-        verEstadoPlanilla();
+//        verEstadoPlanilla();
         cargarDocumentosParaRectificar();
         listaCentralSucursales();
     }
@@ -225,56 +225,68 @@ public class DeclaracionTrimestralBean implements Serializable {
             unidadSeleccionada=central;
         else
             unidadSeleccionada=iUnidadService.obtienePorId(new PerUnidadPK(idPersona, idUnidad));
+
+        ParObligacionCalendario parObligacionCalendario=iObligacionCalendarioService.buscarPorPlatriALaFecha();
+        List<DocDocumento>listaDocumentos=iDocumentoService.listarDocumentosPorPersonaUnidad(unidadSeleccionada.getPerUnidadPK(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
+
+        for(DocDocumento doc:listaDocumentos){
+                if(parametro!=3 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
+                estaDeclaradoMensaje="Solo se puede realizar o la Declaración Jurada Trimestral o la Declaración Jurada Sin Movimiento.";
+                estaDeclarado=true;
+                return;
+            }
+        }
     }
 
     public void seleccionaTrimestre(){
         periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
     }
 
-    public void verEstadoPlanilla(){
-        ParObligacionCalendario parObligacionCalendario;
-        try {
-            parObligacionCalendario=iObligacionCalendarioService.buscarPorPlatriALaFecha();
-        } catch (Exception e) {
-            parObligacionCalendario=null;
-        }
-
-//        if(parObligacionCalendario==null){
-//            estaDeclaradoMensaje="Solo puede realizar la Declaración Jurada dentro del plazo establecido.";
-//            estaDeclarado=true;
-//            return;
+//    public void verEstadoPlanilla(){
+//        ParObligacionCalendario parObligacionCalendario;
+//        try {
+//            parObligacionCalendario=iObligacionCalendarioService.buscarPorPlatriALaFecha();
+//        } catch (Exception e) {
+//            parObligacionCalendario=null;
 //        }
-
-        List<DocDocumento> listaDocumentos;
-        try{
-            //TODO cabiar el metodo, temporalmente habilitado para pruebas...
-            listaDocumentos=iDocumentoService.listarPlanillasTrimestralesPorCodDoc(idPersona, documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento());
-//            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
-            if(listaDocumentos==null){
-                listaDocumentos=new ArrayList<DocDocumento>();
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            listaDocumentos=new ArrayList<DocDocumento>();
-        }
-        estaDeclarado=false;
-        for(DocDocumento documento:listaDocumentos){
-            if(parametro!=3 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
-                estaDeclaradoMensaje="Solo se puede realizar o la Declaración Jurada Trimestral o la Declaración Jurada Sin Movimiento.";
-                estaDeclarado=true;
-                return;
-            }
-
-            if((documento.getCodEstado().getDescripcion().toLowerCase().equals("declarado")
-                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("observado")
-                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")) && parametro==1 ){
-                estaDeclarado=true;
-                estaDeclaradoMensaje="Usted ya realizo la declaracion jurada.";
-                return;
-            }
-        }
-    }
+//
+////        if(parObligacionCalendario==null){
+////            estaDeclaradoMensaje="Solo puede realizar la Declaración Jurada dentro del plazo establecido.";
+////            estaDeclarado=true;
+////            return;
+////        }
+//
+//        List<DocDocumento> listaDocumentos;
+//        try{
+//            //TODO cabiar el metodo, temporalmente habilitado para pruebas...
+//
+//            listaDocumentos=iDocumentoService.listarDocumentosTrimSm(documento.getPerUnidad().getPerUnidadPK());
+////            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
+//            if(listaDocumentos==null){
+//                listaDocumentos=new ArrayList<DocDocumento>();
+//            }
+//        }
+//        catch(Exception e){
+//            e.printStackTrace();
+//            listaDocumentos=new ArrayList<DocDocumento>();
+//        }
+//        estaDeclarado=false;
+//        for(DocDocumento documento:listaDocumentos){
+//            if(parametro!=3 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
+//                estaDeclaradoMensaje="Solo se puede realizar o la Declaración Jurada Trimestral o la Declaración Jurada Sin Movimiento.";
+//                estaDeclarado=true;
+//                return;
+//            }
+//
+//            if((documento.getCodEstado().getDescripcion().toLowerCase().equals("declarado")
+//                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("observado")
+//                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")) && parametro==1 ){
+//                estaDeclarado=true;
+//                estaDeclaradoMensaje="Usted ya realizo la declaracion jurada.";
+//                return;
+//            }
+//        }
+//    }
 
     public void generaDocumento(){
         logger.info("generaDocumento()");

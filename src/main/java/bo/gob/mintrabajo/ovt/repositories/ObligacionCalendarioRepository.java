@@ -50,4 +50,20 @@ public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObl
                     + " a.codObligacion.codObligacion= 'PLATRI' "
                     + " and :fecha between a.fechaDesde and a.fechaPlazo")
     List<ParObligacionCalendario> listarPlanillaTrimEntreFecha(@Param("fecha") Date fecha);
+
+    @Query(
+            "   select a "
+                    + " from ParObligacionCalendario a"
+                    + " where "
+                    + " a.codObligacion.codObligacion like 'PLAAGU' "
+                    + " and :fechaActual between a.fechaHasta and a.fechaPlazo")
+    List<ParObligacionCalendario> listarPlanillaAguiPorFechaHastaFechaPlazo(@Param("fechaActual") Date fechaActual);
+
+    @Query(
+            "   select a "
+                    + " from ParObligacionCalendario a"
+                    + " where "
+                    + " a.codObligacion.codObligacion like 'PLAAGU' "
+                    + " and :fechaActual between a.fechaHasta and a.fechaPlazo2")
+    List<ParObligacionCalendario> listarPlanillaAguiPorFechaHastaFechaPlazo2(@Param("fechaActual") Date fechaActual);
 }

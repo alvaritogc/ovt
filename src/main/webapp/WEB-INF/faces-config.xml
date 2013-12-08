@@ -72,9 +72,15 @@
             </redirect>
         </navigation-case>
         <navigation-case>
-            <from-outcome>irEscritorio1</from-outcome>
-            <to-view-id>/pages/escritorio.xhtml</to-view-id>
-            <redirect include-view-params="false">
+            <from-outcome>irDeclaracionTrimestral</from-outcome>
+            <to-view-id>/pages/declaracion/declaracionTrimestral.xhtml</to-view-id>
+            <redirect>
+            </redirect>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>irDeclaracionAguinaldo</from-outcome>
+            <to-view-id>/pages/declaracion/declaracionAguinaldo.xhtml</to-view-id>
+            <redirect>
             </redirect>
         </navigation-case>
     </navigation-rule>

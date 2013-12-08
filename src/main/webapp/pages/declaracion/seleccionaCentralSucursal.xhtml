@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../../pages/template/templateInicio.xhtml">
+
+    <ui:define name="content">
+        <h:form id="form2" style="font-size: 13px">
+
+            <style type="text/css">
+                label, input, button, select, textarea {
+                    font-size: 14px;
+                    font-weight: normal;
+                    line-height: 10px;
+                }
+            </style>
+            <p:outputPanel rendered="#{!seleccionaCentralSucursalBean.habilitado}">
+                <h1>Información</h1>
+                <p:outputLabel value="#{seleccionaCentralSucursalBean.mensajeValidacion}" style="font-size: 15px;"/>
+            </p:outputPanel>
+            <center>
+
+                <p:outputPanel rendered="#{seleccionaCentralSucursalBean.habilitado}" >
+                <p:outputLabel value="El siguiente formulario se declarará, para:" style="font-size: 14px"/> <br/><br/>
+
+                    <p:selectOneRadio id="customRadio" value="#{seleccionaCentralSucursalBean.tipoEmpresa}" columns="2">
+                        <p:ajax event="change" update="tipoEmpresa"/>
+                        <f:selectItem itemLabel="Declaración consolidada de todas las sucursales" itemValue="1"/>
+                        <f:selectItem itemLabel="Declaración por sucursal" itemValue="2"/>
+                    </p:selectOneRadio>
+                    <br/>
+                    <h:panelGroup id="tipoEmpresa">
+                        <p:outputLabel id="central" value="#{seleccionaCentralSucursalBean.central.nombreComercial}" rendered="#{seleccionaCentralSucursalBean.tipoEmpresa==1}" />
+                        <p:selectOneMenu id="sucursal" style="width: 260px; height: 20px" rendered="#{seleccionaCentralSucursalBean.tipoEmpresa==2}" value="#{seleccionaCentralSucursalBean.idUnidad}">
+                            <f:selectItem itemLabel="---Seleccione---" itemDisabled="true"/>
+                            <f:selectItems value="#{seleccionaCentralSucursalBean.sucursales}" var="sucursal" itemLabel="#{sucursal.nombreComercial}" itemValue="#{sucursal.perUnidadPK.idUnidad}"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                 <br/>
+                <p:commandButton value="Aceptar" action="#{seleccionaCentralSucursalBean.seleccionaUnidad}" update="form2"/>
+                </p:outputPanel>
+            </center>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>
