@@ -10,7 +10,7 @@
     <ui:define name="content">
         <h3>Parámetros del Sistema</h3>
        <h:form id="parametroFrm">
-       <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+           <p:growl showDetail="true" id="auditoriaGrowl" autoUpdate="true" life="8000" />
         <p:commandButton value="Nuevo" icon="ui-icon-circle-plus" action="#{parametrizacionBean.inicializaParametro}" oncomplete="parametroNuevo.show();" update=":parametroNuevoFrm" />
         <br/>
         <p:dataTable id="parametroTbl" value="#{parametrizacionBean.parametrizacionLista}" var="par" paginatorPosition="bottom" paginator="true" rows="15"

@@ -20,12 +20,12 @@
                     <h:outputText value="#{usr.usuario}"/>
                 </p:column>
                 <p:column headerText="Fecha Inhabilitación" sortBy="#{usr.fechaInhabilitacion}" filterMatchMode="contains" styleClass="columnDate">
-                    <h:outputText value="#{usr.fechaInhabilitacion}">
+                    <h:outputText value="#{usr.fechaInhabilitacion.time eq 0 ? '00/00/0000' : usr.fechaInhabilitacion}">
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                     </h:outputText>
                 </p:column>
                 <p:column headerText="Fecha Reabilitación" sortBy="#{usr.fechaRehabilitacion}" filterMatchMode="contains" styleClass="columnDate">
-                    <h:outputText value="#{usr.fechaRehabilitacion}">
+                    <h:outputText value="#{usr.fechaRehabilitacion.time eq 0 ? '00/00/0000' : usr.fechaRehabilitacion}">
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                     </h:outputText>
                 </p:column>
@@ -38,14 +38,14 @@
                 <p:column headerText="Estado Usuario">
                     <h:outputText value="#{usuarioAdministracionBean.descripcionEstado(usr.estadoUsuario)}"/>
                 </p:column>
-                <p:column headerText="Acciones">
+                <p:column headerText="Acciones" style="width: 80px">
                     <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" onclick="edicionDlg.show()" update=":edicionFrm" immediate="true" style="color:#0066CC">
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
                     </p:commandButton>
-                    <p:commandButton icon="ui-icon-unlocked" title="habilitar usuario" oncomplete="habilitarDlg.show()" immediate="true" style="color:#0066CC;" >
+                    <p:commandButton icon="ui-icon-unlocked" title="habilitar usuario" oncomplete="habilitarDlg.show()" immediate="true" style="color:#0066CC;" rendered="#{usr.fechaInhabilitacion.time ne 0 and usr.fechaInhabilitacion ne null}" >
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
                     </p:commandButton>
-                    <p:commandButton icon="ui-icon-locked" title="Inhabilitar usuario" oncomplete="eliminarDlg.show()" immediate="true" style="color:#0066CC">
+                    <p:commandButton icon="ui-icon-locked" title="Inhabilitar usuario" oncomplete="eliminarDlg.show()" immediate="true" style="color:#0066CC" rendered="#{usr.fechaRehabilitacion.time ne 0}">
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
                     </p:commandButton>
                 </p:column>
