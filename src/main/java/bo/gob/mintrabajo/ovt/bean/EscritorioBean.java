@@ -548,7 +548,9 @@ public class EscritorioBean {
         nombreArchivo="declaracionJurada-"+nombreRazonSocial+nombreArchivo+".pdf";
         return nombreArchivo;
     }
-
+    /*
+    *  GENERA EL REPORTE DE LA DECLARACION JURADA
+     */
     public void generarReporte(){
 
 
@@ -592,6 +594,13 @@ public class EscritorioBean {
             hm.put("idPersona",idPersona);
             hm.put("escudoIzquierda",rutaEscudoIzquierda);
             hm.put("escudoDerecha",rutaEscudoDerecha);
+
+            long nroUnidades=0;
+            if(iUnidadService.buscarPorPersona(idPersona)!=null){
+                nroUnidades= iUnidadService.buscarPorPersona(idPersona).size();
+            }
+            hm.put("nro_unidades",nroUnidades);
+
 
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
 
