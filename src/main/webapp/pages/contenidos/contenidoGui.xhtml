@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="./../template/templateInicio.xhtml">
+    <ui:define name="content">
+        <h:form>
+            <br/>
+
+            <h2>Contenidos gui</h2>
+            <br/>
+            <p:dataTable value="#{contenidoGuiBean.listaRecursos}"
+                         var="recurso" rows="10"
+                         emptyMessage="No se encontraron resultados"
+                         paginatorPosition="bottom" paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                         currentPageReportTemplate="{currentPage} / {totalPages}">
+                <p:column headerText="Etiqueta">
+                    <p:outputLabel value="#{recurso.etiqueta}"/>
+                </p:column>
+                <p:column headerText="Descripcion">
+                    <p:outputLabel value="#{recurso.descripcion}"/>
+                </p:column>
+                <p:column headerText="Ejecutable">
+                    <p:outputLabel value="#{recurso.ejecutable}"/>
+                </p:column>
+                <p:column headerText="Numero">
+                    <p:outputLabel value="#{recurso.idRecurso}"/>
+                </p:column>
+                <p:column headerText="Acciones">
+                    <p:commandButton
+                            icon="ui-icon-image"
+                            title="Adicionar contenido"
+                            action="#{contenidoGuiBean.adicionarContenido}">
+                        <f:setPropertyActionListener value="#{recurso}" target="#{contenidoGuiBean.recurso}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

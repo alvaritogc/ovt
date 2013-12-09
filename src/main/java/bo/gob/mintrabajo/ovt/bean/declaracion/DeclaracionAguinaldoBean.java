@@ -95,7 +95,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
     private Long idEntidadSalud;
     private String estaDeclaradoMensaje;
     private boolean verificaValidacion;
-    private Long idRectificatorio;
+//    private Long idRectificatorio;
     private List<String> errores = new ArrayList<String>();
     private boolean valor;
     private int tipoEmpresa=1;
@@ -106,6 +106,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
     private List<DocDocumento> docDocumentosParaRectificar;
     private List<DocAlerta> alertas;
     private List<DocPlanilla> docPlanillasParaRectificar;
+    private DocPlanilla rectificatorio;
     
     @PostConstruct
     public void ini() {
@@ -174,6 +175,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
         cargar();
         if (parametro==5){
             esRectificatorio=true;
+            rectificatorio = iPlanillaService.buscarPorDocumento(iDocumentoService.buscarPorUnindad(unidadSeleccionada.getPerUnidadPK()).getIdDocumento());
         }
         valor=true;
     }
@@ -188,9 +190,9 @@ public class DeclaracionAguinaldoBean implements Serializable {
         docPlanillasParaRectificar= iPlanillaService.listarPlanillasParaRectificar(idPersona, "LC1020");
     }
 
-    public void seleccionaTrimestre(){
-        periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
-    }
+//    public void seleccionaTrimestre(){
+//        periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
+//    }
 
     public void habilitaTipoEmpresa(){
 
@@ -277,7 +279,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
            habilita=true;//deshabilita el boton de envio
         try{
             if(parametro==5)
-                documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
+                documento.setIdDocumentoRef(rectificatorio.getIdDocumento());
             logger.info("Guardando documento, binario y planilla");
             logger.info(documento.toString());
             logger.info(docPlanilla.toString());
@@ -579,14 +581,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
         this.idEntidadSalud = idEntidadSalud;
     }
 
-    public Long getIdRectificatorio() {
-        return idRectificatorio;
-    }
-
-    public void setIdRectificatorio(Long idRectificatorio) {
-        this.idRectificatorio = idRectificatorio;
-    }
-
     public IPlanillaDetalleService getiPlanillaDetalleService() {
         return iPlanillaDetalleService;
     }
@@ -673,5 +667,13 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
     public void setDocPlanillasParaRectificar(List<DocPlanilla> docPlanillasParaRectificar) {
         this.docPlanillasParaRectificar = docPlanillasParaRectificar;
+    }
+
+    public DocPlanilla getRectificatorio() {
+        return rectificatorio;
+    }
+
+    public void setRectificatorio(DocPlanilla rectificatorio) {
+        this.rectificatorio = rectificatorio;
     }
 }

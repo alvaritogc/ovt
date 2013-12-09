@@ -65,11 +65,12 @@
             <p:outputLabel value="1.2 Rectificatoria"/>
             <p:selectBooleanCheckbox value="#{declaracionAguinaldoBean.esRectificatorio}" disabled="true"/>
             <p:outputLabel value="1.3 Nro de orden que rectifica"/>
-            <p:selectOneMenu id="rectificatorio" value="#{declaracionAguinaldoBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="#{!declaracionAguinaldoBean.esRectificatorio}"> <!--disabled="# {declaracionBean.parametro!=3}"-->
-                <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionAguinaldoBean.docPlanillasParaRectificar}" var="elemDoc" itemLabel="#{elemDoc.idDocumento.numeroDocumento}&nbsp;-&nbsp;#{elemDoc.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{elemDoc.idDocumento.idDocumento}"/>
-                <p:ajax listener="#{declaracionAguinaldoBean.seleccionaTrimestre}" update="razonSocial" />
-            </p:selectOneMenu>
+            <p:outputLabel value="#{declaracionAguinaldoBean.rectificatorio.idDocumento.numeroDocumento}&nbsp;-&nbsp;#{declaracionAguinaldoBean.rectificatorio.parCalendario.parCalendarioPK.tipoPeriodo}" style="width: 150px; height: 10px; text-align: right" disabled="#{!declaracionAguinaldoBean.esRectificatorio}" />
+            <!--<p:selectOneMenu id="rectificatorio" value="# {declaracionAguinaldoBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="# {!declaracionAguinaldoBean.esRectificatorio}"> &lt;!&ndash;disabled="# {declaracionBean.parametro!=3}"&ndash;&gt;-->
+                <!--<f:selectItem itemLabel="Seleccione" noSelectionOption="true"/>-->
+                <!--<f:selectItems value="# {declaracionAguinaldoBean.docPlanillasParaRectificar}" var="elemDoc" itemLabel="# {elemDoc.idDocumento.numeroDocumento}&nbsp;-&nbsp;# {elemDoc.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="# {elemDoc.idDocumento.idDocumento}"/>-->
+                <!--<p:ajax listener="# {declaracionAguinaldoBean.seleccionaTrimestre}" update="razonSocial" />-->
+            <!--</p:selectOneMenu>-->
         </p:panelGrid>
     </p:column>
 </p:row>

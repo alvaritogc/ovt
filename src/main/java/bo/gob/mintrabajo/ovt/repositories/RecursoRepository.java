@@ -57,5 +57,27 @@ public interface RecursoRepository extends OpenJpaRepository<UsrRecurso, Long>{
             "WHERE rec.tipoRecurso = :tipoRecurso")
     List<UsrRecurso> listarRecursosPorTipo(@Param("tipoRecurso") String tipoRecurso);
 
+    @Query(
+            "   select rec "
+                    + " from UsrRecurso rec"
+                    + " where "
+                    + " rec.idRecurso IN ("
+                    + "     select rolRec.usrRolRecursoPK.idRecurso "
+                    + "     from UsrRolRecurso rolRec "
+                    + "     where "
+                    + "     rolRec.usrRolRecursoPK.idRol IN ("
+                    + "         select usRol.usrUsuarioRolPK.idRol"
+                    + "         from UsrUsuarioRol usRol"
+                    + "         where usRol.usrUsuarioRolPK.idUsuario = :idUsuario"
+                    + "     )"
+                    + " )"
+                    + " and rec.idRecurso NOT IN ("
+                    + "     select usRec.usrUsuarioRecursoPK.idRecurso"
+                    + "     from UsrUsuarioRecurso usRec"
+                    + "     where usRec.usrUsuarioRecursoPK.idUsuario =: idUsuario"
+                    + " )"
+    )
+    List<UsrRecurso> buscarRecursoPorUsuario(@Param("idUsuario") Long idUsuario);
+
 }
 

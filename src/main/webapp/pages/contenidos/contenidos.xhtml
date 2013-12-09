@@ -42,10 +42,9 @@
                             <p:row>
                                 <p:column>
                                     <p:commandButton value="Editar"
-                                                     type="button"
-                                                     onclick="PF('condenidoDlg').show();"
-                                                     update=":idContenidos:contenidoDialog">
-                                        <f:setPropertyActionListener value="true" target="#{contenidoBean.edicion}"/>
+                                                     action="#{contenidoBean.modificarContenido}"
+                                                     oncomplete="PF('condenidoDlg').show();"
+                                                     update=":contenidoDialog">
                                         <f:setPropertyActionListener value="#{mensajeContenido}"
                                                                      target="#{contenidoBean.mensajeContenido}"/>
                                     </p:commandButton>
@@ -70,17 +69,16 @@
             <p:commandButton value="Nuevo contenido"
                              action="#{contenidoBean.nuevoContenido}"
                              oncomplete="PF('condenidoDlg').show();"
-                             update=":idContenidos:contenidoDialog"/>
+                             update=":contenidoDialog"/>
             <p:commandButton value="Nueva descarga"
                              action="#{contenidoBean.nuevoContenidoDescarga}"
                              oncomplete="PF('condenidoDescargaDlg').show();"
-                             update=":idContenidos:contenidoDescargaDialog"/>
-
-
-            <p:dialog id="contenidoDialog"
-                      resizable="false"
-                      header="Nuevo contenido" widgetVar="condenidoDlg">
-
+                             update=":contenidoDescargaDialog"/>
+        </h:form>
+        <p:dialog
+                resizable="false"
+                header="Nuevo contenido" widgetVar="condenidoDlg">
+            <h:form id="contenidoDialog">
                 <p:editor id="editor" value="#{contenidoBean.mensajeContenido.contenido}" width="700"
                           controls="bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule link unlink cut copy paste pastetext outdent indent"/>
                 <!--bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule image link unlink cut copy paste pastetext print source outdent indent-->
@@ -104,11 +102,12 @@
                               allowTypes="/(\.|\/)(gif|jpe?g|png|txt)$/"/>
                 <p:commandButton value="Guardar" action="#{contenidoBean.guardar}"
                                  update=":idContenidos:idListaContenidos"/>
-
-            </p:dialog>
-            <p:dialog id="contenidoDescargaDialog"
-                      resizable="false"
-                      header="Nueva descarga" widgetVar="condenidoDescargaDlg">
+            </h:form>
+        </p:dialog>
+        <p:dialog
+                resizable="false"
+                header="Nueva descarga" widgetVar="condenidoDescargaDlg">
+            <h:form id="contenidoDescargaDialog">
                 <br/>
                 <p:outputLabel id="messagesDescarga"
                                value="Archivo a descargar: #{contenidoBean.mensajeContenido.archivo}"
@@ -127,8 +126,8 @@
                               allowTypes="/(\.|\/)(gif|jpe?g|png|txt|xls|xlsx|csv|XLS|XLSX|CSV)$/"/>
                 <p:commandButton value="Guardar" action="#{contenidoBean.guardar}"
                                  update=":idContenidos:idListaContenidos"/>
-            </p:dialog>
-        </h:form>
+            </h:form>
+        </p:dialog>
     </ui:define>
 </ui:composition>
 </html>

@@ -91,6 +91,12 @@ public class ContenidoBean implements Serializable {
         binario = null;
     }
 
+
+    public void modificarContenido() {
+        edicion = true;
+        tieneImagenes = true;
+    }
+
     public void guardar() {
         if (mensajeContenido.getEsDescargable() == new Short("1")) {
             mensajeContenido.setContenido("");
@@ -157,8 +163,14 @@ public class ContenidoBean implements Serializable {
         mensajeContenido.setMetadata(event.getFile().getContentType());
     }
 
-    public String irContenidoRecurso() {
-        return "irContenidoRecurso";
+    public void irContenidoRecurso() {
+        FacesContext contex = FacesContext.getCurrentInstance();
+        try {
+            contex.getExternalContext().redirect("/ovt/pages/contenidos/contenidoRecurso.jsf?p=1000");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public IRecursoService getiRecursoService() {

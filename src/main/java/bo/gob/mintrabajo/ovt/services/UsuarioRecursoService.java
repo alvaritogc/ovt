@@ -45,28 +45,8 @@ public class UsuarioRecursoService implements IUsuarioRecursoService{
     }
     
     @Override
-    public UsrUsuarioRecurso save(UsrUsuarioRecurso ur, Long idUsuario) {
-        UsrUsuarioRecurso usuarioRecurso = new UsrUsuarioRecurso();
-        usuarioRecurso.setRegistroBitacora("ROE");
-        usuarioRecurso.setFechaBitacora(new Date());
-        usuarioRecurso.setFechaLimite(ur.getFechaLimite());
-        usuarioRecurso.setUsrRecurso(ur.getUsrRecurso());
-        UsrUsuario usuarioTmp = usuarioRepository.findOne(idUsuario);
-        usuarioRecurso.setUsrUsuario(usuarioTmp);
-        usuarioRecurso.setWx(ur.getWx());
-
-        UsrUsuarioRecursoPK usrUsuarioRecursoPK = new UsrUsuarioRecursoPK();
-        usrUsuarioRecursoPK.setIdUsuario(usuarioTmp.getIdUsuario());
-        usrUsuarioRecursoPK.setIdRecurso(ur.getUsrRecurso().getIdRecurso());
-
-        usuarioRecurso.setUsrUsuarioRecursoPK(usrUsuarioRecursoPK);
-
-        try {
-           return usuarioRecursoRepository.save(usuarioRecurso);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public UsrUsuarioRecurso save(UsrUsuarioRecurso ur) {
+           return usuarioRecursoRepository.save(ur);
     }
 
     @Override
