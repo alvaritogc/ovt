@@ -48,12 +48,13 @@ public class RolRecursoAdministracionBean {
 
     @PostConstruct
     public void ini(){
-        recursoLista = iRecursoService.obtenerTodosRecursoLista();
         rolLista =   iRolService.getAllRoles();
     }
 
     public void buscarRecursoPorRolRecurso(){
         seleccionadoLista = new ArrayList<ArtificioEntity>();
+        recursoLista = new ArrayList<UsrRecurso>();
+        recursoLista.addAll(iRecursoService.obtenerTodosRecursoLista());
 
         for(UsrRecurso r : recursoLista){
             UsrRolRecursoPK usrRolRecursoPK = new UsrRolRecursoPK();
