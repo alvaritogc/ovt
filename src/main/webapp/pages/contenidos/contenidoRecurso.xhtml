@@ -8,6 +8,7 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="./../template/templateInicio.xhtml">
     <ui:define name="content">
+        <ui:include src="/pages/mensajeContenido/mensajeContenido.xhtml"/>
         <h:form id="idContenidoRecurso">
             <h3>Contenido recurso</h3>
             <p:dataTable id="idListaMensajeApp" value="#{contenidoRecursoBean.listaMensajeApp}"

@@ -93,7 +93,7 @@ public class ContenidoRecursoBean {
             return "";
         }
         if (mensajeApp.getFechaHasta() != null) {
-            if (mensajeApp.getFechaDesde().before(mensajeApp.getFechaHasta())) {
+            if (mensajeApp.getFechaDesde().after(mensajeApp.getFechaHasta())) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR
                                 , "Error", "La Fecha hasta no puede ser mayor a la Fecha desde."));
