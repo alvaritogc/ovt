@@ -7,6 +7,12 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="./../template/templateInicio.xhtml">
     <ui:define name="content">
+        <style>
+            .ui-chkbox .ui-chkbox-box {
+                height: 13px;
+                width: 13px;
+            }
+        </style>
         <h3>Administración de usuarios y roles</h3>
         <h:form id="usuarioRolFrm">
             <p:growl showDetail="true" id="auditoriaGrowl" autoUpdate="true" life="8000" />
