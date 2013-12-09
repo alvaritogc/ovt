@@ -6,6 +6,11 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
+
+<f:metadata>
+    <f:viewParam name="p" value="#{declaracionTrimestralBean.parametro}"/>
+</f:metadata>
+
 <ui:composition template="../../pages/template/templateInicio.xhtml">
 <ui:define name="content">
 <h:form id="idMensajeContenido">

@@ -86,13 +86,13 @@ public class SeleccionaCentralSucursalBean implements Serializable{
             unidadSeleccionada=iUnidadService.obtienePorId(new PerUnidadPK(idPersona, idUnidad));
 
         if(verEstadoPlanilla()){
-        session.setAttribute("parametro", parametro);
-        session.setAttribute("unidadSeleccionada", unidadSeleccionada);
-        session.setAttribute("tipoEmpresa", tipoEmpresa);
-        if(parametro<=3)
-            return "irDeclaracionTrimestral";
-        if(parametro<=5)
-            return "irDeclaracionAguinaldo";
+            session.setAttribute("parametro", parametro);
+            session.setAttribute("unidadSeleccionada", unidadSeleccionada);
+            session.setAttribute("tipoEmpresa", tipoEmpresa);
+            if(parametro<=3)
+                return "irDeclaracionTrimestral";
+            if(parametro<=5)
+                return "irDeclaracionAguinaldo";
         }
         return null;
     }
@@ -154,14 +154,17 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                 if(documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999")){
                     mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada por Sucursal.";
                     habilitado=false;
-                return false;
+                    return false;
+                }
             }
-        }
         }
 
         for(DocDocumento documento:listaDocumentos){
             if(documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999") && documento.getPerUnidad().getPerUnidadPK().getIdUnidad() == unidadSeleccionada.getPerUnidadPK().getIdUnidad()){
-                mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada para esta Sucursal.";
+                if(parametro==4)
+                    mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada para esta Sucursal.";
+                if(parametro==5)
+                    mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue rectificada para esta Sucursal.";
                 habilitado=false;
                 return false;
             }
