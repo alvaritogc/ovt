@@ -503,7 +503,7 @@ public class TemplateInicioBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El login no es una cuenta de correo valida!"));
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "No se pudo actualizar el login intente más tarde"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", e.getMessage()));
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("cambioLoginObligadoDlg.hide();");
         }

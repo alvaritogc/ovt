@@ -12,6 +12,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,6 +61,7 @@ public class UsuarioRolAdministracionBean {
     private List<UsrRecurso> usuarioRecursoLista;
 
     private static final Logger log = LoggerFactory.getLogger(UsuarioRolAdministracionBean.class);
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 
     @PostConstruct
     public void ini(){
@@ -68,7 +71,7 @@ public class UsuarioRolAdministracionBean {
 
     public void buscarRolesPorUsuario(){
         seleccionadoLista = new ArrayList<PerPersona>();
-        recursoLista = iRecursoService.buscarPorUsuario(usuarioSelected);
+        recursoLista = iRecursoService.buscarRecursoPorUsuario(usuarioSelected);
         cargarRecursoTemporales();
 
         rolLista = iRolService.getAllRoles();
@@ -93,7 +96,7 @@ public class UsuarioRolAdministracionBean {
         try{
             usuarioRecursoLista = iRecursoService.obtenerRecursoEnUsuarioRecurso(usuarioSelected);
         }catch (Exception e){
-            log.info("Error de la api !!!!!!!!!!");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "Ocurrio una inconsistencia de datos, haga de nuevo click en Buscar"));
         }
     }
 
@@ -119,17 +122,37 @@ public class UsuarioRolAdministracionBean {
         log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo asignarRecursoTemporal()");
         log.info("Asignando el recurso temporal " + recursoSelected.getDescripcion() + " Expira el " + fechaExpiracion + " tipoPermiso " + tipoPermiso);
 
-        if(fechaExpiracion == null){
+        if (fechaExpiracion == null) {
             fechaExpiracion = new Date();
         }
+        if (tipoPermiso == null) {
+            tipoPermiso = "-";
+        }
+
+        UsrUsuario usuarioObj = iUsuarioService.findById(usuarioSelected);
+
         UsrUsuarioRecurso ur = new UsrUsuarioRecurso();
         ur.setFechaLimite(new java.sql.Date(fechaExpiracion.getTime()));
         ur.setUsrRecurso(recursoSelected);
+        ur.setEsDenegado(denegado);
         ur.setWx(tipoPermiso);
-        iUsuarioRecursoService.save(ur, usuarioSelected);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Recurso asignado correctamente"));
-        fechaExpiracion = null;
-        buscarRolesPorUsuario();
+        ur.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
+        ur.setFechaBitacora(new Timestamp(new Date().getTime()));
+        ur.setUsrUsuario(usuarioObj);
+
+        UsrUsuarioRecursoPK usrUsuarioRecursoPK = new UsrUsuarioRecursoPK();
+        usrUsuarioRecursoPK.setIdUsuario(usuarioSelected);
+        usrUsuarioRecursoPK.setIdRecurso(ur.getUsrRecurso().getIdRecurso());
+
+        ur.setUsrUsuarioRecursoPK(usrUsuarioRecursoPK);
+        try {
+            iUsuarioRecursoService.save(ur);
+            fechaExpiracion = null;
+            buscarRolesPorUsuario();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Recurso asignado correctamente"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "No se pudo asignar el recurso, intente más tarde"));
+        }
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("asignaDlg.hide();");
     }
@@ -149,7 +172,7 @@ public class UsuarioRolAdministracionBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Recurso temporal editado correctamente"));
             log.info("Editado correctamente ................. ");
         } catch (Exception e) {
-            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "No se pudo editar el recurso, intente más tarde"));
         }
     }
 

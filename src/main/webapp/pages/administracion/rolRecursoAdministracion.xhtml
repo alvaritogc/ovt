@@ -15,7 +15,7 @@
         </style>
         <h3>Administrar roles y recursos</h3>
         <h:form id="rolRecursoFrm">
-            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <p:growl showDetail="true" id="auditoriaGrowl" autoUpdate="true" life="8000" />
 
             <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
 
@@ -49,11 +49,11 @@
                             <h:outputText value="#{recurso.cadenaAuxiliar}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:selectOneMenu value="#{recurso.cadenaAuxiliar}" style="width: 100px;" required="true" editable="true">
+                            <p:selectOneMenu value="#{recurso.cadenaAuxiliar}" style="width: 100px;" required="true">
                                 <f:selectItem itemLabel="-" itemValue="-"/>
-                                <f:selectItem itemLabel="W" itemValue="W"/>
-                                <f:selectItem itemLabel="X" itemValue="X"/>
-                                <f:selectItem itemLabel="WX" itemValue="WX"/>
+                                <f:selectItem itemLabel="Escritura" itemValue="W"/>
+                                <f:selectItem itemLabel="Ejecución" itemValue="X"/>
+                                <f:selectItem itemLabel="Todo" itemValue="WX"/>
                             </p:selectOneMenu>
                         </f:facet>
                     </p:cellEditor>

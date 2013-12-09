@@ -8,9 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import java.util.List;
 
 /**
@@ -40,17 +42,27 @@ public class ParametrizacionBean {
 
     public void guardarParametro(){
         logger.info("Ingresando a la clase " + getClass().getSimpleName() + "metodo guardarParametro()");
+        try{
         ParParametrizacion pp = iParametrizacionService.editarGuardarParametro(parametrizacionSelected);
         cargaParametricasLista();
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("parametroNuevo.hide();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Parámetro creado correctamente"));
+        }catch (Exception e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El parámetro no pudo crearse, intente más tarde"));
+        }
     }
 
     public void editarParametro(){
         logger.info("Ingresando a la clase " + getClass().getSimpleName() + "metodo editarParametro()");
+        try{
         ParParametrizacion pp = iParametrizacionService.editarGuardarParametro(parametrizacionSelected);
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("parametroEdicion.hide();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Parámetro editado correctamente"));
+        }catch (Exception e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El parámetro no se pudo editar, intente más tarde"));
+        }
     }
 
     public void inicializaParametro(){

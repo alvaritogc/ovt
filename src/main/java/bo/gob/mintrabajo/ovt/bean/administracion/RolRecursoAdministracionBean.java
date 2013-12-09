@@ -48,12 +48,13 @@ public class RolRecursoAdministracionBean {
 
     @PostConstruct
     public void ini(){
-        recursoLista = iRecursoService.obtenerTodosRecursoLista();
         rolLista =   iRolService.getAllRoles();
     }
 
     public void buscarRecursoPorRolRecurso(){
         seleccionadoLista = new ArrayList<ArtificioEntity>();
+        recursoLista = new ArrayList<UsrRecurso>();
+        recursoLista.addAll(iRecursoService.obtenerTodosRecursoLista());
 
         for(UsrRecurso r : recursoLista){
             UsrRolRecursoPK usrRolRecursoPK = new UsrRolRecursoPK();
@@ -80,26 +81,8 @@ public class RolRecursoAdministracionBean {
                 }else{
                     iRolRecursoService.eliminarRolRecurso(idRol, ur.getIdRecurso());
                 }
-
-
-//                if (seleccionadoLista.get(i).getAux1()) {
-//                    UsrRolRecurso rr = new UsrRolRecurso();
-//                    if (seleccionadoLista.get(i).getAux2() && seleccionadoLista.get(i).getAux3()) {
-//                        rr.setWx("WX");
-//                    } else {
-//
-//                        if (seleccionadoLista.get(i).getAux2()) {
-//                            rr.setWx("W");
-//                        }
-//                        if (seleccionadoLista.get(i).getAux3()) {
-//                            rr.setWx("X");
-//                        }
-//                    }
-//                    iRolRecursoService.guardarRolRecurso(rr, idRol, recursoLista.get(i).getIdRecurso());
-//                } else {
-//                    iRolRecursoService.eliminarRolRecurso(idRol, recursoLista.get(i).getIdRecurso());
-//                }
             }
+            buscarRecursoPorRolRecurso();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Asignación de recursos ejecutado correctamente"));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "la asignación de recursos falló"));

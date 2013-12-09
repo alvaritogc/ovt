@@ -10,22 +10,22 @@
     <ui:define name="content">
         <h3>Dominios</h3>
         <h:form id="dominioFrm">
-            <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+            <p:growl showDetail="true" id="auditoriaGrowl" autoUpdate="true" life="8000" />
             <p:commandButton value="Nuevo" icon="ui-icon-circle-plus" action="#{dominioBean.inicializaDominio}" oncomplete="dominioNuevo.show();" update=":dominioNuevoFrm" />
             <br/>
             <p:dataTable id="dominioTbl" value="#{dominioBean.dominioLista}" var="dom" paginator="true" paginatorPosition="bottom" rows="15"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
-                        currentPageReportTemplate="{currentPage} / {totalPages}">
-                <p:column headerText="Dominio">
+                        currentPageReportTemplate="{currentPage} / {totalPages}" filteredValue="#{dominioBean.dominioFiltroLista}">
+                <p:column headerText="Dominio" sortBy="#{dom.parDominioPK.idDominio}">
                     <p:outputLabel value="#{dom.parDominioPK.idDominio}" />
                 </p:column>
-                <p:column headerText="Valor">
+                <p:column headerText="Valor" sortBy="#{dom.parDominioPK.valor}">
                     <p:outputLabel value="#{dom.parDominioPK.valor}" />
                 </p:column>
-                <p:column headerText="Descripción">
+                <p:column headerText="Descripción" sortBy="#{dom.descripcion}">
                     <p:outputLabel value="#{dom.descripcion}" />
                 </p:column>
-                <p:column headerText="Observación">
+                <p:column headerText="Observación" sortBy="#{dom.observacion}">
                     <p:outputLabel value="#{dom.observacion}" />
                 </p:column>
                 <p:column headerText="Módulo">

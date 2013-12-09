@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -154,7 +155,7 @@ public class UsuarioAdministracionBean {
     public void inhabilitarUsuario() {
         log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo eliminarUsuario()");
         try {
-            usuarioSelected.setFechaRehabilitacion(null);
+            usuarioSelected.setFechaRehabilitacion(new Timestamp(0));
             usuarioSelected.setFechaInhabilitacion(new Timestamp(new Date().getTime()));
             usuarioSelected.setFechaBitacora(new Timestamp(new Date().getTime()));
             usuarioSelected.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
@@ -171,7 +172,7 @@ public class UsuarioAdministracionBean {
         log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo habilitarUsuario()");
         try {
             usuarioSelected.setFechaRehabilitacion(new Timestamp(new Date().getTime()));
-            usuarioSelected.setFechaInhabilitacion(null);
+            usuarioSelected.setFechaInhabilitacion(new Timestamp(0));
             usuarioSelected.setFechaBitacora(new Timestamp(new Date().getTime()));
             usuarioSelected.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
             iUsuarioService.save(usuarioSelected);

@@ -10,9 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +32,7 @@ public class DominioBean {
     @ManagedProperty(value = "#{dominioService}")
     private IDominioService iDominioService;
     private List<ParDominio> dominioLista;
+    private List<ParDominio> dominioFiltroLista;
     private ParDominio dominioSelected;
 
     private static final Logger logger = LoggerFactory.getLogger(ParametrizacionBean.class);
@@ -36,7 +40,8 @@ public class DominioBean {
     @PostConstruct
     public void cargaDominiosLista(){
         //dominioLista = iDominioService.obtenerDominioLista();
-        dominioLista = iDominioService.listaDominioPorOrdenDominioAndValor();
+        dominioLista = new ArrayList<ParDominio>();
+        dominioLista.addAll(iDominioService.listaDominioPorOrdenDominioAndValor());
     }
 
     public void inicializaDominio(){
@@ -46,16 +51,26 @@ public class DominioBean {
     }
 
     public void guardarDominio(){
+        try{
         iDominioService.editarGuardarDominio(dominioSelected);
         RequestContext context = RequestContext.getCurrentInstance();
         cargaDominiosLista();
         context.execute("dominioNuevo.hide();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Dominio creado correctamente"));
+        }catch (Exception e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El dominio no pudo crearse, intente más tarde"));
+        }
     }
 
     public void editarDominio(){
+        try{
         iDominioService.editarGuardarDominio(dominioSelected);
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("dominioEdicion.hide();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Dominio editado correctamente"));
+        }catch (Exception e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El dominio no se pudo editar, intente más tarde"));
+        }
     }
 
     // *** Getters y Setters *** //
@@ -81,5 +96,13 @@ public class DominioBean {
 
     public void setDominioLista(List<ParDominio> dominioLista) {
         this.dominioLista = dominioLista;
+    }
+
+    public List<ParDominio> getDominioFiltroLista() {
+        return dominioFiltroLista;
+    }
+
+    public void setDominioFiltroLista(List<ParDominio> dominioFiltroLista) {
+        this.dominioFiltroLista = dominioFiltroLista;
     }
 }

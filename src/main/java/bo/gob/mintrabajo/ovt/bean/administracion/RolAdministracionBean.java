@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,32 +43,42 @@ public class RolAdministracionBean {
     private short esInterno;
     private UsrRol rolSelected;
     private List<UsrRol> rolLista;
+    private List<UsrRol> rolFiltroLista;
     private List<UsrModulo> moduloLista;
 
     private static final Logger log = LoggerFactory.getLogger(RolAdministracionBean.class);
 
     @PostConstruct
     public void cargaRolLista(){
-        rolLista = iRolService.getAllRoles();
+        rolLista = new ArrayList<UsrRol>();
+        rolLista.addAll(iRolService.getAllRoles());
         moduloLista = iUsrModuloService.obtenerUsrModuloLista();
     }
 
     public void guardarRol(){
         log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo guardarRol()");
-        iRolService.save(rolSelected, esInterno);
-        RequestContext context = RequestContext.getCurrentInstance();
-        cargaRolLista();
-        context.execute("nuevoDlg.hide();");
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "El rol se creó correctamente"));
+        try {
+            iRolService.save(rolSelected, esInterno);
+            RequestContext context = RequestContext.getCurrentInstance();
+            cargaRolLista();
+            context.execute("nuevoDlg.hide();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "El rol se creó correctamente"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El rol no pudo crearse, intente más tarde"));
+        }
     }
 
     public void editarRol(){
         log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo editarRol()");
+        try{
         iRolService.save(rolSelected, esInterno);
         RequestContext context = RequestContext.getCurrentInstance();
         cargaRolLista();
         context.execute("edicionDlg.hide();");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "El rol se editó correctamente"));
+        }catch (Exception e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El rol no se pudo editar, intente más tarde"));
+        }
     }
 
     public void eliminarRol(){
@@ -79,7 +90,7 @@ public class RolAdministracionBean {
             cargaRolLista();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "El rol " + rolSelected.getNombre() + " se eliminó correctamente" ));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Cuidado", "El rol no fue eliminado"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El rol no fue eliminado"));
         }
     }
     
@@ -150,5 +161,13 @@ public class RolAdministracionBean {
 
     public void setEsInterno(short esInterno) {
         this.esInterno = esInterno;
+    }
+
+    public List<UsrRol> getRolFiltroLista() {
+        return rolFiltroLista;
+    }
+
+    public void setRolFiltroLista(List<UsrRol> rolFiltroLista) {
+        this.rolFiltroLista = rolFiltroLista;
     }
 }
