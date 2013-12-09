@@ -38,6 +38,7 @@ public class ContenidoRecursoBean {
     private ParMensajeApp mensajeApp;
     //
     private Long idRecurso;
+    private UsrRecurso recurso;
     private boolean edicion;
 
     @PostConstruct
@@ -47,6 +48,7 @@ public class ContenidoRecursoBean {
         Map params = ec.getRequestParameterMap();
         String parametro = params.get("p").toString();
         idRecurso = parametro != null ? new Long(parametro) : new Long("1000");
+        recurso = iRecursoService.findById(idRecurso);
         cargar();
     }
 
@@ -152,6 +154,14 @@ public class ContenidoRecursoBean {
 
     public void setEdicion(boolean edicion) {
         this.edicion = edicion;
+    }
+
+    public UsrRecurso getRecurso() {
+        return recurso;
+    }
+
+    public void setRecurso(UsrRecurso recurso) {
+        this.recurso = recurso;
     }
 
 }

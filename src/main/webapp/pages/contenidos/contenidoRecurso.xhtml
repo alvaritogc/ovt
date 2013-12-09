@@ -8,9 +8,9 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="./../template/templateInicio.xhtml">
     <ui:define name="content">
-        <ui:include src="/pages/mensajeContenido/mensajeContenido.xhtml"/>
+        <!--        <ui:include src="/pages/mensajeContenido/mensajeContenido.xhtml"/>-->
         <h:form id="idContenidoRecurso">
-            <h3>Contenido recurso</h3>
+            <h3>Contenido recurso: #{contenidoRecursoBean.recurso.etiqueta}</h3>
             <p:dataTable id="idListaMensajeApp" value="#{contenidoRecursoBean.listaMensajeApp}"
                          paginatorPosition="bottom" paginator="true"
                          var="mensajeApp" rows="10" emptyMessage="No se encontraron resultados">
