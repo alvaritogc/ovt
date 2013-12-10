@@ -15,10 +15,11 @@ public interface IObligacionCalendarioService {
     public List<ParObligacionCalendario> listaObligacionCalendarioPorObligacion(String codObligacion);
     public List<ParObligacionCalendario> listaObligacionCalendarioOrdenadoPorDescripcionDeObligacion();
 
-    //List<ParObligacionCalendario> listaObligacionCalendarioPorGestion(String gestionActual);
     public ParObligacionCalendario findById(Long id);
-    public ParObligacionCalendario buscarPorPlatriALaFecha();
     public List<ParObligacionCalendario> buscarPorPlatriPorFecha(Date fechaActual);
-    List<ParObligacionCalendario> listarPlanillaAguiPorFechaHastaFechaPlazo(Date fechaActual);
-    List<ParObligacionCalendario> listarPlanillaAguiPorFechaHastaFechaPlazo2(Date fechaActual);
+
+    ParObligacionCalendario listarPlanillaTrimPorFechaHastaFechaPlazo(Date fechaActual);
+    ParObligacionCalendario listarPlanillaTrimPorFechaHastaFechaPlazo2(Date fechaActual);
+    ParObligacionCalendario listarPlanillaAguiPorFechaHastaFechaPlazo(Date fechaActual);
+    ParObligacionCalendario listarPlanillaAguiPorFechaHastaFechaPlazo2(Date fechaActual);
 }

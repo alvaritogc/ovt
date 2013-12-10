@@ -7,7 +7,6 @@ import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import com.csvreader.CsvReader;
 import org.apache.commons.io.FilenameUtils;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -19,7 +18,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -113,8 +111,6 @@ public class DeclaracionTrimestralBean implements Serializable {
     private int tamanioErrores;
     private boolean valor;
     private int tipoEmpresa=1;
-    private PerUnidad central;
-    private List<PerUnidad> sucursales;
     private PerUnidad unidadSeleccionada;
     private int tamañoSucursales;
 
@@ -125,18 +121,14 @@ public class DeclaracionTrimestralBean implements Serializable {
     private List<DocAlerta> alertas;
     private int salarioMinimo;
     private String nombreBinario;
+    private DocPlanilla rectificatorio;
 
     @PostConstruct
     public void ini() {
-        try {
-            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p") == null)
-                parametro = 1;
-            if (((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p") != null|| !((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p").equals(""))
-                parametro = Integer.valueOf(((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter("p"));
-        }catch (Exception e) {
-//            e.printStackTrace();
-            parametro = 1;
-        }
+        parametro = (Integer) session.getAttribute("parametro");
+        unidadSeleccionada = (PerUnidad) session.getAttribute("unidadSeleccionada");
+        tipoEmpresa = (Integer) session.getAttribute("tipoEmpresa");
+
         if(parametro==2)
             habilita=false;
         idPersona = (String) session.getAttribute("idEmpleador");
@@ -175,9 +167,9 @@ public class DeclaracionTrimestralBean implements Serializable {
 //        persona = iPersonaService.buscarPorId(idPersona);
         logger.info("persona ok");
         cargar();
-        if (parametro==3){
+        if (parametro==5){
             esRectificatorio=true;
-            unidadSeleccionada=central;
+            rectificatorio = iPlanillaService.buscarPorDocumento(iDocumentoService.buscarPorUnindad(unidadSeleccionada.getPerUnidadPK()).getIdDocumento());
         }
         valor=true;
         gestion=String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
@@ -185,58 +177,35 @@ public class DeclaracionTrimestralBean implements Serializable {
         tamanioErrores=2;
     }
 
-    public void abrirPanel() {
-        if(valor && !estaDeclarado && parametro!=3)
-            RequestContext.getCurrentInstance().execute("seleccionEmpresa.show()");
-        valor = false;
-    }
-
     public void cargar() {
         generaDocumento();
-//        verEstadoPlanilla();
-        cargarDocumentosParaRectificar();
-        listaCentralSucursales();
-    }
-
-    public void listaCentralSucursales(){
-        central = new PerUnidad();
-        sucursales = new ArrayList<PerUnidad>();
-        List<PerUnidad> listaUnidades;
-        listaUnidades=iUnidadService.listarUnidadesSucursales(idPersona);
-        for(PerUnidad sucursal:listaUnidades)  {
-            if(sucursal.getPerUnidadPK().getIdUnidad()==0)
-                central=sucursal;
-            sucursales.add(sucursal);
-        }
-        tamañoSucursales=sucursales.size();
+        if(parametro==3)
+            cargarDocumentosParaRectificar();
     }
 
     public void cargarDocumentosParaRectificar(){
-//        docDocumentosParaRectificar= new ArrayList<DocDocumento>();
-//        docDocumentosParaRectificar= iDocumentoService.listarDocumentosParaRectificar(idPersona, "LC1010");
-        
         docPlanillasParaRectificar= new ArrayList<DocPlanilla>();
         docPlanillasParaRectificar= iPlanillaService.listarPlanillasParaRectificar(idPersona, "LC1010");
     }
 
 
-    public void seleccionaEmpresa(){
-        if(tipoEmpresa!=2)
-            unidadSeleccionada=central;
-        else
-            unidadSeleccionada=iUnidadService.obtienePorId(new PerUnidadPK(idPersona, idUnidad));
-
-        ParObligacionCalendario parObligacionCalendario=iObligacionCalendarioService.buscarPorPlatriALaFecha();
-        List<DocDocumento>listaDocumentos=iDocumentoService.listarDocumentosPorPersonaUnidad(unidadSeleccionada.getPerUnidadPK(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
-
-        for(DocDocumento doc:listaDocumentos){
-                if(parametro!=3 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
-                estaDeclaradoMensaje="Solo se puede realizar o la Declaración Jurada Trimestral o la Declaración Jurada Sin Movimiento.";
-                estaDeclarado=true;
-                return;
-            }
-        }
-    }
+//    public void seleccionaEmpresa(){
+//        if(tipoEmpresa!=2)
+//            unidadSeleccionada=central;
+//        else
+//            unidadSeleccionada=iUnidadService.obtienePorId(new PerUnidadPK(idPersona, idUnidad));
+//
+//        ParObligacionCalendario parObligacionCalendario=iObligacionCalendarioService.buscarPorPlatriALaFecha();
+//        List<DocDocumento>listaDocumentos=iDocumentoService.listarDocumentosPorPersonaUnidad(unidadSeleccionada.getPerUnidadPK(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
+//
+//        for(DocDocumento doc:listaDocumentos){
+//                if(parametro!=3 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
+//                estaDeclaradoMensaje="Solo se puede realizar o la Declaración Jurada Trimestral o la Declaración Jurada Sin Movimiento.";
+//                estaDeclarado=true;
+//                return;
+//            }
+//        }
+//    }
 
     public void seleccionaTrimestre(){
         periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
@@ -306,7 +275,10 @@ public class DeclaracionTrimestralBean implements Serializable {
         documento.setFechaDocumento(new Date());
         documento.setCodEstado(iDocumentoEstadoService.buscarPorId("110"));
         documento.setFechaReferenca(new Date());
-
+        if(tipoEmpresa!=2)
+            documento.setTipoMedioRegistro("CONSOLIDADO");
+        else
+            documento.setTipoMedioRegistro("SUCURSAL");
         documento.setFechaBitacora(new Date());
         documento.setRegistroBitacora(usuario.getUsuario());
     }
@@ -339,15 +311,12 @@ public class DeclaracionTrimestralBean implements Serializable {
         switch (parametro){
             case 1:
                 docPlanilla.setTipoPlanilla("DDJJ");
-                documento.setTipoMedioRegistro("DDJJ");
                 break;
             case 2:
                 docPlanilla.setTipoPlanilla("DDJJSM");
-                documento.setTipoMedioRegistro("DDJJSM");
                 break;
             case 3:
                 docPlanilla.setTipoPlanilla("DDJJRECT");
-                documento.setTipoMedioRegistro("DDJJRECT");
                 break;
             default:
                 docPlanilla.setTipoPlanilla("");
@@ -1134,22 +1103,6 @@ public class DeclaracionTrimestralBean implements Serializable {
         this.unidadSeleccionada = unidadSeleccionada;
     }
 
-    public List<PerUnidad> getSucursales() {
-        return sucursales;
-    }
-
-    public void setSucursales(List<PerUnidad> sucursales) {
-        this.sucursales = sucursales;
-    }
-
-    public PerUnidad getCentral() {
-        return central;
-    }
-
-    public void setCentral(PerUnidad central) {
-        this.central = central;
-    }
-
     public int getTamañoSucursales() {
         return tamañoSucursales;
     }
@@ -1245,4 +1198,12 @@ public class DeclaracionTrimestralBean implements Serializable {
     public void setDocPlanillasParaRectificar(List<DocPlanilla> docPlanillasParaRectificar) {
         this.docPlanillasParaRectificar = docPlanillasParaRectificar;
 }
+
+    public DocPlanilla getRectificatorio() {
+        return rectificatorio;
+    }
+
+    public void setRectificatorio(DocPlanilla rectificatorio) {
+        this.rectificatorio = rectificatorio;
+    }
 }
