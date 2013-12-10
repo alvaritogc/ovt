@@ -12,6 +12,11 @@
         <!--        <ui:include src="/pages/mensajeContenido/mensajeContenido.xhtml"/>-->
         <h:form id="idContenidoRecurso">
             <h3>Contenido recurso: #{contenidoRecursoBean.recurso.etiqueta}</h3>
+            <br/>
+            <p:outputLabel
+                    value="Este tipo de contenidos solo es visible para los usuarios que se encuentren dentro de la sesión "
+                    rendered="#{contenidoRecursoBean.recurso.tipoRecurso=='GUI'}"/>
+            <br/>
             <p:dataTable id="idListaMensajeApp" value="#{contenidoRecursoBean.listaMensajeApp}"
                          paginatorPosition="bottom" paginator="true"
                          var="mensajeApp" rows="10" emptyMessage="No se encontraron resultados">
@@ -45,7 +50,7 @@
                         <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}"/>
                     </p:commandButton>
                     <p:commandButton icon="ui-icon-trash"
-                                     update=":idContenidoRecurso:idListaMensajeApp"
+                                     update=":idContenidoRecurso"
                                      action="#{contenidoRecursoBean.eliminar}" title="Eliminar" immediate="true">
                         <f:setPropertyActionListener value="#{mensajeApp}" target="#{contenidoRecursoBean.mensajeApp}"/>
                     </p:commandButton>
@@ -53,12 +58,22 @@
             </p:dataTable>
             <br/>
             <p:commandButton value="Nuevo contenido"
+                             rendered="#{contenidoRecursoBean.recurso.tipoRecurso!='GUI'}"
                              action="#{contenidoRecursoBean.nuevo}"
                              oncomplete="PF('contenidoRecursoDlg').show();"
                              immediate="true"
                              icon="ui-icon-circle-plus"
                              update=":idDlgExterno"/>
-
+            <h:panelGrid columns="1"
+                         rendered="#{contenidoRecursoBean.recurso.tipoRecurso=='GUI'}">
+                <p:commandButton value="Nuevo contenido"
+                                 rendered="#{contenidoRecursoBean.listaMensajeApp.size()==0}"
+                                 action="#{contenidoRecursoBean.nuevo}"
+                                 oncomplete="PF('contenidoRecursoDlg').show();"
+                                 immediate="true"
+                                 icon="ui-icon-circle-plus"
+                                 update=":idDlgExterno"/>
+            </h:panelGrid>
         </h:form>
 
         <p:dialog id="contenidoRecursoDialog" header="Nuevo contenido"
@@ -79,7 +94,7 @@
                 </h:panelGrid>
                 <p:commandButton value="Guardar"
                                  action="#{contenidoRecursoBean.guardar}"
-                                 update=":idContenidoRecurso:idListaMensajeApp"
+                                 update=":idContenidoRecurso"
                                  icon="ui-icon-disk"/>
                 <p:commandButton value="Cancelar"
                                  action="#{contenidoRecursoBean.nuevo}"
