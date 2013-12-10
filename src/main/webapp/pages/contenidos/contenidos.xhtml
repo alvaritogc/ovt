@@ -79,6 +79,9 @@
                              oncomplete="PF('condenidoDescargaDlg').show();"
                              icon="ui-icon ui-icon-arrowthickstop-1-s"
                              update=":contenidoDescargaDialog"/>
+            <p:commandButton value="Volver"
+                             action="#{contenidoBean.irContenidoRecurso}"
+                             immediate="true"/>
         </h:form>
         <p:dialog
                 resizable="false"

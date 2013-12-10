@@ -171,7 +171,7 @@ public class ContenidoBean implements Serializable {
     public void irContenidoRecurso() {
         FacesContext contex = FacesContext.getCurrentInstance();
         try {
-            contex.getExternalContext().redirect("/ovt/pages/contenidos/contenidoRecurso.jsf?p=1000");
+            contex.getExternalContext().redirect("/ovt/pages/contenidos/contenidoRecurso.jsf?p=" + mensajeApp.getIdRecurso().getIdRecurso());
         } catch (Exception e) {
             e.printStackTrace();
         }
