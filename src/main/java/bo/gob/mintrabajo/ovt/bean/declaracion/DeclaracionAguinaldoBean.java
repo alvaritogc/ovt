@@ -182,7 +182,8 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
     public void cargar() {
         generaDocumento();
-        cargarDocumentosParaRectificar();
+        if(parametro==5)
+            cargarDocumentosParaRectificar();
     }
 
     public void cargarDocumentosParaRectificar(){
