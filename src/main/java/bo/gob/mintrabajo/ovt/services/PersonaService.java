@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.ejb.TransactionAttribute;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -20,7 +21,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -90,23 +93,11 @@ public class PersonaService implements IPersonaService {
     public void editarPersona(PerPersona persona, PerUnidad unidad, String idLocalidad) {
         log.info("Editando el Usuario ...");
         try{
-        PerPersona perPersonaTmp = personaRepository.findOne(persona.getIdPersona());
-        perPersonaTmp.setTipoIdentificacion(persona.getTipoIdentificacion());
-        perPersonaTmp.setCodLocalidad(localidadRepository.findOne(idLocalidad));
-        perPersonaTmp.setNroIdentificacion(persona.getNroIdentificacion());
-        perPersonaTmp.setNombreRazonSocial(persona.getNombreRazonSocial());
-        perPersonaTmp.setApellidoPaterno(persona.getApellidoPaterno());
-        perPersonaTmp.setApellidoMaterno(persona.getApellidoMaterno());
-        PerPersona personaTmp = personaRepository.save(perPersonaTmp);
+        persona.setCodLocalidad(localidadRepository.findOne(idLocalidad));
+        personaRepository.save(persona);
         log.info("Guardando la persona ");
 
-        PerUnidad unidadTmp = unidadRepository.findByPerPersona_IdPersona(perPersonaTmp.getIdPersona()).get(0);
-        unidadTmp.setNombreComercial(unidad.getNombreComercial());
-        unidadTmp.setTipoEmpresa(unidad.getTipoEmpresa());
-        unidadTmp.setTipoSociedad(unidad.getTipoSociedad());
-        unidadTmp.setActividadDeclarada(unidad.getActividadDeclarada());
-        unidadTmp.setPerPersona(personaTmp);
-        unidadRepository.save(unidadTmp);
+        unidadRepository.save(unidad);
         log.info("Guardada la unidad sin falla ...");
         }catch (Exception e){
             e.printStackTrace();
@@ -274,20 +265,14 @@ public class PersonaService implements IPersonaService {
     @Override
     public boolean guardarUsuarioInterno(PerPersona persona, PerUnidad unidad, UsrUsuario usuario) {
         log.info("Guardando el registro de usuario Interno ... " + getClass().getSimpleName());
-        persona.setFechaBitacora(new Date());
-        persona.setRegistroBitacora("ROE");
         persona = personaRepository.save(persona);
 
         log.info("Guardando la persona ");
-        unidad.setFechaBitacora(new Date());
-        unidad.setRegistroBitacora("ROE");
         unidad.setObservaciones("NINGUNA");
         unidad.setPerPersona(persona);
         unidad = unidadRepository.save(unidad);
 
         log.info("Guardando la unidad");
-        usuario.setFechaBitacora(new Date());
-        usuario.setRegistroBitacora("ROE");
         usuario.setIdPersona(persona);
         usuario.setEstadoUsuario("A");
         usuario.setEsInterno(new Short("1"));
@@ -301,8 +286,8 @@ public class PersonaService implements IPersonaService {
         perUsuarioUnidadPK.setIdUsuario(usuario.getIdUsuario());
 
         log.info("Guardando la relación usuario_unidad");
-        usuarioUnidad.setFechaBitacora(new Date());
-        usuarioUnidad.setRegistroBitacora("ROE");
+        usuarioUnidad.setFechaBitacora(new Timestamp(new Date().getTime()));
+        usuarioUnidad.setRegistroBitacora(persona.getRegistroBitacora());
         usuarioUnidad.setPerUnidad(unidad);
         usuarioUnidad.setUsrUsuario(usuario);
         usuarioUnidad.setPerUsuarioUnidadPK(perUsuarioUnidadPK);
@@ -365,12 +350,13 @@ public class PersonaService implements IPersonaService {
     }
 
     public boolean guardarUsuarioRol(Long idUsuario, Long idRol){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         UsrRol rol = rolRepository.findByIdRol(idRol);
         UsrUsuario usuario = usuarioRepository.findOne(idUsuario);
 
         UsrUsuarioRol usuarioRol = new UsrUsuarioRol();
-        usuarioRol.setFechaBitacora(new Date());
-        usuarioRol.setRegistroBitacora("ROE");
+        usuarioRol.setFechaBitacora(new Timestamp(new Date().getTime()));
+        usuarioRol.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
 
         usuarioRol.setUsrRol(rol);
         usuarioRol.setUsrUsuario(usuario);

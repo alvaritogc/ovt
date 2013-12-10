@@ -40,16 +40,21 @@ public class ParametrizacionBean {
         parametrizacionLista = iParametrizacionService.listaPorOrdenParametroValor();
     }
 
-    public void guardarParametro(){
+    public void guardarParametro() {
         logger.info("Ingresando a la clase " + getClass().getSimpleName() + "metodo guardarParametro()");
-        try{
-        ParParametrizacion pp = iParametrizacionService.editarGuardarParametro(parametrizacionSelected);
-        cargaParametricasLista();
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("parametroNuevo.hide();");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Parámetro creado correctamente"));
-        }catch (Exception e){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El parámetro no pudo crearse, intente más tarde"));
+
+        if (iParametrizacionService.obtenerParametro(parametrizacionSelected.getParParametrizacionPK().getIdParametro(), parametrizacionSelected.getParParametrizacionPK().getValor()) != null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "Ya existe una paramétrica con estos mismos valores de Parámetro y Código"));
+        } else {
+            try {
+                ParParametrizacion pp = iParametrizacionService.editarGuardarParametro(parametrizacionSelected);
+                cargaParametricasLista();
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("parametroNuevo.hide();");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Parámetro creado correctamente"));
+            } catch (Exception e) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El parámetro no pudo crearse, intente más tarde"));
+            }
         }
     }
 
