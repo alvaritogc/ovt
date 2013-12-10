@@ -175,4 +175,12 @@ public class MensajeContenidoBean {
     public void setMensajeContenido(ParMensajeContenido mensajeContenido) {
         this.mensajeContenido = mensajeContenido;
     }
+
+    public IMensajeBinarioService getiMensajeBinarioService() {
+        return iMensajeBinarioService;
+    }
+
+    public void setiMensajeBinarioService(IMensajeBinarioService iMensajeBinarioService) {
+        this.iMensajeBinarioService = iMensajeBinarioService;
+    }
 }

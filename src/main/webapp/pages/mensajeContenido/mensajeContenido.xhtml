@@ -1,54 +1,56 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                    xmlns:h="http://java.sun.com/jsf/html"
-                    xmlns:f="http://java.sun.com/jsf/core"
-                    xmlns:ui="http://java.sun.com/jsf/facelets"
-                    xmlns:p="http://primefaces.org/ui">
-        <p:dialog id="idParMensajeApp" header="Información" widgetVar="dlgParMensajeApp" resizable="false"
-                  >  
-            <h:form id="idMensajeContenidoDlg">
-                <br/>
-                <center>
-                    <p:outputLabel value="#{mensajeContenidoBean.mensajeApp.mensaje}" style="font-size: 30px;"/>
-                </center>
-                <br/>
-                <h:dataTable id="idListaContenidos" value="#{mensajeContenidoBean.listaMensajeContenido}" style="width: 100%;"
-                             var="mensajeContenido"  rows="10" >
-                    <h:column>
-                        <h:panelGrid columns="1" style="width: 100%;">
-                            <h:panelGrid columns="1" 
-                                         rendered="#{mensajeContenido.esDescargable==0?true:false}">
-                                <h:outputText value="#{mensajeContenido.contenido}" escape="false" /> 
-                                <h:panelGrid columns="1" class="hPanelGridCentro"
-                                             rendered="#{mensajeContenido.metadata=='image/jpeg'}">
-                                    <p:graphicImage value="#{images.image}" cache="false">
-                                        <f:param name="id" value="#{mensajeContenido.idMensajeContenido}" />
-                                    </p:graphicImage>
-                                </h:panelGrid>
-
-
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="idParMensajeApp" header="Información" widgetVar="dlgParMensajeApp" resizable="false"
+            >
+        <h:form id="idMensajeContenidoDlg">
+            <br/>
+            <center>
+                <p:outputLabel value="#{mensajeContenidoBean.mensajeApp.mensaje}" style="font-size: 30px;"/>
+            </center>
+            <br/>
+            <h:dataTable id="idListaContenidos" value="#{mensajeContenidoBean.listaMensajeContenido}"
+                         style="width: 100%;"
+                         var="mensajeContenido" rows="10">
+                <h:column>
+                    <h:panelGrid columns="1" style="width: 100%;">
+                        <h:panelGrid columns="1" style="width: 100%;"
+                                     rendered="#{mensajeContenido.esDescargable==0?true:false}">
+                            <h:outputText value="#{mensajeContenido.contenido}" escape="false"/>
+                            <h:panelGrid columns="1" class="hPanelGridCentro"
+                                         rendered="#{mensajeContenido.metadata=='image/jpeg'}">
+                                <p:graphicImage value="#{images.image}" cache="false">
+                                    <f:param name="id" value="#{mensajeContenido.idMensajeContenido}"/>
+                                </p:graphicImage>
                             </h:panelGrid>
-                            <p:commandButton value="Descargar: #{mensajeContenido.archivo}" 
-                                             rendered="#{mensajeContenido.esDescargable==1?true:false}"
-                                             action="#{mensajeContenidoBean.descargar}" ajax="false">
-                                <f:setPropertyActionListener value="#{mensajeContenido}" target="#{mensajeContenidoBean.mensajeContenido}" />
-                            </p:commandButton>
+
+
                         </h:panelGrid>
-                    </h:column>
-                </h:dataTable>
-            </h:form>
-        </p:dialog>  
-        <h:form id="idMensajeContenido">
-            <p:poll interval="1"   id="idPollParMensajeApp"
-                    listener="#{mensajeContenidoBean.abrirPanel}"
-                    update=":idMensajeContenido:idPollParMensajeApp" 
-                    stop="#{mensajeContenidoBean.detenerFacesMessages}"/>
+                        <p:commandButton value="Descargar: #{mensajeContenido.archivo}"
+                                         rendered="#{mensajeContenido.esDescargable==1?true:false}"
+                                         action="#{mensajeContenidoBean.descargar}" ajax="false">
+                            <f:setPropertyActionListener value="#{mensajeContenido}"
+                                                         target="#{mensajeContenidoBean.mensajeContenido}"/>
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:column>
+            </h:dataTable>
         </h:form>
-    </ui:composition>
+    </p:dialog>
+    <h:form id="idMensajeContenido">
+        <p:poll interval="1" id="idPollParMensajeApp"
+                listener="#{mensajeContenidoBean.abrirPanel}"
+                update=":idMensajeContenido:idPollParMensajeApp"
+                stop="#{mensajeContenidoBean.detenerFacesMessages}"/>
+    </h:form>
+</ui:composition>
 </html>

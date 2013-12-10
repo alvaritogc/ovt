@@ -592,6 +592,7 @@ public class EscritorioBean {
             // Paramatros para el reporte
             HashMap hm=new HashMap();
             hm.put("idPersona",idPersona);
+
             hm.put("escudoIzquierda",rutaEscudoIzquierda);
             hm.put("escudoDerecha",rutaEscudoDerecha);
 

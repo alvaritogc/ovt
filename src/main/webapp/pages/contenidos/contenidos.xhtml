@@ -8,6 +8,7 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="./../template/templateInicio.xhtml">
     <ui:define name="content">
+        <p:growl id="messages1" showDetail="true" autoUpdate="true"/>
         <h:form id="idContenidos">
             <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
             <br/>
@@ -41,17 +42,18 @@
                         <h:panelGrid style="text-align: right;width: 100%;" columns="2">
                             <p:row>
                                 <p:column>
-                                    <p:commandButton value="Editar"
-                                                     type="button"
-                                                     onclick="PF('condenidoDlg').show();"
-                                                     update=":idContenidos:contenidoDialog">
-                                        <f:setPropertyActionListener value="true" target="#{contenidoBean.edicion}"/>
+                                    <p:commandButton value="Editar contenido"
+                                                     action="#{contenidoBean.modificarContenido}"
+                                                     oncomplete="PF('condenidoDlg').show();"
+                                                     icon="ui-icon-pencil"
+                                                     update=":contenidoDialog">
                                         <f:setPropertyActionListener value="#{mensajeContenido}"
                                                                      target="#{contenidoBean.mensajeContenido}"/>
                                     </p:commandButton>
                                 </p:column>
                                 <p:column>
                                     <p:commandButton action="#{contenidoBean.eliminar}" value="Eliminar contenido"
+                                                     icon="ui-icon-trash"
                                                      immediate="true"
                                                      update=":idContenidos">
                                         <f:setPropertyActionListener value="#{mensajeContenido}"
@@ -70,22 +72,25 @@
             <p:commandButton value="Nuevo contenido"
                              action="#{contenidoBean.nuevoContenido}"
                              oncomplete="PF('condenidoDlg').show();"
-                             update=":idContenidos:contenidoDialog"/>
+                             icon="ui-icon-circle-plus"
+                             update=":contenidoDialog"/>
             <p:commandButton value="Nueva descarga"
                              action="#{contenidoBean.nuevoContenidoDescarga}"
                              oncomplete="PF('condenidoDescargaDlg').show();"
-                             update=":idContenidos:contenidoDescargaDialog"/>
-
-
-            <p:dialog id="contenidoDialog"
-                      resizable="false"
-                      header="Nuevo contenido" widgetVar="condenidoDlg">
-
+                             icon="ui-icon ui-icon-arrowthickstop-1-s"
+                             update=":contenidoDescargaDialog"/>
+            <p:commandButton value="Volver"
+                             action="#{contenidoBean.irContenidoRecurso}"
+                             immediate="true"/>
+        </h:form>
+        <p:dialog
+                resizable="false"
+                header="Nuevo contenido" widgetVar="condenidoDlg">
+            <h:form id="contenidoDialog">
                 <p:editor id="editor" value="#{contenidoBean.mensajeContenido.contenido}" width="700"
                           controls="bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule link unlink cut copy paste pastetext outdent indent"/>
                 <!--bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule image link unlink cut copy paste pastetext print source outdent indent-->
                 <br/>
-                <p:outputLabel value="tieneImagenes: #{contenidoBean.tieneImagenes}"/>
                 <p:outputLabel id="messages" value="Imagen: #{contenidoBean.mensajeContenido.archivo}"
                                rendered="#{!contenidoBean.tieneImagenes}"
                                style="font-size: 20px;"/>
@@ -103,12 +108,19 @@
                               update="messages idFileUploadContenido" auto="true"
                               allowTypes="/(\.|\/)(gif|jpe?g|png|txt)$/"/>
                 <p:commandButton value="Guardar" action="#{contenidoBean.guardar}"
+                                 icon="ui-icon-disk"
                                  update=":idContenidos:idListaContenidos"/>
-
-            </p:dialog>
-            <p:dialog id="contenidoDescargaDialog"
-                      resizable="false"
-                      header="Nueva descarga" widgetVar="condenidoDescargaDlg">
+                <p:commandButton value="Cancelar"
+                                 action="#{contenidoBean.nuevoContenido}"
+                                 immediate="true"
+                                 onclick="condenidoDlg.hide();"
+                                 icon="ui-icon-close"/>
+            </h:form>
+        </p:dialog>
+        <p:dialog
+                resizable="false"
+                header="Nueva descarga" widgetVar="condenidoDescargaDlg">
+            <h:form id="contenidoDescargaDialog">
                 <br/>
                 <p:outputLabel id="messagesDescarga"
                                value="Archivo a descargar: #{contenidoBean.mensajeContenido.archivo}"
@@ -126,9 +138,15 @@
                               update="messagesDescarga" auto="true"
                               allowTypes="/(\.|\/)(gif|jpe?g|png|txt|xls|xlsx|csv|XLS|XLSX|CSV)$/"/>
                 <p:commandButton value="Guardar" action="#{contenidoBean.guardar}"
+                                 icon="ui-icon-disk"
                                  update=":idContenidos:idListaContenidos"/>
-            </p:dialog>
-        </h:form>
+                <p:commandButton value="Cancelar"
+                                 action="#{contenidoBean.nuevoContenidoDescarga}"
+                                 immediate="true"
+                                 onclick="condenidoDescargaDlg.hide();"
+                                 icon="ui-icon-close"/>
+            </h:form>
+        </p:dialog>
     </ui:define>
 </ui:composition>
 </html>

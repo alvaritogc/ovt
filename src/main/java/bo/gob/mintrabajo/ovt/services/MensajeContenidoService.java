@@ -56,22 +56,29 @@ public class MensajeContenidoService implements IMensajeContenidoService {
     }
 
     @Override
-    public ParMensajeContenido save(ParMensajeContenido mensajeContenido, byte[] binario) {
+    public ParMensajeContenido save(ParMensajeContenido mensajeContenido, byte[] binario, String bitacoraSession) {
         System.out.println("Metadata service: " + mensajeContenido.getMetadata());
 
-        //mensajeContenido.setIdMensajeContenido(new Long(repository.findAll().size()+1));
-        mensajeContenido.setIdMensajeContenido(utils.valorSecuencia("PAR_MENSAJE_CONTENIDO_SEC"));
+        ParMensajeBinario parMensajeBinario;
+        if (mensajeContenido.getIdMensajeContenido() == null) {
+            mensajeContenido.setIdMensajeContenido(utils.valorSecuencia("PAR_MENSAJE_CONTENIDO_SEC"));
+            parMensajeBinario = new ParMensajeBinario();
+        } else {
+            parMensajeBinario = null;
+        }
+
         mensajeContenido.setFechaBitacora(new Date());
-        mensajeContenido.setRegistroBitacora("OVT");
+        mensajeContenido.setRegistroBitacora(bitacoraSession);
         mensajeContenido = repository.save(mensajeContenido);
         //
-        ParMensajeBinario parMensajeBinario = new ParMensajeBinario();
-        parMensajeBinario.setIdMensajeBinario(utils.valorSecuencia("PAR_MENSAJE_BINARIO_SEC"));
-        parMensajeBinario.setBinario(binario);
-        parMensajeBinario.setIdMensajeContenido(mensajeContenido);
-        parMensajeBinario.setFechaBitacora(new Date());
-        parMensajeBinario.setRegistroBitacora("OVt");
-        mensajeBinarioRepository.save(parMensajeBinario);
+        if (parMensajeBinario != null) {
+            parMensajeBinario.setIdMensajeBinario(utils.valorSecuencia("PAR_MENSAJE_BINARIO_SEC"));
+            parMensajeBinario.setBinario(binario);
+            parMensajeBinario.setIdMensajeContenido(mensajeContenido);
+            parMensajeBinario.setFechaBitacora(new Date());
+            parMensajeBinario.setRegistroBitacora(bitacoraSession);
+            mensajeBinarioRepository.save(parMensajeBinario);
+        }
 
         return mensajeContenido;
     }
