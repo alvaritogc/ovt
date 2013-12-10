@@ -53,4 +53,5 @@ public interface IDocumentoService {
     List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumento(String idPersona, Date fechaHasta, Date fechaPlazo, String codDocumento);
 
     DocDocumento buscarPorUnindad(PerUnidadPK perUnidadPK);
+    List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumentos(String idPersona, Date fechaDesde, Date fechaHasta, String codDocumento1, String codDocumento2);
 }

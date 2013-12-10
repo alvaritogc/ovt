@@ -608,4 +608,8 @@ public class DocumentoService implements IDocumentoService {
     public DocDocumento buscarPorUnindad(PerUnidadPK perUnidadPK){
         return documentoRepository.buscarPorUnindad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
     }
+
+    public List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumentos(String idPersona, Date fechaDesde, Date fechaHasta, String codDocumento1, String codDocumento2) {
+        return documentoRepository.listarDocumentosPorpersonaUnidadFechasCodDocumentos(idPersona, fechaDesde, fechaHasta, codDocumento1, codDocumento2);
+    }
 }
