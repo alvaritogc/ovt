@@ -33,18 +33,7 @@
     </style>
 
     <p:panel  id="pnlUnidadPrincipal" styleClass="myPanelContent" style="width: 100px">
-        <f:facet name="footer">
-            <p:commandButton id="cmdButtonPrinc"
-                             icon="ui-icon-pencil"
-                             value="Modificar"
-                             update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
-                             onclick="PF('dlgUnidad').show()">
-                <f:setPropertyActionListener value="#{personaUnidadBean.persona}" target="#{personaUnidadBean.personaRegistro}"/>
-                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
-                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
-                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
-            </p:commandButton>
-        </f:facet>
+
 
             <h:panelGrid   columns="2"  style="width: 680px;">
                  <h:outputText value="Personeria"/>
@@ -54,7 +43,6 @@
                     <f:selectItem itemLabel="Natural   ." itemValue="false" />
                     <f:selectItem itemLabel="Juridica" itemValue="true" />
                 </p:selectOneRadio>
-
 
                         <p:outputLabel  value="Nombre o Razon social:"/>
                         <p:inputText readonly="true"

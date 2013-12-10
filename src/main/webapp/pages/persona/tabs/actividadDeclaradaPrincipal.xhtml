@@ -14,32 +14,11 @@
 
     <p:panel id="pnlActividadDeclaradaP">
 
-        <f:facet name="footer">
-            <p:commandButton id="cmdButtonActividadPModificar"
-                             icon="ui-icon-pencil"
-                             value="Modificar"
-                             rendered="#{personaUnidadBean.actividadPrincipal.idActividad!=null}"
-                             onclick="PF('dlgActividadDeclarada').show()"
-                             update=":frmActividadDeclarada:pnlActividadDeclarada,:txtDlgActividadDeclarada,:frmActividadDeclarada:cmdButtonActividadDeclarada">
-                <f:setPropertyActionListener value="#{personaUnidadBean.actividadPrincipal}" target="#{personaUnidadBean.actividad}"/>
-                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
-                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
-            </p:commandButton>
-
-            <p:commandButton id="cmdButtonActividadPAgregar"
-                             icon="ui-icon-plus"
-                             value="Agregar"
-                             actionListener="#{personaUnidadBean.nuevo}"
-                             rendered="#{personaUnidadBean.actividadPrincipal.idActividad==null}"
-                             onclick="PF('dlgActividadDeclarada').show()"
-                             update=":frmActividadDeclarada:pnlActividadDeclarada,:txtDlgActividadDeclarada">
-                <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
-                <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
-            </p:commandButton>
 
 
 
-        </f:facet>
+
+
 
         <h:panelGrid columns="2">
             <h:outputText value="Codigo de Actividad economica:"/>
