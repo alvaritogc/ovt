@@ -9,7 +9,7 @@ public interface IMensajeContenidoService {
 
     public List<ParMensajeContenido> findByAll();
 
-    public ParMensajeContenido save(ParMensajeContenido mensajeContenido, byte[] binario);
+    public ParMensajeContenido save(ParMensajeContenido mensajeContenido, byte[] binario, String bitacoraSession);
 
     public boolean delete(Long idMensajeContenido);
 

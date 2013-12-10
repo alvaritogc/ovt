@@ -8,6 +8,7 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="./../template/templateInicio.xhtml">
     <ui:define name="content">
+        <p:growl id="messages1" showDetail="true" autoUpdate="true"/>
         <h:form id="idContenidos">
             <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
             <br/>
@@ -41,9 +42,10 @@
                         <h:panelGrid style="text-align: right;width: 100%;" columns="2">
                             <p:row>
                                 <p:column>
-                                    <p:commandButton value="Editar"
+                                    <p:commandButton value="Editar contenido"
                                                      action="#{contenidoBean.modificarContenido}"
                                                      oncomplete="PF('condenidoDlg').show();"
+                                                     icon="ui-icon-pencil"
                                                      update=":contenidoDialog">
                                         <f:setPropertyActionListener value="#{mensajeContenido}"
                                                                      target="#{contenidoBean.mensajeContenido}"/>
@@ -51,6 +53,7 @@
                                 </p:column>
                                 <p:column>
                                     <p:commandButton action="#{contenidoBean.eliminar}" value="Eliminar contenido"
+                                                     icon="ui-icon-trash"
                                                      immediate="true"
                                                      update=":idContenidos">
                                         <f:setPropertyActionListener value="#{mensajeContenido}"
@@ -69,11 +72,16 @@
             <p:commandButton value="Nuevo contenido"
                              action="#{contenidoBean.nuevoContenido}"
                              oncomplete="PF('condenidoDlg').show();"
+                             icon="ui-icon-circle-plus"
                              update=":contenidoDialog"/>
             <p:commandButton value="Nueva descarga"
                              action="#{contenidoBean.nuevoContenidoDescarga}"
                              oncomplete="PF('condenidoDescargaDlg').show();"
+                             icon="ui-icon ui-icon-arrowthickstop-1-s"
                              update=":contenidoDescargaDialog"/>
+            <p:commandButton value="Volver"
+                             action="#{contenidoBean.irContenidoRecurso}"
+                             immediate="true"/>
         </h:form>
         <p:dialog
                 resizable="false"
@@ -83,7 +91,6 @@
                           controls="bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule link unlink cut copy paste pastetext outdent indent"/>
                 <!--bold italic underline strikethrough subscript superscript font size style color highlight bullets numbering alignleft center alignright justify undo redo rule image link unlink cut copy paste pastetext print source outdent indent-->
                 <br/>
-                <p:outputLabel value="tieneImagenes: #{contenidoBean.tieneImagenes}"/>
                 <p:outputLabel id="messages" value="Imagen: #{contenidoBean.mensajeContenido.archivo}"
                                rendered="#{!contenidoBean.tieneImagenes}"
                                style="font-size: 20px;"/>
@@ -101,7 +108,13 @@
                               update="messages idFileUploadContenido" auto="true"
                               allowTypes="/(\.|\/)(gif|jpe?g|png|txt)$/"/>
                 <p:commandButton value="Guardar" action="#{contenidoBean.guardar}"
+                                 icon="ui-icon-disk"
                                  update=":idContenidos:idListaContenidos"/>
+                <p:commandButton value="Cancelar"
+                                 action="#{contenidoBean.nuevoContenido}"
+                                 immediate="true"
+                                 onclick="condenidoDlg.hide();"
+                                 icon="ui-icon-close"/>
             </h:form>
         </p:dialog>
         <p:dialog
@@ -125,7 +138,13 @@
                               update="messagesDescarga" auto="true"
                               allowTypes="/(\.|\/)(gif|jpe?g|png|txt|xls|xlsx|csv|XLS|XLSX|CSV)$/"/>
                 <p:commandButton value="Guardar" action="#{contenidoBean.guardar}"
+                                 icon="ui-icon-disk"
                                  update=":idContenidos:idListaContenidos"/>
+                <p:commandButton value="Cancelar"
+                                 action="#{contenidoBean.nuevoContenidoDescarga}"
+                                 immediate="true"
+                                 onclick="condenidoDescargaDlg.hide();"
+                                 icon="ui-icon-close"/>
             </h:form>
         </p:dialog>
     </ui:define>

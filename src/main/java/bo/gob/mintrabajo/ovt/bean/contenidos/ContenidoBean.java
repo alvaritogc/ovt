@@ -58,12 +58,14 @@ public class ContenidoBean implements Serializable {
     private Long idMensajeApp;
     private boolean edicion;
     private boolean tieneImagenes;
+    private String bitacoraSession;
 
     @PostConstruct
     public void ini() {
         logger.info("ContenidosBean.init()");
         idMensajeApp = (Long) session.getAttribute("idMensajeApp");
         mensajeApp = iMensajeAppService.findById(idMensajeApp);
+        bitacoraSession = (String) session.getAttribute("bitacoraSession");
         cargar();
     }
 
@@ -76,7 +78,6 @@ public class ContenidoBean implements Serializable {
         edicion = false;
         mensajeContenido = new ParMensajeContenido();
         mensajeContenido.setEsDescargable(new Short("0"));
-        //mensajeContenido.setBinario(null);
         mensajeContenido.setMetadata("N/A");
         binario = null;
         tieneImagenes = iMensajeContenidoService.tieneImagenes(mensajeApp.getIdMensajeApp());
@@ -86,7 +87,6 @@ public class ContenidoBean implements Serializable {
         edicion = false;
         mensajeContenido = new ParMensajeContenido();
         mensajeContenido.setEsDescargable(new Short("1"));
-        //mensajeContenido.setBinario(null);
         mensajeContenido.setMetadata("N/A");
         binario = null;
     }
@@ -97,33 +97,25 @@ public class ContenidoBean implements Serializable {
         tieneImagenes = true;
     }
 
-    public void guardar() {
+    public String guardar() {
         if (mensajeContenido.getEsDescargable() == new Short("1")) {
             mensajeContenido.setContenido("");
+            if (binario == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR
+                                , "Error", "No se encontro el archivo."));
+                return "";
+            }
         }
-        //
         mensajeContenido.setIdMensajeApp(mensajeApp);
-        mensajeContenido = iMensajeContenidoService.save(mensajeContenido, binario);
-//        mensajeContenido = new ParMensajeContenido();
-//        cargar();
-//        //
-//        mensajeApp = iMensajeAppService.findById(idMensajeApp);
-//        //mensajeContenido=iMensajeContenidoService.save(mensajeContenido);
-//        //
-//        //cargar();
-//        //
-////        RequestContext context = RequestContext.getCurrentInstance();
-////        context.execute("condenidoDlg.hide()");
-////        context.execute("condenidoDescargaDlg.hide()");
-//        //
+        mensajeContenido = iMensajeContenidoService.save(mensajeContenido, binario, bitacoraSession);
         try {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        return "";
     }
 
     public void eliminar() {
@@ -146,7 +138,6 @@ public class ContenidoBean implements Serializable {
             response.setContentType(mimeDocumentoDigital);
             response.setHeader("Content-disposition", "attachment; filename=\"" + nombreDocumentoDigital + "\"");
             OutputStream output = response.getOutputStream();
-            //output.write(mensajeContenido.getBinario());
             output.write(iMensajeBinarioService.buscarPorMensajeContenido(mensajeContenido.getIdMensajeContenido()).getBinario());
             output.close();
             facesContext.responseComplete();
@@ -159,14 +150,13 @@ public class ContenidoBean implements Serializable {
     public void subirArchivo(FileUploadEvent event) {
         mensajeContenido.setArchivo(event.getFile().getFileName());
         binario = event.getFile().getContents();
-        //mensajeContenido.setBinario(event.getFile().getContents());
         mensajeContenido.setMetadata(event.getFile().getContentType());
     }
 
     public void irContenidoRecurso() {
         FacesContext contex = FacesContext.getCurrentInstance();
         try {
-            contex.getExternalContext().redirect("/ovt/pages/contenidos/contenidoRecurso.jsf?p=1000");
+            contex.getExternalContext().redirect("/ovt/pages/contenidos/contenidoRecurso.jsf?p=" + mensajeApp.getIdRecurso().getIdRecurso());
         } catch (Exception e) {
             e.printStackTrace();
         }
