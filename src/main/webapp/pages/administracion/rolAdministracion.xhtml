@@ -21,9 +21,9 @@
                 <p:column headerText="Es Interno">
                     <h:outputText value="#{rol.esInterno eq 1 ? 'SI' : 'NO'}" />
                 </p:column>
-                <p:column headerText="Estado">
-                    <h:outputText value="#{rolAdministracionBean.descripcionEstado(rol.estado)}" />
-                </p:column>
+                <!--<p:column headerText="Estado">-->
+                    <!--<h:outputText value="# {rolAdministracionBean.descripcionEstado(rol.estado)}" />-->
+                <!--</p:column>-->
                 <p:column headerText="Módulo">
                     <h:outputText value="#{rol.idModulo.idModulo} - #{rol.idModulo.nombre}" />
                 </p:column>

@@ -8,8 +8,10 @@ import bo.gob.mintrabajo.ovt.repositories.RolRecursoRepository;
 import bo.gob.mintrabajo.ovt.repositories.RolRepository;
 
 import javax.ejb.TransactionAttribute;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -71,8 +73,9 @@ public class RolRecursoService implements IRolRecursoService {
 
     public UsrRolRecurso guardarRolRecurso(UsrRolRecurso usrRolRecurso, Long idRol, Long idRecurso){
         try {
-            usrRolRecurso.setFechaBitacora(new Date());
-            usrRolRecurso.setRegistroBitacora("ROE");
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            usrRolRecurso.setFechaBitacora(new Timestamp(new Date().getTime()));
+            usrRolRecurso.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
             usrRolRecurso.setUsrRol(rolRepository.findOne(idRol));
             usrRolRecurso.setUsrRecurso(recursoRepository.findOne(idRecurso));
 

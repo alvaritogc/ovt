@@ -39,23 +39,27 @@ public class AuthenticationRealm extends JdbcRealm {
     /**
      * The default query used to retrieve the roles that apply to a user.
      */
-//    protected static final String CUSTOM_USER_ROLES_QUERY =
-//            // from user self
-//            "SELECT SROLE_NAME from SEC_CLA_ROLES "
-//                    + "JOIN SEC_REL_ROLE_USERS ON SROLE_ID = RRA_SROLE_ID "
-//                    + "JOIN SEC_PRI_USERS ON RRA_USR_ID = USR_ID "
-//                    + "WHERE USR_LOGIN_NAME = ?";
-//    private static final String CUSTOM_PERMISSIONS_QUERY =
-//            "select RES_DESC from SEC_CLA_RESOURCES "
-//                    + "JOIN SEC_REL_ROLE_RESOURCES ON RES_ID = SROR_RES_ID "
-//                    + "JOIN SEC_CLA_ROLES ON SROR_SROLE_ID = SROLE_ID "
-//                    + "where SROLE_NAME = ?";
+    protected static final String AUTENTICACION_ROLES_DE_USUARIO =
+            "SELECT usr_rol.nombre " +
+                    "FROM usr_rol " +
+                    "INNER JOIN usr_usuario_rol " +
+                    "ON usr_usuario_rol.id_rol = usr_rol.id_rol " +
+                    "WHERE usr_usuario_rol.id_usuario = (SELECT id_usuario FROM usr_usuario WHERE usr_usuario.usuario = ?)";
+
+    private static final String AUTENTICACION_PERMISO_DE_USUARIO =
+            "select ejecutable " +
+                    "from usr_recurso " +
+                    "inner join usr_rol_recurso on usr_rol_recurso.id_recurso = usr_recurso.id_recurso " +
+                    "inner join usr_rol on usr_rol_recurso.id_rol = usr_rol.id_rol " +
+                    "where usr_rol.nombre = ?";
     private static final Logger log = LoggerFactory.getLogger(AuthenticationRealm.class);
 
     public AuthenticationRealm() {
 
         setAuthenticationQuery(AUTENTICACION_DE_USUARIO);
-        setPermissionsLookupEnabled(true);
+        setUserRolesQuery(AUTENTICACION_ROLES_DE_USUARIO);
+        setPermissionsQuery(AUTENTICACION_PERMISO_DE_USUARIO);
+        setPermissionsLookupEnabled(false);
         setDataSource(Util.obtenerDatasource());
     }
 

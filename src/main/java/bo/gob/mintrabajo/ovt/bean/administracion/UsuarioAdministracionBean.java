@@ -111,16 +111,22 @@ public class UsuarioAdministracionBean {
         log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo guardarUsuario()");
         personaSelected.setIdPersona(iUtilsService.valorSecuencia("PER_PERSONA_SEC").toString());
         personaSelected.setCodLocalidad(iLocalidadService.findById(idLocalidad));
+        personaSelected.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
+        personaSelected.setFechaBitacora(new Timestamp(new Date().getTime()));
         PerUnidadPK perUnidadPK=new PerUnidadPK();
         perUnidadPK.setIdPersona(personaSelected.getIdPersona());
         perUnidadPK.setIdUnidad(iUtilsService.valorSecuencia("PER_UNIDAD_SEC"));
         unidadSelected.setPerUnidadPK(perUnidadPK);
-        unidadSelected.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO,PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
+        unidadSelected.setEstadoUnidad(iDominioService.obtenerDominioPorNombreYValor(DOM_ESTADO_USUARIO, PAR_ESTADO_USUARIO_ACTIVO).getParDominioPK().getValor());
         unidadSelected.setFechaNacimiento(fechaNacimiento);
+        unidadSelected.setFechaBitacora(new Timestamp(new Date().getTime()));
+        unidadSelected.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
         String passwordEncriptado = Util.encriptaMD5(usuarioSelected.getClave());
         usuarioSelected.setClave(passwordEncriptado);
         usuarioSelected.setIdUsuario(iUtilsService.valorSecuencia("USR_USUARIO_SEC"));
         usuarioSelected.setTipoAutenticacion(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPO_AUTENTICACION, PAR_TIPO_AUTENTICACION_LOCAL).getParDominioPK().getValor());
+        usuarioSelected.setFechaBitacora(new Timestamp(new Date().getTime()));
+        usuarioSelected.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
         iPersonaService.guardarUsuarioInterno(personaSelected, unidadSelected, usuarioSelected);
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("nuevoDlg.hide();");
@@ -137,6 +143,10 @@ public class UsuarioAdministracionBean {
     public void editarUsuario() {
         log.info("Ingresando a la clase " + getClass().getSimpleName() + " metodo editarUsuario()");
         try {
+            personaSelected.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
+            personaSelected.setFechaBitacora(new Timestamp(new Date().getTime()));
+            unidadSelected.setFechaBitacora(new Timestamp(new Date().getTime()));
+            unidadSelected.setRegistroBitacora(personaSelected.getRegistroBitacora());
             iPersonaService.editarPersona(personaSelected, unidadSelected, idLocalidad);
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("edicionDlg.hide();");
