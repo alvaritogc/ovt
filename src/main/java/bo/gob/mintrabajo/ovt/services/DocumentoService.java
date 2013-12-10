@@ -313,7 +313,7 @@ public class DocumentoService implements IDocumentoService {
         String codNumeroS = numeracion.getDocNumeracionPK().getCodDocumento();
         String codNumero = "";
         int numeroInicio = 3;
-        if (codDocumento.equals("LC1010")) {
+        if (codDocumento.equals("LC1010")||codDocumento.equals("LC1020")||codDocumento.equals("LC1021")) {
             numeroInicio = 2;
         }
         for (int i = numeroInicio; i < codNumeroS.length(); i++) {
