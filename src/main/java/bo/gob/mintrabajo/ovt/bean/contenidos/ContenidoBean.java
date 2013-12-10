@@ -97,9 +97,15 @@ public class ContenidoBean implements Serializable {
         tieneImagenes = true;
     }
 
-    public void guardar() {
+    public String guardar() {
         if (mensajeContenido.getEsDescargable() == new Short("1")) {
             mensajeContenido.setContenido("");
+            if (binario == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR
+                                , "Error", "No se encontro el archivo."));
+                return "";
+            }
         }
         //
         mensajeContenido.setIdMensajeApp(mensajeApp);
@@ -122,8 +128,7 @@ public class ContenidoBean implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        return "";
     }
 
     public void eliminar() {
