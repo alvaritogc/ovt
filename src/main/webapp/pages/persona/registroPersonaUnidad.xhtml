@@ -46,11 +46,12 @@
         <p:growl showDetail="true" id="growlROE" />
         <h:panelGrid columns="3" columnClasses="columnd,columnc">
             <h2>Registro Unico de Empleador - ROE </h2>
-
-
             <p:outputLabel value="#{personaUnidadBean.empleador.usuario}" style="color: #0069B1"/>
         </h:panelGrid>
-        <h:outputLabel value="#{personaUnidadBean.empleador.observacion}" style=";font-size: 12px;color: #ffffff"/>
+        <h:panelGrid columns="3" columnClasses="columnd,columnc">
+            <h2></h2>
+            <h:outputLabel value="#{personaUnidadBean.empleador.observacion}" style=";font-size: 12px;color: #ffffff"/>
+        </h:panelGrid>
 
         <p:tabView id="tabPersonaUnidad"   effect="fade" effectDuration="normal" scrollable="true">
             <p:tab id="tabUnidadPrincipal" >
