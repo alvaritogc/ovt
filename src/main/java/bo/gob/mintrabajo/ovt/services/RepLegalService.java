@@ -88,7 +88,7 @@ public class RepLegalService implements IRepLegalService{
     // Obtiene una lista con los representantes legales activos de una persona u empleador.
      public List<PerReplegal>obtenerPorIdPersona(String idPersona){
          Sort sort=new Sort(Sort.Direction.DESC,"idReplegal");
-         return repLegalRepository.obtenerPorIdPersona(idPersona, new PageRequest(0, 10,sort));
+         return repLegalRepository.obtenerPorIdPersona(idPersona, new PageRequest(0, 500,sort));
      }
 
     public Long obtenerSecuencia(String nombreSecuencia){

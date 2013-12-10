@@ -567,9 +567,7 @@ public class PersonaUnidadBean implements Serializable{
         //Si alguno de estos datos se modifico, entonces generar nuevo certificado ROE
         // Verificar si tiene ROE y es la unidad principal
 
-        System.out.println("********* ======>>>> TIENE ROE<<<<====== ******* ");
-        System.out.println("********* ======>>>> TIENE ROE= "+tieneROE);
-        if(unidadRegistro.getPerUnidadPK().getIdUnidad()==0 && tieneROE){
+        if((unidadRegistro.getPerUnidadPK().getIdUnidad()==0 && tieneROE)){
             if(!personaAux.getNombreRazonSocial().equals(persona.getNombreRazonSocial())){
                 generarCertificadoROE2();
             }else{
@@ -590,6 +588,11 @@ public class PersonaUnidadBean implements Serializable{
                     }
                 }
             }
+        }
+
+        // Si tiene ROE y se agrega una nueva unidad, entonces crear un nuevo certficado ROE
+        if((tituloDialog.equalsIgnoreCase("Nuevo")&& tieneROE)){
+            generarCertificadoROE2();
         }
 
         ini();
@@ -978,7 +981,7 @@ public class PersonaUnidadBean implements Serializable{
 
         if(eventuales>nroTotalTrabajadores){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores extranjeros no debe ser mayor al nro. total de trabajadores. "));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores eventuales no debe ser mayor al nro. total de trabajadores. "));
             return ;
         }
 
@@ -1006,13 +1009,13 @@ public class PersonaUnidadBean implements Serializable{
         //validacion para personar jubilado y personal con capacidades diferenciales
         if(jubilados>nroTotalTrabajadores){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores mayores de 60 años no debe ser mayor al nro. total de trabajadores. "));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores jubilados no debe ser mayor al nro. total de trabajadores. "));
             return ;
         }
 
         if(capDiferenciales>nroTotalTrabajadores){
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores mayores de 60 años no debe ser mayor al nro. total de trabajadores. "));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El nro. de trabajadores con capacidades diferentes no debe ser mayor al nro. total de trabajadores. "));
             return ;
         }
 
