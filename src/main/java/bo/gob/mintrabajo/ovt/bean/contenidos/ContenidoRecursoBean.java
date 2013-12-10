@@ -22,10 +22,6 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 
-//import bo.gob.mintrabajo.ovt.envano.DobleTrabajoConexion;
-//import java.util.Collection;
-//import java.util.Collection;
-
 @ManagedBean
 @ViewScoped
 public class ContenidoRecursoBean implements Serializable {
@@ -43,6 +39,7 @@ public class ContenidoRecursoBean implements Serializable {
     private Long idRecurso;
     private UsrRecurso recurso;
     private boolean edicion;
+    private String bitacoraSession;
 
     @PostConstruct
     public void ini() {
@@ -52,6 +49,7 @@ public class ContenidoRecursoBean implements Serializable {
         String parametro = params.get("p").toString();
         idRecurso = parametro != null ? new Long(parametro) : new Long("1000");
         recurso = iRecursoService.findById(idRecurso);
+        bitacoraSession = (String) session.getAttribute("bitacoraSession");
         cargar();
     }
 
@@ -72,36 +70,25 @@ public class ContenidoRecursoBean implements Serializable {
     }
 
     public String guardar() {
-        System.out.println("=====================================");
-        System.out.println("=====================================");
-        System.out.println("=====================================");
-        System.out.println("Guardar");
-        System.out.println("=====================================");
-        System.out.println("=====================================");
-        System.out.println("=====================================");
         if (mensajeApp.getMensaje() == null || mensajeApp.getMensaje().trim().equals("")) {
-            System.out.println("========1");
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR
                             , "Error", "Debe ingresar el campo Etiqueta."));
             return "";
         }
         if (mensajeApp.getReferencia() == null || mensajeApp.getReferencia().trim().equals("")) {
-            System.out.println("========2");
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR
                             , "Error", "Debe ingresar la referencia."));
             return "";
         }
         if (mensajeApp.getFechaDesde() == null) {
-            System.out.println("========3");
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR
                             , "Error", "Debe ingresar la Fecha desde."));
             return "";
         }
         if (mensajeApp.getFechaHasta() != null) {
-            System.out.println("========4");
             if (mensajeApp.getFechaDesde().after(mensajeApp.getFechaHasta())) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR
@@ -110,7 +97,7 @@ public class ContenidoRecursoBean implements Serializable {
 
             }
         }
-        mensajeApp = iMensajeAppService.guardar(mensajeApp, idRecurso);
+        mensajeApp = iMensajeAppService.guardar(mensajeApp, idRecurso, bitacoraSession);
         mensajeApp = new ParMensajeApp();
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("contenidoRecursoDlg.hide()");

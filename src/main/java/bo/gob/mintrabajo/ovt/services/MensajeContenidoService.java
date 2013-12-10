@@ -56,7 +56,7 @@ public class MensajeContenidoService implements IMensajeContenidoService {
     }
 
     @Override
-    public ParMensajeContenido save(ParMensajeContenido mensajeContenido, byte[] binario) {
+    public ParMensajeContenido save(ParMensajeContenido mensajeContenido, byte[] binario, String bitacoraSession) {
         System.out.println("Metadata service: " + mensajeContenido.getMetadata());
 
         ParMensajeBinario parMensajeBinario;
@@ -68,7 +68,7 @@ public class MensajeContenidoService implements IMensajeContenidoService {
         }
 
         mensajeContenido.setFechaBitacora(new Date());
-        mensajeContenido.setRegistroBitacora("OVT");
+        mensajeContenido.setRegistroBitacora(bitacoraSession);
         mensajeContenido = repository.save(mensajeContenido);
         //
         if (parMensajeBinario != null) {
@@ -76,7 +76,7 @@ public class MensajeContenidoService implements IMensajeContenidoService {
             parMensajeBinario.setBinario(binario);
             parMensajeBinario.setIdMensajeContenido(mensajeContenido);
             parMensajeBinario.setFechaBitacora(new Date());
-            parMensajeBinario.setRegistroBitacora("OVt");
+            parMensajeBinario.setRegistroBitacora(bitacoraSession);
             mensajeBinarioRepository.save(parMensajeBinario);
         }
 
