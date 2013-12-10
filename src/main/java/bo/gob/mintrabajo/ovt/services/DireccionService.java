@@ -91,7 +91,7 @@ public class DireccionService implements IDireccionService{
 
      public List<PerDireccion>obtenerPorIdPersonaYIdUnidad(String idPersona,long idUnidad){
          Sort sort=new Sort(Sort.Direction.DESC,"idDireccion");
-         return direccionRepository.obtenerPorIdPersonaYIdUnidad(idPersona, idUnidad, new PageRequest(0, 10,sort));
+         return direccionRepository.obtenerPorIdPersonaYIdUnidad(idPersona, idUnidad, new PageRequest(0, 500,sort));
      }
 
     /*
@@ -107,7 +107,7 @@ public class DireccionService implements IDireccionService{
      */
     public List<PerDireccion>obtenerPorIdPersona(String idPersona ){
         Sort sort=new Sort(Sort.Direction.DESC,"idDireccion");
-        return direccionRepository.obtenerPorIdPersona(idPersona, new PageRequest(0, 10,sort));
+        return direccionRepository.obtenerPorIdPersona(idPersona, new PageRequest(0, 500,sort));
     }
 
     public Long obtenerSecuencia(String nombreSecuencia){

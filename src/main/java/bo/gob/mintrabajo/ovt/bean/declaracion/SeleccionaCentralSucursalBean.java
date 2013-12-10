@@ -114,13 +114,20 @@ public class SeleccionaCentralSucursalBean implements Serializable{
 
         switch (parametro){
             case 1:
+                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
+                if(parObligacionCalendario==null){
+                    mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral dentro del plazo establecido.";
+                    habilitado=false;
+                    return false;
+                }else
+                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
                 break;
             case 2:
                 break;
             case 3:
                 break;
             case 4:
-                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE)).get(0);
+                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
                 if(parObligacionCalendario==null){
                     mensajeValidacion="Solo puede realizar la Declaración Jurada de Aguinaldo dentro del plazo establecido.";
                     habilitado=false;
@@ -129,7 +136,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                     listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1020");
                 break;
             case 5:
-                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo2(DateUtils.truncate(new Date(), Calendar.DATE)).get(0);
+                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo2(DateUtils.truncate(new Date(), Calendar.DATE));
                 if(parObligacionCalendario==null){
                     mensajeValidacion="Solo puede realizar la Declaración Jurada de Aguinaldo Rectificatoria dentro del plazo establecido.";
                     habilitado=false;
@@ -140,33 +147,44 @@ public class SeleccionaCentralSucursalBean implements Serializable{
             default:
                 return false;
         }
-
-        for(DocDocumento documento:listaDocumentos){
-            if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
-                mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada Consolidada.";
-                habilitado=false;
-                return false;
-            }
-        }
-
-        if (tipoEmpresa==1) {
+        if(parametro<=3){
             for(DocDocumento documento:listaDocumentos){
-                if(documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999")){
-                    mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada por Sucursal.";
+                if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
+                    mensajeValidacion="La Declaración Jurada Trimestral ya fue declarada Consolidada.";
                     habilitado=false;
                     return false;
                 }
             }
         }
 
-        for(DocDocumento documento:listaDocumentos){
-            if(documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999") && documento.getPerUnidad().getPerUnidadPK().getIdUnidad() == unidadSeleccionada.getPerUnidadPK().getIdUnidad()){
-                if(parametro==4)
-                    mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada para esta Sucursal.";
-                if(parametro==5)
-                    mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue rectificada para esta Sucursal.";
-                habilitado=false;
-                return false;
+        if(parametro>=4){
+            for(DocDocumento documento:listaDocumentos){
+                if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
+                    mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada Consolidada.";
+                    habilitado=false;
+                    return false;
+                }
+            }
+
+            if (tipoEmpresa==1) {
+                for(DocDocumento documento:listaDocumentos){
+                    if(documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999")){
+                        mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada por Sucursal.";
+                        habilitado=false;
+                        return false;
+                    }
+                }
+            }
+
+            for(DocDocumento documento:listaDocumentos){
+                if(documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999") && documento.getPerUnidad().getPerUnidadPK().getIdUnidad() == unidadSeleccionada.getPerUnidadPK().getIdUnidad()){
+                    if(parametro==4)
+                        mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada para esta Sucursal.";
+                    if(parametro==5)
+                        mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue rectificada para esta Sucursal.";
+                    habilitado=false;
+                    return false;
+                }
             }
         }
         return true;

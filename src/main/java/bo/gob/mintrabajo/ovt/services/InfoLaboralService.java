@@ -137,7 +137,7 @@ public class InfoLaboralService implements IInfoLaboralService {
     @Override
     public List<PerInfolaboral>findByPerUnidad(PerUnidad unidad){
         Sort sort=new Sort(Sort.Direction.DESC,"idInfolaboral");
-        return infoLaboralRepository.obtenerPorIdPersonaYIdUnidad(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad(), new PageRequest(0, 10,sort));
+        return infoLaboralRepository.obtenerPorIdPersonaYIdUnidad(unidad.getPerUnidadPK().getIdPersona(), unidad.getPerUnidadPK().getIdUnidad(), new PageRequest(0, 500,sort));
     }
 
     public  List<PerInfolaboral>obtenerPorIdPersona(String idPersona){

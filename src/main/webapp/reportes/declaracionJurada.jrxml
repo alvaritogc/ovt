@@ -31,7 +31,7 @@
 	<parameter name="escudoDerecha" class="java.lang.String"/>
 	<parameter name="nro_unidades" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT t8.*,coalesce(dom.descripcion,' ') tipoDireccionDominio
+		<![CDATA[SELECT distinct t8.*,coalesce(dom.descripcion,' ') tipoDireccionDominio
 FROM par_dominio dom
 RIGHT OUTER JOIN
 (
@@ -93,7 +93,7 @@ RIGHT OUTER JOIN
                                                        JOIN par_dominio d
                                                        ON (d.valor =u.tipo_empresa )
                                                   WHERE p.id_persona = $P{idPersona}
-					     and u.id_unidad!=0
+
                                                   ) t1
                                            ON d2.id_dominio = 'TSOCIEDAD' and d2.valor = t1. tipo_sociedad
                                        ) t2
