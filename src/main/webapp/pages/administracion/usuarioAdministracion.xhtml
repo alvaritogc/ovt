@@ -35,9 +35,9 @@
                 <p:column headerText="Es delegado">
                     <h:outputText value="#{usr.esDelegado eq 1 ? 'SI' : 'NO'}"/>
                 </p:column>
-                <p:column headerText="Estado Usuario">
-                    <h:outputText value="#{usuarioAdministracionBean.descripcionEstado(usr.estadoUsuario)}"/>
-                </p:column>
+                <!--<p:column headerText="Estado Usuario">-->
+                    <!--<h:outputText value="# {usuarioAdministracionBean.descripcionEstado(usr.estadoUsuario)}"/>-->
+                <!--</p:column>-->
                 <p:column headerText="Acciones" style="width: 80px">
                     <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{usuarioAdministracionBean.cargarPersonaPorUsuario}" onclick="edicionDlg.show()" update=":edicionFrm" immediate="true" style="color:#0066CC">
                         <f:setPropertyActionListener value="#{usr}" target="#{usuarioAdministracionBean.usuarioSelected}" />
