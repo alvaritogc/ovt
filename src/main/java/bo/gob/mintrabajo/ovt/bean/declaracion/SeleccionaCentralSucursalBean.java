@@ -187,9 +187,12 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                 }
             }
             if(parametro==5 && listaDocumentos.size()==0){
-                mensajeValidacion="No existe alguna Declaración Jurada de Aguinaldo para rectificar.";
-                habilitado=false;
-                return false;
+                listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1020");
+                if(listaDocumentos.size()==0) {
+                    mensajeValidacion="No existe alguna Declaración Jurada de Aguinaldo para rectificar.";
+                    habilitado=false;
+                    return false;
+                }
             }
         }
         return true;
