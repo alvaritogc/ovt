@@ -122,9 +122,11 @@ public class DeclaracionTrimestralBean implements Serializable {
     private int salarioMinimo;
     private String nombreBinario;
     private DocPlanilla rectificatorio;
+    private String bitacoraSession;
 
     @PostConstruct
     public void ini() {
+        bitacoraSession = (String) session.getAttribute("bitacoraSession");
         parametro = (Integer) session.getAttribute("parametro");
         unidadSeleccionada = (PerUnidad) session.getAttribute("unidadSeleccionada");
         tipoEmpresa = (Integer) session.getAttribute("tipoEmpresa");
@@ -364,7 +366,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                 logger.info(docPlanilla.toString());
                 generaPlanilla();
                 documento.setPerUnidad(unidadSeleccionada);
-                String msj= iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas);
+                String msj= iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
                 return "irEscritorio";
             }catch (Exception e){
                 e.printStackTrace();

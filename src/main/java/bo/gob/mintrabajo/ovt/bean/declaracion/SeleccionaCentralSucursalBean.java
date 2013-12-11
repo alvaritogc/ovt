@@ -141,8 +141,19 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                     mensajeValidacion="Solo puede realizar la Declaración Jurada de Aguinaldo Rectificatoria dentro del plazo establecido.";
                     habilitado=false;
                     return false;
-                }else
+                }else{
                     listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1021");
+                    if(listaDocumentos.size()==0){
+                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1020");
+                        if(listaDocumentos.size()==0){
+                            mensajeValidacion="No existe alguna Declaración Jurada de Aguinaldo para rectificar.";
+                            habilitado=false;
+                            return false;
+                        }
+                        else
+                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1021");
+                    }
+                }
                 break;
             default:
                 return false;
@@ -185,11 +196,6 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                     habilitado=false;
                     return false;
                 }
-            }
-            if(parametro==5 && listaDocumentos.size()==0){
-                mensajeValidacion="No existe alguna Declaración Jurada de Aguinaldo para rectificar.";
-                habilitado=false;
-                return false;
             }
         }
         return true;
