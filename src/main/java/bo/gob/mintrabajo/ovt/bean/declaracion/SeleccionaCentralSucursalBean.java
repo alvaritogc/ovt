@@ -150,6 +150,8 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                             habilitado=false;
                             return false;
                         }
+                        else
+                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1021");
                     }
                 }
                 break;
@@ -191,14 +193,6 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada para esta Sucursal.";
                     if(parametro==5)
                         mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue rectificada para esta Sucursal.";
-                    habilitado=false;
-                    return false;
-                }
-            }
-            if(parametro==5 && listaDocumentos.size()==0){
-                listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1020");
-                if(listaDocumentos.size()==0) {
-                    mensajeValidacion="No existe alguna Declaración Jurada de Aguinaldo para rectificar.";
                     habilitado=false;
                     return false;
                 }

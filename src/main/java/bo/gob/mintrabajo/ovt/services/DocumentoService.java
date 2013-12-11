@@ -128,16 +128,18 @@ public class DocumentoService implements IDocumentoService {
         return documentoRepository.save(documento);
     }
 
-    public String guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas) {
+    public String guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas, String bitacoraSession) {
         //guarda documento
-        if(docDocumento.getIdDocumentoRef()!=null)
-            guardarCambioEstado(docDocumento.getIdDocumentoRef(), "999", "", "");
+
 
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
 //        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento(), docDocumento.getDocDefinicion().getDocDefinicionPK().getVersion()));
         docDocumento = documentoRepository.save(docDocumento);
         logger.info("Guarda" + docDocumento);
+        if(docDocumento.getIdDocumentoRef()!=null)
+            guardarCambioEstado(docDocumento.getIdDocumentoRef(), "999", bitacoraSession, "Cambio de estado al rectificar un documento.");
+
         //guarda planilla
 
         docPlanilla.setIdDocumento(docDocumento);

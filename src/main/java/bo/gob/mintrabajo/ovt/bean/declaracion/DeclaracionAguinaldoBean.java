@@ -290,7 +290,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
             documento.setPerUnidad(unidadSeleccionada);
             List<DocBinario> listaBinarios= new ArrayList<DocBinario>();
             listaBinarios.add(binario);
-            iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas);
+            iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
             return "irEscritorio";
         }catch (Exception e){
             e.printStackTrace();
