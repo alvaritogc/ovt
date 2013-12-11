@@ -107,9 +107,11 @@ public class DeclaracionAguinaldoBean implements Serializable {
     private List<DocAlerta> alertas;
     private List<DocPlanilla> docPlanillasParaRectificar;
     private DocPlanilla rectificatorio;
+    private String bitacoraSession;
     
     @PostConstruct
     public void ini() {
+        bitacoraSession = (String) session.getAttribute("bitacoraSession");
         parametro = (Integer) session.getAttribute("parametro");
         unidadSeleccionada = (PerUnidad) session.getAttribute("unidadSeleccionada");
         tipoEmpresa = (Integer) session.getAttribute("tipoEmpresa");
