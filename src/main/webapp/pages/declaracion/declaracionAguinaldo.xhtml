@@ -66,11 +66,6 @@
             <p:selectBooleanCheckbox value="#{declaracionAguinaldoBean.esRectificatorio}" disabled="true"/>
             <p:outputLabel value="1.3 Nro de orden que rectifica"/>
             <p:outputLabel value="#{declaracionAguinaldoBean.rectificatorio.idDocumento.numeroDocumento}&nbsp;-&nbsp;#{declaracionAguinaldoBean.rectificatorio.parCalendario.parCalendarioPK.tipoPeriodo}" style="width: 150px; height: 10px; text-align: right" disabled="#{!declaracionAguinaldoBean.esRectificatorio}" />
-            <!--<p:selectOneMenu id="rectificatorio" value="# {declaracionAguinaldoBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="# {!declaracionAguinaldoBean.esRectificatorio}"> &lt;!&ndash;disabled="# {declaracionBean.parametro!=3}"&ndash;&gt;-->
-                <!--<f:selectItem itemLabel="Seleccione" noSelectionOption="true"/>-->
-                <!--<f:selectItems value="# {declaracionAguinaldoBean.docPlanillasParaRectificar}" var="elemDoc" itemLabel="# {elemDoc.idDocumento.numeroDocumento}&nbsp;-&nbsp;# {elemDoc.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="# {elemDoc.idDocumento.idDocumento}"/>-->
-                <!--<p:ajax listener="# {declaracionAguinaldoBean.seleccionaTrimestre}" update="razonSocial" />-->
-            <!--</p:selectOneMenu>-->
         </p:panelGrid>
     </p:column>
 </p:row>
@@ -97,7 +92,7 @@
     <p:column id="razonSocial" colspan="6">
         <p:outputPanel id="empresaRazonSocial">
             <h:outputLabel value="#{declaracionAguinaldoBean.unidadSeleccionada.nombreComercial}"/>
-            <h:outputLabel value="#{declaracionAguinaldoBean.periodo}&nbsp;-&nbsp;#{declaracionAguinaldoBean.gestion}" />
+            <h:outputLabel value="#{declaracionAguinaldoBean.gestion}" />
         </p:outputPanel>
     </p:column>
 </p:row>
@@ -109,175 +104,189 @@
 </p:row>
 
 <p:row>
-    <p:column colspan="16">
-        <p:panelGrid columns="6">
-            <p:outputLabel value="3.1 Nro de empleador MTEPS:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroOtro}"/>
-            <p:outputLabel value="3.2 Nro patronal del seguro social:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroCajaSalud}"/>
-            <p:outputLabel value="3.3 Nro de NIT:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroIdentificacion}"/>
-            <p:outputLabel value="3.4 Nombre o razón social:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nombreRazonSocial}"/>
-            <p:outputLabel value="3.5 Actividad Económica principal:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.actividadDeclarada}"/>
-            <p:outputLabel value="3.6 Departamento:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirDepartamento}"/>
-            <p:outputLabel value="3.7 Ciudad o localidad:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.localidad}"/>
-            <p:outputLabel value="3.8 Zona:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirZona}"/>
-            <p:outputLabel value="3.9 Dirección:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirDireccion}"/>
-            <p:outputLabel value="3.10 Nro:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirNroDireccion}"/>
-            <p:outputLabel value="3.11 Teléfono:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.telefono}"/>
-            <p:outputLabel value="3.12 Fax:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.fax}"/>
-            <p:outputLabel value="3.13 Correo Electronico:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.email}"/>
-        </p:panelGrid>
+    <p:column colspan="2">
+        <p:outputLabel value="3.1 Nro de empleador MTEPS:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="3">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroOtro}"/>
+    </p:column>
+    <p:column colspan="3">
+        <p:outputLabel value="3.2 Nro patronal del seguro social:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="3">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroCajaSalud}"/>
+    </p:column>
+    <p:column colspan="2">
+        <p:outputLabel value="3.3 Nro de NIT:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="3">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroIdentificacion}"/>
+    </p:column>
+</p:row>
+
+<p:row>
+    <p:column colspan="3">
+        <p:outputLabel value="3.4 Nombre o razón social:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="7">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nombreRazonSocial}"/>
+    </p:column>
+    <p:column colspan="3">
+        <p:outputLabel value="3.5 Actividad Económica principal:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="3">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.actividadDeclarada}"/>
+    </p:column>
+</p:row>
+
+<p:row>
+    <p:column colspan="3">
+        <p:outputLabel value="3.6 Departamento:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="2">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirDepartamento}"/>
+    </p:column>
+    <p:column colspan="4">
+        <p:outputLabel value="3.7 Ciudad o localidad:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="3">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.localidad}"/>
+    </p:column>
+    <p:column colspan="1">
+        <p:outputLabel value="3.8 Zona:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="3">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirZona}"/>
+    </p:column>
+</p:row>
+
+<p:row>
+    <p:column colspan="2">
+        <p:outputLabel value="3.9 Dirección:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="12">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirDireccion}"/>
+    </p:column>
+    <p:column colspan="1">
+        <p:outputLabel value="3.10 Nro:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="1">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirNroDireccion}"/>
+    </p:column>
+</p:row>
+
+<p:row>
+    <p:column colspan="2">
+        <p:outputLabel value="3.11 Teléfono:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="3">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.telefono}"/>
+    </p:column>
+    <p:column colspan="2">
+        <p:outputLabel value="3.12 Fax:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="3">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.fax}"/>
+    </p:column>
+    <p:column colspan="3">
+        <p:outputLabel value="3.13 Correo Electronico:" style="font-weight:bold"/>
+    </p:column>
+    <p:column colspan="3">
+        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.email}"/>
     </p:column>
 </p:row>
 
 <p:row rendered="#{declaracionAguinaldoBean.parametro!=2}">
-    <p:column colspan="16" style="background-color: #2264B1; color: #FFFFFF">
+    <p:column colspan="8" style="background-color: #2264B1; color: #FFFFFF">
         <p:outputLabel value="4. COMPOSICIÓN SALARIAL"/>
     </p:column>
-</p:row>
-
-<p:row rendered="#{declaracionAguinaldoBean.parametro!=2}">
-    <p:column colspan="16">
-        <p:panelGrid columns="2" >
-            <p:column>
-            <p:outputLabel value="Concepto" style="font-weight: bold; width: 300px; height: 10px; text-align: right"/>
-            </p:column>
-            <p:column>
-                <p:outputLabel value="Monto (Bs)" style="font-weight: bold; width: 354px; height: 10px; text-align: left"/>
-            </p:column>
-            <p:column>
-                <p:outputLabel value="4.1 Haber Basico" style="width: 300px; height: 10px; text-align: right"/>
-            </p:column>
-            <p:column>
-                <pe:inputNumber id="basico" value="#{declaracionAguinaldoBean.docPlanilla.haberBasico}" disabled="#{declaracionAguinaldoBean.parametro==2}"
-                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-                    <p:ajax event="blur" update="pagable"/>
-                </pe:inputNumber>
-            </p:column>
-            <p:column>
-                <p:outputLabel value="4.2 Bono Antiguedad" style="width: 300px; height: 10px; text-align: right"/>
-            </p:column>
-            <p:column>   
-                <pe:inputNumber id="bonoAn" value="#{declaracionAguinaldoBean.docPlanilla.bonoAntiguedad}" disabled="#{declaracionAguinaldoBean.parametro==2}"
-                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-                    <p:ajax event="blur" update="pagable"/>
-                </pe:inputNumber>
-            </p:column>
-            <p:column>
-                <p:outputLabel value="4.3 Bono Produccion" style="width: 300px; height: 10px; text-align: right"/>
-            </p:column>
-            <p:column>  
-                <pe:inputNumber id="BonoPr" value="#{declaracionAguinaldoBean.docPlanilla.bonoProduccion}" disabled="#{declaracionAguinaldoBean.parametro==2}"
-                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-                   <p:ajax event="blur" update="pagable"/>
-                </pe:inputNumber>
-            </p:column>
-            <p:column>
-                <p:outputLabel value="4.4 Subsidio Frontera" style="width: 300px; height: 10px; text-align: right"/>
-            </p:column>
-            <p:column>
-                <pe:inputNumber id="subFr" value="#{declaracionAguinaldoBean.docPlanilla.subsidioFrontera}" disabled="#{declaracionAguinaldoBean.parametro==2}"
-                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-                   <p:ajax event="blur" update="pagable"/>
-                </pe:inputNumber>
-            </p:column>
-            <p:column>
-                <p:outputLabel value="4.5 Labor Extra" style="width: 300px; height: 10px; text-align: right"/>
-            </p:column>
-            <p:column>
-                <pe:inputNumber id="laborEx" value="#{declaracionAguinaldoBean.docPlanilla.laborExtra}" disabled="#{declaracionAguinaldoBean.parametro==2}"
-                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-                   <p:ajax event="blur" update="pagable"/>
-                </pe:inputNumber>
-            </p:column>
-            <p:column>
-                <p:outputLabel value="4.6 Otros Bonos" style="width: 300px; height: 10px; text-align: right"/>
-            </p:column>
-            <p:column>
-                <pe:inputNumber id="otrosB" value="#{declaracionAguinaldoBean.docPlanilla.otrosBonos}" disabled="#{declaracionAguinaldoBean.parametro==2}"
-                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
-                   <p:ajax event="blur" update="pagable"/>
-                </pe:inputNumber>
-            </p:column>
-            <p:column>
-                <p:outputLabel value="4.7 Liquido Pagable" style="font-weight: bold; width: 300px; height: 10px; text-align: right"/>
-            </p:column>
-            <p:column>
-                <pe:inputNumber id="pagable" value="#{(declaracionAguinaldoBean.docPlanilla.haberBasico +
-                                                                               declaracionAguinaldoBean.docPlanilla.bonoAntiguedad + declaracionAguinaldoBean.docPlanilla.bonoProduccion +
-                                                                               declaracionAguinaldoBean.docPlanilla.subsidioFrontera + declaracionAguinaldoBean.docPlanilla.laborExtra +
-                                                                               declaracionAguinaldoBean.docPlanilla.otrosBonos) - (declaracionAguinaldoBean.docPlanilla.aporteAfp +
-                                                                               declaracionAguinaldoBean.docPlanilla.rciva + declaracionAguinaldoBean.docPlanilla.otrosDescuentos)}"
-                     disabled="true"
-                     thousandSeparator="." decimalSeparator="," style="font-weight: bold; width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
-            </p:column>
-        </p:panelGrid>
-    </p:column>
-</p:row>
-
-
-
-<p:row rendered="#{declaracionAguinaldoBean.parametro!=2}">
-    <p:column colspan="16" style="background-color: #2264B1; color: #FFFFFF">
+    <p:column colspan="8" style="background-color: #2264B1; color: #FFFFFF">
         <p:outputLabel value="5. TRABAJADORES"/>
     </p:column>
 </p:row>
 
 <p:row rendered="#{declaracionAguinaldoBean.parametro!=2}">
-    <p:column colspan="16">
-        <p:panelGrid columns="4">
-            <p:column colspan="1">
-                <p:outputLabel value="       " style="width: 300px; height: 10px; text-align: center"/>
-            </p:column>
-            <p:column colspan="1">
-                <p:outputLabel value="Varones" style="width: 90px; height: 10px; text-align: center"/>
-            </p:column>
-            <p:column colspan="1">
-                <p:outputLabel value="Mujeres" style="width: 90px; height: 10px; text-align: center"/>
-            </p:column>
-            <p:column colspan="1">
-                <p:outputLabel value="Total" style="width: 90px; height: 10px; text-align: center"/>
-            </p:column>
-            <p:column colspan="1">
-                <p:outputLabel value="5.1 Total Trabajadores" style="width: 300px; height: 10px; text-align: center"/>
-            </p:column>
-           <p:column colspan="1"> 
-            <p:inputText id="varones" value="#{declaracionAguinaldoBean.docPlanilla.nroH}"
-                      style="width: 90px; height: 10px; text-align: right" required="true" maxlength="6">
-                <p:ajax event="keyup" update="totalTrabajadores"/>
-                    <pe:keyFilter regEx="/[\d\-]/"/>
-                </p:inputText>
-            </p:column>
-            <p:column colspan="1">
-                <p:inputText id="mujeres" value="#{declaracionAguinaldoBean.docPlanilla.nroM}"
-                              style="width: 90px; height: 10px; text-align: right" required="true" maxlength="6">
-                <p:ajax event="keyup" update="totalTrabajadores"/>
-                    <pe:keyFilter regEx="/[\d\-]/"/>
-                </p:inputText>
-            </p:column>
-            <p:column colspan="1">
-                <p:inputText id="totalTrabajadores"
-                     value="#{(declaracionAguinaldoBean.docPlanilla.nroH + declaracionAguinaldoBean.docPlanilla.nroM)}" disabled="true"
-                     style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35">
-               </p:inputText>
-            </p:column>
+    <p:column colspan="8">
+        <p:panelGrid columns="2">
+            <p:outputLabel value="Concepto" style="font-weight: bold; text-align: right"/>
+            <p:outputLabel value="Monto (Bs)" style="font-weight: bold; text-align: left"/>
+
+            <p:outputLabel value="4.1 Haber Basico" style="text-align: right"/>
+            <pe:inputNumber id="basico" value="#{declaracionAguinaldoBean.docPlanilla.haberBasico}" disabled="#{declaracionAguinaldoBean.parametro==2}"
+                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+                <p:ajax event="blur" update="pagable"/>
+            </pe:inputNumber>
+
+            <p:outputLabel value="4.2 Bono Antiguedad" style="text-align: right"/>
+            <pe:inputNumber id="bonoAn" value="#{declaracionAguinaldoBean.docPlanilla.bonoAntiguedad}" disabled="#{declaracionAguinaldoBean.parametro==2}"
+                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+                <p:ajax event="blur" update="pagable"/>
+            </pe:inputNumber>
+
+            <p:outputLabel value="4.3 Bono Produccion" style="text-align: right"/>
+            <pe:inputNumber id="BonoPr" value="#{declaracionAguinaldoBean.docPlanilla.bonoProduccion}" disabled="#{declaracionAguinaldoBean.parametro==2}"
+                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+                <p:ajax event="blur" update="pagable"/>
+            </pe:inputNumber>
+
+            <p:outputLabel value="4.4 Subsidio Frontera" style="text-align: right"/>
+            <pe:inputNumber id="subFr" value="#{declaracionAguinaldoBean.docPlanilla.subsidioFrontera}" disabled="#{declaracionAguinaldoBean.parametro==2}"
+                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+                <p:ajax event="blur" update="pagable"/>
+            </pe:inputNumber>
+
+            <p:outputLabel value="4.5 Labor Extra" style=" text-align: right"/>
+            <pe:inputNumber id="laborEx" value="#{declaracionAguinaldoBean.docPlanilla.laborExtra}" disabled="#{declaracionAguinaldoBean.parametro==2}"
+                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+                <p:ajax event="blur" update="pagable"/>
+            </pe:inputNumber>
+
+            <p:outputLabel value="4.6 Otros Bonos" style=" text-align: right"/>
+            <pe:inputNumber id="otrosB" value="#{declaracionAguinaldoBean.docPlanilla.otrosBonos}" disabled="#{declaracionAguinaldoBean.parametro==2}"
+                            thousandSeparator="." decimalSeparator="," style="width: 100px; height: 10px; text-align: right" required="true" maxlength="10">
+                <p:ajax event="blur" update="pagable"/>
+            </pe:inputNumber>
+
+            <p:outputLabel value="4.7 Total Ganado" style="font-weight: bold;  text-align: right"/>
+            <pe:inputNumber id="pagable" value="#{(declaracionAguinaldoBean.docPlanilla.haberBasico +
+                                                                               declaracionAguinaldoBean.docPlanilla.bonoAntiguedad + declaracionAguinaldoBean.docPlanilla.bonoProduccion +
+                                                                               declaracionAguinaldoBean.docPlanilla.subsidioFrontera + declaracionAguinaldoBean.docPlanilla.laborExtra +
+                                                                               declaracionAguinaldoBean.docPlanilla.otrosBonos) - (declaracionAguinaldoBean.docPlanilla.aporteAfp +
+                                                                               declaracionAguinaldoBean.docPlanilla.rciva + declaracionAguinaldoBean.docPlanilla.otrosDescuentos)}"
+                            disabled="true"
+                            thousandSeparator="." decimalSeparator="," style="font-weight: bold; width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
         </p:panelGrid>
     </p:column>
-</p:row>
-    
-    
 
+    <p:column colspan="8" >
+        <p:panelGrid columns="4">
+            <p:outputLabel value="       " style=" text-align: center"/>
+            <p:outputLabel value="Varones" style=" text-align: center"/>
+            <p:outputLabel value="Mujeres" style="text-align: center"/>
+            <p:outputLabel value="Total" style=" text-align: center"/>
+
+            <p:outputLabel value="5.1 Total Trabajadores" style=" text-align: center"/>
+            <p:inputText id="varones" value="#{declaracionAguinaldoBean.docPlanilla.nroH}"
+                         style="width: 60px; height: 10px; text-align: right" required="true" maxlength="6">
+                <p:ajax event="keyup" update="totalTrabajadores"/>
+                <pe:keyFilter regEx="/[\d\-]/"/>
+            </p:inputText>
+
+            <p:inputText id="mujeres" value="#{declaracionAguinaldoBean.docPlanilla.nroM}"
+                         style="width: 60px; height: 10px; text-align: right" required="true" maxlength="6">
+                <p:ajax event="keyup" update="totalTrabajadores"/>
+                <pe:keyFilter regEx="/[\d\-]/"/>
+            </p:inputText>
+
+            <p:inputText id="totalTrabajadores"
+                         value="#{(declaracionAguinaldoBean.docPlanilla.nroH + declaracionAguinaldoBean.docPlanilla.nroM)}" disabled="true"
+                         style="width: 50px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35">
+            </p:inputText>
+        </p:panelGrid>
+
+    </p:column>
+
+</p:row>
 
 <p:row>
     <p:column colspan="16" style="background-color: #2264B1; color: #FFFFFF">
@@ -286,23 +295,23 @@
 </p:row>
 
 <p:row>
-    <p:column colspan="7">
+    <p:column colspan="6">
         <p:outputLabel value="6.1 Nro de comprobante de depósito"/>
         <p:inputText value="#{declaracionAguinaldoBean.docPlanilla.numOperacion}"
-                     style="width: 150px; height: 10px; text-align: right" required="true" maxlength="20">
+                     style="width: 160px; height: 10px; text-align: right" required="true" maxlength="20">
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
     </p:column>
-    <p:column colspan="5">
+    <p:column colspan="7">
         <p:outputLabel value="6.2 Fecha de depósito"/>
         <p:calendar value="#{declaracionAguinaldoBean.fechaOperacionAux}" maxdate="#{declaracionAguinaldoBean.fechaTexto}"
-                    id="popupButtonCal" pattern="dd/MM/yyyy" style="width: 100px; height: 10px; text-align: right"
+                    id="popupButtonCal" pattern="dd/MM/yyyy" style="width: 8px; height: 10px; text-align: right"
                     required="true" showOn="button" />
     </p:column>
-    <p:column colspan="4">
+    <p:column colspan="3">
         <p:outputLabel value="6.3 Monto de depósito (Bs)"/>
         <pe:inputNumber value="#{declaracionAguinaldoBean.docPlanilla.montoOperacion}"
-                        thousandSeparator="." decimalSeparator=","  style="width: 150px; height: 10px; text-align: right" maxlength="10">
+                        thousandSeparator="." decimalSeparator=","  style="width: 110px; height: 10px; text-align: right" maxlength="10">
         </pe:inputNumber>
     </p:column>
 </p:row>
@@ -359,8 +368,6 @@
 
     <p:growl id="messages" showDetail="true"/>
 </h:panelGrid>
-<p:messages id="mensajes" showDetail="true" autoUpdate="true" closable="true" />
-<br/>
 
 <div align="CENTER">
     <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada"

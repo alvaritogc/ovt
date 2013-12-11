@@ -107,9 +107,11 @@ public class DeclaracionAguinaldoBean implements Serializable {
     private List<DocAlerta> alertas;
     private List<DocPlanilla> docPlanillasParaRectificar;
     private DocPlanilla rectificatorio;
+    private String bitacoraSession;
     
     @PostConstruct
     public void ini() {
+        bitacoraSession = (String) session.getAttribute("bitacoraSession");
         parametro = (Integer) session.getAttribute("parametro");
         unidadSeleccionada = (PerUnidad) session.getAttribute("unidadSeleccionada");
         tipoEmpresa = (Integer) session.getAttribute("tipoEmpresa");
@@ -288,7 +290,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
             documento.setPerUnidad(unidadSeleccionada);
             List<DocBinario> listaBinarios= new ArrayList<DocBinario>();
             listaBinarios.add(binario);
-            iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas);
+            iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
             return "irEscritorio";
         }catch (Exception e){
             e.printStackTrace();

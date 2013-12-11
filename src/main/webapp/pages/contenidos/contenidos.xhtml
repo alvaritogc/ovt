@@ -45,6 +45,7 @@
                                     <p:commandButton value="Editar contenido"
                                                      action="#{contenidoBean.modificarContenido}"
                                                      oncomplete="PF('condenidoDlg').show();"
+                                                     rendered="#{mensajeContenido.esDescargable==0}"
                                                      icon="ui-icon-pencil"
                                                      update=":contenidoDialog">
                                         <f:setPropertyActionListener value="#{mensajeContenido}"
