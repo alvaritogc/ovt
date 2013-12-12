@@ -66,8 +66,9 @@ public class AuditoriaImpresionBean {
             if (nroIdentificacion.length() > 0 || codDocumento.length() > 1 || fechaInicio != null || fechaFinal != null) {
                 docLogImpresionLista = iLogImpresionService.filtrarLogImpresion(nroIdentificacion, codDocumento, fechaInicio, fechaFinal, tipoImpresion);
                 log.info("Nro de resultados " + docLogImpresionLista.size());
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Número de resultados " + docLogImpresionLista.size()));
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "Debe seleccionar almenos un criterio de búsqueda"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "Debe seleccionar al menos un criterio de búsqueda"));
             }
         } catch (Exception e) {
             e.printStackTrace();

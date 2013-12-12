@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="./../template/templateInicio.xhtml">
     <ui:define name="content">
-        <h3>Administración de Roles</h3>
+        <h3>Gestión de Roles</h3>
         <h:form id="rolFrm">
             <p:growl showDetail="true" id="auditoriaGrowl" autoUpdate="true" life="8000" />
 
@@ -21,9 +21,9 @@
                 <p:column headerText="Es Interno">
                     <h:outputText value="#{rol.esInterno eq 1 ? 'SI' : 'NO'}" />
                 </p:column>
-                <!--<p:column headerText="Estado">-->
-                    <!--<h:outputText value="# {rolAdministracionBean.descripcionEstado(rol.estado)}" />-->
-                <!--</p:column>-->
+                <p:column headerText="Estado">
+                    <h:outputText value="#{rolAdministracionBean.descripcionEstado(rol.estado)}" />
+                </p:column>
                 <p:column headerText="Módulo">
                     <h:outputText value="#{rol.idModulo.idModulo} - #{rol.idModulo.nombre}" />
                 </p:column>
