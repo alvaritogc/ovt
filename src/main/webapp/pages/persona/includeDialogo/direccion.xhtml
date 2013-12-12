@@ -75,6 +75,13 @@
              <f:selectItem itemLabel="---Seleccione un departamento---" itemValue="" />
              <f:selectItems value="#{personaUnidadBean.listaLocalidad}" />
          </p:selectOneMenu>
+            <h:outputText value="Localidad: "/>
+            <p:inputText id="inputTxtLocalidad2" value="#{personaUnidadBean.direccion.localidad}"
+                         style="width: 215px;"
+                         tabindex="6"
+                    >
+            </p:inputText>
+
 
          <h:outputText value="Referencia: "/>
          <p:inputTextarea id="txtAreaReferencia" value="#{personaUnidadBean.direccion.referencia}"
@@ -82,54 +89,56 @@
                           cols="50"
                           autoResize="false"
                           style="width: 215px;text-transform: uppercase;"
-                          tabindex="6">
+                          tabindex="7">
              <f:converter converterId="lowerConverter"/>
          </p:inputTextarea>
 
          <p:outputLabel for="inputTxtFax" value="Fax: "/>
          <p:inputText id="inputTxtFax" value="#{personaUnidadBean.direccion.fax}"
                       style="width: 215px;text-transform: uppercase"
-                      tabindex="7"
+                      tabindex="8"
                       required="true"
                       requiredMessage="El campo Fax es obligatorio."/>
 
          <h:outputText value="Telefono 1: "/>
          <p:inputText id="inputTxtTelf1" value="#{personaUnidadBean.direccion.telefono}"
                       style="width: 215px;"
-                      tabindex="8"
+                      tabindex="9"
                       onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
          <h:outputText value="Telefono 2: "/>
          <p:inputText id="inputTxtTelf2" value="#{personaUnidadBean.direccion.telefono2}"
                       style="width: 215px;"
-                      tabindex="9"
+                      tabindex="10"
                       onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
          <h:outputText value="Celular 1: "/>
          <p:inputText id="inputTxtCelular1" value="#{personaUnidadBean.direccion.celular}"
                       style="width: 215px;"
-                      tabindex="10"
+                      tabindex="11"
                       onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
          <h:outputText value="Celular 2: "/>
          <p:inputText id="inputTxtCelular2" value="#{personaUnidadBean.direccion.celular2}"
                       style="width: 215px;"
-                      tabindex="11"
+                      tabindex="12"
                       onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
          <h:outputText value="Correo electronico 1:"/>
          <p:inputText id="inputTxtEmail1" value="#{personaUnidadBean.direccion.email}"
                       style="width: 215px;"
-                      tabindex="12"
+                      tabindex="13"
                       >
          </p:inputText>
 
          <h:outputText value="Correo electronico 2: "/>
          <p:inputText id="inputTxtEmail2" value="#{personaUnidadBean.direccion.email2}"
                       style="width: 215px;"
-                      tabindex="13"
+                      tabindex="14"
                       >
          </p:inputText>
+
+
      </h:panelGrid>
 
  </p:panel>
