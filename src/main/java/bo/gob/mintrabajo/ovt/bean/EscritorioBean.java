@@ -273,7 +273,7 @@ public class EscritorioBean {
                 parametros.put("escudoBolivia", servletContext.getRealPath("/") + "/images/escudo.jpg");
                 parametros.put("logo", servletContext.getRealPath("/") + "/images/logoMIN.jpg");
 
-                String nombrePdf = "LC1010-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
 
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC1010V1.jasper", parametros));
                 verificaReporte = true;
@@ -304,7 +304,7 @@ public class EscritorioBean {
             parametros.put("roe", servletContext.getRealPath("/") + "/images/roe.jpg");
 
             try {
-                String nombrePdf = "ROE010".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento.concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
                 HttpServletRequest httpServletRequest = ((HttpServletRequest) (FacesContext.getCurrentInstance().getExternalContext()).getRequest());
                 String rutaUrl = httpServletRequest.getRequestURL().toString();
                 if (rutaUrl.contains(".xhtml")) {
@@ -385,7 +385,7 @@ public class EscritorioBean {
                     parametros.put("bajaSeguroLargoPlazo", "");
                 }
                 parametros.put("nombreFuncionario", docGenerico.getCadena10());
-                String nombrePdf = "ROE012-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe012.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
@@ -439,7 +439,7 @@ public class EscritorioBean {
                 String cadena4 = docGenerico.getValor01() != null ? (df.format(docGenerico.getValor01())) : "SIN MOVIMIENTO";
                 parametros.put("cadena4", cadena4);
 
-                String nombrePdf = "ROE013-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe013.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
@@ -461,7 +461,7 @@ public class EscritorioBean {
                 }
                 parametros.put("totalNacional", "X");
                 parametros.put("oficinaCentral", docDocumento.getPerUnidad().getNombreComercial());
-                parametros.put("mesPresentacion", docPlanilla.getParCalendario().getParCalendarioPK().getTipoPeriodo());
+                parametros.put("mesPresentacion", docPlanilla.getParCalendario().getParCalendarioPK().getGestion());
                 parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
                 parametros.put("departamento", vperPersona.getDirDepartamento());
@@ -512,11 +512,11 @@ public class EscritorioBean {
                 parametros.put("lugarPresentacion", "Oficina Virtual");
                 List<DocBinario> lista = iBinarioService.listarPorIdDocumento(docDocumento.getIdDocumento());
 
-                parametros.put("archivo1", lista.get(0));
+                parametros.put("archivo1", lista.get(0).getTipoDocumento());
                 parametros.put("escudoBolivia", servletContext.getRealPath("/") + "/images/escudo.jpg");
                 parametros.put("logo", servletContext.getRealPath("/") + "/images/logoMIN.jpg");
 
-                String nombrePdf = "LC1010-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
 
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC2010V1.jasper", parametros));
                 verificaReporte = true;

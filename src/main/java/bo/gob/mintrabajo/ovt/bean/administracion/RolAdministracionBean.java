@@ -90,7 +90,7 @@ public class RolAdministracionBean {
             cargaRolLista();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "El rol " + rolSelected.getNombre() + " se eliminó correctamente" ));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El rol no fue eliminado"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El rol no fue eliminado, controle que el rol no tenga recursos asignados"));
         }
     }
     

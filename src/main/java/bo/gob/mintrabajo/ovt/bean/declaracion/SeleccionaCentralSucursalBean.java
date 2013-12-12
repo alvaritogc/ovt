@@ -114,13 +114,13 @@ public class SeleccionaCentralSucursalBean implements Serializable{
 
         switch (parametro){
             case 1:
-                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
-                if(parObligacionCalendario==null){
-                    mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral dentro del plazo establecido.";
-                    habilitado=false;
-                    return false;
-                }else
-                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
+//                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
+//                if(parObligacionCalendario==null){
+//                    mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral dentro del plazo establecido.";
+//                    habilitado=false;
+//                    return false;
+//                }else
+//                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
                 break;
             case 2:
                 break;
@@ -141,8 +141,19 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                     mensajeValidacion="Solo puede realizar la Declaración Jurada de Aguinaldo Rectificatoria dentro del plazo establecido.";
                     habilitado=false;
                     return false;
-                }else
+                }else{
                     listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1021");
+                    if(listaDocumentos.size()==0){
+                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1020");
+                        if(listaDocumentos.size()==0){
+                            mensajeValidacion="No existe alguna Declaración Jurada de Aguinaldo para rectificar.";
+                            habilitado=false;
+                            return false;
+                        }
+                        else
+                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1021");
+                    }
+                }
                 break;
             default:
                 return false;

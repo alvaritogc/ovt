@@ -326,6 +326,11 @@ public class TemplateInicioBean implements Serializable {
             cargarDominio();
 
             if (usuario.getEsInterno() == 1) {
+                if(usuario.getFechaInhabilitacion() != null && usuario.getFechaInhabilitacion().getTime() != 0){
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención","El usuario que trató de ingresar se encuentra inhabilitado" ));
+                    return null;
+                }
                 session.setAttribute("idEmpleador", null);
                 UsernamePasswordToken token = new UsernamePasswordToken(username, passwordEncripted);
                 Subject subject = SecurityUtils.getSubject();

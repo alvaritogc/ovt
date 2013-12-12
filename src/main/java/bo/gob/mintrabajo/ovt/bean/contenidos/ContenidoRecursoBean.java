@@ -3,6 +3,9 @@ package bo.gob.mintrabajo.ovt.bean.contenidos;
 import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+
+import java.io.Serializable;
+
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +22,9 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 
-//import bo.gob.mintrabajo.ovt.envano.DobleTrabajoConexion;
-//import java.util.Collection;
-//import java.util.Collection;
-
 @ManagedBean
 @ViewScoped
-public class ContenidoRecursoBean {
+public class ContenidoRecursoBean implements Serializable {
     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     //
     private static final Logger logger = LoggerFactory.getLogger(ContenidoRecursoBean.class);
@@ -40,6 +39,7 @@ public class ContenidoRecursoBean {
     private Long idRecurso;
     private UsrRecurso recurso;
     private boolean edicion;
+    private String bitacoraSession;
 
     @PostConstruct
     public void ini() {
@@ -49,6 +49,7 @@ public class ContenidoRecursoBean {
         String parametro = params.get("p").toString();
         idRecurso = parametro != null ? new Long(parametro) : new Long("1000");
         recurso = iRecursoService.findById(idRecurso);
+        bitacoraSession = (String) session.getAttribute("bitacoraSession");
         cargar();
     }
 
@@ -69,13 +70,6 @@ public class ContenidoRecursoBean {
     }
 
     public String guardar() {
-        System.out.println("=====================================");
-        System.out.println("=====================================");
-        System.out.println("=====================================");
-        System.out.println("Guardar");
-        System.out.println("=====================================");
-        System.out.println("=====================================");
-        System.out.println("=====================================");
         if (mensajeApp.getMensaje() == null || mensajeApp.getMensaje().trim().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR
@@ -103,7 +97,7 @@ public class ContenidoRecursoBean {
 
             }
         }
-        mensajeApp = iMensajeAppService.guardar(mensajeApp, idRecurso);
+        mensajeApp = iMensajeAppService.guardar(mensajeApp, idRecurso, bitacoraSession);
         mensajeApp = new ParMensajeApp();
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("contenidoRecursoDlg.hide()");
@@ -112,7 +106,14 @@ public class ContenidoRecursoBean {
     }
 
     public void eliminar() {
-        iMensajeAppService.delete(mensajeApp.getIdMensajeApp());
+        try {
+            iMensajeAppService.delete(mensajeApp.getIdMensajeApp());
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR
+                            , "Error", "No se pudo borrar porque tiene contenidos."));
+        }
+
         cargar();
     }
 

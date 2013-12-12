@@ -10,10 +10,12 @@ import bo.gob.mintrabajo.ovt.entities.UsrRol;
 import bo.gob.mintrabajo.ovt.repositories.ModuloRepository;
 import bo.gob.mintrabajo.ovt.repositories.RolRepository;
 import javax.ejb.TransactionAttribute;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -51,11 +53,12 @@ public class RolService implements IRolService{
     
     @Override
     public UsrRol save(UsrRol rol, short esInterno) {
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if(rol.getIdRol() == null){
             Long tmp_id = obtenerSecuenciaId("USR_ROL_SEC");
             rol.setIdRol(tmp_id);
-            rol.setRegistroBitacora("ROE");
-            rol.setFechaBitacora(new Date());
+            rol.setRegistroBitacora(session.getAttribute("bitacoraSession").toString());
+            rol.setFechaBitacora(new Timestamp(new Date().getTime()));
         }
         rol.setEsInterno(esInterno);
         return rolRepository.save(rol);
@@ -66,6 +69,7 @@ public class RolService implements IRolService{
         boolean deleted;
         try {
             UsrRol usrRolTmp = rolRepository.findOne(rol.getIdRol());
+
             rolRepository.delete(usrRolTmp);
             rolRepository.flush();
             deleted = true;

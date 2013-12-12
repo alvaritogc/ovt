@@ -268,7 +268,8 @@ a:focus {
 
 .row {
   /*margin-left: -20px;*/
-  *zoom: 1;
+    background:#fff;
+    *zoom: 1;
 }
 
 .row:before,
@@ -292,7 +293,7 @@ a:focus {
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 940px;
+  /*width: 940px;*/
 }
 
 .span12 {

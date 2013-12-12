@@ -128,13 +128,18 @@ public class DocumentoService implements IDocumentoService {
         return documentoRepository.save(documento);
     }
 
-    public String guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas) {
+    public String guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas, String bitacoraSession) {
         //guarda documento
+
+
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
 //        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento(), docDocumento.getDocDefinicion().getDocDefinicionPK().getVersion()));
         docDocumento = documentoRepository.save(docDocumento);
         logger.info("Guarda" + docDocumento);
+        if(docDocumento.getIdDocumentoRef()!=null)
+            guardarCambioEstado(docDocumento.getIdDocumentoRef(), "999", bitacoraSession, "Cambio de estado al rectificar un documento.");
+
         //guarda planilla
 
         docPlanilla.setIdDocumento(docDocumento);
@@ -313,7 +318,7 @@ public class DocumentoService implements IDocumentoService {
         String codNumeroS = numeracion.getDocNumeracionPK().getCodDocumento();
         String codNumero = "";
         int numeroInicio = 3;
-        if (codDocumento.equals("LC1010")) {
+        if (codDocumento.equals("LC1010")||codDocumento.equals("LC1020")||codDocumento.equals("LC1021")) {
             numeroInicio = 2;
         }
         for (int i = numeroInicio; i < codNumeroS.length(); i++) {
@@ -607,5 +612,9 @@ public class DocumentoService implements IDocumentoService {
 
     public DocDocumento buscarPorUnindad(PerUnidadPK perUnidadPK){
         return documentoRepository.buscarPorUnindad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
+    }
+
+    public List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumentos(String idPersona, Date fechaDesde, Date fechaHasta, String codDocumento1, String codDocumento2) {
+        return documentoRepository.listarDocumentosPorpersonaUnidadFechasCodDocumentos(idPersona, fechaDesde, fechaHasta, codDocumento1, codDocumento2);
     }
 }
