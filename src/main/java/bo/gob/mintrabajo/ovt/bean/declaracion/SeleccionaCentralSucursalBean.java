@@ -114,17 +114,64 @@ public class SeleccionaCentralSucursalBean implements Serializable{
 
         switch (parametro){
             case 1:
-//                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
-//                if(parObligacionCalendario==null){
-//                    mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral dentro del plazo establecido.";
-//                    habilitado=false;
-//                    return false;
-//                }else
-//                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
+                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
+                if(parObligacionCalendario==null){
+                    mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral dentro del plazo establecido.";
+                    habilitado=false;
+                    return false;
+                }else{
+                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
+                    if(listaDocumentos.size()==0){
+                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1011");
+                        if(listaDocumentos.size()!=0){
+                            mensajeValidacion="No se puede realizar la Declaración Jurada Trimestral si ya declaro una sin movimiento.";
+                            habilitado=false;
+                            return false;
+                        }
+                        else
+                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010");
+                    }
+                }
                 break;
             case 2:
+                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
+                if(parObligacionCalendario==null){
+                    mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral Sin Movimiento dentro del plazo establecido.";
+                    habilitado=false;
+                    return false;
+                }else{
+                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1011");
+                    if(listaDocumentos.size()==0){
+                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010");
+                        if(listaDocumentos.size()!=0){
+                            mensajeValidacion="No se puede realizar la Declaración Jurada Trimestral Sin Movimiento si ya declaro una con movimiento.";
+                            habilitado=false;
+                            return false;
+                        }
+                        else
+                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1011");
+                    }
+                }
                 break;
             case 3:
+                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo2(DateUtils.truncate(new Date(), Calendar.DATE));
+                if(parObligacionCalendario==null){
+                    mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral Rectificatoria dentro del plazo establecido.";
+                    habilitado=false;
+                    return false;
+                }else{
+                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1012");
+                    if(listaDocumentos.size()==0){
+                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumentos(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010", "LC1011");
+                        if(listaDocumentos.size()==0){
+                            mensajeValidacion="No existe alguna Declaración Jurada Trimestral para rectificar.";
+                            habilitado=false;
+                            return false;
+                        }
+                        else
+                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1012");
+                    }
+                }
                 break;
             case 4:
                 parObligacionCalendario=iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
@@ -158,7 +205,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
             default:
                 return false;
         }
-        if(parametro<=3){
+        if(parametro==1){
             for(DocDocumento documento:listaDocumentos){
                 if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
                     mensajeValidacion="La Declaración Jurada Trimestral ya fue declarada Consolidada.";
@@ -168,7 +215,27 @@ public class SeleccionaCentralSucursalBean implements Serializable{
             }
         }
 
-        if(parametro>=4){
+        if(parametro==2){
+            for(DocDocumento documento:listaDocumentos){
+                if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
+                    mensajeValidacion="La Declaración Jurada Trimestral ya fue declarada Consolidada.";
+                    habilitado=false;
+                    return false;
+                }
+            }
+        }
+
+        if(parametro==3){
+            for(DocDocumento documento:listaDocumentos){
+                if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
+                    mensajeValidacion="La Declaración Jurada Trimestral ya fue declarada Consolidada.";
+                    habilitado=false;
+                    return false;
+                }
+            }
+        }
+
+        if(parametro==4 || parametro==5){
             for(DocDocumento documento:listaDocumentos){
                 if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
                     mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada Consolidada.";

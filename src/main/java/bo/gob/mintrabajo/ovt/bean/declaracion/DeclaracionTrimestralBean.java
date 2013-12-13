@@ -7,6 +7,7 @@ import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import com.csvreader.CsvReader;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -123,6 +124,7 @@ public class DeclaracionTrimestralBean implements Serializable {
     private String nombreBinario;
     private DocPlanilla rectificatorio;
     private String bitacoraSession;
+    private ParObligacionCalendario parObligacionCalendario;
 
     @PostConstruct
     public void ini() {
@@ -139,7 +141,6 @@ public class DeclaracionTrimestralBean implements Serializable {
         //
         logger.info("Realizando la carga de Persona ...");
         idUsuario = (Long) session.getAttribute("idUsuario");
-        Long temp = Long.valueOf(idUsuario);
         usuario = iUsuarioService.findById(idUsuario);
         perPersona = iPersonaService.buscarPorId(idPersona);
         docPlanilla = new DocPlanilla();
@@ -169,7 +170,7 @@ public class DeclaracionTrimestralBean implements Serializable {
 //        persona = iPersonaService.buscarPorId(idPersona);
         logger.info("persona ok");
         cargar();
-        if (parametro==5){
+        if (parametro==3){
             esRectificatorio=true;
             rectificatorio = iPlanillaService.buscarPorDocumento(iDocumentoService.buscarPorUnindad(unidadSeleccionada.getPerUnidadPK()).getIdDocumento());
         }
@@ -186,8 +187,11 @@ public class DeclaracionTrimestralBean implements Serializable {
     }
 
     public void cargarDocumentosParaRectificar(){
+        parObligacionCalendario= new ParObligacionCalendario();
+        parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
+
         docPlanillasParaRectificar= new ArrayList<DocPlanilla>();
-        docPlanillasParaRectificar= iPlanillaService.listarPlanillasParaRectificar(idPersona, "LC1010");
+        docPlanillasParaRectificar= iPlanillaService.listarPlanillasTrimestralesParaRectificar(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
     }
 
 
@@ -354,42 +358,40 @@ public class DeclaracionTrimestralBean implements Serializable {
             return null;
         }
 
-//        validaArchivo(listaBinarios);
-//        if(errores.size()==0 && verificaValidacion){
-        if(true){
-            try{
-                if(parametro==3)
-                    documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
-                logger.info("Guardando documento, binario y planilla");
-                logger.info(documento.toString());
-                logger.info(listaBinarios.toString());
-                logger.info(docPlanilla.toString());
-                generaPlanilla();
-                documento.setPerUnidad(unidadSeleccionada);
-                String msj= iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
-                return "irEscritorio";
-            }catch (Exception e){
-                e.printStackTrace();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+        validaArchivo(listaBinarios);
+        if(errores.size()==0 && verificaValidacion){
+            if(true){
+                try{
+                    if(parametro==3)
+                        documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
+                    logger.info("Guardando documento, binario y planilla");
+                    logger.info(documento.toString());
+                    logger.info(listaBinarios.toString());
+                    logger.info(docPlanilla.toString());
+                    generaPlanilla();
+                    documento.setPerUnidad(unidadSeleccionada);
+                    String msj= iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
+                    return "irEscritorio";
+                }catch (Exception e){
+                    e.printStackTrace();
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+                }
+            }else{
+                binario = new DocBinario();
+                listaBinarios.clear();
             }
-        }else{
-            binario = new DocBinario();
-            listaBinarios.clear();
+            logger.info("retorno final");
         }
-        logger.info("retorno final");
         return null;
     }
 
-    public String irInicio(){
-        idPersona=(String)session.getAttribute("idPersona");
-        String idEmpleador=(String)session.getAttribute("idEmpleador");
-        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador)){
-            return "irBienvenida";
-        }
-        else{
-            return "irEmpleadorBusqueda";
-        }
-    }
+//    public String irInicio(){
+//        idPersona=(String)session.getAttribute("idPersona");
+//        String idEmpleador=(String)session.getAttribute("idEmpleador");
+//        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador))
+//            return "irBienvenida";
+//        return "irEmpleadorBusqueda";
+//    }
 
     public void obtenerPeriodoLista(){
         parObligacionCalendarioLista = new ArrayList<ParObligacionCalendario>();

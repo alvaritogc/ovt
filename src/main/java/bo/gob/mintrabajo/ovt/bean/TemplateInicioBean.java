@@ -299,6 +299,7 @@ public class TemplateInicioBean implements Serializable {
             logger.info("iUsuarioService.login(" + username + "," + password + ")");
             String passwordEncripted = Util.encriptaMD5(password);
             Long idUsuario = iUsuarioService.login(username, passwordEncripted);
+            System.out.println("========>>>> idUSuario "+idUsuario);
             boolean usuarioValido = true;
             logger.info("usuario aceptado");
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
