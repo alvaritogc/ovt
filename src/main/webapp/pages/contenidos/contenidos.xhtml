@@ -51,7 +51,7 @@
                                         <f:setPropertyActionListener value="#{mensajeContenido}"
                                                                      target="#{contenidoBean.mensajeContenido}"/>
                                     </p:commandButton>
-                                    
+
                                     <p:commandButton value="Editar contenido"
                                                      action="#{contenidoBean.nuevaModificacionDescargable}"
                                                      oncomplete="PF('condenidoDescargaModificacionDlg').show();"
@@ -158,8 +158,8 @@
                                  icon="ui-icon-close"/>
             </h:form>
         </p:dialog>
-        
-        
+
+
         <p:dialog
                 resizable="false"
                 header="Modificar descarga" widgetVar="condenidoDescargaModificacionDlg">
@@ -168,6 +168,7 @@
                 <p:outputLabel id="messagesDescargaModificacion"
                                value="Archivo a descargar: #{contenidoBean.archivoModificacion}"
                                style="font-size: 20px;"/>
+                <p:outputLabel value="Al subir un nuevo archivo reemplazara al anterior"/>
                 <br/>
                 <p:fileUpload fileUploadListener="#{contenidoBean.subirArchivoModificacion}" mode="advanced"
                               uploadLabel="Subir" cancelLabel="Cancelar"
