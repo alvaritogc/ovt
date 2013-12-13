@@ -159,7 +159,7 @@
 </p:dialog>
 
 <p:dialog id="dlgMensaje" header="Información" widgetVar="dlgMensaje" resizable="false"
-          position="300,400" modal="true" dynamic="true" >
+          position="200,400"  modal="true" dynamic="true" >
     <h:form id="frmDlg">
         <h:panelGrid columns="2">
             <p:graphicImage value="/images/info2.png" style="width: 80px;height: 80px;"/>
@@ -180,7 +180,7 @@
 <!-- ********************************************* -->
 <!-- **************   DATA GRID ***************** -->
 <!-- ********************************************* -->
-<h2>Lista de Unidades </h2>
+<h2>Lista de Sucursales/Unidades </h2>
 <h:form id="frmAgregarUnidad">
     <br/>
     <h:panelGrid columns="2"  style="width: 765px" columnClasses="column1,column2">
@@ -240,19 +240,20 @@
             <h:outputText value="Tipo de empresa:    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
             <p:inputText value="#{unidad.tipoEmpresaAuxiliar}" readonly="true" style="width: 190px;text-transform: uppercase" />
 
-            <h:outputText value="Fecha actividad:"/>
-            <p:inputText value="#{unidad.fechaNacimiento}" readonly="true" style="width: 190px;">
+            <h:outputText value="Fecha de inicio laboral:"/>
+            <p:inputText value="#{unidad.fechaNacimiento}" readonly="true" style="width: 190px;" >
                 <f:convertDateTime pattern="dd/MM/yyyy"/>
             </p:inputText>
-            <h:outputText value="Fundempresa:"/>
-            <p:inputText value="#{unidad.nroFundaempresa}" readonly="true" style="width: 190px;"/>
-            <h:outputText value="Nro. AFP:"/>
-            <p:inputText value="#{unidad.nroAfp}" readonly="true" style="width: 190px;"/>
+
+            <h:outputText value="Nro. de Caja de salud:"/>
+            <p:inputText value="#{unidad.nroCajaSalud}" readonly="true" style="width: 190px;"/>
+            <h:outputText value="Nro. referencial:"/>
+            <p:inputText value="#{unidad.nroReferencial}" readonly="true" style="width: 190px;"/>
+
 
             <h:outputText value="Tipo de sociedad: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
             <p:inputText value="#{unidad.tipoSociedadAuxiliar}" readonly="true" style="width: 190px;text-transform: uppercase"/>
-            <h:outputText value="Caja de salud: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
-            <p:inputText value="#{unidad.nroCajaSalud}" readonly="true" style="width: 190px;"/>
+
 
             <h:outputText value="Observaciones:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
             <p:inputTextarea id="txtAreaObservacion" value="#{unidad.observaciones}"

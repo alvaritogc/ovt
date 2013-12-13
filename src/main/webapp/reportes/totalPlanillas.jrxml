@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TotalEmpleadorPorGenero" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="40" bottomMargin="40" uuid="c1954da6-c979-4cce-8a96-363ed5352b09">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="escudoBolivia" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="codLocalidad" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mostrarDetalles" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select *
+from VDOC_DOCUMENTOS_PLANILLA
+where
+(COD_LOCALIDAD_DIRECCION = $P{codLocalidad} OR  $P{codLocalidad} = 'ALL')
+and COD_ESTADO<>999
+order by fecha_documento asc]]>
+	</queryString>
+	<field name="ID_PERSONA" class="java.lang.String"/>
+	<field name="TIPO_IDENTIFICACION" class="java.lang.String"/>
+	<field name="NRO_IDENTIFICACION" class="java.lang.String"/>
+	<field name="NOMBRE_RAZON_SOCIAL" class="java.lang.String"/>
+	<field name="APELLIDO_PATERNO" class="java.lang.String"/>
+	<field name="APELLIDO_MATERNO" class="java.lang.String"/>
+	<field name="ES_NATURAL" class="java.math.BigDecimal"/>
+	<field name="COD_LOCALIDAD" class="java.lang.String"/>
+	<field name="LOCALIDAD" class="java.lang.String"/>
+	<field name="ID_UNIDAD" class="java.math.BigDecimal"/>
+	<field name="NOMBRE_COMERCIAL" class="java.lang.String"/>
+	<field name="FECHA_NACIMIENTO" class="java.sql.Timestamp"/>
+	<field name="NRO_CAJA_SALUD" class="java.lang.String"/>
+	<field name="NRO_AFP" class="java.lang.String"/>
+	<field name="NRO_FUNDAEMPRESA" class="java.lang.String"/>
+	<field name="NRO_OTRO" class="java.lang.String"/>
+	<field name="OBSERVACIONES" class="java.lang.String"/>
+	<field name="TIPO_SOCIEDAD" class="java.lang.String"/>
+	<field name="TIPO_EMPRESA" class="java.lang.String"/>
+	<field name="ACTIVIDAD_DECLARADA" class="java.lang.String"/>
+	<field name="ESTADO_UNIDAD" class="java.lang.String"/>
+	<field name="NRO_REFERENCIAL" class="java.lang.String"/>
+	<field name="TIPO_UNIDAD" class="java.lang.String"/>
+	<field name="ID_DOCUMENTO" class="java.math.BigDecimal"/>
+	<field name="COD_DOCUMENTO" class="java.lang.String"/>
+	<field name="VERSION" class="java.math.BigDecimal"/>
+	<field name="NUMERO_DOCUMENTO" class="java.math.BigDecimal"/>
+	<field name="FECHA_DOCUMENTO" class="java.sql.Timestamp"/>
+	<field name="ID_DOCUMENTO_REF" class="java.math.BigDecimal"/>
+	<field name="COD_ESTADO" class="java.lang.String"/>
+	<field name="ESTADO" class="java.lang.String"/>
+	<field name="FECHA_REFERENCA" class="java.sql.Timestamp"/>
+	<field name="TIPO_MEDIO_REGISTRO" class="java.lang.String"/>
+	<field name="FECHA_BITACORA_DOC" class="java.sql.Timestamp"/>
+	<field name="REGISTRO_BITACORA_DOC" class="java.lang.String"/>
+	<field name="ID_PLANILLA" class="java.math.BigDecimal"/>
+	<field name="GESTION" class="java.lang.String"/>
+	<field name="TIPO_PERIODO" class="java.lang.String"/>
+	<field name="TIPO_PLANILLA" class="java.lang.String"/>
+	<field name="NRO_ASEG_CAJA" class="java.math.BigDecimal"/>
+	<field name="MONTO_ASEG_CAJA" class="java.math.BigDecimal"/>
+	<field name="ID_ENTIDAD_SALUD" class="java.math.BigDecimal"/>
+	<field name="NRO_ASEG_AFP" class="java.math.BigDecimal"/>
+	<field name="MONTO_ASEG_AFP" class="java.math.BigDecimal"/>
+	<field name="HABER_BASICO" class="java.math.BigDecimal"/>
+	<field name="BONO_ANTIGUEDAD" class="java.math.BigDecimal"/>
+	<field name="BONO_PRODUCCION" class="java.math.BigDecimal"/>
+	<field name="SUBSIDIO_FRONTERA" class="java.math.BigDecimal"/>
+	<field name="LABOR_EXTRA" class="java.math.BigDecimal"/>
+	<field name="OTROS_BONOS" class="java.math.BigDecimal"/>
+	<field name="APORTE_AFP" class="java.math.BigDecimal"/>
+	<field name="RCIVA" class="java.math.BigDecimal"/>
+	<field name="OTROS_DESCUENTOS" class="java.math.BigDecimal"/>
+	<field name="NRO_M" class="java.math.BigDecimal"/>
+	<field name="NRO_H" class="java.math.BigDecimal"/>
+	<field name="NRO_JUBILADOS_M" class="java.math.BigDecimal"/>
+	<field name="NRO_JUBILADOS_H" class="java.math.BigDecimal"/>
+	<field name="NRO_EXTRANJEROS_M" class="java.math.BigDecimal"/>
+	<field name="NRO_EXTRANJEROS_H" class="java.math.BigDecimal"/>
+	<field name="NRO_DISCAPACIDAD_M" class="java.math.BigDecimal"/>
+	<field name="NRO_DISCAPACIDAD_H" class="java.math.BigDecimal"/>
+	<field name="NRO_CONTRATADOS_M" class="java.math.BigDecimal"/>
+	<field name="NRO_CONTRATADOS_H" class="java.math.BigDecimal"/>
+	<field name="NRO_RETIRADOS_M" class="java.math.BigDecimal"/>
+	<field name="NRO_RETIRADOS_H" class="java.math.BigDecimal"/>
+	<field name="NRO_ACCIDENTES" class="java.math.BigDecimal"/>
+	<field name="NRO_MUERTES" class="java.math.BigDecimal"/>
+	<field name="NRO_ENFERMEDADES" class="java.math.BigDecimal"/>
+	<field name="ID_ENTIDAD_BANCO" class="java.math.BigDecimal"/>
+	<field name="FECHA_OPERACION" class="java.sql.Timestamp"/>
+	<field name="MONTO_OPERACION" class="java.math.BigDecimal"/>
+	<field name="NUM_OPERACION" class="java.lang.String"/>
+	<field name="NRO_EMPLEADOR" class="java.lang.String"/>
+	<field name="NRO_PATRONALSS" class="java.lang.String"/>
+	<field name="ID_ACTIVIDAD_ECONOMICA" class="java.math.BigDecimal"/>
+	<field name="COD_LOCALIDAD_CIUDAD" class="java.lang.String"/>
+	<field name="COD_LOCALIDAD_PAIS" class="java.lang.String"/>
+	<field name="ZONA" class="java.lang.String"/>
+	<field name="DIRECCION" class="java.lang.String"/>
+	<field name="TELEFONO" class="java.lang.String"/>
+	<field name="FAX" class="java.lang.String"/>
+	<field name="ID_REPLEGAL" class="java.lang.String"/>
+	<field name="COD_LOCALIDAD_PRESENTACION" class="java.lang.String"/>
+	<field name="COD_LOCALIDAD_DIRECCION" class="java.lang.String"/>
+	<field name="LOCALIDAD_DIRECCION" class="java.lang.String"/>
+	<variable name="SUMA_HOMBRES" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="SUMA_MUJERES" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="NUMERACION_LOCALIDAD" class="java.lang.Integer" calculation="Count">
+		<initialValueExpression><![CDATA[1]]></initialValueExpression>
+	</variable>
+	<variable name="NUMERACION_DEPARTAMENTO" class="java.lang.Integer" calculation="Sum">
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="TOTAL_FECHA" class="java.lang.Integer"/>
+	<variable name="NRO_PLANILLAS" class="java.lang.String" resetType="Group" resetGroup="GRUPO_LOCALIDAD" calculation="Count">
+		<variableExpression><![CDATA[$F{NOMBRE_RAZON_SOCIAL}]]></variableExpression>
+	</variable>
+	<variable name="ESTADO_1" class="java.lang.Integer" resetType="Group" resetGroup="GRUPO_LOCALIDAD" calculation="Count">
+		<variableExpression><![CDATA[$F{ESTADO}]]></variableExpression>
+	</variable>
+	<variable name="ESTADO_2" class="java.lang.Integer" resetType="Group" resetGroup="GRUPO_FECHA" calculation="Count">
+		<variableExpression><![CDATA[$F{ESTADO}]]></variableExpression>
+	</variable>
+	<variable name="ESTADO_3" class="java.lang.Integer" resetType="Group" resetGroup="GRUPO_FECHA" calculation="Count">
+		<variableExpression><![CDATA[$F{ESTADO}]]></variableExpression>
+	</variable>
+	<variable name="ESTADO_4" class="java.lang.Integer" resetType="Group" resetGroup="GRUPO_LOCALIDAD" calculation="Count">
+		<variableExpression><![CDATA[$F{ESTADO}]]></variableExpression>
+	</variable>
+	<group name="GRUPO_LOCALIDAD">
+		<groupExpression><![CDATA[$F{ID_PERSONA}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<textField>
+					<reportElement uuid="712358ae-232d-4b03-99dd-a5d193755086" x="36" y="0" width="47" height="15"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{COD_LOCALIDAD_DIRECCION}==null?'S/L':$F{COD_LOCALIDAD_DIRECCION}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="c3cb4371-34aa-4b57-b3a5-47afd046abe3" x="96" y="0" width="220" height="15"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LOCALIDAD_DIRECCION}==null?'SIN LOCALIDAD':$F{LOCALIDAD_DIRECCION}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="31">
+				<rectangle>
+					<reportElement uuid="bd4bc59d-e959-47cb-8469-c604da27012c" x="36" y="0" width="519" height="16" backcolor="#CCCCCC"/>
+				</rectangle>
+				<textField>
+					<reportElement uuid="8fecb6a9-32f5-4d46-b211-92bdba8e7a33" x="437" y="0" width="100" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ESTADO_4}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="edf4e677-b77c-460a-99bd-5291f0c61ed3" x="219" y="0" width="100" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[TOTAL]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="4fda9174-d36a-42d2-a4eb-55fae19a7ece" x="325" y="0" width="100" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LOCALIDAD_DIRECCION}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="GRUPO_FECHA">
+		<groupExpression><![CDATA[$F{FECHA_OPERACION}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<textField pattern="dd/MM/yyyy">
+					<reportElement uuid="a4c54f27-2b15-4b63-86f9-519508e86263" x="112" y="0" width="100" height="15"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{FECHA_DOCUMENTO}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRUPO_FECHA">
+					<reportElement uuid="3f17e17e-ca21-4cda-994d-e2bb1e448b6e" x="437" y="0" width="100" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ESTADO_3}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="edf4e677-b77c-460a-99bd-5291f0c61ed3" x="287" y="0" width="100" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[TOTAL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="edf4e677-b77c-460a-99bd-5291f0c61ed3" x="389" y="0" width="13" height="15"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="edf4e677-b77c-460a-99bd-5291f0c61ed3" x="64" y="0" width="47" height="15"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[FECHA:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="2"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="87" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c62298b1-9170-495d-834c-136eb907573a" x="165" y="28" width="241" height="46"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="16" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Reporte de planillas trimestrales ]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="36" y="14" width="115" height="65"/>
+				<imageExpression><![CDATA[$P{escudoBolivia}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="c45502db-e68a-43d8-9d85-39a67b0d2b37" x="417" y="14" width="120" height="60"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<printWhenExpression><![CDATA[$P{mostrarDetalles}=='true']]></printWhenExpression>
+			<textField>
+				<reportElement uuid="7dac7ac9-213c-4285-9b94-2ebd95ebd9e8" x="96" y="0" width="221" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{NOMBRE_RAZON_SOCIAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9c6e9b85-c6cf-4853-bc0c-764068e32484" x="437" y="0" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ESTADO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="10" splitType="Stretch"/>
+	</summary>
+</jasperReport>
