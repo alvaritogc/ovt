@@ -172,7 +172,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         cargar();
         if (parametro==3){
             esRectificatorio=true;
-            rectificatorio = iPlanillaService.buscarPorDocumento(iDocumentoService.buscarPorUnindad(unidadSeleccionada.getPerUnidadPK()).getIdDocumento());
+//            rectificatorio = iPlanillaService.buscarPorDocumento(iDocumentoService.buscarPorUnindad(unidadSeleccionada.getPerUnidadPK()).getIdDocumento());
         }
         valor=true;
         gestion=String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
@@ -358,9 +358,8 @@ public class DeclaracionTrimestralBean implements Serializable {
             return null;
         }
 
-        validaArchivo(listaBinarios);
-        if(errores.size()==0 && verificaValidacion){
-            if(true){
+//        validaArchivo(listaBinarios);
+//        if(errores.size()==0 && verificaValidacion){
                 try{
                     if(parametro==3)
                         documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
@@ -376,12 +375,11 @@ public class DeclaracionTrimestralBean implements Serializable {
                     e.printStackTrace();
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
                 }
-            }else{
-                binario = new DocBinario();
-                listaBinarios.clear();
-            }
+//            }else{
+//                binario = new DocBinario();
+//                listaBinarios.clear();
+//            }
             logger.info("retorno final");
-        }
         return null;
     }
 
@@ -443,51 +441,113 @@ public class DeclaracionTrimestralBean implements Serializable {
                     DocAlerta docAlerta = new DocAlerta();
 
                     //1
-                    docPlanillaDetalle.setTipoDocumento(registro.get(registro.getHeader(columna++)));
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setTipoDocumento(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
 
-                    //2
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                    columna++;//2
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
                         docPlanillaDetalle.setNumeroDocumento(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//3
-                    docPlanillaDetalle.setExtencionDocumento(registro.get(registro.getHeader(columna++)));
-                    //4
-                    docPlanillaDetalle.setAfp(registro.get(registro.getHeader(columna++)));
-                    //5
-                    docPlanillaDetalle.setNuaCua(registro.get(registro.getHeader(columna++)));
-                    //6.7.8.9.10
-                    docPlanillaDetalle.setNombre(registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++)));
-                    //11
-                    docPlanillaDetalle.setNacionalidad(registro.get(registro.getHeader(columna++)));
-                    //12
-                    docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna++)));
-                    //13
-                    docPlanillaDetalle.setSexo(registro.get(registro.getHeader(columna++)));
-                    //14
-                    docPlanillaDetalle.setJubilado(registro.get(registro.getHeader(columna++)));
-                    //15
-                    docPlanillaDetalle.setClasificacionLaboral(registro.get(registro.getHeader(columna++)));
-                    //16
-                    docPlanillaDetalle.setCargo(registro.get(registro.getHeader(columna++)));
-                    //17
-                    docPlanillaDetalle.setFechaIngreso(registro.get(registro.getHeader(columna++)));
-                    //18
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setExtencionDocumento(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//4
+                    docPlanillaDetalle.setAfp(registro.get(registro.getHeader(columna)));
+
+                    columna++;//5
+                    docPlanillaDetalle.setNuaCua(registro.get(registro.getHeader(columna)));
+
+                    columna++;//6
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(registro.get(registro.getHeader(columna))+" ");
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+                    columna++;//7
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+
+                    columna++;//8
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+
+                    columna++;//9
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//10
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+
+                    columna++;//11
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNacionalidad(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//12
+                    if(!registro.get(registro.getHeader(columna)).equals("")){
+                        if(registro.get(registro.getHeader(columna)).length()>=15)
+                            docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy").parse(registro.get(registro.getHeader(columna)))));
+                        else
+                            docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//13
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setSexo(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//14
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setJubilado(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//15
+                        docPlanillaDetalle.setClasificacionLaboral(registro.get(registro.getHeader(columna)));
+
+                    columna++;//16
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setCargo(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//17
+                    if(!registro.get(registro.getHeader(columna)).equals("")) {
+                        if(registro.get(registro.getHeader(columna)).length()>15)
+                            docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy").parse(registro.get(registro.getHeader(columna)))));
+                        else
+                            docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//18
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
                         docPlanillaDetalle.setHorasPagadasDia(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//19
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
                         docPlanillaDetalle.setDiasHaberBasico(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//20
-
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
                         docPlanillaDetalle.setDiasPagados(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -496,7 +556,10 @@ public class DeclaracionTrimestralBean implements Serializable {
                     if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
                         switch (valorPlanilla){
                             case 1:
-                                docPlanillaDetalle.setDominicalMes(registro.get(registro.getHeader(columna)));
+                                if(!registro.get(registro.getHeader(columna)).equals(""))
+                                    docPlanillaDetalle.setDominicalMes(registro.get(registro.getHeader(columna)));
+                                else
+                                    errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                             case 2:
                                 docPlanillaDetalle.setHorasExtra(registro.get(registro.getHeader(columna)));
@@ -606,8 +669,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                             case 2:
-                                String a=registro.get(columna);
-                                if(!a.equals(""))
+                                if(!registro.get(columna).equals(""))
                                     docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -732,7 +794,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //36
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna))))
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))&&!registro.get(columna).equals(""))
                             docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -762,7 +824,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //41
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna))))
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))&&!registro.get(columna).equals(""))
                             docPlanillaDetalle.setLiquidoPagable(registro.get(registro.getHeader(columna)));
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
