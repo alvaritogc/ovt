@@ -12,7 +12,7 @@
         <h:form>
             <h2>Reporte número de trabajadores dependientes</h2>
             <h:panelGrid columns="2" style="width: 50%;">
-                <p:outputLabel value="Tipo:"/>
+                <p:outputLabel value="Tipo de reporte:"/>
                 <p:selectOneMenu value="#{totalEmpleadorPorGeneroBean.tipoReporte}">
                     <f:selectItem itemLabel="Detallado" itemValue="todas"/>
                     <f:selectItem itemLabel="Sin detalles" itemValue="sd"/>
@@ -20,7 +20,7 @@
 
                 <p:outputLabel value="Localidad:"/>
                 <p:selectOneMenu value="#{totalEmpleadorPorGeneroBean.codLocalidad}">
-                    <f:selectItem itemLabel="Todas"/>
+                    <f:selectItem itemLabel="Todas" itemValue="ALL"/>
                     <f:selectItems value="#{totalEmpleadorPorGeneroBean.listaLocalidades}"
                                    var="perLocalidad"
                                    itemLabel="#{perLocalidad.descripcion}"

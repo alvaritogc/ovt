@@ -82,7 +82,6 @@ public class TotalEmpleadorPorGeneroBean implements Serializable {
         logger.info("TotalEmpleadorPorGeneroBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idEmpleador = (String) session.getAttribute("idEmpleador");
-        System.out.println("idEmpleador: " + idEmpleador);
         cargar();
     }
 
@@ -91,13 +90,6 @@ public class TotalEmpleadorPorGeneroBean implements Serializable {
     }
 
     public void generarReporte() {
-        System.out.println("==================================");
-        System.out.println("==================================");
-        System.out.println("==================================");
-        System.out.println("generarReporte");
-        System.out.println("==================================");
-        System.out.println("==================================");
-        System.out.println("==================================");
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String rutaWebApp = servletContext.getRealPath("/");
         String jrxmlFileName = rutaWebApp + "/reportes/totalEmpleadorPorGenero.jrxml";
@@ -126,7 +118,6 @@ public class TotalEmpleadorPorGeneroBean implements Serializable {
             parametros.put("escudoBolivia", servletContext.getRealPath("/") + "images/escudo.jpg");
             parametros.put("logo", servletContext.getRealPath("/") + "images/logoMIN.jpg");
             if (tipoReporte.equals("todas")) {
-                //mostrarDetalles=true;
                 parametros.put("mostrarDetalles", "true");
             } else {
                 parametros.put("mostrarDetalles", "false");
