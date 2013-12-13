@@ -59,8 +59,7 @@
   LOCALIDAD_DIRECCION
 FROM VPER_INFOLABORAL
 where
-(COD_LOCALIDAD_DIRECCION = $P{codLocalidad} OR  $P{codLocalidad} = 'ALL')
-AND ROWNUM < 1000
+COD_LOCALIDAD_DIRECCION = $P{codLocalidad} OR  $P{codLocalidad} = 'ALL'
 order by cod_localidad_direccion]]>
 	</queryString>
 	<field name="ID_PERSONA" class="java.lang.String"/>
