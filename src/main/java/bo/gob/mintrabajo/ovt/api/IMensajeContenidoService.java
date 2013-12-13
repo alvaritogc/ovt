@@ -16,4 +16,5 @@ public interface IMensajeContenidoService {
     public List<ParMensajeContenido> listarPorMensajeApp(Long idMensajeApp);
 
     public boolean tieneImagenes(Long idMensajeApp);
+    public ParMensajeContenido modificarBinario(Long idMensajeContenido, String archivo, String metadata,byte[] binario,String bitacoraSession);
 }

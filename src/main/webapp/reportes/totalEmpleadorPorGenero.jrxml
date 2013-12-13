@@ -58,8 +58,8 @@
   COD_LOCALIDAD_DIRECCION,
   LOCALIDAD_DIRECCION
 FROM VPER_INFOLABORAL
-where id_persona > 1025229
-and (COD_LOCALIDAD_DIRECCION = $P{codLocalidad} OR  $P{codLocalidad} is null)
+where
+COD_LOCALIDAD_DIRECCION = $P{codLocalidad} OR  $P{codLocalidad} = 'ALL'
 order by cod_localidad_direccion]]>
 	</queryString>
 	<field name="ID_PERSONA" class="java.lang.String"/>
@@ -134,31 +134,33 @@ order by cod_localidad_direccion]]>
 	<group name="grupoLocalidad">
 		<groupExpression><![CDATA[$F{COD_LOCALIDAD_DIRECCION}]]></groupExpression>
 		<groupHeader>
-			<band height="22">
+			<band height="16">
 				<textField>
-					<reportElement uuid="712358ae-232d-4b03-99dd-a5d193755086" x="36" y="2" width="47" height="20"/>
+					<reportElement uuid="712358ae-232d-4b03-99dd-a5d193755086" x="36" y="1" width="47" height="15"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{COD_LOCALIDAD_DIRECCION}==null?'S/L':$F{COD_LOCALIDAD_DIRECCION}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="62545004-422f-41f6-8b1e-28c30a93913c" x="437" y="2" width="50" height="15"/>
+					<reportElement uuid="62545004-422f-41f6-8b1e-28c30a93913c" x="437" y="1" width="50" height="15"/>
 					<textElement textAlignment="Right">
 						<font size="9"/>
 					</textElement>
 					<text><![CDATA[Mujeres]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="371" y="2" width="50" height="15"/>
+					<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="371" y="1" width="50" height="15"/>
 					<textElement textAlignment="Right">
 						<font size="9"/>
 					</textElement>
 					<text><![CDATA[Hombres]]></text>
 				</staticText>
 				<textField>
-					<reportElement uuid="c3cb4371-34aa-4b57-b3a5-47afd046abe3" x="83" y="2" width="220" height="20"/>
-					<textElement/>
+					<reportElement uuid="c3cb4371-34aa-4b57-b3a5-47afd046abe3" x="83" y="1" width="220" height="15"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$F{LOCALIDAD_DIRECCION}==null?'SIN LOCALIDAD':$F{LOCALIDAD_DIRECCION}]]></textFieldExpression>
 				</textField>
 			</band>
@@ -226,7 +228,7 @@ order by cod_localidad_direccion]]>
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="17" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{mostrarDetalles}=='true']]></printWhenExpression>
 			<textField>
 				<reportElement uuid="4365d856-8f29-44ca-a571-c78db122261f" x="437" y="0" width="50" height="15"/>
@@ -263,7 +265,7 @@ order by cod_localidad_direccion]]>
 	<summary>
 		<band height="25" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="bd4bc59d-e959-47cb-8469-c604da27012c" x="0" y="1" width="572" height="15" backcolor="#CCCCCC"/>
+				<reportElement uuid="bd4bc59d-e959-47cb-8469-c604da27012c" x="36" y="1" width="501" height="15" backcolor="#CCCCCC"/>
 			</rectangle>
 			<staticText>
 				<reportElement uuid="3d35fc40-0348-4ce1-aa2a-ea87d68d557d" x="177" y="0" width="35" height="15"/>

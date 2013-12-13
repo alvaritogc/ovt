@@ -358,42 +358,40 @@ public class DeclaracionTrimestralBean implements Serializable {
             return null;
         }
 
-//        validaArchivo(listaBinarios);
-//        if(errores.size()==0 && verificaValidacion){
-        if(true){
-            try{
-                if(parametro==3)
-                    documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
-                logger.info("Guardando documento, binario y planilla");
-                logger.info(documento.toString());
-                logger.info(listaBinarios.toString());
-                logger.info(docPlanilla.toString());
-                generaPlanilla();
-                documento.setPerUnidad(unidadSeleccionada);
-                String msj= iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
-                return "irEscritorio";
-            }catch (Exception e){
-                e.printStackTrace();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+        validaArchivo(listaBinarios);
+        if(errores.size()==0 && verificaValidacion){
+            if(true){
+                try{
+                    if(parametro==3)
+                        documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
+                    logger.info("Guardando documento, binario y planilla");
+                    logger.info(documento.toString());
+                    logger.info(listaBinarios.toString());
+                    logger.info(docPlanilla.toString());
+                    generaPlanilla();
+                    documento.setPerUnidad(unidadSeleccionada);
+                    String msj= iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
+                    return "irEscritorio";
+                }catch (Exception e){
+                    e.printStackTrace();
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+                }
+            }else{
+                binario = new DocBinario();
+                listaBinarios.clear();
             }
-        }else{
-            binario = new DocBinario();
-            listaBinarios.clear();
+            logger.info("retorno final");
         }
-        logger.info("retorno final");
         return null;
     }
 
-    public String irInicio(){
-        idPersona=(String)session.getAttribute("idPersona");
-        String idEmpleador=(String)session.getAttribute("idEmpleador");
-        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador)){
-            return "irBienvenida";
-        }
-        else{
-            return "irEmpleadorBusqueda";
-        }
-    }
+//    public String irInicio(){
+//        idPersona=(String)session.getAttribute("idPersona");
+//        String idEmpleador=(String)session.getAttribute("idEmpleador");
+//        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador))
+//            return "irBienvenida";
+//        return "irEmpleadorBusqueda";
+//    }
 
     public void obtenerPeriodoLista(){
         parObligacionCalendarioLista = new ArrayList<ParObligacionCalendario>();
