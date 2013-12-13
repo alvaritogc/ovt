@@ -71,6 +71,9 @@ public class PerDireccion implements Serializable {
     @Basic(optional = false)
     @Column(name = "REGISTRO_BITACORA")
     private String registroBitacora;
+
+    @Column(name = "LOCALIDAD")
+    private String localidad;
     @JoinColumns({
         @JoinColumn(name = "ID_UNIDAD", referencedColumnName = "ID_UNIDAD"),
         @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA")})
@@ -252,6 +255,14 @@ public class PerDireccion implements Serializable {
 
     public void setTipoDireccionAuxiliar(String tipoDireccionAuxiliar) {
         this.tipoDireccionAuxiliar = tipoDireccionAuxiliar;
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
     }
 
     @Override
