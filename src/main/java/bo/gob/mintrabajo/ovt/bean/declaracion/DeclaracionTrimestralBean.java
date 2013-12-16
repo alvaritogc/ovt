@@ -358,8 +358,8 @@ public class DeclaracionTrimestralBean implements Serializable {
             return null;
         }
 
-//        validaArchivo(listaBinarios);
-//        if(errores.size()==0 && verificaValidacion){
+        validaArchivo(listaBinarios);
+        if(errores.size()==0 && verificaValidacion){
                 try{
                     if(parametro==3)
                         documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
@@ -369,27 +369,21 @@ public class DeclaracionTrimestralBean implements Serializable {
                     logger.info(docPlanilla.toString());
                     generaPlanilla();
                     documento.setPerUnidad(unidadSeleccionada);
-                    String msj= iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
+                    iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
                     return "irEscritorio";
                 }catch (Exception e){
                     e.printStackTrace();
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
                 }
-//            }else{
-//                binario = new DocBinario();
-//                listaBinarios.clear();
-//            }
+            }else{
+                binario = new DocBinario();
+                listaBinarios.clear();
+                habilita=true;
+                nombres= new String[3];
+            }
             logger.info("retorno final");
         return null;
     }
-
-//    public String irInicio(){
-//        idPersona=(String)session.getAttribute("idPersona");
-//        String idEmpleador=(String)session.getAttribute("idEmpleador");
-//        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador))
-//            return "irBienvenida";
-//        return "irEmpleadorBusqueda";
-//    }
 
     public void obtenerPeriodoLista(){
         parObligacionCalendarioLista = new ArrayList<ParObligacionCalendario>();

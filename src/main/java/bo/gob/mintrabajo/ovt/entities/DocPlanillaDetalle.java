@@ -471,7 +471,46 @@ public class DocPlanillaDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.DocPlanillaDetalle[ idPlanillaDetalle=" + idPlanillaDetalle + " ]";
+        return "DocPlanillaDetalle{" +
+                "idPlanillaDetalle=" + idPlanillaDetalle +
+                ", tipoDocumento='" + tipoDocumento + '\'' +
+                ", numeroDocumento='" + numeroDocumento + '\'' +
+                ", extencionDocumento='" + extencionDocumento + '\'' +
+                ", afp='" + afp + '\'' +
+                ", nuaCua='" + nuaCua + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", nacionalidad='" + nacionalidad + '\'' +
+                ", fechaNacimiento='" + fechaNacimiento + '\'' +
+                ", sexo='" + sexo + '\'' +
+                ", jubilado='" + jubilado + '\'' +
+                ", clasificacionLaboral='" + clasificacionLaboral + '\'' +
+                ", cargo='" + cargo + '\'' +
+                ", fechaIngreso='" + fechaIngreso + '\'' +
+                ", horasPagadasDia='" + horasPagadasDia + '\'' +
+                ", diasHaberBasico='" + diasHaberBasico + '\'' +
+                ", diasPagados='" + diasPagados + '\'' +
+                ", dominicalMes='" + dominicalMes + '\'' +
+                ", dominicalTrabajado='" + dominicalTrabajado + '\'' +
+                ", horasExtra='" + horasExtra + '\'' +
+                ", horasNocturno='" + horasNocturno + '\'' +
+                ", horasDominicales='" + horasDominicales + '\'' +
+                ", haberBasico='" + haberBasico + '\'' +
+                ", haberDominical='" + haberDominical + '\'' +
+                ", montoDominical='" + montoDominical + '\'' +
+                ", montoHorasExtra='" + montoHorasExtra + '\'' +
+                ", montoHorasNocturno='" + montoHorasNocturno + '\'' +
+                ", montoHorasDominical='" + montoHorasDominical + '\'' +
+                ", bonoAntiguedad='" + bonoAntiguedad + '\'' +
+                ", bonoProduccion='" + bonoProduccion + '\'' +
+                ", bonoFrontera='" + bonoFrontera + '\'' +
+                ", bonoOtros='" + bonoOtros + '\'' +
+                ", totalGanado='" + totalGanado + '\'' +
+                ", descuentoAfp='" + descuentoAfp + '\'' +
+                ", descuentoRciva='" + descuentoRciva + '\'' +
+                ", descuentoOtro='" + descuentoOtro + '\'' +
+                ", descuentosTotal='" + descuentosTotal + '\'' +
+                ", liquidoPagable='" + liquidoPagable + '\'' +
+                ", idPlanilla=" + idPlanilla +
+                '}';
     }
-    
 }

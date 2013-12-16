@@ -97,7 +97,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
     private DocBinario archivoBinario;
     private UsrUsuario usuario;
     private UploadedFile file;
-    private String nombres[]= new String[3];
     //
     private boolean estaDeclarado;
     private Long idEntidadSalud;
@@ -282,6 +281,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
             binario.setFechaBitacora(new Timestamp(new Date().getTime()));
             binario.setRegistroBitacora(usuario.getUsuario());
             binario.setBinario(file.getContents());
+            binario.setInputStream(file.getInputstream());
             habilita=false;
         }catch (Exception e){
             habilita=true;
@@ -290,8 +290,8 @@ public class DeclaracionAguinaldoBean implements Serializable {
     }
 
     public String guardaDocumentoPlanillaBinarioAgunaldoBean(){
-//        validaArchivo(binario);
-//        if(errores.size()==0 && verificaValidacion){
+        validaArchivo(binario);
+        if(errores.size()==0 && verificaValidacion){
             try{
                 if(parametro==5)
                     documento.setIdDocumentoRef(rectificatorio.getIdDocumento());
@@ -309,10 +309,12 @@ public class DeclaracionAguinaldoBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
                 return null;
             }
-//        }else{
-//            binario = new DocBinario();
-//        }
-//        return null;
+        }else{
+            binario = new DocBinario();
+            habilita=true;
+        }
+        logger.info("retorno final");
+        return null;
     }
 
     public String mensajeError(int i, String titulo){
@@ -338,6 +340,9 @@ public class DeclaracionAguinaldoBean implements Serializable {
                 //TODO nombre del documento extraido del metadata
                 nombreBinario=docBinario.getTipoDocumento();
                 while (registro.readRecord()){
+                    if(registro.getColumnCount()!=24)
+                        return;
+
                     c++;
                     int columna=1;
                     DocPlanillaDetalle docPlanillaDetalle = new DocPlanillaDetalle();
@@ -350,7 +355,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//2
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).equals("")&&UtilityData.isInteger(registro.get(registro.getHeader(columna))))
                         docPlanillaDetalle.setNumeroDocumento(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -372,6 +377,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
                         docPlanillaDetalle.setNombre(registro.get(registro.getHeader(columna))+" ");
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
+
                     columna++;//7
                     if(!registro.get(registro.getHeader(columna)).equals(""))
                         docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
@@ -413,7 +419,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//14
-                    if(!registro.get(columna).equals("")){
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))&&!registro.get(columna).equals("")){
                         if((int) Double.parseDouble(registro.get(columna).replace(",","."))<salarioMinimo)
                             docAlerta.setObservacion(nombreBinario+": El registro en la fila \""+c+"\" y la columna \"Haber Básico\" es menor al salario mínimo establecido por ley.");
                         docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
@@ -422,32 +428,32 @@ public class DeclaracionAguinaldoBean implements Serializable {
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//15
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                    if(registro.get(columna).equals("")||UtilityData.isInteger(registro.get(registro.getHeader(columna))))
                         docPlanillaDetalle.setBonoAntiguedad(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
 
                     columna++;//16
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                    if(registro.get(columna).equals("")||UtilityData.isInteger(registro.get(registro.getHeader(columna))))
                         docPlanillaDetalle.setBonoProduccion(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//17
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                    if(registro.get(columna).equals("")||UtilityData.isInteger(registro.get(registro.getHeader(columna))))
                         docPlanillaDetalle.setBonoFrontera(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//18
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                    if(registro.get(columna).equals("")||UtilityData.isInteger(registro.get(registro.getHeader(columna))))
                         docPlanillaDetalle.setMontoHorasExtra(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//19
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                    if(registro.get(columna).equals("")||UtilityData.isInteger(registro.get(registro.getHeader(columna))))
                         docPlanillaDetalle.setBonoOtros(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -459,7 +465,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//21
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                    if(registro.get(columna).equals("")||UtilityData.isInteger(registro.get(registro.getHeader(columna))))
                         docPlanillaDetalle.setDominicalMes(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -703,14 +709,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
     public void setFile(UploadedFile file) {
         this.file = file;
-    }
-
-    public String[] getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String[] nombres) {
-        this.nombres = nombres;
     }
 
     public IDefinicionService getiDefinicionService() {
