@@ -130,7 +130,10 @@ public class DocumentoService implements IDocumentoService {
 
     public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas, String bitacoraSession) {
         //guarda documento
+
+
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
+//        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento(), docDocumento.getDocDefinicion().getDocDefinicionPK().getVersion()));
         docDocumento = documentoRepository.save(docDocumento);
         logger.info("Guarda: " + docDocumento);
@@ -138,7 +141,9 @@ public class DocumentoService implements IDocumentoService {
             guardarCambioEstado(docDocumento.getIdDocumentoRef(), "999", bitacoraSession, "Cambio de estado al rectificar un documento.");
 
         //guarda planilla
+
         docPlanilla.setIdDocumento(docDocumento);
+
         docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
         docPlanilla = planillaRepository.save(docPlanilla);
         logger.info("Guarda: " + docPlanilla);
@@ -173,6 +178,7 @@ public class DocumentoService implements IDocumentoService {
             elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
             logger.info("Guarda: " + binarioRepository.save(elementoBinario));
         }
+        return "guardado correctamente";
     }
 
     @Override
@@ -198,7 +204,12 @@ public class DocumentoService implements IDocumentoService {
     public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK, String registroBitacora) {
         List<DocDocumento> lista = documentoRepository.listarRoe011(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
         if (lista.size() > 0) {
-            throw new RuntimeException("Ya se registro el roe para ese documento");
+            throw new RuntimeException("Ya se registro una modificacion para este documento.");
+        }
+        ParParametrizacion parametroCodigoBaja = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_ESTADO_BAJA);
+        DocDocumento docDocumentoRoe010 = documentoRepository.buscarRoe010PorUnidad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad(), parametroCodigoBaja.getDescripcion());
+        if (docDocumentoRoe010 == null) {
+            throw new RuntimeException("No existe un Roe activo para este empleador.");
         }
 
         ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_IMPRESION);
@@ -206,8 +217,6 @@ public class DocumentoService implements IDocumentoService {
 
         DocDocumento docDocumento = new DocDocumento();
         docDocumento.setPerUnidad(unidadRepository.findOne(perUnidadPK));
-        //
-        //DocDefinicion docDefinicion = definicionRepository.findOne(new DocDefinicionPK("ROE011", (short) 1));
         //
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setDocDefinicion(docDefinicion);
@@ -218,13 +227,8 @@ public class DocumentoService implements IDocumentoService {
 
         docDocumento.setFechaBitacora(new Date());
         docDocumento.setRegistroBitacora(registroBitacora);
-        //docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
         docDocumento.setTipoMedioRegistro("MODIFICACION");//MODIFICACION DEL ROE
-
-
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
-        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
-
         docDocumento = documentoRepository.save(docDocumento);
         //
         DocGenerico docGenerico = new DocGenerico();
@@ -246,17 +250,14 @@ public class DocumentoService implements IDocumentoService {
         docDocumento.setCodEstado(documentoEstadoRepository.findOne(docDefinicion.getCodEstado().getCodEstado()));//Estado inicial
         docDocumento.setFechaDocumento(new Date());
         docDocumento.setFechaReferenca(new Date());
-
         docDocumento.setFechaBitacora(new Date());
         docDocumento.setRegistroBitacora(registroBitacora);
 
-        //docDocumento.setTipoMedioRegistro("DDJJ");
         if (docGenerico.getCadena03() == null || docGenerico.getCadena03().equals("")) {
             docDocumento.setTipoMedioRegistro("DEFINITIVA");//BAJA DEFINITIVA
         } else {
             docDocumento.setTipoMedioRegistro("TEMPORAL");//BAJA TEMPORAL
         }
-
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
         docDocumento = documentoRepository.save(docDocumento);
         //
@@ -273,11 +274,8 @@ public class DocumentoService implements IDocumentoService {
 
     @Override
     public DocDocumento guardarActualizaRoe(DocDocumento docDocumento, DocGenerico docGenerico, String registroBitacora) {
-
         ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_MODIFICACION);
         DocDefinicion docDefinicion = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacion.getDescripcion());
-
-        //DocDefinicion docDefinicion = definicionRepository.findOne(new DocDefinicionPK("ROE013", (short) 1));
         //
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setDocDefinicion(docDefinicion);
@@ -285,13 +283,9 @@ public class DocumentoService implements IDocumentoService {
         docDocumento.setCodEstado(documentoEstadoRepository.findOne(docDefinicion.getCodEstado().getCodEstado()));//Estado inicial
         docDocumento.setFechaDocumento(new Date());
         docDocumento.setFechaReferenca(new Date());
-
         docDocumento.setFechaBitacora(new Date());
         docDocumento.setRegistroBitacora(registroBitacora);
-        //docDocumento.setTipoMedioRegistro("DDJSM");
         docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
-
-        //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
         docDocumento = documentoRepository.save(docDocumento);
         //
@@ -312,7 +306,7 @@ public class DocumentoService implements IDocumentoService {
         String codNumeroS = numeracion.getDocNumeracionPK().getCodDocumento();
         String codNumero = "";
         int numeroInicio = 3;
-        if (codDocumento.equals("LC1010")||codDocumento.equals("LC1020")||codDocumento.equals("LC1021")) {
+        if (codDocumento.equals("LC1010") || codDocumento.equals("LC1020") || codDocumento.equals("LC1021")) {
             numeroInicio = 2;
         }
         for (int i = numeroInicio; i < codNumeroS.length(); i++) {
@@ -345,12 +339,9 @@ public class DocumentoService implements IDocumentoService {
         Long verificacion = 11 - modulo;
         //
         if (verificacion > new Long(9)) {
-            //System.out.println("verificador > a 9");
             String vAux = "" + verificacion;
             verificacion = new Long((Integer.valueOf("" + vAux.charAt(0)) + Integer.valueOf("" + vAux.charAt(1))));
-            //System.out.println("verificacion: "+verificacion);
         }
-
         //
         numeracion.setUltimoNumero(numeracion.getUltimoNumero() + 1);
         numeracionRepository.save(numeracion);
@@ -381,8 +372,8 @@ public class DocumentoService implements IDocumentoService {
         return documentoRepository.listarPlanillaALaFecha(idEmpleador, fechaDesde, fechaHasta, codDocumento);
     }
 
-    @Override    
-    public List<DocDocumento> listarDocumentosPorPersonaUnidad(PerUnidadPK perUnidadPK, Date fechaHasta, Date fechaPlazo){
+    @Override
+    public List<DocDocumento> listarDocumentosPorPersonaUnidad(PerUnidadPK perUnidadPK, Date fechaHasta, Date fechaPlazo) {
         return documentoRepository.listarDocumentosTrimSmPorUnidad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad(), fechaHasta, fechaPlazo);
     }
 
@@ -392,13 +383,6 @@ public class DocumentoService implements IDocumentoService {
 
     @Override
     public DocDocumento guardarDocumentoRoe(DocGenerico docGenerico, Long idDocumento, PerUnidadPK perUnidadPK, DocDefinicionPK docDefinicionPK, String registroBitacora, String parametroDocDefinicionAdicional) {
-        System.out.println("================================");
-        System.out.println("================================");
-        System.out.println("================================");
-        System.out.println("registro: " + registroBitacora);
-        System.out.println("================================");
-        System.out.println("================================");
-        System.out.println("================================");
         if (parametroDocDefinicionAdicional != null && !parametroDocDefinicionAdicional.equals("")) {
             ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, parametroDocDefinicionAdicional);
             DocDefinicion docDefinicionAdicional = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacion.getDescripcion());
@@ -427,13 +411,9 @@ public class DocumentoService implements IDocumentoService {
             docGenericoAdicional.setIdDocumento(docDocumentoAdicional);
             docGenericoAdicional.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
             docGenericoRepository.save(docGenericoAdicional);
-
-            PerUnidad unidad = unidadRepository.findOne(docDocumentoAdicional.getPerUnidad().getPerUnidadPK());
-            System.out.println("========>>> UNIDAD " + unidad);
-            System.out.println("========>>> CAMBIANDO EL VALOR nro de documento" + docDocumentoAdicional.getNumeroDocumento());
-            unidad.setTipoUnidad(String.valueOf(docDocumentoAdicional.getNumeroDocumento()));
-            System.out.println("========>>> MODIFICADO " + unidad);
-            unidadRepository.save(unidad);
+//            PerUnidad unidad = unidadRepository.findOne(docDocumentoAdicional.getPerUnidad().getPerUnidadPK());
+//            unidad.setTipoUnidad(String.valueOf(docDocumentoAdicional.getNumeroDocumento()));
+//            unidadRepository.save(unidad);
         }
 
         DocDefinicion docDefinicion = definicionRepository.findOne(docDefinicionPK);
@@ -453,7 +433,6 @@ public class DocumentoService implements IDocumentoService {
 
             docDocumento.setFechaBitacora(new Date());
             docDocumento.setRegistroBitacora(registroBitacora);
-            //docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
             if (parametroDocDefinicionAdicional != null && !parametroDocDefinicionAdicional.equals("")) {
                 docDocumento.setTipoMedioRegistro("REGISTRO");//SOLICITUD DE IMPRESION DEL ROE
             } else {
@@ -461,7 +440,6 @@ public class DocumentoService implements IDocumentoService {
             }
 
             System.out.println("codEstadoDocumento: " + docDefinicion.getDocDefinicionPK().getCodDocumento());
-            //docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
             docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
 
             docDocumento = documentoRepository.save(docDocumento);
@@ -469,10 +447,7 @@ public class DocumentoService implements IDocumentoService {
             //Si ya tiene un documento actualizara codEstado de 010 al q tenga en docDefinicion ej 013
             docDocumento = documentoRepository.findOne(idDocumento);
             guardarCambioEstado(docDocumento, docDefinicion.getCodEstado().getCodEstado(), registroBitacora, "LLENADO DEL COMPROBANTE DE DEPOSITO");
-            //docDocumento.setCodEstado(documentoEstadoRepository.findOne(docDefinicion.getCodEstado().getCodEstado()));//Estado inicial
-            //docDocumento = documentoRepository.save(docDocumento);
         }
-
         //
         docGenerico.setIdDocumento(docDocumento);
         if (docGenerico.getIdGenerico() == null) {
@@ -488,26 +463,35 @@ public class DocumentoService implements IDocumentoService {
         return documentoRepository.findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(idPersona, codEstado);
     }
 
+    @Override
+    public boolean validarReactivacionRoe(PerUnidadPK perUnidadPK) {
+        List<DocDocumento> lista = documentoRepository.listarPorPersona(perUnidadPK.getIdPersona());
+        if (lista == null || lista.size() == 0) {
+            throw new RuntimeException("No se encontro un Roe para este empleador.");
+        }
+        ParParametrizacion parametroCodigoBaja = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_ESTADO_BAJA);
+        DocDocumento docDocumentoRoe010 = documentoRepository.buscarRoe010PorUnidad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad(), parametroCodigoBaja.getDescripcion());
+        if (docDocumentoRoe010 != null) {
+            throw new RuntimeException("Ya existe un Roe activo para este empleador.");
+        }
+        return true;
+    }
+
+    @Override
     public DocDocumento guardarReactivacionRoe(DocGenerico docGenerico, PerUnidadPK perUnidadPK, String registroBitacora) {
         ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_REACTIVACION);
         DocDefinicion docDefinicion = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacion.getDescripcion());
         //
         DocDocumento docDocumento = new DocDocumento();
-        //
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumento.setDocDefinicion(docDefinicion);
-        //
         docDocumento.setCodEstado(documentoEstadoRepository.findOne(docDefinicion.getCodEstado().getCodEstado()));//Estado inicial
         docDocumento.setPerUnidad(unidadRepository.findOne(perUnidadPK));
         docDocumento.setFechaDocumento(new Date());
         docDocumento.setFechaReferenca(new Date());
-
         docDocumento.setFechaBitacora(new Date());
         docDocumento.setRegistroBitacora(registroBitacora);
-        //docDocumento.setTipoMedioRegistro(docDefinicion.getTipoGrupoDocumento());
         docDocumento.setTipoMedioRegistro("N/A");//SIN TIPO
-
-        System.out.println("codEstadoDocumento: " + docDefinicion.getDocDefinicionPK().getCodDocumento());
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicion.getDocDefinicionPK().getCodDocumento(), (short) 1));
         docDocumento = documentoRepository.save(docDocumento);
         //
@@ -515,34 +499,18 @@ public class DocumentoService implements IDocumentoService {
         docGenerico.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
         docGenericoRepository.save(docGenerico);
         //
-//        DocDocumento docDocumentoRoe010 = documentoRepository.buscarRoe010PorUnidad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
-//        docDocumentoRoe010.setCodEstado(documentoEstadoRepository.findOne(docDocumentoRoe010.getDocDefinicion().getCodEstado().getCodEstado()));
-//        docDocumentoRoe010 = documentoRepository.save(docDocumentoRoe010);
-        //
-        //
-        System.out.println("=========================0");
-        System.out.println("=========================0");
-        System.out.println("Adicionando nuevo roe");
-        System.out.println("=========================0");
-        System.out.println("=========================0");
-        System.out.println("=========================0");
         ParParametrizacion parParametrizacionAdicional = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_INSCRIPCION);
         DocDefinicion docDefinicionAdicional = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacionAdicional.getDescripcion());
         DocDocumento docDocumentoAdicional = new DocDocumento();
-        //
         docDocumentoAdicional.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
         docDocumentoAdicional.setDocDefinicion(docDefinicionAdicional);
-        //
         docDocumentoAdicional.setCodEstado(documentoEstadoRepository.findOne(docDefinicionAdicional.getCodEstado().getCodEstado()));//Estado inicial
         docDocumentoAdicional.setPerUnidad(unidadRepository.findOne(perUnidadPK));
         docDocumentoAdicional.setFechaDocumento(new Date());
         docDocumentoAdicional.setFechaReferenca(new Date());
-
         docDocumentoAdicional.setFechaBitacora(new Date());
         docDocumentoAdicional.setRegistroBitacora(registroBitacora);
-        //docDocumentoAdicional.setTipoMedioRegistro(docDefinicionAdicional.getTipoGrupoDocumento());
         docDocumentoAdicional.setTipoMedioRegistro("REACTIVACION");//MODIFICACION DEL ROE
-        //
         docDocumentoAdicional.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicionAdicional.getDocDefinicionPK().getCodDocumento(), (short) 1));
         docDocumentoAdicional = documentoRepository.save(docDocumentoAdicional);
         //
@@ -553,11 +521,6 @@ public class DocumentoService implements IDocumentoService {
         docGenericoAdicional.setIdGenerico(utils.valorSecuencia("DOC_GENERICO_SEC"));
         docGenericoRepository.save(docGenericoAdicional);
         //
-        System.out.println("============================");
-        System.out.println("============================");
-        System.out.println("roe impresion");
-        System.out.println("============================");
-        System.out.println("============================");
         ParParametrizacion parParametrizacionImpresion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_IMPRESION);
         DocDefinicion docDefinicionImpresion = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacionImpresion.getDescripcion());
 
@@ -569,10 +532,8 @@ public class DocumentoService implements IDocumentoService {
         docDocumentoImpresion.setCodEstado(documentoEstadoRepository.findOne("010"));//Estado inicial pendiente
         docDocumentoImpresion.setFechaDocumento(new Date());
         docDocumentoImpresion.setFechaReferenca(new Date());
-
         docDocumentoImpresion.setFechaBitacora(new Date());
         docDocumentoImpresion.setRegistroBitacora(registroBitacora);
-        //docDocumentoImpresion.setTipoMedioRegistro(docDefinicionImpresion.getTipoGrupoDocumento());
         docDocumentoImpresion.setTipoMedioRegistro("REACTIVACION");//MODIFICACION DEL ROE
 
         docDocumentoImpresion.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicionImpresion.getDocDefinicionPK().getCodDocumento(), (short) 1));
