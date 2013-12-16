@@ -60,6 +60,60 @@ public class ActividadEconomicaService implements IActividadEconomicaService {
         actividadEconomica.setFechaBitacora(new Date());
         return actividadEconomicaRepository.save(actividadEconomica);
     }
+    
+    @Override
+    public boolean guardarActividadEconomica(ParActividadEconomica actividadEconomica, boolean estadoActividadEconomica,
+            String REGISTRO_BITACORA, String tipoNodo, Long idPadre, Long idHijo){
+        boolean guardado=false;
+        
+        ///System.out.println("==> estado " + estadoActividadEconomica);
+        ///System.out.println("==>REGISTRO_BITACORA "+REGISTRO_BITACORA);
+        ///System.out.println("==> tipoNodo "+tipoNodo);
+        ///System.out.println("==> idPadre"+ idPadre);
+        
+        
+        ParActividadEconomica aEconimica= new ParActividadEconomica();
+        try {
+            if(idHijo < 0){
+                //Nuevo
+                ///System.out.println("=> nuevo");
+                aEconimica.setIdActividadEconomica(this.obtenerSecuencia("PAR_ACTIVIDAD_ECONOMICA_SEC"));
+            }else{
+                ///System.out.println("=> edicion");
+                aEconimica=actividadEconomicaRepository.findOne(idHijo);
+            }
+            
+            if(tipoNodo.equals("Hijo")){
+                aEconimica.setIdActividadEconomica2(actividadEconomicaRepository.findOne(idPadre));
+            }    
+            ///System.out.println("=>0 "+ aEconimica.getIdActividadEconomica());
+            aEconimica.setCodActividadEconomica(actividadEconomica.getCodActividadEconomica());
+            ///System.out.println("=>1 "+ aEconimica.getCodActividadEconomica());
+            aEconimica.setDescripcion(actividadEconomica.getDescripcion());
+            ///System.out.println("=>2 "+ aEconimica.getDescripcion());
+            aEconimica.setCodImpuestos(actividadEconomica.getCodImpuestos());
+            ///System.out.println("=>3 "+ aEconimica.getCodImpuestos());
+            aEconimica.setDescricpionImpuestos(actividadEconomica.getDescricpionImpuestos());
+            ///System.out.println("=>4 "+ aEconimica.getDescricpionImpuestos());
+            if(estadoActividadEconomica==true){
+                aEconimica.setEstado(dominioRepository.obtenerDominioPorNombreYValor("ESTADO", "A").getParDominioPK().getValor());
+            }
+            else{
+                aEconimica.setEstado(dominioRepository.obtenerDominioPorNombreYValor("ESTADO", "X").getParDominioPK().getValor());
+            }
+            ///System.out.println("=>5 "+ aEconimica.getEstado());
+            aEconimica.setFechaBitacora(new Date());
+            aEconimica.setRegistroBitacora(REGISTRO_BITACORA);
+            ///System.out.println("preparando para guardar");
+            actividadEconomicaRepository.save(aEconimica);
+            ///System.out.println("guardardado");
+            guardado=true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            guardado=false;
+        }
+        return guardado;
+    }
 
 
 
@@ -73,12 +127,29 @@ public class ActividadEconomicaService implements IActividadEconomicaService {
             return null;
         }
     }
+    
+    @Override
+    public ParActividadEconomica obtieneActividadEconomicaPorId(Long idActividadEconomica){
+        ParActividadEconomica AE=new ParActividadEconomica();
+        try{
+            ///System.out.println("===> idActividadEconomica " + idActividadEconomica);
+            AE = actividadEconomicaRepository.findOne(idActividadEconomica);
+            ///System.out.println("==> id AE " +AE.getIdActividadEconomica());
+            return AE;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
 
-//    @Override
-    public boolean delete(ParActividadEconomica actividadEconomica) {
+    @Override
+    public boolean delete(Long idActividadEconimica){
         boolean deleted = false;
-        actividadEconomicaRepository.delete(actividadEconomica);
+        ///System.out.println("==> nodo eliminado "+ idActividadEconimica);
+        //ParActividadEconomica actividadEconomica= new ParActividadEconomica();
+        //actividadEconomica=actividadEconomicaRepository.findOne(idActividadEconimica);
+        actividadEconomicaRepository.delete(idActividadEconimica);
         return deleted;
     }
 
