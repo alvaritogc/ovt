@@ -68,7 +68,6 @@ public class ActualizaRoeBean {
         idEmpleador = (String) session.getAttribute("idEmpleador");
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
         usuario = iUsuarioService.findById(idUsuario);
-
         mostrarFormulario = iDocumentoService.existeRoe(idEmpleador);
         if (mostrarFormulario) {
             mostrarFormularioMensaje = "";
@@ -90,20 +89,11 @@ public class ActualizaRoeBean {
         docGenerico = new DocGenerico();
         docGenerico.setCadena08(vperPersona.getRlNombre());
         docGenerico.setCadena09(vperPersona.getRlNroIdentidad());
-//        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
-//        docDefinicionPK.setCodDocumento("ROE013");
-//        docDefinicionPK.setVersion((short)1);
-//        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
-        //
         docDefinicion = iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_MODIFICACION);
     }
 
     public String guardar() {
-        System.out.println("==================================");
-        System.out.println("==================================");
-        System.out.println("Guardar");
-        System.out.println("==================================");
-        System.out.println("==================================");
+        logger.info("Guardando actualizacion sin movimiento");
         documento = iDocumentoService.guardarActualizaRoe(documento, docGenerico, bitacoraSession);
         return "irEscritorio";
     }
