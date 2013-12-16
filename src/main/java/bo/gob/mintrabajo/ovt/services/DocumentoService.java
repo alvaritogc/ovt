@@ -178,7 +178,6 @@ public class DocumentoService implements IDocumentoService {
             elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
             logger.info("Guarda: " + binarioRepository.save(elementoBinario));
         }
-        return "guardado correctamente";
     }
 
     @Override
