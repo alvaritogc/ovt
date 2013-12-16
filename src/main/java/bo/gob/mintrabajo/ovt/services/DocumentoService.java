@@ -137,7 +137,7 @@ public class DocumentoService implements IDocumentoService {
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento(), docDocumento.getDocDefinicion().getDocDefinicionPK().getVersion()));
         docDocumento = documentoRepository.save(docDocumento);
         logger.info("Guarda" + docDocumento);
-        if(docDocumento.getIdDocumentoRef()!=null)
+        if (docDocumento.getIdDocumentoRef() != null)
             guardarCambioEstado(docDocumento.getIdDocumentoRef(), "999", bitacoraSession, "Cambio de estado al rectificar un documento.");
 
         //guarda planilla
@@ -149,8 +149,8 @@ public class DocumentoService implements IDocumentoService {
         logger.info("Guarda" + docPlanilla);
 
         //guardaPlanillaDetalles
-        if(docPlanillaDetalles==null)
-            docPlanillaDetalles= new ArrayList<DocPlanillaDetalle>();
+        if (docPlanillaDetalles == null)
+            docPlanillaDetalles = new ArrayList<DocPlanillaDetalle>();
         for (DocPlanillaDetalle elemPlanillaDetalle : docPlanillaDetalles) {
             elemPlanillaDetalle.setIdPlanilla(docPlanilla);
             elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
@@ -158,9 +158,9 @@ public class DocumentoService implements IDocumentoService {
         }
 
         //guardaAlertas
-        DocAlertaDefinicion docAlertaDefinicion= new DocAlertaDefinicion();
-        if(alertas==null)
-            alertas= new ArrayList<DocAlerta>();
+        DocAlertaDefinicion docAlertaDefinicion = new DocAlertaDefinicion();
+        if (alertas == null)
+            alertas = new ArrayList<DocAlerta>();
         else
             docAlertaDefinicion = alertaDefinicionRepository.findByDocDefinicion_DocDefinicionPK(docDocumento.getDocDefinicion().getDocDefinicionPK());
         for (DocAlerta docAlerta : alertas) {
@@ -204,7 +204,12 @@ public class DocumentoService implements IDocumentoService {
     public DocDocumento guardarRoeGenerico(PerUnidadPK perUnidadPK, String registroBitacora) {
         List<DocDocumento> lista = documentoRepository.listarRoe011(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
         if (lista.size() > 0) {
-            throw new RuntimeException("Ya se registro el roe para ese documento");
+            throw new RuntimeException("Ya se registro una modificacion para este documento.");
+        }
+        ParParametrizacion parametroCodigoBaja = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_ESTADO_BAJA);
+        DocDocumento docDocumentoRoe010 = documentoRepository.buscarRoe010PorUnidad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad(), parametroCodigoBaja.getDescripcion());
+        if (docDocumentoRoe010 == null) {
+            throw new RuntimeException("No existe un Roe activo para este empleador.");
         }
 
         ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_IMPRESION);
@@ -318,7 +323,7 @@ public class DocumentoService implements IDocumentoService {
         String codNumeroS = numeracion.getDocNumeracionPK().getCodDocumento();
         String codNumero = "";
         int numeroInicio = 3;
-        if (codDocumento.equals("LC1010")||codDocumento.equals("LC1020")||codDocumento.equals("LC1021")) {
+        if (codDocumento.equals("LC1010") || codDocumento.equals("LC1020") || codDocumento.equals("LC1021")) {
             numeroInicio = 2;
         }
         for (int i = numeroInicio; i < codNumeroS.length(); i++) {
@@ -387,8 +392,8 @@ public class DocumentoService implements IDocumentoService {
         return documentoRepository.listarPlanillaALaFecha(idEmpleador, fechaDesde, fechaHasta, codDocumento);
     }
 
-    @Override    
-    public List<DocDocumento> listarDocumentosPorPersonaUnidad(PerUnidadPK perUnidadPK, Date fechaHasta, Date fechaPlazo){
+    @Override
+    public List<DocDocumento> listarDocumentosPorPersonaUnidad(PerUnidadPK perUnidadPK, Date fechaHasta, Date fechaPlazo) {
         return documentoRepository.listarDocumentosTrimSmPorUnidad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad(), fechaHasta, fechaPlazo);
     }
 
@@ -494,7 +499,31 @@ public class DocumentoService implements IDocumentoService {
         return documentoRepository.findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(idPersona, codEstado);
     }
 
+    @Override
+    public boolean validarReactivacionRoe(PerUnidadPK perUnidadPK) {
+        List<DocDocumento> lista = documentoRepository.listarPorPersona(perUnidadPK.getIdPersona());
+        if (lista == null || lista.size() == 0) {
+            throw new RuntimeException("No se encontro un Roe para este empleador.");
+        }
+        ParParametrizacion parametroCodigoBaja = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_ESTADO_BAJA);
+        DocDocumento docDocumentoRoe010 = documentoRepository.buscarRoe010PorUnidad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad(), parametroCodigoBaja.getDescripcion());
+        if (docDocumentoRoe010 != null) {
+            throw new RuntimeException("Ya existe un Roe activo para este empleador.");
+        }
+        return true;
+    }
+
     public DocDocumento guardarReactivacionRoe(DocGenerico docGenerico, PerUnidadPK perUnidadPK, String registroBitacora) {
+//        List<DocDocumento> lista=documentoRepository.listarPorPersona(perUnidadPK.getIdPersona());
+//        if (lista==null || lista.size() == 0) {
+//            throw new RuntimeException("No se encontro un Roe para este empleador.");
+//        }
+//        ParParametrizacion parametroCodigoBaja = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_ESTADO_BAJA);
+//        DocDocumento docDocumentoRoe010 = documentoRepository.buscarRoe010PorUnidad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad(), parametroCodigoBaja.getDescripcion());
+//        if(docDocumentoRoe010!=null){
+//            throw new RuntimeException("Ya existe un Roe activo para este empleador.");
+//        }
+
         ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_REACTIVACION);
         DocDefinicion docDefinicion = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacion.getDescripcion());
         //
@@ -610,7 +639,7 @@ public class DocumentoService implements IDocumentoService {
         return documentoRepository.listarDocumentosPorpersonaUnidadFechasCodDocumento(idPersona, fechaDesde, fechaHasta, codDocumento);
     }
 
-    public DocDocumento buscarPorUnindad(PerUnidadPK perUnidadPK){
+    public DocDocumento buscarPorUnindad(PerUnidadPK perUnidadPK) {
         return documentoRepository.buscarPorUnindad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
     }
 

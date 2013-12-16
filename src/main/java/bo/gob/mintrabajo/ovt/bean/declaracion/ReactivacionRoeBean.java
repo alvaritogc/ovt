@@ -78,8 +78,15 @@ public class ReactivacionRoeBean implements Serializable {
             mostrarFormulario = false;
             mostrarFormularioMensaje = "No se encontro al empleador";
         } else {
-            mostrarFormulario = true;
-            mostrarFormularioMensaje = "";
+            perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
+            try {
+                iDocumentoService.validarReactivacionRoe(perUnidadPK);
+                mostrarFormulario = true;
+                mostrarFormularioMensaje = "";
+            } catch (Exception e) {
+                mostrarFormulario = false;
+                mostrarFormularioMensaje = e.getMessage();
+            }
         }
         cargar();
     }
@@ -99,7 +106,7 @@ public class ReactivacionRoeBean implements Serializable {
                     + " " + (persona.getApellidoMaterno() != null ? persona.getApellidoMaterno() : "")
             );
         }
-        perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
+        //perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
         //
         docDefinicion = iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_REACTIVACION);
     }
@@ -117,7 +124,13 @@ public class ReactivacionRoeBean implements Serializable {
         //docGenerico.setCadena10("" + nit);
         docGenerico.setCadena07("" + nit);
         //documento = iDocumentoService.guardarBajaRoe(documento, docGenerico, idUsuario.toString());
-        documento = iDocumentoService.guardarReactivacionRoe(docGenerico, perUnidadPK, bitacoraSession);
+        try {
+            documento = iDocumentoService.guardarReactivacionRoe(docGenerico, perUnidadPK, bitacoraSession);
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+            return "";
+        }
+
         return "irEscritorio";
     }
 
