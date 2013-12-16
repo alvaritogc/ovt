@@ -11,6 +11,7 @@ public class Dominios {
     public static final String DOM_TIPOS_IDENTIFICACION = "TIDENTIFICACION";
     public static final String DOM_TIPOS_GRUPO_DOCUMENTO = "TGRUPODOCUMENTO";
     public static final String DOM_TIPOS_MULTA = "TMULTA";
+    public static final String DOM_TIPOS_IDENTIFICACIONROE = "TIDENTROE";
 
     public static final String DOM_ESTADO = "ESTADO";
     public static final String PAR_ESTADO_ACTIVO = "A";

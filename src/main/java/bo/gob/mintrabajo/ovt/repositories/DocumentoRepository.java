@@ -156,6 +156,7 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " where "
                     + " d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
                     + " and d.perUnidad.perUnidadPK.idUnidad=:idUnidad "
+                    + " and d.docDefinicion.docDefinicionPK.codDocumento like 'LC1020'"
 
     )
     DocDocumento buscarPorUnindad(@Param("idEmpleador") String idPersona, @Param("idUnidad") Long idUnidad);

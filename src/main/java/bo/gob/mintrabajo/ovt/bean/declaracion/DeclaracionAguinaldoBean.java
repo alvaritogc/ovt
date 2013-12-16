@@ -1,7 +1,12 @@
 package bo.gob.mintrabajo.ovt.bean.declaracion;
 
+import bo.gob.mintrabajo.ovt.Util.Dominios;
+import bo.gob.mintrabajo.ovt.Util.UtilityData;
+import bo.gob.mintrabajo.ovt.Util.XlsToCSV;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import com.csvreader.CsvReader;
+import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -14,6 +19,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -108,6 +116,9 @@ public class DeclaracionAguinaldoBean implements Serializable {
     private List<DocPlanilla> docPlanillasParaRectificar;
     private DocPlanilla rectificatorio;
     private String bitacoraSession;
+    private String nombreBinario;
+    private int salarioMinimo;
+    private int tamanioErrores;
     
     @PostConstruct
     public void ini() {
@@ -279,39 +290,197 @@ public class DeclaracionAguinaldoBean implements Serializable {
     }
 
     public String guardaDocumentoPlanillaBinarioAgunaldoBean(){
-           habilita=true;//deshabilita el boton de envio
-        try{
-            if(parametro==5)
-                documento.setIdDocumentoRef(rectificatorio.getIdDocumento());
-            logger.info("Guardando documento, binario y planilla");
-            logger.info(documento.toString());
-            logger.info(docPlanilla.toString());
-            generaPlanilla();
-            documento.setPerUnidad(unidadSeleccionada);
-            List<DocBinario> listaBinarios= new ArrayList<DocBinario>();
-            listaBinarios.add(binario);
-            iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
-            return "irEscritorio";
-        }catch (Exception e){
-            e.printStackTrace();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
-            return null;
-        }
-    }
-
-    public String irInicio(){
-        idPersona=(String)session.getAttribute("idPersona");
-        String idEmpleador=(String)session.getAttribute("idEmpleador");
-        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador)){
-            return "irBienvenida";
-        }
-        else{
-            return "irEmpleadorBusqueda";
-        }
+//        validaArchivo(binario);
+//        if(errores.size()==0 && verificaValidacion){
+            try{
+                if(parametro==5)
+                    documento.setIdDocumentoRef(rectificatorio.getIdDocumento());
+                logger.info("Guardando documento, binario y planilla");
+                logger.info(documento.toString());
+                logger.info(docPlanilla.toString());
+                generaPlanilla();
+                documento.setPerUnidad(unidadSeleccionada);
+                List<DocBinario> listaBinarios= new ArrayList<DocBinario>();
+                listaBinarios.add(binario);
+                iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
+                return "irEscritorio";
+            }catch (Exception e){
+                e.printStackTrace();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+                return null;
+            }
+//        }else{
+//            binario = new DocBinario();
+//        }
+//        return null;
     }
 
     public String mensajeError(int i, String titulo){
-        return "Fila: "+i+" y Columna: "+ titulo+ ";";
+        return nombreBinario+": Fila: \""+i+"\" y Columna: \""+ titulo+ "\"; ";
+    }
+
+    public void validaArchivo(DocBinario docBinario){
+        try {
+            docPlanillaDetalles = new ArrayList<DocPlanillaDetalle>();
+            errores = new ArrayList<String>();
+            alertas = new ArrayList<DocAlerta>();
+            int valorPlanilla=0;
+                CsvReader registro;
+                if(!FilenameUtils.getExtension(docBinario.getTipoDocumento()).toUpperCase().equals(Dominios.EXTENSION_CSV)){
+                    File file = XlsToCSV.conversion(docBinario);
+                    registro = new CsvReader(file.getAbsolutePath());
+                }
+                else
+                    registro = new CsvReader(new InputStreamReader(new ByteArrayInputStream(docBinario.getBinario())));
+
+                registro.readHeaders();
+                int c=0;
+                //TODO nombre del documento extraido del metadata
+                nombreBinario=docBinario.getTipoDocumento();
+                while (registro.readRecord()){
+                    c++;
+                    int columna=1;
+                    DocPlanillaDetalle docPlanillaDetalle = new DocPlanillaDetalle();
+                    DocAlerta docAlerta = new DocAlerta();
+
+                    //1
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setTipoDocumento(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//2
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNumeroDocumento(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//3
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setExtencionDocumento(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//4
+                    docPlanillaDetalle.setAfp(registro.get(registro.getHeader(columna)));
+
+                    columna++;//5
+                    docPlanillaDetalle.setNuaCua(registro.get(registro.getHeader(columna)));
+
+                    columna++;//6
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(registro.get(registro.getHeader(columna))+" ");
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+                    columna++;//7
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+
+                    columna++;//8
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+
+                    columna++;//9
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//10
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+
+                    columna++;//11
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNacionalidad(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//12
+                    if(!registro.get(registro.getHeader(columna)).equals("")){
+                        if(registro.get(registro.getHeader(columna)).length()>=15)
+                            docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy").parse(registro.get(registro.getHeader(columna)))));
+                        else
+                            docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//13
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setSexo(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//14
+                    if(!registro.get(columna).equals("")){
+                        if((int) Double.parseDouble(registro.get(columna).replace(",","."))<salarioMinimo)
+                            docAlerta.setObservacion(nombreBinario+": El registro en la fila \""+c+"\" y la columna \"Haber Básico\" es menor al salario mínimo establecido por ley.");
+                        docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//15
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setBonoAntiguedad(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+
+                    columna++;//16
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setBonoProduccion(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//17
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setBonoFrontera(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//18
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setMontoHorasExtra(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//19
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setBonoOtros(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//20
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                        docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//21
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                        docPlanillaDetalle.setDominicalMes(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//22
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                        docPlanillaDetalle.setLiquidoPagable(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    if(docAlerta.getObservacion()!=null)
+                        alertas.add(docAlerta);
+                    docPlanillaDetalles.add(docPlanillaDetalle);
+                }
+            tamanioErrores = errores.size();
+            verificaValidacion=true;
+        }
+        catch (Exception e){
+            verificaValidacion=false;
+            e.printStackTrace();
+        }
     }
 
     //** Obtenemos todos las entidades de la tabla ENTIDAD **//
@@ -678,5 +847,37 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
     public void setRectificatorio(DocPlanilla rectificatorio) {
         this.rectificatorio = rectificatorio;
+    }
+
+    public int getTamanioErrores() {
+        return tamanioErrores;
+    }
+
+    public void setTamanioErrores(int tamanioErrores) {
+        this.tamanioErrores = tamanioErrores;
+    }
+
+    public List<String> getErrores() {
+        return errores;
+    }
+
+    public void setErrores(List<String> errores) {
+        this.errores = errores;
+    }
+
+    public List<DocAlerta> getAlertas() {
+        return alertas;
+    }
+
+    public void setAlertas(List<DocAlerta> alertas) {
+        this.alertas = alertas;
+    }
+
+    public boolean isVerificaValidacion() {
+        return verificaValidacion;
+    }
+
+    public void setVerificaValidacion(boolean verificaValidacion) {
+        this.verificaValidacion = verificaValidacion;
     }
 }

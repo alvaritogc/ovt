@@ -346,10 +346,16 @@
         </p:panelGrid>
     </p:column>
 </p:row>
-
 </p:panelGrid>
 
-
+<p:panelGrid columns="2" rendered="#{declaracionAguinaldoBean.verificaValidacion==true}" style="background: yellow">
+    <p:scrollPanel style="width:330px;height:150px" mode="native">
+        <p:dataList value="#{declaracionAguinaldoBean.errores}" var="e" itemType="disc" emptyMessage="Sin errores.">#{e}</p:dataList>
+    </p:scrollPanel>
+    <p:scrollPanel style="width:329px;height:150px" mode="native">
+        <p:dataList value="#{declaracionAguinaldoBean.alertas}" var="a" itemType="disc" emptyMessage="Sin alertas.">#{a.observacion}</p:dataList>
+    </p:scrollPanel>
+</p:panelGrid>
 
 <!-- Renato Codigo -->
 <h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionAguinaldoBean.parametro!=2}">
