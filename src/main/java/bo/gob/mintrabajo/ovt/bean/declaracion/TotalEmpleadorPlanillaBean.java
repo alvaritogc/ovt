@@ -75,6 +75,9 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
     private String tipoReporte;
     private String codLocalidad;
     private List<ParLocalidad> listaLocalidades;
+    private String tipoPlanilla;
+    private Date fechaDesde;
+    private Date fechaHasta;
 
 
     @PostConstruct
@@ -124,6 +127,15 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             } else {
                 parametros.put("mostrarDetalles", "false");
             }
+            parametros.put("tipoPlanilla", tipoPlanilla);
+            if (tipoPlanilla != null && tipoPlanilla.equals("LC1010")) {
+                parametros.put("descripcionTipoPlanilla", "PLANILLA TRIMESTRAL");
+            } else {
+                parametros.put("descripcionTipoPlanilla", "PLANILLA DE AGUINALDOS");
+            }
+            parametros.put("fechaDesde", fechaDesde);
+            parametros.put("fechaHasta", fechaHasta);
+
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
 
             String rutaPdf = "reportes/temp/" + pdfFileName;
@@ -285,5 +297,29 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
 
     public void setiLocalidadService(ILocalidadService iLocalidadService) {
         this.iLocalidadService = iLocalidadService;
+    }
+
+    public String getTipoPlanilla() {
+        return tipoPlanilla;
+    }
+
+    public void setTipoPlanilla(String tipoPlanilla) {
+        this.tipoPlanilla = tipoPlanilla;
+    }
+
+    public Date getFechaDesde() {
+        return fechaDesde;
+    }
+
+    public void setFechaDesde(Date fechaDesde) {
+        this.fechaDesde = fechaDesde;
+    }
+
+    public Date getFechaHasta() {
+        return fechaHasta;
+    }
+
+    public void setFechaHasta(Date fechaHasta) {
+        this.fechaHasta = fechaHasta;
     }
 }

@@ -26,6 +26,33 @@
                                    itemValue="#{perLocalidad.codLocalidad}"
                             />
                 </p:selectOneMenu>
+                <p:outputLabel value="Tipo planilla:"/>
+                <p:selectOneMenu value="#{totalEmpleadorPlanillaBean.tipoPlanilla}">
+                    <f:selectItem itemLabel="Planilla de aguinaldo" itemValue="LC1020"/>
+                    <f:selectItem itemLabel="Planilla trimestral" itemValue="LC1010"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="idFechaDesde" value="Fecha Desde:"
+                               style="text-align: right;"/>
+                <p:calendar id="idFechaDesde" value="#{totalEmpleadorPlanillaBean.fechaDesde}"
+                            validatorMessage="La fecha no es valida"
+                            locale="es"
+                            maxlength="10"
+                            pattern="dd/MM/yyyy"
+                            showOn="button">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </p:calendar>
+                <p:outputLabel for="idFechaHasta" value="Fecha Desde:"
+                               style="text-align: right;"/>
+                <p:calendar id="idFechaHasta" value="#{totalEmpleadorPlanillaBean.fechaHasta}"
+                            validatorMessage="La fecha no es valida"
+                            locale="es"
+                            maxlength="10"
+                            pattern="dd/MM/yyyy"
+                            showOn="button">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </p:calendar>
+
                 <p:outputLabel value=""/>
                 <h:commandLink value="Ver reporte"
                                styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only botonAnchoAlto"
