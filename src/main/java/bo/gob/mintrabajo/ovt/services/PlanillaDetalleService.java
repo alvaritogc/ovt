@@ -26,4 +26,8 @@ public class PlanillaDetalleService implements IPlanillaDetalleService {
     public DocPlanillaDetalle guardar(DocPlanillaDetalle docPlanillaDetalle){
            return planillaDetalleRepository.save(docPlanillaDetalle);
     }
+
+//    public Long obtieneMenores18(){
+//        return planillaDetalleRepository.obtieneMenores18();
+//    }
 }
