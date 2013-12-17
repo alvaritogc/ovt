@@ -79,36 +79,36 @@ public class DocumentoService implements IDocumentoService {
         this.utils = utils;
     }
 
-    //@Override
+    //    @Override
     public List<DocDocumento> getAllDocumentos() {
         List<DocDocumento> lista;
         lista = documentoRepository.findAll();
         return lista;
     }
 
-    //@Override
+    //    @Override
     public DocDocumento save(DocDocumento documento) {
         DocDocumento entity;
         entity = documentoRepository.save(documento);
         return entity;
     }
 
-    //@Override
+    //    @Override
     public boolean delete(DocDocumento documento) {
         boolean deleted = false;
         documentoRepository.delete(documento);
         return deleted;
     }
 
-    @Override
+    //    @Override
     public DocDocumento findById(Long id) {
         DocDocumento entity;
         entity = documentoRepository.findOne(id);
         return entity;
     }
 
-    @Override
     public List<DocDocumento> listarPorPersona(String idPersona) {
+        //return documentoRepository.findByPerUnidad_PerPersona_IdPersonaOrderByIdDocumentoDesc(idPersona);
         return documentoRepository.listarPorPersona(idPersona);
     }
 
@@ -128,7 +128,7 @@ public class DocumentoService implements IDocumentoService {
         return documentoRepository.save(documento);
     }
 
-    public String guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas, String bitacoraSession) {
+    public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas, String bitacoraSession) {
         //guarda documento
 
 
@@ -136,8 +136,8 @@ public class DocumentoService implements IDocumentoService {
 //        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento(), docDocumento.getDocDefinicion().getDocDefinicionPK().getVersion()));
         docDocumento = documentoRepository.save(docDocumento);
-        logger.info("Guarda" + docDocumento);
-        if (docDocumento.getIdDocumentoRef() != null)
+        logger.info("Guarda: " + docDocumento);
+        if(docDocumento.getIdDocumentoRef()!=null)
             guardarCambioEstado(docDocumento.getIdDocumentoRef(), "999", bitacoraSession, "Cambio de estado al rectificar un documento.");
 
         //guarda planilla
@@ -146,21 +146,21 @@ public class DocumentoService implements IDocumentoService {
 
         docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
         docPlanilla = planillaRepository.save(docPlanilla);
-        logger.info("Guarda" + docPlanilla);
+        logger.info("Guarda: " + docPlanilla);
 
         //guardaPlanillaDetalles
-        if (docPlanillaDetalles == null)
-            docPlanillaDetalles = new ArrayList<DocPlanillaDetalle>();
+        if(docPlanillaDetalles==null)
+            docPlanillaDetalles= new ArrayList<DocPlanillaDetalle>();
         for (DocPlanillaDetalle elemPlanillaDetalle : docPlanillaDetalles) {
             elemPlanillaDetalle.setIdPlanilla(docPlanilla);
             elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
-            logger.info("Guarda", planillaDetalleRepository.save(elemPlanillaDetalle));
+            logger.info("Guarda: ", planillaDetalleRepository.save(elemPlanillaDetalle));
         }
 
         //guardaAlertas
-        DocAlertaDefinicion docAlertaDefinicion = new DocAlertaDefinicion();
-        if (alertas == null)
-            alertas = new ArrayList<DocAlerta>();
+        DocAlertaDefinicion docAlertaDefinicion= new DocAlertaDefinicion();
+        if(alertas==null)
+            alertas= new ArrayList<DocAlerta>();
         else
             docAlertaDefinicion = alertaDefinicionRepository.findByDocDefinicion_DocDefinicionPK(docDocumento.getDocDefinicion().getDocDefinicionPK());
         for (DocAlerta docAlerta : alertas) {
@@ -168,7 +168,7 @@ public class DocumentoService implements IDocumentoService {
             docAlerta.setCodAlerta(docAlertaDefinicion);
             docAlerta.setIdDocumento(docDocumento);
             docAlerta.setIdAlerta(utils.valorSecuencia("DOC_ALERTA_SEC"));
-            logger.info("Guarda", alertaRepository.save(docAlerta));
+            logger.info("Guarda: ", alertaRepository.save(docAlerta));
         }
 
         //guarda binarios
@@ -176,9 +176,8 @@ public class DocumentoService implements IDocumentoService {
         for (DocBinario elementoBinario : listaBinarios) {
             elementoBinario.setDocDocumento(docDocumento);
             elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
-            logger.info("Guarda" + binarioRepository.save(elementoBinario));
+            logger.info("Guarda: " + binarioRepository.save(elementoBinario));
         }
-        return "guardado correctamente";
     }
 
     @Override
@@ -351,7 +350,6 @@ public class DocumentoService implements IDocumentoService {
         return (new Long("" + codNumero + numeroFormato + fmtVerificacion.toString()));
     }
 
-    @Override
     public String generateReport(String nomArchivo, String jasper, HashMap<String, Object> parametros) throws ClassNotFoundException, IOException, JRException {
         List<String> lista = new ArrayList<String>();
         lista.add("nadaQueVer");
@@ -378,7 +376,6 @@ public class DocumentoService implements IDocumentoService {
         return documentoRepository.listarDocumentosTrimSmPorUnidad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad(), fechaHasta, fechaPlazo);
     }
 
-    @Override
     public List<DocDocumento> listarDeclarados(String idEmpleador) {
         return documentoRepository.listarDeclarados(idEmpleador);
     }
@@ -402,6 +399,8 @@ public class DocumentoService implements IDocumentoService {
             docDocumentoAdicional.setRegistroBitacora(registroBitacora);
             docDocumentoAdicional.setTipoMedioRegistro(docDefinicionAdicional.getTipoGrupoDocumento());
 
+            System.out.println("codEstadoDocumento: " + docDefinicionAdicional.getDocDefinicionPK().getCodDocumento());
+            //docDocumentoAdicional.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
             docDocumentoAdicional.setNumeroDocumento(actualizarNumeroDeOrden(docDefinicionAdicional.getDocDefinicionPK().getCodDocumento(), (short) 1));
             docDocumentoAdicional = documentoRepository.save(docDocumentoAdicional);
             //
@@ -459,7 +458,6 @@ public class DocumentoService implements IDocumentoService {
         return docDocumento;
     }
 
-    @Override
     public List<DocDocumento> findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(String idPersona, String codEstado) {
         return documentoRepository.findByPerUnidad_PerPersona_IdPersonaAndCodEstado_CodEstado(idPersona, codEstado);
     }
@@ -548,12 +546,10 @@ public class DocumentoService implements IDocumentoService {
         return docDocumento;
     }
 
-    @Override
     public List<DocDocumento> listarDocumentosParaRectificar(String idPersona, String codDocumento) {
         return documentoRepository.listarDocumentosParaRectificar(idPersona, codDocumento);
     }
 
-    @Override
     public boolean existeRoe(String idPersona) {
         ParParametrizacion parParametrizacion = parametrizacionRepository.obtenerParametro(Dominios.DOM_DOCUMENTO, Dominios.PAR_DOCUMENTO_ROE_INSCRIPCION);
         DocDefinicion docDefinicion = definicionRepository.buscarPorCodDocumentoActivo(parParametrizacion.getDescripcion());
@@ -564,17 +560,14 @@ public class DocumentoService implements IDocumentoService {
         return true;
     }
 
-    @Override
     public List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumento(String idPersona, Date fechaDesde, Date fechaHasta, String codDocumento) {
         return documentoRepository.listarDocumentosPorpersonaUnidadFechasCodDocumento(idPersona, fechaDesde, fechaHasta, codDocumento);
     }
 
-    @Override
-    public DocDocumento buscarPorUnindad(PerUnidadPK perUnidadPK) {
+    public DocDocumento buscarPorUnindad(PerUnidadPK perUnidadPK){
         return documentoRepository.buscarPorUnindad(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
     }
 
-    @Override
     public List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumentos(String idPersona, Date fechaDesde, Date fechaHasta, String codDocumento1, String codDocumento2) {
         return documentoRepository.listarDocumentosPorpersonaUnidadFechasCodDocumentos(idPersona, fechaDesde, fechaHasta, codDocumento1, codDocumento2);
     }

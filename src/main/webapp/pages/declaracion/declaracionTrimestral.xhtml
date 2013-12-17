@@ -8,7 +8,11 @@
       xmlns:pe="http://primefaces.org/ui/extensions">
 <ui:composition template="../../pages/template/templateInicio.xhtml">
 <ui:define name="content">
-
+<p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+<p:dialog modal="true" widgetVar="statusDialog" header="Cargando" resizable="false"
+          draggable="false" closable="false">
+    <p:graphicImage value="../../images/ajax-loader.gif"/>
+</p:dialog>
 <h:form id="formularioFrm" enctype="multipart/form-data">
 
 <h:panelGrid columns="1" rendered="#{declaracionTrimestralBean.estaDeclarado}">

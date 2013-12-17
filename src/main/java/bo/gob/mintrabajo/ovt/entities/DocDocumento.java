@@ -289,7 +289,18 @@ public class DocDocumento implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.DocDocumento[ idDocumento=" + idDocumento + " ]";
+        return "DocDocumento{" +
+                "idDocumento=" + idDocumento +
+                ", numeroDocumento=" + numeroDocumento +
+                ", fechaDocumento=" + fechaDocumento +
+                ", fechaReferenca=" + fechaReferenca +
+                ", tipoMedioRegistro='" + tipoMedioRegistro + '\'' +
+                ", fechaBitacora=" + fechaBitacora +
+                ", registroBitacora='" + registroBitacora + '\'' +
+                ", perUnidad=" + perUnidad +
+                ", codEstado=" + codEstado +
+                ", idDocumentoRef=" + idDocumentoRef +
+                ", docDefinicion=" + docDefinicion +
+                '}';
     }
-    
 }
