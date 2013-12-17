@@ -19,6 +19,7 @@ import javax.inject.Named;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -42,6 +43,7 @@ public class DocumentoService implements IDocumentoService {
     private final ParametrizacionRepository parametrizacionRepository;
     private final AlertaRepository alertaRepository;
     private final AlertaDefinicionRepository alertaDefinicionRepository;
+    private final InfoLaboralRepository infoLaboralRepository;
     private final IUtilsService utils;
     private HashMap<String, Object> parametros = new HashMap<String, Object>();
     private String rutaPdf;
@@ -62,6 +64,7 @@ public class DocumentoService implements IDocumentoService {
                             ParametrizacionRepository parametrizacionRepository,
                             AlertaRepository alertaRepository,
                             AlertaDefinicionRepository alertaDefinicionRepository,
+                            InfoLaboralRepository infoLaboralRepository,
                             IUtilsService utils) {
         this.documentoRepository = documentoRepository;
         this.documentoEstadoRepository = documentoEstadoRepository;
@@ -76,6 +79,7 @@ public class DocumentoService implements IDocumentoService {
         this.parametrizacionRepository = parametrizacionRepository;
         this.alertaRepository = alertaRepository;
         this.alertaDefinicionRepository = alertaDefinicionRepository;
+        this.infoLaboralRepository = infoLaboralRepository;
         this.utils = utils;
     }
 
@@ -130,10 +134,7 @@ public class DocumentoService implements IDocumentoService {
 
     public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas, String bitacoraSession) {
         //guarda documento
-
-
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
-//        docDocumento.setNumeroDocumento(actualizarNumeroDeOrden("LC1010", (short) 1));
         docDocumento.setNumeroDocumento(actualizarNumeroDeOrden(docDocumento.getDocDefinicion().getDocDefinicionPK().getCodDocumento(), docDocumento.getDocDefinicion().getDocDefinicionPK().getVersion()));
         docDocumento = documentoRepository.save(docDocumento);
         logger.info("Guarda: " + docDocumento);
@@ -141,12 +142,40 @@ public class DocumentoService implements IDocumentoService {
             guardarCambioEstado(docDocumento.getIdDocumentoRef(), "999", bitacoraSession, "Cambio de estado al rectificar un documento.");
 
         //guarda planilla
-
         docPlanilla.setIdDocumento(docDocumento);
-
         docPlanilla.setIdPlanilla(utils.valorSecuencia("DOC_PLANILLA_SEC"));
         docPlanilla = planillaRepository.save(docPlanilla);
         logger.info("Guarda: " + docPlanilla);
+
+        //modifica anterior y guarda nuevo infoLaboral
+        PerInfolaboral perInfolaboralAnterior = infoLaboralRepository.findByPerUnidad_PerUnidadPKAndEstadoInfolaboral(docDocumento.getPerUnidad().getPerUnidadPK(), Dominios.PER_ESTADO_ACTIVO);
+        if(perInfolaboralAnterior!=null){
+            perInfolaboralAnterior.setEstadoInfolaboral(Dominios.PER_ESTADO_INACTIVO);
+            infoLaboralRepository.save(perInfolaboralAnterior);
+        }
+        PerInfolaboral perInfolaboralNuevo= new PerInfolaboral();
+        perInfolaboralNuevo.setIdInfolaboral(utils.valorSecuencia("PER_INFOLABORAL_SEC"));
+        perInfolaboralNuevo.setPerUnidad(docDocumento.getPerUnidad());
+        perInfolaboralNuevo.setNroTotalTrabajadores(docPlanilla.getNroH()+docPlanilla.getNroM());
+        perInfolaboralNuevo.setNroHombres(docPlanilla.getNroH());
+        perInfolaboralNuevo.setNroMujeres(docPlanilla.getNroM());
+        perInfolaboralNuevo.setNroExtranjeros(docPlanilla.getNroExtranjerosH()+docPlanilla.getNroExtranjerosM());
+        perInfolaboralNuevo.setNroFijos(0);
+        perInfolaboralNuevo.setNroEventuales(0);
+        perInfolaboralNuevo.setNroMenores18(0);
+        perInfolaboralNuevo.setNroMayores60(0);
+        perInfolaboralNuevo.setNroJubilados(docPlanilla.getNroJubiladosH()+docPlanilla.getNroJubiladosM());
+        perInfolaboralNuevo.setNroCapdiferente(docPlanilla.getNroDiscapacidadH()+docPlanilla.getNroDiscapacidadM());
+        perInfolaboralNuevo.setTotalPlanilla(BigDecimal.ZERO);
+        perInfolaboralNuevo.setNroAsegAfp(docPlanilla.getNroAsegAfp());
+        perInfolaboralNuevo.setNroAsegCaja(docPlanilla.getNroAsegCaja());
+        perInfolaboralNuevo.setMontoAsegAfp(docPlanilla.getMontoAsegAfp());
+        perInfolaboralNuevo.setMontoAsegCaja(docPlanilla.getMontoAsegCaja());
+        perInfolaboralNuevo.setTipoSindicato("");
+        perInfolaboralNuevo.setEstadoInfolaboral(Dominios.PER_ESTADO_ACTIVO);
+        perInfolaboralNuevo.setFechaBitacora(new Date());
+        perInfolaboralNuevo.setRegistroBitacora(bitacoraSession);
+        infoLaboralRepository.save(perInfolaboralNuevo);
 
         //guardaPlanillaDetalles
         if(docPlanillaDetalles==null)

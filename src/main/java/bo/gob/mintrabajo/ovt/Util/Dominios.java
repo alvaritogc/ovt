@@ -68,4 +68,7 @@ public class Dominios {
     public static final String PAR_MULTAS_DIAS_TRANSCURRIDOS_ROE = "DT_ROE";
     public static final String PAR_MULTAS_NUMERO_TRABAJADORES_PLATRI = "NT_PLATRI";
     public static final String PAR_MULTAS_DIAS_TRANSCURRIDOS_PLATRI = "DT_PLATRI";
+
+    public static final String PER_ESTADO_ACTIVO = "A";
+    public static final String PER_ESTADO_INACTIVO = "X";
 }

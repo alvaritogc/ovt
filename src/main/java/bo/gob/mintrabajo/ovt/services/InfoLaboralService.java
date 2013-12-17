@@ -3,10 +3,9 @@ package bo.gob.mintrabajo.ovt.services;
 
 
 import bo.gob.mintrabajo.ovt.api.IInfoLaboralService;
-import bo.gob.mintrabajo.ovt.entities.PerActividad;
 import bo.gob.mintrabajo.ovt.entities.PerInfolaboral;
-
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
+import bo.gob.mintrabajo.ovt.entities.PerUnidadPK;
 import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
 import bo.gob.mintrabajo.ovt.repositories.InfoLaboralRepository;
 import org.springframework.data.domain.PageRequest;
@@ -21,10 +20,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_ESTADO;
-import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_ACTIVO;
-import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_INACTIVO;
-import static bo.gob.mintrabajo.ovt.Util.Sequencias.*;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
+import static bo.gob.mintrabajo.ovt.Util.Sequencias.PER_INFOLABORAL_SEC;
 
 /**
  *
@@ -158,6 +155,7 @@ public class InfoLaboralService implements IInfoLaboralService {
         return rtn.longValue();
     }
 
-
-
+    public PerInfolaboral obtienePorUnidadPKEstado(PerUnidadPK perUnidadPK, String estado){
+        return infoLaboralRepository.findByPerUnidad_PerUnidadPKAndEstadoInfolaboral(perUnidadPK, estado);
+    }
 }
