@@ -285,7 +285,8 @@ public class EscritorioBean {
 
         if (codDocumento.equals("ROE010")) {
             parametros.clear();
-            parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
+            //parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
+            parametros.put("codigoEmpleador", vperPersona.getNroOtro());
             String nombreCompleto = vperPersona.getNombreRazonSocial();
             if (vperPersona.getApellidoPaterno() != null) {
                 nombreCompleto = nombreCompleto + " " + vperPersona.getApellidoPaterno();
@@ -298,7 +299,16 @@ public class EscritorioBean {
             parametros.put("domOficina", vperPersona.getDirDireccion());
             parametros.put("repLegal", vperPersona.getRlNombre());
             parametros.put("fechaEmision", (new SimpleDateFormat("dd/MM/yyyy")).format(new Date()));
-            parametros.put("nroUbicaciones", vperPersona.getNroOtro());
+            //parametros.put("nroUbicaciones", vperPersona.getNroOtro());
+            List<PerUnidad> listaUnidades = iUnidadService.buscarPorPersona(vperPersona.getIdPersona());
+            int nroUbicaciones;
+            if (listaUnidades != null && !listaUnidades.isEmpty()) {
+                nroUbicaciones = listaUnidades.size() - 1;
+            } else {
+                nroUbicaciones = 0;
+            }
+            parametros.put("nroUbicaciones", String.valueOf(nroUbicaciones));
+
             if (esInterno) {
                 parametros.put("roe", servletContext.getRealPath("/") + "/images/roe.jpg");
             } else {
