@@ -11,12 +11,19 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="mostrarDetalles" class="java.lang.String"/>
+	<parameter name="tipoPlanilla" class="java.lang.String"/>
+	<parameter name="fechaDesde" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaHasta" class="java.util.Date"/>
+	<parameter name="descripcionTipoPlanilla" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select *
 from VDOC_DOCUMENTOS_PLANILLA
 where
-(COD_LOCALIDAD_DIRECCION = $P{codLocalidad} OR  $P{codLocalidad} = 'ALL')
-and COD_ESTADO<>999
+((COD_LOCALIDAD_DIRECCION = $P{codLocalidad} OR  $P{codLocalidad} = 'ALL') and COD_ESTADO<>999)
+and fecha_documento between  $P{fechaDesde} and $P{fechaHasta}
+and cod_documento = $P{tipoPlanilla}
 order by fecha_documento asc]]>
 	</queryString>
 	<field name="ID_PERSONA" class="java.lang.String"/>
@@ -230,23 +237,53 @@ order by fecha_documento asc]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="87" splitType="Stretch">
+		<band height="132" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="c62298b1-9170-495d-834c-136eb907573a" x="165" y="28" width="241" height="46"/>
+				<reportElement uuid="c62298b1-9170-495d-834c-136eb907573a" x="165" y="14" width="237" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="SansSerif" size="16" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Reporte de planillas trimestrales ]]></text>
+				<text><![CDATA[Reporte ]]></text>
 			</staticText>
 			<image>
-				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="36" y="14" width="115" height="65"/>
+				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="25" y="9" width="115" height="65"/>
 				<imageExpression><![CDATA[$P{escudoBolivia}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement uuid="c45502db-e68a-43d8-9d85-39a67b0d2b37" x="417" y="14" width="120" height="60"/>
+				<reportElement uuid="c45502db-e68a-43d8-9d85-39a67b0d2b37" x="435" y="14" width="120" height="60"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement uuid="8c996f43-6401-4f08-b199-74b82fedc3b0" x="152" y="36" width="265" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descripcionTipoPlanilla}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="94267081-7fd3-4240-812f-50ac57989d55" x="227" y="56" width="60" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="62fc1e68-8501-46e0-99d8-28aa9cd5994d" x="328" y="56" width="60" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5e0e8ee0-74dc-4230-9d6f-49e152206a57" x="188" y="56" width="39" height="20"/>
+				<textElement/>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5e0e8ee0-74dc-4230-9d6f-49e152206a57" x="293" y="56" width="35" height="20"/>
+				<textElement/>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="357c9a1b-4ddc-49fe-856f-922e0e6005da" x="4" y="80" width="568" height="1"/>
+			</line>
 		</band>
 	</title>
 	<pageHeader>
