@@ -138,7 +138,7 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
 
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
 
-            String rutaPdf = "reportes/temp/" + pdfFileName;
+            String rutaPdf = "/reportes/temp/" + pdfFileName;
             String nombrePdf = rutaWebApp + rutaPdf;
             JasperPrint jprint = (JasperPrint) JasperFillManager.fillReport(jasperFileName, parametros, conn);
             JasperExportManager.exportReportToPdfFile(jprint, nombrePdf);
