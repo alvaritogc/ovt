@@ -24,7 +24,7 @@ where
 ((COD_LOCALIDAD_DIRECCION = $P{codLocalidad} OR  $P{codLocalidad} = 'ALL') and COD_ESTADO<>999)
 and fecha_documento between  $P{fechaDesde} and $P{fechaHasta}
 and cod_documento = $P{tipoPlanilla}
-order by fecha_documento asc]]>
+order by COD_LOCALIDAD_DIRECCION, fecha_documento asc]]>
 	</queryString>
 	<field name="ID_PERSONA" class="java.lang.String"/>
 	<field name="TIPO_IDENTIFICACION" class="java.lang.String"/>
@@ -140,7 +140,7 @@ order by fecha_documento asc]]>
 		<variableExpression><![CDATA[$F{ESTADO}]]></variableExpression>
 	</variable>
 	<group name="GRUPO_LOCALIDAD">
-		<groupExpression><![CDATA[$F{ID_PERSONA}]]></groupExpression>
+		<groupExpression><![CDATA[$F{COD_LOCALIDAD_DIRECCION}]]></groupExpression>
 		<groupHeader>
 			<band height="15">
 				<textField>
@@ -244,7 +244,7 @@ order by fecha_documento asc]]>
 					<font fontName="SansSerif" size="16" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Reporte ]]></text>
+				<text><![CDATA[REPORTE]]></text>
 			</staticText>
 			<image>
 				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="25" y="9" width="115" height="65"/>
