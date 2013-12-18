@@ -147,11 +147,20 @@ public class DocumentoService implements IDocumentoService {
         docPlanilla = planillaRepository.save(docPlanilla);
         logger.info("Guarda: " + docPlanilla);
 
+        //guardaPlanillaDetalles
+        if(docPlanillaDetalles==null)
+            docPlanillaDetalles= new ArrayList<DocPlanillaDetalle>();
+        for (DocPlanillaDetalle elemPlanillaDetalle : docPlanillaDetalles) {
+            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
+            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
+            logger.info("Guarda: ", planillaDetalleRepository.save(elemPlanillaDetalle));
+        }
+
         //modifica anterior y guarda nuevo infoLaboral
         PerInfolaboral perInfolaboralAnterior = infoLaboralRepository.findByPerUnidad_PerUnidadPKAndEstadoInfolaboral(docDocumento.getPerUnidad().getPerUnidadPK(), Dominios.PER_ESTADO_ACTIVO);
         if(perInfolaboralAnterior!=null){
             perInfolaboralAnterior.setEstadoInfolaboral(Dominios.PER_ESTADO_INACTIVO);
-            infoLaboralRepository.save(perInfolaboralAnterior);
+            perInfolaboralAnterior=infoLaboralRepository.save(perInfolaboralAnterior);
         }
         PerInfolaboral perInfolaboralNuevo= new PerInfolaboral();
         perInfolaboralNuevo.setIdInfolaboral(utils.valorSecuencia("PER_INFOLABORAL_SEC"));
@@ -160,8 +169,8 @@ public class DocumentoService implements IDocumentoService {
         perInfolaboralNuevo.setNroHombres(docPlanilla.getNroH());
         perInfolaboralNuevo.setNroMujeres(docPlanilla.getNroM());
         perInfolaboralNuevo.setNroExtranjeros(docPlanilla.getNroExtranjerosH()+docPlanilla.getNroExtranjerosM());
-        perInfolaboralNuevo.setNroFijos(0);
-        perInfolaboralNuevo.setNroEventuales(0);
+        perInfolaboralNuevo.setNroFijos(docPlanilla.getNroAsegAfp());
+        perInfolaboralNuevo.setNroEventuales(perInfolaboralNuevo.getNroTotalTrabajadores()-docPlanilla.getNroAsegAfp());
         perInfolaboralNuevo.setNroMenores18(0);
         perInfolaboralNuevo.setNroMayores60(0);
         perInfolaboralNuevo.setNroJubilados(docPlanilla.getNroJubiladosH()+docPlanilla.getNroJubiladosM());
@@ -171,20 +180,11 @@ public class DocumentoService implements IDocumentoService {
         perInfolaboralNuevo.setNroAsegCaja(docPlanilla.getNroAsegCaja());
         perInfolaboralNuevo.setMontoAsegAfp(docPlanilla.getMontoAsegAfp());
         perInfolaboralNuevo.setMontoAsegCaja(docPlanilla.getMontoAsegCaja());
-        perInfolaboralNuevo.setTipoSindicato("");
+        perInfolaboralNuevo.setTipoSindicato(perInfolaboralAnterior!=null?perInfolaboralAnterior.getTipoSindicato():"2");
         perInfolaboralNuevo.setEstadoInfolaboral(Dominios.PER_ESTADO_ACTIVO);
         perInfolaboralNuevo.setFechaBitacora(new Date());
         perInfolaboralNuevo.setRegistroBitacora(bitacoraSession);
         infoLaboralRepository.save(perInfolaboralNuevo);
-
-        //guardaPlanillaDetalles
-        if(docPlanillaDetalles==null)
-            docPlanillaDetalles= new ArrayList<DocPlanillaDetalle>();
-        for (DocPlanillaDetalle elemPlanillaDetalle : docPlanillaDetalles) {
-            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
-            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
-            logger.info("Guarda: ", planillaDetalleRepository.save(elemPlanillaDetalle));
-        }
 
         //guardaAlertas
         DocAlertaDefinicion docAlertaDefinicion= new DocAlertaDefinicion();
