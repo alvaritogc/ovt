@@ -17,12 +17,13 @@ import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 
 //
 
 @ManagedBean
 @SessionScoped
-public class EmpleadorBean implements Serializable{
+public class EmpleadorBean implements Serializable {
     //
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private Long idUsuario;
@@ -62,24 +63,32 @@ public class EmpleadorBean implements Serializable{
         System.out.println("=============================>>>>>");
         List<PerPersona>listaPersona=iPersonaService.buscarPorNroNombre("1579592010","SUSANA HEREDIA PRADO");
         System.out.println("=============================>>>>> RESULTADO "+listaPersona.size());*/
-    }    
+    }
 
     public void limpiar() {
         busquedaNroIdentificacion = "";
         busquedaNombreRazonSocial = "";
         cargar();
     }
-    
-    public void cargar() {
-        if(busquedaNroIdentificacion.trim().equals("") && busquedaNombreRazonSocial.trim().equals("")){
-            listaPersonas=new ArrayList<PerPersona>();
+
+    public String cargar() {
+        if (busquedaNroIdentificacion.trim().equals("") && busquedaNombreRazonSocial.trim().equals("")) {
+            listaPersonas = new ArrayList<PerPersona>();
+        } else {
+            //validacion de busquedaNombreRazonSocial mayor a 4 caracteres
+            if (busquedaNombreRazonSocial.trim().length() > 0) {
+                if (busquedaNombreRazonSocial.trim().length() < 4) {
+                    listaPersonas = new ArrayList<PerPersona>();
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El campo Nombre razón social debe tener una longitud mínima de 4 caracteres."));
+                    return "";
+                }
+            }
+            listaPersonas = iPersonaService.buscarPorNroNombre(busquedaNombreRazonSocial, "", busquedaNroIdentificacion);
         }
-        else{
-           listaPersonas=iPersonaService.buscarPorNroNombre(busquedaNombreRazonSocial,"",busquedaNroIdentificacion);
-        }
+        return "";
     }
 
-    public String seleccionarEmpleador(){
+    public String seleccionarEmpleador() {
         session.setAttribute("idEmpleador", personaABM.getIdPersona());
         return "irEscritorio";
     }
@@ -90,7 +99,7 @@ public class EmpleadorBean implements Serializable{
 
     public void setiUsuarioService(IUsuarioService iUsuarioService) {
         this.iUsuarioService = iUsuarioService;
-    }   
+    }
 
     public IPersonaService getiPersonaService() {
         return iPersonaService;

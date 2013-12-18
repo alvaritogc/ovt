@@ -1,63 +1,65 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="../pages/template/templateInicio.xhtml">
-        <ui:define name="content">
+<ui:composition template="../pages/template/templateInicio.xhtml">
+    <ui:define name="content">
 
-            <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+        <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
 
-            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
-                      draggable="false" closable="false">
-                <p:graphicImage value="../images/ajax-loader.gif" />
-            </p:dialog>
+        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                  draggable="false" closable="false">
+            <p:graphicImage value="../images/ajax-loader.gif"/>
+        </p:dialog>
 
-            <h:form id="idFormEmpleadorBusqueda">
-                <h1>Búsqueda de empleador</h1>
+        <h:form id="idFormEmpleadorBusqueda">
+            <h1>Búsqueda de empleador</h1>
 
-                
-                    <h:panelGrid columns="2" id="idPanelBusqueda">
-                        <p:outputLabel value="Nro. identificación: " style="font-size: 13px;"/>
-                        <p:inputText value="#{empleadorBean.busquedaNroIdentificacion}" style="height: 15px;"/>
-                        <p:outputLabel value="Nombre razón social: " style="font-size: 13px;"/>
-                        <p:inputText value="#{empleadorBean.busquedaNombreRazonSocial}" style="height: 15px;"/>
-                        <h:panelGroup>
-                            <p:commandButton action="#{empleadorBean.cargar}" value="Buscar" icon="ui-icon-search"
-                                             update=":idFormEmpleadorBusqueda:idPanelBusqueda, :idFormEmpleadorBusqueda:idDTlistaPersonas"/>
-                            <p:commandButton action="#{empleadorBean.limpiar}" value="Limpiar" icon="ui-icon-arrowrefresh-1-s"
-                                             update=":idFormEmpleadorBusqueda:idPanelBusqueda, :idFormEmpleadorBusqueda:idDTlistaPersonas"/>
-                        </h:panelGroup>
-                    </h:panelGrid>
-                
-                <br/>
-                <p:dataTable id="idDTlistaPersonas" sortMode="multiple" value="#{empleadorBean.listaPersonas}" var="o" rows="10" emptyMessage="No se encontraron resultados"
-                             paginatorPosition="bottom" paginator="true"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
-                            currentPageReportTemplate="{currentPage} / {totalPages}">
-                    <p:column headerText="Tipo identifiación">
-                        <h:outputLabel value="#{o.tipoIdentificacion}"/>
-                    </p:column>
-                    <p:column headerText="Nro. identificación">
-                        <h:outputLabel value="#{o.nroIdentificacion}"/>
-                    </p:column>
-                    <p:column headerText="Nombre razón social ">
-                        <h:outputLabel value="#{o.nombreRazonSocial} #{o.apellidoPaterno} #{o.apellidoMaterno}"/>
-                    </p:column>
-                    
-                    
-                    
-                    <p:column headerText="Acciones">
 
-                        <p:commandButton action="#{empleadorBean.seleccionarEmpleador}"  update="@all"  ajax="true" icon="ui-icon-zoomin" title="Ver">
-                            <f:setPropertyActionListener value="#{o}" target="#{empleadorBean.personaABM}" />  
-                        </p:commandButton>  
-                    </p:column>  
-                </p:dataTable>
-            </h:form>
-        </ui:define>
-    </ui:composition>
+            <h:panelGrid columns="2" id="idPanelBusqueda">
+                <p:outputLabel value="Nro. identificación: " style="font-size: 13px;"/>
+                <p:inputText value="#{empleadorBean.busquedaNroIdentificacion}" style="height: 15px;"/>
+                <p:outputLabel value="Nombre razón social: " style="font-size: 13px;"/>
+                <p:inputText value="#{empleadorBean.busquedaNombreRazonSocial}" style="height: 15px;"/>
+                <h:panelGroup>
+                    <p:growl id="growl" showDetail="true" sticky="true"/>
+                    <p:commandButton action="#{empleadorBean.cargar}" value="Buscar" icon="ui-icon-search"
+                                     update=":idFormEmpleadorBusqueda:idPanelBusqueda, :idFormEmpleadorBusqueda:idDTlistaPersonas"/>
+                    <p:commandButton action="#{empleadorBean.limpiar}" value="Limpiar" icon="ui-icon-arrowrefresh-1-s"
+                                     update=":idFormEmpleadorBusqueda:idPanelBusqueda, :idFormEmpleadorBusqueda:idDTlistaPersonas"/>
+                </h:panelGroup>
+            </h:panelGrid>
+
+            <br/>
+            <p:dataTable id="idDTlistaPersonas" sortMode="multiple" value="#{empleadorBean.listaPersonas}" var="o"
+                         rows="10" emptyMessage="No se encontraron resultados"
+                         paginatorPosition="bottom" paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                         currentPageReportTemplate="{currentPage} / {totalPages}">
+                <p:column headerText="Tipo identifiación">
+                    <h:outputLabel value="#{o.tipoIdentificacion}"/>
+                </p:column>
+                <p:column headerText="Nro. identificación">
+                    <h:outputLabel value="#{o.nroIdentificacion}"/>
+                </p:column>
+                <p:column headerText="Nombre razón social ">
+                    <h:outputLabel value="#{o.nombreRazonSocial} #{o.apellidoPaterno} #{o.apellidoMaterno}"/>
+                </p:column>
+
+
+                <p:column headerText="Acciones">
+
+                    <p:commandButton action="#{empleadorBean.seleccionarEmpleador}" update="@all" ajax="true"
+                                     icon="ui-icon-zoomin" title="Ver">
+                        <f:setPropertyActionListener value="#{o}" target="#{empleadorBean.personaABM}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
 </html>
