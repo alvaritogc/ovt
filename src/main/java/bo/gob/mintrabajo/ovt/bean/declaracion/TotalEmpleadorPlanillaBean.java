@@ -118,8 +118,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             // Paramatros para el reporte
             //ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             HashMap<String, Object> parametros = new HashMap<String, Object>();
-            parametros.put("escudoBolivia", servletContext.getRealPath("/") + "images/escudo.jpg");
-            parametros.put("logo", servletContext.getRealPath("/") + "images/logoMIN.jpg");
+            parametros.put("escudoBolivia", servletContext.getRealPath("/") + "/images/escudo.jpg");
+            parametros.put("logo", servletContext.getRealPath("/") + "/images/logoMIN.jpg");
             parametros.put("codLocalidad", codLocalidad);
             if (tipoReporte.equals("todas")) {
                 //mostrarDetalles=true;
