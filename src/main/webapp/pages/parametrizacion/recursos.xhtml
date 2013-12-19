@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2013 lvaldez.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <h2 class="form-signin-heading">Recursos</h2>
+            <p:growl id="messages" showDetail="true" />
+            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                      draggable="false" closable="false">
+                <p:graphicImage value="../../images/ajax-loader.gif"/>
+            </p:dialog>
+            <h:panelGrid columns="2">
+                <h:form id="form">
+                    <p:scrollPanel style="width:410px;height:480px" mode="native" widgetVar="scroller">
+                        <p:panel header="Arbol de recursos" style="margin-bottom:10px; border: 0; ">
+                            <p:contextMenu for="tree" style="position: absolute; margin-left: -120px">  
+                                <p:menuitem value="Nuevo hijo" icon="ui-icon-circle-plus" update=":form1:botones :messages :form1:pnlGridRecurso"
+                                            actionListener="#{recursosBean.agregaNodoHijo}"/>  
+                                <p:menuitem value="Editar" icon="ui-icon-pencil" update=":form1:botones :messages :form1:pnlGridRecurso" 
+                                            actionListener="#{recursosBean.editar}" />  
+                                <p:menuitem value="Eliminar" icon="ui-icon-trash" update=":messages" actionListener="#{recursosBean.preparaEliminar}"/>  
+                            </p:contextMenu> 
+                            <p:tree value="#{recursosBean.root}" var="node" id="tree" selection="#{recursosBean.nodoSeleccionado}"
+                                    dynamic="true" cache="false" selectionMode="single" style="border: 0;">                                  
+                                <p:ajax event="select" update=":messages :form1" listener="#{recursosBean.onNodeSelect}" />
+                                <p:treeNode id="treeNode">  
+                                    <h:outputText value="#{node}" id="lblNode"/>
+                                </p:treeNode>  
+                            </p:tree>
+                        </p:panel>
+                    </p:scrollPanel>
+                </h:form>
+                <p:panel header="Recursos" style="margin-bottom:10px;" id="formPanel">
+                    <h:form id="form1">
+                        <h:panelGroup id="botones">
+                            <p:commandButton value="Nuevo padre" id="padre" icon="ui-icon-circle-plus" disabled="#{!recursosBean.estadoBoton}" actionListener="#{recursosBean.agregaNodoPadre}"
+                                             update="botones :messages pnlGridRecurso" style="width: 80px; height: 40px"/>
+                            <p:commandButton value="Guardar" id="guardar" icon="ui-icon-disk" disabled="#{recursosBean.estadoBoton}" actionListener="#{recursosBean.guardarNodo}"
+                                             update="botones :messages pnlGridRecurso :form" onstart="statusDialog.show();" oncomplete="statusDialog.hide();" style="width: 80px; height: 40px"/>
+                            <p:commandButton value="Cancelar" id="cancelar" icon="ui-icon-close" disabled="#{recursosBean.estadoBoton}" actionListener="#{recursosBean.canselar}"
+                                             update="botones :messages pnlGridRecurso" onstart="statusDialog.show();"  oncomplete="statusDialog.hide();" style="width: 80px; height: 40px" immediate="true"/>
+
+                        </h:panelGroup>
+                        <p:confirmDialog message="Esta seguro de eliminar este nodo?"  
+                                         showEffect="fade" hideEffect="explode" closable="false"  
+                                         header="Confirmación" severity="alert" widgetVar="confirmation">  
+                            <p:commandButton value="Si" update=":form :messages" oncomplete="confirmation.hide()" actionListener="#{recursosBean.confirmaEliminar}"/>  
+                            <p:commandButton value="No" oncomplete="confirmation.hide()" actionListener="#{recursosBean.canselar}"/>   
+                        </p:confirmDialog>
+
+
+                        <br /><br />                        
+                        <h:panelGrid columns="1" id="pnlGridRecurso">
+                            <p:outputLabel for="modulo" value="Modulo:" style="font-weight:bold"/>  
+                            <p:selectOneMenu id="modulo" value="#{recursosBean.usrModuloId}" required="true" requiredMessage="Debe seleccionar el modulo" disabled="#{recursosBean.estadoBoton}">  
+                                <f:selectItem itemLabel=" ---Seleccione modulo--- " itemValue="" />
+                                <f:selectItems value="#{recursosBean.listaModulos}" var="mo" itemLabel="#{mo.nombre}" itemValue="#{mo.idModulo}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="recurso" value="Recurso:" style="font-weight:bold"/>  
+                            <p:selectOneMenu id="recurso" value="#{recursosBean.usrRecurso.tipoRecurso}" required="true" requiredMessage="Debe seleccionar el recurso" disabled="#{recursosBean.estadoBoton}">  
+                                <f:selectItem itemLabel=" ---Seleccione recurso--- " itemValue="" />
+                                <f:selectItems value="#{recursosBean.listaDominioRecurso}" var="re" itemLabel="#{re.descripcion}" itemValue="#{re.parDominioPK.valor}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="plataforma" value="Plataforma:" style="font-weight:bold"/>  
+                            <p:inputText id="plataforma" value="#{recursosBean.usrRecurso.tipoPlataforma}" 
+                                         maxlength="120" style="text-transform: uppercase; width: 214px" required="true" disabled="#{recursosBean.estadoBoton}">
+                                <f:converter converterId="lowerConverter"/>
+                            </p:inputText>
+
+                            <p:outputLabel for="orden" value="Orden:" style="font-weight:bold"/>  
+                            <pe:inputNumber id="orden" value="#{recursosBean.usrRecurso.orden}" requiredMessage="Debe ingresar un orden"
+                                            thousandSeparator="." decimalSeparator="," decimalPlaces="0" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="3" disabled="#{recursosBean.estadoBoton}">
+                            </pe:inputNumber> 
+
+
+                            <p:outputLabel for="etiqueta" value="Etiqueta:" style="font-weight:bold"/>  
+                            <p:inputText id="etiqueta" value="#{recursosBean.usrRecurso.etiqueta}" 
+                                         maxlength="120" style="width: 214px" disabled="#{recursosBean.estadoBoton}">
+                            </p:inputText>
+
+                            <p:outputLabel for="descripcion" value="Descripción:" style="font-weight:bold"/>                           
+                            <p:inputTextarea id="descripcion" value="#{recursosBean.usrRecurso.descripcion}"
+                                             maxlength="120" style="text-transform: uppercase; width: 214px" disabled="#{recursosBean.estadoBoton}">
+                                <f:converter converterId="lowerConverter"/>
+                            </p:inputTextarea>
+
+                            <p:outputLabel for="ejecutable" value="Ejecutable:" style="font-weight:bold"/>  
+                            <p:inputTextarea id="ejecutable" value="#{recursosBean.usrRecurso.ejecutable}" 
+                                             maxlength="120" style="width: 214px" disabled="#{recursosBean.estadoBoton}">
+                            </p:inputTextarea>
+
+                            <p:outputLabel for="verificable" value="Verificable:" style="font-weight:bold"/>  
+                            <pe:inputNumber id="verificable" value="#{recursosBean.usrRecurso.esVerificable}" requiredMessage="Debe llenar el campo de valor de Venta"
+                                            thousandSeparator="." decimalSeparator="," decimalPlaces="0" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="1" disabled="#{recursosBean.estadoBoton}">
+                            </pe:inputNumber>
+
+                            <h:panelGrid columns="2">
+                                <p:outputLabel for="estado" value="Estado:" style="font-weight:bold"/>  
+                                <p:selectBooleanCheckbox id="estado" value="#{recursosBean.estadoRecurso}" disabled="#{recursosBean.estadoBoton}"/>
+                            </h:panelGrid> 
+
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
+
+            </h:panelGrid>
+        </ui:define>
+    </ui:composition>
+</html>

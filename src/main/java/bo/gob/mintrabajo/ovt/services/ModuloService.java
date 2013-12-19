@@ -26,7 +26,7 @@ public class ModuloService implements IModuloService {
         this.moduloRepository = moduloRepository;
     }
 
-//    @Override
+    @Override
     public List<UsrModulo> getAllModulos() {
         List<UsrModulo> allModulos;
 
