@@ -45,7 +45,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 @ViewScoped
 public class TotalEmpleadorPorGeneroBean implements Serializable {
     //
-    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     private Long idUsuario;
     private String idPersona;
     private String idEmpleador;
@@ -76,16 +76,19 @@ public class TotalEmpleadorPorGeneroBean implements Serializable {
     private String codLocalidad;
     private List<ParLocalidad> listaLocalidades;
 
+    private PerPersona perPersona;
 
     @PostConstruct
     public void ini() {
         logger.info("TotalEmpleadorPorGeneroBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
+        idPersona = (String) session.getAttribute("idPersona");
         idEmpleador = (String) session.getAttribute("idEmpleador");
         cargar();
     }
 
     public void cargar() {
+        perPersona = iPersonaService.findById(idPersona);
         listaLocalidades = iLocalidadService.listarDepartamentos();
     }
 
@@ -123,6 +126,8 @@ public class TotalEmpleadorPorGeneroBean implements Serializable {
                 parametros.put("mostrarDetalles", "false");
             }
             parametros.put("codLocalidad", codLocalidad);
+            parametros.put("usuarioIdentificacion", perPersona.getNroIdentificacion());
+            //
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
 
             String rutaPdf = "reportes/temp/" + pdfFileName;

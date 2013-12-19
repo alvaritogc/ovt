@@ -45,7 +45,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 @ViewScoped
 public class TotalEmpleadorPlanillaBean implements Serializable {
     //
-    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     private Long idUsuario;
     private String idPersona;
     private String idEmpleador;
@@ -79,16 +79,19 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
     private Date fechaDesde;
     private Date fechaHasta;
 
+    private PerPersona perPersona;
 
     @PostConstruct
     public void ini() {
         logger.info("TotalEmpleadorPlanillaBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
+        idPersona = (String) session.getAttribute("idPersona");
         idEmpleador = (String) session.getAttribute("idEmpleador");
         cargar();
     }
 
     public void cargar() {
+        perPersona = iPersonaService.findById(idPersona);
         listaLocalidades = iLocalidadService.listarDepartamentos();
     }
 
@@ -135,7 +138,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             }
             parametros.put("fechaDesde", fechaDesde);
             parametros.put("fechaHasta", fechaHasta);
-
+            parametros.put("usuarioIdentificacion", perPersona.getNroIdentificacion());
+            //
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
 
             String rutaPdf = "reportes/temp/" + pdfFileName;
