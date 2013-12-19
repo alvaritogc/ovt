@@ -700,10 +700,10 @@ public class DocPlanilla implements Serializable {
                 ", fax='" + fax + '\'' +
                 ", idReplegal='" + idReplegal + '\'' +
                 ", codLocalidadPresentacion='" + codLocalidadPresentacion + '\'' +
-                ", idEntidadSalud=" + idEntidadSalud +
-                ", idEntidadBanco=" + idEntidadBanco +
-                ", parCalendario=" + parCalendario +
-                ", idDocumento=" + idDocumento +
+                ", idEntidadSalud=" + idEntidadSalud.getIdEntidad() +
+                ", idEntidadBanco=" + idEntidadBanco.getIdEntidad() +
+                ", parCalendario=" + parCalendario.getParCalendarioPK() +
+                ", idDocumento=" + idDocumento.getIdDocumento() +
                 '}';
     }
 }

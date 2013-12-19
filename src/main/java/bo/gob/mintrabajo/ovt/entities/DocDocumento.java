@@ -297,10 +297,10 @@ public class DocDocumento implements Serializable {
                 ", tipoMedioRegistro='" + tipoMedioRegistro + '\'' +
                 ", fechaBitacora=" + fechaBitacora +
                 ", registroBitacora='" + registroBitacora + '\'' +
-                ", perUnidad=" + perUnidad +
-                ", codEstado=" + codEstado +
-                ", idDocumentoRef=" + idDocumentoRef +
-                ", docDefinicion=" + docDefinicion +
+                ", perUnidad=" + perUnidad.getPerUnidadPK() +
+                ", codEstado=" + codEstado.getCodEstado() +
+                ", idDocumentoRef=" + idDocumentoRef.getIdDocumento() +
+                ", docDefinicion=" + docDefinicion.getDocDefinicionPK() +
                 '}';
     }
 }
