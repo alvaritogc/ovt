@@ -11,4 +11,7 @@ public interface IRecursoService {
     public List<UsrRecurso> obtenerRecursoEnUsuarioRecurso(Long idUsuario);
     public List<UsrRecurso> listarRecursosPorTipo(String tipoRecurso);
     public List<UsrRecurso> buscarRecursoPorUsuario(Long idUsuario);
+    public boolean delete(Long id);
+    public boolean guardarRecurso(UsrRecurso recurso, String usrModuloId, boolean estadoRecurso,
+            String REGISTRO_BITACORA, String tipoNodo, Long idPadre, Long idHijo);
 }
