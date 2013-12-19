@@ -106,8 +106,9 @@ public class VActividadEconomicaService implements IVActividadEconomicaService {
         Query query = entityManager.createNativeQuery("select a.*  from " + nombreVista + " a "
                 + " where a.descripcion = '"+descripcion+"' and "
                 + " a.nivel = '"+ nivel+"'" );
-        
+        System.out.println("== nivel en obtine " + nivel);
         System.out.println("== SQL "+query.toString());
+        
         List<Object[]> objeto = (List<Object[]>) query.getResultList();
         
         VparActividadEconomica v=new VparActividadEconomica();
@@ -123,15 +124,20 @@ public class VActividadEconomicaService implements IVActividadEconomicaService {
                     v.setCodImpuestos((String) obj[i++]);
                     v.setDescricpionImpuestos((String) obj[i++]);
                     try {
-                        long id2=new Long (obj[i++].toString());
-                        System.out.println("==> long ==> string"+ id2);
-                        if (id2 >= 0){
-                            v.setIdActividadEconomica2(new Long (id2));
+                        if (nivel.equals("1")){
+                            String idPadre = (String) obj[i++];
+                            System.out.println("No tiene padre");
+                        }else{
+                            long id2=new Long (obj[i++].toString());
+                            if (id2 >= 0){
+                                v.setIdActividadEconomica2(new Long (id2));
+                            }
                         }
                     } catch (Exception e) {
                         System.out.println("=> No tiene IdActividadEconomica2");    
                         e.printStackTrace();    
                     }
+                    
                     v.setEstado((String) obj[i++]);
                     v.setFechaBitacora((Date) obj[i++]);
                     v.setRegistroBitacora((String) obj[i++]);

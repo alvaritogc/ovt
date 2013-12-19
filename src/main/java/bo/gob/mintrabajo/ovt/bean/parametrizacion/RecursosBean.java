@@ -250,6 +250,9 @@ public class RecursosBean implements Serializable{
             }else{
                 niv=nivelNodo;
             }
+            if (registro.equals("Editar")){
+                niv = nivelNodo;
+            }
             aux = iVRecursosService.ObtienePorEtiquetaYNivel(usrRecurso.getEtiqueta(), niv);
             System.out.println("====>> aux.getNivel() " + aux.getNivel());
             if (registro.equals("Editar")) {

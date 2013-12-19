@@ -65,7 +65,7 @@ limitations under the License.
                         <p:confirmDialog message="Esta seguro de eliminar este nodo?"  
                                          showEffect="fade" hideEffect="explode" closable="false"  
                                          header="Confirmación" severity="alert" widgetVar="confirmation">  
-                            <p:commandButton value="Si" update=":form :messages" oncomplete="confirmation.hide()" actionListener="#{recursosBean.confirmaEliminar}"/>  
+                            <p:commandButton value="Si" update=":form :messages" onstart="statusDialog.show();" oncomplete="statusDialog.hide(); confirmation.hide()" actionListener="#{recursosBean.confirmaEliminar}"/>  
                             <p:commandButton value="No" oncomplete="confirmation.hide()" actionListener="#{recursosBean.canselar}"/>   
                         </p:confirmDialog>
 

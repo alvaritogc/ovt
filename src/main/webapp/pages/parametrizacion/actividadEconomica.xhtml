@@ -29,32 +29,46 @@ limitations under the License.
                       draggable="false" closable="false">
                 <p:graphicImage value="../../images/ajax-loader.gif"/>
             </p:dialog>
-            <h:panelGrid columns="1">
-                <p:panel header="Actividad economica" style="margin-bottom:10px;" id="formPanel">
+            <h:panelGrid columns="2">
+                <h:form id="form">
+                    <p:scrollPanel style="width:410px;height:480px" mode="native" widgetVar="scroller">
+                        <p:panel header="Arbol de actividad economica" style="margin-bottom:10px; border: 0;">
+                            <p:contextMenu for="tree" style="position: absolute; margin-left: -120px">  
+                                <p:menuitem value="Nuevo hijo" icon="ui-icon-circle-plus" update=":form1:botones :messages :form1:pnlGridActividad"
+                                            actionListener="#{actividadEconomicaBean.agregaNodoHijo}"/>  
+                                <p:menuitem value="Editar" icon="ui-icon-pencil" update=":form1:botones :messages :form1:pnlGridActividad" 
+                                            actionListener="#{actividadEconomicaBean.editar}" />  
+                                <p:menuitem value="Eliminar" icon="ui-icon-trash" update=":messages" actionListener="#{actividadEconomicaBean.preparaEliminar}"/>  
+                            </p:contextMenu>
+                            <p:tree value="#{actividadEconomicaBean.root}" var="node" id="tree" selection="#{actividadEconomicaBean.nodoSeleccionado}"
+                                    dynamic="true" cache="false" selectionMode="single" style="border: 0; width: 1000px;">  
+                                <p:ajax event="select" update=":messages :form1:pnlGridActividad" listener="#{actividadEconomicaBean.onNodeSelect}" />
+                                <p:treeNode id="treeNode">  
+                                    <h:outputText value="#{node}" id="lblNode"/>
+                                </p:treeNode>  
+                            </p:tree>
+                        </p:panel>
+                    </p:scrollPanel>
+                </h:form>
+                <p:panel header="Actividad economica" style="margin-bottom:10px; height:480px" id="formPanel">
                     <h:form id="form1">
                         <h:panelGroup id="botones">
-                            <p:commandButton value="Agregar padre" id="padre" icon="ui-icon-circle-plus" disabled="#{!actividadEconomicaBean.estadoBoton}" actionListener="#{actividadEconomicaBean.agregaNodoPadre}"
-                                             update="botones :messages pnlGridActividad"/>
-                            <p:commandButton value="Agregar hijo" id="hijo" icon="ui-icon-circle-plus" disabled="#{!actividadEconomicaBean.estadoBoton}" actionListener="#{actividadEconomicaBean.agregaNodoHijo}"
-                                             update="botones :messages pnlGridActividad"/>
-                            <p:commandButton value="Editar" id="editar" icon="ui-icon-pencil" disabled="#{!actividadEconomicaBean.estadoBoton}" actionListener="#{actividadEconomicaBean.editar}"
-                                             update="botones :messages pnlGridActividad"/>
+                            <p:commandButton value="Nuevo padre" id="padre" icon="ui-icon-circle-plus" disabled="#{!actividadEconomicaBean.estadoBoton}" actionListener="#{actividadEconomicaBean.agregaNodoPadre}"
+                                             update="botones :messages pnlGridActividad" style="width: 80px; height: 40px"/>
                             <p:commandButton value="Guardar" id="guardar" icon="ui-icon-disk" disabled="#{actividadEconomicaBean.estadoBoton}" actionListener="#{actividadEconomicaBean.guardarNodo}"
-                                             update="botones :messages pnlGridActividad :form" onstart="statusDialog.show();" oncomplete="statusDialog.hide();"/>
+                                             update="botones :messages pnlGridActividad :form" onstart="statusDialog.show();" oncomplete="statusDialog.hide();" style="width: 80px; height: 40px"/>
                             <p:commandButton value="Cancelar" id="cancelar" icon="ui-icon-close" disabled="#{actividadEconomicaBean.estadoBoton}" actionListener="#{actividadEconomicaBean.canselar}"
-                                             update="botones :messages pnlGridActividad" onstart="statusDialog.show();"  oncomplete="statusDialog.hide();"/>
-                            <p:commandButton value="Eliminar" id="eliminar" icon="ui-icon-trash" disabled="#{!actividadEconomicaBean.estadoBoton}" actionListener="#{actividadEconomicaBean.preparaEliminar}"
-                                             update=":messages" onstart="statusDialog.show();"  oncomplete="statusDialog.hide();"/>
+                                             update="botones :messages pnlGridActividad" onstart="statusDialog.show();" oncomplete="statusDialog.hide();" style="width: 80px; height: 40px"/>
                         </h:panelGroup>
                         <p:confirmDialog message="Esta seguro de eliminar este nodo?"  
                                          showEffect="fade" hideEffect="explode" closable="false"  
                                          header="Confirmación" severity="alert" widgetVar="confirmation">  
-                            <p:commandButton value="Si" update=":form :messages" oncomplete="confirmation.hide()" actionListener="#{actividadEconomicaBean.confirmaEliminar}"/>  
+                            <p:commandButton value="Si" update=":form :messages" onstart="statusDialog.show();" oncomplete="statusDialog.hide(); confirmation.hide()" actionListener="#{actividadEconomicaBean.confirmaEliminar}"/>  
                             <p:commandButton value="No" oncomplete="confirmation.hide()" actionListener="#{actividadEconomicaBean.canselar}"/>   
                         </p:confirmDialog>
                         <br /><br />
 
-                        <h:panelGrid columns="2" id="pnlGridActividad">
+                        <h:panelGrid columns="1" id="pnlGridActividad">
                             <p:outputLabel for="codActividad" value="Codigo de actividad: *" style="font-weight:bold"/>  
                             <p:inputText id="codActividad" value="#{actividadEconomicaBean.parActividadEconomica.codActividadEconomica}" 
                                          maxlength="120" style="text-transform: uppercase; width: 214px" disabled="#{actividadEconomicaBean.estadoBoton}">
@@ -76,24 +90,13 @@ limitations under the License.
                                              maxlength="120" style="text-transform: uppercase; width: 214px" disabled="#{actividadEconomicaBean.estadoBoton}">
                                 <f:converter converterId="lowerConverter"/>
                             </p:inputTextarea> 
-                            <p:outputLabel for="estado" value="Estado:" style="font-weight:bold"/>  
-                            <p:selectBooleanCheckbox id="estado" value="#{actividadEconomicaBean.estadoActividadEconomica}" disabled="#{actividadEconomicaBean.estadoBoton}"/>
+                            <h:panelGrid columns="2">
+                                <p:outputLabel for="estado" value="Estado:" style="font-weight:bold"/>  
+                                <p:selectBooleanCheckbox id="estado" value="#{actividadEconomicaBean.estadoActividadEconomica}" disabled="#{actividadEconomicaBean.estadoBoton}"/>
+                            </h:panelGrid>
                         </h:panelGrid>
                     </h:form>
                 </p:panel>
-                <h:form id="form">
-                    <p:panel header="Arbol de actividad economica" style="margin-bottom:10px; height: 300px;border: 0; width: 700px">
-
-                        <p:tree value="#{actividadEconomicaBean.root}" var="node" id="tree" selection="#{actividadEconomicaBean.nodoSeleccionado}"
-                                dynamic="false" cache="false" selectionMode="single" style="border: 0; width: 700px">  
-                            <p:ajax event="select" update=":messages :form1:pnlGridActividad" listener="#{actividadEconomicaBean.onNodeSelect}" />
-                            <p:treeNode id="treeNode">  
-                                <h:outputText value="#{node}" id="lblNode"/>
-                            </p:treeNode>  
-                        </p:tree>
-                    </p:panel>
-                </h:form>
-
             </h:panelGrid>
         </ui:define>
     </ui:composition>
