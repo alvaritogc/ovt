@@ -48,6 +48,7 @@ public class EntidadBean implements Serializable{
     private IUsuarioService iUsuarioService;
     
      private HttpSession session;
+     private String REGISTRO_BITACORA;
     private UsrUsuario usuario;
     
     private List<ParEntidad> listaEntidad;
@@ -66,14 +67,11 @@ public class EntidadBean implements Serializable{
     public void ini() {
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            Long idUsuario = (Long) session.getAttribute("idUsuario");
-            usuario = iUsuarioService.findById(idUsuario);
+            REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        
-        
+               
         listaEntidad =new ArrayList<ParEntidad>();
         listaEntidad= iEntidadService.listaEntidadPorOrden();
         listaDominio = new ArrayList<ParDominio>();
@@ -108,7 +106,7 @@ public class EntidadBean implements Serializable{
         if(entidad.getCodigo().trim().isEmpty()){return;}
         if(entidad.getDescripcion().trim().isEmpty()){return;}
         RequestContext context = RequestContext.getCurrentInstance();        
-        final String  REGISTRO_BITACORA=usuario.getUsuario();
+        //final String  REGISTRO_BITACORA=usuario.getUsuario();
         try {
             ParEntidad pe = iEntidadService.saveEntidad(entidad,REGISTRO_BITACORA,unidad, evento);
             nuevo();
