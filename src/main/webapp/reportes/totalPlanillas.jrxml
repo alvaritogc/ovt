@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TotalEmpleadorPorGenero" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="40" bottomMargin="40" uuid="c1954da6-c979-4cce-8a96-363ed5352b09">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.1000000000000025"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="escudoBolivia" class="java.lang.String">
@@ -17,6 +17,7 @@
 	</parameter>
 	<parameter name="fechaHasta" class="java.util.Date"/>
 	<parameter name="descripcionTipoPlanilla" class="java.lang.String"/>
+	<parameter name="usuarioIdentificacion" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select *
 from VDOC_DOCUMENTOS_PLANILLA
@@ -237,9 +238,9 @@ order by COD_LOCALIDAD_DIRECCION, fecha_documento asc]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="132" splitType="Stretch">
+		<band height="100" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="c62298b1-9170-495d-834c-136eb907573a" x="165" y="14" width="237" height="22"/>
+				<reportElement uuid="c62298b1-9170-495d-834c-136eb907573a" x="170" y="8" width="237" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="SansSerif" size="16" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica"/>
 					<paragraph lineSpacing="Single"/>
@@ -247,43 +248,71 @@ order by COD_LOCALIDAD_DIRECCION, fecha_documento asc]]>
 				<text><![CDATA[REPORTE]]></text>
 			</staticText>
 			<image>
-				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="25" y="9" width="115" height="65"/>
+				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="21" y="0" width="115" height="65"/>
 				<imageExpression><![CDATA[$P{escudoBolivia}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement uuid="c45502db-e68a-43d8-9d85-39a67b0d2b37" x="435" y="14" width="120" height="60"/>
+				<reportElement uuid="c45502db-e68a-43d8-9d85-39a67b0d2b37" x="452" y="0" width="120" height="50"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement uuid="8c996f43-6401-4f08-b199-74b82fedc3b0" x="152" y="36" width="265" height="20"/>
+				<reportElement uuid="8c996f43-6401-4f08-b199-74b82fedc3b0" x="140" y="31" width="305" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="16" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{descripcionTipoPlanilla}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="94267081-7fd3-4240-812f-50ac57989d55" x="227" y="56" width="60" height="20"/>
+				<reportElement uuid="94267081-7fd3-4240-812f-50ac57989d55" x="204" y="53" width="60" height="15"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="62fc1e68-8501-46e0-99d8-28aa9cd5994d" x="328" y="56" width="60" height="20"/>
+				<reportElement uuid="62fc1e68-8501-46e0-99d8-28aa9cd5994d" x="347" y="53" width="60" height="15"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="5e0e8ee0-74dc-4230-9d6f-49e152206a57" x="188" y="56" width="39" height="20"/>
+				<reportElement uuid="5e0e8ee0-74dc-4230-9d6f-49e152206a57" x="165" y="53" width="39" height="15"/>
 				<textElement/>
 				<text><![CDATA[Desde:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="5e0e8ee0-74dc-4230-9d6f-49e152206a57" x="293" y="56" width="35" height="20"/>
+				<reportElement uuid="5e0e8ee0-74dc-4230-9d6f-49e152206a57" x="312" y="53" width="35" height="15"/>
 				<textElement/>
 				<text><![CDATA[Hasta:]]></text>
 			</staticText>
 			<line>
 				<reportElement uuid="357c9a1b-4ddc-49fe-856f-922e0e6005da" x="4" y="80" width="568" height="1"/>
 			</line>
+			<textField>
+				<reportElement uuid="93d588e3-7cd5-49d6-bd8e-12763f0d1701" x="482" y="50" width="90" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuarioIdentificacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2d6d9650-d253-4da3-8fda-08532933abc8" x="452" y="60" width="28" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha: ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="14ba99b1-6be5-40db-8bab-f7bdc1815e30" x="482" y="60" width="90" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2d6d9650-d253-4da3-8fda-08532933abc8" x="452" y="50" width="28" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[UID: ]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

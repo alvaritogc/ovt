@@ -35,19 +35,19 @@
                 <p:outputLabel for="idFechaDesde" value="Fecha Desde:"
                                style="text-align: right;"/>
                 <p:calendar id="idFechaDesde" value="#{totalEmpleadorPlanillaBean.fechaDesde}"
-                            required="true"
                             validatorMessage="La fecha no es valida"
+                            required="true"
                             locale="es"
                             maxlength="10"
                             pattern="dd/MM/yyyy"
                             showOn="button">
                     <f:convertDateTime pattern="dd/MM/yyyy"/>
                 </p:calendar>
-                <p:outputLabel for="idFechaHasta" value="Fecha Hasta"
+                <p:outputLabel for="idFechaHasta" value="Fecha Hasta:"
                                style="text-align: right;"/>
                 <p:calendar id="idFechaHasta" value="#{totalEmpleadorPlanillaBean.fechaHasta}"
-                            required="true"
                             validatorMessage="La fecha no es valida"
+                            required="true"
                             locale="es"
                             maxlength="10"
                             pattern="dd/MM/yyyy"

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TotalEmpleadorPorGenero" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="40" bottomMargin="40" uuid="c1954da6-c979-4cce-8a96-363ed5352b09">
-	<property name="ireport.zoom" value="1.4641000000000008"/>
-	<property name="ireport.x" value="240"/>
-	<property name="ireport.y" value="12"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TotalEmpleadorPorGenero" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="40" bottomMargin="40" uuid="c1954da6-c979-4cce-8a96-363ed5352b09">
+	<property name="ireport.zoom" value="1.3310000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="58"/>
 	<parameter name="escudoBolivia" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -11,6 +11,7 @@
 	<parameter name="codLocalidad" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="usuarioIdentificacion" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT ID_PERSONA,
   TIPO_IDENTIFICACION,
@@ -56,7 +57,8 @@
   FECHA_BITACORA,
   REGISTRO_BITACORA,
   COD_LOCALIDAD_DIRECCION,
-  LOCALIDAD_DIRECCION
+  LOCALIDAD_DIRECCION,
+  (NRO_HOMBRES+NRO_MUJERES) TOTAL_EMPLEADOS
 FROM VPER_INFOLABORAL
 where
 COD_LOCALIDAD_DIRECCION = $P{codLocalidad} OR  $P{codLocalidad} = 'ALL'
@@ -107,6 +109,7 @@ order by cod_localidad_direccion, nombre_Razon_social, id_unidad]]>
 	<field name="REGISTRO_BITACORA" class="java.lang.String"/>
 	<field name="COD_LOCALIDAD_DIRECCION" class="java.lang.String"/>
 	<field name="LOCALIDAD_DIRECCION" class="java.lang.String"/>
+	<field name="TOTAL_EMPLEADOS" class="java.math.BigDecimal"/>
 	<variable name="SUMA_HOMBRES" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$V{NRO_HOMBRES_1}]]></variableExpression>
 	</variable>
@@ -131,26 +134,120 @@ order by cod_localidad_direccion, nombre_Razon_social, id_unidad]]>
 	<variable name="NUMERACION_DEPARTAMENTO" class="java.lang.Integer" calculation="Sum">
 		<initialValueExpression><![CDATA[]]></initialValueExpression>
 	</variable>
+	<variable name="NOMBRE_COMERCIAL_1" class="java.lang.Integer" resetType="Group" resetGroup="grupoLocalidad" calculation="Count">
+		<variableExpression><![CDATA[$F{NOMBRE_COMERCIAL}]]></variableExpression>
+	</variable>
+	<variable name="NOMBRE_RAZON_SOCIAL_1" class="java.lang.Integer" resetType="Group" resetGroup="grupoLocalidad" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{NOMBRE_RAZON_SOCIAL}]]></variableExpression>
+	</variable>
+	<variable name="NOMBRE_COMERCIAL_2" class="java.lang.Integer" resetType="Group" resetGroup="grupoLocalidad" calculation="Count">
+		<variableExpression><![CDATA[$F{NOMBRE_COMERCIAL}]]></variableExpression>
+	</variable>
+	<variable name="NRO_HOMBRES_3" class="java.math.BigDecimal" resetType="Group" resetGroup="grupoLocalidad" calculation="Sum">
+		<variableExpression><![CDATA[$F{NRO_HOMBRES}]]></variableExpression>
+	</variable>
+	<variable name="NRO_HOMBRES_4" class="java.math.BigDecimal" resetType="Group" resetGroup="grupoLocalidad" calculation="Sum">
+		<variableExpression><![CDATA[$F{NRO_HOMBRES}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_EMPLEADOS_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grupoLocalidad" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTAL_EMPLEADOS}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_EMPLEADOS_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTAL_EMPLEADOS}]]></variableExpression>
+	</variable>
+	<variable name="variable1" class="java.lang.String"/>
 	<group name="grupoLocalidad">
 		<groupExpression><![CDATA[$F{COD_LOCALIDAD_DIRECCION}]]></groupExpression>
 		<groupHeader>
 			<band height="16">
+				<printWhenExpression><![CDATA[$P{mostrarDetalles}=='true']]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="190" y="0" width="70" height="15" printWhenGroupChanges="grupoLocalidad"/>
+					<textElement textAlignment="Center">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nº empresas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="289" y="0" width="75" height="15" printWhenGroupChanges="grupoLocalidad"/>
+					<textElement textAlignment="Center">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nº sucursales]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="393" y="0" width="92" height="15" printWhenGroupChanges="grupoLocalidad"/>
+					<textElement textAlignment="Center">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total empleados]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="14" y="0" width="47" height="15" printWhenGroupChanges="grupoLocalidad"/>
+					<textElement textAlignment="Left">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Código]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="61" y="0" width="78" height="15" printWhenGroupChanges="grupoLocalidad"/>
+					<textElement textAlignment="Left">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Localidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="521" y="0" width="97" height="15"/>
+					<textElement textAlignment="Left">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nº Hombres]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="62545004-422f-41f6-8b1e-28c30a93913c" x="638" y="0" width="97" height="15"/>
+					<textElement textAlignment="Left">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nº Mujeres]]></text>
+				</staticText>
+			</band>
+			<band height="15">
+				<staticText>
+					<reportElement uuid="964aa198-3fbf-4de0-b215-7ea26a3bcf81" x="689" y="0" width="6" height="15"/>
+					<textElement/>
+					<text><![CDATA[(]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="964aa198-3fbf-4de0-b215-7ea26a3bcf81" x="717" y="0" width="20" height="15"/>
+					<textElement/>
+					<text><![CDATA[%)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="964aa198-3fbf-4de0-b215-7ea26a3bcf81" x="601" y="0" width="20" height="15"/>
+					<textElement/>
+					<text><![CDATA[%)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="964aa198-3fbf-4de0-b215-7ea26a3bcf81" x="572" y="0" width="6" height="15"/>
+					<textElement/>
+					<text><![CDATA[(]]></text>
+				</staticText>
 				<textField>
-					<reportElement uuid="712358ae-232d-4b03-99dd-a5d193755086" x="0" y="1" width="47" height="15"/>
+					<reportElement uuid="712358ae-232d-4b03-99dd-a5d193755086" x="14" y="0" width="47" height="15"/>
 					<textElement>
-						<font isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{COD_LOCALIDAD_DIRECCION}==null?'S/L':$F{COD_LOCALIDAD_DIRECCION}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="c3cb4371-34aa-4b57-b3a5-47afd046abe3" x="47" y="1" width="220" height="15"/>
+					<reportElement uuid="c3cb4371-34aa-4b57-b3a5-47afd046abe3" x="61" y="0" width="78" height="15"/>
 					<textElement>
-						<font isBold="false"/>
+						<font size="9" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{LOCALIDAD_DIRECCION}==null?'SIN LOCALIDAD':$F{LOCALIDAD_DIRECCION}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="grupoLocalidad" pattern="#,##0;-#,##0">
-					<reportElement uuid="d1936e53-7fe4-4f88-b08a-612b1afb83cc" x="512" y="1" width="50" height="15"/>
+					<reportElement uuid="d1936e53-7fe4-4f88-b08a-612b1afb83cc" x="638" y="0" width="50" height="15"/>
 					<textElement textAlignment="Right">
 						<font size="9" isBold="true"/>
 						<paragraph rightIndent="2"/>
@@ -158,133 +255,257 @@ order by cod_localidad_direccion, nombre_Razon_social, id_unidad]]>
 					<textFieldExpression><![CDATA[$V{NRO_MUJERES_1}==null?(new BigDecimal(0)):$V{NRO_MUJERES_1}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="grupoLocalidad" pattern="#,##0;-#,##0">
-					<reportElement uuid="43c58bac-7c1f-494a-8a6e-617c7891d032" x="446" y="1" width="50" height="15"/>
+					<reportElement uuid="43c58bac-7c1f-494a-8a6e-617c7891d032" x="521" y="0" width="50" height="15"/>
 					<textElement textAlignment="Right">
 						<font size="9" isBold="true"/>
 						<paragraph rightIndent="2"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{NRO_HOMBRES_1}==null?(new BigDecimal(0)):$V{NRO_HOMBRES_1}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement uuid="3d35fc40-0348-4ce1-aa2a-ea87d68d557d" x="411" y="1" width="35" height="15"/>
-					<textElement verticalAlignment="Middle">
-						<font size="9" isBold="true"/>
+				<textField evaluationTime="Group" evaluationGroup="grupoLocalidad">
+					<reportElement uuid="55d672c5-4610-4b48-b7b4-41c60419471d" x="190" y="0" width="65" height="15"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
 					</textElement>
-					<text><![CDATA[Total]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[$V{NOMBRE_RAZON_SOCIAL_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grupoLocalidad">
+					<reportElement uuid="54d96ea4-971b-454c-b5b1-04bbbc6903b7" x="294" y="0" width="65" height="15"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{NOMBRE_COMERCIAL_2}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grupoLocalidad" pattern="#,##0.00 %">
+					<reportElement uuid="7fec8d57-52e4-4ead-9fec-d182879d9674" x="576" y="0" width="25" height="15"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{NRO_HOMBRES_1}/$V{TOTAL_EMPLEADOS_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grupoLocalidad">
+					<reportElement uuid="069a1a29-8ebe-4890-8640-5d28076f463f" x="402" y="0" width="75" height="15"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TOTAL_EMPLEADOS_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grupoLocalidad" pattern="#,##0.00 %">
+					<reportElement uuid="7fec8d57-52e4-4ead-9fec-d182879d9674" x="693" y="0" width="25" height="15"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{NRO_MUJERES_1}/$V{TOTAL_EMPLEADOS_1}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
+		<groupFooter>
+			<band height="34">
+				<printWhenExpression><![CDATA[$P{mostrarDetalles}=='true']]></printWhenExpression>
+			</band>
+		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="127" splitType="Stretch">
+		<band height="100" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="c62298b1-9170-495d-834c-136eb907573a" x="144" y="28" width="283" height="46"/>
+				<reportElement uuid="c62298b1-9170-495d-834c-136eb907573a" x="147" y="15" width="448" height="34"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="SansSerif" size="16" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Nº de trabajadores dependientes]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="8eed97fb-db0d-4022-bb0a-f170060c2348" x="11" y="90" width="551" height="26"/>
-				<textElement/>
-				<text><![CDATA[Reporte del número de trabajadores dependientes en la agencia central y sucursales, agrupado por departamento y región ]]></text>
+				<text><![CDATA[Nº DE TRABAJADORES DEPENDIENTES ]]></text>
 			</staticText>
 			<image>
-				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="10" y="14" width="115" height="65"/>
+				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="14" y="0" width="115" height="65"/>
 				<imageExpression><![CDATA[$P{escudoBolivia}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement uuid="c45502db-e68a-43d8-9d85-39a67b0d2b37" x="446" y="14" width="120" height="60"/>
+				<reportElement uuid="c45502db-e68a-43d8-9d85-39a67b0d2b37" x="615" y="0" width="120" height="50"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="15" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="62545004-422f-41f6-8b1e-28c30a93913c" x="512" y="0" width="50" height="15"/>
-				<textElement textAlignment="Right">
-					<font size="9"/>
+			<line>
+				<reportElement uuid="e308af2b-66f5-4679-b300-823246d657f5" x="0" y="80" width="752" height="1"/>
+			</line>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="14ba99b1-6be5-40db-8bab-f7bdc1815e30" x="646" y="59" width="89" height="10"/>
+				<textElement>
+					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Mujeres]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="446" y="0" width="50" height="15"/>
-				<textElement textAlignment="Right">
-					<font size="9"/>
-				</textElement>
-				<text><![CDATA[Hombres]]></text>
-			</staticText>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band splitType="Stretch"/>
-	</columnHeader>
-	<detail>
-		<band height="16" splitType="Stretch">
-			<printWhenExpression><![CDATA[$P{mostrarDetalles}=='true']]></printWhenExpression>
-			<textField pattern="#,##0;-#,##0">
-				<reportElement uuid="4365d856-8f29-44ca-a571-c78db122261f" x="512" y="0" width="50" height="15"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9"/>
-					<paragraph rightIndent="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{NRO_MUJERES}==null?(new BigDecimal(0)):$F{NRO_MUJERES}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="eaf9d708-389f-474f-9666-f2cdce04cf96" isPrintRepeatedValues="false" x="0" y="0" width="252" height="15"/>
+				<reportElement uuid="93d588e3-7cd5-49d6-bd8e-12763f0d1701" x="645" y="49" width="90" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuarioIdentificacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2d6d9650-d253-4da3-8fda-08532933abc8" x="615" y="59" width="28" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2d6d9650-d253-4da3-8fda-08532933abc8" x="615" y="50" width="28" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[UID: ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="15">
+			<printWhenExpression><![CDATA[$P{mostrarDetalles}!='true']]></printWhenExpression>
+			<staticText>
+				<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="393" y="0" width="92" height="15" printWhenGroupChanges="grupoLocalidad"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total empleados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="61" y="0" width="78" height="15" printWhenGroupChanges="grupoLocalidad"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Localidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="190" y="0" width="70" height="15" printWhenGroupChanges="grupoLocalidad"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº empresas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="14" y="0" width="47" height="15" printWhenGroupChanges="grupoLocalidad"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="289" y="0" width="75" height="15" printWhenGroupChanges="grupoLocalidad"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº sucursales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="62545004-422f-41f6-8b1e-28c30a93913c" x="638" y="0" width="97" height="15"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº Mujeres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="33a63455-ac65-4990-9fef-50070e7085f3" x="521" y="0" width="97" height="15"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº Hombres]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{mostrarDetalles}=='true']]></printWhenExpression>
+			<textField>
+				<reportElement uuid="eaf9d708-389f-474f-9666-f2cdce04cf96" isPrintRepeatedValues="false" x="11" y="0" width="280" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{NOMBRE_RAZON_SOCIAL}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="7718e77a-1f42-48e5-be71-650a97bb7b77" x="252" y="0" width="194" height="15"/>
-				<textElement verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{ID_UNIDAD}+" "+$F{NOMBRE_COMERCIAL}]]></textFieldExpression>
-			</textField>
 			<textField pattern="#,##0;-#,##0" isBlankWhenNull="false">
-				<reportElement uuid="566c06b0-d65c-4f3f-8282-c9a91ec4431f" x="446" y="0" width="50" height="15"/>
+				<reportElement uuid="566c06b0-d65c-4f3f-8282-c9a91ec4431f" x="521" y="0" width="50" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="8"/>
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{NRO_HOMBRES}==null?(new BigDecimal(0)):$F{NRO_HOMBRES}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement uuid="7718e77a-1f42-48e5-be71-650a97bb7b77" x="291" y="0" width="200" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ID_UNIDAD}+" "+$F{NOMBRE_COMERCIAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement uuid="4365d856-8f29-44ca-a571-c78db122261f" x="638" y="0" width="50" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NRO_MUJERES}==null?(new BigDecimal(0)):$F{NRO_MUJERES}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>
-		<band height="102" splitType="Stretch">
+		<band height="22" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="bd4bc59d-e959-47cb-8469-c604da27012c" x="0" y="1" width="572" height="15" backcolor="#CCCCCC"/>
+				<reportElement uuid="bd4bc59d-e959-47cb-8469-c604da27012c" x="11" y="1" width="727" height="15" backcolor="#CCCCCC"/>
 			</rectangle>
 			<staticText>
-				<reportElement uuid="3d35fc40-0348-4ce1-aa2a-ea87d68d557d" x="177" y="0" width="35" height="15"/>
+				<reportElement uuid="3d35fc40-0348-4ce1-aa2a-ea87d68d557d" x="445" y="0" width="35" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<textField pattern="#,##0;-#,##0">
-				<reportElement uuid="c838fe39-4aa0-4af1-bf4b-9664dfc8dd47" x="446" y="0" width="50" height="15"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{NRO_HOMBRES_2}==null?(new BigDecimal(0)):$V{NRO_HOMBRES_2}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0;-#,##0">
-				<reportElement uuid="a1c333c9-dc71-4ab1-84a4-67debcbd543f" x="512" y="0" width="50" height="15"/>
+				<reportElement uuid="a1c333c9-dc71-4ab1-84a4-67debcbd543f" x="638" y="0" width="50" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{NRO_MUJERES_2}==null?(new BigDecimal(0)):$V{NRO_MUJERES_2}]]></textFieldExpression>
 			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement uuid="c838fe39-4aa0-4af1-bf4b-9664dfc8dd47" x="521" y="1" width="50" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{NRO_HOMBRES_2}==null?(new BigDecimal(0)):$V{NRO_HOMBRES_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00 %">
+				<reportElement uuid="b92e9322-da5d-4892-b91b-c285e1a8fa8a" x="576" y="1" width="25" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{NRO_HOMBRES_2}/$V{TOTAL_EMPLEADOS_2}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="grupoLocalidad" pattern="#,##0.00 %">
+				<reportElement uuid="7fec8d57-52e4-4ead-9fec-d182879d9674" x="693" y="1" width="25" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{NRO_MUJERES_2}/$V{TOTAL_EMPLEADOS_2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="964aa198-3fbf-4de0-b215-7ea26a3bcf81" x="689" y="1" width="6" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[(]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="964aa198-3fbf-4de0-b215-7ea26a3bcf81" x="717" y="1" width="20" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="964aa198-3fbf-4de0-b215-7ea26a3bcf81" x="601" y="1" width="20" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="964aa198-3fbf-4de0-b215-7ea26a3bcf81" x="572" y="1" width="6" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[(]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>
