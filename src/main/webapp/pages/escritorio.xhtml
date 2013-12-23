@@ -44,7 +44,7 @@
                 </p:column>
                 <!--style="width: 140px;word-break: break-all;"-->
                 <p:column headerText="Nombre del documento" style="width: 150px;">
-                    <h:outputText value="# {o1.docDefinicion.nombre}: # {o1.tipoMedioRegistro=='N/A'?'':o1.tipoMedioRegistro}"/>
+                    <h:outputText value="#{o1.docDefinicion.nombre}: #{o1.tipoMedioRegistro=='N/A'?'':o1.tipoMedioRegistro}"/>
                 </p:column>
                 <p:column headerText="Número de orden" style="width: 110px;">
                     <h:outputText value="#{o1.docDefinicion.docDefinicionPK.codDocumento}: #{o1.numeroDocumento}"/>

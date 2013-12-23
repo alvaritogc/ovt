@@ -85,19 +85,19 @@ limitations under the License.
                             </p:selectOneMenu>
 
                             <p:outputLabel for="plataforma" value="Plataforma:" style="font-weight:bold"/>  
-                            <p:inputText id="plataforma" value="#{recursosBean.usrRecurso.tipoPlataforma}" 
+                            <p:inputText id="plataforma" value="#{recursosBean.usrRecurso.tipoPlataforma}" requiredMessage="Debe llenar el campo plataforma" 
                                          maxlength="120" style="text-transform: uppercase; width: 214px" required="true" disabled="#{recursosBean.estadoBoton}">
                                 <f:converter converterId="lowerConverter"/>
                             </p:inputText>
 
                             <p:outputLabel for="orden" value="Orden:" style="font-weight:bold"/>  
-                            <pe:inputNumber id="orden" value="#{recursosBean.usrRecurso.orden}" requiredMessage="Debe ingresar un orden"
+                            <pe:inputNumber id="orden" value="#{recursosBean.usrRecurso.orden}" requiredMessage="Debe ingresar un orden" rendered="true"
                                             thousandSeparator="." decimalSeparator="," decimalPlaces="0" style="width: 150px; height: 10px; text-align: right" required="true" maxlength="3" disabled="#{recursosBean.estadoBoton}">
                             </pe:inputNumber> 
 
 
                             <p:outputLabel for="etiqueta" value="Etiqueta:" style="font-weight:bold"/>  
-                            <p:inputText id="etiqueta" value="#{recursosBean.usrRecurso.etiqueta}" 
+                            <p:inputText id="etiqueta" value="#{recursosBean.usrRecurso.etiqueta}" required="true" requiredMessage="Debe llenar este campo para que se vea en el menu" 
                                          maxlength="120" style="width: 214px" disabled="#{recursosBean.estadoBoton}">
                             </p:inputText>
 
