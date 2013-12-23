@@ -19,7 +19,8 @@ public interface IUsuarioService {
     public UsrUsuario obtenerUsuarioPorNombreUsuario(String email);
     public String cambiarContrasenia(String email,String clave,String nuevaClave,String confirmarClave);
     public String cambiarContrasenia(Long idUsuario,String clave,String nuevaClave,String confirmarClave);
+    public String cambiarContraseniaNueva(Long idUsuario, String nuevaClave, String confirmarClave);
     public void cambiarLogin(Long idUsuario,String loginNuevo);
     public List<UsrUsuario> buscarPorUsuario(String usuario);
-    List<UsrUsuario> obtenerUsuarioPorIdPersona(String idPersona);
+    public List<UsrUsuario> obtenerUsuarioPorIdPersona(String idPersona);
 }
