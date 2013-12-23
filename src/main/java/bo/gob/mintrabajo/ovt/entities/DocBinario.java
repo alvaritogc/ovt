@@ -167,7 +167,7 @@ public class DocBinario implements Serializable {
                 ", metadata='" + metadata + '\'' +
                 ", fechaBitacora=" + fechaBitacora +
                 ", registroBitacora='" + registroBitacora + '\'' +
-                ", docDocumento=" + docDocumento +
+                ", docDocumento=" + docDocumento.getIdDocumento() +
                 '}';
     }
 }

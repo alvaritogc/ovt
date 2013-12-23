@@ -320,7 +320,28 @@ public class PerInfolaboral implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.PerInfolaboral[ idInfolaboral=" + idInfolaboral + " ]";
+        return "PerInfolaboral{" +
+                "idInfolaboral=" + idInfolaboral +
+                ", nroTotalTrabajadores=" + nroTotalTrabajadores +
+                ", nroHombres=" + nroHombres +
+                ", nroMujeres=" + nroMujeres +
+                ", nroExtranjeros=" + nroExtranjeros +
+                ", nroFijos=" + nroFijos +
+                ", nroEventuales=" + nroEventuales +
+                ", nroMenores18=" + nroMenores18 +
+                ", nroMayores60=" + nroMayores60 +
+                ", nroJubilados=" + nroJubilados +
+                ", nroCapdiferente=" + nroCapdiferente +
+                ", totalPlanilla=" + totalPlanilla +
+                ", nroAsegAfp=" + nroAsegAfp +
+                ", nroAsegCaja=" + nroAsegCaja +
+                ", montoAsegAfp=" + montoAsegAfp +
+                ", montoAsegCaja=" + montoAsegCaja +
+                ", tipoSindicato='" + tipoSindicato + '\'' +
+                ", estadoInfolaboral='" + estadoInfolaboral + '\'' +
+                ", fechaBitacora=" + fechaBitacora +
+                ", registroBitacora='" + registroBitacora + '\'' +
+                ", perUnidad=" + perUnidad.getPerUnidadPK() +
+                '}';
     }
-    
 }

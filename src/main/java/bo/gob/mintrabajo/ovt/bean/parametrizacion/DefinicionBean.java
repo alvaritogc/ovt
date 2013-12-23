@@ -40,6 +40,7 @@ public class DefinicionBean {
 
     private static final Logger logger = LoggerFactory.getLogger(DefinicionBean.class);
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    private String REGISTRO_BITACORA;
     private String idUsuario;
 
     private DocDefinicion docDefinicion=new DocDefinicion();
@@ -65,6 +66,12 @@ public class DefinicionBean {
         perPersona = new PerPersona();
         idUsuario=(String) session.getAttribute("idPersona");
         perPersona=iPersonaService.findById(idUsuario);
+        try {
+            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         listaDocDefinicion = new ArrayList<DocDefinicion>();
         //llenarLista();
         llenarListaOrden();
@@ -135,7 +142,7 @@ public class DefinicionBean {
             if (li.isEmpty())
             {
                 boolean guardado = iDefinicionService.saveDefincion(docDefinicion, codDocumento, version, codEstado
-                        , "OVT", estadoDoc, tipoGrupoDocumento);
+                        , REGISTRO_BITACORA, estadoDoc, tipoGrupoDocumento);
                 if(!guardado){
                     FacesMessage msg = new FacesMessage("Error Codigo ya existente");
                     FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -153,7 +160,7 @@ public class DefinicionBean {
 
         } else {
             boolean guardado = iDefinicionService.saveDefincion(docDefinicion, codDocumento, version, codEstado
-                        , "OVT", estadoDoc,tipoGrupoDocumento);
+                        , REGISTRO_BITACORA, estadoDoc,tipoGrupoDocumento);
             if(!guardado){
                     FacesMessage msg = new FacesMessage("Error Codigo ya existente");
                     FacesContext.getCurrentInstance().addMessage(null, msg);

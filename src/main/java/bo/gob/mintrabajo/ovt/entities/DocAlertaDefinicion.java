@@ -65,8 +65,8 @@ public class DocAlertaDefinicion implements Serializable {
         @JoinColumn(name = "VERSION", referencedColumnName = "VERSION")})
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DocDefinicion docDefinicion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codAlerta", fetch = FetchType.LAZY)
-    private List<DocAlerta> docAlertaList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codAlerta", fetch = FetchType.LAZY)
+//    private List<DocAlerta> docAlertaList;
 
     public DocAlertaDefinicion() {
     }
@@ -129,13 +129,13 @@ public class DocAlertaDefinicion implements Serializable {
         this.docDefinicion = docDefinicion;
     }
 
-    public List<DocAlerta> getDocAlertaList() {
-        return docAlertaList;
-    }
-
-    public void setDocAlertaList(List<DocAlerta> docAlertaList) {
-        this.docAlertaList = docAlertaList;
-    }
+//    public List<DocAlerta> getDocAlertaList() {
+//        return docAlertaList;
+//    }
+//
+//    public void setDocAlertaList(List<DocAlerta> docAlertaList) {
+//        this.docAlertaList = docAlertaList;
+//    }
 
     @Override
     public int hashCode() {
@@ -159,7 +159,13 @@ public class DocAlertaDefinicion implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.DocAlertaDefinicion[ codAlerta=" + codAlerta + " ]";
+        return "DocAlertaDefinicion{" +
+                "codAlerta='" + codAlerta + '\'' +
+                ", descricpion='" + descricpion + '\'' +
+                ", tipoAlerta='" + tipoAlerta + '\'' +
+                ", fechaBitacora=" + fechaBitacora +
+                ", registroBitacora='" + registroBitacora + '\'' +
+                ", docDefinicion=" + docDefinicion.getDocDefinicionPK() +
+                '}';
     }
-    
 }

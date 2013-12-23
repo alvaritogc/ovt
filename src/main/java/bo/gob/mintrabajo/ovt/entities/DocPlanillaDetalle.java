@@ -510,7 +510,7 @@ public class DocPlanillaDetalle implements Serializable {
                 ", descuentoOtro='" + descuentoOtro + '\'' +
                 ", descuentosTotal='" + descuentosTotal + '\'' +
                 ", liquidoPagable='" + liquidoPagable + '\'' +
-                ", idPlanilla=" + idPlanilla +
+                ", idPlanilla=" + idPlanilla.getIdPlanilla() +
                 '}';
     }
 }

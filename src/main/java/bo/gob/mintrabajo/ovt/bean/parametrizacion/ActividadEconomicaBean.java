@@ -123,7 +123,7 @@ public class ActividadEconomicaBean implements Serializable {
 
     public void onNodeSelect(NodeSelectEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Elemento seleccionado", event.getTreeNode().toString()));
+        //context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Elemento seleccionado", event.getTreeNode().toString()));
         String nivel = event.getTreeNode().getRowKey();
         estadoBoton = true;
         int i = 0;
@@ -153,15 +153,21 @@ public class ActividadEconomicaBean implements Serializable {
         try {
             if (vparActividadEconomica.getIdActividadEconomica2() != null) {
                 idPadre = vparActividadEconomica.getIdActividadEconomica2();
+            } else {
+                idPadre = new Long(-1);
+            }
+            if (idPadre >= 0) {
                 actividadEconomicaPadre = iActividadEconomicaService.obtieneActividadEconomicaPorId(idPadre);
                 nuevoAE.setIdActividadEconomica2(actividadEconomicaPadre);
             } else {
-                System.out.println("Sin IdActividadEconomica2");
+                System.out.println("Sin Idpadre");
             }
+
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "No se cargarón los datos corectamente, por favor vuelva a seleccionar el elemento"));
             e.printStackTrace();
         }
+
         nuevoAE.setEstado(vparActividadEconomica.getEstado());
         if (nuevoAE.getEstado().equals("A")) {
             estadoActividadEconomica = true;
@@ -180,6 +186,7 @@ public class ActividadEconomicaBean implements Serializable {
         System.out.println("botones " + estadoBoton);
         tipoNodo = "Padre";
         idHijo = new Long(-1);
+        nivelNodo="1";
         nuevo();
     }
 
@@ -210,7 +217,7 @@ public class ActividadEconomicaBean implements Serializable {
             if (parActividadEconomica.getIdActividadEconomica() != null) {
                 estadoBoton = false;
                 registro = "Editar";
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Elemento seleccionado", parActividadEconomica.getDescripcion()));
+                //context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Elemento seleccionado", parActividadEconomica.getDescripcion()));
             } else {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "No selecciono ningun nodo"));
             }
@@ -256,27 +263,43 @@ public class ActividadEconomicaBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             VparActividadEconomica aux = new VparActividadEconomica();
-            if (tipoNodo.equals("Padre")) {
-                nivelNodo = 1 + "";
-            }
-            if (nivelNodo != null && tipoNodo.equals("Hijo")) {
+            String niv;
+            if (tipoNodo.equals("Hijo")) {
                 int n = Integer.parseInt(nivelNodo) + 1;
-                nivelNodo = n + "";
+                niv = n + "";
+            } else {
+                niv = nivelNodo;
             }
-            aux = ivActividadEconomicaService.ObtienePorDescripcionYNivel(parActividadEconomica.getDescripcion(), nivelNodo);
+            if (registro.equals("Editar")){
+                niv = nivelNodo;
+            }
+            System.out.println("=== nivel " + nivelNodo);
+            aux = ivActividadEconomicaService.ObtienePorDescripcionYNivel(parActividadEconomica.getDescripcion(), niv);
             System.out.println("aa=== " + aux.getIdActividadEconomica());
             System.out.println("ab=== " + parActividadEconomica.getIdActividadEconomica());
             if (registro.equals("Editar")) {
-                if (aux.getIdActividadEconomica() == parActividadEconomica.getIdActividadEconomica()) {
-                    System.out.println("iguales");
+                if (aux.getDescripcion() == null) {
                     guarda();
-                }else {
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El Nodo con esas caracteristicas ya existe en este nivel"));
+                } else {
+                    if (aux.getIdActividadEconomica() == parActividadEconomica.getIdActividadEconomica()) {
+                        System.out.println("iguales");
+                        guarda();
+                    } else {
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El Nodo con esas caracteristicas ya existe en este nivel"));
+                    }
                 }
             } else {
                 System.out.println("distintos");
                 if (aux.getDescripcion() == null) {
                     System.out.println("nuevo");
+                     System.out.println("tipo nodo " + tipoNodo);
+                    if (tipoNodo.equals("Padre")) {
+                        nivelNodo = 1 + "";
+                    }
+                    if (nivelNodo != null && tipoNodo.equals("Hijo")) {
+                        int n = Integer.parseInt(nivelNodo) + 1;
+                        nivelNodo = n + "";
+                    }
                     guarda();
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El Nodo con esas caracteristicas ya existe en este nivel"));
@@ -311,6 +334,7 @@ public class ActividadEconomicaBean implements Serializable {
     public void nuevo() {
         estadoActividadEconomica = true;
         parActividadEconomica = new ParActividadEconomica();
+        registro = "Agregar";
     }
 
     /**

@@ -19,7 +19,7 @@ import javax.inject.Named;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -45,10 +45,8 @@ public class DocumentoService implements IDocumentoService {
     private final AlertaDefinicionRepository alertaDefinicionRepository;
     private final InfoLaboralRepository infoLaboralRepository;
     private final IUtilsService utils;
-    private HashMap<String, Object> parametros = new HashMap<String, Object>();
-    private String rutaPdf;
-    private String nombrePdf;
-    private File file;
+    private int menores18;
+    private int mayores60;
 
     @Inject
     public DocumentoService(DocumentoRepository documentoRepository,
@@ -132,6 +130,19 @@ public class DocumentoService implements IDocumentoService {
         return documentoRepository.save(documento);
     }
 
+    public void cuenta1860(String fechaNacimiento, Date fecha18, Date fecha60){
+        try{
+            Date fecha= (new SimpleDateFormat("dd/MM/yyyy")).parse(fechaNacimiento);
+            if(fecha18.before(fecha))
+                menores18++;
+            if (fecha60.after(fecha))
+                mayores60++;
+
+        }catch (Exception e){
+            System.out.println("fecha incorrecta");
+        }
+    }
+
     public void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas, String bitacoraSession) {
         //guarda documento
         docDocumento.setIdDocumento(utils.valorSecuencia("DOC_DOCUMENTO_SEC"));
@@ -147,6 +158,18 @@ public class DocumentoService implements IDocumentoService {
         docPlanilla = planillaRepository.save(docPlanilla);
         logger.info("Guarda: " + docPlanilla);
 
+        menores18=0;
+        mayores60=0;
+        Date fechaHace18= new Date();
+        Date fechaHace60= new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.YEAR, -18);
+        fechaHace18.setTime(c.getTime().getTime());
+        c.add(Calendar.YEAR, -(60-18));
+        fechaHace60.setTime(c.getTime().getTime());
+
+
         //guardaPlanillaDetalles
         if(docPlanillaDetalles==null)
             docPlanillaDetalles= new ArrayList<DocPlanillaDetalle>();
@@ -154,6 +177,8 @@ public class DocumentoService implements IDocumentoService {
             elemPlanillaDetalle.setIdPlanilla(docPlanilla);
             elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
             logger.info("Guarda: ", planillaDetalleRepository.save(elemPlanillaDetalle));
+            //para infoLaboral
+            cuenta1860(elemPlanillaDetalle.getFechaNacimiento(), fechaHace18, fechaHace60);
         }
 
         //modifica anterior y guarda nuevo infoLaboral
@@ -171,11 +196,11 @@ public class DocumentoService implements IDocumentoService {
         perInfolaboralNuevo.setNroExtranjeros(docPlanilla.getNroExtranjerosH()+docPlanilla.getNroExtranjerosM());
         perInfolaboralNuevo.setNroFijos(docPlanilla.getNroAsegAfp());
         perInfolaboralNuevo.setNroEventuales(perInfolaboralNuevo.getNroTotalTrabajadores()-docPlanilla.getNroAsegAfp());
-        perInfolaboralNuevo.setNroMenores18(0);
-        perInfolaboralNuevo.setNroMayores60(0);
+        perInfolaboralNuevo.setNroMenores18(menores18);
+        perInfolaboralNuevo.setNroMayores60(mayores60);
         perInfolaboralNuevo.setNroJubilados(docPlanilla.getNroJubiladosH()+docPlanilla.getNroJubiladosM());
         perInfolaboralNuevo.setNroCapdiferente(docPlanilla.getNroDiscapacidadH()+docPlanilla.getNroDiscapacidadM());
-        perInfolaboralNuevo.setTotalPlanilla(BigDecimal.ZERO);
+        perInfolaboralNuevo.setTotalPlanilla((((((docPlanilla.getHaberBasico()).add(docPlanilla.getBonoAntiguedad())).add(docPlanilla.getBonoProduccion())).add(docPlanilla.getSubsidioFrontera())).add(docPlanilla.getLaborExtra())).add(docPlanilla.getOtrosBonos()));
         perInfolaboralNuevo.setNroAsegAfp(docPlanilla.getNroAsegAfp());
         perInfolaboralNuevo.setNroAsegCaja(docPlanilla.getNroAsegCaja());
         perInfolaboralNuevo.setMontoAsegAfp(docPlanilla.getMontoAsegAfp());
@@ -184,7 +209,7 @@ public class DocumentoService implements IDocumentoService {
         perInfolaboralNuevo.setEstadoInfolaboral(Dominios.PER_ESTADO_ACTIVO);
         perInfolaboralNuevo.setFechaBitacora(new Date());
         perInfolaboralNuevo.setRegistroBitacora(bitacoraSession);
-        infoLaboralRepository.save(perInfolaboralNuevo);
+        logger.info("Guarda: ", infoLaboralRepository.save(perInfolaboralNuevo));
 
         //guardaAlertas
         DocAlertaDefinicion docAlertaDefinicion= new DocAlertaDefinicion();
@@ -384,8 +409,8 @@ public class DocumentoService implements IDocumentoService {
         lista.add("nadaQueVer");
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String rutaWebapp = servletContext.getRealPath("/");
-        rutaPdf = "/reportes/temp/" + nomArchivo;
-        nombrePdf = rutaWebapp + rutaPdf;
+        String rutaPdf = "/reportes/temp/" + nomArchivo;
+        String nombrePdf = rutaWebapp + rutaPdf;
         JasperReport reporte = (JasperReport) JRLoader.loadObject(new File(rutaWebapp + jasper));
         JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(lista));
         JRExporter exporter = new JRPdfExporter();
