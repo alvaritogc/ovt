@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<ui:composition template="../../pages/template/templateInicio.xhtml">
+    <ui:define name="content">
+
+        <h:form>
+            <h2>Reporte número de trabajadores por nivel salarial</h2>
+            <p:outputLabel
+                    value="Reporte por género, edad y nacionalidad del trabajador, agrupado por nivel salarial y actividad declarada."/>
+            <br/>
+            <h:panelGrid columns="2" style="width: 50%;">
+                <p:outputLabel value="Detalle de genero:"/>
+                <p:selectOneMenu value="#{totalEmpleadorPorSalarioBean.tipoReporte}">
+                    <f:selectItem itemLabel="Detallado" itemValue="todas"/>
+                    <f:selectItem itemLabel="Sin detalles" itemValue="sd"/>
+                </p:selectOneMenu>
+
+                <!--                <p:outputLabel value="Localidad:"/>
+                                <p:selectOneMenu value="# {totalEmpleadorPorSalarioBean.codLocalidad}">
+                                    <f:selectItem itemLabel="Todas" itemValue="ALL"/>
+                                    <f:selectItems value="# {totalEmpleadorPorSalarioBean.listaLocalidades}"
+                                                   var="perLocalidad"
+                                                   itemLabel="# {perLocalidad.descripcion}"
+                                                   itemValue="# {perLocalidad.codLocalidad}"
+                                            />
+                                </p:selectOneMenu>-->
+                <!--<p:outputLabel value=""/>-->
+                <h:commandLink value="Ver reporte"
+                               styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only botonAnchoAlto"
+                               target="_blank" title="reporte" action="#{totalEmpleadorPorSalarioBean.generarReporte}"/>
+            </h:panelGrid>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+</html>

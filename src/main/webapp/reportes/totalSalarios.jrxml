@@ -6,6 +6,7 @@
 	<parameter name="escudoBolivia" class="java.lang.String"/>
 	<parameter name="logo" class="java.lang.String"/>
 	<parameter name="usuarioIdentificacion" class="java.lang.String"/>
+	<parameter name="detalleGenero" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select x.*
 , case when X.total_ganado < 5500 then 'G1' when TO_NUMBER(X.total_ganado) between 5500 and  12000 then 'G2' when TO_NUMBER(X.total_ganado) > 12000 then 'G3' else 'G4' end GRUPO_NIVEL_SALARIAL_ORDEN
@@ -138,6 +139,7 @@ order by clasificacion_laboral, nacionalidad,grupo_nivel_salarial_orden, sexo, E
 		<groupExpression><![CDATA[$F{GRUPO_NIVEL_SALARIAL_ORDEN}]]></groupExpression>
 		<groupHeader>
 			<band height="20">
+				<printWhenExpression><![CDATA[$P{detalleGenero}=='true']]></printWhenExpression>
 				<textField>
 					<reportElement uuid="5e0bc8fa-2092-4b6d-aeb8-3899b60804bb" x="34" y="0" width="350" height="20"/>
 					<textElement>
@@ -170,6 +172,7 @@ order by clasificacion_laboral, nacionalidad,grupo_nivel_salarial_orden, sexo, E
 		<groupExpression><![CDATA[$F{SEXO}]]></groupExpression>
 		<groupFooter>
 			<band height="20">
+				<printWhenExpression><![CDATA[$P{detalleGenero}=='true']]></printWhenExpression>
 				<textField>
 					<reportElement uuid="c2440188-f7db-4b9c-b299-dd760a50f5bd" x="90" y="0" width="88" height="20"/>
 					<textElement>
@@ -198,6 +201,7 @@ order by clasificacion_laboral, nacionalidad,grupo_nivel_salarial_orden, sexo, E
 		<groupExpression><![CDATA[$F{GRUPO_EDAD}]]></groupExpression>
 		<groupHeader>
 			<band height="20">
+				<printWhenExpression><![CDATA[$P{detalleGenero}=='true']]></printWhenExpression>
 				<textField evaluationTime="Group" evaluationGroup="grupo_edad">
 					<reportElement uuid="20d1fb0e-a462-45c7-9ac8-0089aa20d9d1" x="178" y="0" width="50" height="20"/>
 					<textElement textAlignment="Right"/>
@@ -227,7 +231,7 @@ order by clasificacion_laboral, nacionalidad,grupo_nivel_salarial_orden, sexo, E
 					<font fontName="SansSerif" size="16" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[ REPORTE POR GENERO Y EDAD]]></text>
+				<text><![CDATA[REPORTE POR NIVEL SALARIAL]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="2d6d9650-d253-4da3-8fda-08532933abc8" x="452" y="50" width="28" height="10"/>
@@ -274,7 +278,7 @@ order by clasificacion_laboral, nacionalidad,grupo_nivel_salarial_orden, sexo, E
 		<band height="19" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="18" splitType="Stretch"/>
+		<band height="11" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>

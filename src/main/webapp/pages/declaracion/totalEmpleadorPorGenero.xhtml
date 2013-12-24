@@ -11,6 +11,9 @@
 
         <h:form>
             <h2>Reporte número de trabajadores dependientes</h2>
+            <p:outputLabel
+                    value="Reporte del número de trabajadores dependientes en la agencia central y sucursales agrupado por departamento y región."/>
+            <br/>
             <h:panelGrid columns="2" style="width: 50%;">
                 <p:outputLabel value="Tipo de reporte:"/>
                 <p:selectOneMenu value="#{totalEmpleadorPorGeneroBean.tipoReporte}">
