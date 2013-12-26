@@ -92,13 +92,13 @@ limitations under the License.
                             </p:inputText>
 
                            <p:outputLabel for="oCodigo" value="Otro codigo:" style="font-weight:bold"/>  
-                           <p:inputText id="oCodigo" value="#{localidadBean.parLocalidad.codigoOtr}" required="true" requiredMessage="Debe llenar este campo para que se vea en el menu" 
+                           <p:inputText id="oCodigo" value="#{localidadBean.parLocalidad.codigoOtr}" 
                                          maxlength="120" style="width: 214px; text-transform: uppercase;" disabled="#{localidadBean.estadoBoton}">
                                <f:converter converterId="lowerConverter"/>
                             </p:inputText>
                            
                            <p:outputLabel for="rCodigo" value="Codigo de referencia:" style="font-weight:bold"/>  
-                           <p:inputText id="rCodigo" value="#{localidadBean.parLocalidad.codigoRef}" required="true" requiredMessage="Debe llenar este campo para que se vea en el menu" 
+                           <p:inputText id="rCodigo" value="#{localidadBean.parLocalidad.codigoRef}"  
                                          maxlength="120" style="width: 214px; text-transform: uppercase;" disabled="#{localidadBean.estadoBoton}">
                                <f:converter converterId="lowerConverter"/>
                             </p:inputText>
