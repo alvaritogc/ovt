@@ -16,4 +16,7 @@ public interface ILocalidadService {
     public ParLocalidad findById(String idLocalidad);
 
     public List<ParLocalidad> listarDepartamentos();
+    public boolean guardaLocalidad(ParLocalidad parLocalidad, String tipoLocalidad,
+            String REGISTRO_BITACORA, String tipoNodo, String idPadre, String idHijo);
+    public boolean eliminarLocalidad(String idLoc);
 }
