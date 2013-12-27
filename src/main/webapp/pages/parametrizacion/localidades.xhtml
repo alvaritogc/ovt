@@ -36,10 +36,11 @@ limitations under the License.
                         <p:panel header="Arbol de localidades" style="margin-bottom:10px; border: 0; ">
                             <p:contextMenu for="tree" style="position: absolute; margin-left: -120px">  
                                 <p:menuitem value="Nuevo hijo" icon="ui-icon-circle-plus" update=":form1:botones :messages :form1:pnlGridRecurso"
-                                            actionListener="#{localidadBean.agregaNodoHijo}"/>  
+                                            actionListener="#{localidadBean.agregaNodoHijo}" onstart="statusDialog.show();"  oncomplete="statusDialog.hide();"/>  
                                 <p:menuitem value="Editar" icon="ui-icon-pencil" update=":form1:botones :messages :form1:pnlGridRecurso" 
-                                             actionListener="#{localidadBean.editar}"/>  
-                                <p:menuitem value="Eliminar" icon="ui-icon-trash" update=":messages" actionListener="#{localidadBean.preparaEliminar}"/>  
+                                             actionListener="#{localidadBean.editar}" onstart="statusDialog.show();"  oncomplete="statusDialog.hide();"/>  
+                                <p:menuitem value="Eliminar" icon="ui-icon-trash" update=":messages" actionListener="#{localidadBean.preparaEliminar}"
+                                            onstart="statusDialog.show();"  oncomplete="statusDialog.hide();"/>  
                             </p:contextMenu> 
                             <p:tree value="#{localidadBean.root}" var="node" id="tree" selection="#{localidadBean.nodoSeleccionado}"
                                     dynamic="true" cache="false" selectionMode="single" style="border: 0;">                                  

@@ -35,10 +35,11 @@ limitations under the License.
                         <p:panel header="Arbol de actividad economica" style="margin-bottom:10px; border: 0;">
                             <p:contextMenu for="tree" style="position: absolute; margin-left: -120px">  
                                 <p:menuitem value="Nuevo hijo" icon="ui-icon-circle-plus" update=":form1:botones :messages :form1:pnlGridActividad"
-                                            actionListener="#{actividadEconomicaBean.agregaNodoHijo}"/>  
+                                            actionListener="#{actividadEconomicaBean.agregaNodoHijo}" onstart="statusDialog.show();"  oncomplete="statusDialog.hide();"/>  
                                 <p:menuitem value="Editar" icon="ui-icon-pencil" update=":form1:botones :messages :form1:pnlGridActividad" 
-                                            actionListener="#{actividadEconomicaBean.editar}" />  
-                                <p:menuitem value="Eliminar" icon="ui-icon-trash" update=":messages" actionListener="#{actividadEconomicaBean.preparaEliminar}"/>  
+                                            actionListener="#{actividadEconomicaBean.editar}" onstart="statusDialog.show();"  oncomplete="statusDialog.hide();"/>  
+                                <p:menuitem value="Eliminar" icon="ui-icon-trash" update=":messages" actionListener="#{actividadEconomicaBean.preparaEliminar}"
+                                            onstart="statusDialog.show();"  oncomplete="statusDialog.hide();"/>  
                             </p:contextMenu>
                             <p:tree value="#{actividadEconomicaBean.root}" var="node" id="tree" selection="#{actividadEconomicaBean.nodoSeleccionado}"
                                     dynamic="true" cache="false" selectionMode="single" style="border: 0; width: 1000px;">  
