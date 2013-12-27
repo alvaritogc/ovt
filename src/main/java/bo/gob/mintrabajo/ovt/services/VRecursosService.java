@@ -50,7 +50,7 @@ public class VRecursosService implements IVRecursosService{
     @Override
     public List<VparRecurso> listarVRecursos(){
         String nombreVista = "vpar_recurso";
-        Query query = entityManager.createNativeQuery("select ae.*  from " + nombreVista + " ae order by ae.id_recurso_padre asc");
+        Query query = entityManager.createNativeQuery("select ae.*  from " + nombreVista + " ae order by ae.id_recurso_padre asc, ae.orden asc");
         List<Object[]> objeto = (List<Object[]>) query.getResultList();
         
         List<VparRecurso> lista = new ArrayList<VparRecurso>();
@@ -96,7 +96,8 @@ public class VRecursosService implements IVRecursosService{
     @Override
     public List<VparRecurso> listarVRecursosHijo(Long idPadre){
         String nombreVista = "vpar_recurso";
-        Query query = entityManager.createNativeQuery("select ae.*  from " + nombreVista + " ae where ae.id_recurso_padre ='"+idPadre+"'");
+        Query query = entityManager.createNativeQuery("select ae.*  from " + nombreVista + " ae where ae.id_recurso_padre ='"+idPadre+"' "
+                + " order by ae.id_recurso_padre asc, ae.orden asc");
         List<Object[]> objeto = (List<Object[]>) query.getResultList();
         
         List<VparRecurso> lista = new ArrayList<VparRecurso>();
