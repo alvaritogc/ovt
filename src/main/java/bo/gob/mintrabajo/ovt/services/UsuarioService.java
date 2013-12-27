@@ -256,31 +256,67 @@ public class UsuarioService implements IUsuarioService{
 
     }
 
+    @Override
+    public String cambiarContraseniaNueva(Long idUsuario, String nuevaClave, String confirmarClave) {
+        String mensaje = "";
+        System.out.println("==> id usuario cambio" + idUsuario);
+        try {
+            UsrUsuario usuario = usuarioRepository.findOne(idUsuario);
+        confirmarClave = Util.encriptaMD5(confirmarClave);
+        String claveDescencriptada = usuario.getClave();
+        System.out.println("==> id usuario cambio" + idUsuario);
+        System.out.println("==> id usuario cambio" + usuario.getIdUsuario());
+        System.out.println("==> claveDescencriptada " + claveDescencriptada);
+        nuevaClave = Util.encriptaMD5(nuevaClave);
+        //Verificar que la nueva contrasenia sea distinta  a la antigua contrasenia
+        if (claveDescencriptada.equals(nuevaClave)) {
+            mensaje = "La nueva contrasenia debe ser distinta a la version anterior.";
+            return mensaje;
+        }
 
-    public String olvidoContrasenia(String email,String clave,String nuevaClave,String confirmarClave){
-        String mensaje="";
-        if (nuevaClave.equals(confirmarClave)){
-            System.out.println("====>> BUSCANDO USUARIO "+email+"  CLAVE "+clave);
-            UsrUsuario usuario= usuarioRepository.findByUsuarioAndClave(email,clave);
-            if(usuario!=null)  {
-                if(clave.equals(nuevaClave)){
-                    mensaje="El valor de la nueva contrasenia asociada debe ser distinta a la anterior contrasenia.";
-                }else{
+        //Verificar que la nueva contrasenia sea igual a la confirmacion de contrasenia
+        if (!nuevaClave.equals(confirmarClave)) {
+            mensaje = "El valor del campo Nueva contrasenia debe ser igual al campo Confirmar contrasenia.";
+            return mensaje;
+        }
+
+        //actualizar contrasenia (Encriptada)
                     usuario.setClave(nuevaClave);
-                    usuario= usuarioRepository.save(usuario);
-                    mensaje="OK";
+        //usuario.setClave(Util.crypt(nuevaClave));
+        usuarioRepository.save(usuario);
+        mensaje = "OK";
+        } catch (Exception e) {
+            e.printStackTrace();
                 }
-            }else{
-                mensaje="La contrasenia asociada a su cuenta es incorrecta";
+        return mensaje;
+
             }
-        }else {
-            mensaje="El valor del campo Nueva contrasenia debe ser igual al campo Confirmar contrasenia.";
+
+    public String olvidoContrasenia(String email, String clave, String nuevaClave, String confirmarClave) {
+        String mensaje = "";
+        if (nuevaClave.equals(confirmarClave)) {
+            System.out.println("====>> BUSCANDO USUARIO " + email + "  CLAVE " + clave);
+            UsrUsuario usuario = usuarioRepository.findByUsuarioAndClave(email, clave);
+            if (usuario != null) {
+                if (clave.equals(nuevaClave)) {
+                    mensaje = "El valor de la nueva contrasenia asociada debe ser distinta a la anterior contrasenia.";
+                } else {
+                    usuario.setClave(nuevaClave);
+                    usuario = usuarioRepository.save(usuario);
+                    mensaje = "OK";
+        }
+            } else {
+                mensaje = "La contrasenia asociada a su cuenta es incorrecta";
+            }
+        } else {
+            mensaje = "El valor del campo Nueva contrasenia debe ser igual al campo Confirmar contrasenia.";
         }
 
         return mensaje;
     }
 
-    public List<UsrUsuario> obtenerUsuarioPorIdPersona(String idPersona){
+    @Override
+    public List<UsrUsuario> obtenerUsuarioPorIdPersona(String idPersona) {
         return usuarioRepository.findByIdPersona_IdPersona(idPersona);
     }
 }
