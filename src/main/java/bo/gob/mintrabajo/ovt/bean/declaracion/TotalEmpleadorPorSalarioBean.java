@@ -43,7 +43,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 
 @ManagedBean
 @ViewScoped
-public class TotalEmpleadorPlanillaBean implements Serializable {
+public class TotalEmpleadorPorSalarioBean implements Serializable {
     //
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     private Long idUsuario;
@@ -75,15 +75,12 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
     private String tipoReporte;
     private String codLocalidad;
     private List<ParLocalidad> listaLocalidades;
-    private String tipoPlanilla;
-    private Date fechaDesde;
-    private Date fechaHasta;
 
     private PerPersona perPersona;
 
     @PostConstruct
     public void ini() {
-        logger.info("TotalEmpleadorPlanillaBean.init()");
+        logger.info("TotalEmpleadorPorGeneroBean.init()");
         idUsuario = (Long) session.getAttribute("idUsuario");
         idPersona = (String) session.getAttribute("idPersona");
         idEmpleador = (String) session.getAttribute("idEmpleador");
@@ -98,13 +95,13 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
     public void generarReporte() {
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String rutaWebApp = servletContext.getRealPath("/");
-        String jrxmlFileName = rutaWebApp + "/reportes/totalPlanillas.jrxml";
-        String jasperFileName = rutaWebApp + "/reportes/totalPlanillas.jasper";
+        String jrxmlFileName = rutaWebApp + "/reportes/totalSalarios.jrxml";
+        String jasperFileName = rutaWebApp + "/reportes/totalSalarios.jasper";
         String pdfFileName = "";
         String dbDriver = "oracle.jdbc.driver.OracleDriver";
         Connection conn = null;
         Date fecha = new Date();
-        pdfFileName = "totalPlanillas" + fecha.getTime() + ".pdf";
+        pdfFileName = "totalSalarios" + fecha.getTime() + ".pdf";
         try {
             Class.forName(dbDriver);
         } catch (ClassNotFoundException e) {
@@ -123,21 +120,12 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             HashMap<String, Object> parametros = new HashMap<String, Object>();
             parametros.put("escudoBolivia", servletContext.getRealPath("/") + "/images/escudo.jpg");
             parametros.put("logo", servletContext.getRealPath("/") + "/images/logoMIN.jpg");
-            parametros.put("codLocalidad", codLocalidad);
             if (tipoReporte.equals("todas")) {
-                //mostrarDetalles=true;
-                parametros.put("mostrarDetalles", "true");
+                parametros.put("detalleGenero", "true");
             } else {
-                parametros.put("mostrarDetalles", "false");
+                parametros.put("detalleGenero", "false");
             }
-            parametros.put("tipoPlanilla", tipoPlanilla);
-            if (tipoPlanilla != null && tipoPlanilla.equals("LC1010")) {
-                parametros.put("descripcionTipoPlanilla", "PLANILLA TRIMESTRAL");
-            } else {
-                parametros.put("descripcionTipoPlanilla", "PLANILLA DE AGUINALDOS");
-            }
-            parametros.put("fechaDesde", fechaDesde);
-            parametros.put("fechaHasta", fechaHasta);
+//            parametros.put("codLocalidad", codLocalidad);
             parametros.put("usuarioIdentificacion", perPersona.getNroIdentificacion());
             //
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
@@ -301,29 +289,5 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
 
     public void setiLocalidadService(ILocalidadService iLocalidadService) {
         this.iLocalidadService = iLocalidadService;
-    }
-
-    public String getTipoPlanilla() {
-        return tipoPlanilla;
-    }
-
-    public void setTipoPlanilla(String tipoPlanilla) {
-        this.tipoPlanilla = tipoPlanilla;
-    }
-
-    public Date getFechaDesde() {
-        return fechaDesde;
-    }
-
-    public void setFechaDesde(Date fechaDesde) {
-        this.fechaDesde = fechaDesde;
-    }
-
-    public Date getFechaHasta() {
-        return fechaHasta;
-    }
-
-    public void setFechaHasta(Date fechaHasta) {
-        this.fechaHasta = fechaHasta;
     }
 }

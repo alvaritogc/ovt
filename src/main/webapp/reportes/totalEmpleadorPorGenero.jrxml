@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TotalEmpleadorPorGenero" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="40" bottomMargin="40" uuid="c1954da6-c979-4cce-8a96-363ed5352b09">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="58"/>
+	<property name="ireport.x" value="238"/>
+	<property name="ireport.y" value="37"/>
 	<parameter name="escudoBolivia" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -299,11 +299,6 @@ order by cod_localidad_direccion, nombre_Razon_social, id_unidad]]>
 				</textField>
 			</band>
 		</groupHeader>
-		<groupFooter>
-			<band height="34">
-				<printWhenExpression><![CDATA[$P{mostrarDetalles}=='true']]></printWhenExpression>
-			</band>
-		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
@@ -448,6 +443,23 @@ order by cod_localidad_direccion, nombre_Razon_social, id_unidad]]>
 			</textField>
 		</band>
 	</detail>
+	<pageFooter>
+		<band height="18">
+			<textField>
+				<reportElement uuid="073a1350-da25-47a9-8c28-c90a6d0880b6" x="703" y="3" width="35" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="aeb85f19-8826-4068-b6b5-3effda773456" x="606" y="3" width="97" height="15"/>
+				<textElement/>
+				<text><![CDATA[Número de página:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="e308af2b-66f5-4679-b300-823246d657f5" x="0" y="0" width="752" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
 	<summary>
 		<band height="22" splitType="Stretch">
 			<rectangle>

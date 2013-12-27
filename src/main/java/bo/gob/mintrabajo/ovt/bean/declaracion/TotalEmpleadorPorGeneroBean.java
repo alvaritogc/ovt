@@ -118,8 +118,8 @@ public class TotalEmpleadorPorGeneroBean implements Serializable {
             // Paramatros para el reporte
             //ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             HashMap<String, Object> parametros = new HashMap<String, Object>();
-            parametros.put("escudoBolivia", servletContext.getRealPath("/") + "images/escudo.jpg");
-            parametros.put("logo", servletContext.getRealPath("/") + "images/logoMIN.jpg");
+            parametros.put("escudoBolivia", servletContext.getRealPath("/") + "/images/escudo.jpg");
+            parametros.put("logo", servletContext.getRealPath("/") + "/images/logoMIN.jpg");
             if (tipoReporte.equals("todas")) {
                 parametros.put("mostrarDetalles", "true");
             } else {
@@ -130,7 +130,7 @@ public class TotalEmpleadorPorGeneroBean implements Serializable {
             //
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
 
-            String rutaPdf = "reportes/temp/" + pdfFileName;
+            String rutaPdf = "/reportes/temp/" + pdfFileName;
             String nombrePdf = rutaWebApp + rutaPdf;
             JasperPrint jprint = (JasperPrint) JasperFillManager.fillReport(jasperFileName, parametros, conn);
             JasperExportManager.exportReportToPdfFile(jprint, nombrePdf);
