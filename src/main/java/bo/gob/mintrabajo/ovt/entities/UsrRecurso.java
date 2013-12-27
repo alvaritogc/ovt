@@ -24,14 +24,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
  * @author rvelasquez
  */
 @Entity
 @Table(name = "USR_RECURSO")
 @NamedQueries({
-    @NamedQuery(name = "UsrRecurso.findAll", query = "SELECT u FROM UsrRecurso u")})
-public class UsrRecurso extends ArtificioEntity implements Serializable {
+        @NamedQuery(name = "UsrRecurso.findAll", query = "SELECT u FROM UsrRecurso u")})
+public class UsrRecurso extends ArtificioEntity implements Serializable, Comparable<Object> {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -264,5 +263,15 @@ public class UsrRecurso extends ArtificioEntity implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.UsrRecurso[ idRecurso=" + idRecurso + " ]";
     }
-    
+
+    public int compareTo(Object o) {
+        UsrRecurso otroUsrRecurso = (UsrRecurso) o;
+        if (orden > otroUsrRecurso.orden)
+            return 1;
+        if (orden < otroUsrRecurso.orden)
+            return -1;
+        return 0;
+        //return (orden).compareTo(otroUsrRecurso.orden);
+    }
+
 }
