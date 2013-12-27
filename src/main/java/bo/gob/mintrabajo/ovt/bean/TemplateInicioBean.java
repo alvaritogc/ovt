@@ -78,7 +78,7 @@ public class TemplateInicioBean implements Serializable {
     @ManagedProperty(value = "#{mensajeAppService}")
     private IMensajeAppService iMensajeAppService;
 
-    @ManagedProperty(value="#{dominioService}")
+    @ManagedProperty(value = "#{dominioService}")
     public IDominioService iDominioService;
     //
     private UsrUsuario usuario;
@@ -112,7 +112,7 @@ public class TemplateInicioBean implements Serializable {
     //*** Cache para guardar dominios guava ***//
     public static Cache<ParDominioPK, ParDominio> mapaDominio = CacheBuilder.newBuilder().maximumSize(600).build();
 
-    
+
     //Variables para los servicios publicos
     private List<ParMensajeApp> listaMensajeApp;
     private ParMensajeApp mensajeApp;
@@ -151,8 +151,8 @@ public class TemplateInicioBean implements Serializable {
             if (idEmpleador != null) {
                 empleador = iPersonaService.findById(idEmpleador);
                 nombreDeUnidad = empleador.getNombreRazonSocial();
-                nombreDeUnidad = empleador.getApellidoPaterno()!=null?(nombreDeUnidad+" "+empleador.getApellidoPaterno()):(nombreDeUnidad);
-                nombreDeUnidad = empleador.getApellidoMaterno()!=null?(nombreDeUnidad+" "+empleador.getApellidoMaterno()):(nombreDeUnidad);
+                nombreDeUnidad = empleador.getApellidoPaterno() != null ? (nombreDeUnidad + " " + empleador.getApellidoPaterno()) : (nombreDeUnidad);
+                nombreDeUnidad = empleador.getApellidoMaterno() != null ? (nombreDeUnidad + " " + empleador.getApellidoMaterno()) : (nombreDeUnidad);
             } else {
                 nombreDeUnidad = "N/A";
             }
@@ -208,7 +208,7 @@ public class TemplateInicioBean implements Serializable {
         while (nroDeRecursos > 0) {
             listaRecursosPadres = new ArrayList<UsrRecurso>();
             for (UsrRecurso r : listaRecursosHijos) {
-                if(r.getIdRecursoPadre()!=null){
+                if (r.getIdRecursoPadre() != null) {
                     adicionarPadres(r.getIdRecursoPadre().getIdRecurso());
                 }
             }
@@ -221,7 +221,13 @@ public class TemplateInicioBean implements Serializable {
             }
             nroDeRecursos = listaRecursosHijos.size();
         }
-        listaRecursos=listaRecursosFinales;
+        //listaRecursos=listaRecursosFinales;
+        listaRecursos = new ArrayList<UsrRecurso>();
+        for (UsrRecurso r : listaRecursosFinales) {
+            if (!listaRecursos.contains(r)) {
+                listaRecursos.add(r);
+            }
+        }
     }
 
     public String adicionarPadres(Long idPadre) {
@@ -230,8 +236,7 @@ public class TemplateInicioBean implements Serializable {
                 if ((!listaRecursosPadres.contains(r)) && (!listaRecursosFinales.contains(r))) {
                     listaRecursosPadres.add(r);
                     return "";
-                }
-                else{
+                } else {
                     return "";
                 }
             }
@@ -299,7 +304,7 @@ public class TemplateInicioBean implements Serializable {
             logger.info("iUsuarioService.login(" + username + "," + password + ")");
             String passwordEncripted = Util.encriptaMD5(password);
             Long idUsuario = iUsuarioService.login(username, passwordEncripted);
-            System.out.println("========>>>> idUSuario "+idUsuario);
+            System.out.println("========>>>> idUSuario " + idUsuario);
             boolean usuarioValido = true;
             logger.info("usuario aceptado");
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -307,7 +312,7 @@ public class TemplateInicioBean implements Serializable {
             UsrUsuario usuario = iUsuarioService.findById(idUsuario);
             session.setAttribute("idPersona", usuario.getIdPersona().getIdPersona());
             String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getHeader("X-FORWARDED-FOR");
-            if(ipCliente == null){
+            if (ipCliente == null) {
                 ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
             }
             String bitacoraSession = usuario.getUsuario() + "|" + ipCliente;
@@ -315,11 +320,11 @@ public class TemplateInicioBean implements Serializable {
             int activarWebservice = Integer.parseInt(iParametrizacion.obtenerParametro(ID_PARAMETRO_WEBSERVICE, VALOR_ACTIVAR).getDescripcion());
 
             if (usuario.getEsInterno() == 1 && activarWebservice == 1) {
-                String descSinEspacio = usuario.getIdPersona().getCodLocalidad().getDescripcion().replaceAll(" ","");
+                String descSinEspacio = usuario.getIdPersona().getCodLocalidad().getDescripcion().replaceAll(" ", "");
                 usuarioValido = consumoWebservice(usuario.getIdPersona().getNroIdentificacion(), descSinEspacio);
-                if(!usuarioValido){
+                if (!usuarioValido) {
                     FacesContext context = FacesContext.getCurrentInstance();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Atención", "El usuario no se encuentra activo!"));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El usuario no se encuentra activo!"));
                     return null;
                 }
             }
@@ -327,9 +332,9 @@ public class TemplateInicioBean implements Serializable {
             cargarDominio();
 
             if (usuario.getEsInterno() == 1) {
-                if(usuario.getFechaInhabilitacion() != null && usuario.getFechaInhabilitacion().getTime() != 0){
+                if (usuario.getFechaInhabilitacion() != null && usuario.getFechaInhabilitacion().getTime() != 0) {
                     FacesContext context = FacesContext.getCurrentInstance();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención","El usuario que trató de ingresar se encuentra inhabilitado" ));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El usuario que trató de ingresar se encuentra inhabilitado"));
                     return null;
                 }
                 session.setAttribute("idEmpleador", null);
@@ -471,7 +476,7 @@ public class TemplateInicioBean implements Serializable {
         if (mensaeje.equalsIgnoreCase("OK")) {
 
             limpiar();
-           // logout();
+            // logout();
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("dlgCambiarContrasenia.hide();");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO ", "Se cambio la contraseñia con exito."));
@@ -488,7 +493,7 @@ public class TemplateInicioBean implements Serializable {
             if (Util.validaCorreo(loginNuevo)) {
                 if (loginConfirmacion.equals(loginNuevo)) {
 
-                    if(iUsuarioService.obtenerUsuarioPorNombreUsuario(loginNuevo) == null){
+                    if (iUsuarioService.obtenerUsuarioPorNombreUsuario(loginNuevo) == null) {
 
                         iUsuarioService.cambiarLogin(idUsuario, loginNuevo);
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", " El lógin se actualizó correctamente"));
@@ -496,11 +501,11 @@ public class TemplateInicioBean implements Serializable {
                         context.execute("cambioLoginObligadoDlg.hide();");
 
                         ServicioEnvioEmail envioEmail = new ServicioEnvioEmail();
-                        Map<String, String> configuracionEmail= cargaParametricasEmailLogin();
+                        Map<String, String> configuracionEmail = cargaParametricasEmailLogin();
                         envioEmail.envioEmail(loginNuevo, configuracionEmail);
 
                     } else {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Atención","Esta cuenta de correo ya existe, intente otro correo electrónico"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "Esta cuenta de correo ya existe, intente otro correo electrónico"));
                     }
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El login nuevo no coincide con el login de confirmación!"));
@@ -557,35 +562,35 @@ public class TemplateInicioBean implements Serializable {
     public Cache<ParDominioPK, ParDominio> cargarDominio() {
         List<ParDominio> todosDominioLista = iDominioService.obtenerDominioLista();
         logger.info("El numero de dominios en base de datos " + todosDominioLista.size() + ", tamaño de objetos guardados en cache " + mapaDominio.size());
-        if(todosDominioLista.size() != mapaDominio.size()){
+        if (todosDominioLista.size() != mapaDominio.size()) {
 
-        for (ParDominio d : todosDominioLista) {
-            ParDominio parDominio = mapaDominio.getIfPresent(d.getParDominioPK());
+            for (ParDominio d : todosDominioLista) {
+                ParDominio parDominio = mapaDominio.getIfPresent(d.getParDominioPK());
 
-            if (parDominio == null) {
-                logger.debug("No existe en la cache este objeto es agregado a cache " + d.getParDominioPK().getIdDominio() + " " + d.getParDominioPK().getValor());
-                mapaDominio.put(d.getParDominioPK(), d);
-            }else{
-                logger.info("Este dominio existe en la cache pasamos al siguiente " + parDominio.getParDominioPK().getIdDominio() + " " + d.getParDominioPK().getValor());
-                continue;
+                if (parDominio == null) {
+                    logger.debug("No existe en la cache este objeto es agregado a cache " + d.getParDominioPK().getIdDominio() + " " + d.getParDominioPK().getValor());
+                    mapaDominio.put(d.getParDominioPK(), d);
+                } else {
+                    logger.info("Este dominio existe en la cache pasamos al siguiente " + parDominio.getParDominioPK().getIdDominio() + " " + d.getParDominioPK().getValor());
+                    continue;
+                }
             }
-        }
-        }else{
+        } else {
             logger.info("El mapa esta cargado con la misma cantidad de datos en cache ");
         }
         return mapaDominio;
     }
 
-    public void  abrirCambioLoginDlg() {
+    public void abrirCambioLoginDlg() {
         logger.info("Ingresando a la clase " + getClass().getSimpleName() + " poll listener abrirCambioLoginDlg()");
-        if(!loginValido) {
+        if (!loginValido) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("cambioLoginObligadoDlg.show();");
             loginValido = true;
         }
     }
 
-    public boolean consumoWebservice(String nroDocumento, String ciudadEx){
+    public boolean consumoWebservice(String nroDocumento, String ciudadEx) {
         logger.info("Consultando a webservice el numero de documento " + nroDocumento + " " + ciudadEx);
         String codExp = "NN";
         if (ciudadEx.trim().toLowerCase().equals("lapaz")) {
@@ -645,8 +650,8 @@ public class TemplateInicioBean implements Serializable {
         this.iDominioService = iDominioService;
     }
 
-    public void cargarServiciosPublicos(){
-        listaMensajeApp=iMensajeAppService.listarPorRecursoYFechaActual(new Long("1000"));
+    public void cargarServiciosPublicos() {
+        listaMensajeApp = iMensajeAppService.listarPorRecursoYFechaActual(new Long("1000"));
     }
 
     public IUsuarioUnidadService getiUsuarioUnidadService() {
@@ -667,8 +672,8 @@ public class TemplateInicioBean implements Serializable {
 
     public String irRegistro() {
         //String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getHeader("X-FORWARDED-FOR");
-  //      if(ipCliente == null){
-     String       ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
+        //      if(ipCliente == null){
+        String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
 //        }
         String bitacoraSession = ipCliente;
         session.setAttribute("bitacoraSession", bitacoraSession);
