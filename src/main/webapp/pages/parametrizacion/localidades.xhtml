@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2013 lvaldez.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../pages/template/templateInicio.xhtml">
+        <ui:define name="content">
+            <h2 class="form-signin-heading">Localidades</h2>
+            <p:growl id="messages" showDetail="true" />
+            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+                      draggable="false" closable="false">
+                <p:graphicImage value="../../images/ajax-loader.gif"/>
+            </p:dialog>
+            <h:panelGrid columns="2">
+                <h:form id="form">
+                    <p:scrollPanel style="width:410px;height:480px" mode="native" widgetVar="scroller">
+                        <p:panel header="Arbol de localidades" style="margin-bottom:10px; border: 0; ">
+                            <p:contextMenu for="tree" style="position: absolute; margin-left: -120px">  
+                                <p:menuitem value="Nuevo hijo" icon="ui-icon-circle-plus" update=":form1:botones :messages :form1:pnlGridRecurso"
+                                            actionListener="#{localidadBean.agregaNodoHijo}" onstart="statusDialog.show();"  oncomplete="statusDialog.hide();"/>  
+                                <p:menuitem value="Editar" icon="ui-icon-pencil" update=":form1:botones :messages :form1:pnlGridRecurso" 
+                                             actionListener="#{localidadBean.editar}" onstart="statusDialog.show();"  oncomplete="statusDialog.hide();"/>  
+                                <p:menuitem value="Eliminar" icon="ui-icon-trash" update=":messages" actionListener="#{localidadBean.preparaEliminar}"
+                                            onstart="statusDialog.show();"  oncomplete="statusDialog.hide();"/>  
+                            </p:contextMenu> 
+                            <p:tree value="#{localidadBean.root}" var="node" id="tree" selection="#{localidadBean.nodoSeleccionado}"
+                                    dynamic="true" cache="false" selectionMode="single" style="border: 0;">                                  
+                                <p:ajax event="select" update=":messages :form1" listener="#{localidadBean.onNodeSelect}" />
+                                <p:treeNode id="treeNode">  
+                                    <h:outputText value="#{node}" id="lblNode"/>
+                                </p:treeNode>  
+                            </p:tree>
+                        </p:panel>
+                    </p:scrollPanel>
+                </h:form>
+                
+                <p:panel header="Localidades" style="margin-bottom:10px; height:470px" id="formPanel">
+                    <h:form id="form1">
+                        <h:panelGroup id="botones">
+                            <p:commandButton value="Nuevo padre" id="padre" icon="ui-icon-circle-plus" disabled="#{!localidadBean.estadoBoton}" actionListener="#{localidadBean.agregaNodoPadre}"
+                                             update="botones :messages pnlGridRecurso" style="width: 80px; height: 40px"/>
+                            <p:commandButton value="Guardar" id="guardar" icon="ui-icon-disk" disabled="#{localidadBean.estadoBoton}" actionListener="#{localidadBean.guardarNodo}"
+                                             update="botones :messages pnlGridRecurso :form" onstart="statusDialog.show();" oncomplete="statusDialog.hide();" style="width: 80px; height: 40px"/>
+                            <p:commandButton value="Cancelar" id="cancelar" icon="ui-icon-close" disabled="#{localidadBean.estadoBoton}" actionListener="#{localidadBean.canselar}"
+                                             update="botones :messages pnlGridRecurso" onstart="statusDialog.show();"  oncomplete="statusDialog.hide();" style="width: 80px; height: 40px" immediate="true"/>
+
+                        </h:panelGroup>
+                        <p:confirmDialog message="Esta seguro de eliminar este nodo?"  
+                                         showEffect="fade" hideEffect="explode" closable="false"  
+                                         header="Confirmación" severity="alert" widgetVar="confirmation">  
+                            <p:commandButton value="Si" update=":form :messages" onstart="statusDialog.show();" oncomplete="statusDialog.hide(); confirmation.hide()" actionListener="#{localidadBean.confirmaEliminar}"/>  
+                            <p:commandButton value="No" oncomplete="confirmation.hide()" actionListener="#{localidadBean.canselar}"/>   
+                        </p:confirmDialog>
+
+
+                        <br /><br />                        
+                        <h:panelGrid columns="1" id="pnlGridRecurso">
+                            <p:outputLabel for="codigo" value="Codigo:" style="font-weight:bold"/>  
+                            <p:inputText id="codigo" value="#{localidadBean.parLocalidad.codLocalidad}" requiredMessage="Debe llenar el campo plataforma" 
+                                         maxlength="120" style="text-transform: uppercase; width: 214px; opacity: 4.5" required="true" disabled="#{!localidadBean.estadoCod}">
+                                <f:converter converterId="lowerConverter"/>
+                            </p:inputText>
+
+                            <p:outputLabel for="descripcion" value="Descripción:" style="font-weight:bold"/>                           
+                            <p:inputText id="descripcion" value="#{localidadBean.parLocalidad.descripcion}"
+                                             maxlength="120" style="text-transform: uppercase; width: 214px" disabled="#{localidadBean.estadoBoton}">
+                                <f:converter converterId="lowerConverter"/>
+                            </p:inputText>
+                            
+                            
+                           <p:outputLabel for="tipo" value="Tipo de localidad:" style="font-weight:bold"/>  
+                           <p:inputText id="tipo" value="#{localidadBean.tipoLocalidad}"  
+                                         maxlength="120" style="width: 214px; text-transform: uppercase; opacity: 4.5" disabled="true">
+                            </p:inputText>
+
+                           <p:outputLabel for="oCodigo" value="Otro codigo:" style="font-weight:bold"/>  
+                           <p:inputText id="oCodigo" value="#{localidadBean.parLocalidad.codigoOtr}" 
+                                         maxlength="120" style="width: 214px; text-transform: uppercase;" disabled="#{localidadBean.estadoBoton}">
+                               <f:converter converterId="lowerConverter"/>
+                            </p:inputText>
+                           
+                           <p:outputLabel for="rCodigo" value="Codigo de referencia:" style="font-weight:bold"/>  
+                           <p:inputText id="rCodigo" value="#{localidadBean.parLocalidad.codigoRef}"  
+                                         maxlength="120" style="width: 214px; text-transform: uppercase;" disabled="#{localidadBean.estadoBoton}">
+                               <f:converter converterId="lowerConverter"/>
+                            </p:inputText>
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
+            </h:panelGrid>
+        </ui:define>
+    </ui:composition>
+</html>
