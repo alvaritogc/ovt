@@ -40,6 +40,8 @@ import java.util.regex.Pattern;
 
 import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
 
+import java.util.Collections;
+
 @ManagedBean(name = "templateInicioBean")
 @ViewScoped
 public class TemplateInicioBean implements Serializable {
@@ -181,6 +183,7 @@ public class TemplateInicioBean implements Serializable {
         try {
             //listaRecursos = iRecursoService.buscarPorUsuario(idUsuario);
             cargarRecursos();
+            Collections.sort(listaRecursos);
             //logger.info("nro recursos del usuario:" + listaRecursos.size());
         } catch (Exception e) {
             e.printStackTrace();
