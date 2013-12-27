@@ -58,6 +58,11 @@ public class RecursoService implements IRecursoService {
     }
 
     @Override
+    public List<UsrRecurso> obtenerTodosRecursoListaOrdenados(){
+        return recursoRepository.listaPorOrdenModuloId();
+    }
+
+    @Override
     public UsrRecurso findById(Long id) {
         return recursoRepository.findOne(id);
     }
