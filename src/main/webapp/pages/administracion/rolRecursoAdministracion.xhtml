@@ -34,6 +34,9 @@
             <p:dataTable id="rolRecursoTbl" value="#{rolRecursoAdministracionBean.recursoLista}" paginator="true" rows="15" paginatorPosition="bottom" var="recurso"
                          editable="true" editMode="cell" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
                  currentPageReportTemplate="{currentPage} / {totalPages}">
+                <p:column headerText="Modulo">
+                    <h:outputText value="#{recurso.idModulo.nombre}" />
+                </p:column>
                 <p:column headerText="Tipo recurso">
                     <h:outputText value="#{recurso.tipoRecurso}" />
                 </p:column>

@@ -8,6 +8,7 @@ public interface IRecursoService {
     public List<UsrRecurso> buscarPorUsuario(Long idUsuario);
     public List<UsrRecurso> listarPorTipoRecurso(String tipoRecurso);
     public List<UsrRecurso> obtenerTodosRecursoLista();
+    public List<UsrRecurso> obtenerTodosRecursoListaOrdenados();
     public List<UsrRecurso> obtenerRecursoEnUsuarioRecurso(Long idUsuario);
     public List<UsrRecurso> listarRecursosPorTipo(String tipoRecurso);
     public List<UsrRecurso> buscarRecursoPorUsuario(Long idUsuario);
