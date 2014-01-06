@@ -98,7 +98,7 @@ from
 					<reportElement uuid="e81eb52c-a01e-462a-9f62-a2d182e1ce32" x="0" y="0" width="572" height="15" backcolor="#CCCCCC"/>
 				</rectangle>
 				<textField>
-					<reportElement uuid="614b77c6-96b7-4b98-837e-1181cd34abd2" x="0" y="0" width="401" height="15"/>
+					<reportElement uuid="614b77c6-96b7-4b98-837e-1181cd34abd2" x="3" y="0" width="401" height="15"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
@@ -107,12 +107,12 @@ from
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="28">
+			<band height="27">
 				<rectangle>
 					<reportElement uuid="e81eb52c-a01e-462a-9f62-a2d182e1ce32" x="0" y="0" width="572" height="15" backcolor="#CCCCCC"/>
 				</rectangle>
 				<staticText>
-					<reportElement uuid="71bfe5d1-0520-4052-a49c-39e0f6b18d73" x="0" y="0" width="30" height="15"/>
+					<reportElement uuid="71bfe5d1-0520-4052-a49c-39e0f6b18d73" x="3" y="0" width="30" height="15"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
@@ -163,7 +163,7 @@ from
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="21">
+			<band height="20">
 				<textField>
 					<reportElement uuid="95c6f9c1-a17d-402e-b847-3af2f6b7389f" x="203" y="0" width="100" height="15"/>
 					<textElement verticalAlignment="Middle">
@@ -210,7 +210,7 @@ from
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="23">
+			<band height="20">
 				<textField>
 					<reportElement uuid="d62da5b9-f365-410f-a794-3e3e9eb6bf91" x="87" y="0" width="265" height="15"/>
 					<textElement verticalAlignment="Middle">
@@ -348,7 +348,7 @@ from
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="20">
+			<band height="18">
 				<printWhenExpression><![CDATA[$P{detalleGenero}=='true']]></printWhenExpression>
 				<textField>
 					<reportElement uuid="faceffa9-624b-4974-a1ba-85e1abde7aa0" x="195" y="0" width="100" height="15"/>
@@ -428,13 +428,21 @@ from
 			</line>
 		</band>
 	</title>
-	<columnFooter>
-		<band height="14" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
-		<band height="37" splitType="Stretch"/>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement uuid="073a1350-da25-47a9-8c28-c90a6d0880b6" x="534" y="3" width="35" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="aeb85f19-8826-4068-b6b5-3effda773456" x="435" y="3" width="100" height="15"/>
+				<textElement/>
+				<text><![CDATA[Número de página:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="357c9a1b-4ddc-49fe-856f-922e0e6005da" x="0" y="0" width="568" height="1"/>
+			</line>
+		</band>
 	</pageFooter>
-	<summary>
-		<band height="26" splitType="Stretch"/>
-	</summary>
 </jasperReport>
