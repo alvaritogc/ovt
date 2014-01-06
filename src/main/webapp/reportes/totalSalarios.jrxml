@@ -1,284 +1,435 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="totalSalarios" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e869574a-d5e6-42b1-9b3b-63a0fb13d14d">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="totalSalario" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ee681543-c3fb-4720-a560-27a5a8e19a01">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="28"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="escudoBolivia" class="java.lang.String"/>
 	<parameter name="logo" class="java.lang.String"/>
 	<parameter name="usuarioIdentificacion" class="java.lang.String"/>
 	<parameter name="detalleGenero" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select x.*
-, case when X.total_ganado < 5500 then 'G1' when TO_NUMBER(X.total_ganado) between 5500 and  12000 then 'G2' when TO_NUMBER(X.total_ganado) > 12000 then 'G3' else 'G4' end GRUPO_NIVEL_SALARIAL_ORDEN
-, case when X.total_ganado < 5500 then 'Nivel Salarial<1,200.00 Bs. A 4,499.00 Bs.>' when TO_NUMBER(X.total_ganado) between 5500 and  12000 then 'Nivel Salarial<5,500.00 Bs. a 12,000.00 Bs.>' when TO_NUMBER(X.total_ganado) > 12000 then 'Nivel Salarial<12,000.00 Bs. a 18,000.00 Bs.>' else 'G4' end GRUPO_NIVEL_SALARIAL
-, case when EDAD < 18 then 'GE1' when EDAD between 18 and  25 then 'GE2' when EDAD between 26 and  45 then 'GE3' when EDAD between 46 and  60 then 'GE4' when EDAD > 60 then 'GE5' else 'GE6' end  grupo_edad_orden
-, case when EDAD < 18 then '<Menor a 18>' when EDAD between 18 and  25 then '<18 a 25>' when EDAD between 26 and  45 then '<26 a 45>' when EDAD between 46 and  60 then '<46 a 60>' when EDAD > 60 then '<Mayor a 60>' else 'GE6' end  grupo_edad
-from (
-select nombre,clasificacion_laboral,nacionalidad,sexo,total_ganado,
-trunc(months_between(sysdate, to_date(fecha_nacimiento,'dd/mm/yyyy'))/12) "EDAD"
- from doc_planilla_detalle) x
-order by clasificacion_laboral, nacionalidad,grupo_nivel_salarial_orden, sexo, EDAD asc]]>
+		<![CDATA[SELECT x.*,
+  case  when  total_ganado <5500 then 'g1'
+        when total_ganado between 5500 and 12000 then 'g2'
+        when total_ganado >12000 then 'g3'
+        else 'g4'
+  end nivel_salarial,
+  case  when  total_ganado <5500 then 'Nivel Salarial<1,200.00 Bs. a 5,500.00 Bs.>'
+        when total_ganado between 5500 and 12000 then 'Nivel Salarial<5,500.00 Bs. a 12,000.00 Bs.>'
+        when total_ganado >12000 then 'Nivel Salarial<12,000.00 Bs. a 18,000.00 Bs.>'
+        else 'g4'
+  end nivel_salarial_etiqueta,
+  case when edad <18 then 1 else 0 end edad1,
+  case when edad between 18 and 25 then 1 else 0 end edad2,
+  case when edad between 26 and 45 then 1 else 0 end edad3,
+  case when edad between 46 and 60 then 1 else 0 end edad4,
+  case when edad > 60 then 1 else 0 end edad5
+from
+    ( SELECT nvl(clasificacion_laboral,'SIN CLASIFICACION') clasificacion_laboral ,
+      nvl(nacionalidad,'SIN NACIONALIDAD')nacionalidad
+      ,sexo
+      ,total_ganado
+      ,trunc(months_between(sysdate, to_date(fecha_nacimiento,'dd/mm/yyyy'))/12) EDAD
+      FROM doc_planilla_detalle
+    ) x
+  ORDER BY clasificacion_laboral,
+    nacionalidad,nivel_salarial, sexo asc]]>
 	</queryString>
-	<field name="NOMBRE" class="java.lang.String"/>
 	<field name="CLASIFICACION_LABORAL" class="java.lang.String"/>
 	<field name="NACIONALIDAD" class="java.lang.String"/>
 	<field name="SEXO" class="java.lang.String"/>
 	<field name="TOTAL_GANADO" class="java.lang.String"/>
 	<field name="EDAD" class="java.math.BigDecimal"/>
-	<field name="GRUPO_NIVEL_SALARIAL_ORDEN" class="java.lang.String"/>
-	<field name="GRUPO_NIVEL_SALARIAL" class="java.lang.String"/>
-	<field name="GRUPO_EDAD_ORDEN" class="java.lang.String"/>
-	<field name="GRUPO_EDAD" class="java.lang.String"/>
-	<variable name="NOMBRE_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_clasificacion_laboral" calculation="Count">
-		<variableExpression><![CDATA[$F{NOMBRE}]]></variableExpression>
+	<field name="NIVEL_SALARIAL" class="java.lang.String"/>
+	<field name="NIVEL_SALARIAL_ETIQUETA" class="java.lang.String"/>
+	<field name="EDAD1" class="java.math.BigDecimal"/>
+	<field name="EDAD2" class="java.math.BigDecimal"/>
+	<field name="EDAD3" class="java.math.BigDecimal"/>
+	<field name="EDAD4" class="java.math.BigDecimal"/>
+	<field name="EDAD5" class="java.math.BigDecimal"/>
+	<variable name="EDAD1_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_genero" calculation="Count">
+		<variableExpression><![CDATA[$F{EDAD1}]]></variableExpression>
 	</variable>
-	<variable name="NOMBRE_2" class="java.lang.Integer" resetType="Group" resetGroup="grupo_nacionalidad" calculation="Count">
-		<variableExpression><![CDATA[$F{NOMBRE}]]></variableExpression>
+	<variable name="EDAD2_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_genero" calculation="Count">
+		<variableExpression><![CDATA[$F{EDAD2}]]></variableExpression>
 	</variable>
-	<variable name="GRUPO_NIVEL_SALARIAL_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_nivel_salarial" calculation="Count">
-		<variableExpression><![CDATA[$F{GRUPO_NIVEL_SALARIAL}]]></variableExpression>
+	<variable name="EDAD3_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_genero" calculation="Count">
+		<variableExpression><![CDATA[$F{EDAD3}]]></variableExpression>
+	</variable>
+	<variable name="EDAD4_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_genero" calculation="Count">
+		<variableExpression><![CDATA[$F{EDAD4}]]></variableExpression>
+	</variable>
+	<variable name="EDAD5_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_genero" calculation="Count">
+		<variableExpression><![CDATA[$F{EDAD5}]]></variableExpression>
+	</variable>
+	<variable name="EDAD4_2" class="java.math.BigDecimal" resetType="Group" resetGroup="grupo_genero" calculation="Sum">
+		<variableExpression><![CDATA[$F{EDAD4}]]></variableExpression>
+	</variable>
+	<variable name="EDAD3_2" class="java.math.BigDecimal" resetType="Group" resetGroup="grupo_genero" calculation="Sum">
+		<variableExpression><![CDATA[$F{EDAD3}]]></variableExpression>
+	</variable>
+	<variable name="EDAD1_2" class="java.math.BigDecimal" resetType="Group" resetGroup="grupo_genero" calculation="Sum">
+		<variableExpression><![CDATA[$F{EDAD1}]]></variableExpression>
+	</variable>
+	<variable name="EDAD2_2" class="java.math.BigDecimal" resetType="Group" resetGroup="grupo_genero" calculation="Sum">
+		<variableExpression><![CDATA[$F{EDAD2}]]></variableExpression>
+	</variable>
+	<variable name="EDAD5_2" class="java.math.BigDecimal" resetType="Group" resetGroup="grupo_genero" calculation="Sum">
+		<variableExpression><![CDATA[$F{EDAD5}]]></variableExpression>
+	</variable>
+	<variable name="totalEdad" class="java.lang.String"/>
+	<variable name="NIVEL_SALARIAL_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_nivel_salarial" calculation="Count">
+		<variableExpression><![CDATA[$F{NIVEL_SALARIAL}]]></variableExpression>
 	</variable>
 	<variable name="SEXO_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_genero" calculation="Count">
 		<variableExpression><![CDATA[$F{SEXO}]]></variableExpression>
 	</variable>
-	<variable name="GRUPO_EDAD_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_edad" calculation="Count">
-		<variableExpression><![CDATA[$F{GRUPO_EDAD}]]></variableExpression>
+	<variable name="NACIONALIDAD_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_nacionalidad" calculation="Count">
+		<variableExpression><![CDATA[$F{NACIONALIDAD}]]></variableExpression>
+	</variable>
+	<variable name="CLASIFICACION_LABORAL_1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_clasificacion_laboral" calculation="Count">
+		<variableExpression><![CDATA[$F{CLASIFICACION_LABORAL}]]></variableExpression>
 	</variable>
 	<group name="grupo_clasificacion_laboral">
 		<groupExpression><![CDATA[$F{CLASIFICACION_LABORAL}]]></groupExpression>
 		<groupHeader>
-			<band height="20">
+			<band height="19">
 				<rectangle>
-					<reportElement uuid="c2bd9c8b-a7b4-49f2-830d-22b8dc0cd2b7" x="0" y="0" width="572" height="20" backcolor="#CCCCCC"/>
+					<reportElement uuid="e81eb52c-a01e-462a-9f62-a2d182e1ce32" x="0" y="0" width="572" height="15" backcolor="#CCCCCC"/>
 				</rectangle>
 				<textField>
-					<reportElement uuid="8a338efc-4241-401a-bc15-6872ea327623" x="6" y="0" width="506" height="20"/>
+					<reportElement uuid="614b77c6-96b7-4b98-837e-1181cd34abd2" x="3" y="0" width="401" height="15"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{CLASIFICACION_LABORAL}!=null?$F{CLASIFICACION_LABORAL}:'SIN CLASIFICACION']]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{CLASIFICACION_LABORAL}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="30">
+			<band height="27">
 				<rectangle>
-					<reportElement uuid="c2bd9c8b-a7b4-49f2-830d-22b8dc0cd2b7" x="0" y="0" width="572" height="20" backcolor="#CCCCCC"/>
+					<reportElement uuid="e81eb52c-a01e-462a-9f62-a2d182e1ce32" x="0" y="0" width="572" height="15" backcolor="#CCCCCC"/>
 				</rectangle>
-				<textField>
-					<reportElement uuid="52d0cc87-d721-4b25-9204-ce9d6135f7c9" x="466" y="0" width="100" height="20"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{NOMBRE_1}]]></textFieldExpression>
-				</textField>
 				<staticText>
-					<reportElement uuid="7f32f86d-f8ca-4cb8-8e0a-1a9b98ef5481" x="8" y="0" width="30" height="20"/>
+					<reportElement uuid="71bfe5d1-0520-4052-a49c-39e0f6b18d73" x="3" y="0" width="30" height="15"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[Total ]]></text>
+					<text><![CDATA[Total]]></text>
 				</staticText>
 				<textField>
-					<reportElement uuid="6d43196d-c79a-4101-9ffe-c93aa15798ba" x="44" y="0" width="150" height="20"/>
+					<reportElement uuid="59ff9cd2-49a5-4eca-bcba-09dd50903d58" x="36" y="0" width="153" height="15"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{CLASIFICACION_LABORAL}!=null?$F{CLASIFICACION_LABORAL}:'SIN CLASIFICACION']]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{CLASIFICACION_LABORAL}]]></textFieldExpression>
 				</textField>
+				<textField>
+					<reportElement uuid="be70af83-f424-403d-b867-c8c36a20ab95" x="203" y="0" width="100" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{CLASIFICACION_LABORAL_1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="71bfe5d1-0520-4052-a49c-39e0f6b18d73" x="188" y="-1" width="12" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>
 	<group name="grupo_nacionalidad">
-		<groupExpression><![CDATA[$F{NACIONALIDAD}]]></groupExpression>
+		<groupExpression><![CDATA[$F{CLASIFICACION_LABORAL}]]></groupExpression>
 		<groupHeader>
-			<band height="20">
+			<band height="15">
 				<textField>
-					<reportElement uuid="1a866d67-8d1f-4c66-912c-be915f2c6625" x="103" y="0" width="150" height="20"/>
+					<reportElement uuid="faedb401-8205-44f5-9e2d-96988f81184c" x="100" y="0" width="235" height="15"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{NACIONALIDAD}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="5c343dec-ee0e-451c-8eaa-475e7d5e33cd" x="20" y="0" width="83" height="20"/>
+					<reportElement uuid="71bfe5d1-0520-4052-a49c-39e0f6b18d73" x="15" y="0" width="85" height="15"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[Nacionalidad:]]></text>
+					<text><![CDATA[Nacionalidad: ]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="20">
-				<staticText>
-					<reportElement uuid="7f32f86d-f8ca-4cb8-8e0a-1a9b98ef5481" x="20" y="0" width="131" height="20"/>
+				<textField>
+					<reportElement uuid="95c6f9c1-a17d-402e-b847-3af2f6b7389f" x="203" y="0" width="100" height="15"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[TOTAL NACIONALIDAD: ]]></text>
+					<textFieldExpression><![CDATA[$V{NACIONALIDAD_1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="71bfe5d1-0520-4052-a49c-39e0f6b18d73" x="15" y="0" width="105" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total nacionalidad]]></text>
 				</staticText>
 				<textField>
-					<reportElement uuid="002c96b9-2050-479d-af32-39edecd8e6a4" x="154" y="0" width="150" height="20"/>
+					<reportElement uuid="81d7c28b-a778-4d12-b1d0-c1611fddf833" x="123" y="0" width="65" height="15"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{NACIONALIDAD}]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement uuid="ae7a8918-daaa-43a9-a31e-57dc06ab779e" x="466" y="0" width="100" height="20"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+				<staticText>
+					<reportElement uuid="71bfe5d1-0520-4052-a49c-39e0f6b18d73" x="189" y="0" width="12" height="15"/>
+					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{NOMBRE_2}]]></textFieldExpression>
-				</textField>
+					<text><![CDATA[:]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>
 	<group name="grupo_nivel_salarial">
-		<groupExpression><![CDATA[$F{GRUPO_NIVEL_SALARIAL_ORDEN}]]></groupExpression>
+		<groupExpression><![CDATA[$F{NIVEL_SALARIAL}]]></groupExpression>
 		<groupHeader>
-			<band height="20">
+			<band height="15">
 				<printWhenExpression><![CDATA[$P{detalleGenero}=='true']]></printWhenExpression>
 				<textField>
-					<reportElement uuid="5e0bc8fa-2092-4b6d-aeb8-3899b60804bb" x="34" y="0" width="350" height="20"/>
-					<textElement>
+					<reportElement uuid="456fb994-e037-422f-951e-9cdd4c180709" x="54" y="0" width="371" height="15"/>
+					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{GRUPO_NIVEL_SALARIAL}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{NIVEL_SALARIAL_ETIQUETA}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="20">
 				<textField>
-					<reportElement uuid="76a6cd5a-d575-44f2-a1c4-5dfbcfaa4f8e" x="34" y="0" width="300" height="20"/>
-					<textElement>
+					<reportElement uuid="d62da5b9-f365-410f-a794-3e3e9eb6bf91" x="87" y="0" width="265" height="15"/>
+					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["TOTAL "+$F{GRUPO_NIVEL_SALARIAL}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{NIVEL_SALARIAL_ETIQUETA}]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Group" evaluationGroup="grupo_nivel_salarial">
-					<reportElement uuid="8f24591d-136c-4381-a527-59751bec3d40" x="334" y="0" width="50" height="20"/>
-					<textElement textAlignment="Right">
+				<staticText>
+					<reportElement uuid="71bfe5d1-0520-4052-a49c-39e0f6b18d73" x="54" y="0" width="29" height="15"/>
+					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{GRUPO_NIVEL_SALARIAL_1}]]></textFieldExpression>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="1b6a7b9d-63df-444b-8120-c696907c949d" x="364" y="0" width="100" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{NIVEL_SALARIAL_1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
 	</group>
 	<group name="grupo_genero">
-		<groupExpression><![CDATA[$F{SEXO}]]></groupExpression>
-		<groupFooter>
-			<band height="20">
+		<groupExpression><![CDATA[$F{SEXO}=='femenino'?'Mujeres':'Varones']]></groupExpression>
+		<groupHeader>
+			<band height="75">
 				<printWhenExpression><![CDATA[$P{detalleGenero}=='true']]></printWhenExpression>
-				<textField>
-					<reportElement uuid="c2440188-f7db-4b9c-b299-dd760a50f5bd" x="90" y="0" width="88" height="20"/>
-					<textElement>
-						<font isBold="true"/>
+				<staticText>
+					<reportElement uuid="c0604db0-b669-4616-bb9e-5804352701cd" x="124" y="0" width="71" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{SEXO}=='masculino'?'VARONES':'MUJERES']]></textFieldExpression>
+					<text><![CDATA[<Menor a 18>]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="b0e75524-e11b-45cf-b083-c8ec8cc7e977" x="83" y="0" width="41" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SEXO}=='femenino'?'Mujeres':'Varones']]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grupo_genero">
+					<reportElement uuid="b3eafdf6-db4a-4393-9970-e53dfe9359f5" x="195" y="45" width="100" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{EDAD4_2}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grupo_genero">
+					<reportElement uuid="0833af3c-c8c9-40b2-b255-3eafaa275cdc" x="195" y="30" width="100" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{EDAD3_2}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grupo_genero">
+					<reportElement uuid="e3ab3488-1c99-4a15-82e5-ef0255e73f85" x="195" y="0" width="100" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{EDAD1_2}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grupo_genero">
+					<reportElement uuid="97bc4c4e-09a3-4e88-adc7-eed848694700" x="195" y="15" width="100" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{EDAD2_2}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grupo_genero">
+					<reportElement uuid="40ce1a0f-7e53-4450-b81c-6c22f0c7a851" x="195" y="60" width="100" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{EDAD5_2}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="4519d939-2ec6-4071-820e-fd4a9b03061a" x="178" y="0" width="50" height="20"/>
-					<textElement textAlignment="Right">
+					<reportElement uuid="b0e75524-e11b-45cf-b083-c8ec8cc7e977" x="83" y="15" width="41" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SEXO}=='femenino'?'Mujeres':'Varones']]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="b0e75524-e11b-45cf-b083-c8ec8cc7e977" x="83" y="30" width="41" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SEXO}=='femenino'?'Mujeres':'Varones']]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="b0e75524-e11b-45cf-b083-c8ec8cc7e977" x="83" y="45" width="41" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SEXO}=='femenino'?'Mujeres':'Varones']]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="b0e75524-e11b-45cf-b083-c8ec8cc7e977" x="83" y="60" width="41" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SEXO}=='femenino'?'Mujeres':'Varones']]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="c0604db0-b669-4616-bb9e-5804352701cd" x="124" y="15" width="71" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[<18 a 25>]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="c0604db0-b669-4616-bb9e-5804352701cd" x="124" y="30" width="71" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[<26 a 45>]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="c0604db0-b669-4616-bb9e-5804352701cd" x="124" y="45" width="71" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[<46 a 60>]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="c0604db0-b669-4616-bb9e-5804352701cd" x="124" y="60" width="71" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[<Mayor a 60>]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="18">
+				<printWhenExpression><![CDATA[$P{detalleGenero}=='true']]></printWhenExpression>
+				<textField>
+					<reportElement uuid="faceffa9-624b-4974-a1ba-85e1abde7aa0" x="195" y="0" width="100" height="15"/>
+					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SEXO_1}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement uuid="d37fe084-238d-4100-9eb0-feffcb218744" x="51" y="0" width="37" height="20"/>
-					<textElement>
+				<textField>
+					<reportElement uuid="6d3ce166-63a0-4cf4-a837-12c6e9e306d5" x="116" y="0" width="79" height="15"/>
+					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[TOTAL]]></text>
+					<textFieldExpression><![CDATA[$F{SEXO}=='femenino'?'MUJERES':'VARONES']]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="71bfe5d1-0520-4052-a49c-39e0f6b18d73" x="84" y="0" width="29" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total]]></text>
 				</staticText>
 			</band>
 		</groupFooter>
-	</group>
-	<group name="grupo_edad">
-		<groupExpression><![CDATA[$F{GRUPO_EDAD}]]></groupExpression>
-		<groupHeader>
-			<band height="20">
-				<printWhenExpression><![CDATA[$P{detalleGenero}=='true']]></printWhenExpression>
-				<textField evaluationTime="Group" evaluationGroup="grupo_edad">
-					<reportElement uuid="20d1fb0e-a462-45c7-9ac8-0089aa20d9d1" x="178" y="0" width="50" height="20"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$V{GRUPO_EDAD_1}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement uuid="df966acf-3e38-4437-8f81-11628af9c060" x="51" y="0" width="52" height="20"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[$F{SEXO}=='masculino'?'Varones':'Mujeres']]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement uuid="47caa398-c25a-4564-8360-9c09629d12cd" x="103" y="0" width="75" height="20"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[$F{GRUPO_EDAD}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="89" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="c62298b1-9170-495d-834c-136eb907573a" x="136" y="19" width="298" height="40"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-					<font fontName="SansSerif" size="16" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica"/>
-					<paragraph lineSpacing="Single"/>
+		<band height="88" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="14ba99b1-6be5-40db-8bab-f7bdc1815e30" x="482" y="49" width="90" height="10"/>
+				<textElement>
+					<font size="8"/>
 				</textElement>
-				<text><![CDATA[REPORTE POR NIVEL SALARIAL]]></text>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2d6d9650-d253-4da3-8fda-08532933abc8" x="452" y="58" width="28" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[UID: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2d6d9650-d253-4da3-8fda-08532933abc8" x="452" y="50" width="28" height="10"/>
+				<reportElement uuid="2d6d9650-d253-4da3-8fda-08532933abc8" x="452" y="49" width="28" height="10"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Fecha: ]]></text>
 			</staticText>
 			<image>
-				<reportElement uuid="c45502db-e68a-43d8-9d85-39a67b0d2b37" x="452" y="0" width="120" height="50"/>
+				<reportElement uuid="c45502db-e68a-43d8-9d85-39a67b0d2b37" x="452" y="2" width="120" height="50"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
-			<image>
-				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="1" y="0" width="115" height="65"/>
-				<imageExpression><![CDATA[$P{escudoBolivia}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement uuid="2d6d9650-d253-4da3-8fda-08532933abc8" x="452" y="59" width="28" height="10"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[UID: ]]></text>
-			</staticText>
 			<textField>
-				<reportElement uuid="93d588e3-7cd5-49d6-bd8e-12763f0d1701" x="482" y="59" width="90" height="10"/>
+				<reportElement uuid="93d588e3-7cd5-49d6-bd8e-12763f0d1701" x="482" y="58" width="90" height="10"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuarioIdentificacion}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="14ba99b1-6be5-40db-8bab-f7bdc1815e30" x="482" y="50" width="90" height="10"/>
-				<textElement>
-					<font size="8"/>
+			<staticText>
+				<reportElement uuid="c62298b1-9170-495d-834c-136eb907573a" x="115" y="12" width="325" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="16" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[REPORTE POR NIVEL SALARIAL]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="0" y="0" width="115" height="65"/>
+				<imageExpression><![CDATA[$P{escudoBolivia}]]></imageExpression>
+			</image>
 			<line>
-				<reportElement uuid="357c9a1b-4ddc-49fe-856f-922e0e6005da" x="0" y="80" width="568" height="1"/>
+				<reportElement uuid="357c9a1b-4ddc-49fe-856f-922e0e6005da" x="0" y="74" width="568" height="1"/>
 			</line>
 		</band>
 	</title>
-	<columnFooter>
-		<band height="19" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
-		<band height="18" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<textField>
 				<reportElement uuid="073a1350-da25-47a9-8c28-c90a6d0880b6" x="534" y="3" width="35" height="15"/>
 				<textElement textAlignment="Right"/>
@@ -290,11 +441,8 @@ order by clasificacion_laboral, nacionalidad,grupo_nivel_salarial_orden, sexo, E
 				<text><![CDATA[Número de página:]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="357c9a1b-4ddc-49fe-856f-922e0e6005da" x="0" y="1" width="568" height="1"/>
+				<reportElement uuid="357c9a1b-4ddc-49fe-856f-922e0e6005da" x="0" y="0" width="568" height="1"/>
 			</line>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>
