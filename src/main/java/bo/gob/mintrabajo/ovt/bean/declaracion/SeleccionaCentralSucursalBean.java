@@ -185,7 +185,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
         }
     }
 
-    //upload de archivos
+    // upload de archivos
     public void upload(FileUploadEvent evento){
         logger.info("upload(FileUploadEvent evento)");
         file = evento.getFile();
