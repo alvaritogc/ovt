@@ -3,7 +3,6 @@ package bo.gob.mintrabajo.ovt.services;
 import bo.gob.mintrabajo.ovt.api.ILocalidadService;
 import bo.gob.mintrabajo.ovt.entities.ParLocalidad;
 import bo.gob.mintrabajo.ovt.repositories.LocalidadRepository;
-import bo.gob.mintrabajo.ovt.repositories.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +57,7 @@ public class LocalidadService implements ILocalidadService {
 
     @Override
     public boolean guardaLocalidad(ParLocalidad parLocalidad, String tipoLocalidad,
-            String REGISTRO_BITACORA, String tipoNodo, String idPadre, String idHijo) {
+                                   String REGISTRO_BITACORA, String tipoNodo, String idPadre, String idHijo) {
         boolean guardado = false;
         System.out.println("entra a guardar");
 
@@ -112,7 +111,7 @@ public class LocalidadService implements ILocalidadService {
         boolean estado = false;
         try {
             localidadRepository.delete(idLoc);
-            estado = true;
+            estado=true;
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -4,6 +4,9 @@ import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import bo.gob.mintrabajo.wsclient.Service1;
+import bo.gob.mintrabajo.wsclient.Service1Soap;
+import bo.gob.mintrabajo.wsclient.WSSAPWEBPARAMResponse;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
@@ -17,7 +20,6 @@ import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import bo.gob.mintrabajo.wsclient.*;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -26,21 +28,14 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
-
-import java.util.Collections;
 
 @ManagedBean(name = "templateInicioBean")
 @ViewScoped
@@ -307,6 +302,7 @@ public class TemplateInicioBean implements Serializable {
             logger.info("iUsuarioService.login(" + username + "," + password + ")");
             String passwordEncripted = Util.encriptaMD5(password);
             Long idUsuario = iUsuarioService.login(username, passwordEncripted);
+            System.out.println("========>>>> idUSuario " + idUsuario);
             boolean usuarioValido = true;
             logger.info("usuario aceptado");
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);

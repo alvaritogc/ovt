@@ -264,7 +264,6 @@ public class UsrRecurso extends ArtificioEntity implements Serializable, Compara
         return "bo.gob.mintrabajo.ovt.entities.UsrRecurso[ idRecurso=" + idRecurso + " ]";
     }
 
-    @Override
     public int compareTo(Object o) {
         UsrRecurso otroUsrRecurso = (UsrRecurso) o;
         if (orden > otroUsrRecurso.orden)
