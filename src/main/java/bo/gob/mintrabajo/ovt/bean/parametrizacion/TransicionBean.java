@@ -58,6 +58,7 @@ public class TransicionBean implements Serializable{
     private IRolService iRolService;
     
     private HttpSession session;
+    private String REGISTRO_BITACORA;
     private UsrUsuario usuario;
     
     private List<DocTransicion> listaTransicion;
@@ -84,8 +85,7 @@ public class TransicionBean implements Serializable{
         docTransicion= new DocTransicion();
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            Long idUsuario = (Long) session.getAttribute("idUsuario");
-            usuario = iUsuarioService.findById(idUsuario);
+            REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -121,7 +121,7 @@ public class TransicionBean implements Serializable{
     
     public void guardarModificar(){
         RequestContext context = RequestContext.getCurrentInstance();
-        final String  REGISTRO_BITACORA=usuario.getUsuario();
+        //final String  REGISTRO_BITACORA=usuario.getUsuario();
         try {
             DocTransicionPK docTransicionPK=new DocTransicionPK();
             docTransicionPK.setCodDocumento(codigo);

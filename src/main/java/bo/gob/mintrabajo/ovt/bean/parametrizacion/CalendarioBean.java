@@ -56,6 +56,7 @@ public class CalendarioBean implements Serializable{
     private Integer anioActual;
     private UsrUsuario usuario;
     private HttpSession session;
+    private String REGISTRO_BITACORA;
     
     //para el form
     private Integer gestion;
@@ -65,8 +66,7 @@ public class CalendarioBean implements Serializable{
     public void ini() {
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            Long idUsuario = (Long) session.getAttribute("idUsuario");
-            usuario = iUsuarioService.findById(idUsuario);
+            REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,7 +85,7 @@ public class CalendarioBean implements Serializable{
     
      public void guardar(){
         RequestContext context = RequestContext.getCurrentInstance();
-        String  REGISTRO_BITACORA=usuario.getUsuario();
+        //String  REGISTRO_BITACORA=usuario.getUsuario();
         listaDominio = iDominioService.obtenerItemsDominio("TPERIODO");
         if(iCalendarioService.listaCalendarioPorGestion(gestion).size() <= 0){
             for (ParDominio parDominio : listaDominio) {

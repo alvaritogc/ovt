@@ -45,7 +45,7 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " where "
                     + " d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
                     + " and d.perUnidad.perUnidadPK.idUnidad=:idUnidad"
-                    + " and d.docDefinicion.docDefinicionPK.codDocumento='ROE011'"
+                    + " and d.docDefinicion.docDefinicionPK.codDocumento='ROE013'"
                     + " and d.codEstado.codEstado = '010'"
     )
     List<DocDocumento> listarRoe011(@Param("idEmpleador") String idPersona, @Param("idUnidad") long idUnidad);
@@ -148,7 +148,7 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " and d.fechaDocumento between :fechaDesde and :fechaHasta"
                     + " and upper( d.docDefinicion.docDefinicionPK.codDocumento) = :codDocumento"
     )
-    List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumento(@Param("idEmpleador") String idPersona, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta,  @Param("codDocumento") String codDocumento);
+    List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumento(@Param("idEmpleador") String idPersona, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta, @Param("codDocumento") String codDocumento);
 
     @Query(
             "   select d "
@@ -156,6 +156,7 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " where "
                     + " d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
                     + " and d.perUnidad.perUnidadPK.idUnidad=:idUnidad "
+                    + " and d.docDefinicion.docDefinicionPK.codDocumento like 'LC1020'"
 
     )
     DocDocumento buscarPorUnindad(@Param("idEmpleador") String idPersona, @Param("idUnidad") Long idUnidad);
@@ -168,5 +169,5 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " and d.fechaDocumento between :fechaDesde and :fechaHasta"
                     + " and (upper( d.docDefinicion.docDefinicionPK.codDocumento) = :codDocumento1 or upper( d.docDefinicion.docDefinicionPK.codDocumento) = :codDocumento2)"
     )
-    List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumentos(@Param("idEmpleador") String idPersona, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta,  @Param("codDocumento1") String codDocumento1,  @Param("codDocumento2") String codDocumento2);
+    List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumentos(@Param("idEmpleador") String idPersona, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta, @Param("codDocumento1") String codDocumento1, @Param("codDocumento2") String codDocumento2);
 }

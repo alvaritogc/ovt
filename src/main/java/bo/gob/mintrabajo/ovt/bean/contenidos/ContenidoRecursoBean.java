@@ -92,7 +92,7 @@ public class ContenidoRecursoBean implements Serializable {
             if (mensajeApp.getFechaDesde().after(mensajeApp.getFechaHasta())) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR
-                                , "Error", "La Fecha hasta no puede ser mayor a la Fecha desde."));
+                                , "Error", "La Fecha hasta debe ser mayor que la Fecha desde."));
                 return "";
 
             }

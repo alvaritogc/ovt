@@ -7,7 +7,11 @@
       xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions">
 <ui:composition template="../../pages/template/templateInicio.xhtml">
 <ui:define name="content">
-
+<p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+<p:dialog modal="true" widgetVar="statusDialog" header="Cargando" resizable="false"
+          draggable="false" closable="false">
+    <p:graphicImage value="../../images/ajax-loader.gif"/>
+</p:dialog>
 <h:form id="formularioFrm" enctype="multipart/form-data">
 <h:panelGroup id="panelForm" rendered="#{!declaracionAguinaldoBean.estaDeclarado}">
 <p:panelGrid id="gridForm">
@@ -346,11 +350,18 @@
         </p:panelGrid>
     </p:column>
 </p:row>
-
 </p:panelGrid>
-
-
-
+<br/><br/>
+<p:panelGrid columns="2" rendered="#{declaracionAguinaldoBean.verificaValidacion==true}" style="background: yellow">
+    <p:outputLabel value="Errores" style="font-weight: bold"/>
+    <p:outputLabel value="Alertas" style="font-weight: bold"/>
+    <p:scrollPanel style="width:330px;height:150px" mode="native">
+        <p:dataList value="#{declaracionAguinaldoBean.errores}" var="e" itemType="disc" emptyMessage="Sin errores.">#{e}</p:dataList>
+    </p:scrollPanel>
+    <p:scrollPanel style="width:329px;height:150px" mode="native">
+        <p:dataList value="#{declaracionAguinaldoBean.alertas}" var="a" itemType="disc" emptyMessage="Sin alertas.">#{a.observacion}</p:dataList>
+    </p:scrollPanel>
+</p:panelGrid>
 <!-- Renato Codigo -->
 <h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionAguinaldoBean.parametro!=2}">
     <h:outputText style="font-weight: bold;text-align: center" value="Planilla Aguinaldo"
@@ -363,7 +374,7 @@
                   invalidSizeMessage="Archivo demasiado grande."
                   sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv|XLS|XLSX|CSV)$/"
                   rendered="#{declaracionAguinaldoBean.habilita}"/>
-    <h:outputText id="idArchivo1" value="#{declaracionAguinaldoBean.nombres[0]}"
+    <h:outputText id="idArchivo1" value="#{declaracionAguinaldoBean.binario.tipoDocumento}"
                   style="font-weight: bold;text-align: center"/>
 
     <p:growl id="messages" showDetail="true"/>

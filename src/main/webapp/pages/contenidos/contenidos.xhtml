@@ -51,6 +51,16 @@
                                         <f:setPropertyActionListener value="#{mensajeContenido}"
                                                                      target="#{contenidoBean.mensajeContenido}"/>
                                     </p:commandButton>
+
+                                    <p:commandButton value="Editar contenido"
+                                                     action="#{contenidoBean.nuevaModificacionDescargable}"
+                                                     oncomplete="PF('condenidoDescargaModificacionDlg').show();"
+                                                     rendered="#{mensajeContenido.esDescargable==1}"
+                                                     icon="ui-icon-pencil"
+                                                     update=":contenidoDescargaModificacionDialog">
+                                        <f:setPropertyActionListener value="#{mensajeContenido}"
+                                                                     target="#{contenidoBean.mensajeContenido}"/>
+                                    </p:commandButton>
                                 </p:column>
                                 <p:column>
                                     <p:commandButton action="#{contenidoBean.eliminar}" value="Eliminar contenido"
@@ -145,6 +155,39 @@
                                  action="#{contenidoBean.nuevoContenidoDescarga}"
                                  immediate="true"
                                  onclick="condenidoDescargaDlg.hide();"
+                                 icon="ui-icon-close"/>
+            </h:form>
+        </p:dialog>
+
+
+        <p:dialog
+                resizable="false"
+                header="Modificar descarga" widgetVar="condenidoDescargaModificacionDlg">
+            <h:form id="contenidoDescargaModificacionDialog">
+                <br/>
+                <p:outputLabel id="messagesDescargaModificacion"
+                               value="Archivo a descargar: #{contenidoBean.archivoModificacion}"
+                               style="font-size: 20px;"/>
+                <p:outputLabel value="Al subir un nuevo archivo reemplazara al anterior"/>
+                <br/>
+                <p:fileUpload fileUploadListener="#{contenidoBean.subirArchivoModificacion}" mode="advanced"
+                              uploadLabel="Subir" cancelLabel="Cancelar"
+                              label="Seleccione"
+                              style="width: 500px"
+                              fileLimit="1"
+                              fileLimitMessage="Sólo se puede elegir un archivo."
+                              invalidFileMessage="El archivo no es válido, revise la extensión"
+                              sizeLimit="5242880"
+                              invalidSizeMessage="Archivo demasiado grande."
+                              update="messagesDescargaModificacion" auto="true"
+                              allowTypes="/(\.|\/)(gif|jpe?g|png|txt|xls|xlsx|csv|XLS|XLSX|CSV)$/"/>
+                <p:commandButton value="Guardar" action="#{contenidoBean.modificarArchivoBinario}"
+                                 icon="ui-icon-disk"
+                                 update=":idContenidos:idListaContenidos"/>
+                <p:commandButton value="Cancelar"
+                                 action="#{contenidoBean.nuevaModificacionDescargable}"
+                                 immediate="true"
+                                 onclick="condenidoDescargaModificacionDlg.hide();"
                                  icon="ui-icon-close"/>
             </h:form>
         </p:dialog>

@@ -6,6 +6,31 @@
 
     <p:panel id="pnlDireccion1">
 
+            <p:commandButton value="Adicionar"
+                             icon="ui-icon-plus"
+                             actionListener="#{personaUnidadBean.nuevo}"
+                             onclick="PF('dlgDireccion').show()"
+                             id="cmdButtonDireccion1"
+                             update=":frmDireccion:pnlDireccion,:txtDlgDireccion"
+                             rendered="#{personaUnidadBean.direccionPrincipal.idDireccion==null}">
+                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
+            <p:commandButton value="Modificar"
+                             icon="ui-icon-pencil"
+                             onclick="PF('dlgDireccion').show()"
+                             id="cmdButtonDireccion2"
+                             update=":frmDireccion:pnlDireccion,:txtDlgDireccion"
+                             rendered="#{personaUnidadBean.direccionPrincipal.idDireccion!=null}">
+                <f:setPropertyActionListener value="#{personaUnidadBean.direccionPrincipal.perUnidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.direccionPrincipal}" target="#{personaUnidadBean.direccion}"/>
+                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
+            <br/><br/><br/>
 
         <h:panelGrid columns="2">
             <h:outputText value="Zona:" style="width: 250px;" />
@@ -29,6 +54,8 @@
             <p:inputText value="#{personaUnidadBean.direccionPrincipal.pisoDepOfi}" readonly="true" style="width: 250px;"/>
             <h:outputText value="Departamento:&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
             <p:inputText value="#{personaUnidadBean.direccionPrincipal.codLocalidad.descripcion}" readonly="true" style="width: 250px;"/>
+            <h:outputText value="Localidad:&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
+            <p:inputText value="#{personaUnidadBean.direccionPrincipal.localidad}" readonly="true" style="width: 250px;"/>
 
             <h:outputText value="Referencia: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>
             <p:inputTextarea id="txtAreaReferencia22" value="#{personaUnidadBean.direccionPrincipal.referencia}"

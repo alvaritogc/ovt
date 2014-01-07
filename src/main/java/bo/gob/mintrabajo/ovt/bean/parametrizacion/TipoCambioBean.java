@@ -53,6 +53,7 @@ public class TipoCambioBean implements Serializable{
     private IUsuarioService iUsuarioService;
     
     private HttpSession session;
+    private String REGISTRO_BITACORA;
     private UsrUsuario usuario;
     
     private List<ParTipoCambio> listaTipoCambio;
@@ -82,8 +83,7 @@ public class TipoCambioBean implements Serializable{
         tipoCambioForm= new ParTipoCambio();
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            Long idUsuario = (Long) session.getAttribute("idUsuario");
-            usuario = iUsuarioService.findById(idUsuario);
+            REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -153,7 +153,7 @@ public class TipoCambioBean implements Serializable{
     
     public void guardarModificar(){
         RequestContext context = RequestContext.getCurrentInstance();        
-        String  REGISTRO_BITACORA=usuario.getUsuario();
+        //String  REGISTRO_BITACORA=usuario.getUsuario();
         try {
             if(!iTipoCambioService.saveTipoCambio(fecha, tipoCambioForm,REGISTRO_BITACORA,monedaBaseForm,monedaCambioForm, accion)){
                 context.execute("dlgMensajeInfo.show()");

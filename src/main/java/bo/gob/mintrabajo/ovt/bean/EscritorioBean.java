@@ -250,14 +250,14 @@ public class EscritorioBean {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(docPlanilla.getFechaOperacion());
                 parametros.put("diaDeposito", cal.get(Calendar.DAY_OF_MONTH));
-                int mes1=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesDeposito", mes1+1);
+                int mes1 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesDeposito", mes1 + 1);
                 parametros.put("anioDeposito", cal.get(Calendar.YEAR));
                 cal = Calendar.getInstance();
                 cal.setTime(docDocumento.getFechaDocumento());
                 parametros.put("diaFechaPresentacion", cal.get(Calendar.DAY_OF_MONTH));
-                int mes2=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesFechaPresentacion", mes2+1);
+                int mes2 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesFechaPresentacion", mes2 + 1);
                 parametros.put("anioFechaPresentacion", cal.get(Calendar.YEAR));
                 parametros.put("montoDeposito", docPlanilla.getMontoOperacion());
                 parametros.put("nroComprobante", docPlanilla.getNumOperacion());
@@ -273,7 +273,7 @@ public class EscritorioBean {
                 parametros.put("escudoBolivia", servletContext.getRealPath("/") + "/images/escudo.jpg");
                 parametros.put("logo", servletContext.getRealPath("/") + "/images/logoMIN.jpg");
 
-                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento + "-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
 
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC1010V1.jasper", parametros));
                 verificaReporte = true;
@@ -285,7 +285,8 @@ public class EscritorioBean {
 
         if (codDocumento.equals("ROE010")) {
             parametros.clear();
-            parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
+            //parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
+            parametros.put("codigoEmpleador", vperPersona.getNroOtro());
             String nombreCompleto = vperPersona.getNombreRazonSocial();
             if (vperPersona.getApellidoPaterno() != null) {
                 nombreCompleto = nombreCompleto + " " + vperPersona.getApellidoPaterno();
@@ -298,10 +299,23 @@ public class EscritorioBean {
             parametros.put("domOficina", vperPersona.getDirDireccion());
             parametros.put("repLegal", vperPersona.getRlNombre());
             parametros.put("fechaEmision", (new SimpleDateFormat("dd/MM/yyyy")).format(new Date()));
-            parametros.put("nroUbicaciones", vperPersona.getNroOtro());
+            //parametros.put("nroUbicaciones", vperPersona.getNroOtro());
+            List<PerUnidad> listaUnidades = iUnidadService.buscarPorPersona(vperPersona.getIdPersona());
+            int nroUbicaciones;
+            if (listaUnidades != null && !listaUnidades.isEmpty()) {
+                nroUbicaciones = listaUnidades.size() - 1;
+            } else {
+                nroUbicaciones = 0;
+            }
+            parametros.put("nroUbicaciones", String.valueOf(nroUbicaciones));
 
+            if (esInterno) {
+                parametros.put("roe", servletContext.getRealPath("/") + "/images/roe.jpg");
+            } else {
+                parametros.put("roe", servletContext.getRealPath("/") + "/images/roeInvalido.jpg");
+            }
+            //parametros.put("roe", servletContext.getRealPath("/") + "/images/roe.jpg");
 
-            parametros.put("roe", servletContext.getRealPath("/") + "/images/roe.jpg");
 
             try {
                 String nombrePdf = codDocumento.concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
@@ -356,8 +370,8 @@ public class EscritorioBean {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(docDocumento.getFechaDocumento());
                 parametros.put("diaFechaPresentacion", cal.get(Calendar.DAY_OF_MONTH));
-                int mes1=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesFechaPresentacion", mes1+1);
+                int mes1 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesFechaPresentacion", mes1 + 1);
                 parametros.put("anioFechaPresentacion", cal.get(Calendar.YEAR));
                 parametros.put("nombreEmpleador", vperPersona.getRlNombre());
                 parametros.put("nroDocumento", vperPersona.getRlNroIdentidad());
@@ -385,7 +399,7 @@ public class EscritorioBean {
                     parametros.put("bajaSeguroLargoPlazo", "");
                 }
                 parametros.put("nombreFuncionario", docGenerico.getCadena10());
-                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento + "-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe012.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
@@ -419,8 +433,8 @@ public class EscritorioBean {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(docDocumento.getFechaDocumento());
                 parametros.put("diaFechaPresentacion", cal.get(Calendar.DAY_OF_MONTH));
-                int mes1=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesFechaPresentacion", mes1+1);
+                int mes1 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesFechaPresentacion", mes1 + 1);
                 parametros.put("anioFechaPresentacion", cal.get(Calendar.YEAR));
                 parametros.put("nombreEmpleador", vperPersona.getRlNombre());
                 parametros.put("nroDocumento", vperPersona.getRlNroIdentidad());
@@ -439,7 +453,7 @@ public class EscritorioBean {
                 String cadena4 = docGenerico.getValor01() != null ? (df.format(docGenerico.getValor01())) : "SIN MOVIMIENTO";
                 parametros.put("cadena4", cadena4);
 
-                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento + "-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe013.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
@@ -495,15 +509,15 @@ public class EscritorioBean {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(docPlanilla.getFechaOperacion());
                 parametros.put("diaDeposito", cal.get(Calendar.DAY_OF_MONTH));
-                int mes1=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesDeposito", mes1+1);
+                int mes1 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesDeposito", mes1 + 1);
                 parametros.put("anioDeposito", cal.get(Calendar.YEAR));
                 cal = Calendar.getInstance();
                 cal.setTime(docDocumento.getFechaDocumento());
                 parametros.put("diaFechaPresentacion", cal.get(Calendar.DAY_OF_MONTH));
 //                cal.add(Calendar.MONTH, 1);
-                int mes2=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesFechaPresentacion", mes2+1);
+                int mes2 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesFechaPresentacion", mes2 + 1);
                 parametros.put("anioFechaPresentacion", cal.get(Calendar.YEAR));
                 parametros.put("montoDeposito", docPlanilla.getMontoOperacion());
                 parametros.put("nroComprobante", docPlanilla.getNumOperacion());
@@ -516,7 +530,7 @@ public class EscritorioBean {
                 parametros.put("escudoBolivia", servletContext.getRealPath("/") + "/images/escudo.jpg");
                 parametros.put("logo", servletContext.getRealPath("/") + "/images/logoMIN.jpg");
 
-                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento + "-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
 
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC2010V1.jasper", parametros));
                 verificaReporte = true;
@@ -534,86 +548,87 @@ public class EscritorioBean {
 
 
     /**
-     *  Genera un nombre para archivo PDF.
-     *  Este nombre esta compuesto del nombreRazonSocial, la fecha
-     *  y un randomico de dos dígitos.
+     * Genera un nombre para archivo PDF.
+     * Este nombre esta compuesto del nombreRazonSocial, la fecha
+     * y un randomico de dos dígitos.
      */
-    static String generarNombreReporte(String nombreRazonSocial){
-        String nombreArchivo="";
-        SimpleDateFormat sdf=new SimpleDateFormat("ddMMyyyyHHmmss");
-        Date fecha=new Date();
-        Random num=new Random();
-        String nu=String.valueOf(num.nextInt(2));
-        nombreArchivo=sdf.format(fecha).toString()+nu;
-        nombreArchivo="declaracionJurada-"+nombreRazonSocial+nombreArchivo+".pdf";
+    static String generarNombreReporte(String nombreRazonSocial) {
+        String nombreArchivo = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyHHmmss");
+        Date fecha = new Date();
+        Random num = new Random();
+        String nu = String.valueOf(num.nextInt(2));
+        nombreArchivo = sdf.format(fecha).toString() + nu;
+        nombreArchivo = "declaracionJurada-" + nombreRazonSocial + nombreArchivo + ".pdf";
         return nombreArchivo;
     }
+
     /*
     *  GENERA EL REPORTE DE LA DECLARACION JURADA
      */
-    public void generarReporte(){
+    public void generarReporte() {
 
 
-        ServletContext servletContext=(ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext();
-        String rutaWebApp=servletContext.getRealPath("/");
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String rutaWebApp = servletContext.getRealPath("/");
 
-        String jrxmlFileName=rutaWebApp+"/reportes/declaracionJurada.jrxml";
-        String jasperFileName=rutaWebApp+"/reportes/declaracionJurada.jasper";
-        String pdfFileName="";
+        String jrxmlFileName = rutaWebApp + "/reportes/declaracionJurada.jrxml";
+        String jasperFileName = rutaWebApp + "/reportes/declaracionJurada.jasper";
+        String pdfFileName = "";
 
-        String dbUrl="jdbc:oracle:thin:@192.168.50.7:1521:desa";
-        String dbDriver="oracle.jdbc.driver.OracleDriver";
-        String dbUname="ovt";
-        String dbPwd="prueba";
+        String dbUrl = "jdbc:oracle:thin:@192.168.50.7:1521:desa";
+        String dbDriver = "oracle.jdbc.driver.OracleDriver";
+        String dbUname = "ovt";
+        String dbPwd = "prueba";
 
-        Connection conn=null;
+        Connection conn = null;
 
 
-        String idPersona=(String)session.getAttribute("idEmpleador");
-        PerPersona p=iPersonaService.findById(idPersona);
-        pdfFileName=generarNombreReporte(p.getNombreRazonSocial());
+        String idPersona = (String) session.getAttribute("idEmpleador");
+        PerPersona p = iPersonaService.findById(idPersona);
+        pdfFileName = generarNombreReporte(p.getNombreRazonSocial());
 
-        try{
+        try {
             Class.forName(dbDriver);
-        }catch(ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             logger.error("ORACLE JDBC Driver no encontrado");
         }
 
-        try{
+        try {
             //conn= DriverManager.getConnection(dbUrl, dbUname, dbPwd);
-            conn=Util.obtenerDatasource().getConnection();
-        }catch (SQLException e){
-            logger.error("Error de conexion "+e.getMessage());
+            conn = Util.obtenerDatasource().getConnection();
+        } catch (SQLException e) {
+            logger.error("Error de conexion " + e.getMessage());
         }
 
-        try{
-            String rutaEscudoIzquierda=rutaWebApp+"/images/escudo.jpg";
-            String rutaEscudoDerecha=rutaWebApp+"/images/escudo.jpg";
+        try {
+            String rutaEscudoIzquierda = rutaWebApp + "/images/escudo.jpg";
+            String rutaEscudoDerecha = rutaWebApp + "/images/escudo.jpg";
             // Paramatros para el reporte
-            HashMap hm=new HashMap();
-            hm.put("idPersona",idPersona);
+            HashMap hm = new HashMap();
+            hm.put("idPersona", idPersona);
 
-            hm.put("escudoIzquierda",rutaEscudoIzquierda);
-            hm.put("escudoDerecha",rutaEscudoDerecha);
+            hm.put("escudoIzquierda", rutaEscudoIzquierda);
+            hm.put("escudoDerecha", rutaEscudoDerecha);
 
-            long nroUnidades=0;
-            if(iUnidadService.buscarPorPersona(idPersona)!=null){
-                nroUnidades= iUnidadService.buscarPorPersona(idPersona).size();
+            long nroUnidades = 0;
+            if (iUnidadService.buscarPorPersona(idPersona) != null) {
+                nroUnidades = iUnidadService.buscarPorPersona(idPersona).size();
             }
-            hm.put("nro_unidades",nroUnidades);
+            hm.put("nro_unidades", nroUnidades);
 
 
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
 
-            String rutaPdf="/reportes/temp/"+pdfFileName;
-            String nombrePdf=rutaWebApp+rutaPdf;
+            String rutaPdf = "/reportes/temp/" + pdfFileName;
+            String nombrePdf = rutaWebApp + rutaPdf;
 
-            JasperPrint jprint=(JasperPrint) JasperFillManager.fillReport(jasperFileName, hm, conn);
+            JasperPrint jprint = (JasperPrint) JasperFillManager.fillReport(jasperFileName, hm, conn);
             JasperExportManager.exportReportToPdfFile(jprint, nombrePdf);
 
             redirecionarReporte(nombrePdf);
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             logger.error("====>>>> Error al exportar el reporte a PDF <<<<<=====");
             logger.error(ex.getMessage());
             ex.printStackTrace();

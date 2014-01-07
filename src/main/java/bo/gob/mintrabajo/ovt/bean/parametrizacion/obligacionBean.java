@@ -45,6 +45,7 @@ public class obligacionBean implements Serializable{
     private IUsuarioService iUsuarioService;
     
     private HttpSession session;
+    private String REGISTRO_BITACORA;
     private UsrUsuario usuario;
     
     private List<ParObligacion> listaObligacion;
@@ -58,8 +59,7 @@ public class obligacionBean implements Serializable{
     public void ini() {
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            Long idUsuario = (Long) session.getAttribute("idUsuario");
-            usuario = iUsuarioService.findById(idUsuario);
+            REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,7 +85,7 @@ public class obligacionBean implements Serializable{
         if(obligacion.getCodObligacion().trim().isEmpty()){return;}
         if(obligacion.getDescripcion().trim().isEmpty()){return;}
         RequestContext context = RequestContext.getCurrentInstance();
-        final String  REGISTRO_BITACORA=usuario.getUsuario();
+        //final String  REGISTRO_BITACORA=usuario.getUsuario();
         try {
             if(iObligacionService.saveObligacion(obligacion, REGISTRO_BITACORA, estadoObligacion,evento)){
                 context.execute("dlgFormObligacion.hide();");

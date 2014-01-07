@@ -112,6 +112,7 @@ public class PersonaUnidadBean implements Serializable{
     List<SelectItem>listaTipoEmpresa;
     List<SelectItem>listaTipoSociedad;
     List<SelectItem>listaTipoIdentificacion;
+    List<SelectItem>listaTipoIdentificacionROE;
 
 
     private PerDireccion direccion;
@@ -304,6 +305,7 @@ public class PersonaUnidadBean implements Serializable{
         listaTipoEmpresa=cargarListas(listaTipoEmpresa,DOM_TIPOS_EMPRESA);
         listaTipoSociedad=cargarListas(listaTipoEmpresa,DOM_TIPOS_SOCIEDAD);
         listaTipoIdentificacion=cargarListas(listaTipoEmpresa,DOM_TIPOS_IDENTIFICACION);
+        listaTipoIdentificacionROE=cargarListas(listaTipoEmpresa,DOM_TIPOS_IDENTIFICACIONROE);
         listaTipoDirecciones=cargarListas(listaTipoDirecciones,DOM_TIPO_DIRECCION);
         cargarUnidad();
         cargarActividadDeclarda();
@@ -348,6 +350,7 @@ public class PersonaUnidadBean implements Serializable{
     public void nuevo(){
         unidadRegistro=new PerUnidad();
         unidadRegistro.setTipoEmpresa(unidad.getTipoEmpresa());
+        unidadRegistro.setTipoSociedad(unidad.getTipoSociedad());
         unidadRegistro.setActividadDeclarada(unidad.getActividadDeclarada());
         direccion=new PerDireccion();
         repLegal=new PerReplegal();
@@ -633,9 +636,7 @@ public class PersonaUnidadBean implements Serializable{
             ini();
             return ;
         }
-         logger.info("====>>> EMAIL DE PERSONA1 "+direccion.getEmail());
-        logger.info("====>>> EMAIL DE PERSONA2 "+direccion.getEmail2());
-        System.out.print("correeeeooooo======================================");
+
         if(direccion.getEmail()!=null){
             if(!direccion.getEmail().trim().equals("")){
                 if(!validarEmail(direccion.getEmail())){
@@ -1560,5 +1561,13 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setEmpleador(UsrUsuario empleador) {
         this.empleador = empleador;
+    }
+
+    public List<SelectItem> getListaTipoIdentificacionROE() {
+        return listaTipoIdentificacionROE;
+    }
+
+    public void setListaTipoIdentificacionROE(List<SelectItem> listaTipoIdentificacionROE) {
+        this.listaTipoIdentificacionROE = listaTipoIdentificacionROE;
     }
 }

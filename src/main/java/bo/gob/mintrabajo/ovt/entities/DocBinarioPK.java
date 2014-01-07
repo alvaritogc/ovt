@@ -16,10 +16,10 @@
 
 package bo.gob.mintrabajo.ovt.entities;
 
-import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  *
@@ -84,7 +84,9 @@ public class DocBinarioPK implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.DocBinarioPK[ idBinario=" + idBinario + ", idDocumento=" + idDocumento + " ]";
+        return "DocBinarioPK{" +
+                "idBinario=" + idBinario +
+                ", idDocumento=" + idDocumento +
+                '}';
     }
-    
 }

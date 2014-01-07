@@ -37,6 +37,9 @@ import java.util.regex.Pattern;
 
 import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
 
+import java.util.Collection;
+import java.util.Collections;
+
 @ManagedBean(name = "templateInicioBean")
 @ViewScoped
 public class TemplateInicioBean implements Serializable {

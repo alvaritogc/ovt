@@ -16,10 +16,10 @@
 
 package bo.gob.mintrabajo.ovt.entities;
 
-import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  *
@@ -84,7 +84,9 @@ public class DocDefinicionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.DocDefinicionPK[ codDocumento=" + codDocumento + ", version=" + version + " ]";
+        return "DocDefinicionPK{" +
+                "codDocumento='" + codDocumento + '\'' +
+                ", version=" + version +
+                '}';
     }
-    
 }

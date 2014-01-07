@@ -18,6 +18,7 @@ package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -160,7 +161,13 @@ public class DocBinario implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.DocBinario[ docBinarioPK=" + docBinarioPK + " ]";
+        return "DocBinario{" +
+                "docBinarioPK=" + docBinarioPK +
+                ", tipoDocumento='" + tipoDocumento + '\'' +
+                ", metadata='" + metadata + '\'' +
+                ", fechaBitacora=" + fechaBitacora +
+                ", registroBitacora='" + registroBitacora + '\'' +
+                ", docDocumento=" + docDocumento.getIdDocumento() +
+                '}';
     }
-    
 }
