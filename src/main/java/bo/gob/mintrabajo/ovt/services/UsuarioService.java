@@ -137,7 +137,7 @@ public class UsuarioService implements IUsuarioService {
         Specification<UsrUsuario> specification = new Specification<UsrUsuario>() {
             @Override
             public Predicate toPredicate(Root<UsrUsuario> perPersonaEntityRoot, CriteriaQuery<?> criteriaQuery,
-                                         CriteriaBuilder criteriaBuilder) {
+                    CriteriaBuilder criteriaBuilder) {
 
                 List<Predicate> pr = new LinkedList<Predicate>();
                 pr.add(criteriaBuilder.equal(perPersonaEntityRoot.get("esInterno"), 1));
@@ -154,7 +154,7 @@ public class UsuarioService implements IUsuarioService {
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
-    //    @Override
+//    @Override
 //    public List<UsrUsuario> buscarPorUsuario(String usuario){
 //        System.out.println("Busca --------------------------------- " + usuario);
 //        System.out.println("Busca --------------------------------- TAMAÑO " + usuarioRepository.findByAttribute("usuario", usuario, -1, -1).size());
@@ -261,29 +261,29 @@ public class UsuarioService implements IUsuarioService {
         System.out.println("==> id usuario cambio" + idUsuario);
         try {
             UsrUsuario usuario = usuarioRepository.findOne(idUsuario);
-            confirmarClave = Util.encriptaMD5(confirmarClave);
-            String claveDescencriptada = usuario.getClave();
-            System.out.println("==> id usuario cambio" + idUsuario);
-            System.out.println("==> id usuario cambio" + usuario.getIdUsuario());
-            System.out.println("==> claveDescencriptada " + claveDescencriptada);
-            nuevaClave = Util.encriptaMD5(nuevaClave);
-            //Verificar que la nueva contrasenia sea distinta  a la antigua contrasenia
-            if (claveDescencriptada.equals(nuevaClave)) {
-                mensaje = "La nueva contrasenia debe ser distinta a la version anterior.";
-                return mensaje;
-            }
+        confirmarClave = Util.encriptaMD5(confirmarClave);
+        String claveDescencriptada = usuario.getClave();
+        System.out.println("==> id usuario cambio" + idUsuario);
+        System.out.println("==> id usuario cambio" + usuario.getIdUsuario());
+        System.out.println("==> claveDescencriptada " + claveDescencriptada);
+        nuevaClave = Util.encriptaMD5(nuevaClave);
+        //Verificar que la nueva contrasenia sea distinta  a la antigua contrasenia
+        if (claveDescencriptada.equals(nuevaClave)) {
+            mensaje = "La nueva contrasenia debe ser distinta a la version anterior.";
+            return mensaje;
+        }
 
-            //Verificar que la nueva contrasenia sea igual a la confirmacion de contrasenia
-            if (!nuevaClave.equals(confirmarClave)) {
-                mensaje = "El valor del campo Nueva contrasenia debe ser igual al campo Confirmar contrasenia.";
-                return mensaje;
-            }
+        //Verificar que la nueva contrasenia sea igual a la confirmacion de contrasenia
+        if (!nuevaClave.equals(confirmarClave)) {
+            mensaje = "El valor del campo Nueva contrasenia debe ser igual al campo Confirmar contrasenia.";
+            return mensaje;
+        }
 
-            //actualizar contrasenia (Encriptada)
-            usuario.setClave(nuevaClave);
-            //usuario.setClave(Util.crypt(nuevaClave));
-            usuarioRepository.save(usuario);
-            mensaje = "OK";
+        //actualizar contrasenia (Encriptada)
+        usuario.setClave(nuevaClave);
+        //usuario.setClave(Util.crypt(nuevaClave));
+        usuarioRepository.save(usuario);
+        mensaje = "OK";
         } catch (Exception e) {
             e.printStackTrace();
         }

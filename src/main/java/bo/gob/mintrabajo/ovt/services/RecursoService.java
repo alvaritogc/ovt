@@ -5,15 +5,16 @@ import bo.gob.mintrabajo.ovt.entities.UsrRecurso;
 import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
 import bo.gob.mintrabajo.ovt.repositories.ModuloRepository;
 import bo.gob.mintrabajo.ovt.repositories.RecursoRepository;
-
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -36,7 +37,7 @@ public class RecursoService implements IRecursoService {
         this.moduloRepository = moduloRepository;
     }
 
-    //    @Override
+//    @Override
     public List<UsrRecurso> getAllRecursos() {
         List<UsrRecurso> allRecursos;
         allRecursos = recursoRepository.findAll();
@@ -93,7 +94,7 @@ public class RecursoService implements IRecursoService {
 
     @Override
     public boolean guardarRecurso(UsrRecurso recurso, String usrModuloId, boolean estadoRecurso,
-                                  String REGISTRO_BITACORA, String tipoNodo, Long idPadre, Long idHijo) {
+            String REGISTRO_BITACORA, String tipoNodo, Long idPadre, Long idHijo) {
         boolean guardado = false;
         System.out.println("entra a guardar");
 
