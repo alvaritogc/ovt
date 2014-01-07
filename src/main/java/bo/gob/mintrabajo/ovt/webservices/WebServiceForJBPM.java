@@ -16,19 +16,20 @@
 
 package bo.gob.mintrabajo.ovt.webservices;
 
+import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.webServiceJbpm.UsuariosInternosExternosforJPBM;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import javax.jws.WebService;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -54,8 +55,10 @@ public class WebServiceForJBPM {
         logger.info("Listando a los usuarios");
         try {
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.50.7:1521:DESA", "ovt", "prueba");
-            Statement stmt = conn.createStatement();
+            //Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.50.7:1521:DESA", "ovt", "prueba");
+            DataSource ds = Util.obtenerDatasource();
+            Statement stmt = (Statement) ds.getConnection();
+            ds.getConnection();
             UsuariosInternosExternosforJPBM jBPM = new UsuariosInternosExternosforJPBM();
             ResultSet rset1 = stmt.executeQuery("SELECT * FROM usr_usuario u where u.es_interno=1 and u.fecha_inhabilitacion is null and u.estado_usuario='A' ");
             jBPM.setListaUsuariosInternos(jBPM.converterObjectUsuario(rset1));
