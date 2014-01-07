@@ -209,7 +209,7 @@ public class EscritorioBean {
                 parametros.put("direccion", vperPersona.getDirDireccion());
                 parametros.put("telefono", vperPersona.getTelefono());
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getLocalidad());
+                parametros.put("ciudadLocalidad", vperPersona.getDirLocalidad());
                 parametros.put("fax", vperPersona.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
@@ -358,7 +358,7 @@ public class EscritorioBean {
                 parametros.put("direccion", vperPersona.getDirDireccion());
                 parametros.put("telefono", vperPersona.getTelefono());
                 parametros.put("patronalSS", vperPersona.getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getLocalidad());
+                parametros.put("ciudadLocalidad", vperPersona.getDirLocalidad());
                 parametros.put("fax", vperPersona.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
@@ -421,7 +421,7 @@ public class EscritorioBean {
                 parametros.put("direccion", vperPersona.getDirDireccion());
                 parametros.put("telefono", vperPersona.getTelefono());
                 parametros.put("patronalSS", vperPersona.getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getLocalidad());
+                parametros.put("ciudadLocalidad", vperPersona.getDirLocalidad());
                 parametros.put("fax", vperPersona.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
@@ -482,7 +482,7 @@ public class EscritorioBean {
                 parametros.put("direccion", vperPersona.getDirDireccion());
                 parametros.put("telefono", vperPersona.getTelefono());
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getLocalidad());
+                parametros.put("ciudadLocalidad", vperPersona.getDirLocalidad());
                 parametros.put("fax", vperPersona.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
