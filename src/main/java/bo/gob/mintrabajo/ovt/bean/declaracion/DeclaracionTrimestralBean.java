@@ -127,9 +127,30 @@ public class DeclaracionTrimestralBean implements Serializable {
     private DocPlanilla rectificatorio;
     private String bitacoraSession;
     private ParObligacionCalendario parObligacionCalendario;
+    private int trimestralAuto;
 
     @PostConstruct
     public void ini() {
+//        trimestralAuto= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_FORMULARIO, Dominios.PAR_AUTOLLENADO_TRIMESTRAL).getDescripcion());
+        docPlanilla = new DocPlanilla();
+//        if(trimestralAuto==1){
+//            listaBinarios= SeleccionaCentralSucursalBean.binarios.getIfPresent("binarios");
+//            docPlanillaDetalles= SeleccionaCentralSucursalBean.planillaDetalles.getIfPresent("planillaDetalles");
+//
+//            docPlanilla.setHaberBasico(BigDecimal.valueOf((Double) session.getAttribute("haberBasico")));
+//            docPlanilla.setBonoAntiguedad(BigDecimal.valueOf((Double) session.getAttribute("bonoAntiguedad")));
+//            docPlanilla.setBonoProduccion(BigDecimal.valueOf((Double) session.getAttribute("bonoProduccion")));
+//            docPlanilla.setSubsidioFrontera(BigDecimal.valueOf((Double) session.getAttribute("subsidioFrontera")));
+//            docPlanilla.setLaborExtra(BigDecimal.valueOf((Double) session.getAttribute("laborExtraordinaria")));
+//            docPlanilla.setOtrosBonos(BigDecimal.valueOf((Double) session.getAttribute("otrosBonos")));
+//            docPlanilla.setAporteAfp(BigDecimal.valueOf((Double) session.getAttribute("aporteAFP")));
+//            docPlanilla.setRciva(BigDecimal.valueOf((Double) session.getAttribute("rcIVA")));
+//            docPlanilla.setOtrosDescuentos(BigDecimal.valueOf((Double) session.getAttribute("otrosDescuentos")));
+//            docPlanilla.setMontoAsegCaja(BigDecimal.ZERO);
+//            docPlanilla.setMontoAsegAfp(BigDecimal.ZERO);
+//            docPlanilla.setMontoOperacion(BigDecimal.ZERO);
+//        }
+
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
         parametro = (Integer) session.getAttribute("parametro");
         unidadSeleccionada = (PerUnidad) session.getAttribute("unidadSeleccionada");
@@ -145,7 +166,8 @@ public class DeclaracionTrimestralBean implements Serializable {
         idUsuario = (Long) session.getAttribute("idUsuario");
         usuario = iUsuarioService.findById(idUsuario);
         perPersona = iPersonaService.buscarPorId(idPersona);
-        docPlanilla = new DocPlanilla();
+
+//        if(trimestralAuto==0){
         docPlanilla.setHaberBasico(BigDecimal.ZERO);
         docPlanilla.setBonoAntiguedad(BigDecimal.ZERO);
         docPlanilla.setBonoProduccion(BigDecimal.ZERO);
@@ -158,7 +180,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         docPlanilla.setMontoAsegCaja(BigDecimal.ZERO);
         docPlanilla.setMontoAsegAfp(BigDecimal.ZERO);
         docPlanilla.setMontoOperacion(BigDecimal.ZERO);
-
+//        }
         salarioMinimo= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_SALARIO, Dominios.PAR_SALARIO_MINIMO).getDescripcion());
         //** Controlamos que no puedan acceder a una fecha anterior a la actual  **//
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -295,15 +317,12 @@ public class DeclaracionTrimestralBean implements Serializable {
             return null;
         }
 
-        validaArchivo(listaBinarios);
-        if(errores.size()==0 && verificaValidacion){
+//        validaArchivo(listaBinarios);
+//        if(errores.size()==0 && verificaValidacion){
                 try{
                     if(parametro==3)
                         documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
                     logger.info("Guardando documento, binario y planilla");
-                    logger.info(documento.toString());
-                    logger.info(listaBinarios.toString());
-                    logger.info(docPlanilla.toString());
                     generaPlanilla();
                     documento.setPerUnidad(unidadSeleccionada);
                     iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
@@ -312,12 +331,12 @@ public class DeclaracionTrimestralBean implements Serializable {
                     e.printStackTrace();
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
                 }
-            }else{
-                binario = new DocBinario();
-                listaBinarios.clear();
-                habilita=true;
-                nombres= new String[3];
-            }
+//            }else{
+//                binario = new DocBinario();
+//                listaBinarios.clear();
+//                habilita=true;
+//                nombres= new String[3];
+//            }
             logger.info("retorno final");
         return null;
     }
