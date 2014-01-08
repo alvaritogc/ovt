@@ -74,15 +74,19 @@
                           requiredMessage="El campo Departamento es obligatorio">
              <f:selectItem itemLabel="---Seleccione un departamento---" itemValue="" />
              <f:selectItems value="#{personaUnidadBean.listaLocalidad}" />
+             <p:ajax update="localidad" listener="#{personaUnidadBean.cargarLocalidadDeDepartamento}" />
          </p:selectOneMenu>
-            <h:outputText value="Localidad: "/>
-            <p:inputText id="inputTxtLocalidad2" value="#{personaUnidadBean.direccion.localidad}"
-                         style="width: 215px;"
-                         tabindex="6"
-                    >
-            </p:inputText>
-
-
+         
+         <p:outputLabel for="localidad" value="Localidad:"/>
+         <p:selectOneMenu id="localidad" value="#{personaUnidadBean.direccion.localidad}"
+                          tabindex="6"
+                          style="text-transform: uppercase;"
+                          required="true"
+                          requiredMessage="El campo Localidad es obligatorio">
+             <f:selectItem itemLabel="---Seleccione una localidad---" itemValue="" />
+             <f:selectItems value="#{personaUnidadBean.listaLocalidades}" var="loc" itemLabel="#{loc.descripcion}" itemValue="#{loc.descripcion}" />
+         </p:selectOneMenu>
+         
          <h:outputText value="Referencia: "/>
          <p:inputTextarea id="txtAreaReferencia" value="#{personaUnidadBean.direccion.referencia}"
                           rows="5"
