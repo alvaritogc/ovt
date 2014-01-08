@@ -94,6 +94,9 @@ public class PersonaUnidadBean implements Serializable{
 
     @ManagedProperty(value = "#{documentoService}")
     private IDocumentoService documentoService;
+    
+    @ManagedProperty(value = "#{vParLocalidadService}")
+    private IVParLocalidadService iVParLocalidadService;
 
     private PerPersona persona=new PerPersona();
     private String idLocalidadPersona;
@@ -102,6 +105,9 @@ public class PersonaUnidadBean implements Serializable{
 
     private String idLocalidad;
     private List<SelectItem>listaLocalidad;
+    
+    private List<VparLocalidad> listaLocalidades;
+    private String idLocalidadAux;
 
     private PerUnidad unidad;
     private List<PerUnidad>listaUnidad;
@@ -162,6 +168,8 @@ public class PersonaUnidadBean implements Serializable{
 
     @PostConstruct
     public void ini(){
+        idLocalidad="";
+        idLocalidadAux="";
 
         persona=new PerPersona();
         String idEmpleador=   (String)session.getAttribute("idEmpleador");
@@ -312,6 +320,26 @@ public class PersonaUnidadBean implements Serializable{
         cargarDireccion();
         cargarRepLegal();
         cargarInfoLaboral();
+    }
+    
+    public void cargarLocalidadDeDepartamento(){
+        System.out.println("==========================================================");
+        String idAux;
+        if(!idLocalidad.equals(""))
+            idAux=idLocalidad;
+        else{
+            idAux=direccionPrincipal.getCodLocalidad().getCodLocalidad();
+        }
+                
+        System.out.println("==>> idLocalidad " +idLocalidad);
+        System.out.println("==>> idLocalidadAux " +idLocalidadAux);
+        System.out.println("==>> direccion " + direccionPrincipal.getCodLocalidad().getCodLocalidad());
+        if(idAux.equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se encontrarón Localidades para este departamento."));
+        }else{
+            listaLocalidades= iVParLocalidadService.listarVLocalidadesHijo(idAux);
+        }
     }
 
     /*
@@ -752,7 +780,7 @@ public class PersonaUnidadBean implements Serializable{
             listaLocalidad=new ArrayList<SelectItem>();
             localidades=iLocalidadService.getAllLocalidades();
             for (ParLocalidad l:localidades){
-                if(!l.getDescripcion().equalsIgnoreCase("BOLIVIA"))
+                if(!l.getDescripcion().equalsIgnoreCase("BOLIVIA") && l.getCodLocalidadPadre().getCodLocalidad().equalsIgnoreCase("BOL"))
                     listaLocalidad.add(new SelectItem(l.getCodLocalidad(),l.getDescripcion()));
             }
         }
@@ -1569,5 +1597,47 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setListaTipoIdentificacionROE(List<SelectItem> listaTipoIdentificacionROE) {
         this.listaTipoIdentificacionROE = listaTipoIdentificacionROE;
+    }
+
+    /**
+     * @return the iVParLocalidadService
+     */
+    public IVParLocalidadService getiVParLocalidadService() {
+        return iVParLocalidadService;
+    }
+
+    /**
+     * @param iVParLocalidadService the iVParLocalidadService to set
+     */
+    public void setiVParLocalidadService(IVParLocalidadService iVParLocalidadService) {
+        this.iVParLocalidadService = iVParLocalidadService;
+    }
+
+    /**
+     * @return the listaLocalidades
+     */
+    public List<VparLocalidad> getListaLocalidades() {
+        return listaLocalidades;
+    }
+
+    /**
+     * @param listaLocalidades the listaLocalidades to set
+     */
+    public void setListaLocalidades(List<VparLocalidad> listaLocalidades) {
+        this.listaLocalidades = listaLocalidades;
+    }
+
+    /**
+     * @return the idLocalidadAux
+     */
+    public String getIdLocalidadAux() {
+        return idLocalidadAux;
+    }
+
+    /**
+     * @param idLocalidadAux the idLocalidadAux to set
+     */
+    public void setIdLocalidadAux(String idLocalidadAux) {
+        this.idLocalidadAux = idLocalidadAux;
     }
 }

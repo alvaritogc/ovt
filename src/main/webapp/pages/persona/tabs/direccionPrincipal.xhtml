@@ -23,7 +23,8 @@
                              onclick="PF('dlgDireccion').show()"
                              id="cmdButtonDireccion2"
                              update=":frmDireccion:pnlDireccion,:txtDlgDireccion"
-                             rendered="#{personaUnidadBean.direccionPrincipal.idDireccion!=null}">
+                             rendered="#{personaUnidadBean.direccionPrincipal.idDireccion!=null}"
+                             actionListener="#{personaUnidadBean.cargarLocalidadDeDepartamento}">
                 <f:setPropertyActionListener value="#{personaUnidadBean.direccionPrincipal.perUnidad}" target="#{personaUnidadBean.unidadRegistro}"/>
                 <f:setPropertyActionListener value="#{personaUnidadBean.direccionPrincipal}" target="#{personaUnidadBean.direccion}"/>
                 <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
