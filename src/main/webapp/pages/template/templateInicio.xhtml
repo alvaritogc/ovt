@@ -115,7 +115,7 @@
 <div class="row">
 <div class="span3 bs-docs-sidebar">
 
-<p:idleMonitor timeout="60000">
+<p:idleMonitor timeout="#{templateInicioBean.sessionTimeOut}">
     <p:ajax event="idle" listener="#{templateInicioBean.timeOutOvt}"/>
 </p:idleMonitor>
 <h:form>
@@ -178,7 +178,7 @@
                           update=":frmOlvidoContrasenia:txtOlvidoNIT,:frmOlvidoContrasenia:txtOlvidoEmail"/></u>
         <br/>
         <!--<u><p:commandLink value="Regístrate a la oficina virtual" action="# {templateInicioBean.irRegistro}"-->
-                          <!--style="color:#00079C;" immediate="true"/></u>-->
+        <!--style="color:#00079C;" immediate="true"/></u>-->
     </p:panel>
     <br/><br/>
 </h:form>
