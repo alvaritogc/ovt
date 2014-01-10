@@ -90,7 +90,8 @@ public class ContenidoPublicoBean {
             output.close();
             facesContext.responseComplete();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("No se pudo descargar el archivo");
         }
         mensajeContenido = new ParMensajeContenido();
     }

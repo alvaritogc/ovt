@@ -359,7 +359,7 @@ public class TemplateInicioBean implements Serializable {
             }
             //
         } catch (RuntimeException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
@@ -556,7 +556,8 @@ public class TemplateInicioBean implements Serializable {
         try {
             contex.getExternalContext().redirect("/ovt/faces/pages/contenidos/contenidoPublico.xhtml?p=" + mensajeApp.getIdMensajeApp());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("No se pudo redireccionar a la página " + "/ovt/faces/pages/contenidos/contenidoPublico.xhtml?p=" + mensajeApp.getIdMensajeApp());
         }
 
     }
@@ -574,7 +575,8 @@ public class TemplateInicioBean implements Serializable {
         try {
             contex.getExternalContext().redirect("/ovt/pages/inicio.jsf");
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("No se pudo redireccionar a la página /ovt/pages/inicio.jsf");
         }
         //
         return "";

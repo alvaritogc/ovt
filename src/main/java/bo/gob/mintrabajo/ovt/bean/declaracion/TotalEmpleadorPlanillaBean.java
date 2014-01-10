@@ -179,7 +179,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             }
             output.flush();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("No se pudo abrir el archivo");
         } finally {
             close(output);
             close(input);
@@ -193,7 +194,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             try {
                 resource.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                logger.info("No se pudo cerrar el recurso");
             }
         }
     }
