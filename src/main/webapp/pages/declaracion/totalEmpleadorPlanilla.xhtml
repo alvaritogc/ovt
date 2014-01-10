@@ -31,8 +31,12 @@
                 </p:selectOneMenu>
                 <p:outputLabel value="Tipo planilla:"/>
                 <p:selectOneMenu value="#{totalEmpleadorPlanillaBean.tipoPlanilla}">
-                    <f:selectItem itemLabel="Planilla de aguinaldo" itemValue="LC1020"/>
-                    <f:selectItem itemLabel="Planilla trimestral" itemValue="LC1010"/>
+                    <!--                    <f:selectItem itemLabel="Planilla de aguinaldo" itemValue="LC1020"/>
+                                        <f:selectItem itemLabel="Planilla trimestral" itemValue="LC1010"/>-->
+                    <f:selectItems value="#{totalEmpleadorPlanillaBean.listaDominios}"
+                                   var="dominio"
+                                   itemLabel="#{dominio.descripcion}"
+                                   itemValue="#{dominio.parDominioPK.valor}"/>
                 </p:selectOneMenu>
 
                 <p:outputLabel for="idFechaDesde" value="Fecha Desde:"
