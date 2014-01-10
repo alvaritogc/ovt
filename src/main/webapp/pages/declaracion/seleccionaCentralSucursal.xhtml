@@ -8,11 +8,10 @@
 <ui:composition template="../../pages/template/templateInicio.xhtml">
 
     <ui:define name="content">
-        <h:form id="form2" style="font-size: 13px">
-
+        <h:form id="form">
             <style type="text/css">
                 label, input, button, select, textarea {
-                    font-size: 14px;
+                    font-size: 13px;
                     font-weight: normal;
                     line-height: 10px;
                 }
@@ -21,10 +20,11 @@
                 <h1>Información</h1>
                 <p:outputLabel value="#{seleccionaCentralSucursalBean.mensajeValidacion}" style="font-size: 15px;"/>
             </p:outputPanel>
-            <center>
 
-                <p:outputPanel rendered="#{seleccionaCentralSucursalBean.habilitado}" >
-                <p:outputLabel value="El siguiente formulario se declarará, para:" style="font-size: 14px"/> <br/><br/>
+
+            <p:outputPanel rendered="#{seleccionaCentralSucursalBean.habilitado}" >
+                <center>
+                    <p:outputLabel value="El siguiente formulario se declarará, para:" style="font-size: 14px"/> <br/><br/>
 
                     <p:selectOneRadio id="customRadio" value="#{seleccionaCentralSucursalBean.tipoEmpresa}" columns="2">
                         <p:ajax event="change" update="tipoEmpresa"/>
@@ -33,16 +33,29 @@
                     </p:selectOneRadio>
                     <br/>
                     <h:panelGroup id="tipoEmpresa">
-                        <p:outputLabel id="central" value="#{seleccionaCentralSucursalBean.central.nombreComercial}" rendered="#{seleccionaCentralSucursalBean.tipoEmpresa==1}" />
-                        <p:selectOneMenu id="sucursal" style="width: 260px; height: 20px" rendered="#{seleccionaCentralSucursalBean.tipoEmpresa==2}" value="#{seleccionaCentralSucursalBean.idUnidad}">
+                        <p:outputLabel id="central" style="font-size: 13px" value="#{seleccionaCentralSucursalBean.central.nombreComercial}" rendered="#{seleccionaCentralSucursalBean.tipoEmpresa==1}" />
+                        <p:selectOneMenu id="sucursal" style="width: 260px; height: 18px" rendered="#{seleccionaCentralSucursalBean.tipoEmpresa==2}" value="#{seleccionaCentralSucursalBean.idUnidad}">
                             <f:selectItem itemLabel="---Seleccione---" itemDisabled="true"/>
                             <f:selectItems value="#{seleccionaCentralSucursalBean.sucursales}" var="sucursal" itemLabel="#{sucursal.nombreComercial}" itemValue="#{sucursal.perUnidadPK.idUnidad}"/>
                         </p:selectOneMenu>
                     </h:panelGroup>
-                 <br/>
-                <p:commandButton value="Aceptar" action="#{seleccionaCentralSucursalBean.seleccionaUnidad}" update="form2"/>
-                </p:outputPanel>
-            </center>
+
+                <br/><br/>
+                <p:panelGrid columns="2" rendered="#{seleccionaCentralSucursalBean.verificaValidacion==true}">
+                    <p:outputLabel value="Errores" style="font-weight: bold"/>
+                    <p:outputLabel value="Alertas" style="font-weight: bold"/>
+                    <p:scrollPanel style="width:330px;height:150px" mode="native">
+                        <p:dataList value="#{seleccionaCentralSucursalBean.errores}" var="e" itemType="disc" emptyMessage="Sin errores.">#{e}</p:dataList>
+                    </p:scrollPanel>
+                    <p:scrollPanel style="width:329px;height:150px" mode="native">
+                        <p:dataList value="#{seleccionaCentralSucursalBean.alertas}" var="a" itemType="disc" emptyMessage="Sin alertas.">#{a.observacion}</p:dataList>
+                    </p:scrollPanel>
+                </p:panelGrid>
+                </center>
+                <!-- Renato Codigo -->
+
+                <p:commandButton id="btnAceptar" value="Aceptar" action="#{seleccionaCentralSucursalBean.seleccionaUnidad}" update="form"/>
+            </p:outputPanel>
         </h:form>
     </ui:define>
 </ui:composition>
