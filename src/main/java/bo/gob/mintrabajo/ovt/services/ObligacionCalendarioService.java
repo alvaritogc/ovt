@@ -63,7 +63,7 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
     public List<ParObligacionCalendario> listaObligacionCalendarioPorObligacion(String codObligacion){
         List<ParObligacionCalendario> lista;
         try {
-            lista = obligacionCalendarioRepository.findByCodObligacion_CodObligacion(codObligacion);
+            lista = obligacionCalendarioRepository.listaEnOrdenYPorCodObligacion(codObligacion);
         } catch (Exception e) {
             e.printStackTrace();
             lista = null;
