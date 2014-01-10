@@ -14,6 +14,16 @@ Copyright 2013 lvaldez.
         <ui:define name="content">
             <h2 class="form-signin-heading">Transición de documentos</h2>
             <!--  Boton de registro-->
+            <h:form id="tablaTransiciones">
+                <h:panelGrid columns="4" style="alignment-adjust: middle" cellpadding="5">
+                    <h:outputLabel for="documento" value="Tipo de documento:" style="font-weight:bold"/>  
+                    <p:selectOneMenu id="documento" value="#{transicionBean.tipoDocumento}">  
+                        <f:selectItem itemLabel="---Seleccione documento---" itemValue=" " />  
+                        <f:selectItems value="#{transicionBean.listaDefinicionDocumento}" var="ob" itemLabel="#{ob.nombre}" itemValue="#{ob.docDefinicionPK.codDocumento}"/>
+                        <p:ajax update="tablaTransiciones"  
+                                listener="#{transicionBean.listarTransiciones}" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
             <p:commandButton value="Nuevo" oncomplete="dlgFormTransicion.show();" update=":formTransicion" 
                              icon="ui-icon-circle-plus" actionListener="#{transicionBean.nuevo}" immediate="true"/>
             <!--  Listado de Transiciones en tabla-->
@@ -66,7 +76,7 @@ Copyright 2013 lvaldez.
              <p:confirmDialog message="Esta seguro de eliminar este registro?"  
                               showEffect="fade" hideEffect="explode" closable="false" 
                 header="Confirmación" severity="alert" widgetVar="confirmation">  
-                 <p:commandButton value="Si" update=":messages :dataTableTransicion" oncomplete="confirmation.hide()" actionListener="#{transicionBean.confirmaEliminar}" />  
+                 <p:commandButton value="Si" update="messages dataTableTransicion" oncomplete="confirmation.hide()" actionListener="#{transicionBean.confirmaEliminar}" />  
                  <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
             </p:confirmDialog>
              
@@ -80,6 +90,7 @@ Copyright 2013 lvaldez.
                 <span class="ui-icon ui-icon-alert"></span>
                 <h:outputText value="Los datos del registro que esta ingresando ya existen o hubo un error al guardar el registro." />  
             </p:dialog>
+            </h:form>
                 
              <!--            Formulario de registro y edicion-->   
             <p:dialog id="basicDialogMessage" header="Transición" widgetVar="dlgFormTransicion" 
@@ -130,7 +141,7 @@ Copyright 2013 lvaldez.
                         <p:selectBooleanCheckbox id="estado" value="#{transicionBean.estadoTransicion}"  />
                         <h:panelGroup>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <p:commandButton value="Guardar" action="#{transicionBean.guardarModificar}" update=":growl formTransicion :dataTableTransicion" icon="ui-icon-disk"/>
+                            <p:commandButton value="Guardar" action="#{transicionBean.guardarModificar}" update=":growl formTransicion :tablaTransiciones" icon="ui-icon-disk"/>
                         </h:panelGroup> 
                         <p:commandButton value="Cancelar" actionListener="#{transicionBean.limpiar}" immediate="true"
                                          onclick="dlgFormTransicion.hide();" update="formTransicion" icon="ui-icon-close"/>

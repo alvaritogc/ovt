@@ -103,6 +103,16 @@
                 <p:inputText value="#{personaUnidadBean.unidad.nroCajaSalud}" readonly="true" style="width: 150px;"/>
             </h:panelGrid>
 
+            <h:outputText value="Nro. de AFP:"/>
+            <h:panelGrid columns="3" columnClasses="column2,column3">
+                <p:inputText value="#{personaUnidadBean.unidad.nroAfp}" readonly="true" style="width: 150px;"/>
+
+                <h:outputText value="Nro. de FUNDAEMPRESA:"/>
+                <p:inputText value="#{personaUnidadBean.unidad.nroFundaempresa}" readonly="true" style="width: 150px;"/>
+            </h:panelGrid>
+            <h:outputText value="Otro Nro.:"/>
+            <p:inputText value="#{personaUnidadBean.unidad.nroOtro}" readonly="true" style="width: 150px;"/>
+
             <h:outputText value="Observaciones:"/>
             <p:inputTextarea id="txtAreaObservacion" value="#{personaUnidadBean.unidad.observaciones}"
                              rows="5"

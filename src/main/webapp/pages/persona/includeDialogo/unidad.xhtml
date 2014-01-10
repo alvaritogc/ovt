@@ -176,7 +176,36 @@
                 <p:inputText value="#{personaUnidadBean.unidadRegistro.nroCajaSalud}"
                              style="width: 205px;text-transform: uppercase"
                              id="inputtxtNCajaSalud"
-                             tabindex="100">
+                             tabindex="12">
+                    <f:converter converterId="lowerConverter"/>
+                </p:inputText>
+                
+                <p:outputLabel for="inputtxtNAFP" value="Nro. de AFP: "/>
+                <p:inputText value="#{personaUnidadBean.unidadRegistro.nroAfp}"
+                             style="width: 205px;text-transform: uppercase"
+                             id="inputtxtNAFP"
+                             tabindex="13">
+                    <f:converter converterId="lowerConverter"/>
+                </p:inputText>
+                <p:outputLabel for="inputtxtNFundaempresa" value="Nro. de FUNDAEMPRESA: "/>
+                <p:inputText value="#{personaUnidadBean.unidadRegistro.nroFundaempresa}"
+                             style="width: 205px;text-transform: uppercase"
+                             id="inputtxtNFundaempresa"
+                             tabindex="14">
+                    <f:converter converterId="lowerConverter"/>
+                </p:inputText>
+                <p:outputLabel for="inputtxtNOtro" value="Otro Nro.: "/>
+                <p:inputText value="#{personaUnidadBean.unidadRegistro.nroOtro}"
+                             style="width: 205px;text-transform: uppercase"
+                             id="inputtxtNOtro"
+                             tabindex="15">
+                    <f:converter converterId="lowerConverter"/>
+                </p:inputText>
+                <p:outputLabel for="inputtxtNReferecial" value="Nro. Referencial: "/>
+                <p:inputText value="#{personaUnidadBean.unidadRegistro.nroReferencial}"
+                             style="width: 205px;text-transform: uppercase"
+                             id="inputtxtNReferecial"
+                             tabindex="16" readonly="true">
                     <f:converter converterId="lowerConverter"/>
                 </p:inputText>
 
