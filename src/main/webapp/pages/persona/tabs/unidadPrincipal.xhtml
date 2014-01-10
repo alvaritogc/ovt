@@ -15,7 +15,7 @@
         {
             border-color: transparent;
 
-            }
+        }
 
         .ui-panel .ui-panel-footer {
             border-color: transparent;
@@ -34,91 +34,91 @@
 
     <p:panel  id="pnlUnidadPrincipal" styleClass="myPanelContent" style="width: 100px">
 
-            <p:commandButton id="cmdButtonPrinc"
-                             icon="ui-icon-pencil"
-                             value="Modificar"
-                             update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
-                             onclick="PF('dlgUnidad').show()">
-                <f:setPropertyActionListener value="#{personaUnidadBean.persona}" target="#{personaUnidadBean.personaRegistro}"/>
-                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
-                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
-                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
-            </p:commandButton>
+        <p:commandButton id="cmdButtonPrinc"
+                         icon="ui-icon-pencil"
+                         value="Modificar"
+                         update=":frmUnidad:pnlUnidad,:txtDldUnidad,:frmUnidad:cmdButtonUnidad"
+                         onclick="PF('dlgUnidad').show()">
+            <f:setPropertyActionListener value="#{personaUnidadBean.persona}" target="#{personaUnidadBean.personaRegistro}"/>
+            <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+            <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
+            <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
+        </p:commandButton>
         <br/><br/><br/>
 
 
-            <h:panelGrid   columns="2"  style="width: 680px;">
-                 <h:outputText value="Personeria"/>
-                <p:selectOneRadio id="checkEsNatural"
-                                  value="#{personaUnidadBean.persona.esNatural}"
-                                  disabled="true">
-                    <f:selectItem itemLabel="Natural   ." itemValue="false" />
-                    <f:selectItem itemLabel="Juridica" itemValue="true" />
-                </p:selectOneRadio>
+        <h:panelGrid   columns="2"  style="width: 680px;">
+            <h:outputText value="Personeria"/>
+            <p:selectOneRadio id="checkEsNatural"
+                              value="#{personaUnidadBean.persona.esNatural}"
+                              disabled="true">
+                <f:selectItem itemLabel="Natural   ." itemValue="false" />
+                <f:selectItem itemLabel="Juridica" itemValue="true" />
+            </p:selectOneRadio>
 
-                        <p:outputLabel  value="Nombre o Razon social:"/>
-                        <p:inputText readonly="true"
-                                     value="#{personaUnidadBean.persona.nombreRazonSocial}" style="width: 455px;"/>
+            <p:outputLabel  value="Nombre o Razon social:"/>
+            <p:inputText readonly="true"
+                         value="#{personaUnidadBean.persona.nombreRazonSocial}" style="width: 455px;"/>
 
-                        <h:outputText value="Ap. paterno:" />
-                <h:panelGrid columns="3" columnClasses="column2,column3">
+            <h:outputText value="Ap. paterno:" />
+            <h:panelGrid columns="3" columnClasses="column2,column3">
                 <p:inputText readonly="true" value="#{personaUnidadBean.persona.apellidoPaterno}" style="width: 150px;"/>
 
-                        <h:outputText value="Ap. materno:"  />
-                        <p:inputText readonly="true" value="#{personaUnidadBean.persona.apellidoMaterno}" style="width: 150px;"/>
-                        </h:panelGrid>
-                        <p:outputLabel  value="Nro. de identificacion:" />
-                        <p:inputText readonly="true" value="#{personaUnidadBean.persona.nroIdentificacion}" style="width: 455px;" />
+                <h:outputText value="Ap. materno:"  />
+                <p:inputText readonly="true" value="#{personaUnidadBean.persona.apellidoMaterno}" style="width: 150px;"/>
+            </h:panelGrid>
+            <p:outputLabel  value="Nro. de identificacion:" />
+            <p:inputText readonly="true" value="#{personaUnidadBean.persona.nroIdentificacion}" style="width: 455px;" />
 
 
-                        <p:outputLabel  value="Identificacion:"/>
-                <h:panelGrid columns="3" columnClasses="column2,column3">
-                        <p:inputText readonly="true" value="#{personaUnidadBean.persona.tipoIdentificacion}" style="width: 150px;" />
+            <p:outputLabel  value="Identificacion:"/>
+            <h:panelGrid columns="3" columnClasses="column2,column3">
+                <p:inputText readonly="true" value="#{personaUnidadBean.persona.tipoIdentificacion}" style="width: 150px;" />
                 <p:outputLabel value="&#160;&#160;&#160;Lugar de emision:"/>
                 <p:inputText readonly="true" value="#{personaUnidadBean.persona.codLocalidad.descripcion}" style="width: 150px;" />
-                </h:panelGrid>
+            </h:panelGrid>
 
-                <h:outputText value="Nombre comercial: "/>
-                <p:inputText value="#{personaUnidadBean.unidad.nombreComercial}" readonly="true" style="width: 455px;"/>
+            <h:outputText value="Nombre comercial: "/>
+            <p:inputText value="#{personaUnidadBean.unidad.nombreComercial}" readonly="true" style="width: 455px;"/>
 
 
-                <h:outputText value="Tipo de empresa:   "/>
-                <h:panelGrid columns="3" columnClasses="column2,column3">
+            <h:outputText value="Tipo de empresa:   "/>
+            <h:panelGrid columns="3" columnClasses="column2,column3">
                 <p:inputText value="#{personaUnidadBean.tipoEmpresaPrincipal}" readonly="true" style="width: 150px;text-transform: uppercase"/>
                 <h:outputText value="Tipo de sociedad: "/>
                 <p:inputText value="#{personaUnidadBean.tipoSociedadPrincipal}" readonly="true" style="width: 150px;text-transform: uppercase"/>
-                </h:panelGrid>
-
-
-                <h:outputText value="Fecha de inicio laboral:"/>
-
-                <p:inputText id="aa" value="#{personaUnidadBean.unidad.fechaNacimiento}" readonly="true" style="width: 150px;">
-                    <f:convertDateTime pattern="dd/MM/yyyy" for="aa"/>
-                </p:inputText>
-
-                               <h:outputText value="Nro. Referencial:"/>
-                                <h:panelGrid columns="3" columnClasses="column2,column3">
-                                <p:inputText value="#{personaUnidadBean.unidad.nroReferencial}" readonly="true" style="width: 150px;"/>
-                                    <h:outputText value="Nro. de Caja de salud:"/>
-                                    <p:inputText value="#{personaUnidadBean.unidad.nroCajaSalud}" readonly="true" style="width: 150px;"/>
-                                </h:panelGrid>
-
-                <h:outputText value="Observaciones:"/>
-                <p:inputTextarea id="txtAreaObservacion" value="#{personaUnidadBean.unidad.observaciones}"
-                                 rows="5"
-                                 cols="50"
-                                 autoResize="false"
-                                 style="width: 455px;"
-                                 readonly="true"/>
-
-
-                <h:outputText value="Actividad declarada:"/>
-                <p:inputTextarea id="txtAreaActividadDeclarada"
-                                 value="#{personaUnidadBean.unidad.actividadDeclarada}"
-                                 rows="5"
-                                 cols="50" autoResize="false"
-                                 style="width: 455px;"
-                                 readonly="true"/>
             </h:panelGrid>
+
+
+            <h:outputText value="Fecha de inicio laboral:"/>
+
+            <p:inputText id="aa" value="#{personaUnidadBean.unidad.fechaNacimiento}" readonly="true" style="width: 150px;">
+                <f:convertDateTime pattern="dd/MM/yyyy" for="aa"/>
+            </p:inputText>
+
+            <h:outputText value="Nro. Referencial:"/>
+            <h:panelGrid columns="3" columnClasses="column2,column3">
+                <p:inputText value="#{personaUnidadBean.unidad.nroReferencial}" readonly="true" style="width: 150px;"/>
+                <h:outputText value="Nro. de Caja de salud:"/>
+                <p:inputText value="#{personaUnidadBean.unidad.nroCajaSalud}" readonly="true" style="width: 150px;"/>
+            </h:panelGrid>
+
+            <h:outputText value="Observaciones:"/>
+            <p:inputTextarea id="txtAreaObservacion" value="#{personaUnidadBean.unidad.observaciones}"
+                             rows="5"
+                             cols="50"
+                             autoResize="false"
+                             style="width: 455px;"
+                             readonly="true"/>
+
+
+            <h:outputText value="Actividad declarada:"/>
+            <p:inputTextarea id="txtAreaActividadDeclarada"
+                             value="#{personaUnidadBean.unidad.actividadDeclarada}"
+                             rows="5"
+                             cols="50" autoResize="false"
+                             style="width: 455px;"
+                             readonly="true"/>
+        </h:panelGrid>
     </p:panel>
 </ui:composition>

@@ -89,6 +89,7 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         poc.setFechaDesde(obligacionCalendario.getFechaDesde());
         poc.setFechaHasta(obligacionCalendario.getFechaHasta());
         poc.setFechaPlazo(obligacionCalendario.getFechaPlazo());
+        poc.setFechaPlazo2(obligacionCalendario.getFechaPlazo2());
 
         poc.setFechaBitacora(new Date());
         poc.setRegistroBitacora(REGISTRO_BITACORA);
