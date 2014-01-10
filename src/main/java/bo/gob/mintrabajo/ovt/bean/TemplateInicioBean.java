@@ -1,5 +1,6 @@
 package bo.gob.mintrabajo.ovt.bean;
 
+import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.Util.ServicioEnvioEmail;
 import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.api.*;
@@ -43,6 +44,8 @@ import static bo.gob.mintrabajo.ovt.Util.Parametricas.*;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.omg.CORBA.INTERNAL;
+
 @ManagedBean(name = "templateInicioBean")
 @ViewScoped
 public class TemplateInicioBean implements Serializable {
@@ -58,15 +61,6 @@ public class TemplateInicioBean implements Serializable {
     //
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
-
-    public IUsuarioService getiUsuarioCambiarContraseniaService() {
-        return iUsuarioCambiarContraseniaService;
-    }
-
-    public void setiUsuarioCambiarContraseniaService(IUsuarioService iUsuarioCambiarContraseniaService) {
-        this.iUsuarioCambiarContraseniaService = iUsuarioCambiarContraseniaService;
-    }
-
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioCambiarContraseniaService;
     @ManagedProperty(value = "#{recursoService}")
@@ -124,6 +118,8 @@ public class TemplateInicioBean implements Serializable {
     // envio de email
     @ManagedProperty(value = "#{parametrizacionService}")
     private IParametrizacionService iParametrizacion;
+    //
+    private String sessionTimeOut;
 
     @PostConstruct
     public void ini() {
@@ -176,6 +172,7 @@ public class TemplateInicioBean implements Serializable {
             model.addElement(item);
         }
         cargarServiciosPublicos();
+        cargarSessionTimeOut();
     }
 
     public void cargar() {
@@ -285,6 +282,7 @@ public class TemplateInicioBean implements Serializable {
         }
         return false;
     }
+
 
     public String logout() {
         logger.info("logout()");
@@ -561,6 +559,25 @@ public class TemplateInicioBean implements Serializable {
             e.printStackTrace();
         }
 
+    }
+
+    public void cargarSessionTimeOut() {
+        ParParametrizacion parParametrizacion = iParametrizacion.obtenerParametro(Dominios.DOM_TIMER, Dominios.PAR_TIMER_SESSION_TIME_OUT);
+        int timeOut = Integer.valueOf(parParametrizacion.getDescripcion()) * 60 * 1000;
+        sessionTimeOut = String.valueOf(timeOut);
+    }
+
+    public String timeOutOvt() {
+        logout();
+        //
+        FacesContext contex = FacesContext.getCurrentInstance();
+        try {
+            contex.getExternalContext().redirect("/ovt/pages/inicio.jsf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //
+        return "";
     }
 
     public Cache<ParDominioPK, ParDominio> cargarDominio() {
@@ -878,5 +895,21 @@ public class TemplateInicioBean implements Serializable {
 
     public void setiParametrizacion(IParametrizacionService iParametrizacion) {
         this.iParametrizacion = iParametrizacion;
+    }
+
+    public IUsuarioService getiUsuarioCambiarContraseniaService() {
+        return iUsuarioCambiarContraseniaService;
+    }
+
+    public void setiUsuarioCambiarContraseniaService(IUsuarioService iUsuarioCambiarContraseniaService) {
+        this.iUsuarioCambiarContraseniaService = iUsuarioCambiarContraseniaService;
+    }
+
+    public String getSessionTimeOut() {
+        return sessionTimeOut;
+    }
+
+    public void setSessionTimeOut(String sessionTimeOut) {
+        this.sessionTimeOut = sessionTimeOut;
     }
 }

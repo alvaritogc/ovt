@@ -115,6 +115,9 @@
 <div class="row">
 <div class="span3 bs-docs-sidebar">
 
+<p:idleMonitor timeout="60000">
+    <p:ajax event="idle" listener="#{templateInicioBean.timeOutOvt}"/>
+</p:idleMonitor>
 <h:form>
     <p:commandButton value="Inicio" action="#{templateInicioBean.irInicio}" style="width: 100%"/>
 </h:form>
