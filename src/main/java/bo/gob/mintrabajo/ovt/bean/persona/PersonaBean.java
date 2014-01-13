@@ -152,7 +152,7 @@ public class PersonaBean implements Serializable{
             listaLocalidad=new ArrayList<SelectItem>();
             localidades=iLocalidadService.getAllLocalidades();
             for (ParLocalidad l:localidades){
-                if(!l.getDescripcion().equalsIgnoreCase("BOLIVIA"))
+                if(!l.getDescripcion().equalsIgnoreCase("BOLIVIA") && l.getCodLocalidadPadre().getCodLocalidad().equalsIgnoreCase("BOL"))
                     listaLocalidad.add(new SelectItem(l.getCodLocalidad(),l.getDescripcion()));
             }
         }

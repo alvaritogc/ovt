@@ -1,9 +1,11 @@
 package bo.gob.mintrabajo.ovt.bean.declaracion;
 
+import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.Util.Util;
 import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
+import com.sun.org.omg.CORBA.ParDescriptionSeqHelper;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -71,6 +73,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
     private IEntidadService iEntidadService;
     @ManagedProperty(value = "#{localidadService}")
     private ILocalidadService iLocalidadService;
+    @ManagedProperty(value = "#{dominioService}")
+    private IDominioService iDominioService;
     //
     private String tipoReporte;
     private String codLocalidad;
@@ -80,6 +84,9 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
     private Date fechaHasta;
 
     private PerPersona perPersona;
+
+
+    private List<ParDominio> listaDominios;
 
     @PostConstruct
     public void ini() {
@@ -93,6 +100,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
     public void cargar() {
         perPersona = iPersonaService.findById(idPersona);
         listaLocalidades = iLocalidadService.listarDepartamentos();
+        //
+        listaDominios = iDominioService.obtenerItemsDominio(Dominios.DOM_TIPO_GRUPO_DOCUMENTO);
     }
 
     public void generarReporte() {
@@ -130,12 +139,11 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             } else {
                 parametros.put("mostrarDetalles", "false");
             }
+            //            
+            ParDominio dominio = iDominioService.obtenerDominioPorNombreYValor(Dominios.DOM_TIPO_GRUPO_DOCUMENTO, tipoPlanilla);
             parametros.put("tipoPlanilla", tipoPlanilla);
-            if (tipoPlanilla != null && tipoPlanilla.equals("LC1010")) {
-                parametros.put("descripcionTipoPlanilla", "PLANILLA TRIMESTRAL");
-            } else {
-                parametros.put("descripcionTipoPlanilla", "PLANILLA DE AGUINALDOS");
-            }
+            parametros.put("descripcionTipoPlanilla", dominio.getDescripcion());
+            //
             parametros.put("fechaDesde", fechaDesde);
             parametros.put("fechaHasta", fechaHasta);
             parametros.put("usuarioIdentificacion", perPersona.getNroIdentificacion());
@@ -179,7 +187,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             }
             output.flush();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("No se pudo abrir el archivo");
         } finally {
             close(output);
             close(input);
@@ -193,7 +202,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             try {
                 resource.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                logger.info("No se pudo cerrar el recurso");
             }
         }
     }
@@ -325,5 +335,21 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
 
     public void setFechaHasta(Date fechaHasta) {
         this.fechaHasta = fechaHasta;
+    }
+
+    public IDominioService getiDominioService() {
+        return iDominioService;
+    }
+
+    public void setiDominioService(IDominioService iDominioService) {
+        this.iDominioService = iDominioService;
+    }
+
+    public List<ParDominio> getListaDominios() {
+        return listaDominios;
+    }
+
+    public void setListaDominios(List<ParDominio> listaDominios) {
+        this.listaDominios = listaDominios;
     }
 }

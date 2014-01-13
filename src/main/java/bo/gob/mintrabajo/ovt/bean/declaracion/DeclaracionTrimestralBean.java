@@ -76,6 +76,8 @@ public class DeclaracionTrimestralBean implements Serializable {
     private IParametrizacionService iParametrizacionService;
     @ManagedProperty(value = "#{infoLaboralService}")
     private IInfoLaboralService iInfoLaboralService;
+    @ManagedProperty(value = "#{direccionService}")
+    private IDireccionService iDireccionService;
 
     private int parametro;
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
@@ -93,6 +95,8 @@ public class DeclaracionTrimestralBean implements Serializable {
     private boolean temporalBoolean;
     private PerPersona persona;
     private Date fechaTemp = new Date();
+    private PerDireccion perDireccion;
+    private List<PerDireccion> perDireccions;
 
     private String textoBenvenida;
     private DocDocumento documento;
@@ -167,6 +171,8 @@ public class DeclaracionTrimestralBean implements Serializable {
         usuario = iUsuarioService.findById(idUsuario);
         perPersona = iPersonaService.buscarPorId(idPersona);
 
+        perDireccion = new PerDireccion();
+        perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(unidadSeleccionada.getPerUnidadPK());
 //        if(trimestralAuto==0){
         docPlanilla.setHaberBasico(BigDecimal.ZERO);
         docPlanilla.setBonoAntiguedad(BigDecimal.ZERO);
@@ -319,25 +325,25 @@ public class DeclaracionTrimestralBean implements Serializable {
 
 //        validaArchivo(listaBinarios);
 //        if(errores.size()==0 && verificaValidacion){
-                try{
-                    if(parametro==3)
-                        documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
-                    logger.info("Guardando documento, binario y planilla");
-                    generaPlanilla();
-                    documento.setPerUnidad(unidadSeleccionada);
-                    iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
-                    return "irEscritorio";
-                }catch (Exception e){
-                    e.printStackTrace();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
-                }
+        try{
+            if(parametro==3)
+                documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
+            logger.info("Guardando documento, binario y planilla");
+            generaPlanilla();
+            documento.setPerUnidad(unidadSeleccionada);
+            iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
+            return "irEscritorio";
+        }catch (Exception e){
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+        }
 //            }else{
 //                binario = new DocBinario();
 //                listaBinarios.clear();
 //                habilita=true;
 //                nombres= new String[3];
 //            }
-            logger.info("retorno final");
+        logger.info("retorno final");
         return null;
     }
 
@@ -466,7 +472,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//15
-                        docPlanillaDetalle.setClasificacionLaboral(registro.get(registro.getHeader(columna)));
+                    docPlanillaDetalle.setClasificacionLaboral(registro.get(registro.getHeader(columna)));
 
                     columna++;//16
                     if(!registro.get(registro.getHeader(columna)).equals(""))
@@ -1213,7 +1219,7 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void setDocPlanillasParaRectificar(List<DocPlanilla> docPlanillasParaRectificar) {
         this.docPlanillasParaRectificar = docPlanillasParaRectificar;
-}
+    }
 
     public DocPlanilla getRectificatorio() {
         return rectificatorio;
@@ -1229,5 +1235,21 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void setiInfoLaboralService(IInfoLaboralService iInfoLaboralService) {
         this.iInfoLaboralService = iInfoLaboralService;
+    }
+
+    public IDireccionService getiDireccionService() {
+        return iDireccionService;
+    }
+
+    public void setiDireccionService(IDireccionService iDireccionService) {
+        this.iDireccionService = iDireccionService;
+    }
+
+    public PerDireccion getPerDireccion() {
+        return perDireccion;
+    }
+
+    public void setPerDireccion(PerDireccion perDireccion) {
+        this.perDireccion = perDireccion;
     }
 }

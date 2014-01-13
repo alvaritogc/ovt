@@ -68,7 +68,8 @@ public class ContenidoGuiBean implements Serializable {
         try {
             contex.getExternalContext().redirect("/ovt/pages/contenidos/contenidoRecurso.jsf?p=" + recurso.getIdRecurso());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("no se pudo redireccionar a la pagina");
         }
 
     }

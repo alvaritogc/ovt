@@ -24,8 +24,21 @@ public interface ObligacionCalendarioRepository extends OpenJpaRepository<ParObl
     @Query(
             "   select a "
             + " from ParObligacionCalendario a"
-            + " order by a.codObligacion.descripcion asc ")
+            + " order by "
+            + " a.parCalendario.parCalendarioPK.gestion desc, "
+            + " a.parCalendario.parCalendarioPK.tipoPeriodo asc, "
+            + " a.codObligacion.descripcion asc")
     List<ParObligacionCalendario> listaPorOrdenDescripcionDeObligacion();
+    
+    @Query(
+            "   select a "
+            + " from ParObligacionCalendario a where a.codObligacion.codObligacion = :codObligacion"
+            + " order by "
+            + " a.parCalendario.parCalendarioPK.gestion desc, "
+            + " a.parCalendario.parCalendarioPK.tipoPeriodo asc, "
+            + " a.codObligacion.descripcion asc "
+            + " ")
+    List<ParObligacionCalendario> listaEnOrdenYPorCodObligacion(@Param("codObligacion") String codObligacion);
 
     @Query(
             "   select a "

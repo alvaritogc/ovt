@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TotalEmpleadorPorGenero" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="40" bottomMargin="40" uuid="c1954da6-c979-4cce-8a96-363ed5352b09">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TotalEmpleadorPorGenero" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="40" bottomMargin="40" uuid="c1954da6-c979-4cce-8a96-363ed5352b09">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
-	<property name="ireport.x" value="238"/>
-	<property name="ireport.y" value="37"/>
+	<property name="ireport.x" value="44"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="escudoBolivia" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>

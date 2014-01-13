@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ITransicionService {
     public List<DocTransicion> listaTransicion();
+    public List<DocTransicion> listaTransicionPorDocumento(String codDocumento);
     public boolean saveTransicion(
             DocTransicion transicion,
             boolean estadoTransicion,

@@ -115,7 +115,8 @@ public class MensajeContenidoBean {
             output.close();
             facesContext.responseComplete();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("No se pudo descargar el contenido");
         }
         mensajeContenido = new ParMensajeContenido();
     }

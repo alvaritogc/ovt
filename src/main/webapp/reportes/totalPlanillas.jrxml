@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TotalEmpleadorPorGenero" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="40" bottomMargin="40" uuid="c1954da6-c979-4cce-8a96-363ed5352b09">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TotalEmpleadorPorGenero" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="40" bottomMargin="40" uuid="c1954da6-c979-4cce-8a96-363ed5352b09">
 	<property name="ireport.zoom" value="1.1000000000000025"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -11,7 +11,10 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="mostrarDetalles" class="java.lang.String"/>
-	<parameter name="tipoPlanilla" class="java.lang.String"/>
+	<parameter name="tipoPlanilla" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<parameter name="fechaDesde" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -24,7 +27,7 @@ from VDOC_DOCUMENTOS_PLANILLA
 where
 ((COD_LOCALIDAD_DIRECCION = $P{codLocalidad} OR  $P{codLocalidad} = 'ALL') and COD_ESTADO<>999)
 and fecha_documento between  $P{fechaDesde} and $P{fechaHasta}
-and cod_documento = $P{tipoPlanilla}
+and tipo_grupo_documento = $P{tipoPlanilla}
 order by COD_LOCALIDAD_DIRECCION, fecha_documento asc]]>
 	</queryString>
 	<field name="ID_PERSONA" class="java.lang.String"/>
@@ -112,6 +115,8 @@ order by COD_LOCALIDAD_DIRECCION, fecha_documento asc]]>
 	<field name="COD_LOCALIDAD_PRESENTACION" class="java.lang.String"/>
 	<field name="COD_LOCALIDAD_DIRECCION" class="java.lang.String"/>
 	<field name="LOCALIDAD_DIRECCION" class="java.lang.String"/>
+	<field name="DOCUMENTO" class="java.lang.String"/>
+	<field name="TIPO_GRUPO_DOCUMENTO" class="java.lang.String"/>
 	<variable name="SUMA_HOMBRES" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
@@ -170,7 +175,7 @@ order by COD_LOCALIDAD_DIRECCION, fecha_documento asc]]>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{ESTADO_4}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{ESTADO_4}==null?'N/A':$V{ESTADO_4}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement uuid="edf4e677-b77c-460a-99bd-5291f0c61ed3" x="219" y="0" width="100" height="15"/>
@@ -184,7 +189,7 @@ order by COD_LOCALIDAD_DIRECCION, fecha_documento asc]]>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{LOCALIDAD_DIRECCION}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{LOCALIDAD_DIRECCION}==null?'N/A':$F{LOCALIDAD_DIRECCION}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -198,14 +203,14 @@ order by COD_LOCALIDAD_DIRECCION, fecha_documento asc]]>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{FECHA_DOCUMENTO}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{FECHA_DOCUMENTO}==null?'N/A':$F{FECHA_DOCUMENTO}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRUPO_FECHA">
 					<reportElement uuid="3f17e17e-ca21-4cda-994d-e2bb1e448b6e" x="437" y="0" width="100" height="15"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{ESTADO_3}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{ESTADO_3}==null?'N/A':$V{ESTADO_3}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement uuid="edf4e677-b77c-460a-99bd-5291f0c61ed3" x="287" y="0" width="100" height="15"/>
@@ -240,12 +245,12 @@ order by COD_LOCALIDAD_DIRECCION, fecha_documento asc]]>
 	<title>
 		<band height="100" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="c62298b1-9170-495d-834c-136eb907573a" x="170" y="8" width="237" height="22"/>
+				<reportElement uuid="c62298b1-9170-495d-834c-136eb907573a" x="156" y="8" width="276" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="SansSerif" size="16" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[REPORTE]]></text>
+				<text><![CDATA[MOVIMIENTO DE PLANILLAS]]></text>
 			</staticText>
 			<image>
 				<reportElement uuid="7453f039-a7c1-45f4-98dd-54a2ce076abb" x="21" y="0" width="115" height="65"/>

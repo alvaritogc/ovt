@@ -49,6 +49,18 @@ public class TransicionService implements ITransicionService {
         return lista;
     }
     
+    @Override
+    public List<DocTransicion> listaTransicionPorDocumento(String codDocumento){
+        List<DocTransicion> lista;
+        try {
+            lista = transicionRepository.listaTransicionPorDocumento(codDocumento);
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
+    }
+    
     public DocTransicion guardar(DocTransicion docTransicion){
         docTransicion.setFechaBitacora(new Date());
         docTransicion.setRegistroBitacora("OVT");

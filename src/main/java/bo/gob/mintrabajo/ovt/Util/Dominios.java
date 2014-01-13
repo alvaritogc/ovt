@@ -75,4 +75,9 @@ public class Dominios {
 
     public static final String PER_ESTADO_ACTIVO = "A";
     public static final String PER_ESTADO_INACTIVO = "X";
+
+    public static final String DOM_TIMER = "TIMER";
+    public static final String PAR_TIMER_SESSION_TIME_OUT = "SESSION_TIME_OUT";
+
+    public static final String DOM_TIPO_GRUPO_DOCUMENTO = "TGRUPODOCUMENTO";
 }
