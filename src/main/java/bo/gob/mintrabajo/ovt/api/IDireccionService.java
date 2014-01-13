@@ -1,9 +1,9 @@
 
 package bo.gob.mintrabajo.ovt.api;
 
-import bo.gob.mintrabajo.ovt.entities.ParDominio;
 import bo.gob.mintrabajo.ovt.entities.PerDireccion;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
+import bo.gob.mintrabajo.ovt.entities.PerUnidadPK;
 
 import java.util.List;
 
@@ -13,4 +13,5 @@ public interface IDireccionService {
     public List<PerDireccion>obtenerPorIdPersonaYIdUnidad(String idPersona,long idUnidad);
     public List<PerDireccion>obtenerPorIdPersona(String idPersona);
     public PerDireccion obtenerPorId(Long idDireccion);
+    public PerDireccion obtenerPorIdPersonaYIdUnidadYEstadoActivo(PerUnidadPK perUnidadPK);
 }
