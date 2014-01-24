@@ -364,8 +364,8 @@ public class DeclaracionTrimestralBean implements Serializable {
                 logger.info("retorno final");
                 return null;
             case 0:
-                validaArchivo(listaBinarios);
-                if(errores.size()==0 && verificaValidacion){
+//                validaArchivo(listaBinarios);
+//                if(errores.size()==0 && verificaValidacion){
                     try{
                         if(parametro==3)
                             documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
@@ -378,12 +378,12 @@ public class DeclaracionTrimestralBean implements Serializable {
                         e.printStackTrace();
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
                     }
-                }else{
-                    binario = new DocBinario();
-                    listaBinarios.clear();
-                    habilita=true;
-                    nombres= new String[3];
-                }
+//                }else{
+//                    binario = new DocBinario();
+//                    listaBinarios.clear();
+//                    habilita=true;
+//                    nombres= new String[3];
+//                }
                 logger.info("retorno final");
                 return null;
             default:

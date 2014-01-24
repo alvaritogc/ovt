@@ -155,11 +155,12 @@ public class SeleccionaCentralSucursalBean implements Serializable{
     }
 
     public String seleccionaUnidad(){
-        if(((parametro==1||parametro==3)&&listaBinarios.size()<3)||(parametro==4&&listaBinarios.size()==0))  {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "No subió la cantidad necesaria de archivos."));
-            return null;
+        if(aguinaldoAuto==1|| trimestralAuto==1){
+            if(((parametro==1||parametro==3)&&listaBinarios.size()<3)||(parametro==4&&listaBinarios.size()==0))  {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "No subió la cantidad necesaria de archivos."));
+                return null;
+            }
         }
-
         if(tipoEmpresa!=2)
             unidadSeleccionada=central;
         else
@@ -199,7 +200,6 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         session.setAttribute("masculinoContratadoTrim", masculinoContratadoTrim);
                         session.setAttribute("femeninoContratadoTrim", femeninoContratadoTrim);
                     }
-
                 }
                 else{
                     binario = new DocBinario();

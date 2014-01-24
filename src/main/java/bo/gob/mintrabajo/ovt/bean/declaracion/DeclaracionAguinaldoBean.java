@@ -331,8 +331,8 @@ public class DeclaracionAguinaldoBean implements Serializable {
                 logger.info("retorno final");
                 return null;
             case 0:
-                validaArchivo(listaBinarios);
-                if(errores.size()==0 && verificaValidacion){
+//                validaArchivo(listaBinarios);
+//                if(errores.size()==0 && verificaValidacion){
                     try{
                         if(parametro==5)
                             documento.setIdDocumentoRef(rectificatorio.getIdDocumento());
@@ -345,11 +345,11 @@ public class DeclaracionAguinaldoBean implements Serializable {
                         e.printStackTrace();
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
                     }
-                }else{
-                    binario = new DocBinario();
-                    listaBinarios.clear();
-                    habilita=true;
-                }
+//                }else{
+//                    binario = new DocBinario();
+//                    listaBinarios.clear();
+//                    habilita=true;
+//                }
                 logger.info("retorno final");
                 return null;
             default:
