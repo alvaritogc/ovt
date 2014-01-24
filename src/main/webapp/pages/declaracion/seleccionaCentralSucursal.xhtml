@@ -53,8 +53,56 @@
                 </p:panelGrid>
                 </center>
                 <!-- Renato Codigo -->
+                <br/>
+                <h:panelGrid columns="2" style="text-align: left" rendered="#{seleccionaCentralSucursalBean.habilitaTrim}">
+                    <h:outputText style="font-weight: bold;text-align: center" value="Primer mes trimestre" /> &nbsp;
+                    <p:fileUpload fileUploadListener="#{seleccionaCentralSucursalBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
+                                  fileLimitMessage="Sólo se puede elegir un archivo."
+                                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
+                                  style="width: 500px"
+                                  mode="advanced" update="idArchivo1,form:btnAceptar" fileLimit="1" label="Seleccione"
+                                  invalidSizeMessage="Archivo demasiado grande."
+                                  sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
+                                  />
+                    <h:outputText id="idArchivo1" value="#{seleccionaCentralSucursalBean.nombres[0]}" style="font-weight: bold;text-align: center"/>
 
-                <p:commandButton id="btnAceptar" value="Aceptar" action="#{seleccionaCentralSucursalBean.seleccionaUnidad}" update="form"/>
+                    <h:outputText value="Segundo mes trimestre" style="font-weight: bold" /> &nbsp;
+                    <p:fileUpload fileUploadListener="#{seleccionaCentralSucursalBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
+                                  fileLimitMessage="Sólo se puede elegir un archivo."
+                                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
+                                  style="width: 500px"
+                                  mode="advanced" update="idArchivo2,form:btnAceptar" fileLimit="1" label="Seleccione"
+                                  invalidSizeMessage="Archivo demasiado grande."
+                                  sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
+                                  />
+                    <h:outputText id="idArchivo2" value="#{seleccionaCentralSucursalBean.nombres[1]}" style="font-weight: bold;text-align: center"/>
+
+                    <h:outputText value="Tercer mes trimestre" style="font-weight: bold" /> &nbsp;
+                    <p:fileUpload fileUploadListener="#{seleccionaCentralSucursalBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
+                                  fileLimitMessage="Sólo se puede elegir un archivo."
+                                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
+                                  style="width: 500px"
+                                  mode="advanced" update="idArchivo3,form:btnAceptar" fileLimit="1" label="Seleccione"
+                                  invalidSizeMessage="Archivo demasiado grande."
+                                  sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
+                                  />
+                    <h:outputText id="idArchivo3" value="#{seleccionaCentralSucursalBean.nombres[2]}" style="font-weight: bold;text-align: center"/>
+                </h:panelGrid>
+                <h:panelGrid columns="2" style="text-align: left" rendered="#{seleccionaCentralSucursalBean.habilitaAgui}">
+                    <h:outputText style="font-weight: bold;text-align: center" value="Planilla Aguinaldo"/> &nbsp;
+                    <p:fileUpload fileUploadListener="#{seleccionaCentralSucursalBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
+                                  fileLimitMessage="Sólo se puede elegir un archivo."
+                                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
+                                  style="width: 500px"
+                                  mode="advanced" update="idArchivo4,btnAceptar" fileLimit="1" label="Seleccione"
+                                  invalidSizeMessage="Archivo demasiado grande."
+                                  sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv|XLS|XLSX|CSV)$/"/>
+                    <h:outputText id="idArchivo4" value="#{seleccionaCentralSucursalBean.nombres[0]}"
+                                  style="font-weight: bold;text-align: center"/>
+                </h:panelGrid>
+                <br/><br/>
+                <p:commandButton id="btnAceptar" value="Aceptar" action="#{seleccionaCentralSucursalBean.seleccionaUnidad}" update="messages form"/>
+                <p:growl id="messages" showDetail="true"/>
             </p:outputPanel>
         </h:form>
     </ui:define>

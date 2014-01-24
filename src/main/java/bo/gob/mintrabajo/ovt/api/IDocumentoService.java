@@ -57,4 +57,6 @@ public interface IDocumentoService {
     List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumentos(String idPersona, Date fechaDesde, Date fechaHasta, String codDocumento1, String codDocumento2);
 
     public boolean validarReactivacionRoe(PerUnidadPK perUnidadPK);
+
+    void guardaDetallesAlertasActualizaInfLab(DocDocumento docDocumento, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas);
 }

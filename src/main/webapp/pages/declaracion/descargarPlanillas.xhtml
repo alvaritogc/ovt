@@ -7,9 +7,9 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../../pages/template/templateInicio.xhtml">
         <ui:define name="content">
-            <h:form>
-
-                <p:dataTable id="idListaDocumentos" value="#{descargarPlanillasBean.listaBinarios}" var="elemBinario" paginator="true" rows="10">
+            <h:form id="formDescarga">
+                <p:growl id="messages" showDetail="true"/>
+                <p:dataTable id="idListaDocumentos" value="#{descargarPlanillasBean.listaBinarios}" var="elemBinario" rows="3">
                     <p:column headerText="Nombre">
                         <h:outputText value="#{elemBinario.tipoDocumento}"/>
                     </p:column>
@@ -25,7 +25,19 @@
                     </p:column>
                 </p:dataTable>
                 <br/>
+                <p:panelGrid columns="2" rendered="#{descargarPlanillasBean.verificaValidacion==true}">
+                    <p:outputLabel value="Errores" style="font-weight: bold"/>
+                    <p:outputLabel value="Alertas" style="font-weight: bold"/>
+                    <p:scrollPanel style="width:330px;height:150px" mode="native">
+                        <p:dataList value="#{descargarPlanillasBean.errores}" var="e" itemType="disc" emptyMessage="Sin errores.">#{e}</p:dataList>
+                    </p:scrollPanel>
+                    <p:scrollPanel style="width:329px;height:150px" mode="native">
+                        <p:dataList value="#{descargarPlanillasBean.alertas}" var="a" itemType="disc" emptyMessage="Sin alertas.">#{a.observacion}</p:dataList>
+                    </p:scrollPanel>
+                </p:panelGrid>
+                <br/>
                 <p:commandButton action="irEscritorio" ajax="false" value="Volver"/>
+                <p:commandButton action="#{descargarPlanillasBean.validaArchivo}" rendered="#{descargarPlanillasBean.validacion==false}" ajax="false" value="Validar Archivos" update="formDescarga"/>
             </h:form>
         </ui:define>
     </ui:composition>

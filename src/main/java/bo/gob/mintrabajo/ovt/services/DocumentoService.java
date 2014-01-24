@@ -176,16 +176,25 @@ public class DocumentoService implements IDocumentoService {
         for (DocPlanillaDetalle elemPlanillaDetalle : docPlanillaDetalles) {
             elemPlanillaDetalle.setIdPlanilla(docPlanilla);
             elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
-            logger.info("Guarda Planilla Detalle: ", planillaDetalleRepository.save(elemPlanillaDetalle).getIdPlanillaDetalle());
+            elemPlanillaDetalle=planillaDetalleRepository.save(elemPlanillaDetalle);
+            logger.info("Guarda Planilla Detalle: ", elemPlanillaDetalle.getIdPlanillaDetalle());
             //para infoLaboral
             cuenta1860(elemPlanillaDetalle.getFechaNacimiento(), fechaHace18, fechaHace60);
         }
 
         //modifica anterior y guarda nuevo infoLaboral
-        PerInfolaboral perInfolaboralAnterior = infoLaboralRepository.findByPerUnidad_PerUnidadPKAndEstadoInfolaboral(docDocumento.getPerUnidad().getPerUnidadPK(), Dominios.PER_ESTADO_ACTIVO);
+        PerInfolaboral perInfolaboralAnterior;
+        try{
+            perInfolaboralAnterior = infoLaboralRepository.findByPerUnidad_PerUnidadPKAndEstadoInfolaboral(docDocumento.getPerUnidad().getPerUnidadPK(), Dominios.PER_ESTADO_ACTIVO);
+        }
+        catch (Exception e){
+            perInfolaboralAnterior=null;
+        }
+
         if(perInfolaboralAnterior!=null){
             perInfolaboralAnterior.setEstadoInfolaboral(Dominios.PER_ESTADO_INACTIVO);
             perInfolaboralAnterior=infoLaboralRepository.save(perInfolaboralAnterior);
+            logger.info("Guarda Infolaboral Antiguo: ", perInfolaboralAnterior.getIdInfolaboral());
         }
         PerInfolaboral perInfolaboralNuevo= new PerInfolaboral();
         perInfolaboralNuevo.setIdInfolaboral(utils.valorSecuencia("PER_INFOLABORAL_SEC"));
@@ -209,7 +218,69 @@ public class DocumentoService implements IDocumentoService {
         perInfolaboralNuevo.setEstadoInfolaboral(Dominios.PER_ESTADO_ACTIVO);
         perInfolaboralNuevo.setFechaBitacora(new Date());
         perInfolaboralNuevo.setRegistroBitacora(bitacoraSession);
-        logger.info("Guarda Infolaboral: ", infoLaboralRepository.save(perInfolaboralNuevo).getIdInfolaboral());
+        perInfolaboralNuevo= infoLaboralRepository.save(perInfolaboralNuevo);
+        logger.info("Guarda Infolaboral Nuevo: ", perInfolaboralNuevo.getIdInfolaboral());
+
+        //guardaAlertas
+        DocAlertaDefinicion docAlertaDefinicion= new DocAlertaDefinicion();
+        if(alertas==null)
+            alertas= new ArrayList<DocAlerta>();
+        else
+            docAlertaDefinicion = alertaDefinicionRepository.findByDocDefinicion_DocDefinicionPK(docDocumento.getDocDefinicion().getDocDefinicionPK());
+        for (DocAlerta elementoAlerta : alertas) {
+            elementoAlerta.setEstadoAlerta("Estado Alerta");  //revisar que utilizar
+            elementoAlerta.setCodAlerta(docAlertaDefinicion);
+            elementoAlerta.setIdDocumento(docDocumento);
+            elementoAlerta.setIdAlerta(utils.valorSecuencia("DOC_ALERTA_SEC"));
+            elementoAlerta= alertaRepository.save(elementoAlerta);
+            logger.info("Guarda Alerta: ", elementoAlerta.getIdAlerta());
+        }
+
+        //guarda binarios
+        int idBinario = 1;
+        for (DocBinario elementoBinario : listaBinarios) {
+            elementoBinario.setValidado(docPlanillaDetalles.size()>0?true:false);
+            elementoBinario.setDocDocumento(docDocumento);
+            elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
+            elementoBinario=binarioRepository.save(elementoBinario);
+            logger.info("Guarda Binario: ", elementoBinario.getDocBinarioPK());
+        }
+    }
+
+    public void guardaDetallesAlertasActualizaInfLab(DocDocumento docDocumento, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas){
+        menores18=0;
+        mayores60=0;
+        Date fechaHace18= new Date();
+        Date fechaHace60= new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.YEAR, -18);
+        fechaHace18.setTime(c.getTime().getTime());
+        c.add(Calendar.YEAR, -(60-18));
+        fechaHace60.setTime(c.getTime().getTime());
+
+
+        //guardaPlanillaDetalles
+        DocPlanilla docPlanilla=new DocPlanilla();
+        docPlanilla=planillaRepository.findByIdDocumento_IdDocumento(docDocumento.getIdDocumento());
+        if(docPlanillaDetalles==null)
+            docPlanillaDetalles= new ArrayList<DocPlanillaDetalle>();
+        for (DocPlanillaDetalle elemPlanillaDetalle : docPlanillaDetalles) {
+            elemPlanillaDetalle.setIdPlanilla(docPlanilla);
+            elemPlanillaDetalle.setIdPlanillaDetalle(utils.valorSecuencia("DOC_PLANILLA_DETALLE_SEC"));
+            elemPlanillaDetalle=planillaDetalleRepository.save(elemPlanillaDetalle);
+            logger.info("Guarda Planilla Detalle: ", elemPlanillaDetalle.getIdPlanillaDetalle());
+            //para infoLaboral
+            cuenta1860(elemPlanillaDetalle.getFechaNacimiento(), fechaHace18, fechaHace60);
+        }
+
+        //modifica anterior y guarda nuevo infoLaboral
+        PerInfolaboral perInfolaboralAnterior = infoLaboralRepository.findByPerUnidad_PerUnidadPKAndEstadoInfolaboral(docDocumento.getPerUnidad().getPerUnidadPK(), Dominios.PER_ESTADO_ACTIVO);
+        if(perInfolaboralAnterior!=null){
+            perInfolaboralAnterior.setNroMenores18(menores18);
+            perInfolaboralAnterior.setNroMayores60(mayores60);
+            infoLaboralRepository.save(perInfolaboralAnterior);
+        }
 
         //guardaAlertas
         DocAlertaDefinicion docAlertaDefinicion= new DocAlertaDefinicion();
@@ -225,12 +296,10 @@ public class DocumentoService implements IDocumentoService {
             logger.info("Guarda Alerta: ", alertaRepository.save(docAlerta).getIdAlerta());
         }
 
-        //guarda binarios
-        int idBinario = 1;
-        for (DocBinario elementoBinario : listaBinarios) {
-            elementoBinario.setDocDocumento(docDocumento);
-            elementoBinario.setDocBinarioPK(new DocBinarioPK(idBinario++, docDocumento.getIdDocumento()));
-            logger.info("Guarda Binario: " + binarioRepository.save(elementoBinario));
+        List <DocBinario> binarioList= binarioRepository.findByIdDocumento(docDocumento.getIdDocumento());
+        for (DocBinario docBinario:binarioList){
+            docBinario.setValidado(true);
+            binarioRepository.save(docBinario);
         }
     }
 

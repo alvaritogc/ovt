@@ -84,9 +84,6 @@ public class DocBinarioPK implements Serializable {
 
     @Override
     public String toString() {
-        return "DocBinarioPK{" +
-                "idBinario=" + idBinario +
-                ", idDocumento=" + idDocumento +
-                '}';
+        return "bo.gob.mintrabajo.ovt.entities.DocBinarioPK[ idBinario=" + idBinario + ", idDocumento=" + idDocumento + " ]";
     }
 }

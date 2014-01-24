@@ -53,6 +53,9 @@ public class DocBinario implements Serializable {
     @JoinColumn(name = "ID_DOCUMENTO", referencedColumnName = "ID_DOCUMENTO", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DocDocumento docDocumento;
+    @Basic(optional = false)
+    @Column(name = "VALIDADO")
+    private boolean validado;
     @Transient
     private InputStream inputStream;
 
@@ -63,12 +66,13 @@ public class DocBinario implements Serializable {
         this.docBinarioPK = docBinarioPK;
     }
 
-    public DocBinario(DocBinarioPK docBinarioPK, String tipoDocumento, String metadata, Date fechaBitacora, String registroBitacora) {
+    public DocBinario(DocBinarioPK docBinarioPK, String tipoDocumento, String metadata, Date fechaBitacora, String registroBitacora, boolean validado) {
         this.docBinarioPK = docBinarioPK;
         this.tipoDocumento = tipoDocumento;
         this.metadata = metadata;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
+        this.validado = validado;
     }
 
     public DocBinario(long idBinario, long idDocumento) {
@@ -131,6 +135,14 @@ public class DocBinario implements Serializable {
         this.docDocumento = docDocumento;
     }
 
+    public boolean isValidado() {
+        return validado;
+    }
+
+    public void setValidado(boolean validado) {
+        this.validado = validado;
+    }
+
     public InputStream getInputStream() {
         return inputStream;
     }
@@ -161,13 +173,6 @@ public class DocBinario implements Serializable {
 
     @Override
     public String toString() {
-        return "DocBinario{" +
-                "docBinarioPK=" + docBinarioPK +
-                ", tipoDocumento='" + tipoDocumento + '\'' +
-                ", metadata='" + metadata + '\'' +
-                ", fechaBitacora=" + fechaBitacora +
-                ", registroBitacora='" + registroBitacora + '\'' +
-                ", docDocumento=" + docDocumento.getIdDocumento() +
-                '}';
+        return "bo.gob.mintrabajo.ovt.entities.DocBinario[ docBinarioPK=" + docBinarioPK + " ]";
     }
 }
