@@ -101,6 +101,8 @@ public class DeclaracionTrimestralBean implements Serializable {
     private String textoBenvenida;
     private DocDocumento documento;
     private String periodo;
+    private ParObligacionCalendario periodoGestion;
+    private Long periodoGestionId;
     private DocBinario binario;
     private boolean habilita = true;
     private List<DocBinario> listaBinarios;
@@ -141,6 +143,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         unidadSeleccionada = (PerUnidad) session.getAttribute("unidadSeleccionada");
         tipoEmpresa = (Integer) session.getAttribute("tipoEmpresa");
         docPlanilla = new DocPlanilla();
+        periodoGestion= new ParObligacionCalendario();
         //0 NO AUTOLLENADO
         //1 SI AUTOLLENADO
         switch (trimestralAuto){
@@ -301,7 +304,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         docPlanilla.setFax(vperPersona.getFax());
         docPlanilla.setIdReplegal(vperPersona.getRlNroIdentidad());        //revisar el id aprtir de la BD
         docPlanilla.setCodLocalidadPresentacion(vperPersona.getLocalidad());
-        docPlanilla.setParCalendario(iCalendarioService.obtenerCalendarioPorGestionYPeriodo(gestion, periodo));
+        docPlanilla.setParCalendario(periodoGestion.getParCalendario());
 
 
         switch (parametro){
@@ -347,6 +350,9 @@ public class DeclaracionTrimestralBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Advertencia", "No puede guardarse, ya que no se pueden obtener declaraciones."));
             return null;
         }
+
+        periodoGestion= iObligacionCalendarioService.findById(periodoGestionId);
+
         switch (trimestralAuto){
             case 1:
                 try{
@@ -1303,5 +1309,21 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void setTrimestralAuto(int trimestralAuto) {
         this.trimestralAuto = trimestralAuto;
+    }
+
+    public ParObligacionCalendario getPeriodoGestion() {
+        return periodoGestion;
+    }
+
+    public void setPeriodoGestion(ParObligacionCalendario periodoGestion) {
+        this.periodoGestion = periodoGestion;
+    }
+
+    public Long getPeriodoGestionId() {
+        return periodoGestionId;
+    }
+
+    public void setPeriodoGestionId(Long periodoGestionId) {
+        this.periodoGestionId = periodoGestionId;
     }
 }

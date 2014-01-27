@@ -70,6 +70,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
 
     private String mensajeValidacion;
     private boolean habilitado;
+    private ParObligacionCalendario periodoGestion;
 
     //  uploadarchivo
     public static Cache<String, List<DocBinario>> binarios = CacheBuilder.newBuilder().maximumSize(600).build();
@@ -135,8 +136,32 @@ public class SeleccionaCentralSucursalBean implements Serializable{
     }
 
     public void cargar(){
+        verficaPeriodoGestion();
         listaCentralSucursales();
         verficaHabilitacionUpload();
+    }
+
+    public void verficaPeriodoGestion(){
+
+        if(parametro==1||parametro==2||parametro==3){
+            periodoGestion = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo2(new Date());
+            return;
+        }
+        if(parametro==4||parametro==5)
+            periodoGestion= iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo2(new Date());
+    }
+
+    public void listaCentralSucursales(){
+        if(periodoGestion!=null){
+            central = new PerUnidad();
+            sucursales = new ArrayList<PerUnidad>();
+            List<PerUnidad> listaUnidades=iUnidadService.listarUnidadesSucursalesPorFecha(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+            for(PerUnidad sucursal:listaUnidades)  {
+                if(sucursal.getPerUnidadPK().getIdUnidad()==0)
+                    central=sucursal;
+                sucursales.add(sucursal);
+            }
+        }
     }
 
     public void verficaHabilitacionUpload(){
@@ -155,6 +180,9 @@ public class SeleccionaCentralSucursalBean implements Serializable{
     }
 
     public String seleccionaUnidad(){
+        if(periodoGestion!=null)
+
+
         if(aguinaldoAuto==1|| trimestralAuto==1){
             if(((parametro==1||parametro==3)&&listaBinarios.size()<3)||(parametro==4&&listaBinarios.size()==0))  {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "No subió la cantidad necesaria de archivos."));
@@ -217,16 +245,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
         return null;
     }
 
-    public void listaCentralSucursales(){
-        central = new PerUnidad();
-        sucursales = new ArrayList<PerUnidad>();
-        List<PerUnidad> listaUnidades=iUnidadService.listarUnidadesSucursales(idPersona);
-        for(PerUnidad sucursal:listaUnidades)  {
-            if(sucursal.getPerUnidadPK().getIdUnidad()==0)
-                central=sucursal;
-            sucursales.add(sucursal);
-        }
-    }
+
 
     // upload de archivos
     public void upload(FileUploadEvent evento){
