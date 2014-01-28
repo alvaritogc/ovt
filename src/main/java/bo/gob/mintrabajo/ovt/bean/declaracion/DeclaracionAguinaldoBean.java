@@ -27,7 +27,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -126,11 +125,16 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
     private int aguinaldoAuto;
     List<DocBinario> listaBinarios= new ArrayList<DocBinario>();
+    private ParObligacionCalendario periodoGestion;
     
     @PostConstruct
     public void ini() {
         aguinaldoAuto= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_FORMULARIO, Dominios.PAR_AUTOLLENADO_AGUINALDO).getDescripcion());
         docPlanilla = new DocPlanilla();
+        periodoGestion= new ParObligacionCalendario();
+        periodoGestion= iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo(new Date());
+        gestion=periodoGestion.getParCalendario().getParCalendarioPK().getGestion();
+        periodo =periodoGestion.getParCalendario().getParCalendarioPK().getTipoPeriodo();
         //0 NO AUTOLLENADO
         //1 SI AUTOLLENADO
         switch (aguinaldoAuto){
@@ -196,9 +200,6 @@ public class DeclaracionAguinaldoBean implements Serializable {
         //** Controlamos que no puedan acceder a una fecha anterior a la actual  **//
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         fechaTexto = sdf.format(fechaTemp);
-        gestion=String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
-        parObligacionCalendarioPeriodo= iObligacionCalendarioService.buscarAguinaldoPorGestion(gestion);
-        periodo =parObligacionCalendarioPeriodo.getParCalendario().getTipoCalendario();
         obtenerEntidad();
         //** Obtenemos de la Vista a la persona **//
         vperPersona = iVperPersonaService.cargaVistaPersona(perPersona.getIdPersona());
@@ -279,7 +280,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
         docPlanilla.setIdEntidadBanco(iEntidadService.buscaPorId(new Long("2")));
         docPlanilla.setIdEntidadSalud(iEntidadService.buscaPorId(new Long("13")));
         docPlanilla.setFechaOperacion(fechaOperacionAux);
-        docPlanilla.setParCalendario(iCalendarioService.obtenerCalendarioPorGestionYPeriodo(gestion, periodo));
+        docPlanilla.setParCalendario(periodoGestion.getParCalendario());
 
 
         switch (parametro){
