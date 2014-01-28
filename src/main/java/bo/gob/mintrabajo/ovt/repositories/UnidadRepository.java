@@ -45,7 +45,10 @@ public interface UnidadRepository extends OpenJpaRepository<PerUnidad, PerUnidad
             "WHERE u.perUnidadPK.idPersona=:idPersona " +
             "AND u.perUnidadPK.idUnidad NOT IN " +
             "(SELECT d.perUnidad.perUnidadPK.idUnidad " +
-            "FROM DocDocumento d WHERE d.perUnidad.perUnidadPK.idPersona=:idPersona AND d.fechaDocumento BETWEEN :fechaHasta AND :fechaPlazo2)")
-    List<PerUnidad> listarSucursalesPorPersonaYUnidadSegunFecha(@Param("idPersona")String idPersona, @Param("fechaHasta")Date fechaHasta, @Param("fechaPlazo2")Date fechaPlazo2);
+            "FROM DocDocumento d WHERE d.perUnidad.perUnidadPK.idPersona=:idPersona AND d.docDefinicion.docDefinicionPK.codDocumento =:codDocumento AND d.fechaDocumento BETWEEN :fechaHasta AND :fechaPlazo2)")
+List<PerUnidad> listarSucursalesPorPersonaYUnidadSegunFecha(@Param("idPersona")String idPersona, @Param("codDocumento") String codDocumento, @Param("fechaHasta")Date fechaHasta, @Param("fechaPlazo2")Date fechaPlazo2);
+
+//    @Query(value = "SELECT * FROM per_unidad WHERE u.id_persona= AND u.id_unidad NOT IN (SELECT d.id_unidad FROM doc_Documento d WHERE d.id_persona=?0 AND d.cod_Documento LIKE ?1 AND d.fecha_Documento BETWEEN ?2 AND ?3", nativeQuery = true)
+//    List<PerUnidad> listarSucursalesPorPersonaYUnidadSegunFecha(String idPersona, String codDocumento, Date fechaHasta, Date fechaPlazo2);
 
 }

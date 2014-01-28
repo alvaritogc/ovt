@@ -111,6 +111,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
     private double aporteAFP;
     private double rcIVA;
     private double otrosDescuentos;
+    private String codDocumento;
 
     @PostConstruct
     public void ini() {
@@ -136,6 +137,24 @@ public class SeleccionaCentralSucursalBean implements Serializable{
     }
 
     public void cargar(){
+
+        switch (parametro){
+            case 1:
+                codDocumento="LC1010";
+                break;
+            case 2:
+                codDocumento="LC1011";
+                break;
+            case 3:
+                codDocumento="LC1012";
+                break;
+            case 4:
+                codDocumento="LC1020";
+                break;
+            case 5:
+                codDocumento="LC1021";
+                break;
+        }
         verficaPeriodoGestion();
         listaCentralSucursales();
         verficaHabilitacionUpload();
@@ -155,7 +174,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
         if(periodoGestion!=null){
             central = new PerUnidad();
             sucursales = new ArrayList<PerUnidad>();
-            List<PerUnidad> listaUnidades=iUnidadService.listarUnidadesSucursalesPorFecha(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+            List<PerUnidad> listaUnidades=iUnidadService.listarUnidadesSucursalesPorFecha(idPersona, codDocumento, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
             for(PerUnidad sucursal:listaUnidades)  {
                 if(sucursal.getPerUnidadPK().getIdUnidad()==0)
                     central=sucursal;

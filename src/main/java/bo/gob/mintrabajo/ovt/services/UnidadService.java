@@ -180,8 +180,10 @@ public class UnidadService implements IUnidadService{
         return unidadRepository.findByPerPersona_IdPersona(idPersona);
     }
 
-    public List<PerUnidad> listarUnidadesSucursalesPorFecha(String idPersona, Date fechaHasta, Date fechaPlazo2){
-        return unidadRepository.listarSucursalesPorPersonaYUnidadSegunFecha(idPersona, fechaHasta, fechaPlazo2);
+    public List<PerUnidad> listarUnidadesSucursalesPorFecha(String idPersona, String codDocumento, Date fechaHasta, Date fechaPlazo2){
+        return unidadRepository.listarSucursalesPorPersonaYUnidadSegunFecha(idPersona, codDocumento, fechaHasta, fechaPlazo2);
+
+//        return (List<PerUnidad>)(entityManager.createNativeQuery("SELECT * FROM per_unidad WHERE u.id_persona='"+idPersona+"' AND u.id_unidad NOT IN (SELECT d.id_unidad FROM doc_Documento d WHERE d.id_persona='"+idPersona+"' AND d.cod_Documento LIKE '"+codDocumento+"' AND d.fecha_Documento BETWEEN '"+fechaHasta+"' AND '"+fechaPlazo2+"'").getResultList());
     }
 
     /*
