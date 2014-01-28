@@ -10,5 +10,5 @@ public interface IPlanillaService {
     DocPlanilla buscarPorDocumento(Long idDocumento);
     List<DocPlanilla> listarporPersona(String idPersona);
     List<DocPlanilla> listarPlanillasParaRectificar(String idPersona, String codDocumento);
-    List<DocPlanilla> listarPlanillasTrimestralesParaRectificar(String idPersona, Date fechaHasta, Date fechaPlazo2);
+    List<DocPlanilla> listarPlanillasTrimestralesParaRectificar(String idPersona, Long idUnidad, Date fechaHasta, Date fechaPlazo2);
 }

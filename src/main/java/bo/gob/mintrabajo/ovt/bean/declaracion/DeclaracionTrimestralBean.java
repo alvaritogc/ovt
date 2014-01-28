@@ -255,7 +255,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
 
         docPlanillasParaRectificar= new ArrayList<DocPlanilla>();
-        docPlanillasParaRectificar= iPlanillaService.listarPlanillasTrimestralesParaRectificar(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
+        docPlanillasParaRectificar= iPlanillaService.listarPlanillasTrimestralesParaRectificar(idPersona, unidadSeleccionada.getPerUnidadPK().getIdUnidad(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
     }
 
     public void seleccionaTrimestre(){
