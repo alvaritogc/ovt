@@ -70,6 +70,8 @@ public class EscritorioBean {
     private IUtilsService iUtilsService;
     @ManagedProperty(value = "#{parametrizacionService}")
     private IParametrizacionService iParametrizacionService;
+    @ManagedProperty(value = "#{direccionService}")
+    private IDireccionService iDireccionService;
     //
     private String textoBenvenida;
     //
@@ -206,16 +208,20 @@ public class EscritorioBean {
                 parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
                 parametros.put("departamento", vperPersona.getDirDepartamento());
-                parametros.put("direccion", vperPersona.getDirDireccion());
-                parametros.put("telefono", vperPersona.getTelefono());
+
+                PerDireccion perDireccion = new PerDireccion();
+                perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+
+                parametros.put("direccion", perDireccion.getDireccion());
+                parametros.put("telefono", perDireccion.getTelefono());
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getDirLocalidad());
-                parametros.put("fax", vperPersona.getFax());
+                parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
+                parametros.put("fax", perDireccion.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
-                parametros.put("zona", vperPersona.getDirZona());
-                parametros.put("numero", vperPersona.getDirNroDireccion());
-                parametros.put("correoElectronico", vperPersona.getEmail());
+                parametros.put("zona", perDireccion.getZonaUrbanizacion());
+                parametros.put("numero", perDireccion.getPisoDepOfi());
+                parametros.put("correoElectronico", perDireccion.getEmail());
                 parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
                 parametros.put("montoAportadoAsegurados", docPlanilla.getMontoAsegCaja());
                 if (docPlanilla.getIdEntidadSalud() != null) {
@@ -479,16 +485,20 @@ public class EscritorioBean {
                 parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
                 parametros.put("departamento", vperPersona.getDirDepartamento());
-                parametros.put("direccion", vperPersona.getDirDireccion());
-                parametros.put("telefono", vperPersona.getTelefono());
+
+                PerDireccion perDireccion = new PerDireccion();
+                perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+
+                parametros.put("direccion", perDireccion.getDireccion());
+                parametros.put("telefono", perDireccion.getTelefono());
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getDirLocalidad());
-                parametros.put("fax", vperPersona.getFax());
+                parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
+                parametros.put("fax", perDireccion.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
-                parametros.put("zona", vperPersona.getDirZona());
-                parametros.put("numero", vperPersona.getDirNroDireccion());
-                parametros.put("correoElectronico", vperPersona.getEmail());
+                parametros.put("zona", perDireccion.getZonaUrbanizacion());
+                parametros.put("numero", perDireccion.getPisoDepOfi());
+                parametros.put("correoElectronico", perDireccion.getEmail());
                 parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
                 parametros.put("montoAportadoAsegurados", docPlanilla.getMontoAsegCaja());
                 if (docPlanilla.getIdEntidadSalud() != null) {
@@ -894,5 +904,13 @@ public class EscritorioBean {
 
     public void setConBinario(String conBinario) {
         this.conBinario = conBinario;
+    }
+
+    public IDireccionService getiDireccionService() {
+        return iDireccionService;
+    }
+
+    public void setiDireccionService(IDireccionService iDireccionService) {
+        this.iDireccionService = iDireccionService;
     }
 }
