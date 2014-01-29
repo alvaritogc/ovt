@@ -295,9 +295,9 @@
     </p:scrollPanel>
 </p:panelGrid>
 <!-- Renato Codigo -->
-<h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionAguinaldoBean.parametro!=2}">
+<h:panelGrid columns="2" style="text-align: left">
     <h:outputText style="font-weight: bold;text-align: center" value="Planilla Aguinaldo"
-                  rendered="#{declaracionAguinaldoBean.habilita}"/> &nbsp;
+                  /> &nbsp;
     <p:fileUpload fileUploadListener="#{declaracionAguinaldoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
                   fileLimitMessage="Sólo se puede elegir un archivo."
                   invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
@@ -305,7 +305,7 @@
                   mode="advanced" update="idArchivo1,guardarPlanillaBtn" fileLimit="1" label="Seleccione"
                   invalidSizeMessage="Archivo demasiado grande."
                   sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv|XLS|XLSX|CSV)$/"
-                  rendered="#{declaracionAguinaldoBean.habilita}"/>
+                  />
     <h:outputText id="idArchivo1" value="#{declaracionAguinaldoBean.binario.tipoDocumento}"
                   style="font-weight: bold;text-align: center"/>
 
