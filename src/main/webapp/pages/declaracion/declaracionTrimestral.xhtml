@@ -106,11 +106,11 @@
     <p:column id="razonSocial" colspan="5">
         <p:outputPanel id="empresaRazonSocial">
             <p:outputLabel value="#{declaracionTrimestralBean.unidadSeleccionada.nombreComercial}" style="text-align: justify"/>
-            <p:outputLabel id="trimestre" value="#{declaracionTrimestralBean.periodo}" rendered="#{declaracionTrimestralBean.parametro==3}"/>
-            <p:selectOneMenu value="#{declaracionTrimestralBean.periodo}" style="width: 260px; height: 20px" rendered="#{declaracionTrimestralBean.parametro!=3}" required="true">
-                <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionTrimestralBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="#{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}" itemLabel="#{oCalendario.parCalendario.parCalendarioPK.gestion} - #{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>
-            </p:selectOneMenu>
+            <p:outputLabel id="trimestre" value="#{declaracionTrimestralBean.periodo} - #{declaracionTrimestralBean.gestion}"/>
+            <!--<p:selectOneMenu value="# {declaracionTrimestralBean.periodoGestionId}" style="width: 260px; height: 20px" rendered="# {declaracionTrimestralBean.parametro!=3}" required="true">-->
+                <!--<f:selectItem itemLabel="- -Seleccione- -" noSelectionOption="true"/>-->
+                <!--<f:selectItems value="# {declaracionTrimestralBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="# {oCalendario.idObligacionCalendario}" itemLabel="# {oCalendario.parCalendario.parCalendarioPK.gestion} - # {oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>-->
+            <!--</p:selectOneMenu>-->
         </p:outputPanel>
     </p:column>
 </p:row>
@@ -415,60 +415,57 @@
 </p:row>
 
 <p:row>
-    <p:column colspan="7">
+    <p:column colspan="7" style="text-align: left">
         <p:outputLabel value="8.1 Nro de comprobante de depósito"/>
         <p:inputText value="#{declaracionTrimestralBean.docPlanilla.numOperacion}"
                      style="width: 150px; height: 10px; text-align: right" required="true" maxlength="19">
             <pe:keyFilter regEx="/[\d\-]/"/>
         </p:inputText>
     </p:column>
-    <p:column colspan="7">
+    <p:column colspan="8" style="text-align: center">
         <p:outputLabel value="8.2 Fecha de depósito"/>
         <p:calendar value="#{declaracionTrimestralBean.fechaOperacionAux}" maxdate="#{declaracionTrimestralBean.fechaTexto}"
-                    id="popupButtonCal" pattern="dd/MM/yyyy"
+                    id="popupButtonCal" pattern="dd/MM/yyyy" style="width: 50px; height: 10px"
                     required="true" showOn="button"/>
     </p:column>
-    <p:column colspan="4">
+    <p:column colspan="4" style="text-align: right">
         <p:outputLabel value="8.3 Monto de depósito (Bs)"/>
         <pe:inputNumber value="#{declaracionTrimestralBean.docPlanilla.montoOperacion}"
-                        thousandSeparator="." decimalSeparator=","  style="width: 150px; height: 10px; text-align: right" maxlength="5">
+                        thousandSeparator="." decimalSeparator=","  style="width: 100px; height: 10px; text-align: right" maxlength="5">
         </pe:inputNumber>
     </p:column>
 </p:row>
 
 <p:row>
-    <p:column colspan="16">
+    <p:column colspan="16" style="text-align: justify">
         <b>IMPORTANTE: </b>Los derechos laborales de las trabajadoras y los trabajadores son irrenunciables y son nulas las convenciones contrarias o que tiendan a burlar sus
         efectos, por lo tanto los datos contenidos en el presente formulario y los documentos parte de este trámite no causan estado ni revisten el sello de cosa juzgada.
     </p:column>
 </p:row>
 
-<p:row>
-    <p:column colspan="10">
+<p:row >
+    <p:column colspan="18" style="text-align: center">
         <p:panelGrid columns="2">
-            <p:outputLabel value="Nombre de empleador y/o representante legal" style="font-weight: bold"/>
-            <p:outputLabel
+            <p:outputLabel value="Nombre de empleador y/o representante legal" style="font-weight: bold;text-align: left"/>
+            <p:outputLabel style="text-align: right"
                     value="#{declaracionTrimestralBean.vperPersona.rlNombre lt '1' ? declaracionTrimestralBean.vperPersona.nombreRazonSocial : declaracionTrimestralBean.vperPersona.rlNombre}"/>
-            <p:outputLabel value="Nro de documento de identidad" style="font-weight: bold"/>
+            <p:outputLabel value="Nro de documento de identidad" style="font-weight: bold;text-align: left"/>
             <p:outputLabel
                     value="#{declaracionTrimestralBean.vperPersona.rlNombre lt '1' ? declaracionTrimestralBean.vperPersona.nroIdentificacion : declaracionTrimestralBean.vperPersona.rlNroIdentidad}"
-                    style="width: 150px; height: 10px; text-align: left"/>
-            <p:outputLabel value="Lugar de Presentación" style="font-weight: bold"/>
-            <h:outputText value="Oficina Virtual" style="width: 150px; height: 10px"/>
-        </p:panelGrid>
-    </p:column>
-    <p:column colspan="6">
-        <p:panelGrid columns="2">
-            <p:outputLabel value="Fecha Presentación" style="font-weight: bold"/>
-            <p:outputLabel value="#{declaracionTrimestralBean.fechaTemp}" style="width: 150px; height: 10px">
+                    />
+            <p:outputLabel value="Lugar de Presentación" style="font-weight: bold;text-align: left"/>
+            <h:outputText value="Oficina Virtual"/>
+            <p:outputLabel value="Fecha Presentación" style="font-weight: bold;text-align: left"/>
+            <p:outputLabel value="#{declaracionTrimestralBean.fechaTemp}">
                 <f:convertDateTime pattern="dd/MM/yyyy"/>
             </p:outputLabel>
         </p:panelGrid>
     </p:column>
 </p:row>
 </p:panelGrid>
-    <br/><br/>
-<p:panelGrid columns="2" rendered="#{declaracionTrimestralBean.verificaValidacion==true}" style="background: yellow">
+
+<br/><br/>
+<p:panelGrid columns="2" rendered="#{declaracionTrimestralBean.verificaValidacion==true and declaracionTrimestralBean.trimestralAuto!=0}" style="background: yellow">
     <p:outputLabel value="Errores" style="font-weight: bold"/>
     <p:outputLabel value="Alertas" style="font-weight: bold"/>
     <p:scrollPanel style="width:330px;height:150px" mode="native">
@@ -479,8 +476,8 @@
     </p:scrollPanel>
 </p:panelGrid>
 
-<!-- Renato Codigo -->
-<h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionTrimestralBean.parametro!=2 and declaracionTrimestralBean.tamanioErrores!=3}">
+<!--Renato Codigo-->
+<h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionTrimestralBean.parametro!=2 and declaracionTrimestralBean.trimestralAuto!=1 and declaracionTrimestralBean.tamanioErrores!=3}">
     <h:outputText style="font-weight: bold;text-align: center" value="Primer mes trimestre"
                   rendered="#{declaracionTrimestralBean.habilita}"/> &nbsp;
     <p:fileUpload fileUploadListener="#{declaracionTrimestralBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
@@ -522,7 +519,7 @@
 
     <p:growl id="messages" showDetail="true"/>
 </h:panelGrid>
-
+<br/>
 
 <div align="CENTER">
     <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada" update="formularioFrm"

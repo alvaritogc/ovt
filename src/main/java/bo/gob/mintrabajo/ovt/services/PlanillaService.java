@@ -128,7 +128,7 @@ public class PlanillaService implements IPlanillaService {
         return planillaRepository.listarPlanillasParaRectificar(idPersona, codDocumento);
     }
 
-    public List<DocPlanilla> listarPlanillasTrimestralesParaRectificar(String idPersona, Date fechaHasta, Date fechaPlazo2) {
-        return planillaRepository.listarPlanillasTrimestralesParaRectificar(idPersona, fechaHasta, fechaPlazo2);
+    public List<DocPlanilla> listarPlanillasTrimestralesParaRectificar(String idPersona, Long idUnidad, Date fechaHasta, Date fechaPlazo2) {
+        return planillaRepository.listarPlanillasTrimestralesParaRectificar(idPersona, idUnidad, fechaHasta, fechaPlazo2);
     }
 }

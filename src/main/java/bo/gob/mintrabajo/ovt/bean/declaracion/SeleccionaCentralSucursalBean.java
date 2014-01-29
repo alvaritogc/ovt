@@ -70,16 +70,19 @@ public class SeleccionaCentralSucursalBean implements Serializable{
 
     private String mensajeValidacion;
     private boolean habilitado;
+    private ParObligacionCalendario periodoGestion;
 
     //  uploadarchivo
     public static Cache<String, List<DocBinario>> binarios = CacheBuilder.newBuilder().maximumSize(600).build();
     public static Cache<String, List<DocPlanillaDetalle>> planillaDetalles = CacheBuilder.newBuilder().maximumSize(600).build();
+    public static Cache<String, List<DocAlerta>> planillaAlertas = CacheBuilder.newBuilder().maximumSize(600).build();
     private List<DocPlanillaDetalle> docPlanillaDetalles;
     private UploadedFile file;
     private String nombres[]= new String[3];
     private List<DocBinario> listaBinarios;
     private DocBinario binario;
-    private boolean habilita = true;
+    private boolean habilitaTrim;
+    private boolean habilitaAgui;
     private String bitacoraSession;
     private List<String> errores = new ArrayList<String>();
     private List<DocAlerta> alertas;
@@ -90,6 +93,15 @@ public class SeleccionaCentralSucursalBean implements Serializable{
     private int trimestralAuto;
     private int aguinaldoAuto;
 
+    private int masculino;
+    private int femenino;
+    private int masculinoJubilado;
+    private int femeninoJubilado;
+    private int masculinoExtranjero;
+    private int femeninoExtranjero;
+    private int masculinoContratadoTrim;
+    private int femeninoContratadoTrim;
+
     private double haberBasico;
     private double bonoAntiguedad;
     private double bonoProduccion;
@@ -99,6 +111,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
     private double aporteAFP;
     private double rcIVA;
     private double otrosDescuentos;
+    private String codDocumento;
 
     @PostConstruct
     public void ini() {
@@ -111,15 +124,9 @@ public class SeleccionaCentralSucursalBean implements Serializable{
         }catch (Exception e) {
             parametro = 1;
         }
-        if(parametro==2)
-            habilita=false;
+
         habilitado=true;
         salarioMinimo= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_SALARIO, Dominios.PAR_SALARIO_MINIMO).getDescripcion());
-        if(parametro<=3)
-            trimestralAuto= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_FORMULARIO, Dominios.PAR_AUTOLLENADO_TRIMESTRAL).getDescripcion());
-        if(parametro>=4)
-            aguinaldoAuto= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_FORMULARIO, Dominios.PAR_AUTOLLENADO_AGUINALDO).getDescripcion());
-
         idPersona = (String) session.getAttribute("idEmpleador");
         persona = iPersonaService.buscarPorId(idPersona);
         idUsuario = (Long) session.getAttribute("idUsuario");
@@ -130,10 +137,77 @@ public class SeleccionaCentralSucursalBean implements Serializable{
     }
 
     public void cargar(){
+
+        switch (parametro){
+            case 1:
+                codDocumento="LC1010";
+                break;
+            case 2:
+                codDocumento="LC1011";
+                break;
+            case 3:
+                codDocumento="LC1012";
+                break;
+            case 4:
+                codDocumento="LC1020";
+                break;
+            case 5:
+                codDocumento="LC1021";
+                break;
+        }
+        verficaPeriodoGestion();
         listaCentralSucursales();
+        verficaHabilitacionUpload();
+    }
+
+    public void verficaPeriodoGestion(){
+
+        if(parametro==1||parametro==2||parametro==3){
+            periodoGestion = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo2(new Date());
+            return;
+        }
+        if(parametro==4||parametro==5)
+            periodoGestion= iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo2(new Date());
+    }
+
+    public void listaCentralSucursales(){
+        if(periodoGestion!=null){
+            central = new PerUnidad();
+            sucursales = new ArrayList<PerUnidad>();
+            List<PerUnidad> listaUnidades=iUnidadService.listarUnidadesSucursalesPorFecha(idPersona, codDocumento, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+            for(PerUnidad sucursal:listaUnidades)  {
+                if(sucursal.getPerUnidadPK().getIdUnidad()==0)
+                    central=sucursal;
+                sucursales.add(sucursal);
+            }
+        }
+    }
+
+    public void verficaHabilitacionUpload(){
+        if(parametro==1||parametro==2||parametro==3){
+            habilitaTrim = false;
+            trimestralAuto= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_FORMULARIO, Dominios.PAR_AUTOLLENADO_TRIMESTRAL).getDescripcion());
+            if((parametro==1||parametro==3) && trimestralAuto==1)
+                habilitaTrim=true;
+        }
+        if(parametro==4||parametro==5){
+            habilitaAgui=false;
+            aguinaldoAuto= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_FORMULARIO, Dominios.PAR_AUTOLLENADO_AGUINALDO).getDescripcion());
+            if((parametro==4 ||parametro==5)&& aguinaldoAuto==1)
+                habilitaAgui=true;
+        }
     }
 
     public String seleccionaUnidad(){
+        if(periodoGestion!=null)
+
+
+        if(aguinaldoAuto==1|| trimestralAuto==1){
+            if(((parametro==1||parametro==3)&&listaBinarios.size()<3)||(parametro==4&&listaBinarios.size()==0))  {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "No subió la cantidad necesaria de archivos."));
+                return null;
+            }
+        }
         if(tipoEmpresa!=2)
             unidadSeleccionada=central;
         else
@@ -143,29 +217,45 @@ public class SeleccionaCentralSucursalBean implements Serializable{
             session.setAttribute("parametro", parametro);
             session.setAttribute("unidadSeleccionada", unidadSeleccionada);
             session.setAttribute("tipoEmpresa", tipoEmpresa);
+//          reo revisar
             //verifica trimestralAuto y aguinaldoAuto: SI (1) ó NO (0), para el llenado del formulario...
-//            if(trimestralAuto==1 || aguinaldoAuto==1){
-//                validaArchivo(listaBinarios);
-//                if(errores.size()==0 && verificaValidacion){
-//                    binarios.put("binarios", listaBinarios);
-//                    planillaDetalles.put("planillaDetalles", docPlanillaDetalles);
-//                    session.setAttribute("haberBasico", haberBasico);
-//                    session.setAttribute("bonoAntiguedad", bonoAntiguedad);
-//                    session.setAttribute("bonoProduccion", bonoProduccion);
-//                    session.setAttribute("subsidioFrontera", subsidioFrontera);
-//                    session.setAttribute("laborExtraordinaria", laborExtraordinaria);
-//                    session.setAttribute("otrosBonos", otrosBonos);
-//                    session.setAttribute("aporteAFP", aporteAFP);
-//                    session.setAttribute("rcIVA", rcIVA);
-//                    session.setAttribute("otrosDescuentos", otrosDescuentos);
-//                }
-//                else{
-//                    binario = new DocBinario();
-//                    listaBinarios.clear();
-//                    habilita=true;
-//                    nombres= new String[3];
-//                }
-//            }
+            if(habilitaTrim||habilitaAgui){
+                validaArchivo(listaBinarios);
+                if(errores.size()==0 && verificaValidacion){
+                    binarios.put("binarios", listaBinarios);
+                    planillaDetalles.put("planillaDetalles", docPlanillaDetalles);
+                    planillaAlertas.put("planillaAlertas", alertas);
+                    session.setAttribute("haberBasico", haberBasico);
+                    session.setAttribute("bonoAntiguedad", bonoAntiguedad);
+                    session.setAttribute("bonoProduccion", bonoProduccion);
+                    session.setAttribute("subsidioFrontera", subsidioFrontera);
+                    session.setAttribute("laborExtraordinaria", laborExtraordinaria);
+                    session.setAttribute("otrosBonos", otrosBonos);
+
+                    session.setAttribute("masculino", masculino);
+                    session.setAttribute("femenino", femenino);
+
+                    if(parametro!=4){
+                        session.setAttribute("aporteAFP", aporteAFP);
+                        session.setAttribute("rcIVA", rcIVA);
+                        session.setAttribute("otrosDescuentos", otrosDescuentos);
+
+                        session.setAttribute("masculinoJubilado", masculinoJubilado);
+                        session.setAttribute("femeninoJubilado", femeninoJubilado);
+                        session.setAttribute("masculinoExtranjero", masculinoExtranjero);
+                        session.setAttribute("femeninoExtranjero", femeninoExtranjero);
+                        session.setAttribute("masculinoContratadoTrim", masculinoContratadoTrim);
+                        session.setAttribute("femeninoContratadoTrim", femeninoContratadoTrim);
+                    }
+                }
+                else{
+                    binario = new DocBinario();
+                    listaBinarios.clear();
+                    verficaHabilitacionUpload();
+                    nombres= new String[3];
+                    return null;
+                }
+            }
             if(parametro==1 || parametro==2 || parametro==3)
                 return "irDeclaracionTrimestral";
             if(parametro==4 || parametro==5)
@@ -174,16 +264,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
         return null;
     }
 
-    public void listaCentralSucursales(){
-        central = new PerUnidad();
-        sucursales = new ArrayList<PerUnidad>();
-        List<PerUnidad> listaUnidades=iUnidadService.listarUnidadesSucursales(idPersona);
-        for(PerUnidad sucursal:listaUnidades)  {
-            if(sucursal.getPerUnidadPK().getIdUnidad()==0)
-                central=sucursal;
-            sucursales.add(sucursal);
-        }
-    }
+
 
     // upload de archivos
     public void upload(FileUploadEvent evento){
@@ -200,10 +281,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
             binario.setInputStream(file.getInputstream());
             listaBinarios.add(binario);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Éxito", binario.getTipoDocumento() + " fue cargado satisfactoriamente."));
-            if(listaBinarios.size()==3)
-                habilita=false;
         }catch (Exception e){
-            habilita=true;
             e.printStackTrace();
         }
     }
@@ -229,6 +307,16 @@ public class SeleccionaCentralSucursalBean implements Serializable{
 
                 registro.readHeaders();
                 int c=0;
+                masculino=0;
+                femenino=0;
+                masculinoJubilado=0;
+                femeninoJubilado=0;
+                masculinoExtranjero=0;
+                femeninoExtranjero=0;
+                masculinoContratadoTrim=0;
+                femeninoContratadoTrim=0;
+
+
                 haberBasico=0;
                 bonoAntiguedad=0;
                 bonoProduccion=0;
@@ -262,19 +350,19 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                     DocAlerta docAlerta = new DocAlerta();
 
                     //1
-                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setTipoDocumento(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//2
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setNumeroDocumento(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//3
-                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setExtencionDocumento(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -286,36 +374,36 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                     docPlanillaDetalle.setNuaCua(registro.get(registro.getHeader(columna)));
 
                     columna++;//6
-                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setNombre(registro.get(registro.getHeader(columna))+" ");
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
                     columna++;//7
-                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
 
                     columna++;//8
-                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
 
                     columna++;//9
-                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//10
-                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
 
                     columna++;//11
-                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setNacionalidad(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//12
-                    if(!registro.get(registro.getHeader(columna)).equals("")){
+                    if(!registro.get(registro.getHeader(columna)).isEmpty()){
                         if(registro.get(registro.getHeader(columna)).length()>=15)
                             docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy").parse(registro.get(registro.getHeader(columna)))));
                         else
@@ -325,14 +413,36 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//13
-                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).equals("")){
                         docPlanillaDetalle.setSexo(registro.get(registro.getHeader(columna)));
+                        if(docPlanillaDetalle.getSexo().toUpperCase().equals("M")||docPlanillaDetalle.getSexo().toUpperCase().equals("VARON")||docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO")||docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN"))
+                            masculino++;
+                        if(docPlanillaDetalle.getSexo().toUpperCase().equals("F")||docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER")||docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO"))
+                            femenino++;
+                    }
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//14
-                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).equals("")){
                         docPlanillaDetalle.setJubilado(registro.get(registro.getHeader(columna)));
+
+                        //masculino
+                        if(docPlanillaDetalle.getSexo().toUpperCase().equals("M")||docPlanillaDetalle.getSexo().toUpperCase().equals("VARON")||docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO")||docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN")){
+                            if(docPlanillaDetalle.getJubilado().toUpperCase().equals("SI"))
+                                masculinoJubilado++;
+                            if(!docPlanillaDetalle.getNacionalidad().toUpperCase().equals("BOLIVIA")||!docPlanillaDetalle.getNacionalidad().toUpperCase().equals("BOLIVIANA"))
+                                masculinoExtranjero++;
+                        }
+
+                        //femenino
+                        if(docPlanillaDetalle.getSexo().toUpperCase().equals("F")||docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER")||docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO")){
+                            if(docPlanillaDetalle.getJubilado().toUpperCase().equals("SI"))
+                                femeninoJubilado++;
+                            if(!docPlanillaDetalle.getNacionalidad().toUpperCase().equals("BOLIVIA")||!docPlanillaDetalle.getNacionalidad().toUpperCase().equals("BOLIVIANA"))
+                                femeninoExtranjero++;
+                        }
+                    }
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
@@ -340,15 +450,27 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                     docPlanillaDetalle.setClasificacionLaboral(registro.get(registro.getHeader(columna)));
 
                     columna++;//16
-                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                    if(!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setCargo(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//17
                     if(!registro.get(registro.getHeader(columna)).equals("")) {
-                        if(registro.get(registro.getHeader(columna)).length()>15)
+                        if(registro.get(registro.getHeader(columna)).length()>15){
                             docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy").parse(registro.get(registro.getHeader(columna)))));
+
+                            Date fechaIngreso= new SimpleDateFormat("dd/MM/yyyy").parse(docPlanillaDetalle.getFechaIngreso());
+                            if(fechaIngreso.after(parObligacionCalendario.getFechaDesde()) && fechaIngreso.before(parObligacionCalendario.getFechaHasta())){
+                                //masculino
+                                if(docPlanillaDetalle.getSexo().toUpperCase().equals("M")||docPlanillaDetalle.getSexo().toUpperCase().equals("VARON")||docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO")||docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN"))
+                                    masculinoContratadoTrim++;
+
+                                //femenino
+                                if(docPlanillaDetalle.getSexo().toUpperCase().equals("F")||docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER")||docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO"))
+                                    femeninoContratadoTrim++;
+                            }
+                        }
                         else
                             docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
                     }
@@ -356,28 +478,28 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//18
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setHorasPagadasDia(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//19
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setDiasHaberBasico(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//20
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).isEmpty())
                         docPlanillaDetalle.setDiasPagados(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//21
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                         switch (valorPlanilla){
                             case 1:
-                                if(!registro.get(registro.getHeader(columna)).equals(""))
+                                if(!registro.get(registro.getHeader(columna)).isEmpty())
                                     docPlanillaDetalle.setDominicalMes(registro.get(registro.getHeader(columna)));
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -386,11 +508,12 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                                 docPlanillaDetalle.setHorasExtra(registro.get(registro.getHeader(columna)));
                                 break;
                             case 3:
-                                if(!registro.get(columna).equals("")){
+                                if(!registro.get(columna).isEmpty()){
                                     if((int) Double.parseDouble(registro.get(columna).replace(",","."))<salarioMinimo)
                                         docAlerta.setObservacion(nombreBinario+": El registro en la fila \""+c+"\" y la columna \"Haber Básico\" es menor al salario mínimo establecido por ley.");
                                     docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
-                                    haberBasico = haberBasico + Double.parseDouble(docPlanillaDetalle.getHaberBasico());
+                                    if(!docPlanillaDetalle.getHaberBasico().isEmpty())
+                                        haberBasico = haberBasico + Double.parseDouble(docPlanillaDetalle.getHaberBasico());
                                 }
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -401,25 +524,26 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//22
-                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                         switch (valorPlanilla){
                             case 1:
                                 docPlanillaDetalle.setDominicalTrabajado(registro.get(registro.getHeader(columna)));
                                 break;
                             case 2:
-                                if(!registro.get(columna).equals("")){
+                                if(!registro.get(columna).isEmpty()){
                                     int numero=(int) Double.parseDouble(registro.get(columna).replace(",","."));
                                     if(numero<salarioMinimo)
                                         docAlerta.setObservacion(nombreBinario + ": El registro en la fila \"" + c + "\" y la columna \"Haber Básico\" es menor al salario mínimo establecido por ley.");
                                     docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
-                                    haberBasico = haberBasico + Double.parseDouble(docPlanillaDetalle.getHaberBasico());
+                                    if(!docPlanillaDetalle.getHaberBasico().isEmpty())
+                                        haberBasico = haberBasico + Double.parseDouble(docPlanillaDetalle.getHaberBasico());
                                 }
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                             case 3:
                                 docPlanillaDetalle.setBonoAntiguedad(registro.get(registro.getHeader(columna)));
-                                if(docPlanillaDetalle.getBonoAntiguedad()!=null)
+                                if(!docPlanillaDetalle.getBonoAntiguedad().isEmpty())
                                     bonoAntiguedad= bonoAntiguedad+Double.parseDouble(docPlanillaDetalle.getBonoAntiguedad());
                                 break;
                         }
@@ -428,7 +552,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//23
-                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                         switch (valorPlanilla){
                             case 1:
                                 docPlanillaDetalle.setHorasExtra(registro.get(registro.getHeader(columna)));
@@ -438,7 +562,8 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                                 break;
                             case 3:
                                 docPlanillaDetalle.setBonoOtros(registro.get(registro.getHeader(columna)));
-                                otrosBonos = otrosBonos + Double.parseDouble(docPlanillaDetalle.getBonoOtros());
+                                if(!docPlanillaDetalle.getBonoOtros().isEmpty())
+                                    otrosBonos = otrosBonos + Double.parseDouble(docPlanillaDetalle.getBonoOtros());
                                 break;
                         }
                     }
@@ -446,18 +571,18 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++; //24
-                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                         switch (valorPlanilla){
                             case 1:
                                 docPlanillaDetalle.setHorasNocturno(registro.get(registro.getHeader(columna)));
                                 break;
                             case 2:
                                 docPlanillaDetalle.setBonoAntiguedad(registro.get(registro.getHeader(columna)));
-                                if(docPlanillaDetalle.getBonoAntiguedad()!=null)
+                                if(!docPlanillaDetalle.getBonoAntiguedad().isEmpty())
                                     bonoAntiguedad=bonoAntiguedad+Double.parseDouble(docPlanillaDetalle.getBonoAntiguedad());
                                 break;
                             case 3:
-                                if(!registro.get(columna).equals(""))
+                                if(!registro.get(columna).isEmpty())
                                     docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -468,19 +593,19 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++; //25
-                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                         switch (valorPlanilla){
                             case 1:
                                 docPlanillaDetalle.setHorasDominicales(registro.get(registro.getHeader(columna)));
                                 break;
                             case 2:
                                 docPlanillaDetalle.setBonoOtros(registro.get(registro.getHeader(columna)));
-                                if(docPlanillaDetalle.getBonoOtros()!=null)
+                                if(!docPlanillaDetalle.getBonoOtros().isEmpty())
                                     otrosBonos= otrosBonos+Double.parseDouble(docPlanillaDetalle.getBonoOtros());
                                 break;
                             case 3:
                                 docPlanillaDetalle.setDescuentoAfp(registro.get(registro.getHeader(columna)));
-                                if(docPlanillaDetalle.getDescuentoAfp()!=null)
+                                if(!docPlanillaDetalle.getDescuentoAfp().isEmpty())
                                     aporteAFP=aporteAFP+Double.parseDouble(docPlanillaDetalle.getDescuentoAfp());
                                 break;
                         }
@@ -489,27 +614,29 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++; //26
-                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                         switch (valorPlanilla){
                             case 1:
-                                if(!registro.get(columna).equals("")){
+                                if(!registro.get(columna).isEmpty()){
                                     if((int) Double.parseDouble(registro.get(columna).replace(",","."))<salarioMinimo)
                                         docAlerta.setObservacion(nombreBinario + ": El registro en la fila \"" + c + "\" y la columna \"Haber Básico\" es menor al salario mínimo establecido por ley.");
                                     docPlanillaDetalle.setHaberBasico(registro.get(registro.getHeader(columna)));
-                                    haberBasico=haberBasico+Double.parseDouble(docPlanillaDetalle.getHaberBasico());
+                                    if(!docPlanillaDetalle.getHaberBasico().isEmpty())
+                                        haberBasico=haberBasico+Double.parseDouble(docPlanillaDetalle.getHaberBasico());
                                 }
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                             case 2:
-                                if(!registro.get(columna).equals(""))
+                                if(!registro.get(columna).isEmpty())
                                     docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                             case 3:
                                 docPlanillaDetalle.setDescuentoRciva(registro.get(registro.getHeader(columna)));
-                                rcIVA=rcIVA+Double.parseDouble(docPlanillaDetalle.getDescuentoRciva());
+                                if(!docPlanillaDetalle.getDescuentoRciva().isEmpty())
+                                    rcIVA=rcIVA+Double.parseDouble(docPlanillaDetalle.getDescuentoRciva());
                                 break;
                         }
                     }
@@ -517,18 +644,20 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++; //27
-                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                         switch (valorPlanilla){
                             case 1:
                                 docPlanillaDetalle.setHaberDominical(registro.get(registro.getHeader(columna)));
                                 break;
                             case 2:
                                 docPlanillaDetalle.setDescuentoAfp(registro.get(registro.getHeader(columna)));
-                                aporteAFP= aporteAFP+Double.parseDouble(docPlanillaDetalle.getDescuentoAfp());
+                                if(!docPlanillaDetalle.getDescuentoAfp().isEmpty())
+                                    aporteAFP= aporteAFP+Double.parseDouble(docPlanillaDetalle.getDescuentoAfp());
                                 break;
                             case 3:
                                 docPlanillaDetalle.setDescuentoOtro(registro.get(registro.getHeader(columna)));
-                                otrosDescuentos=otrosDescuentos+Double.parseDouble(docPlanillaDetalle.getDescuentoOtro());
+                                if(!docPlanillaDetalle.getDescuentoOtro().isEmpty())
+                                    otrosDescuentos=otrosDescuentos+Double.parseDouble(docPlanillaDetalle.getDescuentoOtro());
                                 break;
                         }
                     }
@@ -536,14 +665,15 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++; //28
-                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                         switch (valorPlanilla){
                             case 1:
                                 docPlanillaDetalle.setMontoDominical(registro.get(registro.getHeader(columna)));
                                 break;
                             case 2:
                                 docPlanillaDetalle.setDescuentoRciva(registro.get(registro.getHeader(columna)));
-                                rcIVA=rcIVA+Double.parseDouble(docPlanillaDetalle.getDescuentoRciva());
+                                if(!docPlanillaDetalle.getDescuentoRciva().isEmpty())
+                                    rcIVA=rcIVA+Double.parseDouble(docPlanillaDetalle.getDescuentoRciva());
                                 break;
                             case 3:
                                 docPlanillaDetalle.setDescuentosTotal(registro.get(registro.getHeader(columna)));
@@ -554,17 +684,18 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++; //29
-                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                    if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                         switch (valorPlanilla){
                             case 1:
                                 docPlanillaDetalle.setMontoHorasExtra(registro.get(registro.getHeader(columna)));
                                 break;
                             case 2:
                                 docPlanillaDetalle.setDescuentoOtro(registro.get(registro.getHeader(columna)));
-                                otrosDescuentos= otrosDescuentos+Double.parseDouble(docPlanillaDetalle.getDescuentoOtro());
+                                if(!docPlanillaDetalle.getDescuentoOtro().isEmpty())
+                                    otrosDescuentos= otrosDescuentos+Double.parseDouble(docPlanillaDetalle.getDescuentoOtro());
                                 break;
                             case 3:
-                                if(!registro.get(columna).equals(""))
+                                if(!registro.get(columna).isEmpty())
                                     docPlanillaDetalle.setLiquidoPagable(registro.get(registro.getHeader(columna)));
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -576,7 +707,7 @@ public class SeleccionaCentralSucursalBean implements Serializable{
 
                     if(valorPlanilla!=3){
                         columna++; //30
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                             switch (valorPlanilla){
                                 case 1:
                                     docPlanillaDetalle.setMontoHorasNocturno(registro.get(registro.getHeader(columna)));
@@ -590,13 +721,13 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //31
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                             switch (valorPlanilla){
                                 case 1:
                                     docPlanillaDetalle.setMontoHorasDominical(registro.get(registro.getHeader(columna)));
                                     break;
                                 case 2:
-                                    if(!registro.get(columna).equals(""))
+                                    if(!registro.get(columna).isEmpty())
                                         docPlanillaDetalle.setLiquidoPagable(registro.get(registro.getHeader(columna)));
                                     else
                                         errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -608,75 +739,82 @@ public class SeleccionaCentralSucursalBean implements Serializable{
                     }
                     if(valorPlanilla==1){
                         columna++; //32
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                             docPlanillaDetalle.setBonoAntiguedad(registro.get(registro.getHeader(columna)));
-                            bonoAntiguedad=bonoAntiguedad+Double.parseDouble(docPlanillaDetalle.getBonoAntiguedad());
+                            if(!docPlanillaDetalle.getBonoAntiguedad().isEmpty())
+                                bonoAntiguedad=bonoAntiguedad+Double.parseDouble(docPlanillaDetalle.getBonoAntiguedad());
                         }
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //33
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                             docPlanillaDetalle.setBonoProduccion(registro.get(registro.getHeader(columna)));
-                            bonoProduccion=bonoProduccion+Double.parseDouble(docPlanillaDetalle.getBonoProduccion());
+                            if(!docPlanillaDetalle.getBonoProduccion().isEmpty())
+                                bonoProduccion=bonoProduccion+Double.parseDouble(docPlanillaDetalle.getBonoProduccion());
                         }
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //34
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                             docPlanillaDetalle.setBonoFrontera(registro.get(registro.getHeader(columna)));
-                            subsidioFrontera= subsidioFrontera+Double.parseDouble(docPlanillaDetalle.getBonoFrontera());
+                            if(!docPlanillaDetalle.getBonoFrontera().isEmpty())
+                                subsidioFrontera= subsidioFrontera+Double.parseDouble(docPlanillaDetalle.getBonoFrontera());
                         }
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //35
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                             docPlanillaDetalle.setBonoOtros(registro.get(registro.getHeader(columna)));
-                            otrosBonos= otrosBonos+Double.parseDouble(docPlanillaDetalle.getBonoOtros());
+                            if(!docPlanillaDetalle.getBonoOtros().isEmpty())
+                                otrosBonos= otrosBonos+Double.parseDouble(docPlanillaDetalle.getBonoOtros());
                         }
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //36
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))&&!registro.get(columna).equals(""))
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))&&!registro.get(columna).isEmpty())
                             docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //37
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                             docPlanillaDetalle.setDescuentoAfp(registro.get(registro.getHeader(columna)));
-                            aporteAFP= aporteAFP+Double.parseDouble(docPlanillaDetalle.getDescuentoAfp());
+                            if(!docPlanillaDetalle.getDescuentoAfp().isEmpty())
+                                aporteAFP= aporteAFP+Double.parseDouble(docPlanillaDetalle.getDescuentoAfp());
                         }
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //38
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                             docPlanillaDetalle.setDescuentoRciva(registro.get(registro.getHeader(columna)));
-                            rcIVA=rcIVA+Double.parseDouble(docPlanillaDetalle.getDescuentoRciva());
+                            if(!docPlanillaDetalle.getDescuentoRciva().isEmpty())
+                                rcIVA=rcIVA+Double.parseDouble(docPlanillaDetalle.getDescuentoRciva());
                         }
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //39
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty()){
                             docPlanillaDetalle.setDescuentoOtro(registro.get(registro.getHeader(columna)));
-                            otrosDescuentos= otrosDescuentos+ Double.parseDouble(docPlanillaDetalle.getDescuentoOtro());
+                            if(!docPlanillaDetalle.getDescuentoOtro().isEmpty())
+                                otrosDescuentos= otrosDescuentos+ Double.parseDouble(docPlanillaDetalle.getDescuentoOtro());
                         }
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //40
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).equals(""))
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))||registro.get(columna).isEmpty())
                             docPlanillaDetalle.setDescuentosTotal(registro.get(registro.getHeader(columna)));
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //41
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))&&!registro.get(columna).equals(""))
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))&&!registro.get(columna).isEmpty())
                             docPlanillaDetalle.setLiquidoPagable(registro.get(registro.getHeader(columna)));
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -698,161 +836,163 @@ public class SeleccionaCentralSucursalBean implements Serializable{
     public boolean verEstadoPlanilla(){
         List<DocDocumento> listaDocumentos = new ArrayList<DocDocumento>();
         habilitado = true;
-
-        switch (parametro){
-            case 1:
-                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
-                if(parObligacionCalendario==null){
-                    mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral dentro del plazo establecido.";
-                    habilitado=false;
-                    return false;
-                }else{
-                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
-                    if(listaDocumentos.size()==0){
-                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1011");
-                        if(listaDocumentos.size()!=0){
-                            mensajeValidacion="No se puede realizar la Declaración Jurada Trimestral si ya declaro una sin movimiento.";
-                            habilitado=false;
-                            return false;
-                        }
-                        else
-                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010");
-                    }
-                }
-                break;
-            case 2:
-                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
-                if(parObligacionCalendario==null){
-                    mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral Sin Movimiento dentro del plazo establecido.";
-                    habilitado=false;
-                    return false;
-                }else{
-                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1011");
-                    if(listaDocumentos.size()==0){
-                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010");
-                        if(listaDocumentos.size()!=0){
-                            mensajeValidacion="No se puede realizar la Declaración Jurada Trimestral Sin Movimiento si ya declaro una con movimiento.";
-                            habilitado=false;
-                            return false;
-                        }
-                        else
+        if(unidadSeleccionada.getPerUnidadPK()!=null){
+            switch (parametro){
+                case 1:
+                    parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
+                    if(parObligacionCalendario==null){
+                        mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral dentro del plazo establecido.";
+                        habilitado=false;
+                        return false;
+                    }else{
+                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
+                        if(listaDocumentos.size()==0){
                             listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1011");
-                    }
-                }
-                break;
-            case 3:
-                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo2(DateUtils.truncate(new Date(), Calendar.DATE));
-                if(parObligacionCalendario==null){
-                    mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral Rectificatoria dentro del plazo establecido.";
-                    habilitado=false;
-                    return false;
-                }else{
-                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1012");
-                    if(listaDocumentos.size()==0){
-                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumentos(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010", "LC1011");
-                        if(listaDocumentos.size()==0){
-                            mensajeValidacion="No existe alguna Declaración Jurada Trimestral para rectificar.";
-                            habilitado=false;
-                            return false;
+                            if(listaDocumentos.size()!=0){
+                                mensajeValidacion="No se puede realizar la Declaración Jurada Trimestral si ya declaro una sin movimiento.";
+                                habilitado=false;
+                                return false;
+                            }
+                            else
+                                listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010");
                         }
-                        else
-                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1012");
                     }
-                }
-                break;
-            case 4:
-                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
-                if(parObligacionCalendario==null){
-                    mensajeValidacion="Solo puede realizar la Declaración Jurada de Aguinaldo dentro del plazo establecido.";
-                    habilitado=false;
-                    return false;
-                }else
-                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1020");
-                break;
-            case 5:
-                parObligacionCalendario=iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo2(DateUtils.truncate(new Date(), Calendar.DATE));
-                if(parObligacionCalendario==null){
-                    mensajeValidacion="Solo puede realizar la Declaración Jurada de Aguinaldo Rectificatoria dentro del plazo establecido.";
-                    habilitado=false;
-                    return false;
-                }else{
-                    listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1021");
-                    if(listaDocumentos.size()==0){
-                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1020");
+                    break;
+                case 2:
+                    parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
+                    if(parObligacionCalendario==null){
+                        mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral Sin Movimiento dentro del plazo establecido.";
+                        habilitado=false;
+                        return false;
+                    }else{
+                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1011");
                         if(listaDocumentos.size()==0){
-                            mensajeValidacion="No existe alguna Declaración Jurada de Aguinaldo para rectificar.";
-                            habilitado=false;
-                            return false;
+                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010");
+                            if(listaDocumentos.size()!=0){
+                                mensajeValidacion="No se puede realizar la Declaración Jurada Trimestral Sin Movimiento si ya declaro una con movimiento.";
+                                habilitado=false;
+                                return false;
+                            }
+                            else
+                                listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1011");
                         }
-                        else
-                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1021");
                     }
-                }
-                break;
-            default:
-                return false;
-        }
-        if(parametro==1){
-            for(DocDocumento documento:listaDocumentos){
-                if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
-                    mensajeValidacion="La Declaración Jurada Trimestral ya fue declarada Consolidada.";
-                    habilitado=false;
+                    break;
+                case 3:
+                    parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo2(DateUtils.truncate(new Date(), Calendar.DATE));
+                    if(parObligacionCalendario==null){
+                        mensajeValidacion="Solo puede realizar la Declaración Jurada Trimestral Rectificatoria dentro del plazo establecido.";
+                        habilitado=false;
+                        return false;
+                    }else{
+                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1012");
+                        if(listaDocumentos.size()==0){
+                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumentos(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010", "LC1011");
+                            if(listaDocumentos.size()==0){
+                                mensajeValidacion="No existe alguna Declaración Jurada Trimestral para rectificar.";
+                                habilitado=false;
+                                return false;
+                            }
+                            else
+                                listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1012");
+                        }
+                    }
+                    break;
+                case 4:
+                    parObligacionCalendario=iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
+                    if(parObligacionCalendario==null){
+                        mensajeValidacion="Solo puede realizar la Declaración Jurada de Aguinaldo dentro del plazo establecido.";
+                        habilitado=false;
+                        return false;
+                    }else
+                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1020");
+                    break;
+                case 5:
+                    parObligacionCalendario=iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo2(DateUtils.truncate(new Date(), Calendar.DATE));
+                    if(parObligacionCalendario==null){
+                        mensajeValidacion="Solo puede realizar la Declaración Jurada de Aguinaldo Rectificatoria dentro del plazo establecido.";
+                        habilitado=false;
+                        return false;
+                    }else{
+                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1021");
+                        if(listaDocumentos.size()==0){
+                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1020");
+                            if(listaDocumentos.size()==0){
+                                mensajeValidacion="No existe alguna Declaración Jurada de Aguinaldo para rectificar.";
+                                habilitado=false;
+                                return false;
+                            }
+                            else
+                                listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1021");
+                        }
+                    }
+                    break;
+                default:
                     return false;
-                }
             }
-        }
-
-        if(parametro==2){
-            for(DocDocumento documento:listaDocumentos){
-                if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
-                    mensajeValidacion="La Declaración Jurada Trimestral ya fue declarada Consolidada.";
-                    habilitado=false;
-                    return false;
-                }
-            }
-        }
-
-        if(parametro==3){
-            for(DocDocumento documento:listaDocumentos){
-                if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
-                    mensajeValidacion="La Declaración Jurada Trimestral ya fue declarada Consolidada.";
-                    habilitado=false;
-                    return false;
-                }
-            }
-        }
-
-        if(parametro==4 || parametro==5){
-            for(DocDocumento documento:listaDocumentos){
-                if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
-                    mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada Consolidada.";
-                    habilitado=false;
-                    return false;
-                }
-            }
-
-            if (tipoEmpresa==1) {
+            if(parametro==1){
                 for(DocDocumento documento:listaDocumentos){
-                    if(documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999")){
-                        mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada por Sucursal.";
+                    if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
+                        mensajeValidacion="La Declaración Jurada Trimestral ya fue declarada Consolidada.";
                         habilitado=false;
                         return false;
                     }
                 }
             }
 
-            for(DocDocumento documento:listaDocumentos){
-                if(documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999") && documento.getPerUnidad().getPerUnidadPK().getIdUnidad() == unidadSeleccionada.getPerUnidadPK().getIdUnidad()){
-                    if(parametro==4)
-                        mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada para esta Sucursal.";
-                    if(parametro==5)
-                        mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue rectificada para esta Sucursal.";
-                    habilitado=false;
-                    return false;
+            if(parametro==2){
+                for(DocDocumento documento:listaDocumentos){
+                    if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
+                        mensajeValidacion="La Declaración Jurada Trimestral ya fue declarada Consolidada.";
+                        habilitado=false;
+                        return false;
+                    }
                 }
             }
-        }
-        return true;
+
+            if(parametro==3){
+                for(DocDocumento documento:listaDocumentos){
+                    if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
+                        mensajeValidacion="La Declaración Jurada Trimestral ya fue declarada Consolidada.";
+                        habilitado=false;
+                        return false;
+                    }
+                }
+            }
+
+            if(parametro==4 || parametro==5){
+                for(DocDocumento documento:listaDocumentos){
+                    if(documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")){
+                        mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada Consolidada.";
+                        habilitado=false;
+                        return false;
+                    }
+                }
+
+                if (tipoEmpresa==1) {
+                    for(DocDocumento documento:listaDocumentos){
+                        if(documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999")){
+                            mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada por Sucursal.";
+                            habilitado=false;
+                            return false;
+                        }
+                    }
+                }
+
+                for(DocDocumento documento:listaDocumentos){
+                    if(documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999") && documento.getPerUnidad().getPerUnidadPK().getIdUnidad() == unidadSeleccionada.getPerUnidadPK().getIdUnidad()){
+                        if(parametro==4)
+                            mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue declarada para esta Sucursal.";
+                        if(parametro==5)
+                            mensajeValidacion="La Declaración Jurada de Aguinaldo ya fue rectificada para esta Sucursal.";
+                        habilitado=false;
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }else
+            return false;
     }
 
     public IPersonaService getiPersonaService() {
@@ -967,12 +1107,20 @@ public class SeleccionaCentralSucursalBean implements Serializable{
         this.nombres = nombres;
     }
 
-    public boolean isHabilita() {
-        return habilita;
+    public boolean isHabilitaTrim() {
+        return habilitaTrim;
     }
 
-    public void setHabilita(boolean habilita) {
-        this.habilita = habilita;
+    public void setHabilitaTrim(boolean habilitaTrim) {
+        this.habilitaTrim = habilitaTrim;
+    }
+
+    public boolean isHabilitaAgui() {
+        return habilitaAgui;
+    }
+
+    public void setHabilitaAgui(boolean habilitaAgui) {
+        this.habilitaAgui = habilitaAgui;
     }
 
     public List<String> getErrores() {

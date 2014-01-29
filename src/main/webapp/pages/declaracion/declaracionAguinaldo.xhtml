@@ -108,109 +108,48 @@
 </p:row>
 
 <p:row>
-    <p:column colspan="2">
-        <p:outputLabel value="3.1 Nro de empleador MTEPS:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="3">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroOtro}"/>
-    </p:column>
-    <p:column colspan="3">
-        <p:outputLabel value="3.2 Nro patronal del seguro social:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="3">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroCajaSalud}"/>
-    </p:column>
-    <p:column colspan="2">
-        <p:outputLabel value="3.3 Nro de NIT:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="3">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroIdentificacion}"/>
-    </p:column>
-</p:row>
+    <p:column colspan="16">
+        <p:panelGrid columns="6">
+            <p:outputLabel value="3.1 Nro de empleador MTEPS:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroOtro}"/>
+            <p:outputLabel value="3.2 Nro patronal del seguro social:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroCajaSalud}"/>
+            <p:outputLabel value="3.3 Nro de NIT:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nroIdentificacion}"/>
+            <p:outputLabel value="3.4 Nombre o razón social:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nombreRazonSocial}"/>
+            <p:outputLabel value="3.5 Actividad Económica principal:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.actividadDeclarada}"/>
+            <p:outputLabel value="3.6 Departamento:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirDepartamento}"/>
+            <p:outputLabel value="3.7 Ciudad o localidad:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.perDireccion.localidad}"/>
+            <p:outputLabel value="3.8 Zona:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.perDireccion.zonaUrbanizacion}"/>
+            <p:outputLabel value="3.9 Dirección:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.perDireccion.direccion}"/>
+            <p:outputLabel value="3.10 Nro:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.perDireccion.pisoDepOfi}"/>
+            <p:outputLabel value="3.11 Teléfono:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.perDireccion.telefono}"/>
+            <p:outputLabel value="3.12 Fax:" style="font-weight:bold"/>
+            <h:outputText value="#{declaracionAguinaldoBean.perDireccion.fax}"/>
 
-<p:row>
-    <p:column colspan="3">
-        <p:outputLabel value="3.4 Nombre o razón social:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="7">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.nombreRazonSocial}"/>
-    </p:column>
-    <p:column colspan="3">
-        <p:outputLabel value="3.5 Actividad Económica principal:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="3">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.actividadDeclarada}"/>
-    </p:column>
-</p:row>
-
-<p:row>
-    <p:column colspan="3">
-        <p:outputLabel value="3.6 Departamento:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="2">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirDepartamento}"/>
-    </p:column>
-    <p:column colspan="4">
-        <p:outputLabel value="3.7 Ciudad o localidad:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="3">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirLocalidad}"/>
-    </p:column>
-    <p:column colspan="1">
-        <p:outputLabel value="3.8 Zona:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="3">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirZona}"/>
-    </p:column>
-</p:row>
-
-<p:row>
-    <p:column colspan="2">
-        <p:outputLabel value="3.9 Dirección:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="12">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirDireccion}"/>
-    </p:column>
-    <p:column colspan="1">
-        <p:outputLabel value="3.10 Nro:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="1">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.dirNroDireccion}"/>
-    </p:column>
-</p:row>
-
-<p:row>
-    <p:column colspan="2">
-        <p:outputLabel value="3.11 Teléfono:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="3">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.telefono}"/>
-    </p:column>
-    <p:column colspan="2">
-        <p:outputLabel value="3.12 Fax:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="3">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.fax}"/>
-    </p:column>
-    <p:column colspan="3">
-        <p:outputLabel value="3.13 Correo Electronico:" style="font-weight:bold"/>
-    </p:column>
-    <p:column colspan="3">
-        <h:outputText value="#{declaracionAguinaldoBean.vperPersona.email}"/>
+        </p:panelGrid>
     </p:column>
 </p:row>
 
 <p:row rendered="#{declaracionAguinaldoBean.parametro!=2}">
-    <p:column colspan="8" style="background-color: #2264B1; color: #FFFFFF">
+    <p:column colspan="10" style="background-color: #2264B1; color: #FFFFFF">
         <p:outputLabel value="4. COMPOSICIÓN SALARIAL"/>
     </p:column>
-    <p:column colspan="8" style="background-color: #2264B1; color: #FFFFFF">
+    <p:column colspan="6" style="background-color: #2264B1; color: #FFFFFF">
         <p:outputLabel value="5. TRABAJADORES"/>
     </p:column>
 </p:row>
 
 <p:row rendered="#{declaracionAguinaldoBean.parametro!=2}">
-    <p:column colspan="8">
+    <p:column colspan="10">
         <p:panelGrid columns="2">
             <p:outputLabel value="Concepto" style="font-weight: bold; text-align: right"/>
             <p:outputLabel value="Monto (Bs)" style="font-weight: bold; text-align: left"/>
@@ -253,16 +192,15 @@
 
             <p:outputLabel value="4.7 Total Ganado" style="font-weight: bold;  text-align: right"/>
             <pe:inputNumber id="pagable" value="#{(declaracionAguinaldoBean.docPlanilla.haberBasico +
-                                                                               declaracionAguinaldoBean.docPlanilla.bonoAntiguedad + declaracionAguinaldoBean.docPlanilla.bonoProduccion +
-                                                                               declaracionAguinaldoBean.docPlanilla.subsidioFrontera + declaracionAguinaldoBean.docPlanilla.laborExtra +
-                                                                               declaracionAguinaldoBean.docPlanilla.otrosBonos) - (declaracionAguinaldoBean.docPlanilla.aporteAfp +
-                                                                               declaracionAguinaldoBean.docPlanilla.rciva + declaracionAguinaldoBean.docPlanilla.otrosDescuentos)}"
+                                                   declaracionAguinaldoBean.docPlanilla.bonoAntiguedad + declaracionAguinaldoBean.docPlanilla.bonoProduccion +
+                                                   declaracionAguinaldoBean.docPlanilla.subsidioFrontera + declaracionAguinaldoBean.docPlanilla.laborExtra +
+                                                   declaracionAguinaldoBean.docPlanilla.otrosBonos)}"
                             disabled="true"
                             thousandSeparator="." decimalSeparator="," style="font-weight: bold; width: 100px; height: 10px; text-align: right; border: none; box-shadow: none; cursor:auto; opacity: 4.35"/>
         </p:panelGrid>
     </p:column>
 
-    <p:column colspan="8" >
+    <p:column colspan="6" >
         <p:panelGrid columns="4">
             <p:outputLabel value="       " style=" text-align: center"/>
             <p:outputLabel value="Varones" style=" text-align: center"/>
@@ -299,7 +237,7 @@
 </p:row>
 
 <p:row>
-    <p:column colspan="6">
+    <p:column colspan="7">
         <p:outputLabel value="6.1 Nro de comprobante de depósito"/>
         <p:inputText value="#{declaracionAguinaldoBean.docPlanilla.numOperacion}"
                      style="width: 160px; height: 10px; text-align: right" required="true" maxlength="20">
@@ -327,24 +265,18 @@
     </p:column>
 </p:row>
 
-<p:row>
-    <p:column colspan="10">
+<p:row >
+    <p:column colspan="18" style="text-align: center">
         <p:panelGrid columns="2">
-            <p:outputLabel value="Nombre de empleador y/o representante legal" style="font-weight: bold"/>
-            <p:outputLabel
-                    value="#{declaracionAguinaldoBean.vperPersona.rlNombre lt '1' ? declaracionAguinaldoBean.vperPersona.nombreRazonSocial : declaracionAguinaldoBean.vperPersona.rlNombre}"/>
-            <p:outputLabel value="Nro de documento de identidad" style="font-weight: bold"/>
-            <p:outputLabel
-                    value="#{declaracionAguinaldoBean.vperPersona.rlNombre lt '1' ? declaracionAguinaldoBean.vperPersona.nroIdentificacion : declaracionAguinaldoBean.vperPersona.rlNroIdentidad}"
-                    style="width: 150px; height: 10px; text-align: left"/>
-            <p:outputLabel value="Lugar de Presentación" style="font-weight: bold"/>
-            <h:outputText value="Oficina Virtual" style="width: 150px; height: 10px"/>
-        </p:panelGrid>
-    </p:column>
-    <p:column colspan="6">
-        <p:panelGrid columns="2">
-            <p:outputLabel value="Fecha Presentación" style="font-weight: bold"/>
-            <p:outputLabel value="#{declaracionAguinaldoBean.fechaTemp}" style="width: 150px; height: 10px">
+            <p:outputLabel value="Nombre de empleador y/o representante legal" style="font-weight: bold;text-align: left"/>
+            <p:outputLabel style="text-align: right"
+                           value="#{declaracionAguinaldoBean.vperPersona.rlNombre lt '1' ? declaracionAguinaldoBean.vperPersona.nombreRazonSocial : declaracionAguinaldoBean.vperPersona.rlNombre}"/>
+            <p:outputLabel value="Nro de documento de identidad" style="font-weight: bold;text-align: left"/>
+            <p:outputLabel value="#{declaracionAguinaldoBean.vperPersona.rlNombre lt '1' ? declaracionAguinaldoBean.vperPersona.nroIdentificacion : declaracionAguinaldoBean.vperPersona.rlNroIdentidad}"/>
+            <p:outputLabel value="Lugar de Presentación" style="font-weight: bold;text-align: left"/>
+            <h:outputText value="Oficina Virtual"/>
+            <p:outputLabel value="Fecha Presentación" style="font-weight: bold;text-align: left"/>
+            <p:outputLabel value="#{declaracionAguinaldoBean.fechaTemp}">
                 <f:convertDateTime pattern="dd/MM/yyyy"/>
             </p:outputLabel>
         </p:panelGrid>

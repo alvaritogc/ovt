@@ -5,9 +5,9 @@ import bo.gob.mintrabajo.ovt.entities.PerPersona;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import bo.gob.mintrabajo.ovt.entities.PerUnidadPK;
 import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
+import bo.gob.mintrabajo.ovt.repositories.ObligacionCalendarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.PersonaRepository;
 import bo.gob.mintrabajo.ovt.repositories.UnidadRepository;
-import org.springframework.data.repository.query.Param;
 
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
@@ -18,7 +18,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_ESTADO_UNIDAD;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_UNIDAD_ACTIVO;
 
 /**
  *
@@ -30,16 +31,18 @@ public class UnidadService implements IUnidadService{
     private final UnidadRepository unidadRepository;
     private final DominioRepository dominioRepository;
     private final PersonaRepository personaRepository;
+    private final ObligacionCalendarioRepository obligacionCalendarioRepository;
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
 
 
     @Inject
-    public UnidadService(UnidadRepository unidadRepository,DominioRepository dominioRepository,PersonaRepository personaRepository) {
+    public UnidadService(UnidadRepository unidadRepository,DominioRepository dominioRepository,PersonaRepository personaRepository, ObligacionCalendarioRepository obligacionCalendarioRepository) {
         this.unidadRepository = unidadRepository;
         this.dominioRepository=dominioRepository;
         this.personaRepository=personaRepository;
+        this.obligacionCalendarioRepository=obligacionCalendarioRepository;
     }
     
 
@@ -177,10 +180,19 @@ public class UnidadService implements IUnidadService{
         return unidadRepository.findByPerPersona_IdPersona(idPersona);
     }
 
+    public List<PerUnidad> listarUnidadesSucursalesPorFecha(String idPersona, String codDocumento, Date fechaHasta, Date fechaPlazo2){
+        return unidadRepository.listarSucursalesPorPersonaYUnidadSegunFecha(idPersona, codDocumento, fechaHasta, fechaPlazo2);
+
+//        return (List<PerUnidad>)(entityManager.createNativeQuery("SELECT * FROM per_unidad WHERE u.id_persona='"+idPersona+"' AND u.id_unidad NOT IN (SELECT d.id_unidad FROM doc_Documento d WHERE d.id_persona='"+idPersona+"' AND d.cod_Documento LIKE '"+codDocumento+"' AND d.fecha_Documento BETWEEN '"+fechaHasta+"' AND '"+fechaPlazo2+"'").getResultList());
+    }
+
     /*
      *Obtiene el idUnidad maximo de las unidades de una persona o empresa.
      */
     public long obtenerMaximaUnidad(String idPersona){
            return unidadRepository.obtenerMaximaUnidad(idPersona);
     }
+
+
+
 }

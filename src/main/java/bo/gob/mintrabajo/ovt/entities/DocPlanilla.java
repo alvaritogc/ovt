@@ -654,56 +654,6 @@ public class DocPlanilla implements Serializable {
 
     @Override
     public String toString() {
-        return "DocPlanilla{" +
-                "idPlanilla=" + idPlanilla +
-                ", tipoPlanilla='" + tipoPlanilla + '\'' +
-                ", nroAsegCaja=" + nroAsegCaja +
-                ", montoAsegCaja=" + montoAsegCaja +
-                ", nroAsegAfp=" + nroAsegAfp +
-                ", montoAsegAfp=" + montoAsegAfp +
-                ", haberBasico=" + haberBasico +
-                ", bonoAntiguedad=" + bonoAntiguedad +
-                ", bonoProduccion=" + bonoProduccion +
-                ", subsidioFrontera=" + subsidioFrontera +
-                ", laborExtra=" + laborExtra +
-                ", otrosBonos=" + otrosBonos +
-                ", aporteAfp=" + aporteAfp +
-                ", rciva=" + rciva +
-                ", otrosDescuentos=" + otrosDescuentos +
-                ", nroM=" + nroM +
-                ", nroH=" + nroH +
-                ", nroJubiladosM=" + nroJubiladosM +
-                ", nroJubiladosH=" + nroJubiladosH +
-                ", nroExtranjerosM=" + nroExtranjerosM +
-                ", nroExtranjerosH=" + nroExtranjerosH +
-                ", nroDiscapacidadM=" + nroDiscapacidadM +
-                ", nroDiscapacidadH=" + nroDiscapacidadH +
-                ", nroContratadosM=" + nroContratadosM +
-                ", nroContratadosH=" + nroContratadosH +
-                ", nroRetiradosM=" + nroRetiradosM +
-                ", nroRetiradosH=" + nroRetiradosH +
-                ", nroAccidentes=" + nroAccidentes +
-                ", nroMuertes=" + nroMuertes +
-                ", nroEnfermedades=" + nroEnfermedades +
-                ", fechaOperacion=" + fechaOperacion +
-                ", montoOperacion=" + montoOperacion +
-                ", numOperacion='" + numOperacion + '\'' +
-                ", nroEmpleador='" + nroEmpleador + '\'' +
-                ", nroPatronalss='" + nroPatronalss + '\'' +
-                ", nombreRazonSocial='" + nombreRazonSocial + '\'' +
-                ", idActividadEconomica=" + idActividadEconomica +
-                ", codLocalidadCiudad='" + codLocalidadCiudad + '\'' +
-                ", codLocalidadPais='" + codLocalidadPais + '\'' +
-                ", zona='" + zona + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", fax='" + fax + '\'' +
-                ", idReplegal='" + idReplegal + '\'' +
-                ", codLocalidadPresentacion='" + codLocalidadPresentacion + '\'' +
-                ", idEntidadSalud=" + idEntidadSalud.getIdEntidad() +
-                ", idEntidadBanco=" + idEntidadBanco.getIdEntidad() +
-                ", parCalendario=" + parCalendario.getParCalendarioPK() +
-                ", idDocumento=" + idDocumento.getIdDocumento() +
-                '}';
+        return "bo.gob.mintrabajo.ovt.entities.DocPlanilla[ idPlanilla=" + idPlanilla + " ]";
     }
 }
