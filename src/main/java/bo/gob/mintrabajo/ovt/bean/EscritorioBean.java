@@ -95,6 +95,9 @@ public class EscritorioBean {
     private String observacionLogEstado;
     private String conBinario;
     private String bitacoraSession;
+    
+    /////
+   private boolean delegado=false;
 
     @PostConstruct
     public void ini() {
@@ -103,6 +106,9 @@ public class EscritorioBean {
         idPersona = (String) session.getAttribute("idPersona");
         idEmpleador = (String) session.getAttribute("idEmpleador");
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
+        //////////////////////////////////////////LUIS
+//        delegado = "siDelegado".equals((String) session.getAttribute("delegado"));
+
         System.out.println("idPersona: " + idPersona);
         System.out.println("idEmpleador: " + idEmpleador);
         //
@@ -120,13 +126,44 @@ public class EscritorioBean {
 
     public void cargar() {
         textoBenvenida = "Bienvenido  OVT";
-        listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
+        listaUnidades= new ArrayList<PerUnidad>();
+        
+//        if(delegado){//cambiar por delegado
+//            List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,idEmpleador);
+//
+//            for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+//                if(perUsuarioUnidad.getEstado().equals("A"))
+//                    listaUnidades.add(iUnidadService.obtenerPorIdPersonaIdUnidad(idEmpleador, perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+//            }
+//        }else{
+            listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
+//        }
         cargarDocumentos();
     }
 
     public void cargarDocumentos() {
         try {
-            listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
+            listaDocumentos = new ArrayList<DocDocumento>();
+//            if (delegado) {
+//                System.out.println("idUsuario "+idUsuario);
+//            System.out.println("idEmpleador "+idEmpleador);
+//                List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario, idEmpleador);
+//                for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+//                    if (perUsuarioUnidad.getEstado().equals("A")) {
+//                        DocDocumento doc = new DocDocumento();
+//                        System.out.println(" ============================"
+//                                + perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona() +" / "+ perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad());
+//
+//                        listaDocumentos.addAll(iDocumentoService.obtenerPorIdPersonaIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+////                        if (doc != null)
+////                            listaDocumentos.add(doc);
+//                    }
+//                }
+//            } else {
+                listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
+//            }
+            
+            //listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
             if (listaDocumentos == null) {
                 listaDocumentos = new ArrayList<DocDocumento>();
             }
@@ -904,6 +941,14 @@ public class EscritorioBean {
 
     public void setConBinario(String conBinario) {
         this.conBinario = conBinario;
+    }
+
+    public boolean isDelegado() {
+        return delegado;
+    }
+
+    public void setDelegado(boolean delegado) {
+        this.delegado = delegado;
     }
 
     public IDireccionService getiDireccionService() {
