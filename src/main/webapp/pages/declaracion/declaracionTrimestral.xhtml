@@ -106,11 +106,11 @@
     <p:column id="razonSocial" colspan="5">
         <p:outputPanel id="empresaRazonSocial">
             <p:outputLabel value="#{declaracionTrimestralBean.unidadSeleccionada.nombreComercial}" style="text-align: justify"/>
-            <p:outputLabel id="trimestre" value="#{declaracionTrimestralBean.periodo}" rendered="#{declaracionTrimestralBean.parametro==3}"/>
-            <p:selectOneMenu value="#{declaracionTrimestralBean.periodoGestionId}" style="width: 260px; height: 20px" rendered="#{declaracionTrimestralBean.parametro!=3}" required="true">
-                <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
-                <f:selectItems value="#{declaracionTrimestralBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="#{oCalendario.idObligacionCalendario}" itemLabel="#{oCalendario.parCalendario.parCalendarioPK.gestion} - #{oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>
-            </p:selectOneMenu>
+            <p:outputLabel id="trimestre" value="#{declaracionTrimestralBean.periodo} - #{declaracionTrimestralBean.gestion}"/>
+            <!--<p:selectOneMenu value="# {declaracionTrimestralBean.periodoGestionId}" style="width: 260px; height: 20px" rendered="# {declaracionTrimestralBean.parametro!=3}" required="true">-->
+                <!--<f:selectItem itemLabel="- -Seleccione- -" noSelectionOption="true"/>-->
+                <!--<f:selectItems value="# {declaracionTrimestralBean.parObligacionCalendarioLista}" var="oCalendario" itemValue="# {oCalendario.idObligacionCalendario}" itemLabel="# {oCalendario.parCalendario.parCalendarioPK.gestion} - # {oCalendario.parCalendario.parCalendarioPK.tipoPeriodo}"/>-->
+            <!--</p:selectOneMenu>-->
         </p:outputPanel>
     </p:column>
 </p:row>
@@ -135,7 +135,7 @@
             <p:outputLabel value="3.5 Actividad Económica principal:" style="font-weight:bold"/>
             <h:outputText value="#{declaracionTrimestralBean.vperPersona.actividadDeclarada}"/>
             <p:outputLabel value="3.6 Departamento:" style="font-weight:bold"/>
-            <h:outputText value="#{declaracionTrimestralBean.vperPersona.dirDepartamento}"/>
+            <h:outputText value="#{declaracionTrimestralBean.perDireccion.codLocalidad.descripcion}"/>
             <p:outputLabel value="3.7 Ciudad o localidad:" style="font-weight:bold"/>
             <h:outputText value="#{declaracionTrimestralBean.perDireccion.localidad}"/>
             <p:outputLabel value="3.8 Zona:" style="font-weight:bold"/>

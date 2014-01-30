@@ -70,6 +70,8 @@ public class EscritorioBean {
     private IUtilsService iUtilsService;
     @ManagedProperty(value = "#{parametrizacionService}")
     private IParametrizacionService iParametrizacionService;
+    @ManagedProperty(value = "#{direccionService}")
+    private IDireccionService iDireccionService;
     //
     private String textoBenvenida;
     //
@@ -93,6 +95,9 @@ public class EscritorioBean {
     private String observacionLogEstado;
     private String conBinario;
     private String bitacoraSession;
+    
+    /////
+   private boolean delegado=false;
 
     @PostConstruct
     public void ini() {
@@ -101,6 +106,9 @@ public class EscritorioBean {
         idPersona = (String) session.getAttribute("idPersona");
         idEmpleador = (String) session.getAttribute("idEmpleador");
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
+        //////////////////////////////////////////LUIS
+//        delegado = "siDelegado".equals((String) session.getAttribute("delegado"));
+
         System.out.println("idPersona: " + idPersona);
         System.out.println("idEmpleador: " + idEmpleador);
         //
@@ -118,13 +126,44 @@ public class EscritorioBean {
 
     public void cargar() {
         textoBenvenida = "Bienvenido  OVT";
-        listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
+        listaUnidades= new ArrayList<PerUnidad>();
+        
+//        if(delegado){//cambiar por delegado
+//            List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,idEmpleador);
+//
+//            for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+//                if(perUsuarioUnidad.getEstado().equals("A"))
+//                    listaUnidades.add(iUnidadService.obtenerPorIdPersonaIdUnidad(idEmpleador, perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+//            }
+//        }else{
+            listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
+//        }
         cargarDocumentos();
     }
 
     public void cargarDocumentos() {
         try {
-            listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
+            listaDocumentos = new ArrayList<DocDocumento>();
+//            if (delegado) {
+//                System.out.println("idUsuario "+idUsuario);
+//            System.out.println("idEmpleador "+idEmpleador);
+//                List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario, idEmpleador);
+//                for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+//                    if (perUsuarioUnidad.getEstado().equals("A")) {
+//                        DocDocumento doc = new DocDocumento();
+//                        System.out.println(" ============================"
+//                                + perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona() +" / "+ perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad());
+//
+//                        listaDocumentos.addAll(iDocumentoService.obtenerPorIdPersonaIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+////                        if (doc != null)
+////                            listaDocumentos.add(doc);
+//                    }
+//                }
+//            } else {
+                listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
+//            }
+            
+            //listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
             if (listaDocumentos == null) {
                 listaDocumentos = new ArrayList<DocDocumento>();
             }
@@ -205,17 +244,22 @@ public class EscritorioBean {
                 parametros.put("mesPresentacion", docPlanilla.getParCalendario().getParCalendarioPK().getTipoPeriodo());
                 parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
-                parametros.put("departamento", vperPersona.getDirDepartamento());
-                parametros.put("direccion", vperPersona.getDirDireccion());
-                parametros.put("telefono", vperPersona.getTelefono());
+
+
+                PerDireccion perDireccion = new PerDireccion();
+                perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+
+                parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
+                parametros.put("direccion", perDireccion.getDireccion());
+                parametros.put("telefono", perDireccion.getTelefono());
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getDirLocalidad());
-                parametros.put("fax", vperPersona.getFax());
+                parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
+                parametros.put("fax", perDireccion.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
-                parametros.put("zona", vperPersona.getDirZona());
-                parametros.put("numero", vperPersona.getDirNroDireccion());
-                parametros.put("correoElectronico", vperPersona.getEmail());
+                parametros.put("zona", perDireccion.getZonaUrbanizacion());
+                parametros.put("numero", perDireccion.getPisoDepOfi());
+                parametros.put("correoElectronico", perDireccion.getEmail());
                 parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
                 parametros.put("montoAportadoAsegurados", docPlanilla.getMontoAsegCaja());
                 if (docPlanilla.getIdEntidadSalud() != null) {
@@ -478,17 +522,21 @@ public class EscritorioBean {
                 parametros.put("mesPresentacion", docPlanilla.getParCalendario().getParCalendarioPK().getGestion());
                 parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
-                parametros.put("departamento", vperPersona.getDirDepartamento());
-                parametros.put("direccion", vperPersona.getDirDireccion());
-                parametros.put("telefono", vperPersona.getTelefono());
+
+                PerDireccion perDireccion = new PerDireccion();
+                perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+
+                parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
+                parametros.put("direccion", perDireccion.getDireccion());
+                parametros.put("telefono", perDireccion.getTelefono());
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getDirLocalidad());
-                parametros.put("fax", vperPersona.getFax());
+                parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
+                parametros.put("fax", perDireccion.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
-                parametros.put("zona", vperPersona.getDirZona());
-                parametros.put("numero", vperPersona.getDirNroDireccion());
-                parametros.put("correoElectronico", vperPersona.getEmail());
+                parametros.put("zona", perDireccion.getZonaUrbanizacion());
+                parametros.put("numero", perDireccion.getPisoDepOfi());
+                parametros.put("correoElectronico", perDireccion.getEmail());
                 parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
                 parametros.put("montoAportadoAsegurados", docPlanilla.getMontoAsegCaja());
                 if (docPlanilla.getIdEntidadSalud() != null) {
@@ -894,5 +942,21 @@ public class EscritorioBean {
 
     public void setConBinario(String conBinario) {
         this.conBinario = conBinario;
+    }
+
+    public boolean isDelegado() {
+        return delegado;
+    }
+
+    public void setDelegado(boolean delegado) {
+        this.delegado = delegado;
+    }
+
+    public IDireccionService getiDireccionService() {
+        return iDireccionService;
+    }
+
+    public void setiDireccionService(IDireccionService iDireccionService) {
+        this.iDireccionService = iDireccionService;
     }
 }

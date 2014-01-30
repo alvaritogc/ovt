@@ -144,6 +144,12 @@ public class DeclaracionTrimestralBean implements Serializable {
         tipoEmpresa = (Integer) session.getAttribute("tipoEmpresa");
         docPlanilla = new DocPlanilla();
         periodoGestion= new ParObligacionCalendario();
+        if(parametro==1||parametro==2)
+            periodoGestion= iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(new Date());
+        if(parametro==3)
+            periodoGestion= iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo2(new Date());
+        periodo=periodoGestion.getParCalendario().getParCalendarioPK().getTipoPeriodo();
+        gestion=periodoGestion.getParCalendario().getParCalendarioPK().getGestion();
         //0 NO AUTOLLENADO
         //1 SI AUTOLLENADO
         switch (trimestralAuto){
@@ -233,7 +239,6 @@ public class DeclaracionTrimestralBean implements Serializable {
 //            rectificatorio = iPlanillaService.buscarPorDocumento(iDocumentoService.buscarPorUnindad(unidadSeleccionada.getPerUnidadPK()).getIdDocumento());
         }
         valor=true;
-        gestion=String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         obtenerPeriodoLista();
         tamanioErrores=2;
     }
@@ -249,12 +254,12 @@ public class DeclaracionTrimestralBean implements Serializable {
         parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
 
         docPlanillasParaRectificar= new ArrayList<DocPlanilla>();
-        docPlanillasParaRectificar= iPlanillaService.listarPlanillasTrimestralesParaRectificar(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
+        docPlanillasParaRectificar= iPlanillaService.listarPlanillasTrimestralesParaRectificar(idPersona, unidadSeleccionada.getPerUnidadPK().getIdUnidad(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
     }
 
-    public void seleccionaTrimestre(){
-        periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
-    }
+ //   public void seleccionaTrimestre(){
+     //   periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
+   // }
 
     public void generaDocumento(){
         logger.info("generaDocumento()");
@@ -350,8 +355,6 @@ public class DeclaracionTrimestralBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Advertencia", "No puede guardarse, ya que no se pueden obtener declaraciones."));
             return null;
         }
-
-        periodoGestion= iObligacionCalendarioService.findById(periodoGestionId);
 
         switch (trimestralAuto){
             case 1:
@@ -1325,5 +1328,13 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void setPeriodoGestionId(Long periodoGestionId) {
         this.periodoGestionId = periodoGestionId;
+    }
+
+    public String getGestion() {
+        return gestion;
+    }
+
+    public void setGestion(String gestion) {
+        this.gestion = gestion;
     }
 }
