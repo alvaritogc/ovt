@@ -244,11 +244,12 @@ public class EscritorioBean {
                 parametros.put("mesPresentacion", docPlanilla.getParCalendario().getParCalendarioPK().getTipoPeriodo());
                 parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
-                parametros.put("departamento", vperPersona.getDirDepartamento());
+
 
                 PerDireccion perDireccion = new PerDireccion();
                 perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
 
+                parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
                 parametros.put("direccion", perDireccion.getDireccion());
                 parametros.put("telefono", perDireccion.getTelefono());
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
@@ -521,11 +522,11 @@ public class EscritorioBean {
                 parametros.put("mesPresentacion", docPlanilla.getParCalendario().getParCalendarioPK().getGestion());
                 parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
-                parametros.put("departamento", vperPersona.getDirDepartamento());
 
                 PerDireccion perDireccion = new PerDireccion();
                 perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
 
+                parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
                 parametros.put("direccion", perDireccion.getDireccion());
                 parametros.put("telefono", perDireccion.getTelefono());
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
