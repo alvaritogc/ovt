@@ -307,6 +307,7 @@ public class DeclaracionAguinaldoBean implements Serializable {
             binario.setRegistroBitacora(usuario.getUsuario());
             binario.setBinario(file.getContents());
             binario.setInputStream(file.getInputstream());
+            listaBinarios.add(binario);
             habilita=false;
         }catch (Exception e){
             habilita=true;

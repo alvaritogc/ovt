@@ -239,7 +239,6 @@ public class DeclaracionTrimestralBean implements Serializable {
 //            rectificatorio = iPlanillaService.buscarPorDocumento(iDocumentoService.buscarPorUnindad(unidadSeleccionada.getPerUnidadPK()).getIdDocumento());
         }
         valor=true;
-        gestion=String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         obtenerPeriodoLista();
         tamanioErrores=2;
     }
@@ -258,9 +257,9 @@ public class DeclaracionTrimestralBean implements Serializable {
         docPlanillasParaRectificar= iPlanillaService.listarPlanillasTrimestralesParaRectificar(idPersona, unidadSeleccionada.getPerUnidadPK().getIdUnidad(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
     }
 
-    public void seleccionaTrimestre(){
-        periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
-    }
+ //   public void seleccionaTrimestre(){
+     //   periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
+   // }
 
     public void generaDocumento(){
         logger.info("generaDocumento()");
