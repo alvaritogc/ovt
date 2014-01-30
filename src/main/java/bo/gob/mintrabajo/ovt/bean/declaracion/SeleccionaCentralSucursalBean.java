@@ -920,6 +920,46 @@ public class SeleccionaCentralSucursalBean implements Serializable {
         }
     }
 
+//    public boolean verEstadoPlanilla(){
+//        List<DocDocumento> listaDocumentos = new ArrayList<DocDocumento>();
+//        ParObligacionCalendario obligacionCalendario= new ParObligacionCalendario();
+//        habilitado = true;
+////        if(tipoEmpresa==1){
+////
+////        }
+////        if(tipoEmpresa==2){
+////
+////        }
+//
+//
+//        if(unidadSeleccionada.getPerUnidadPK()!=null){
+//
+//
+//
+//
+//            switch (parametro){
+//                case 1:
+//
+//
+//
+//                case 2:
+//                    listaDocumentos=iDocumentoService.listarDocumentosPorUnidadCodFechaHastaPlazo2(unidadSeleccionada.getPerUnidadPK(), "LC1010", periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+//                    if(listaDocumentos.size()!=0)
+//
+//
+//                case 3:
+//                    listaDocumentos=iDocumentoService.listarDocumentosPorUnidadCodFechaHastaPlazo2(unidadSeleccionada.getPerUnidadPK(), "LC1012", periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+//                case 4:
+//                    listaDocumentos=iDocumentoService.listarDocumentosPorUnidadCodFechaHastaPlazo2(unidadSeleccionada.getPerUnidadPK(), "LC1020", periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+//                case 5:
+//                    listaDocumentos=iDocumentoService.listarDocumentosPorUnidadCodFechaHastaPlazo2(unidadSeleccionada.getPerUnidadPK(), "LC1021", periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+//
+//            }
+//        }
+//        return false;
+//    }
+
+
     public boolean verEstadoPlanilla() {
         List<DocDocumento> listaDocumentos = new ArrayList<DocDocumento>();
         habilitado = true;
