@@ -155,7 +155,14 @@ public class InfoLaboralService implements IInfoLaboralService {
         return rtn.longValue();
     }
 
+    @Override
     public PerInfolaboral obtienePorUnidadPKEstado(PerUnidadPK perUnidadPK, String estado){
         return infoLaboralRepository.findByPerUnidad_PerUnidadPKAndEstadoInfolaboral(perUnidadPK, estado);
+    }
+    
+    /////////////////////////////////LUIS
+    @Override
+    public List<PerInfolaboral> obtienePorIdPersonaAndIdUnidad(String idPersona, Long idUnidad){
+        return infoLaboralRepository.obtenerPorIdPersonaAndIdUnidad(idPersona, idUnidad);
     }
 }

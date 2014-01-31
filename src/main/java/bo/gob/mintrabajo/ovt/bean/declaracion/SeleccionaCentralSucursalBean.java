@@ -138,13 +138,13 @@ public class SeleccionaCentralSucursalBean implements Serializable {
         persona = iPersonaService.buscarPorId(idPersona);
         idUsuario = (Long) session.getAttribute("idUsuario");
         usuario = iUsuarioService.findById(idUsuario);
-        ///////////////LUIS
-//        delegado = "siDelegado".equals((String) session.getAttribute("delegado"));
-//        if (delegado) {
-//            tipoEmpresa = 2;
-//        } else {
+        ///////////////////////////LUIS
+        delegado = "siDelegado".equals((String) session.getAttribute("delegado"));
+        if (delegado) {
+            tipoEmpresa = 2;
+        } else {
             tipoEmpresa = 1;
-        //}
+        }
         listaBinarios = new ArrayList<DocBinario>();
         cargar();
     }
@@ -189,25 +189,25 @@ public class SeleccionaCentralSucursalBean implements Serializable {
             central = new PerUnidad();
             sucursales = new ArrayList<PerUnidad>();
             //////////////////////////////////////////LUIS
-//            List<PerUnidad> listaUnidades = new ArrayList<PerUnidad>();
-//            if (delegado) {
-//                List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario, idPersona);
-//                for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
-//                    if (perUsuarioUnidad.getEstado().equals("A")) {
-//                        List<DocPlanilla> docPlanillaVerifica = new ArrayList<DocPlanilla>();
-//                        PerUnidad unidad = iUnidadService.obtenerPorIdPersonaIdUnidad(idPersona, perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad());
-//                        docPlanillaVerifica = iPlanillaService.listaPlanillasTrimestrales(idPersona, unidad.getPerUnidadPK().getIdUnidad(), codDocumento,
-//                                periodoGestion.getParCalendario().getParCalendarioPK().getGestion(), periodoGestion.getParCalendario().getParCalendarioPK().getTipoPeriodo());
-//                        if (docPlanillaVerifica.isEmpty()) {
-//                            listaUnidades.add(unidad);
-//                        }
-//                    }
-//                }
-//            } else {
-//                listaUnidades = iUnidadService.listarUnidadesSucursalesPorFecha(idPersona, codDocumento, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
-//            }
+            List<PerUnidad> listaUnidades = new ArrayList<PerUnidad>();
+            if (delegado) {
+                List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario, idPersona);
+                for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                    if (perUsuarioUnidad.getEstado().equals("A")) {
+                        List<DocPlanilla> docPlanillaVerifica = new ArrayList<DocPlanilla>();
+                        PerUnidad unidad = iUnidadService.obtenerPorIdPersonaIdUnidad(idPersona, perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad());
+                        docPlanillaVerifica = iPlanillaService.listaPlanillasTrimestrales(idPersona, unidad.getPerUnidadPK().getIdUnidad(), codDocumento,
+                                periodoGestion.getParCalendario().getParCalendarioPK().getGestion(), periodoGestion.getParCalendario().getParCalendarioPK().getTipoPeriodo());
+                        if (docPlanillaVerifica.isEmpty()) {
+                            listaUnidades.add(unidad);
+                        }
+                    }
+                }
+            } else {
+                listaUnidades = iUnidadService.listarUnidadesSucursalesPorFecha(idPersona, codDocumento, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+            }
             //////////////////////////////////////////////
-            List<PerUnidad> listaUnidades = iUnidadService.listarUnidadesSucursalesPorFecha(idPersona, codDocumento, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+            //List<PerUnidad> listaUnidades = iUnidadService.listarUnidadesSucursalesPorFecha(idPersona, codDocumento, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
             for (PerUnidad sucursal : listaUnidades) {
                 if (sucursal.getPerUnidadPK().getIdUnidad() == 0) {
                     central = sucursal;

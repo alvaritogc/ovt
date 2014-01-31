@@ -43,4 +43,18 @@ public interface PlanillaRepository extends OpenJpaRepository<DocPlanilla, Long>
                     + " and d.idDocumento.docDefinicion.docDefinicionPK.codDocumento like 'LC1010'"
     )
     List<DocPlanilla> listarPlanillasTrimestralesParaRectificar(@Param("idEmpleador") String idPersona, @Param("idUnidad") Long idUnidad, @Param("fechaHasta") Date fechaHasta, @Param("fechaPlazo2") Date fechaPlazo2);
+    
+    @Query(
+            "   select d "
+                    + " from DocPlanilla d"
+                    + " where "
+                    + " d.idDocumento.perUnidad.perUnidadPK.idPersona=:idEmpleador "
+                    + " and d.idDocumento.perUnidad.perUnidadPK.idUnidad=:idUnidad "
+                    + " and d.parCalendario.parCalendarioPK.gestion=:gestion "
+                    + " and d.parCalendario.parCalendarioPK.tipoPeriodo=:tipoPeriodo "
+                    //+ " and d.tipoPlanilla=:tipoPlanilla "
+                    + " and d.idDocumento.docDefinicion.docDefinicionPK.codDocumento =:tipoPlanilla"
+    )
+    List<DocPlanilla> listarPlanillasTrimestrales(@Param("idEmpleador") String idEmpleador, @Param("idUnidad") Long idUnidad
+            , @Param("tipoPlanilla") String tipoPlanilla, @Param("gestion") String gestion,@Param("tipoPeriodo") String tipoPeriodo);
 }

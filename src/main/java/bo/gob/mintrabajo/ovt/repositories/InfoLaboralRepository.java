@@ -26,4 +26,11 @@ public interface InfoLaboralRepository extends OpenJpaRepository<PerInfolaboral,
     List<PerInfolaboral>obtenerPorIdPersona(@Param("idPersona")String idPersona);
 
     PerInfolaboral findByPerUnidad_PerUnidadPKAndEstadoInfolaboral(PerUnidadPK perUnidadPK, String estado);
+    
+    @Query("select il " +
+            "   from PerInfolaboral il " +
+            "   where il.perUnidad.perUnidadPK.idPersona = :idPersona " +
+            "   and il.perUnidad.perUnidadPK.idUnidad = :idUnidad "+
+            "        and lower(il.estadoInfolaboral) = lower('A') ")
+    List<PerInfolaboral> obtenerPorIdPersonaAndIdUnidad(@Param("idPersona")String idPersona,@Param("idUnidad")long idUnidad);
 }

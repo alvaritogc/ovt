@@ -26,7 +26,7 @@
                 <center>
                     <p:outputLabel value="El siguiente formulario se declarará, para:" style="font-size: 14px"/> <br/><br/>
 
-                    <p:selectOneRadio id="customRadio" value="#{seleccionaCentralSucursalBean.tipoEmpresa}" columns="2">
+                    <p:selectOneRadio id="customRadio" value="#{seleccionaCentralSucursalBean.tipoEmpresa}" columns="2" rendered="#{!seleccionaCentralSucursalBean.delegado}">
                         <p:ajax event="change" update="tipoEmpresa"/>
                         <f:selectItem itemLabel="Declaración consolidada de todas las sucursales" itemValue="1"/>
                         <f:selectItem itemLabel="Declaración por sucursal" itemValue="2"/>

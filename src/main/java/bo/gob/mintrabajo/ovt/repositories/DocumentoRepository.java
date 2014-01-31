@@ -27,6 +27,17 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " order by d.idDocumento desc"
     )
     List<DocDocumento> listarPorPersona(@Param("idPersona") String idPersona);
+    
+    @Query(
+            "   select d "
+                    + " from DocDocumento d"
+                    + " join fetch d.docDefinicion"
+                    + " where "
+                    + " d.perUnidad.perUnidadPK.idPersona=:idPersona and "
+                    + " d.perUnidad.perUnidadPK.idUnidad=:idUnidad "
+                    + " order by d.idDocumento desc"
+    )
+    List<DocDocumento> obtenerPorIdPersonaIdUnidad(@Param("idPersona") String idPersona, @Param("idUnidad") Long idUnidad);
 
 
     @Query(

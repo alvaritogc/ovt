@@ -349,6 +349,33 @@
             stop="#{templateInicioBean.loginValido}"/>
 </h:form>
 
+<!-- Seleccion de sucursal -->
+<h:form id="seleccionUnidadFrm">
+    <p:poll interval="1" id="seleccionUnidadPoll"
+            listener="#{templateInicioBean.abrirSeleccionUnidadDlg}"
+            update=":seleccionUnidadFrm:seleccionUnidadPoll"
+            stop="#{!templateInicioBean.mostrarDialog}"/>
+</h:form>
+<p:dialog header="Seleccion de Empresa/Unidad" widgetVar="dlgEmpresaUnidad"
+          width="400" closable="false"
+          resizable="false" id="dlgEmpresaUnidad"
+          modal="true">
+    <h:form>
+        <h:panelGrid columns="2">
+            <p:outputLabel for="empresaUnidad" value="Empresa/Unidad:"/>
+            <p:selectOneMenu id="empresaUnidad" 
+                             value="#{templateInicioBean.idPersonaEmpresa}"
+                             style="text-transform: uppercase; opacity: 4; background-color: transparent;">
+                <f:selectItems value="#{templateInicioBean.listaUnidadesPrincipales}" var="UP" 
+                               itemLabel="#{UP.nombreComercial}" itemValue="#{UP.perUnidadPK.idPersona}" />
+            </p:selectOneMenu>
+        </h:panelGrid>
+        <br />
+        <p:commandButton value="Ir a sucursales de unidad" onclick="dlgEmpresaUnidad.hide();"
+                         action="#{templateInicioBean.seleccionUnidadSucursal}"/>
+    </h:form>
+</p:dialog>
+
 
 <h:form>
     <p:dataTable var="mensajeApp" value="#{templateInicioBean.listaMensajeApp}"

@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../template/templateInicio.xhtml">
+        <ui:define name="content">
+            <h:form rendered="#{!personaSucursalBean.mostrarFormulario}">
+                <h2>#{personaSucursalBean.mostrarFormularioMensaje}</h2>
+            </h:form>
+            <h:form id="formBusqueda" rendered="#{personaSucursalBean.mostrarFormulario}">
+                <h2 class="form-signin-heading">Usuarios dependientes por sucursal</h2>
+                <h:panelGrid columns="4">
+                    <p:outputLabel value="Nro. identificación: " style="font-size: 13px;"/>
+                    <p:inputText value="#{personaSucursalBean.numIdentificacion}" style="height: 15px;"/>
+                    <p:commandButton value="Buscar" icon="ui-icon-search" onclick="dlgAsisgnacion.show()" actionListener="#{personaSucursalBean.buscarPersona}"
+                                     update=":formAsignacion"/>
+                </h:panelGrid>
+                <br/>
+                <p:dataTable id="dataTableAsignacion" var="sucUser" value="#{personaSucursalBean.listaSucursalesDelegados}" 
+                             paginator="true" rows="10" sortMode="multiple" widgetVar="entidadTable" paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
+                             currentPageReportTemplate="{currentPage} / {totalPages}" rowIndexVar="fila" >
+
+                    <p:column headerText="Sucursal">  
+                        <h:outputText value="#{sucUser.perUnidad.nombreComercial}" />  
+                    </p:column>
+                    
+                    <p:column headerText="Nombre" >   
+                        <h:outputText value="#{sucUser.usrUsuario.idPersona.nombreRazonSocial}" />  
+                    </p:column>  
+
+                    <p:column headerText="Paterno">    
+                        <h:outputText value="#{sucUser.usrUsuario.idPersona.apellidoPaterno}" />  
+                    </p:column> 
+                    
+                    <p:column headerText="Materno">    
+                        <h:outputText value="#{sucUser.usrUsuario.idPersona.apellidoMaterno}" />  
+                    </p:column>  
+                    
+                    <p:column headerText="Estado">  
+                        <h:outputText value="#{personaSucursalBean.descripcionEstado(sucUser.estado)}" />  
+                    </p:column>
+                    <p:column headerText="Acciones" style="width: 60px">                
+                        <p:commandButton title="Editar" onclick="dlgAsisgnacion.show()" update=":formAsignacion" icon="ui-icon-pencil" actionListener="#{personaSucursalBean.revisaDelegadoFuncionario(sucUser.usrUsuario.idPersona.idPersona)}">
+                            <f:setPropertyActionListener value="#{sucUser.usrUsuario.idPersona}" target="#{personaSucursalBean.persona}"/>
+                            <f:setPropertyActionListener value="#{sucUser.usrUsuario.idPersona.codLocalidad.codLocalidad}" target="#{personaSucursalBean.idLocalidad}"/>
+                            <f:setPropertyActionListener value="#{sucUser.usrUsuario}" target="#{personaSucursalBean.usuarioDelegado}"/>
+                            <f:setPropertyActionListener value="#{sucUser.perUnidad.perUnidadPK.idUnidad}" target="#{personaSucursalBean.idSucursal}"/>
+                            <f:setPropertyActionListener value="#{sucUser.perUnidad.perUnidadPK.idUnidad}" target="#{personaSucursalBean.idSucursalAnterior}"/>
+                            <f:setPropertyActionListener value="#{sucUser.estado eq 'A'? true : false}" target="#{personaSucursalBean.estadoDelegado}" />
+                            <f:setPropertyActionListener value="#{sucUser.estado eq 'A'? true : false}" target="#{personaSucursalBean.estadoDelegadoAnterior}" />
+                            <f:setPropertyActionListener value="true" target="#{personaSucursalBean.activarForm}" />
+                        </p:commandButton>
+
+                    </p:column>  
+                </p:dataTable>
+                <p:growl id="messages" showDetail="true" />
+                <p:confirmDialog message="Esta seguro de eliminar este registro?"  
+                                 showEffect="fade" hideEffect="explode" closable="false"  
+                                 header="Confirmación" severity="alert" widgetVar="confirmation">  
+                    <p:commandButton value="Si" update="messages dataTableAsignacion" oncomplete="confirmation.hide()" />  
+                    <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+                </p:confirmDialog>
+            </h:form>
+
+            <p:dialog id="dlgAsisgnacion" widgetVar="dlgAsisgnacion" header="Asignación de personal" closable="false" 
+                      resizable="false"
+                      modal="true">
+                <h:form id="formAsignacion">
+                    <p:messages id="messages1" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:panelGrid columns="2" style=" width: 420px">
+                        <f:facet name="header">
+                            DATOS DE PERSONA
+                        </f:facet>
+                        <p:outputLabel value="Nombre o Razon social :"/>
+                        <p:inputText id="inputTxtNombre"
+                                     value="#{personaSucursalBean.persona.nombreRazonSocial}"
+                                     disabled="#{personaSucursalBean.activarForm}"
+                                     required="true"
+                                     style="width: 215px;text-transform: uppercase; opacity: 4; background-color: transparent;"
+                                     requiredMessage="El campo Nombre o Razon social es obligatorio" tabindex="2">
+                            <f:converter converterId="lowerConverter"/>
+                        </p:inputText>
+
+                        <p:outputLabel value="Apellido paterno :"/>
+                        <p:inputText id="inputTxtPaterno"
+                                     value="#{personaSucursalBean.persona.apellidoPaterno}"
+                                     disabled="#{personaSucursalBean.activarForm}"
+                                     style="width: 215px;text-transform: uppercase; opacity: 4; background-color: transparent;"
+                                     tabindex="3">
+                            <f:converter converterId="lowerConverter"/>
+                        </p:inputText>
+
+                        <p:outputLabel value="Apellido materno :"/>
+                        <p:inputText id="inputTxtMaterno"
+                                     value="#{personaSucursalBean.persona.apellidoMaterno}"
+                                     disabled="#{personaSucursalBean.activarForm}"
+                                     tabindex="4"
+                                     style="width: 215px;text-transform: uppercase; opacity: 4; background-color: transparent;">
+                            <f:converter converterId="lowerConverter"/>
+                        </p:inputText>
+
+                        <p:outputLabel for="tipoIdentificacionP" value="Tipo de identificación :"/>
+                        <p:selectOneMenu id="tipoIdentificacionP"
+                                         value="#{personaSucursalBean.persona.tipoIdentificacion}"
+                                         disabled="#{personaSucursalBean.activarForm}"
+                                         tabindex="5"
+                                         style="text-transform: uppercase; opacity: 4; background-color: transparent;" required="true">
+                            <f:selectItem itemLabel="--seleccione--" itemValue="#{null}"/>
+                            <f:selectItems value="#{personaSucursalBean.listaTipoIdentificacion}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="localidadN" value="Localidad:"/>
+                        <p:selectOneMenu id="localidadN" 
+                                         value="#{personaSucursalBean.idLocalidad}"
+                                         disabled="#{personaSucursalBean.activarForm}"
+                                         tabindex="6"
+                                         style="text-transform: uppercase; opacity: 4; background-color: transparent;" rendered="true">
+                            <f:selectItem itemLabel="--seleccione--" itemValue="#{null}"/>
+                            <f:selectItems value="#{personaSucursalBean.listaLocalidad}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Nro. de identificación :"/>
+                        <p:inputText id="inputTxtNroIdentificacion"
+                                     value="#{personaSucursalBean.persona.nroIdentificacion}"
+                                     disabled="#{personaSucursalBean.activarForm}"
+                                     tabindex="7"
+                                     required="true"
+                                     style="width: 215px;text-transform: uppercase; opacity: 4; background-color: transparent;"
+                                     requiredMessage="El campo Nro. de identificacion es obligatorio"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="3" style=" width: 420px">
+                        <f:facet name="header">
+                            DATOS DE USUARIO
+                        </f:facet>
+                        <p:outputLabel for="jefe" value="Empleador:" />  
+                        <p:selectBooleanCheckbox id="jefe" value="#{personaSucursalBean.noDelegadoNoFuncionario}" 
+                                                 disabled="true" style="opacity: 4; background-color: transparent;"/>
+                        <p:outputLabel value="" />  
+
+                        <p:outputLabel for="delegado" value="Delegado:" />  
+                        <p:selectBooleanCheckbox id="delegado" value="#{personaSucursalBean.delegadoNoFuncionario}" 
+                                                 disabled="true" style="opacity: 4;"/>
+                        <p:outputLabel value="" />  
+
+                        <p:outputLabel for="sucursal" value="Sucursal:"/>
+                        <p:selectOneMenu id="sucursal" value="#{personaSucursalBean.idSucursal}"
+                                         tabindex="6" required="true" requiredMessage="Debe seleccionar la sucursal"
+                                         style="text-transform: uppercase;">
+                            <f:selectItem itemLabel="--seleccione--" itemValue="#{null}"/>
+                            <f:selectItems value="#{personaSucursalBean.listaSucursales}" var="suc" 
+                                           itemLabel="#{suc.nombreComercial}" itemValue="#{suc.perUnidadPK.idUnidad}" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="" />  
+
+                        <p:outputLabel for="inputTxtUsuario" value="Usuario:"/>
+                        <p:inputText id="inputTxtUsuario" value="#{personaSucursalBean.usuarioDelegado.usuario}"
+                                     required="true"
+                                     requiredMessage="El campo Usuario es obligatorio"
+                                     tabindex="12"
+                                     autocomplete="off">
+                            <p:watermark for="inputTxtUsuario" value="Correo electronico"/>
+                        </p:inputText>
+                        <p:outputLabel value="" />  
+
+                        <p:outputLabel for="inputTxtClave" value="Contraseña:" />
+
+                        <p:password id="inputTxtClave" value="#{personaSucursalBean.contrasenia}"
+                                    feedback="true"
+                                    tabindex="15"
+                                    autocomplete="off"
+                                    promptLabel="Ingrese su contraseña"
+                                    weakLabel="Contraseña debil"
+                                    goodLabel="Contraseña media"
+                                    strongLabel="Contraseña fuerte"
+                                    style="width: 215px;"
+                                    />
+                        <h:panelGrid columns="2">
+                            <h:graphicImage value="/images/ayuda.png" id="grafayuda"/>
+                            <p:tooltip for="grafayuda">
+                                <ol>
+                                    <li>La Contrase&ntilde;a permite los siguientes caracteres
+                                        especiales:<br /> <b> ` ~ ! @ # $ % ^ &amp; * ( ) _ = { }
+                                            + \ | : ; &prime; &Prime; &lt; &gt; , - . ? /</b>
+                                    </li>
+                                    <li>La Contrase&ntilde;a permite validar que ingrese al
+                                        menos un caracter especial, numerico y alfabetico</li>
+                                    <li>La longitud minima requerida es de
+                                        #{personaSucursalBean.LONGITUD_MINIMA} caracteres</li>
+                                </ol>
+                                <b>Ejemplo:</b>
+                                <pre>admin12@</pre>
+                            </p:tooltip>
+                        </h:panelGrid>
+                        <p:outputLabel for="inputTxtConfirmar" value="Confirmar contraseña:" />
+                        <p:password id="inputTxtConfirmar" value="#{personaSucursalBean.confirmarContrasenia}"
+                                    feedback="true"
+                                    tabindex="16"
+                                    autocomplete="off"
+                                    promptLabel="Ingrese su contraseña"
+                                    weakLabel="Contraseña debil"
+                                    goodLabel="Contraseña media"
+                                    strongLabel="Contraseña fuerte"
+                                    style="width: 215px;"
+                                    />
+                        <p:outputLabel value="" /> 
+
+                        <p:outputLabel for="activo" value="Activo:" style="font-weight:bold"/>  
+                        <p:selectBooleanCheckbox id="activo" value="#{personaSucursalBean.estadoDelegado}"  />
+                    </p:panelGrid>
+                    <p:commandButton value="Guardar" icon="ui-icon-disk" actionListener="#{personaSucursalBean.registrar}" 
+                                     update=":formBusqueda"/>
+                    <p:commandButton value="Cancelar" onclick="dlgAsisgnacion.hide();" immediate="true" icon="ui-icon-close"
+                                     actionListener="#{personaSucursalBean.ini}"/>
+                </h:form>
+            </p:dialog>
+
+        </ui:define>
+    </ui:composition>
+</html>

@@ -21,4 +21,28 @@ public interface UsuarioUnidadRepository extends OpenJpaRepository<PerUsuarioUni
     @Query(" select perUnidad from PerUsuarioUnidad perUnidad " +
             "where perUnidad.perUsuarioUnidadPK.idPersona = :idPersona")
     PerUsuarioUnidad unidadPorIdPersona(@Param("idPersona") String idPersona);
+    
+    @Query(" select perUnidad from PerUsuarioUnidad perUnidad " +
+            "where perUnidad.perUsuarioUnidadPK.idUnidad <> 0 and "
+            + " perUnidad.perUsuarioUnidadPK.idPersona = :idPersona")
+    List<PerUsuarioUnidad> listaUsuarioUnidadPorIdPersona(@Param("idPersona") String idPersona);
+    
+    @Query(" select perUnidad from PerUsuarioUnidad perUnidad " +
+            "where perUnidad.perUsuarioUnidadPK.idUnidad <> 0 and "
+            + " perUnidad.perUsuarioUnidadPK.idUsuario = :idUsuario "
+            + " order by perUnidad.perUsuarioUnidadPK.idUnidad desc")
+    List<PerUsuarioUnidad> listaUsuarioUnidadPorIdUsuario(@Param("idUsuario") Long idUsuario);
+    
+    @Query(" select perUnidad from PerUsuarioUnidad perUnidad " +
+            "where perUnidad.perUsuarioUnidadPK.idUnidad <> 0 and "
+            + " perUnidad.perUsuarioUnidadPK.idUsuario = :idUsuario and "
+            + " perUnidad.perUsuarioUnidadPK.idPersona = :idPersona "
+            + " order by perUnidad.perUsuarioUnidadPK.idUnidad desc")
+    List<PerUsuarioUnidad> listaUsuarioUnidadPorIdUsuarioIdPersona(@Param("idUsuario") Long idUsuario, @Param("idPersona") String idPersona);
+    
+    @Query(" select perUnidad from PerUsuarioUnidad perUnidad " +
+            "where perUnidad.perUsuarioUnidadPK.idUnidad <> 0 and "
+            + " perUnidad.perUsuarioUnidadPK.idUsuario = :idUsuario "
+            + " group by perUnidad.perUsuarioUnidadPK.idPersona")
+    List<PerUsuarioUnidad> listaUsuarioUnidadPorIdUsuarioAgrupadoPorIdPersona(@Param("idUsuario") Long idUsuario);
 }

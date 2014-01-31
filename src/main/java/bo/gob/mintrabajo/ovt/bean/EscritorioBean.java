@@ -107,7 +107,7 @@ public class EscritorioBean {
         idEmpleador = (String) session.getAttribute("idEmpleador");
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
         //////////////////////////////////////////LUIS
-//        delegado = "siDelegado".equals((String) session.getAttribute("delegado"));
+        delegado = "siDelegado".equals((String) session.getAttribute("delegado"));
 
         System.out.println("idPersona: " + idPersona);
         System.out.println("idEmpleador: " + idEmpleador);
@@ -127,41 +127,39 @@ public class EscritorioBean {
     public void cargar() {
         textoBenvenida = "Bienvenido  OVT";
         listaUnidades= new ArrayList<PerUnidad>();
+        //listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
+        /////////////////////////////////LUIS
+        if(delegado){
+            List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,idEmpleador);
         
-//        if(delegado){//cambiar por delegado
-//            List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,idEmpleador);
-//
-//            for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
-//                if(perUsuarioUnidad.getEstado().equals("A"))
-//                    listaUnidades.add(iUnidadService.obtenerPorIdPersonaIdUnidad(idEmpleador, perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
-//            }
-//        }else{
+            for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                if(perUsuarioUnidad.getEstado().equals("A"))
+                    listaUnidades.add(iUnidadService.obtenerPorIdPersonaIdUnidad(idEmpleador, perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+            }   
+        }else{
             listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
-//        }
+        }
+        /////////////////////////////////
         cargarDocumentos();
     }
 
     public void cargarDocumentos() {
         try {
             listaDocumentos = new ArrayList<DocDocumento>();
-//            if (delegado) {
-//                System.out.println("idUsuario "+idUsuario);
-//            System.out.println("idEmpleador "+idEmpleador);
-//                List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario, idEmpleador);
-//                for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
-//                    if (perUsuarioUnidad.getEstado().equals("A")) {
-//                        DocDocumento doc = new DocDocumento();
-//                        System.out.println(" ============================"
-//                                + perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona() +" / "+ perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad());
-//
-//                        listaDocumentos.addAll(iDocumentoService.obtenerPorIdPersonaIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
-////                        if (doc != null)
-////                            listaDocumentos.add(doc);
-//                    }
-//                }
-//            } else {
+            /////////////////////////////////LUIS
+            if (delegado) {
+                List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario, idEmpleador);
+                for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                    if (perUsuarioUnidad.getEstado().equals("A")) {
+                        //DocDocumento doc = new DocDocumento();                      
+                        listaDocumentos.addAll(iDocumentoService.obtenerPorIdPersonaIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+//                        if (doc != null)
+//                            listaDocumentos.add(doc);
+                    }
+                }
+            } else {
                 listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
-//            }
+            }
             
             //listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
             if (listaDocumentos == null) {
@@ -326,7 +324,6 @@ public class EscritorioBean {
             }
         }
 
-
         if (codDocumento.equals("ROE010")) {
             parametros.clear();
             //parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
@@ -359,7 +356,6 @@ public class EscritorioBean {
                 parametros.put("roe", servletContext.getRealPath("/") + "/images/roeInvalido.jpg");
             }
             //parametros.put("roe", servletContext.getRealPath("/") + "/images/roe.jpg");
-
 
             try {
                 String nombrePdf = codDocumento.concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
@@ -484,7 +480,6 @@ public class EscritorioBean {
                 parametros.put("nroDocumento", vperPersona.getRlNroIdentidad());
                 parametros.put("lugarPresentacion", "Oficina Virtual");
 
-
                 parametros.put("cadena1", docGenerico.getCadena01() != null ? docGenerico.getCadena01() : "SIN MOVIMIENTO");
                 parametros.put("cadena2", docGenerico.getCadena02() != null ? docGenerico.getCadena02() : "SIN MOVIMIENTO");
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -594,7 +589,6 @@ public class EscritorioBean {
         }
     }
 
-
     /**
      * Genera un nombre para archivo PDF.
      * Este nombre esta compuesto del nombreRazonSocial, la fecha
@@ -616,7 +610,6 @@ public class EscritorioBean {
      */
     public void generarReporte() {
 
-
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String rutaWebApp = servletContext.getRealPath("/");
 
@@ -630,7 +623,6 @@ public class EscritorioBean {
         String dbPwd = "prueba";
 
         Connection conn = null;
-
 
         String idPersona = (String) session.getAttribute("idEmpleador");
         PerPersona p = iPersonaService.findById(idPersona);
@@ -664,7 +656,6 @@ public class EscritorioBean {
                 nroUnidades = iUnidadService.buscarPorPersona(idPersona).size();
             }
             hm.put("nro_unidades", nroUnidades);
-
 
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
 

@@ -1,6 +1,7 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IPersonaService;
+import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.entities.*;
 import bo.gob.mintrabajo.ovt.repositories.*;
 import com.google.common.base.Strings;
@@ -24,6 +25,7 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,24 +45,23 @@ public class PersonaService implements IPersonaService {
     private final UsuarioRolRepository usuarioRolRepository;
     private final LocalidadRepository localidadRepository;
 
-
     private static final Logger log = LoggerFactory.getLogger(PersonaService.class);
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
 
     @Inject
-    public PersonaService(PersonaRepository personaRepository,UnidadRepository unidadRepository,UsuarioRepository usuarioRepository,UsuarioUnidadRepository usuarioUnidadRepository,RolRepository rolRepository,ModuloRepository moduloRepository,UsuarioRolRepository usuarioRolRepository, LocalidadRepository localidadRepository) {
-    //public PersonaService(PersonaRepository personaRepository,UnidadRepository unidadRepository,UnidadService unidadService,UsuarioRepository usuarioRepository,IUsuarioService usuarioService,UsuarioUnidadRepository usuarioUnidadRepository) {
+    public PersonaService(PersonaRepository personaRepository, UnidadRepository unidadRepository, UsuarioRepository usuarioRepository, UsuarioUnidadRepository usuarioUnidadRepository, RolRepository rolRepository, ModuloRepository moduloRepository, UsuarioRolRepository usuarioRolRepository, LocalidadRepository localidadRepository) {
+        //public PersonaService(PersonaRepository personaRepository,UnidadRepository unidadRepository,UnidadService unidadService,UsuarioRepository usuarioRepository,IUsuarioService usuarioService,UsuarioUnidadRepository usuarioUnidadRepository) {
         this.personaRepository = personaRepository;
-        this.unidadRepository=unidadRepository;
+        this.unidadRepository = unidadRepository;
         //this.unidadService=unidadService;
-        this.usuarioRepository=usuarioRepository;
-       // this.usuarioService=usuarioService;
-        this.usuarioUnidadRepository=usuarioUnidadRepository;
-        this.rolRepository=rolRepository;
-        this.moduloRepository=moduloRepository;
-        this.usuarioRolRepository=usuarioRolRepository;
+        this.usuarioRepository = usuarioRepository;
+        // this.usuarioService=usuarioService;
+        this.usuarioUnidadRepository = usuarioUnidadRepository;
+        this.rolRepository = rolRepository;
+        this.moduloRepository = moduloRepository;
+        this.usuarioRolRepository = usuarioRolRepository;
         this.localidadRepository = localidadRepository;
     }
 
@@ -78,36 +79,34 @@ public class PersonaService implements IPersonaService {
         return perPersonaEntity;
     }
 
-
-   @Override
-   public PerPersona findByNroIdentificacion(String nroIdentificacion){
-        try{
+    @Override
+    public PerPersona findByNroIdentificacion(String nroIdentificacion) {
+        try {
             return personaRepository.findByNroIdentificacion(nroIdentificacion);
-        }catch (Exception ex){
-           ex.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
-   }
+    }
 
     @Override
     public void editarPersona(PerPersona persona, PerUnidad unidad, String idLocalidad) {
         log.info("Editando el Usuario ...");
-        try{
-        persona.setCodLocalidad(localidadRepository.findOne(idLocalidad));
-        personaRepository.save(persona);
-        log.info("Guardando la persona ");
+        try {
+            persona.setCodLocalidad(localidadRepository.findOne(idLocalidad));
+            personaRepository.save(persona);
+            log.info("Guardando la persona ");
 
-        unidadRepository.save(unidad);
-        log.info("Guardada la unidad sin falla ...");
-        }catch (Exception e){
+            unidadRepository.save(unidad);
+            log.info("Guardada la unidad sin falla ...");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public PerPersona obtenerPersonaPorUsuario(UsrUsuario usrUsuario){
+    public PerPersona obtenerPersonaPorUsuario(UsrUsuario usrUsuario) {
         return personaRepository.obtenerPersonaPorIdUsuario(usrUsuario.getIdUsuario());
     }
-
 
 //    @Override
     public boolean delete(PerPersona persona) {
@@ -128,16 +127,14 @@ public class PersonaService implements IPersonaService {
     }
 
     @Override
-      public  List<PerPersona> findAll(){
+    public List<PerPersona> findAll() {
 
-        Sort sort=new Sort(Sort.Direction.DESC,"idPersona","nombreRazonSocial");
-        return personaRepository.findAll(new PageRequest(0,200,sort)).getContent();
-     }
-
+        Sort sort = new Sort(Sort.Direction.DESC, "idPersona", "nombreRazonSocial");
+        return personaRepository.findAll(new PageRequest(0, 200, sort)).getContent();
+    }
 
     @Override
-    public List<PerPersona> buscarPorNroNombre(final String nombreRazonSocial,final String tipoIdentificacion,final String nroIdentificacion) {
-
+    public List<PerPersona> buscarPorNroNombre(final String nombreRazonSocial, final String tipoIdentificacion, final String nroIdentificacion) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PerPersona> criteriaQuery = criteriaBuilder.createQuery(PerPersona.class);
@@ -146,10 +143,10 @@ public class PersonaService implements IPersonaService {
         if (Strings.isNullOrEmpty(nroIdentificacion) && Strings.isNullOrEmpty(nombreRazonSocial) && Strings.isNullOrEmpty(tipoIdentificacion)) {
             //return Collections.emptyList();
 
-            Query q= entityManager.createQuery(criteriaQuery);
+            Query q = entityManager.createQuery(criteriaQuery);
             q.setFirstResult(0);
             q.setMaxResults(200);
-             return q.getResultList();
+            return q.getResultList();
             //return entityManager.createQuery(criteriaQuery).getResultList();
         }
 
@@ -157,7 +154,6 @@ public class PersonaService implements IPersonaService {
             @Override
             public Predicate toPredicate(Root<PerPersona> perPersonaEntityRoot, CriteriaQuery<?> criteriaQuery,
                     CriteriaBuilder criteriaBuilder) {
-
 
                 List<Predicate> pr = new LinkedList<Predicate>();
 
@@ -189,65 +185,64 @@ public class PersonaService implements IPersonaService {
         // TODO: esto deberia funcionar... return personaRepository.findAll(specification);
     }
 
-
     @Override
-    public Long obtenerSecuencia(String nombreSecuencia){
+    public Long obtenerSecuencia(String nombreSecuencia) {
         BigDecimal rtn;
-        rtn = (BigDecimal)entityManager.createNativeQuery("SELECT "+nombreSecuencia+".nextval FROM DUAL").getSingleResult();
+        rtn = (BigDecimal) entityManager.createNativeQuery("SELECT " + nombreSecuencia + ".nextval FROM DUAL").getSingleResult();
         return rtn.longValue();
     }
 
     @Override
-    public  boolean registrar(PerPersona persona,PerUnidad unidad,UsrUsuario usuario){
-        try{
-            final String  REGISTRO_BITACORA="ROE";
+    public boolean registrar(PerPersona persona, PerUnidad unidad, UsrUsuario usuario) {
+        try {
+            final String REGISTRO_BITACORA = "ROE";
             System.out.println("======>>> GUARDADO PERSONA <<<===== ");
             persona.setFechaBitacora(new Date());
             //personaRepository.save(persona);
-            persona=personaRepository.save(persona);
+            persona = personaRepository.save(persona);
             System.out.println("======>>> GUARDADO PERSONA  OK<<<===== ");
 
             System.out.println("======================================= ");
             System.out.println("======>>> GUARDADO UNIDAD <<<===== ");
             unidad.setFechaBitacora(new Date());
             unidad.setPerPersona(persona);
-            unidad=unidadRepository.save(unidad);
+            unidad = unidadRepository.save(unidad);
             System.out.println("======>>> GUARDADO UNIDAD OK <<<===== ");
 
             System.out.println("======================================= ");
             System.out.println("======>>> GUARDADO USUARIO <<<===== ");
             usuario.setFechaBitacora(new Date());
             usuario.setIdPersona(persona);
-            usuario=usuarioRepository.save(usuario);
+            usuario = usuarioRepository.save(usuario);
             System.out.println("======>>> GUARDADO USUARIO OK <<<===== ");
 
             System.out.println("======================================= ");
             System.out.println("======>>> GUARDADO USUARIO_UNIDAD <<<===== ");
-            PerUsuarioUnidad usuarioUnidad =new PerUsuarioUnidad();
-                PerUsuarioUnidadPK perUsuarioUnidadPK=new PerUsuarioUnidadPK();
-                perUsuarioUnidadPK.setIdPersona(persona.getIdPersona());
-                perUsuarioUnidadPK.setIdUnidad(unidad.getPerUnidadPK().getIdUnidad());
-                perUsuarioUnidadPK.setIdUsuario(usuario.getIdUsuario());
+            PerUsuarioUnidad usuarioUnidad = new PerUsuarioUnidad();
+            PerUsuarioUnidadPK perUsuarioUnidadPK = new PerUsuarioUnidadPK();
+            perUsuarioUnidadPK.setIdPersona(persona.getIdPersona());
+            perUsuarioUnidadPK.setIdUnidad(unidad.getPerUnidadPK().getIdUnidad());
+            perUsuarioUnidadPK.setIdUsuario(usuario.getIdUsuario());
 
-                usuarioUnidad.setFechaBitacora(new Date());
-                usuarioUnidad.setRegistroBitacora(REGISTRO_BITACORA);
-                usuarioUnidad.setPerUnidad(unidad);
-                usuarioUnidad.setUsrUsuario(usuario);
-                usuarioUnidad.setPerUsuarioUnidadPK(perUsuarioUnidadPK);
-                usuarioUnidadRepository.save(usuarioUnidad);
+            usuarioUnidad.setFechaBitacora(new Date());
+            usuarioUnidad.setRegistroBitacora(REGISTRO_BITACORA);
+            usuarioUnidad.setPerUnidad(unidad);
+            usuarioUnidad.setUsrUsuario(usuario);
+            usuarioUnidad.setPerUsuarioUnidadPK(perUsuarioUnidadPK);
+            usuarioUnidadRepository.save(usuarioUnidad);
             System.out.println("======>>> GUARDADO USUARIO_UNIDAD OK <<<===== ");
             System.out.println("======================================= ");
             System.out.println("======>>> GUARDADO USUARIO_ROL <<<===== ");
 
-            UsrModulo modulo=moduloRepository.findByIdModulo("PER");
-            UsrRol rol=rolRepository.findByIdRol((Long.valueOf("2")));
+            UsrModulo modulo = moduloRepository.findByIdModulo("PER");
+            UsrRol rol = rolRepository.findByIdRol((Long.valueOf("2")));
 
-            UsrUsuarioRol usuarioRol=new UsrUsuarioRol();
+            UsrUsuarioRol usuarioRol = new UsrUsuarioRol();
             usuarioRol.setFechaBitacora(new Date());
             usuarioRol.setRegistroBitacora(REGISTRO_BITACORA);
             usuarioRol.setUsrRol(rol);
             usuarioRol.setUsrUsuario(usuario);
-            UsrUsuarioRolPK usrUsuarioRolPK=new UsrUsuarioRolPK();
+            UsrUsuarioRolPK usrUsuarioRolPK = new UsrUsuarioRolPK();
             usrUsuarioRolPK.setIdRol(rol.getIdRol());
             usrUsuarioRolPK.setIdUsuario(usuario.getIdUsuario());
 
@@ -256,10 +251,113 @@ public class PersonaService implements IPersonaService {
             usuarioRolRepository.save(usuarioRol);
             System.out.println("======>>> GUARDADO USUARIO_ROL OK <<<===== ");
             return true;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    ////////////////////////////////////LUIS
+    @Override
+    public boolean registrarDependiente(PerPersona persona, PerUnidad unidad, UsrUsuario usuario, String REGISTRO_BITACORA, boolean estado) {
+        try {
+            persona.setFechaBitacora(new Date());
+            persona = personaRepository.save(persona);
+
+//            unidad.setFechaBitacora(new Date());
+//            unidad.setPerPersona(persona);
+//            unidad=unidadRepository.save(unidad);
+            usuario.setFechaBitacora(new Date());
+            usuario.setIdPersona(persona);
+            usuario = usuarioRepository.save(usuario);
+            PerUsuarioUnidad usuarioUnidad = new PerUsuarioUnidad();
+            
+            PerUsuarioUnidadPK perUsuarioUnidadPK = new PerUsuarioUnidadPK();
+            perUsuarioUnidadPK.setIdPersona(unidad.getPerUnidadPK().getIdPersona());
+            perUsuarioUnidadPK.setIdUnidad(unidad.getPerUnidadPK().getIdUnidad());
+            perUsuarioUnidadPK.setIdUsuario(usuario.getIdUsuario());
+
+            usuarioUnidad.setFechaBitacora(new Date());
+            usuarioUnidad.setRegistroBitacora(REGISTRO_BITACORA);
+            usuarioUnidad.setPerUnidad(unidad);
+            usuarioUnidad.setUsrUsuario(usuario);
+            usuarioUnidad.setPerUsuarioUnidadPK(perUsuarioUnidadPK);
+            if (estado == true) {
+                usuarioUnidad.setEstado(Dominios.PAR_ESTADO_ACTIVO);
+            } else {
+                usuarioUnidad.setEstado(Dominios.PAR_ESTADO_INACTIVO);
+            }
+            usuarioUnidadRepository.save(usuarioUnidad);
+
+            UsrModulo modulo = moduloRepository.findByIdModulo("PER");
+            UsrRol rol = rolRepository.findByIdRol((Long.valueOf("2")));
+
+            UsrUsuarioRol usuarioRol = new UsrUsuarioRol();
+            usuarioRol.setFechaBitacora(new Date());
+            usuarioRol.setRegistroBitacora(REGISTRO_BITACORA);
+            usuarioRol.setUsrRol(rol);
+            usuarioRol.setUsrUsuario(usuario);
+            
+            UsrUsuarioRolPK usrUsuarioRolPK = new UsrUsuarioRolPK();
+            usrUsuarioRolPK.setIdRol(rol.getIdRol());
+            usrUsuarioRolPK.setIdUsuario(usuario.getIdUsuario());
+
+            usuarioRol.setUsrUsuarioRolPK(usrUsuarioRolPK);
+
+            usuarioRolRepository.save(usuarioRol);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public List<PerUsuarioUnidad> listaUsuarioUnidadPorIdPersona(String idPersona) {
+        List<PerUsuarioUnidad> lista = new ArrayList<PerUsuarioUnidad>();
+        try {
+            lista = usuarioUnidadRepository.listaUsuarioUnidadPorIdPersona(idPersona);
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
+    }
+    
+    @Override
+    public List<PerUsuarioUnidad> listaUsuarioUnidadPorIdUsuario(Long idUsuario){
+        List<PerUsuarioUnidad> lista = new ArrayList<PerUsuarioUnidad>();
+        try {
+            lista = usuarioUnidadRepository.listaUsuarioUnidadPorIdUsuario(idUsuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
+    }
+    
+    @Override
+    public List<PerUsuarioUnidad> listaUsuarioUnidadPorIdUsuarioIdPersona(Long idUsuario,String idPersona){
+        List<PerUsuarioUnidad> lista = new ArrayList<PerUsuarioUnidad>();
+        try {
+            lista = usuarioUnidadRepository.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,idPersona);
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
+    }
+    
+    @Override
+    public List<PerUsuarioUnidad> listaUsuarioUnidadPersonaPorIdUsuario(Long idUsuario){
+        List<PerUsuarioUnidad> lista = new ArrayList<PerUsuarioUnidad>();
+        try {
+            lista = usuarioUnidadRepository.listaUsuarioUnidadPorIdUsuarioAgrupadoPorIdPersona(idUsuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+            lista = null;
+        }
+        return lista;
     }
 
     @Override
@@ -338,18 +436,19 @@ public class PersonaService implements IPersonaService {
         return true;
     }
 
-    public List<PerPersona> listarPorSucursal(String idPersona){
-       return personaRepository.findByIdPersonaAndEsNatural(idPersona, true);
+    public List<PerPersona> listarPorSucursal(String idPersona) {
+        return personaRepository.findByIdPersonaAndEsNatural(idPersona, true);
     }
 
-    public PerPersona obtienePorCentral(String idPersona){
-        List<PerPersona> personaList=personaRepository.findByIdPersonaAndEsNatural(idPersona, false);
-        if(personaList.size()==0)
+    public PerPersona obtienePorCentral(String idPersona) {
+        List<PerPersona> personaList = personaRepository.findByIdPersonaAndEsNatural(idPersona, false);
+        if (personaList.size() == 0) {
             return new PerPersona();
+        }
         return personaList.get(0);
     }
 
-    public boolean guardarUsuarioRol(Long idUsuario, Long idRol){
+    public boolean guardarUsuarioRol(Long idUsuario, Long idRol) {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         UsrRol rol = rolRepository.findByIdRol(idRol);
         UsrUsuario usuario = usuarioRepository.findOne(idUsuario);
@@ -370,13 +469,13 @@ public class PersonaService implements IPersonaService {
         return true;
     }
 
-    public void eliminarUsuarioRol(Long idUsuario, Long idRol){
+    public void eliminarUsuarioRol(Long idUsuario, Long idRol) {
         UsrUsuarioRolPK usrPK = new UsrUsuarioRolPK();
         usrPK.setIdUsuario(idUsuario);
         usrPK.setIdRol(idRol);
         UsrUsuarioRol usrUsuarioRolTmp = usuarioRolRepository.findOne(usrPK);
-        if(usrUsuarioRolTmp != null){
-        usuarioRolRepository.delete(usrUsuarioRolTmp);
+        if (usrUsuarioRolTmp != null) {
+            usuarioRolRepository.delete(usrUsuarioRolTmp);
         }
     }
 }

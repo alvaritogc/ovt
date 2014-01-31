@@ -14,4 +14,5 @@ public interface IDireccionService {
     public List<PerDireccion>obtenerPorIdPersona(String idPersona);
     public PerDireccion obtenerPorId(Long idDireccion);
     public PerDireccion obtenerPorIdPersonaYIdUnidadYEstadoActivo(PerUnidadPK perUnidadPK);
+    public PerDireccion obtenerPorIdPersonaAndIdUnidad(String idPersona, Long idUnidad);
 }

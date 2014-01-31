@@ -113,6 +113,11 @@ public class DocumentoService implements IDocumentoService {
         //return documentoRepository.findByPerUnidad_PerPersona_IdPersonaOrderByIdDocumentoDesc(idPersona);
         return documentoRepository.listarPorPersona(idPersona);
     }
+    
+    @Override
+    public List<DocDocumento> obtenerPorIdPersonaIdUnidad(String idPersona, Long idUnidad) {
+        return documentoRepository.obtenerPorIdPersonaIdUnidad(idPersona,idUnidad);
+    }
 
     @Override
     public DocDocumento guardarCambioEstado(DocDocumento documento, String codEstadoFinal, String idUsuario, String observacionLogEstado) {
