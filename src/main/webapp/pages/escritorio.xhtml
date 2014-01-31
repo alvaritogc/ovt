@@ -39,22 +39,23 @@
                          var="o1" rows="10" emptyMessage="No se encontraron resultados"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
                          currentPageReportTemplate="{currentPage} / {totalPages}">
-                <p:column headerText="Código" style="width: 30px;">
+                <p:column headerText="Código" style="width: 30px;padding-right: 5px;padding-left: 5px;">
                     <h:outputText value="#{o1.docDefinicion.alias}"/>
                 </p:column>
                 <!--style="width: 140px;word-break: break-all;"-->
-                <p:column headerText="Nombre del documento" style="width: 150px;">
-                    <h:outputText value="#{o1.docDefinicion.nombre}: #{o1.tipoMedioRegistro=='N/A'?'':o1.tipoMedioRegistro}"/>
+                <p:column headerText="Nombre del documento" style="width: 150px;padding-right: 5px;padding-left: 5px;">
+                    <h:outputText
+                            value="#{o1.docDefinicion.nombre}: #{o1.tipoMedioRegistro=='N/A'?'':o1.tipoMedioRegistro}"/>
                 </p:column>
-                <p:column headerText="Número de orden" style="width: 110px;">
+                <p:column headerText="Número de orden" style="width: 110px;padding-right: 5px;padding-left: 5px;">
                     <h:outputText value="#{o1.docDefinicion.docDefinicionPK.codDocumento}: #{o1.numeroDocumento}"/>
                 </p:column>
-                <p:column headerText="Fecha" style="width: 55px;">
+                <p:column headerText="Fecha" style="width: 55px;padding-right: 5px;padding-left: 5px;">
                     <h:outputText value="#{o1.fechaDocumento}">
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Estado" style="width: 55px;">
+                <p:column headerText="Estado" style="width: 55px;padding-right: 5px;padding-left: 5px;">
                     <u><p:commandLink value="#{o1.codEstado.descripcion}"
                                       style="color: #{o1.codEstado.metadata}; font-weight: bold"
                                       action="#{escritorioBean.irLogEstadoDocumento}"
@@ -66,7 +67,11 @@
                 <p:column headerText="Medio de registro" rendered="false">
                     <h:outputText value="#{o1.tipoMedioRegistro}"/>
                 </p:column>
-                <p:column headerText="Acciones">
+                <p:column headerText="Suc" style="padding-right: 5px;padding-left: 5px;text-align: center;">
+                    <p:selectBooleanCheckbox value="#{o1.perUnidad.perUnidadPK.idUnidad!=0?true:false}"
+                                             disabled="true"/>
+                </p:column>
+                <p:column headerText="Acciones" style="padding-right: 5px;padding-left: 5px;">
                     <p:commandButton update=":idEscritorio:cambioEstadoDlg"
                                      action="#{escritorioBean.cargarCambioDeEstados}"
                                      oncomplete="PF('cambioEstadoDialog').show()" icon="ui-icon-gear"
@@ -98,7 +103,8 @@
                     <h:commandLink target="_blank" action="#{escritorioBean.generarReporte}"
                                    title="Imprimir declaracion jurada"
                                    rendered="#{o1.docDefinicion.docDefinicionPK.codDocumento=='ROE010'}">
-                        <h:graphicImage style="float: left;width:25px;height: 23px;padding-right: 3px; " value="/images/print.png"/>
+                        <h:graphicImage style="float: left;width:25px;height: 23px;padding-right: 3px; "
+                                        value="/images/print.png"/>
                     </h:commandLink>
                 </p:column>
             </p:dataTable>
