@@ -142,14 +142,10 @@ public class DeclaracionTrimestralBean implements Serializable {
         parametro = (Integer) session.getAttribute("parametro");
         unidadSeleccionada = (PerUnidad) session.getAttribute("unidadSeleccionada");
         tipoEmpresa = (Integer) session.getAttribute("tipoEmpresa");
-        docPlanilla = new DocPlanilla();
-        periodoGestion= new ParObligacionCalendario();
-        if(parametro==1||parametro==2)
-            periodoGestion= iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(new Date());
-        if(parametro==3)
-            periodoGestion= iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo2(new Date());
+        periodoGestion= (ParObligacionCalendario) session.getAttribute("periodoGestion");
         periodo=periodoGestion.getParCalendario().getParCalendarioPK().getTipoPeriodo();
         gestion=periodoGestion.getParCalendario().getParCalendarioPK().getGestion();
+        docPlanilla = new DocPlanilla();
         //0 NO AUTOLLENADO
         //1 SI AUTOLLENADO
         switch (trimestralAuto){
@@ -200,15 +196,12 @@ public class DeclaracionTrimestralBean implements Serializable {
                     docPlanilla.setOtrosDescuentos(BigDecimal.ZERO);
                     listaBinarios = new ArrayList<DocBinario>();
                 }
-
                 habilita=false;
                 break;
         }
         docPlanilla.setMontoAsegCaja(BigDecimal.ZERO);
         docPlanilla.setMontoAsegAfp(BigDecimal.ZERO);
         docPlanilla.setMontoOperacion(BigDecimal.ZERO);
-
-
 
         if(parametro==2)
             habilita=false;

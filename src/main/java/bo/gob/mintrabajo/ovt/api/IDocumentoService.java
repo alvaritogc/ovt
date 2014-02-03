@@ -62,4 +62,10 @@ public interface IDocumentoService {
     void guardaDetallesAlertasActualizaInfLab(DocDocumento docDocumento, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas);
 
     List<DocDocumento> listarDocumentosPorUnidadCodFechaHastaPlazo2(PerUnidadPK perUnidadPK, String codDocumento, Date fechaHasta, Date fechaPlazo2);
+
+    List<DocDocumento> listarDocumentosPorPersonaUnidadFechasHastaPlazoCodDocumentos(PerUnidadPK perUnidadPK,Date fechaHasta, Date fechaPlazo2, String codDocumento1, String codDocumento2);
+
+    List<DocDocumento> listarDocumentosPorPersonaEntreFechasTrim(String idPersona,Date fechaHasta, Date fechaPlazo);
+
+    List<DocDocumento> listarDocumentosPorPersonaEntreFechasAgui(String idPersona,Date fechaHasta, Date fechaPlazo);
 }

@@ -28,8 +28,8 @@
 
                     <p:selectOneRadio id="customRadio" value="#{seleccionaCentralSucursalBean.tipoEmpresa}" columns="2" rendered="#{!seleccionaCentralSucursalBean.delegado}">
                         <p:ajax event="change" update="tipoEmpresa"/>
-                        <f:selectItem itemLabel="Declaración consolidada de todas las sucursales" itemValue="1"/>
-                        <f:selectItem itemLabel="Declaración por sucursal" itemValue="2"/>
+                        <f:selectItem itemLabel="Declaración consolidada de todas las sucursales" itemValue="1" itemDisabled="#{!seleccionaCentralSucursalBean.consolidado}"/>
+                        <f:selectItem itemLabel="Declaración por sucursal" itemValue="2" itemDisabled="#{!seleccionaCentralSucursalBean.sucursal}"/>
                     </p:selectOneRadio>
                     <br/>
                     <h:panelGroup id="tipoEmpresa">
