@@ -66,11 +66,10 @@ public class SeleccionaCentralSucursalBean implements Serializable {
     private PerUnidad central;
     private PerUnidad unidadSeleccionada;
     private List<PerUnidad> sucursales;
-    private ParObligacionCalendario parObligacionCalendario;
 
     private String mensajeValidacion;
     private boolean habilitado;
-    private ParObligacionCalendario periodoGestion;
+    private ParObligacionCalendario periodoGestion= new ParObligacionCalendario();
 
     //  uploadarchivo
     public static Cache<String, List<DocBinario>> binarios = CacheBuilder.newBuilder().maximumSize(600).build();
@@ -212,7 +211,7 @@ public class SeleccionaCentralSucursalBean implements Serializable {
             }
             if(docu.getTipoMedioRegistro().toUpperCase().equalsIgnoreCase("SUCURSAL")){
                 consolidado=false;
-                sucursal=false;
+                sucursal=true;
             }
         }
     }
@@ -498,10 +497,10 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                     columna++;//13
                     if (!registro.get(registro.getHeader(columna)).equals("")) {
                         docPlanillaDetalle.setSexo(registro.get(registro.getHeader(columna)));
-                        if (docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN")) {
+                        if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN")) ){
                             masculino++;
                         }
-                        if (docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO")) {
+                        if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO"))) {
                             femenino++;
                         }
                     } else {
@@ -513,7 +512,7 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                         docPlanillaDetalle.setJubilado(registro.get(registro.getHeader(columna)));
 
                         //masculino
-                        if (docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN")) {
+                        if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN") )) {
                             if (docPlanillaDetalle.getJubilado().toUpperCase().equals("SI")) {
                                 masculinoJubilado++;
                             }
@@ -523,7 +522,7 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                         }
 
                         //femenino
-                        if (docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO")) {
+                        if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO"))) {
                             if (docPlanillaDetalle.getJubilado().toUpperCase().equals("SI")) {
                                 femeninoJubilado++;
                             }
@@ -551,14 +550,14 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                             docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy").parse(registro.get(registro.getHeader(columna)))));
 
                             Date fechaIngreso = new SimpleDateFormat("dd/MM/yyyy").parse(docPlanillaDetalle.getFechaIngreso());
-                            if (fechaIngreso.after(parObligacionCalendario.getFechaDesde()) && fechaIngreso.before(parObligacionCalendario.getFechaHasta())) {
+                            if (fechaIngreso.after(periodoGestion.getFechaDesde()) && fechaIngreso.before(periodoGestion.getFechaHasta())) {
                                 //masculino
-                                if (docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN")) {
+                                if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN") || docPlanillaDetalle.getSexo()!=null) ){
                                     masculinoContratadoTrim++;
                                 }
 
                                 //femenino
-                                if (docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO")) {
+                                if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO") || docPlanillaDetalle.getSexo()!=null) ){
                                     femeninoContratadoTrim++;
                                 }
                             }
