@@ -225,7 +225,7 @@ public class SeleccionaCentralSucursalBean implements Serializable {
             if (delegado) {
                 List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario, idPersona);
                 for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
-                    if (perUsuarioUnidad.getEstado().equals("A")) {
+                    if (perUsuarioUnidad.getEstado().equals("A") && sucursal) {
                         List<DocPlanilla> docPlanillaVerifica = new ArrayList<DocPlanilla>();
                         PerUnidad unidad = iUnidadService.obtenerPorIdPersonaIdUnidad(idPersona, perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad());
                         docPlanillaVerifica = iPlanillaService.listaPlanillasTrimestrales(idPersona, unidad.getPerUnidadPK().getIdUnidad(), codDocumento,
@@ -285,6 +285,17 @@ public class SeleccionaCentralSucursalBean implements Serializable {
         } else {
             unidadSeleccionada = iUnidadService.obtienePorId(new PerUnidadPK(idPersona, idUnidad));
         }
+        ///////////////////////////////////////////////LUIS
+        if(delegado && !sucursal){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "No seleccionó alguna sucursal o ya realizó la declaracion como una consolidada."));
+            return null;
+        }
+        
+        if(delegado && idUnidad<1L){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "No seleccionó alguna sucursal."));
+            return null;
+        }
+        ///////////////////////////////////////////////
 
         if (verEstadoPlanilla()) {
             session.setAttribute("parametro", parametro);
