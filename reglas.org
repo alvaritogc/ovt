@@ -3,7 +3,11 @@
 2. Java 7
 3. Maven
 4. Internet
-5. clonarse e instalarse https://github.com/marcelomorales-name/siqisiqi
+5. clonarse e instalarse
+git clone https://github.com/marcelomorales-name/siqisiqi.git
+git checkout siqisiqi-parent-0.2
+mvn clean install
+
 6. Si usan eclipse, el plugin de maven de SONATYPE. Intellij y
    Netbeans ya tienen soporte para maven.
 7. BAJAR DOCUMENTACIÓN DE TODOS LOS COMPONENTES Y SOURCES DE TODOS
