@@ -77,7 +77,6 @@
             <p:selectOneMenu id="rectificatorio" value="#{declaracionTrimestralBean.idRectificatorio}" style="width: 260px; height: 20px" disabled="#{!declaracionTrimestralBean.esRectificatorio}">
                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true"/>
                 <f:selectItems value="#{declaracionTrimestralBean.docPlanillasParaRectificar}" var="elemDoc" itemLabel="#{elemDoc.idDocumento.numeroDocumento}&nbsp;-&nbsp;#{elemDoc.parCalendario.parCalendarioPK.tipoPeriodo}" itemValue="#{elemDoc.idDocumento.idDocumento}"/>
-                <p:ajax listener="#{declaracionTrimestralBean.seleccionaTrimestre}" update="razonSocial" />
             </p:selectOneMenu>
             <!--<p:outputLabel value="# {declaracionTrimestralBean.rectificatorio.idDocumento.numeroDocumento}&nbsp;-&nbsp;# {declaracionTrimestralBean.rectificatorio.parCalendario.parCalendarioPK.tipoPeriodo}" style="width: 150px; height: 10px; text-align: right" disabled="# {!declaracionTrimestralBean.esRectificatorio}" />-->
         </p:panelGrid>

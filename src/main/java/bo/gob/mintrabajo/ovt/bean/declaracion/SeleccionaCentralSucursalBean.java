@@ -9,7 +9,6 @@ import com.csvreader.CsvReader;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -29,7 +28,6 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -68,11 +66,10 @@ public class SeleccionaCentralSucursalBean implements Serializable {
     private PerUnidad central;
     private PerUnidad unidadSeleccionada;
     private List<PerUnidad> sucursales;
-    private ParObligacionCalendario parObligacionCalendario;
 
     private String mensajeValidacion;
     private boolean habilitado;
-    private ParObligacionCalendario periodoGestion;
+    private ParObligacionCalendario periodoGestion= new ParObligacionCalendario();
 
     //  uploadarchivo
     public static Cache<String, List<DocBinario>> binarios = CacheBuilder.newBuilder().maximumSize(600).build();
@@ -117,6 +114,8 @@ public class SeleccionaCentralSucursalBean implements Serializable {
 
     //////
     private boolean delegado = false;
+    private boolean consolidado=true;
+    private boolean sucursal=true;
 
     @PostConstruct
     public void ini() {
@@ -150,37 +149,70 @@ public class SeleccionaCentralSucursalBean implements Serializable {
     }
 
     public void cargar() {
-
-        switch (parametro) {
-            case 1:
-                codDocumento = "LC1010";
-                break;
-            case 2:
-                codDocumento = "LC1011";
-                break;
-            case 3:
-                codDocumento = "LC1012";
-                break;
-            case 4:
-                codDocumento = "LC1020";
-                break;
-            case 5:
-                codDocumento = "LC1021";
-                break;
-        }
         verficaPeriodoGestion();
         listaCentralSucursales();
         verficaHabilitacionUpload();
     }
 
     public void verficaPeriodoGestion() {
+        List<DocDocumento> docs = new ArrayList<DocDocumento>();
+        switch (parametro){
+            case 1:
+                codDocumento = "LC1010";
+                periodoGestion = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(new Date());
+                docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasTrim(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+                if(periodoGestion==null) {
+                    mensajeValidacion = "Fuera de rango para realizar la declaración jurada.";
+                    habilitado = false;
+                }
+                break;
+            case 2:
+                codDocumento = "LC1011";
+                periodoGestion = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(new Date());
+                docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasTrim(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+                if(periodoGestion==null) {
+                    mensajeValidacion = "Fuera de rango para realizar la declaración jurada sin movimiento.";
+                    habilitado = false;
+                }
 
-        if (parametro == 1 || parametro == 2 || parametro == 3) {
-            periodoGestion = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo2(new Date());
-            return;
+                break;
+            case 3:
+                codDocumento = "LC1012";
+                periodoGestion = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo2(new Date());
+                docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasTrim(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+                if(periodoGestion==null) {
+                    mensajeValidacion = "Fuera de rango para realizar la declaración jurada rectificatoria.";
+                    habilitado = false;
+                }
+                break;
+            case 4:
+                codDocumento = "LC1020";
+                periodoGestion = iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo(new Date());
+                docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasAgui(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+                if(periodoGestion==null) {
+                    mensajeValidacion = "Fuera de rango para realizar la declaración jurada de aguinaldo.";
+                    habilitado = false;
+                }
+                break;
+            case 5:
+                codDocumento = "LC1021";
+                periodoGestion = iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo2(new Date());
+                docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasAgui(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+                if(periodoGestion==null) {
+                    mensajeValidacion = "Fuera de rango para realizar la declaración jurada rectificatoria de aguinaldo.";
+                    habilitado = false;
+                }
+                break;
         }
-        if (parametro == 4 || parametro == 5) {
-            periodoGestion = iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo2(new Date());
+        for (DocDocumento docu: docs){
+            if(docu.getTipoMedioRegistro().toUpperCase().equalsIgnoreCase("CONSOLIDADO")){
+                consolidado=true;
+                sucursal=false;
+            }
+            if(docu.getTipoMedioRegistro().toUpperCase().equalsIgnoreCase("SUCURSAL")){
+                consolidado=false;
+                sucursal=true;
+            }
         }
     }
 
@@ -242,7 +274,12 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                     return null;
                 }
             }
+        }else{
+            mensajeValidacion = "Fuera de rango para realizar la declaración jurada.";
+            habilitado = false;
+            return null;
         }
+
         if (tipoEmpresa != 2) {
             unidadSeleccionada = central;
         } else {
@@ -252,6 +289,7 @@ public class SeleccionaCentralSucursalBean implements Serializable {
         if (verEstadoPlanilla()) {
             session.setAttribute("parametro", parametro);
             session.setAttribute("unidadSeleccionada", unidadSeleccionada);
+            session.setAttribute("periodoGestion", periodoGestion);
             session.setAttribute("tipoEmpresa", tipoEmpresa);
 //          reo revisar
             //verifica trimestralAuto y aguinaldoAuto: SI (1) ó NO (0), para el llenado del formulario...
@@ -459,10 +497,10 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                     columna++;//13
                     if (!registro.get(registro.getHeader(columna)).equals("")) {
                         docPlanillaDetalle.setSexo(registro.get(registro.getHeader(columna)));
-                        if (docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN")) {
+                        if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN")) ){
                             masculino++;
                         }
-                        if (docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO")) {
+                        if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO"))) {
                             femenino++;
                         }
                     } else {
@@ -474,7 +512,7 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                         docPlanillaDetalle.setJubilado(registro.get(registro.getHeader(columna)));
 
                         //masculino
-                        if (docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN")) {
+                        if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN") )) {
                             if (docPlanillaDetalle.getJubilado().toUpperCase().equals("SI")) {
                                 masculinoJubilado++;
                             }
@@ -484,7 +522,7 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                         }
 
                         //femenino
-                        if (docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO")) {
+                        if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO"))) {
                             if (docPlanillaDetalle.getJubilado().toUpperCase().equals("SI")) {
                                 femeninoJubilado++;
                             }
@@ -512,14 +550,14 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                             docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy").parse(registro.get(registro.getHeader(columna)))));
 
                             Date fechaIngreso = new SimpleDateFormat("dd/MM/yyyy").parse(docPlanillaDetalle.getFechaIngreso());
-                            if (fechaIngreso.after(parObligacionCalendario.getFechaDesde()) && fechaIngreso.before(parObligacionCalendario.getFechaHasta())) {
+                            if (fechaIngreso.after(periodoGestion.getFechaDesde()) && fechaIngreso.before(periodoGestion.getFechaHasta())) {
                                 //masculino
-                                if (docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN")) {
+                                if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN") || docPlanillaDetalle.getSexo()!=null) ){
                                     masculinoContratadoTrim++;
                                 }
 
                                 //femenino
-                                if (docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO")) {
+                                if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO") || docPlanillaDetalle.getSexo()!=null) ){
                                     femeninoContratadoTrim++;
                                 }
                             }
@@ -920,210 +958,46 @@ public class SeleccionaCentralSucursalBean implements Serializable {
         }
     }
 
-//    public boolean verEstadoPlanilla(){
-//        List<DocDocumento> listaDocumentos = new ArrayList<DocDocumento>();
-//        ParObligacionCalendario obligacionCalendario= new ParObligacionCalendario();
-//        habilitado = true;
-////        if(tipoEmpresa==1){
-////
-////        }
-////        if(tipoEmpresa==2){
-////
-////        }
-//
-//
-//        if(unidadSeleccionada.getPerUnidadPK()!=null){
-//
-//
-//
-//
-//            switch (parametro){
-//                case 1:
-//
-//
-//
-//                case 2:
-//                    listaDocumentos=iDocumentoService.listarDocumentosPorUnidadCodFechaHastaPlazo2(unidadSeleccionada.getPerUnidadPK(), "LC1010", periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
-//                    if(listaDocumentos.size()!=0)
-//
-//
-//                case 3:
-//                    listaDocumentos=iDocumentoService.listarDocumentosPorUnidadCodFechaHastaPlazo2(unidadSeleccionada.getPerUnidadPK(), "LC1012", periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
-//                case 4:
-//                    listaDocumentos=iDocumentoService.listarDocumentosPorUnidadCodFechaHastaPlazo2(unidadSeleccionada.getPerUnidadPK(), "LC1020", periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
-//                case 5:
-//                    listaDocumentos=iDocumentoService.listarDocumentosPorUnidadCodFechaHastaPlazo2(unidadSeleccionada.getPerUnidadPK(), "LC1021", periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
-//
-//            }
-//        }
-//        return false;
-//    }
-
-
-    public boolean verEstadoPlanilla() {
-        List<DocDocumento> listaDocumentos = new ArrayList<DocDocumento>();
+    public boolean verEstadoPlanilla(){
+        List<DocDocumento> listaDocumentos;
         habilitado = true;
-        if (unidadSeleccionada.getPerUnidadPK() != null) {
-            switch (parametro) {
+        if(unidadSeleccionada.getPerUnidadPK()!=null){
+            switch (parametro){
                 case 1:
-                    parObligacionCalendario = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
-                    if (parObligacionCalendario == null) {
-                        mensajeValidacion = "Solo puede realizar la Declaración Jurada Trimestral dentro del plazo establecido.";
-                        habilitado = false;
+                    listaDocumentos=iDocumentoService.listarDocumentosPorPersonaUnidadFechasHastaPlazoCodDocumentos(unidadSeleccionada.getPerUnidadPK(),periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2(), "LC1010", "LC1011");
+                    if(listaDocumentos.size()!=0){
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La presentación trimestral ya fue declarada como sin movimiento."));
                         return false;
-                    } else {
-                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
-                        if (listaDocumentos.size() == 0) {
-                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1011");
-                            if (listaDocumentos.size() != 0) {
-                                mensajeValidacion = "No se puede realizar la Declaración Jurada Trimestral si ya declaro una sin movimiento.";
-                                habilitado = false;
-                                return false;
-                            } else {
-                                listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010");
-                            }
-                        }
                     }
-                    break;
+                    return true;
                 case 2:
-                    parObligacionCalendario = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
-                    if (parObligacionCalendario == null) {
-                        mensajeValidacion = "Solo puede realizar la Declaración Jurada Trimestral Sin Movimiento dentro del plazo establecido.";
-                        habilitado = false;
+                    listaDocumentos=iDocumentoService.listarDocumentosPorPersonaUnidadFechasHastaPlazoCodDocumentos(unidadSeleccionada.getPerUnidadPK(),periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2(), "LC1010", "LC1011");
+                    if(listaDocumentos.size()!=0){
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La presentación trimestral ya fue declarada."));
                         return false;
-                    } else {
-                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1011");
-                        if (listaDocumentos.size() == 0) {
-                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010");
-                            if (listaDocumentos.size() != 0) {
-                                mensajeValidacion = "No se puede realizar la Declaración Jurada Trimestral Sin Movimiento si ya declaro una con movimiento.";
-                                habilitado = false;
-                                return false;
-                            } else {
-                                listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1011");
-                            }
-                        }
                     }
-                    break;
+                    return true;
                 case 3:
-                    parObligacionCalendario = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo2(DateUtils.truncate(new Date(), Calendar.DATE));
-                    if (parObligacionCalendario == null) {
-                        mensajeValidacion = "Solo puede realizar la Declaración Jurada Trimestral Rectificatoria dentro del plazo establecido.";
-                        habilitado = false;
+                    listaDocumentos=iDocumentoService.listarDocumentosPorUnidadCodFechaHastaPlazo2(unidadSeleccionada.getPerUnidadPK(), "LC1010", periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+                    if(listaDocumentos.size()==0){
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No existe declaración para ser rectificada."));
                         return false;
-                    } else {
-                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1012");
-                        if (listaDocumentos.size() == 0) {
-                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumentos(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1010", "LC1011");
-                            if (listaDocumentos.size() == 0) {
-                                mensajeValidacion = "No existe alguna Declaración Jurada Trimestral para rectificar.";
-                                habilitado = false;
-                                return false;
-                            } else {
-                                listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1012");
-                            }
-                        }
                     }
-                    break;
+                    return true;
+
                 case 4:
-                    parObligacionCalendario = iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
-                    if (parObligacionCalendario == null) {
-                        mensajeValidacion = "Solo puede realizar la Declaración Jurada de Aguinaldo dentro del plazo establecido.";
-                        habilitado = false;
-                        return false;
-                    } else {
-                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1020");
-                    }
-                    break;
+                    return true;
                 case 5:
-                    parObligacionCalendario = iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo2(DateUtils.truncate(new Date(), Calendar.DATE));
-                    if (parObligacionCalendario == null) {
-                        mensajeValidacion = "Solo puede realizar la Declaración Jurada de Aguinaldo Rectificatoria dentro del plazo establecido.";
-                        habilitado = false;
+                    listaDocumentos=iDocumentoService.listarDocumentosPorUnidadCodFechaHastaPlazo2(unidadSeleccionada.getPerUnidadPK(), "LC1020", periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
+                    if(listaDocumentos.size()==0){
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No existe declaración para ser rectificada."));
                         return false;
-                    } else {
-                        listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1021");
-                        if (listaDocumentos.size() == 0) {
-                            listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1020");
-                            if (listaDocumentos.size() == 0) {
-                                mensajeValidacion = "No existe alguna Declaración Jurada de Aguinaldo para rectificar.";
-                                habilitado = false;
-                                return false;
-                            } else {
-                                listaDocumentos = iDocumentoService.listarDocumentosPorpersonaUnidadFechasCodDocumento(unidadSeleccionada.getPerUnidadPK().getIdPersona(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo2(), "LC1021");
-                            }
-                        }
                     }
-                    break;
-                default:
-                    return false;
+                    return true;
             }
-            if (parametro == 1) {
-                for (DocDocumento documento : listaDocumentos) {
-                    if (documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")) {
-                        mensajeValidacion = "La Declaración Jurada Trimestral ya fue declarada Consolidada.";
-                        habilitado = false;
-                        return false;
-                    }
-                }
-            }
-
-            if (parametro == 2) {
-                for (DocDocumento documento : listaDocumentos) {
-                    if (documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")) {
-                        mensajeValidacion = "La Declaración Jurada Trimestral ya fue declarada Consolidada.";
-                        habilitado = false;
-                        return false;
-                    }
-                }
-            }
-
-            if (parametro == 3) {
-                for (DocDocumento documento : listaDocumentos) {
-                    if (documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")) {
-                        mensajeValidacion = "La Declaración Jurada Trimestral ya fue declarada Consolidada.";
-                        habilitado = false;
-                        return false;
-                    }
-                }
-            }
-
-            if (parametro == 4 || parametro == 5) {
-                for (DocDocumento documento : listaDocumentos) {
-                    if (documento.getTipoMedioRegistro().toUpperCase().equals("CONSOLIDADO") && !documento.getCodEstado().getCodEstado().equals("999")) {
-                        mensajeValidacion = "La Declaración Jurada de Aguinaldo ya fue declarada Consolidada.";
-                        habilitado = false;
-                        return false;
-                    }
-                }
-
-                if (tipoEmpresa == 1) {
-                    for (DocDocumento documento : listaDocumentos) {
-                        if (documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999")) {
-                            mensajeValidacion = "La Declaración Jurada de Aguinaldo ya fue declarada por Sucursal.";
-                            habilitado = false;
-                            return false;
-                        }
-                    }
-                }
-
-                for (DocDocumento documento : listaDocumentos) {
-                    if (documento.getTipoMedioRegistro().toUpperCase().equals("SUCURSAL") && !documento.getCodEstado().getCodEstado().equals("999") && documento.getPerUnidad().getPerUnidadPK().getIdUnidad() == unidadSeleccionada.getPerUnidadPK().getIdUnidad()) {
-                        if (parametro == 4) {
-                            mensajeValidacion = "La Declaración Jurada de Aguinaldo ya fue declarada para esta Sucursal.";
-                        }
-                        if (parametro == 5) {
-                            mensajeValidacion = "La Declaración Jurada de Aguinaldo ya fue rectificada para esta Sucursal.";
-                        }
-                        habilitado = false;
-                        return false;
-                    }
-                }
-            }
-            return true;
-        } else {
-            return false;
-        }
+        } else
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "No seleccionó alguna sucursal o ya realizó la declaracion como una consolidada."));
+        return false;
     }
 
     public IPersonaService getiPersonaService() {
@@ -1320,5 +1194,21 @@ public class SeleccionaCentralSucursalBean implements Serializable {
      */
     public void setDelegado(boolean delegado) {
         this.delegado = delegado;
+    }
+
+    public boolean isConsolidado() {
+        return consolidado;
+    }
+
+    public void setConsolidado(boolean consolidado) {
+        this.consolidado = consolidado;
+    }
+
+    public boolean isSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(boolean sucursal) {
+        this.sucursal = sucursal;
     }
 }
