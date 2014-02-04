@@ -85,8 +85,8 @@ public class TemplateInicioBean implements Serializable {
     private List<PerUnidad> listaUnidadesPrincipales;
     private String idPersonaEmpresa;
     private boolean delegado = false;
-    private boolean mostrarDialog= false;
-    
+    private boolean mostrarDialog = false;
+
     //
     private UsrUsuario usuario;
     private PerPersona persona;
@@ -171,7 +171,7 @@ public class TemplateInicioBean implements Serializable {
             logger.info("usuario ok");
             //////////////////////////////////////////LUIS
             delegado = "siDelegado".equals((String) session.getAttribute("delegado"));
-            boolean Empresa = "vacio".equals((String)session.getAttribute("idPersonaEmpresa"));
+            boolean Empresa = "vacio".equals((String) session.getAttribute("idPersonaEmpresa"));
             if (delegado && Empresa) {
                 listaUnidadesPrincipales = new ArrayList<PerUnidad>();
                 try {
@@ -207,7 +207,7 @@ public class TemplateInicioBean implements Serializable {
                     idPersonaEmpresa = listaUnidadesPrincipales.get(0).getPerUnidadPK().getIdPersona();
                     session.setAttribute("idEmpleador", idPersonaEmpresa);
                     session.setAttribute("idPersonaEmpresa", idPersonaEmpresa);
-                    
+
                     mostrarDialog = false;
                     FacesContext contex = FacesContext.getCurrentInstance();
                     try {
@@ -219,8 +219,8 @@ public class TemplateInicioBean implements Serializable {
                     mostrarDialog = true;
                 }
             }
-        ///////////////////////////////////////////////////////////////////
-            
+            ///////////////////////////////////////////////////////////////////
+
             cargar();
         } catch (Exception e) {
 //            e.printStackTrace();
@@ -406,7 +406,7 @@ public class TemplateInicioBean implements Serializable {
                         FacesContext context = FacesContext.getCurrentInstance();
                         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El usuario no tiene sucursales delegadas!"));
                         return null;
-                    }else{
+                    } else {
                         session.setAttribute("delegado", "siDelegado");
                         session.setAttribute("idPersonaEmpresa", "vacio");
                     }
@@ -451,16 +451,16 @@ public class TemplateInicioBean implements Serializable {
         password = "";
         return "";
     }
-    
+
     //////////////////////////////////Luis
-    public void abrirSeleccionUnidadDlg(){
+    public void abrirSeleccionUnidadDlg() {
         if (mostrarDialog) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("dlgEmpresaUnidad.show();");
             mostrarDialog = false;
         }
     }
-    
+
     public String seleccionUnidadSucursal() {
         session.setAttribute("idEmpleador", idPersonaEmpresa);
         session.setAttribute("idPersonaEmpresa", idPersonaEmpresa);
@@ -793,12 +793,9 @@ public class TemplateInicioBean implements Serializable {
     }
 
     public String irRegistro() {
-        //String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getHeader("X-FORWARDED-FOR");
-        //      if(ipCliente == null){
-        String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
-//        }
-        String bitacoraSession = ipCliente;
-        session.setAttribute("bitacoraSession", bitacoraSession);
+//        String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
+//        String bitacoraSession = ipCliente;
+//        session.setAttribute("bitacoraSession", bitacoraSession);
         return "irRegistro";
     }
 
