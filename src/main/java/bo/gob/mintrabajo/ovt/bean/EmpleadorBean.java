@@ -79,7 +79,8 @@ public class EmpleadorBean implements Serializable {
                     return "";
                 }
             }
-            listaPersonas = iPersonaService.buscarPorNroNombre(busquedaNombreRazonSocial, "", busquedaNroIdentificacion);
+            //listaPersonas = iPersonaService.buscarPorNroNombre(busquedaNombreRazonSocial, "", busquedaNroIdentificacion);
+            listaPersonas = iPersonaService.listarEmpleadores(busquedaNombreRazonSocial, busquedaNroIdentificacion);
         }
         return "";
     }
