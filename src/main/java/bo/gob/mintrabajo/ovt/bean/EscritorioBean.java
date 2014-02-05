@@ -244,20 +244,30 @@ public class EscritorioBean {
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
 
 
-                PerDireccion perDireccion = new PerDireccion();
-                perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
-
-                parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
-                parametros.put("direccion", perDireccion.getDireccion());
-                parametros.put("telefono", perDireccion.getTelefono());
+                PerDireccion perDireccion = iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+                if(perDireccion!=null){
+                    parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
+                    parametros.put("direccion", perDireccion.getDireccion());
+                    parametros.put("telefono", perDireccion.getTelefono());
+                    parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
+                    parametros.put("fax", perDireccion.getFax());
+                    parametros.put("zona", perDireccion.getZonaUrbanizacion());
+                    parametros.put("numero", perDireccion.getPisoDepOfi());
+                    parametros.put("correoElectronico", perDireccion.getEmail());
+                }else{
+                    parametros.put("departamento", "");
+                    parametros.put("direccion", "");
+                    parametros.put("telefono", "");
+                    parametros.put("ciudadLocalidad", "");
+                    parametros.put("fax", "");
+                    parametros.put("zona","");
+                    parametros.put("numero", "");
+                    parametros.put("correoElectronico", "");
+                }
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
-                parametros.put("fax", perDireccion.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
-                parametros.put("zona", perDireccion.getZonaUrbanizacion());
-                parametros.put("numero", perDireccion.getPisoDepOfi());
-                parametros.put("correoElectronico", perDireccion.getEmail());
+
                 parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
                 parametros.put("montoAportadoAsegurados", docPlanilla.getMontoAsegCaja());
                 if (docPlanilla.getIdEntidadSalud() != null) {
@@ -518,20 +528,31 @@ public class EscritorioBean {
                 parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
 
-                PerDireccion perDireccion = new PerDireccion();
-                perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+                PerDireccion perDireccion = iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+                if(perDireccion!=null){
+                    parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
+                    parametros.put("direccion", perDireccion.getDireccion());
+                    parametros.put("telefono", perDireccion.getTelefono());
+                    parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
+                    parametros.put("fax", perDireccion.getFax());
+                    parametros.put("zona", perDireccion.getZonaUrbanizacion());
+                    parametros.put("numero", perDireccion.getPisoDepOfi());
+                    parametros.put("correoElectronico", perDireccion.getEmail());
+                }else{
+                    parametros.put("departamento", "");
+                    parametros.put("direccion", "");
+                    parametros.put("telefono", "");
+                    parametros.put("ciudadLocalidad", "");
+                    parametros.put("fax", "");
+                    parametros.put("zona","");
+                    parametros.put("numero", "");
+                    parametros.put("correoElectronico", "");
+                }
 
-                parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
-                parametros.put("direccion", perDireccion.getDireccion());
-                parametros.put("telefono", perDireccion.getTelefono());
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
-                parametros.put("fax", perDireccion.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
-                parametros.put("zona", perDireccion.getZonaUrbanizacion());
-                parametros.put("numero", perDireccion.getPisoDepOfi());
-                parametros.put("correoElectronico", perDireccion.getEmail());
+
                 parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
                 parametros.put("montoAportadoAsegurados", docPlanilla.getMontoAsegCaja());
                 if (docPlanilla.getIdEntidadSalud() != null) {
