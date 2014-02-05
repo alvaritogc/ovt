@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * User: Renato Velasquez Date: 12/7/13
@@ -502,7 +503,7 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                     columna++;//12
                     if (!registro.get(registro.getHeader(columna)).isEmpty()) {
                         if (registro.get(registro.getHeader(columna)).length() >= 15) {
-                            docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy").parse(registro.get(registro.getHeader(columna)))));
+                            docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
                         } else {
                             docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
                         }
@@ -563,7 +564,7 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                     columna++;//17
                     if (!registro.get(registro.getHeader(columna)).equals("")) {
                         if (registro.get(registro.getHeader(columna)).length() > 15) {
-                            docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy").parse(registro.get(registro.getHeader(columna)))));
+                            docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
 
                             Date fechaIngreso = new SimpleDateFormat("dd/MM/yyyy").parse(docPlanillaDetalle.getFechaIngreso());
                             if (fechaIngreso.after(periodoGestion.getFechaDesde()) && fechaIngreso.before(periodoGestion.getFechaHasta())) {
