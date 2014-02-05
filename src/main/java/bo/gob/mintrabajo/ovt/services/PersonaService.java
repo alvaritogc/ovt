@@ -187,6 +187,7 @@ public class PersonaService implements IPersonaService {
         // TODO: esto deberia funcionar... return personaRepository.findAll(specification);
     }
 
+    @Override
     public List<PerPersona> listarEmpleadores(final String nombreRazonSocial, final String nroIdentificacion) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PerPersona> criteriaQuery = criteriaBuilder.createQuery(PerPersona.class);
@@ -214,7 +215,6 @@ public class PersonaService implements IPersonaService {
                 subquery.select(fromProject.get("idPersona")); // field to map with main-query
                 subquery.where(criteriaBuilder.equal(fromProject.get("esInterno"), (short) 0));
                 subquery.where(criteriaBuilder.equal(fromProject.get("esDelegado"), (short) 0));
-
                 //select.where(criteriaBuilder.in(path).value(subquery));
                 //pr.add(criteriaBuilder.in("idPersona").value(subquery));
                 pr.add(criteriaBuilder.in(perPersonaEntityRoot.get("idPersona")).value(subquery));
@@ -222,21 +222,9 @@ public class PersonaService implements IPersonaService {
                 return criteriaBuilder.and(pr.toArray(new Predicate[pr.size()])); // O puede ser or()
             }
         };
-//        Specification<UsrUsuario> specification2=new Specification<UsrUsuario>() {
-//            @Override
-//            public Predicate toPredicate(Root<UsrUsuario> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-//                List<Predicate> pr = new LinkedList<Predicate>();
-//                criteriaBuilder.in()
-//                return criteriaBuilder.and(pr.toArray(new Predicate[pr.size()])); // O puede ser or()
-//            }
-//        };
         criteriaQuery.where(specification.toPredicate(from, criteriaQuery, criteriaBuilder));
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
-
-//    public List<PerPersona> listarEmpleadores(final String nombreRazonSocial, final String nroIdentificacion) {
-//        return personaRepository.listarEmpladores(("%"+nroIdentificacion+"%"), ("%"+nombreRazonSocial+"%"));
-//    }
 
     @Override
     public Long obtenerSecuencia(String nombreSecuencia) {
