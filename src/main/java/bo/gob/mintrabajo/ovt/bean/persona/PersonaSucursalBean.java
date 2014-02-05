@@ -161,7 +161,7 @@ public class PersonaSucursalBean implements Serializable {
             }
             listaSucursales = listaUnidadAux.subList(0, listaUnidadAux.size() - 1);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             mostrarFormulario = false;
             mostrarFormularioMensaje = "No tiene permisos para ver esta pagina";
 //            FacesContext contex = FacesContext.getCurrentInstance();
@@ -183,7 +183,7 @@ public class PersonaSucursalBean implements Serializable {
                 lista.add(new SelectItem(d.getParDominioPK().getValor(), d.getDescripcion()));
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
         return lista;
     }
@@ -199,8 +199,27 @@ public class PersonaSucursalBean implements Serializable {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            
         }
+    }
+    
+    public void limpiar(){
+        activarForm = false;
+        delegadoNoFuncionario = false;
+        noDelegadoFuncionario = false;
+        noDelegadoNoFuncionario = false;
+        estadoDelegado = true;
+        estadoDelegadoAnterior = true;
+        personaNueva = false;
+        sucursalAsignada = false;
+        idLocalidad = "";
+        numIdentificacion = "";
+        idSucursalAnterior = -1L;
+        idSucursal = -1L;
+        persona = new PerPersona();
+        usuarioDelegado = new UsrUsuario();
+        sucursal = new PerUnidad();
     }
 
     public void buscarPersona() {
@@ -236,12 +255,42 @@ public class PersonaSucursalBean implements Serializable {
 
     public void registrar() {
         if (personaNueva) {
+            if (persona.getNombreRazonSocial().isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El campo Nombre o Razon social es obligatorio"));
+                return;
+            }
+            
+            if (persona.getTipoIdentificacion().isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar el tipo de identificación"));
+                return;
+            }
+
+            if (idLocalidad.isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar la localidad"));
+                return;
+            }
+            
+            if (persona.getNroIdentificacion().isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El campo Nro. de identificacion es obligatorio"));
+                return;
+            }
+            
             //validar que nro de identificacion sea unico
             if (iPersonaService.findByNroIdentificacion(persona.getNroIdentificacion()) != null) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL valor del campo Nro. de identificacion ya existe. Modifique este valor"));
                 return;
             }
+        }
+       
+        if(idSucursal < 1L){
+            FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar la sucursal"));
+                return;
         }
 
         if (!delegadoNoFuncionario) {
@@ -329,7 +378,7 @@ public class PersonaSucursalBean implements Serializable {
 
             //idSucursal para unidad
             sucursal = iUnidadService.obtenerPorIdPersonaIdUnidad((String) session.getAttribute("idPersona"), idSucursal);
-            
+                    
             if (sucursalAsignada && (estadoDelegadoAnterior == estadoDelegado) && (passw.equals(usuarioDelegado.getClave()))) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "La persona ya tiene asignada esa sucursal"));
@@ -352,7 +401,7 @@ public class PersonaSucursalBean implements Serializable {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "El registro no fue completado, verifique su configuración de email o base de datos"));
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "O el usuario ya tiene"));
         }

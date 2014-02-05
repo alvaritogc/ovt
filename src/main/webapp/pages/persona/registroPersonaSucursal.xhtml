@@ -44,7 +44,8 @@
                         <h:outputText value="#{personaSucursalBean.descripcionEstado(sucUser.estado)}" />  
                     </p:column>
                     <p:column headerText="Acciones" style="width: 60px">                
-                        <p:commandButton title="Editar" onclick="dlgAsisgnacion.show()" update=":formAsignacion" icon="ui-icon-pencil" actionListener="#{personaSucursalBean.revisaDelegadoFuncionario(sucUser.usrUsuario.idPersona.idPersona)}">
+                        <p:commandButton title="Editar" onclick="dlgAsisgnacion.show()" update=":formAsignacion" immediate="true"
+                                         icon="ui-icon-pencil" actionListener="#{personaSucursalBean.revisaDelegadoFuncionario(sucUser.usrUsuario.idPersona.idPersona)}">
                             <f:setPropertyActionListener value="#{sucUser.usrUsuario.idPersona}" target="#{personaSucursalBean.persona}"/>
                             <f:setPropertyActionListener value="#{sucUser.usrUsuario.idPersona.codLocalidad.codLocalidad}" target="#{personaSucursalBean.idLocalidad}"/>
                             <f:setPropertyActionListener value="#{sucUser.usrUsuario}" target="#{personaSucursalBean.usuarioDelegado}"/>
@@ -57,11 +58,10 @@
 
                     </p:column>  
                 </p:dataTable>
-                <p:growl id="messages" showDetail="true" />
                 <p:confirmDialog message="Esta seguro de eliminar este registro?"  
                                  showEffect="fade" hideEffect="explode" closable="false"  
                                  header="Confirmación" severity="alert" widgetVar="confirmation">  
-                    <p:commandButton value="Si" update="messages dataTableAsignacion" oncomplete="confirmation.hide()" />  
+                    <p:commandButton value="Si" update="dataTableAsignacion" oncomplete="confirmation.hide()" />  
                     <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
                 </p:confirmDialog>
             </h:form>
@@ -79,8 +79,8 @@
                         <p:inputText id="inputTxtNombre"
                                      value="#{personaSucursalBean.persona.nombreRazonSocial}"
                                      disabled="#{personaSucursalBean.activarForm}"
-                                     required="true"
-                                     style="width: 215px;text-transform: uppercase; opacity: 4; background-color: transparent;"
+                                     
+                                     style="width: 215px;text-transform: uppercase;"
                                      requiredMessage="El campo Nombre o Razon social es obligatorio" tabindex="2">
                             <f:converter converterId="lowerConverter"/>
                         </p:inputText>
@@ -89,7 +89,7 @@
                         <p:inputText id="inputTxtPaterno"
                                      value="#{personaSucursalBean.persona.apellidoPaterno}"
                                      disabled="#{personaSucursalBean.activarForm}"
-                                     style="width: 215px;text-transform: uppercase; opacity: 4; background-color: transparent;"
+                                     style="width: 215px;text-transform: uppercase;"
                                      tabindex="3">
                             <f:converter converterId="lowerConverter"/>
                         </p:inputText>
@@ -99,7 +99,7 @@
                                      value="#{personaSucursalBean.persona.apellidoMaterno}"
                                      disabled="#{personaSucursalBean.activarForm}"
                                      tabindex="4"
-                                     style="width: 215px;text-transform: uppercase; opacity: 4; background-color: transparent;">
+                                     style="width: 215px;text-transform: uppercase;">
                             <f:converter converterId="lowerConverter"/>
                         </p:inputText>
 
@@ -107,8 +107,8 @@
                         <p:selectOneMenu id="tipoIdentificacionP"
                                          value="#{personaSucursalBean.persona.tipoIdentificacion}"
                                          disabled="#{personaSucursalBean.activarForm}"
-                                         tabindex="5"
-                                         style="text-transform: uppercase; opacity: 4; background-color: transparent;" required="true">
+                                         tabindex="5" requiredMessage="Debe seleccionar el tipo de identificación"
+                                         style="text-transform: uppercase;" >
                             <f:selectItem itemLabel="--seleccione--" itemValue="#{null}"/>
                             <f:selectItems value="#{personaSucursalBean.listaTipoIdentificacion}"/>
                         </p:selectOneMenu>
@@ -117,8 +117,8 @@
                         <p:selectOneMenu id="localidadN" 
                                          value="#{personaSucursalBean.idLocalidad}"
                                          disabled="#{personaSucursalBean.activarForm}"
-                                         tabindex="6"
-                                         style="text-transform: uppercase; opacity: 4; background-color: transparent;" rendered="true">
+                                         tabindex="6" requiredMessage="Debe seleccionar la localidad"
+                                         style="text-transform: uppercase;" >
                             <f:selectItem itemLabel="--seleccione--" itemValue="#{null}"/>
                             <f:selectItems value="#{personaSucursalBean.listaLocalidad}" />
                         </p:selectOneMenu>
@@ -128,8 +128,8 @@
                                      value="#{personaSucursalBean.persona.nroIdentificacion}"
                                      disabled="#{personaSucursalBean.activarForm}"
                                      tabindex="7"
-                                     required="true"
-                                     style="width: 215px;text-transform: uppercase; opacity: 4; background-color: transparent;"
+                                     
+                                     style="width: 215px;text-transform: uppercase;"
                                      requiredMessage="El campo Nro. de identificacion es obligatorio"/>
                     </p:panelGrid>
 
@@ -139,17 +139,17 @@
                         </f:facet>
                         <p:outputLabel for="jefe" value="Empleador:" />  
                         <p:selectBooleanCheckbox id="jefe" value="#{personaSucursalBean.noDelegadoNoFuncionario}" 
-                                                 disabled="true" style="opacity: 4; background-color: transparent;"/>
+                                                 disabled="true" style="opacity: 0.6;"/>
                         <p:outputLabel value="" />  
 
                         <p:outputLabel for="delegado" value="Delegado:" />  
                         <p:selectBooleanCheckbox id="delegado" value="#{personaSucursalBean.delegadoNoFuncionario}" 
-                                                 disabled="true" style="opacity: 4;"/>
+                                                 disabled="true" style="opacity: 0.6;"/>
                         <p:outputLabel value="" />  
 
                         <p:outputLabel for="sucursal" value="Sucursal:"/>
                         <p:selectOneMenu id="sucursal" value="#{personaSucursalBean.idSucursal}"
-                                         tabindex="6" required="true" requiredMessage="Debe seleccionar la sucursal"
+                                         tabindex="6" requiredMessage="Debe seleccionar la sucursal"
                                          style="text-transform: uppercase;">
                             <f:selectItem itemLabel="--seleccione--" itemValue="#{null}"/>
                             <f:selectItems value="#{personaSucursalBean.listaSucursales}" var="suc" 
@@ -159,9 +159,10 @@
 
                         <p:outputLabel for="inputTxtUsuario" value="Usuario:"/>
                         <p:inputText id="inputTxtUsuario" value="#{personaSucursalBean.usuarioDelegado.usuario}"
-                                     required="true"
+                                     
                                      requiredMessage="El campo Usuario es obligatorio"
                                      tabindex="12"
+                                     disabled="#{personaSucursalBean.activarForm}"
                                      autocomplete="off">
                             <p:watermark for="inputTxtUsuario" value="Correo electronico"/>
                         </p:inputText>
@@ -214,8 +215,8 @@
                     </p:panelGrid>
                     <p:commandButton value="Guardar" icon="ui-icon-disk" actionListener="#{personaSucursalBean.registrar}" 
                                      update=":formBusqueda"/>
-                    <p:commandButton value="Cancelar" onclick="dlgAsisgnacion.hide();" immediate="true" icon="ui-icon-close"
-                                     actionListener="#{personaSucursalBean.ini}"/>
+                    <p:commandButton value="Cancelar" onclick="dlgAsisgnacion.hide();" icon="ui-icon-close" immediate="true"
+                                     action="#{personaSucursalBean.ini}"/>
                 </h:form>
             </p:dialog>
 
