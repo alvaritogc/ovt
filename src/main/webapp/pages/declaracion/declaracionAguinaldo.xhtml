@@ -295,7 +295,7 @@
     </p:scrollPanel>
 </p:panelGrid>
 <!-- Renato Codigo -->
-<h:panelGrid columns="2" style="text-align: left">
+<h:panelGrid columns="2" style="text-align: left" rendered="#{declaracionAguinaldoBean.aguinaldoAuto==0}">
     <h:outputText style="font-weight: bold;text-align: center" value="Planilla Aguinaldo"
                   /> &nbsp;
     <p:fileUpload fileUploadListener="#{declaracionAguinaldoBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
@@ -308,10 +308,8 @@
                   />
     <h:outputText id="idArchivo1" value="#{declaracionAguinaldoBean.binario.tipoDocumento}"
                   style="font-weight: bold;text-align: center"/>
-
-    <p:growl id="messages" showDetail="true"/>
 </h:panelGrid>
-
+<p:growl id="messages" showDetail="true"/>
 <div align="CENTER">
     <p:commandButton id="guardarPlanillaBtn" value="Enviar Declaracion Jurada"
                      action="#{declaracionAguinaldoBean.guardaDocumentoPlanillaBinarioAgunaldoBean}" update="formularioFrm messages"

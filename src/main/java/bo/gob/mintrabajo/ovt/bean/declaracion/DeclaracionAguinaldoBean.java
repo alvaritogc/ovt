@@ -1250,4 +1250,12 @@ public class DeclaracionAguinaldoBean implements Serializable {
     public void setPerDireccion(PerDireccion perDireccion) {
         this.perDireccion = perDireccion;
     }
+
+    public int getAguinaldoAuto() {
+        return aguinaldoAuto;
+    }
+
+    public void setAguinaldoAuto(int aguinaldoAuto) {
+        this.aguinaldoAuto = aguinaldoAuto;
+    }
 }
