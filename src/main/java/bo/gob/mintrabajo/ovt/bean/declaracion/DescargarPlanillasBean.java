@@ -624,7 +624,8 @@ public class DescargarPlanillasBean {
         }
         catch (Exception e){
             verificaValidacion=false;
-            e.printStackTrace();
+            logger.error("====>>>> Error al validar el archivo <<<<<=====");
+            logger.error(e.getMessage());
         }
         if(tamanioErrores==0&&verificaValidacion==true){
             iDocumentoService.guardaDetallesAlertasActualizaInfLab(docDocumento, docPlanillaDetalles, alertas);

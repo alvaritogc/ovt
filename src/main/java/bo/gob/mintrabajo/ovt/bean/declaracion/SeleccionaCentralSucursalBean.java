@@ -369,9 +369,9 @@ public class SeleccionaCentralSucursalBean implements Serializable {
             binario.setBinario(file.getContents());
             binario.setInputStream(file.getInputstream());
             listaBinarios.add(binario);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Éxito", binario.getTipoDocumento() + " fue cargado satisfactoriamente."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Éxito", binario.getTipoDocumento() + ", fue cargado satisfactoriamente."));
         } catch (Exception e) {
-            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", binario.getTipoDocumento() + ", no fue cargado satisfactoriamente."));
         }
     }
 
@@ -970,7 +970,8 @@ public class SeleccionaCentralSucursalBean implements Serializable {
             verificaValidacion = true;
         } catch (Exception e) {
             verificaValidacion = false;
-            e.printStackTrace();
+            logger.error("====>>>> Error al validar el archivo <<<<<=====");
+            logger.error(e.getMessage());
         }
     }
 

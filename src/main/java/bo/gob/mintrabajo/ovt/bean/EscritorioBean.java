@@ -166,7 +166,7 @@ public class EscritorioBean {
                 listaDocumentos = new ArrayList<DocDocumento>();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             listaDocumentos = new ArrayList<DocDocumento>();
         }
     }
@@ -330,7 +330,8 @@ public class EscritorioBean {
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC1010V1.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -393,8 +394,8 @@ public class EscritorioBean {
                 file.delete();
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("ERROR al generar el reporte: " + e.getMessage());
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -453,8 +454,8 @@ public class EscritorioBean {
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe012.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("ERROR al generar el reporte: " + e.getMessage());
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -506,8 +507,8 @@ public class EscritorioBean {
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe013.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("ERROR al generar el reporte: " + e.getMessage());
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -599,7 +600,8 @@ public class EscritorioBean {
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC2010V1.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -691,7 +693,7 @@ public class EscritorioBean {
         } catch (Exception ex) {
             logger.error("====>>>> Error al exportar el reporte a PDF <<<<<=====");
             logger.error(ex.getMessage());
-            ex.printStackTrace();
+//            ex.printStackTrace();
         }
     }
 

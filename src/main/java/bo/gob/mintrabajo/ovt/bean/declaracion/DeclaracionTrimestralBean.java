@@ -339,7 +339,8 @@ public class DeclaracionTrimestralBean implements Serializable {
                 habilita=false;
         }catch (Exception e){
             habilita=true;
-            e.printStackTrace();
+            logger.error("====>>>> Error al cargar el archivo <<<<<=====");
+            logger.error(e.getMessage());
         }
     }
 
@@ -360,7 +361,8 @@ public class DeclaracionTrimestralBean implements Serializable {
                     iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
                     return "irEscritorio";
                 }catch (Exception e){
-                    e.printStackTrace();
+                    logger.error("====>>>> Error al guardar el formulario <<<<<=====");
+                    logger.error(e.getMessage());
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
                 }
                 logger.info("retorno final");
@@ -377,7 +379,8 @@ public class DeclaracionTrimestralBean implements Serializable {
                         iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, new ArrayList<DocPlanillaDetalle>(), new ArrayList<DocAlerta>(), bitacoraSession);
                         return "irEscritorio";
                     }catch (Exception e){
-                        e.printStackTrace();
+                        logger.error("====>>>> Error al guardar el formulario <<<<<=====");
+                        logger.error(e.getMessage());
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
                     }
 //                }else{
@@ -841,7 +844,8 @@ public class DeclaracionTrimestralBean implements Serializable {
         }
         catch (Exception e){
             verificaValidacion=false;
-            e.printStackTrace();
+            logger.error("====>>>> Error al validar el archivo <<<<<=====");
+            logger.error(e.getMessage());
         }
     }
 

@@ -59,8 +59,8 @@ public class BinarioService implements IBinarioService{
             logImpresionRepository.save(docLogImpresion);
 
             } catch (Exception e) {
-                System.out.println("El archivo no se descargo correctamente.");
-                e.printStackTrace();
+            System.out.println("====>>>> Error al descargar el archivo <<<<<=====");
+            System.out.println(e.getMessage());
         }
     }
 }

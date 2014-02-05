@@ -200,7 +200,7 @@ public class OlvidoContraseniaBean implements Serializable {
             ctx.redirect(ctxPath + "/faces/pages/inicio.xhtml");
         } catch (IOException e) {
             System.out.println("Error en cerrar sesion");
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return "";
     }
