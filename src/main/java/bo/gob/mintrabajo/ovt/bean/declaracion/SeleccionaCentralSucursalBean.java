@@ -69,7 +69,7 @@ public class SeleccionaCentralSucursalBean implements Serializable {
 
     private String mensajeValidacion;
     private boolean habilitado;
-    private ParObligacionCalendario periodoGestion= new ParObligacionCalendario();
+    private ParObligacionCalendario periodoGestion;
 
     //  uploadarchivo
     public static Cache<String, List<DocBinario>> binarios = CacheBuilder.newBuilder().maximumSize(600).build();
@@ -160,48 +160,53 @@ public class SeleccionaCentralSucursalBean implements Serializable {
             case 1:
                 codDocumento = "LC1010";
                 periodoGestion = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(new Date());
-                docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasTrim(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
                 if(periodoGestion==null) {
                     mensajeValidacion = "Fuera de rango para realizar la declaración jurada.";
                     habilitado = false;
                 }
+                else
+                    docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasTrim(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
                 break;
             case 2:
                 codDocumento = "LC1011";
                 periodoGestion = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(new Date());
-                docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasTrim(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
                 if(periodoGestion==null) {
                     mensajeValidacion = "Fuera de rango para realizar la declaración jurada sin movimiento.";
                     habilitado = false;
                 }
+                else
+                    docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasTrim(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
 
                 break;
             case 3:
                 codDocumento = "LC1012";
                 periodoGestion = iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo2(new Date());
-                docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasTrim(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
                 if(periodoGestion==null) {
                     mensajeValidacion = "Fuera de rango para realizar la declaración jurada rectificatoria.";
                     habilitado = false;
                 }
+                else
+                    docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasTrim(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
                 break;
             case 4:
                 codDocumento = "LC1020";
                 periodoGestion = iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo(new Date());
-                docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasAgui(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
                 if(periodoGestion==null) {
                     mensajeValidacion = "Fuera de rango para realizar la declaración jurada de aguinaldo.";
                     habilitado = false;
                 }
+                else
+                    docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasAgui(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
                 break;
             case 5:
                 codDocumento = "LC1021";
                 periodoGestion = iObligacionCalendarioService.listarPlanillaAguiPorFechaHastaFechaPlazo2(new Date());
-                docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasAgui(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
                 if(periodoGestion==null) {
                     mensajeValidacion = "Fuera de rango para realizar la declaración jurada rectificatoria de aguinaldo.";
                     habilitado = false;
                 }
+                else
+                    docs= iDocumentoService.listarDocumentosPorPersonaEntreFechasAgui(idPersona, periodoGestion.getFechaHasta(), periodoGestion.getFechaPlazo2());
                 break;
         }
         for (DocDocumento docu: docs){
