@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
+import javax.persistence.criteria.Subquery;
 
 @Named("personaService")
 @TransactionAttribute
@@ -65,7 +67,7 @@ public class PersonaService implements IPersonaService {
         this.localidadRepository = localidadRepository;
     }
 
-//    @Override
+    //    @Override
     public List<PerPersona> getAllPersonas() {
         List<PerPersona> allPersonas;
         allPersonas = personaRepository.findAll();
@@ -108,7 +110,7 @@ public class PersonaService implements IPersonaService {
         return personaRepository.obtenerPersonaPorIdUsuario(usrUsuario.getIdUsuario());
     }
 
-//    @Override
+    //    @Override
     public boolean delete(PerPersona persona) {
         boolean deleted = false;
         personaRepository.delete(persona);
@@ -153,7 +155,7 @@ public class PersonaService implements IPersonaService {
         Specification<PerPersona> specification = new Specification<PerPersona>() {
             @Override
             public Predicate toPredicate(Root<PerPersona> perPersonaEntityRoot, CriteriaQuery<?> criteriaQuery,
-                    CriteriaBuilder criteriaBuilder) {
+                                         CriteriaBuilder criteriaBuilder) {
 
                 List<Predicate> pr = new LinkedList<Predicate>();
 
@@ -184,6 +186,57 @@ public class PersonaService implements IPersonaService {
 
         // TODO: esto deberia funcionar... return personaRepository.findAll(specification);
     }
+
+    public List<PerPersona> listarEmpleadores(final String nombreRazonSocial, final String nroIdentificacion) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<PerPersona> criteriaQuery = criteriaBuilder.createQuery(PerPersona.class);
+        Root<PerPersona> from = criteriaQuery.from(PerPersona.class);
+        criteriaQuery.orderBy(criteriaBuilder.desc(from.get("idPersona")));
+        if (Strings.isNullOrEmpty(nroIdentificacion) && Strings.isNullOrEmpty(nombreRazonSocial)) {
+            Query q = entityManager.createQuery(criteriaQuery);
+            q.setFirstResult(0);
+            q.setMaxResults(200);
+            return q.getResultList();
+        }
+        Specification<PerPersona> specification = new Specification<PerPersona>() {
+            @Override
+            public Predicate toPredicate(Root<PerPersona> perPersonaEntityRoot, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> pr = new LinkedList<Predicate>();
+                if (!Strings.isNullOrEmpty(nroIdentificacion)) {
+                    pr.add(criteriaBuilder.equal(perPersonaEntityRoot.get("nroIdentificacion"), nroIdentificacion));
+                }
+                if (!Strings.isNullOrEmpty(nombreRazonSocial)) {
+                    pr.add(criteriaBuilder.like(criteriaBuilder.lower(perPersonaEntityRoot.<String>get("nombreRazonSocial")), "%" + nombreRazonSocial.toLowerCase() + "%"));
+                }
+                //
+                Subquery<UsrUsuario> subquery = criteriaQuery.subquery(UsrUsuario.class);
+                Root fromProject = subquery.from(UsrUsuario.class);
+                subquery.select(fromProject.get("idPersona")); // field to map with main-query
+                subquery.where(criteriaBuilder.equal(fromProject.get("esInterno"), (short) 0));
+                subquery.where(criteriaBuilder.equal(fromProject.get("esDelegado"), (short) 0));
+
+                //select.where(criteriaBuilder.in(path).value(subquery));
+                //pr.add(criteriaBuilder.in("idPersona").value(subquery));
+                pr.add(criteriaBuilder.in(perPersonaEntityRoot.get("idPersona")).value(subquery));
+                //
+                return criteriaBuilder.and(pr.toArray(new Predicate[pr.size()])); // O puede ser or()
+            }
+        };
+//        Specification<UsrUsuario> specification2=new Specification<UsrUsuario>() {
+//            @Override
+//            public Predicate toPredicate(Root<UsrUsuario> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+//                List<Predicate> pr = new LinkedList<Predicate>();
+//                criteriaBuilder.in()
+//                return criteriaBuilder.and(pr.toArray(new Predicate[pr.size()])); // O puede ser or()
+//            }
+//        };
+        criteriaQuery.where(specification.toPredicate(from, criteriaQuery, criteriaBuilder));
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+//    public List<PerPersona> listarEmpleadores(final String nombreRazonSocial, final String nroIdentificacion) {
+//        return personaRepository.listarEmpladores(("%"+nroIdentificacion+"%"), ("%"+nombreRazonSocial+"%"));
+//    }
 
     @Override
     public Long obtenerSecuencia(String nombreSecuencia) {
@@ -271,7 +324,7 @@ public class PersonaService implements IPersonaService {
             usuario.setIdPersona(persona);
             usuario = usuarioRepository.save(usuario);
             PerUsuarioUnidad usuarioUnidad = new PerUsuarioUnidad();
-            
+
             PerUsuarioUnidadPK perUsuarioUnidadPK = new PerUsuarioUnidadPK();
             perUsuarioUnidadPK.setIdPersona(unidad.getPerUnidadPK().getIdPersona());
             perUsuarioUnidadPK.setIdUnidad(unidad.getPerUnidadPK().getIdUnidad());
@@ -297,7 +350,7 @@ public class PersonaService implements IPersonaService {
             usuarioRol.setRegistroBitacora(REGISTRO_BITACORA);
             usuarioRol.setUsrRol(rol);
             usuarioRol.setUsrUsuario(usuario);
-            
+
             UsrUsuarioRolPK usrUsuarioRolPK = new UsrUsuarioRolPK();
             usrUsuarioRolPK.setIdRol(rol.getIdRol());
             usrUsuarioRolPK.setIdUsuario(usuario.getIdUsuario());
@@ -323,9 +376,9 @@ public class PersonaService implements IPersonaService {
         }
         return lista;
     }
-    
+
     @Override
-    public List<PerUsuarioUnidad> listaUsuarioUnidadPorIdUsuario(Long idUsuario){
+    public List<PerUsuarioUnidad> listaUsuarioUnidadPorIdUsuario(Long idUsuario) {
         List<PerUsuarioUnidad> lista = new ArrayList<PerUsuarioUnidad>();
         try {
             lista = usuarioUnidadRepository.listaUsuarioUnidadPorIdUsuario(idUsuario);
@@ -335,21 +388,21 @@ public class PersonaService implements IPersonaService {
         }
         return lista;
     }
-    
+
     @Override
-    public List<PerUsuarioUnidad> listaUsuarioUnidadPorIdUsuarioIdPersona(Long idUsuario,String idPersona){
+    public List<PerUsuarioUnidad> listaUsuarioUnidadPorIdUsuarioIdPersona(Long idUsuario, String idPersona) {
         List<PerUsuarioUnidad> lista = new ArrayList<PerUsuarioUnidad>();
         try {
-            lista = usuarioUnidadRepository.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,idPersona);
+            lista = usuarioUnidadRepository.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario, idPersona);
         } catch (Exception e) {
             e.printStackTrace();
             lista = null;
         }
         return lista;
     }
-    
+
     @Override
-    public List<PerUsuarioUnidad> listaUsuarioUnidadPersonaPorIdUsuario(Long idUsuario){
+    public List<PerUsuarioUnidad> listaUsuarioUnidadPersonaPorIdUsuario(Long idUsuario) {
         List<PerUsuarioUnidad> lista = new ArrayList<PerUsuarioUnidad>();
         try {
             lista = usuarioUnidadRepository.listaUsuarioUnidadPorIdUsuarioAgrupadoPorIdPersona(idUsuario);
