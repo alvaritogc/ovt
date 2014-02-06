@@ -153,6 +153,8 @@ public class SeleccionaCentralSucursalBean implements Serializable {
         verficaPeriodoGestion();
         listaCentralSucursales();
         verficaHabilitacionUpload();
+        if(sucursal==true&&consolidado==false)
+            central=null;
     }
 
     public void verficaPeriodoGestion() {
