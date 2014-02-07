@@ -977,7 +977,6 @@ public class SeleccionaCentralSucursalBean implements Serializable {
             verificaValidacion = false;
             logger.error("====>>>> Error al validar el archivo <<<<<=====");
             logger.error(e.getMessage());
-            e.printStackTrace();
         }
     }
 
