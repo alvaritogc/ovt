@@ -234,8 +234,13 @@ public class DescargarPlanillasBean {
 
                     columna++;//12
                     if(!registro.get(registro.getHeader(columna)).isEmpty()){
-                        if(registro.get(registro.getHeader(columna)).length()>=15)
-                            docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
+                        if(registro.get(registro.getHeader(columna)).length()>=15){
+                            try {
+                                docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
+                            }catch (Exception e){
+                                docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
+                            }
+                        }
                         else
                             docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
                     }
@@ -265,8 +270,13 @@ public class DescargarPlanillasBean {
 
                     columna++;//17
                     if(!registro.get(registro.getHeader(columna)).isEmpty()) {
-                        if(registro.get(registro.getHeader(columna)).length()>15)
-                            docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
+                        if(registro.get(registro.getHeader(columna)).length()>15){
+                            try {
+                                docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
+                            }catch (Exception e){
+                                docPlanillaDetalle.setFechaIngreso(registro.get(registro.getHeader(columna)));
+                            }
+                        }
                         else
                             docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
                     }

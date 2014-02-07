@@ -505,7 +505,11 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                     columna++;//12
                     if (!registro.get(registro.getHeader(columna)).isEmpty()) {
                         if (registro.get(registro.getHeader(columna)).length() >= 15) {
-                            docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
+                            try{
+                                docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
+                            }catch (Exception e){
+                                docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
+                            }
                         } else {
                             docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
                         }
@@ -566,26 +570,24 @@ public class SeleccionaCentralSucursalBean implements Serializable {
                     columna++;//17
                     if (!registro.get(registro.getHeader(columna)).equals("")) {
                         if (registro.get(registro.getHeader(columna)).length() > 15) {
-                            docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
-
-                            Date fechaIngreso = new SimpleDateFormat("dd/MM/yyyy").parse(docPlanillaDetalle.getFechaIngreso());
-                            if (fechaIngreso.after(periodoGestion.getFechaDesde()) && fechaIngreso.before(periodoGestion.getFechaHasta())) {
-                                //masculino
-                                if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN") || docPlanillaDetalle.getSexo()!=null) ){
-                                    masculinoContratadoTrim++;
+                            try{
+                                docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
+                                Date fechaIngreso = new SimpleDateFormat("dd/MM/yyyy").parse(docPlanillaDetalle.getFechaIngreso());
+                                if (fechaIngreso.after(periodoGestion.getFechaDesde()) && fechaIngreso.before(periodoGestion.getFechaHasta())) {
+                                    //masculino
+                                    if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("M") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARON") || docPlanillaDetalle.getSexo().toUpperCase().equals("MASCULINO") || docPlanillaDetalle.getSexo().toUpperCase().equals("VARÓN") || docPlanillaDetalle.getSexo()!=null) )
+                                        masculinoContratadoTrim++;
+                                    //femenino
+                                    if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO") || docPlanillaDetalle.getSexo()!=null) )
+                                        femeninoContratadoTrim++;
                                 }
-
-                                //femenino
-                                if (docPlanillaDetalle.getSexo()!=null &&(docPlanillaDetalle.getSexo().toUpperCase().equals("F") || docPlanillaDetalle.getSexo().toUpperCase().equals("MUJER") || docPlanillaDetalle.getSexo().toUpperCase().equals("FEMENINO") || docPlanillaDetalle.getSexo()!=null) ){
-                                    femeninoContratadoTrim++;
-                                }
+                            }catch (Exception e){
+                                docPlanillaDetalle.setFechaIngreso(registro.get(registro.getHeader(columna)));
                             }
-                        } else {
+                        } else
                             docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
-                        }
-                    } else {
+                    }else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
-                    }
 
                     columna++;//18
                     if (UtilityData.isInteger(registro.get(registro.getHeader(columna))) && !registro.get(registro.getHeader(columna)).isEmpty()) {
@@ -975,6 +977,7 @@ public class SeleccionaCentralSucursalBean implements Serializable {
             verificaValidacion = false;
             logger.error("====>>>> Error al validar el archivo <<<<<=====");
             logger.error(e.getMessage());
+            e.printStackTrace();
         }
     }
 
