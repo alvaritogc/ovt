@@ -15,36 +15,40 @@
         </style>
         <h3>Administrar roles y recursos</h3>
         <h:form id="rolRecursoFrm">
-            <p:growl showDetail="true" id="auditoriaGrowl" autoUpdate="true" life="8000" />
+            <p:growl showDetail="true" id="auditoriaGrowl" autoUpdate="true" life="8000"/>
 
             <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
 
             <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
                       draggable="false" closable="false">
-                <p:graphicImage value="../../images/ajax-loader.gif" />
+                <p:graphicImage value="../../images/ajax-loader.gif"/>
             </p:dialog>
 
-            <p:outputLabel value="Selección de usuario :" />
+            <p:outputLabel value="Selección de usuario :"/>
             <p:selectOneMenu value="#{rolRecursoAdministracionBean.idRol}">
-                <f:selectItem itemValue="#{null}" itemLabel="--seleccione--" />
-                <f:selectItems value="#{rolRecursoAdministracionBean.rolLista}" var="rol" itemLabel="#{rol.nombre}" itemValue="#{rol.idRol}" />
-                <p:ajax listener="#{rolRecursoAdministracionBean.buscarRecursoPorRolRecurso}" update="rolRecursoTbl" />
+                <f:selectItem itemValue="#{null}" itemLabel="--seleccione--"/>
+                <f:selectItems value="#{rolRecursoAdministracionBean.rolLista}" var="rol" itemLabel="#{rol.nombre}"
+                               itemValue="#{rol.idRol}"/>
+                <p:ajax listener="#{rolRecursoAdministracionBean.buscarRecursoPorRolRecurso}" update="rolRecursoTbl"/>
             </p:selectOneMenu>
-            
-            <p:dataTable id="rolRecursoTbl" value="#{rolRecursoAdministracionBean.recursoLista}" paginator="true" rows="15" paginatorPosition="bottom" var="recurso"
-                         editable="true" editMode="cell" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " emptyMessage="No se encontraron resultados"
-                 currentPageReportTemplate="{currentPage} / {totalPages}">
+
+            <p:dataTable id="rolRecursoTbl" value="#{rolRecursoAdministracionBean.recursoLista}" paginator="true"
+                         rows="15" paginatorPosition="bottom" var="recurso"
+                         editable="true" editMode="cell"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                         emptyMessage="No se encontraron resultados"
+                         currentPageReportTemplate="{currentPage} / {totalPages}">
                 <p:column headerText="Modulo">
-                    <h:outputText value="#{recurso.idModulo.nombre}" />
+                    <h:outputText value="#{recurso.idModulo.nombre}"/>
                 </p:column>
                 <p:column headerText="Tipo recurso">
-                    <h:outputText value="#{recurso.tipoRecurso}" />
+                    <h:outputText value="#{recurso.tipoRecurso}"/>
                 </p:column>
                 <p:column headerText="Tipo plataforma">
-                    <h:outputText value="#{recurso.tipoPlataforma}" />
+                    <h:outputText value="#{recurso.tipoPlataforma}"/>
                 </p:column>
-                <p:column headerText="Descripción">
-                    <h:outputText value="#{recurso.descripcion}" />
+                <p:column headerText="Etiqueta">
+                    <h:outputText value="#{recurso.etiqueta}"/>
                 </p:column>
                 <p:column headerText="Tipo de permiso" style="background-color: #d0e9c6">
                     <p:cellEditor>
@@ -62,12 +66,13 @@
                     </p:cellEditor>
                 </p:column>
                 <p:column headerText="Selección">
-                    <p:selectBooleanCheckbox value="#{recurso.aux1}" />
+                    <p:selectBooleanCheckbox value="#{recurso.aux1}"/>
                 </p:column>
 
             </p:dataTable>
-            
-            <p:commandButton value="Guardar" action="#{rolRecursoAdministracionBean.guardarRolRecurso}" update="rolRecursoTbl" 
+
+            <p:commandButton value="Guardar" action="#{rolRecursoAdministracionBean.guardarRolRecurso}"
+                             update="rolRecursoTbl"
                              icon="ui-icon-disk"/>
         </h:form>
     </ui:define>

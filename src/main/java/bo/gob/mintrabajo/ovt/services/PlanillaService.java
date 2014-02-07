@@ -131,4 +131,11 @@ public class PlanillaService implements IPlanillaService {
     public List<DocPlanilla> listarPlanillasTrimestralesParaRectificar(String idPersona, Long idUnidad, Date fechaHasta, Date fechaPlazo2) {
         return planillaRepository.listarPlanillasTrimestralesParaRectificar(idPersona, idUnidad, fechaHasta, fechaPlazo2);
     }
+    
+    ////////////////////////////////////////////////////LUIS
+    @Override
+    public List<DocPlanilla> listaPlanillasTrimestrales (String idPersona, Long idUnidad, String tipoPlanilla,
+            String gestion, String periodo){
+        return planillaRepository.listarPlanillasTrimestrales(idPersona, idUnidad, tipoPlanilla, gestion, periodo);
+    }
 }

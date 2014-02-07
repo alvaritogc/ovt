@@ -107,7 +107,7 @@ public class EscritorioBean {
         idEmpleador = (String) session.getAttribute("idEmpleador");
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
         //////////////////////////////////////////LUIS
-//        delegado = "siDelegado".equals((String) session.getAttribute("delegado"));
+        delegado = "siDelegado".equals((String) session.getAttribute("delegado"));
 
         System.out.println("idPersona: " + idPersona);
         System.out.println("idEmpleador: " + idEmpleador);
@@ -127,48 +127,46 @@ public class EscritorioBean {
     public void cargar() {
         textoBenvenida = "Bienvenido  OVT";
         listaUnidades= new ArrayList<PerUnidad>();
+        //listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
+        /////////////////////////////////LUIS
+        if(delegado){
+            List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,idEmpleador);
         
-//        if(delegado){//cambiar por delegado
-//            List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,idEmpleador);
-//
-//            for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
-//                if(perUsuarioUnidad.getEstado().equals("A"))
-//                    listaUnidades.add(iUnidadService.obtenerPorIdPersonaIdUnidad(idEmpleador, perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
-//            }
-//        }else{
+            for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                if(perUsuarioUnidad.getEstado().equals("A"))
+                    listaUnidades.add(iUnidadService.obtenerPorIdPersonaIdUnidad(idEmpleador, perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+            }   
+        }else{
             listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
-//        }
+        }
+        /////////////////////////////////
         cargarDocumentos();
     }
 
     public void cargarDocumentos() {
         try {
             listaDocumentos = new ArrayList<DocDocumento>();
-//            if (delegado) {
-//                System.out.println("idUsuario "+idUsuario);
-//            System.out.println("idEmpleador "+idEmpleador);
-//                List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario, idEmpleador);
-//                for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
-//                    if (perUsuarioUnidad.getEstado().equals("A")) {
-//                        DocDocumento doc = new DocDocumento();
-//                        System.out.println(" ============================"
-//                                + perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona() +" / "+ perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad());
-//
-//                        listaDocumentos.addAll(iDocumentoService.obtenerPorIdPersonaIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
-////                        if (doc != null)
-////                            listaDocumentos.add(doc);
-//                    }
-//                }
-//            } else {
+            /////////////////////////////////LUIS
+            if (delegado) {
+                List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario, idEmpleador);
+                for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                    if (perUsuarioUnidad.getEstado().equals("A")) {
+                        //DocDocumento doc = new DocDocumento();                      
+                        listaDocumentos.addAll(iDocumentoService.obtenerPorIdPersonaIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+//                        if (doc != null)
+//                            listaDocumentos.add(doc);
+                    }
+                }
+            } else {
                 listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
-//            }
+            }
             
             //listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
             if (listaDocumentos == null) {
                 listaDocumentos = new ArrayList<DocDocumento>();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             listaDocumentos = new ArrayList<DocDocumento>();
         }
     }
@@ -246,20 +244,30 @@ public class EscritorioBean {
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
 
 
-                PerDireccion perDireccion = new PerDireccion();
-                perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
-
-                parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
-                parametros.put("direccion", perDireccion.getDireccion());
-                parametros.put("telefono", perDireccion.getTelefono());
+                PerDireccion perDireccion = iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+                if(perDireccion!=null){
+                    parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
+                    parametros.put("direccion", perDireccion.getDireccion());
+                    parametros.put("telefono", perDireccion.getTelefono());
+                    parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
+                    parametros.put("fax", perDireccion.getFax());
+                    parametros.put("zona", perDireccion.getZonaUrbanizacion());
+                    parametros.put("numero", perDireccion.getPisoDepOfi());
+                    parametros.put("correoElectronico", perDireccion.getEmail());
+                }else{
+                    parametros.put("departamento", "");
+                    parametros.put("direccion", "");
+                    parametros.put("telefono", "");
+                    parametros.put("ciudadLocalidad", "");
+                    parametros.put("fax", "");
+                    parametros.put("zona","");
+                    parametros.put("numero", "");
+                    parametros.put("correoElectronico", "");
+                }
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
-                parametros.put("fax", perDireccion.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
-                parametros.put("zona", perDireccion.getZonaUrbanizacion());
-                parametros.put("numero", perDireccion.getPisoDepOfi());
-                parametros.put("correoElectronico", perDireccion.getEmail());
+
                 parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
                 parametros.put("montoAportadoAsegurados", docPlanilla.getMontoAsegCaja());
                 if (docPlanilla.getIdEntidadSalud() != null) {
@@ -322,10 +330,10 @@ public class EscritorioBean {
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC1010V1.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
-
 
         if (codDocumento.equals("ROE010")) {
             parametros.clear();
@@ -360,7 +368,6 @@ public class EscritorioBean {
             }
             //parametros.put("roe", servletContext.getRealPath("/") + "/images/roe.jpg");
 
-
             try {
                 String nombrePdf = codDocumento.concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
                 HttpServletRequest httpServletRequest = ((HttpServletRequest) (FacesContext.getCurrentInstance().getExternalContext()).getRequest());
@@ -387,8 +394,8 @@ public class EscritorioBean {
                 file.delete();
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("ERROR al generar el reporte: " + e.getMessage());
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -447,8 +454,8 @@ public class EscritorioBean {
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe012.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("ERROR al generar el reporte: " + e.getMessage());
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -484,7 +491,6 @@ public class EscritorioBean {
                 parametros.put("nroDocumento", vperPersona.getRlNroIdentidad());
                 parametros.put("lugarPresentacion", "Oficina Virtual");
 
-
                 parametros.put("cadena1", docGenerico.getCadena01() != null ? docGenerico.getCadena01() : "SIN MOVIMIENTO");
                 parametros.put("cadena2", docGenerico.getCadena02() != null ? docGenerico.getCadena02() : "SIN MOVIMIENTO");
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -501,8 +507,8 @@ public class EscritorioBean {
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe013.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("ERROR al generar el reporte: " + e.getMessage());
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -523,20 +529,31 @@ public class EscritorioBean {
                 parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
 
-                PerDireccion perDireccion = new PerDireccion();
-                perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+                PerDireccion perDireccion = iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+                if(perDireccion!=null){
+                    parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
+                    parametros.put("direccion", perDireccion.getDireccion());
+                    parametros.put("telefono", perDireccion.getTelefono());
+                    parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
+                    parametros.put("fax", perDireccion.getFax());
+                    parametros.put("zona", perDireccion.getZonaUrbanizacion());
+                    parametros.put("numero", perDireccion.getPisoDepOfi());
+                    parametros.put("correoElectronico", perDireccion.getEmail());
+                }else{
+                    parametros.put("departamento", "");
+                    parametros.put("direccion", "");
+                    parametros.put("telefono", "");
+                    parametros.put("ciudadLocalidad", "");
+                    parametros.put("fax", "");
+                    parametros.put("zona","");
+                    parametros.put("numero", "");
+                    parametros.put("correoElectronico", "");
+                }
 
-                parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
-                parametros.put("direccion", perDireccion.getDireccion());
-                parametros.put("telefono", perDireccion.getTelefono());
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
-                parametros.put("fax", perDireccion.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
-                parametros.put("zona", perDireccion.getZonaUrbanizacion());
-                parametros.put("numero", perDireccion.getPisoDepOfi());
-                parametros.put("correoElectronico", perDireccion.getEmail());
+
                 parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
                 parametros.put("montoAportadoAsegurados", docPlanilla.getMontoAsegCaja());
                 if (docPlanilla.getIdEntidadSalud() != null) {
@@ -583,7 +600,8 @@ public class EscritorioBean {
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC2010V1.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -593,7 +611,6 @@ public class EscritorioBean {
             iLogImpresionService.guarda(docLogImpresion);
         }
     }
-
 
     /**
      * Genera un nombre para archivo PDF.
@@ -616,7 +633,6 @@ public class EscritorioBean {
      */
     public void generarReporte() {
 
-
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String rutaWebApp = servletContext.getRealPath("/");
 
@@ -630,7 +646,6 @@ public class EscritorioBean {
         String dbPwd = "prueba";
 
         Connection conn = null;
-
 
         String idPersona = (String) session.getAttribute("idEmpleador");
         PerPersona p = iPersonaService.findById(idPersona);
@@ -665,7 +680,6 @@ public class EscritorioBean {
             }
             hm.put("nro_unidades", nroUnidades);
 
-
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
 
             String rutaPdf = "/reportes/temp/" + pdfFileName;
@@ -679,7 +693,7 @@ public class EscritorioBean {
         } catch (Exception ex) {
             logger.error("====>>>> Error al exportar el reporte a PDF <<<<<=====");
             logger.error(ex.getMessage());
-            ex.printStackTrace();
+//            ex.printStackTrace();
         }
     }
 

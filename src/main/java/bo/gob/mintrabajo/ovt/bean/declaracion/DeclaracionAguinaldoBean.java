@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * User: gmercado
@@ -311,7 +312,8 @@ public class DeclaracionAguinaldoBean implements Serializable {
             habilita=false;
         }catch (Exception e){
             habilita=true;
-            e.printStackTrace();
+            logger.error("====>>>> Error al cargar el archivo <<<<<=====");
+            logger.error(e.getMessage());
         }
     }
 
@@ -327,7 +329,8 @@ public class DeclaracionAguinaldoBean implements Serializable {
                     iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
                     return "irEscritorio";
                 }catch (Exception e){
-                    e.printStackTrace();
+                    logger.error("====>>>> Error al guardar el formulario <<<<<=====");
+                    logger.error(e.getMessage());
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
                 }
                 logger.info("retorno final");
@@ -344,7 +347,8 @@ public class DeclaracionAguinaldoBean implements Serializable {
                         iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, new ArrayList<DocPlanillaDetalle>(), new ArrayList<DocAlerta>(), bitacoraSession);
                         return "irEscritorio";
                     }catch (Exception e){
-                        e.printStackTrace();
+                        logger.error("====>>>> Error al guardar el formulario <<<<<=====");
+                        logger.error(e.getMessage());
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
                     }
 //                }else{
@@ -485,8 +489,13 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
                     columna++;//12
                     if(!registro.get(registro.getHeader(columna)).equals("")){
-                        if(registro.get(registro.getHeader(columna)).length()>=15)
-                            docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy").parse(registro.get(registro.getHeader(columna)))));
+                        if(registro.get(registro.getHeader(columna)).length()>=15){
+                            try{
+                                docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
+                            }catch (Exception e){
+                                docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
+                            }
+                        }
                         else
                             docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
                     }
@@ -516,8 +525,13 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
                     columna++;//17
                     if(!registro.get(registro.getHeader(columna)).equals("")) {
-                        if(registro.get(registro.getHeader(columna)).length()>15)
-                            docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy").parse(registro.get(registro.getHeader(columna)))));
+                        if(registro.get(registro.getHeader(columna)).length()>15){
+                            try{
+                                docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
+                            }catch (Exception e){
+                                docPlanillaDetalle.setFechaIngreso(registro.get(registro.getHeader(columna)));
+                            }
+                        }
                         else
                             docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
                     }
@@ -829,7 +843,8 @@ public class DeclaracionAguinaldoBean implements Serializable {
         }
         catch (Exception e){
             verificaValidacion=false;
-            e.printStackTrace();
+            logger.error("====>>>> Error al validar el archivo <<<<<=====");
+            logger.error(e.getMessage());
         }
     }
 
@@ -1245,5 +1260,13 @@ public class DeclaracionAguinaldoBean implements Serializable {
 
     public void setPerDireccion(PerDireccion perDireccion) {
         this.perDireccion = perDireccion;
+    }
+
+    public int getAguinaldoAuto() {
+        return aguinaldoAuto;
+    }
+
+    public void setAguinaldoAuto(int aguinaldoAuto) {
+        this.aguinaldoAuto = aguinaldoAuto;
     }
 }

@@ -8,6 +8,11 @@
 <ui:composition template="../../pages/template/templateInicio.xhtml">
 
     <ui:define name="content">
+        <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando" resizable="false"
+                  draggable="false" closable="false">
+            <p:graphicImage value="../../images/ajax-loader.gif"/>
+        </p:dialog>
         <h:form id="form">
             <style type="text/css">
                 label, input, button, select, textarea {
@@ -24,13 +29,14 @@
 
             <p:outputPanel rendered="#{seleccionaCentralSucursalBean.habilitado}" >
                 <center>
-                    <p:outputLabel value="El siguiente formulario se declarará, para:" style="font-size: 14px"/> <br/><br/>
+                    <h3>El siguiente formulario se declarará, para:</h3>
 
-                    <p:selectOneRadio id="customRadio" value="#{seleccionaCentralSucursalBean.tipoEmpresa}" columns="2">
+                    <p:selectOneRadio id="customRadio" value="#{seleccionaCentralSucursalBean.tipoEmpresa}" columns="2" rendered="#{!seleccionaCentralSucursalBean.delegado}" >
                         <p:ajax event="change" update="tipoEmpresa"/>
-                        <f:selectItem itemLabel="Declaración consolidada de todas las sucursales" itemValue="1"/>
-                        <f:selectItem itemLabel="Declaración por sucursal" itemValue="2"/>
+                        <f:selectItem itemLabel="Declaración consolidada de todas las sucursales" itemValue="1" itemDisabled="#{!seleccionaCentralSucursalBean.consolidado}"/>
+                        <f:selectItem itemLabel="Declaración por sucursal" itemValue="2" itemDisabled="#{!seleccionaCentralSucursalBean.sucursal}"/>
                     </p:selectOneRadio>
+
                     <br/>
                     <h:panelGroup id="tipoEmpresa">
                         <p:outputLabel id="central" style="font-size: 13px" value="#{seleccionaCentralSucursalBean.central.nombreComercial}" rendered="#{seleccionaCentralSucursalBean.tipoEmpresa==1}" />

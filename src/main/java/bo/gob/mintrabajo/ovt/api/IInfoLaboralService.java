@@ -14,4 +14,6 @@ public interface IInfoLaboralService {
     public List<PerInfolaboral>findByPerUnidad(PerUnidad unidad);
     public  List<PerInfolaboral>obtenerPorIdPersona(String idPersona);
     PerInfolaboral obtienePorUnidadPKEstado(PerUnidadPK perUnidadPK, String estado);
+    /////////////////////////////////LUIS
+    public List<PerInfolaboral> obtienePorIdPersonaAndIdUnidad(String idPersona, Long idUnidad);
 }

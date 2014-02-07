@@ -86,9 +86,16 @@ public class RepLegalService implements IRepLegalService{
     }
 
     // Obtiene una lista con los representantes legales activos de una persona u empleador.
+    @Override
      public List<PerReplegal>obtenerPorIdPersona(String idPersona){
          Sort sort=new Sort(Sort.Direction.DESC,"idReplegal");
          return repLegalRepository.obtenerPorIdPersona(idPersona, new PageRequest(0, 500,sort));
+     }
+     
+     /////////////////////////////////////LUIS
+    @Override
+     public PerReplegal obtenerPorIdPersonaAndIdUnidad(String idPersona, Long idUnidad){
+         return repLegalRepository.obtenerPorIdPersonaAndIdUnidad(idPersona, idUnidad);
      }
 
     public Long obtenerSecuencia(String nombreSecuencia){

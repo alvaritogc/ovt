@@ -113,6 +113,11 @@ public class DocumentoService implements IDocumentoService {
         //return documentoRepository.findByPerUnidad_PerPersona_IdPersonaOrderByIdDocumentoDesc(idPersona);
         return documentoRepository.listarPorPersona(idPersona);
     }
+    
+    @Override
+    public List<DocDocumento> obtenerPorIdPersonaIdUnidad(String idPersona, Long idUnidad) {
+        return documentoRepository.obtenerPorIdPersonaIdUnidad(idPersona,idUnidad);
+    }
 
     @Override
     public DocDocumento guardarCambioEstado(DocDocumento documento, String codEstadoFinal, String idUsuario, String observacionLogEstado) {
@@ -693,5 +698,21 @@ public class DocumentoService implements IDocumentoService {
 
     public List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumentos(String idPersona, Date fechaDesde, Date fechaHasta, String codDocumento1, String codDocumento2) {
         return documentoRepository.listarDocumentosPorpersonaUnidadFechasCodDocumentos(idPersona, fechaDesde, fechaHasta, codDocumento1, codDocumento2);
+    }
+
+    public List<DocDocumento> listarDocumentosPorUnidadCodFechaHastaPlazo2(PerUnidadPK perUnidadPK, String codDocumento, Date fechaHasta, Date fechaPlazo2) {
+        return documentoRepository.listarDocumentosPorUniCodFecha(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad(), codDocumento, fechaHasta, fechaPlazo2);
+    }
+
+    public List<DocDocumento> listarDocumentosPorPersonaUnidadFechasHastaPlazoCodDocumentos(PerUnidadPK perUnidadPK,Date fechaHasta, Date fechaPlazo2, String codDocumento1, String codDocumento2) {
+        return documentoRepository.listarDocumentosPorPersonaUnidadFechasHastaPlazoCodDocumentos(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad(), fechaHasta, fechaPlazo2, codDocumento1, codDocumento2);
+    }
+
+    public List<DocDocumento> listarDocumentosPorPersonaEntreFechasTrim(String idPersona,Date fechaHasta, Date fechaPlazo) {
+        return documentoRepository.listarDocumentosPorPersonaEntreFechasTrim(idPersona, fechaHasta, fechaPlazo);
+    }
+
+    public List<DocDocumento> listarDocumentosPorPersonaEntreFechasAgui(String idPersona,Date fechaHasta, Date fechaPlazo) {
+        return documentoRepository.listarDocumentosPorPersonaEntreFechasAgui(idPersona, fechaHasta, fechaPlazo);
     }
 }

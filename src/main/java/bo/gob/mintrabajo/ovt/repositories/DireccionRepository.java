@@ -32,6 +32,6 @@ public interface DireccionRepository extends OpenJpaRepository<PerDireccion, Lon
             "   from PerDireccion d " +
             "   where d.perUnidad.perUnidadPK.idPersona = :idPersona and " +
             "         d.perUnidad.perUnidadPK.idUnidad = :idUnidad " +
-            "         and d.estado like 'A'")
+            "         and lower(d.estado) = lower('A')")
     PerDireccion obtenerPorIdPersonaYIdUnidadYEstadoActivo(@Param("idPersona") String idPersona, @Param("idUnidad")long idUnidad);
 }

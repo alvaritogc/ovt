@@ -46,6 +46,7 @@ import org.omg.CORBA.INTERNAL;
 @ManagedBean(name = "templateInicioBean")
 @ViewScoped
 public class TemplateInicioBean implements Serializable {
+
     //
     private HttpSession session;
     private Long idUsuario;
@@ -74,6 +75,15 @@ public class TemplateInicioBean implements Serializable {
 
     @ManagedProperty(value = "#{dominioService}")
     public IDominioService iDominioService;
+
+    //nuevo 20012014
+    @ManagedProperty(value = "#{unidadService}")
+    private IUnidadService iUnidadService;
+    private List<PerUnidad> listaUnidadesPrincipales;
+    private String idPersonaEmpresa;
+    private boolean delegado = false;
+    private boolean mostrarDialog = false;
+
     //
     private UsrUsuario usuario;
     private PerPersona persona;
@@ -105,7 +115,6 @@ public class TemplateInicioBean implements Serializable {
 
     //*** Cache para guardar dominios guava ***//
     public static Cache<ParDominioPK, ParDominio> mapaDominio = CacheBuilder.newBuilder().maximumSize(600).build();
-
 
     //Variables para los servicios publicos
     private List<ParMensajeApp> listaMensajeApp;
@@ -157,6 +166,58 @@ public class TemplateInicioBean implements Serializable {
             loginValido = Util.validaCorreo(usuario.getUsuario());
             //
             logger.info("usuario ok");
+            //////////////////////////////////////////LUIS
+            delegado = "siDelegado".equals((String) session.getAttribute("delegado"));
+            boolean Empresa = "vacio".equals((String) session.getAttribute("idPersonaEmpresa"));
+            if (delegado && Empresa) {
+                listaUnidadesPrincipales = new ArrayList<PerUnidad>();
+                try {
+                    List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuario(idUsuario);
+                    if (!listaSucursalesDelegadas.isEmpty()) {
+                        boolean existeUnidad = false;
+                        for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                            if (perUsuarioUnidad.getEstado().equals("A")) {
+                                Long idUnidad = 0L;
+                                PerUnidad perUnidad = iUnidadService.obtenerPorIdPersonaIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), idUnidad);
+                                if (listaUnidadesPrincipales.isEmpty()) {
+                                    listaUnidadesPrincipales.add(perUnidad);
+                                } else {
+
+                                    for (PerUnidad unidadP : listaUnidadesPrincipales) {
+                                        if (unidadP.equals(perUnidad)) {
+                                            existeUnidad = true;
+                                        }
+                                    }
+                                    if (!existeUnidad) {
+                                        listaUnidadesPrincipales.add(perUnidad);
+                                    }
+                                    existeUnidad = false;
+                                }
+                            }
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (listaUnidadesPrincipales.size() == 1) {
+                    idPersonaEmpresa = listaUnidadesPrincipales.get(0).getPerUnidadPK().getIdPersona();
+                    session.setAttribute("idEmpleador", idPersonaEmpresa);
+                    session.setAttribute("idPersonaEmpresa", idPersonaEmpresa);
+
+                    mostrarDialog = false;
+                    FacesContext contex = FacesContext.getCurrentInstance();
+                    try {
+                        contex.getExternalContext().redirect("/ovt/faces/pages/escritorio.xhtml");
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    mostrarDialog = true;
+                }
+            }
+            ///////////////////////////////////////////////////////////////////
+
             cargar();
         } catch (Exception e) {
 //            e.printStackTrace();
@@ -280,7 +341,6 @@ public class TemplateInicioBean implements Serializable {
         return false;
     }
 
-
     public String logout() {
         logger.info("logout()");
         //ExternalContext ctx = FacesContext.getCuirrentInstance().getExternalContext();
@@ -327,7 +387,31 @@ public class TemplateInicioBean implements Serializable {
                     return null;
                 }
             }
-
+            /////////////////////////////////////////////////////////////////////////////////////// LUIS
+            //Verifica si el usuario tiene por lo menos una sucursal delegada
+            boolean tieneSucursalesDelegadas = false;
+            session.setAttribute("delegado", "noDelegado");
+            try {
+                List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuario(idUsuario);
+                if (!listaSucursalesDelegadas.isEmpty()) {
+                    for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                        if (perUsuarioUnidad.getEstado().equals("A")) {
+                            tieneSucursalesDelegadas = true;
+                        }
+                    }
+                    if (!tieneSucursalesDelegadas) {
+                        FacesContext context = FacesContext.getCurrentInstance();
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "El usuario no tiene sucursales delegadas!"));
+                        return null;
+                    } else {
+                        session.setAttribute("delegado", "siDelegado");
+                        session.setAttribute("idPersonaEmpresa", "vacio");
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //////////////////////////////////////////////////////////////////////////////////////
             cargarDominio();
 
             if (usuario.getEsInterno() == 1) {
@@ -364,6 +448,22 @@ public class TemplateInicioBean implements Serializable {
         password = "";
         return "";
     }
+
+    //////////////////////////////////Luis
+    public void abrirSeleccionUnidadDlg() {
+        if (mostrarDialog) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dlgEmpresaUnidad.show();");
+            mostrarDialog = false;
+        }
+    }
+
+    public String seleccionUnidadSucursal() {
+        session.setAttribute("idEmpleador", idPersonaEmpresa);
+        session.setAttribute("idPersonaEmpresa", idPersonaEmpresa);
+        return "irEscritorio";
+    }
+    /////////////////////////////////////
 
     public String irUnidad() throws IOException {
         session.setAttribute("idEmpleador", idEmpleador);
@@ -661,7 +761,6 @@ public class TemplateInicioBean implements Serializable {
         return false;
     }
 
-
     public IDominioService getiDominioService() {
         return iDominioService;
     }
@@ -691,12 +790,9 @@ public class TemplateInicioBean implements Serializable {
     }
 
     public String irRegistro() {
-        //String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getHeader("X-FORWARDED-FOR");
-        //      if(ipCliente == null){
-        String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
-//        }
-        String bitacoraSession = ipCliente;
-        session.setAttribute("bitacoraSession", bitacoraSession);
+//        String ipCliente = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
+//        String bitacoraSession = ipCliente;
+//        session.setAttribute("bitacoraSession", bitacoraSession);
         return "irRegistro";
     }
 
@@ -910,5 +1006,75 @@ public class TemplateInicioBean implements Serializable {
 
     public void setSessionTimeOut(String sessionTimeOut) {
         this.sessionTimeOut = sessionTimeOut;
+    }
+
+    /**
+     * @return the iUnidadService
+     */
+    public IUnidadService getiUnidadService() {
+        return iUnidadService;
+    }
+
+    /**
+     * @param iUnidadService the iUnidadService to set
+     */
+    public void setiUnidadService(IUnidadService iUnidadService) {
+        this.iUnidadService = iUnidadService;
+    }
+
+    /**
+     * @return the listaUnidadesPrincipales
+     */
+    public List<PerUnidad> getListaUnidadesPrincipales() {
+        return listaUnidadesPrincipales;
+    }
+
+    /**
+     * @param listaUnidadesPrincipales the listaUnidadesPrincipales to set
+     */
+    public void setListaUnidadesPrincipales(List<PerUnidad> listaUnidadesPrincipales) {
+        this.listaUnidadesPrincipales = listaUnidadesPrincipales;
+    }
+
+    /**
+     * @return the idPersonaEmpresa
+     */
+    public String getIdPersonaEmpresa() {
+        return idPersonaEmpresa;
+    }
+
+    /**
+     * @param idPersonaEmpresa the idPersonaEmpresa to set
+     */
+    public void setIdPersonaEmpresa(String idPersonaEmpresa) {
+        this.idPersonaEmpresa = idPersonaEmpresa;
+    }
+
+    /**
+     * @return the delegado
+     */
+    public boolean isDelegado() {
+        return delegado;
+    }
+
+    /**
+     * @param delegado the delegado to set
+     */
+    public void setDelegado(boolean delegado) {
+        this.delegado = delegado;
+    }
+
+    /**
+     * @return the mostrarDialog
+     */
+    public boolean isMostrarDialog() {
+        return mostrarDialog;
+    }
+
+    /**
+     * @param mostrarDialog the mostrarDialog to set
+     */
+    public void setMostrarDialog(boolean mostrarDialog) {
+        this.mostrarDialog = mostrarDialog;
     }
 }

@@ -192,6 +192,13 @@ public class UnidadService implements IUnidadService{
     public long obtenerMaximaUnidad(String idPersona){
            return unidadRepository.obtenerMaximaUnidad(idPersona);
     }
+    
+    //////////////////////////////////LUIS
+    @Override
+    public PerUnidad obtenerPorIdPersonaIdUnidad(String idPersona,long idUnidad){
+        return unidadRepository.obtenerPorIdPersonaIdUnidad(idPersona, idUnidad);
+    }
+    
 
 
 

@@ -85,7 +85,8 @@ public class XlsToCSV {
             return file;
         }
         catch (Exception e){
-            e.printStackTrace();
+            System.out.println("====>>>> Error en la conversion del archivo <<<<<=====");
+            System.out.println(e.getMessage());
             return null;
         }
     }

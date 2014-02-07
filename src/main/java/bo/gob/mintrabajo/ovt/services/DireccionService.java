@@ -109,8 +109,14 @@ public class DireccionService implements IDireccionService{
         return rtn.longValue();
     }
 
+    @Override
     public PerDireccion obtenerPorIdPersonaYIdUnidadYEstadoActivo(PerUnidadPK perUnidadPK){
         return direccionRepository.obtenerPorIdPersonaYIdUnidadYEstadoActivo(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
     }
-
+    
+    /////////////////////////////////LUIS
+    @Override
+    public PerDireccion obtenerPorIdPersonaAndIdUnidad(String idPersona, Long idUnidad){
+        return direccionRepository.obtenerPorIdPersonaYIdUnidadYEstadoActivo(idPersona, idUnidad);
+    }
 }

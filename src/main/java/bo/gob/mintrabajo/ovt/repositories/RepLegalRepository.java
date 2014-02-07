@@ -19,5 +19,11 @@ public interface RepLegalRepository extends OpenJpaRepository<PerReplegal, Long>
             "   where rp.perUnidad.perUnidadPK.idPersona = :idPersona " +
             "         and lower(rp.estadoRepLegal)  =  lower('A')")
     List<PerReplegal>obtenerPorIdPersona(@Param("idPersona") String idPersona, Pageable pageable);
-
+    
+    @Query("select rp " +
+            "   from PerReplegal rp " +
+            "   where rp.perUnidad.perUnidadPK.idPersona = :idPersona " +
+            "   and rp.perUnidad.perUnidadPK.idUnidad = :idUnidad " +
+            "         and lower(rp.estadoRepLegal)  =  lower('A')")
+    PerReplegal obtenerPorIdPersonaAndIdUnidad(@Param("idPersona") String idPersona, @Param("idUnidad") Long idUnidad);
 }
