@@ -275,24 +275,36 @@ public class SeleccionaCentralSucursalBean implements Serializable {
     }
 
     public String seleccionaUnidad() {
-        if (periodoGestion != null) {
-            if (aguinaldoAuto == 1 || trimestralAuto == 1) {
-                if (((parametro == 1 || parametro == 3) && listaBinarios.size() < 3) || (parametro == 4 && listaBinarios.size() == 0)) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "No subió la cantidad necesaria de archivos."));
-                    return null;
-                }
-            }
-        }else{
+        if (periodoGestion == null) {
             mensajeValidacion = "Fuera de rango para realizar la declaración jurada.";
             habilitado = false;
             return null;
         }
 
-        if (tipoEmpresa != 2) {
+
+        if (tipoEmpresa != 2)
             unidadSeleccionada = central;
-        } else {
+        else{
+            if(idUnidad==null){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "No seleccionó sucursal."));
+                return null;
+            }
             unidadSeleccionada = iUnidadService.obtienePorId(new PerUnidadPK(idPersona, idUnidad));
         }
+
+        if(unidadSeleccionada.getPerUnidadPK()==null)
+            return  null;
+
+
+        if (periodoGestion != null) {
+            if (aguinaldoAuto == 1 || trimestralAuto == 1) {
+                if (((parametro == 1 || parametro == 3) && listaBinarios.size() < 3) || (parametro == 4 && listaBinarios.size() == 0)) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "No subió la cantidad necesaria de archivos."));
+                    return null;
+                }
+            }
+        }
+
         ///////////////////////////////////////////////LUIS
         if(delegado && !sucursal){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "No seleccionó alguna sucursal o ya realizó la declaracion como una consolidada."));
