@@ -23,7 +23,6 @@ import javax.faces.application.FacesMessage;
 @ViewScoped
 public class BajaRoeBean {
     //
-
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private Long idUsuario;
     private String idPersona;
@@ -112,25 +111,11 @@ public class BajaRoeBean {
                     + " " + (persona.getApellidoMaterno() != null ? persona.getApellidoMaterno() : "")
             );
         }
-        cargarDocumento();
+        perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
         cargarFechas();
     }
 
-    public void cargarDocumento() {
-        perUnidadPK = new PerUnidadPK(idEmpleador, 0L);
-        //documento = new DocDocumento();
-        //
-        //documento.setPerUnidad(iUnidadService.obtienePorId(new PerUnidadPK(idEmpleador, 0L)));
-        //
-//        DocDefinicionPK docDefinicionPK=new DocDefinicionPK();
-//        docDefinicionPK.setCodDocumento("ROE012");
-//        docDefinicionPK.setVersion((short)1);
-//        docDefinicion=iDefinicionService.buscaPorId(docDefinicionPK);
-        //docDefinicion = iDefinicionService.buscarActivoPorParametro(Dominios.PAR_DOCUMENTO_ROE_BAJA);
-    }
-
     public void cargarFechas() {
-//        listaDominioMeses=iDominioService.obtenerItemsDominio("TPERIODO");
         ParDominioPK parDominioPK = new ParDominioPK();
         parDominioPK.setIdDominio("TCALENDARIO");
         parDominioPK.setValor("MES");
@@ -140,11 +125,6 @@ public class BajaRoeBean {
     }
 
     public String guardar() {
-        System.out.println("==================================");
-        System.out.println("==================================");
-        System.out.println("Guardar");
-        System.out.println("==================================");
-        System.out.println("==================================");
         if ((docGenerico.getCadena03() == null || docGenerico.getCadena03().trim().equals(""))
                 && (docGenerico.getCadena04() == null || docGenerico.getCadena04().trim().equals(""))
                 && (docGenerico.getCadena05() == null || docGenerico.getCadena05().trim().equals(""))
@@ -185,11 +165,8 @@ public class BajaRoeBean {
                 return "";
             }
         }
-        //
-        //documento = iDocumentoService.guardarBajaRoe(documento, docGenerico, idUsuario.toString());
+        logger.info("Baja roe");
         documento = iDocumentoService.guardarBajaRoe(perUnidadPK, docGenerico, idUsuario.toString());
-        //RequestContext context = RequestContext.getCurrentInstance();
-        //context.execute("dlgConfirmacion.show()");
         return "irEscritorio";
     }
 

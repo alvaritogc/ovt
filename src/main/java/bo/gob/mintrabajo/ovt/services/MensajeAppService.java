@@ -24,6 +24,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.slf4j.Logger;
+
 /**
  * User: Renato Velasquez
  * Date: 03-10-13
@@ -66,7 +68,7 @@ public class MensajeAppService implements IMensajeAppService {
                 entityManager.detach(mapp);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new RuntimeException("Error al buscar ParMensajeApp.");
         }
         return lista;
@@ -78,7 +80,7 @@ public class MensajeAppService implements IMensajeAppService {
         try {
             lista = repository.buscarPorRecurso(idRecurso);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new RuntimeException("Error al buscar ParMensajeApp.");
         }
         if (lista.size() == 0) {
@@ -112,7 +114,7 @@ public class MensajeAppService implements IMensajeAppService {
             repository.delete(idMensajeApp);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return false;
     }

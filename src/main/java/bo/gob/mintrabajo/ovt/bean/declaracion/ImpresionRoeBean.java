@@ -23,7 +23,6 @@ import java.util.List;
 @ViewScoped
 public class ImpresionRoeBean {
     //
-
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     private Long idUsuario;
     private String idPersona;
@@ -86,7 +85,6 @@ public class ImpresionRoeBean {
             fechaDepositoMax = sdf.parse(fechaMax);
         } catch (Exception e) {
         }
-
     }
 
     public void cargar() {
@@ -115,7 +113,6 @@ public class ImpresionRoeBean {
             docGenerico = iDocGenericoService.buscarPorDocumento(idDocumento);
             //
             vperPersona = iVperPersonaService.cargaVistaPersona(docGenerico.getIdDocumento().getPerUnidad().getPerPersona().getIdPersona());
-            //==================================================================
             mostrarFormulario = iDocumentoService.existeRoe(docGenerico.getIdDocumento().getPerUnidad().getPerPersona().getIdPersona());
             if (mostrarFormulario) {
                 mostrarFormularioMensaje = "";
@@ -126,7 +123,6 @@ public class ImpresionRoeBean {
                     mostrarFormularioMensaje = "No se encontro un documento ROE activo para este empleador";
                 }
             }
-            //==================================================================
             bancoDeposito = docGenerico.getCadena01();
             nroComprobanteDeposito = docGenerico.getCadena02();
             fechaDeposito = docGenerico.getFecha01();
@@ -170,16 +166,10 @@ public class ImpresionRoeBean {
         docGenerico.setCadena01(bancoDeposito);
         docGenerico.setCadena02(nroComprobanteDeposito);
         docGenerico.setFecha01(fechaDeposito);
-        //docGenerico.setCadena03(sdf.format(fechaDeposito));
         docGenerico.setValor01(montoDeposito);
-        //docGenerico.setCadena04(montoDeposito.toString());
         //
-
-        //documento = iDocumentoService.guardarImpresionRoe(documento, docGenerico, idUsuario.toString(), docDefinicion);//, vperPersona, idUsuarioEmpleador);
+        logger.info("Guardando impresion  Roe ");
         documento = iDocumentoService.guardarDocumentoRoe(docGenerico, idDocumento, perUnidadPK, docDefinicion.getDocDefinicionPK(), bitacoraSession, parametroDocDefinicion);
-
-//        session.removeAttribute("idDocumentoImpresion");
-//        session.removeAttribute("parametroDocDefinicion");
         session.setAttribute("idDocumentoImpresion", null);
         session.setAttribute("parametroDocDefinicion", null);
         return "irEscritorio";

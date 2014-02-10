@@ -7,6 +7,7 @@ import bo.gob.mintrabajo.ovt.api.*;
 import bo.gob.mintrabajo.ovt.entities.*;
 import com.csvreader.CsvReader;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -26,10 +27,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: gmercado
@@ -73,6 +71,10 @@ public class DeclaracionTrimestralBean implements Serializable {
     private ICalendarioService iCalendarioService;
     @ManagedProperty(value = "#{parametrizacionService}")
     private IParametrizacionService iParametrizacionService;
+    @ManagedProperty(value = "#{infoLaboralService}")
+    private IInfoLaboralService iInfoLaboralService;
+    @ManagedProperty(value = "#{direccionService}")
+    private IDireccionService iDireccionService;
 
     private int parametro;
     private List<ParObligacionCalendario> parObligacionCalendarioLista;
@@ -90,10 +92,14 @@ public class DeclaracionTrimestralBean implements Serializable {
     private boolean temporalBoolean;
     private PerPersona persona;
     private Date fechaTemp = new Date();
+    private PerDireccion perDireccion;
+    private List<PerDireccion> perDireccions;
 
     private String textoBenvenida;
     private DocDocumento documento;
     private String periodo;
+    private ParObligacionCalendario periodoGestion;
+    private Long periodoGestionId;
     private DocBinario binario;
     private boolean habilita = true;
     private List<DocBinario> listaBinarios;
@@ -123,40 +129,90 @@ public class DeclaracionTrimestralBean implements Serializable {
     private String nombreBinario;
     private DocPlanilla rectificatorio;
     private String bitacoraSession;
+    private ParObligacionCalendario parObligacionCalendario;
+    private int trimestralAuto;
 
     @PostConstruct
     public void ini() {
+        trimestralAuto= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_FORMULARIO, Dominios.PAR_AUTOLLENADO_TRIMESTRAL).getDescripcion());
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
         parametro = (Integer) session.getAttribute("parametro");
         unidadSeleccionada = (PerUnidad) session.getAttribute("unidadSeleccionada");
         tipoEmpresa = (Integer) session.getAttribute("tipoEmpresa");
+        periodoGestion= (ParObligacionCalendario) session.getAttribute("periodoGestion");
+        periodo=periodoGestion.getParCalendario().getParCalendarioPK().getTipoPeriodo();
+        gestion=periodoGestion.getParCalendario().getParCalendarioPK().getGestion();
+        docPlanilla = new DocPlanilla();
+        //0 NO AUTOLLENADO
+        //1 SI AUTOLLENADO
+        switch (trimestralAuto){
+            case 0:
+                docPlanilla.setHaberBasico(BigDecimal.ZERO);
+                docPlanilla.setBonoAntiguedad(BigDecimal.ZERO);
+                docPlanilla.setBonoProduccion(BigDecimal.ZERO);
+                docPlanilla.setSubsidioFrontera(BigDecimal.ZERO);
+                docPlanilla.setLaborExtra(BigDecimal.ZERO);
+                docPlanilla.setOtrosBonos(BigDecimal.ZERO);
+                docPlanilla.setRciva(BigDecimal.ZERO);
+                docPlanilla.setAporteAfp(BigDecimal.ZERO);
+                docPlanilla.setOtrosDescuentos(BigDecimal.ZERO);
+                listaBinarios = new ArrayList<DocBinario>();
+//                salarioMinimo= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_SALARIO, Dominios.PAR_SALARIO_MINIMO).getDescripcion());
+                break;
+            case 1:
+                if(parametro!=2){
+                    listaBinarios= SeleccionaCentralSucursalBean.binarios.getIfPresent("binarios");
+                    alertas= SeleccionaCentralSucursalBean.planillaAlertas.getIfPresent("planillaAlertas");
+                    docPlanillaDetalles= SeleccionaCentralSucursalBean.planillaDetalles.getIfPresent("planillaDetalles");
+                    docPlanilla.setHaberBasico(BigDecimal.valueOf((Double) session.getAttribute("haberBasico")));
+                    docPlanilla.setBonoAntiguedad(BigDecimal.valueOf((Double) session.getAttribute("bonoAntiguedad")));
+                    docPlanilla.setBonoProduccion(BigDecimal.valueOf((Double) session.getAttribute("bonoProduccion")));
+                    docPlanilla.setSubsidioFrontera(BigDecimal.valueOf((Double) session.getAttribute("subsidioFrontera")));
+                    docPlanilla.setLaborExtra(BigDecimal.valueOf((Double) session.getAttribute("laborExtraordinaria")));
+                    docPlanilla.setOtrosBonos(BigDecimal.valueOf((Double) session.getAttribute("otrosBonos")));
+                    docPlanilla.setAporteAfp(BigDecimal.valueOf((Double) session.getAttribute("aporteAFP")));
+                    docPlanilla.setRciva(BigDecimal.valueOf((Double) session.getAttribute("rcIVA")));
+                    docPlanilla.setOtrosDescuentos(BigDecimal.valueOf((Double) session.getAttribute("otrosDescuentos")));
+                    docPlanilla.setNroH((Integer) session.getAttribute("masculino"));
+                    docPlanilla.setNroM((Integer) session.getAttribute("femenino"));
+                    docPlanilla.setNroJubiladosH((Integer) session.getAttribute("masculinoJubilado"));
+                    docPlanilla.setNroJubiladosM((Integer) session.getAttribute("femeninoJubilado"));
+                    docPlanilla.setNroExtranjerosH((Integer) session.getAttribute("masculinoExtranjero"));
+                    docPlanilla.setNroExtranjerosM((Integer) session.getAttribute("femeninoExtranjero"));
+                    docPlanilla.setNroContratadosH((Integer) session.getAttribute("masculinoContratadoTrim"));
+                    docPlanilla.setNroContratadosM((Integer) session.getAttribute("femeninoContratadoTrim"));
+                }else{
+                    docPlanilla.setHaberBasico(BigDecimal.ZERO);
+                    docPlanilla.setBonoAntiguedad(BigDecimal.ZERO);
+                    docPlanilla.setBonoProduccion(BigDecimal.ZERO);
+                    docPlanilla.setSubsidioFrontera(BigDecimal.ZERO);
+                    docPlanilla.setLaborExtra(BigDecimal.ZERO);
+                    docPlanilla.setOtrosBonos(BigDecimal.ZERO);
+                    docPlanilla.setRciva(BigDecimal.ZERO);
+                    docPlanilla.setAporteAfp(BigDecimal.ZERO);
+                    docPlanilla.setOtrosDescuentos(BigDecimal.ZERO);
+                    listaBinarios = new ArrayList<DocBinario>();
+                }
+                habilita=false;
+                break;
+        }
+        docPlanilla.setMontoAsegCaja(BigDecimal.ZERO);
+        docPlanilla.setMontoAsegAfp(BigDecimal.ZERO);
+        docPlanilla.setMontoOperacion(BigDecimal.ZERO);
 
         if(parametro==2)
             habilita=false;
         idPersona = (String) session.getAttribute("idEmpleador");
         logger.info("buscando persona:"+idPersona);
         persona = iPersonaService.buscarPorId(idPersona);
-        //
+
         logger.info("Realizando la carga de Persona ...");
         idUsuario = (Long) session.getAttribute("idUsuario");
-        Long temp = Long.valueOf(idUsuario);
         usuario = iUsuarioService.findById(idUsuario);
         perPersona = iPersonaService.buscarPorId(idPersona);
-        docPlanilla = new DocPlanilla();
-        docPlanilla.setHaberBasico(BigDecimal.ZERO);
-        docPlanilla.setBonoAntiguedad(BigDecimal.ZERO);
-        docPlanilla.setBonoProduccion(BigDecimal.ZERO);
-        docPlanilla.setSubsidioFrontera(BigDecimal.ZERO);
-        docPlanilla.setLaborExtra(BigDecimal.ZERO);
-        docPlanilla.setOtrosBonos(BigDecimal.ZERO);
-        docPlanilla.setRciva(BigDecimal.ZERO);
-        docPlanilla.setAporteAfp(BigDecimal.ZERO);
-        docPlanilla.setOtrosDescuentos(BigDecimal.ZERO);
-        docPlanilla.setMontoAsegCaja(BigDecimal.ZERO);
-        docPlanilla.setMontoAsegAfp(BigDecimal.ZERO);
-        docPlanilla.setMontoOperacion(BigDecimal.ZERO);
 
-        salarioMinimo= Integer.valueOf(iParametrizacionService.obtenerParametro(Dominios.DOM_SALARIO, Dominios.PAR_SALARIO_MINIMO).getDescripcion());
+        perDireccion = new PerDireccion();
+        perDireccion= iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(unidadSeleccionada.getPerUnidadPK());
         //** Controlamos que no puedan acceder a una fecha anterior a la actual  **//
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         fechaTexto = sdf.format(fechaTemp);
@@ -164,17 +220,15 @@ public class DeclaracionTrimestralBean implements Serializable {
         //** Obtenemos de la Vista a la persona **//
         vperPersona = iVperPersonaService.cargaVistaPersona(perPersona.getIdPersona());
         binario= new DocBinario();
-        listaBinarios = new ArrayList<DocBinario>();
 //        idPersona = (String) session.getAttribute("idEmpleador");
 //        persona = iPersonaService.buscarPorId(idPersona);
         logger.info("persona ok");
         cargar();
-        if (parametro==5){
+        if (parametro==3){
             esRectificatorio=true;
-            rectificatorio = iPlanillaService.buscarPorDocumento(iDocumentoService.buscarPorUnindad(unidadSeleccionada.getPerUnidadPK()).getIdDocumento());
+//            rectificatorio = iPlanillaService.buscarPorDocumento(iDocumentoService.buscarPorUnindad(unidadSeleccionada.getPerUnidadPK()).getIdDocumento());
         }
         valor=true;
-        gestion=String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         obtenerPeriodoLista();
         tamanioErrores=2;
     }
@@ -186,78 +240,16 @@ public class DeclaracionTrimestralBean implements Serializable {
     }
 
     public void cargarDocumentosParaRectificar(){
+        parObligacionCalendario= new ParObligacionCalendario();
+        parObligacionCalendario=iObligacionCalendarioService.listarPlanillaTrimPorFechaHastaFechaPlazo(DateUtils.truncate(new Date(), Calendar.DATE));
+
         docPlanillasParaRectificar= new ArrayList<DocPlanilla>();
-        docPlanillasParaRectificar= iPlanillaService.listarPlanillasParaRectificar(idPersona, "LC1010");
+        docPlanillasParaRectificar= iPlanillaService.listarPlanillasTrimestralesParaRectificar(idPersona, unidadSeleccionada.getPerUnidadPK().getIdUnidad(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
     }
 
-
-//    public void seleccionaEmpresa(){
-//        if(tipoEmpresa!=2)
-//            unidadSeleccionada=central;
-//        else
-//            unidadSeleccionada=iUnidadService.obtienePorId(new PerUnidadPK(idPersona, idUnidad));
-//
-//        ParObligacionCalendario parObligacionCalendario=iObligacionCalendarioService.buscarPorPlatriALaFecha();
-//        List<DocDocumento>listaDocumentos=iDocumentoService.listarDocumentosPorPersonaUnidad(unidadSeleccionada.getPerUnidadPK(), parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo());
-//
-//        for(DocDocumento doc:listaDocumentos){
-//                if(parametro!=3 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
-//                estaDeclaradoMensaje="Solo se puede realizar o la Declaración Jurada Trimestral o la Declaración Jurada Sin Movimiento.";
-//                estaDeclarado=true;
-//                return;
-//            }
-//        }
-//    }
-
-    public void seleccionaTrimestre(){
-        periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
-    }
-
-//    public void verEstadoPlanilla(){
-//        ParObligacionCalendario parObligacionCalendario;
-//        try {
-//            parObligacionCalendario=iObligacionCalendarioService.buscarPorPlatriALaFecha();
-//        } catch (Exception e) {
-//            parObligacionCalendario=null;
-//        }
-//
-////        if(parObligacionCalendario==null){
-////            estaDeclaradoMensaje="Solo puede realizar la Declaración Jurada dentro del plazo establecido.";
-////            estaDeclarado=true;
-////            return;
-////        }
-//
-//        List<DocDocumento> listaDocumentos;
-//        try{
-//            //TODO cabiar el metodo, temporalmente habilitado para pruebas...
-//
-//            listaDocumentos=iDocumentoService.listarDocumentosTrimSm(documento.getPerUnidad().getPerUnidadPK());
-////            listaDocumentos=iDocumentoService.listarPlanillasTrimestrales(idPersona, parObligacionCalendario.getFechaHasta(), parObligacionCalendario.getFechaPlazo(), "LC1010");
-//            if(listaDocumentos==null){
-//                listaDocumentos=new ArrayList<DocDocumento>();
-//            }
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//            listaDocumentos=new ArrayList<DocDocumento>();
-//        }
-//        estaDeclarado=false;
-//        for(DocDocumento documento:listaDocumentos){
-//            if(parametro!=3 && (documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1010") || documento.getDocDefinicion().getDocDefinicionPK().getCodDocumento().equals("LC1012"))){
-//                estaDeclaradoMensaje="Solo se puede realizar o la Declaración Jurada Trimestral o la Declaración Jurada Sin Movimiento.";
-//                estaDeclarado=true;
-//                return;
-//            }
-//
-//            if((documento.getCodEstado().getDescripcion().toLowerCase().equals("declarado")
-//                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("observado")
-//                    || documento.getCodEstado().getDescripcion().toLowerCase().equals("finalizado")) && parametro==1 ){
-//                estaDeclarado=true;
-//                estaDeclaradoMensaje="Usted ya realizo la declaracion jurada.";
-//                return;
-//            }
-//        }
-//    }
+ //   public void seleccionaTrimestre(){
+     //   periodo = iPlanillaService.buscarPorDocumento(idRectificatorio).getParCalendario().getParCalendarioPK().getTipoPeriodo();
+   // }
 
     public void generaDocumento(){
         logger.info("generaDocumento()");
@@ -282,7 +274,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         else
             documento.setTipoMedioRegistro("SUCURSAL");
         documento.setFechaBitacora(new Date());
-        documento.setRegistroBitacora(usuario.getUsuario());
+        documento.setRegistroBitacora(bitacoraSession);
     }
 
     public void generaPlanilla(){
@@ -307,7 +299,7 @@ public class DeclaracionTrimestralBean implements Serializable {
         docPlanilla.setFax(vperPersona.getFax());
         docPlanilla.setIdReplegal(vperPersona.getRlNroIdentidad());        //revisar el id aprtir de la BD
         docPlanilla.setCodLocalidadPresentacion(vperPersona.getLocalidad());
-        docPlanilla.setParCalendario(iCalendarioService.obtenerCalendarioPorGestionYPeriodo(gestion, periodo));
+        docPlanilla.setParCalendario(periodoGestion.getParCalendario());
 
 
         switch (parametro){
@@ -335,7 +327,7 @@ public class DeclaracionTrimestralBean implements Serializable {
             binario.setTipoDocumento(file.getFileName());
             binario.setMetadata(file.getContentType());
             binario.setFechaBitacora(new Timestamp(new Date().getTime()));
-            binario.setRegistroBitacora(usuario.getUsuario());
+            binario.setRegistroBitacora(bitacoraSession);
             binario.setBinario(file.getContents());
             binario.setInputStream(file.getInputstream());
             listaBinarios.add(binario);
@@ -344,7 +336,8 @@ public class DeclaracionTrimestralBean implements Serializable {
                 habilita=false;
         }catch (Exception e){
             habilita=true;
-            e.printStackTrace();
+            logger.error("====>>>> Error al cargar el archivo <<<<<=====");
+            logger.error(e.getMessage());
         }
     }
 
@@ -354,40 +347,49 @@ public class DeclaracionTrimestralBean implements Serializable {
             return null;
         }
 
-//        validaArchivo(listaBinarios);
-//        if(errores.size()==0 && verificaValidacion){
-        if(true){
-            try{
-                if(parametro==3)
-                    documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
-                logger.info("Guardando documento, binario y planilla");
-                logger.info(documento.toString());
-                logger.info(listaBinarios.toString());
-                logger.info(docPlanilla.toString());
-                generaPlanilla();
-                documento.setPerUnidad(unidadSeleccionada);
-                String msj= iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
-                return "irEscritorio";
-            }catch (Exception e){
-                e.printStackTrace();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
-            }
-        }else{
-            binario = new DocBinario();
-            listaBinarios.clear();
-        }
-        logger.info("retorno final");
-        return null;
-    }
-
-    public String irInicio(){
-        idPersona=(String)session.getAttribute("idPersona");
-        String idEmpleador=(String)session.getAttribute("idEmpleador");
-        if(idPersona!=null && idEmpleador!=null && idPersona.equals(idEmpleador)){
-            return "irBienvenida";
-        }
-        else{
-            return "irEmpleadorBusqueda";
+        switch (trimestralAuto){
+            case 1:
+                try{
+                    if(parametro==3)
+                        documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
+                    logger.info("Guardando documento, binario y planilla");
+                    generaPlanilla();
+                    documento.setPerUnidad(unidadSeleccionada);
+                    iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, docPlanillaDetalles, alertas, bitacoraSession);
+                    return "irEscritorio";
+                }catch (Exception e){
+                    logger.error("====>>>> Error al guardar el formulario <<<<<=====");
+                    logger.error(e.getMessage());
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+                }
+                logger.info("retorno final");
+                return null;
+            case 0:
+//                validaArchivo(listaBinarios);
+//                if(errores.size()==0 && verificaValidacion){
+                    try{
+                        if(parametro==3)
+                            documento.setIdDocumentoRef(iDocumentoService.findById(idRectificatorio));
+                        logger.info("Guardando documento, binario y planilla");
+                        generaPlanilla();
+                        documento.setPerUnidad(unidadSeleccionada);
+                        iDocumentoService.guardaDocumentoPlanillaBinario(documento, docPlanilla, listaBinarios, new ArrayList<DocPlanillaDetalle>(), new ArrayList<DocAlerta>(), bitacoraSession);
+                        return "irEscritorio";
+                    }catch (Exception e){
+                        logger.error("====>>>> Error al guardar el formulario <<<<<=====");
+                        logger.error(e.getMessage());
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se guardo el formulario",""));
+                    }
+//                }else{
+//                    binario = new DocBinario();
+//                    listaBinarios.clear();
+//                    habilita=true;
+//                    nombres= new String[3];
+//                }
+                logger.info("retorno final");
+                return null;
+            default:
+                return null;
         }
     }
 
@@ -441,51 +443,123 @@ public class DeclaracionTrimestralBean implements Serializable {
                     DocAlerta docAlerta = new DocAlerta();
 
                     //1
-                    docPlanillaDetalle.setTipoDocumento(registro.get(registro.getHeader(columna++)));
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setTipoDocumento(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
 
-                    //2
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                    columna++;//2
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
                         docPlanillaDetalle.setNumeroDocumento(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//3
-                    docPlanillaDetalle.setExtencionDocumento(registro.get(registro.getHeader(columna++)));
-                    //4
-                    docPlanillaDetalle.setAfp(registro.get(registro.getHeader(columna++)));
-                    //5
-                    docPlanillaDetalle.setNuaCua(registro.get(registro.getHeader(columna++)));
-                    //6.7.8.9.10
-                    docPlanillaDetalle.setNombre(registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++))+" "+registro.get(registro.getHeader(columna++)));
-                    //11
-                    docPlanillaDetalle.setNacionalidad(registro.get(registro.getHeader(columna++)));
-                    //12
-                    docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna++)));
-                    //13
-                    docPlanillaDetalle.setSexo(registro.get(registro.getHeader(columna++)));
-                    //14
-                    docPlanillaDetalle.setJubilado(registro.get(registro.getHeader(columna++)));
-                    //15
-                    docPlanillaDetalle.setClasificacionLaboral(registro.get(registro.getHeader(columna++)));
-                    //16
-                    docPlanillaDetalle.setCargo(registro.get(registro.getHeader(columna++)));
-                    //17
-                    docPlanillaDetalle.setFechaIngreso(registro.get(registro.getHeader(columna++)));
-                    //18
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setExtencionDocumento(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//4
+                    docPlanillaDetalle.setAfp(registro.get(registro.getHeader(columna)));
+
+                    columna++;//5
+                    docPlanillaDetalle.setNuaCua(registro.get(registro.getHeader(columna)));
+
+                    columna++;//6
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(registro.get(registro.getHeader(columna))+" ");
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+                    columna++;//7
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+
+                    columna++;//8
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+
+                    columna++;//9
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//10
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNombre(docPlanillaDetalle.getNombre()+" "+registro.get(registro.getHeader(columna)));
+
+                    columna++;//11
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setNacionalidad(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//12
+                    if(!registro.get(registro.getHeader(columna)).equals("")){
+                        if(registro.get(registro.getHeader(columna)).length()>=15){
+                            try {
+                                docPlanillaDetalle.setFechaNacimiento(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
+                            }catch (Exception e){
+                                docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
+                            }
+                        }
+                        else
+                            docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//13
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setSexo(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//14
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setJubilado(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//15
+                    docPlanillaDetalle.setClasificacionLaboral(registro.get(registro.getHeader(columna)));
+
+                    columna++;//16
+                    if(!registro.get(registro.getHeader(columna)).equals(""))
+                        docPlanillaDetalle.setCargo(registro.get(registro.getHeader(columna)));
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//17
+                    if(!registro.get(registro.getHeader(columna)).equals("")) {
+                        if(registro.get(registro.getHeader(columna)).length()>15){
+                            try{
+                                docPlanillaDetalle.setFechaIngreso(new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss 'BOT' yyyy", Locale.ENGLISH).parse(registro.get(registro.getHeader(columna)))));
+                            }catch (Exception e){
+                                docPlanillaDetalle.setFechaIngreso(registro.get(registro.getHeader(columna)));
+                            }
+                        }
+                        else
+                            docPlanillaDetalle.setFechaNacimiento(registro.get(registro.getHeader(columna)));
+                    }
+                    else
+                        errores.add(mensajeError(c, registro.getHeader(columna)));
+
+                    columna++;//18
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
                         docPlanillaDetalle.setHorasPagadasDia(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//19
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
                         docPlanillaDetalle.setDiasHaberBasico(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
 
                     columna++;//20
-
-                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna))))
+                    if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))&&!registro.get(registro.getHeader(columna)).equals(""))
                         docPlanillaDetalle.setDiasPagados(registro.get(registro.getHeader(columna)));
                     else
                         errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -494,7 +568,10 @@ public class DeclaracionTrimestralBean implements Serializable {
                     if(UtilityData.isInteger(registro.get(registro.getHeader(columna)))||registro.get(columna).equals("")){
                         switch (valorPlanilla){
                             case 1:
-                                docPlanillaDetalle.setDominicalMes(registro.get(registro.getHeader(columna)));
+                                if(!registro.get(registro.getHeader(columna)).equals(""))
+                                    docPlanillaDetalle.setDominicalMes(registro.get(registro.getHeader(columna)));
+                                else
+                                    errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                             case 2:
                                 docPlanillaDetalle.setHorasExtra(registro.get(registro.getHeader(columna)));
@@ -604,8 +681,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
                                 break;
                             case 2:
-                                String a=registro.get(columna);
-                                if(!a.equals(""))
+                                if(!registro.get(columna).equals(""))
                                     docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
                                 else
                                     errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -730,7 +806,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //36
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna))))
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))&&!registro.get(columna).equals(""))
                             docPlanillaDetalle.setTotalGanado(registro.get(registro.getHeader(columna)));
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -760,7 +836,7 @@ public class DeclaracionTrimestralBean implements Serializable {
                             errores.add(mensajeError(c, registro.getHeader(columna)));
 
                         columna++; //41
-                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna))))
+                        if(UtilityData.isDecimal(registro.get(registro.getHeader(columna)))&&!registro.get(columna).equals(""))
                             docPlanillaDetalle.setLiquidoPagable(registro.get(registro.getHeader(columna)));
                         else
                             errores.add(mensajeError(c, registro.getHeader(columna)));
@@ -775,7 +851,8 @@ public class DeclaracionTrimestralBean implements Serializable {
         }
         catch (Exception e){
             verificaValidacion=false;
-            e.printStackTrace();
+            logger.error("====>>>> Error al validar el archivo <<<<<=====");
+            logger.error(e.getMessage());
         }
     }
 
@@ -1199,7 +1276,7 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void setDocPlanillasParaRectificar(List<DocPlanilla> docPlanillasParaRectificar) {
         this.docPlanillasParaRectificar = docPlanillasParaRectificar;
-}
+    }
 
     public DocPlanilla getRectificatorio() {
         return rectificatorio;
@@ -1207,5 +1284,61 @@ public class DeclaracionTrimestralBean implements Serializable {
 
     public void setRectificatorio(DocPlanilla rectificatorio) {
         this.rectificatorio = rectificatorio;
+    }
+
+    public IInfoLaboralService getiInfoLaboralService() {
+        return iInfoLaboralService;
+    }
+
+    public void setiInfoLaboralService(IInfoLaboralService iInfoLaboralService) {
+        this.iInfoLaboralService = iInfoLaboralService;
+    }
+
+    public IDireccionService getiDireccionService() {
+        return iDireccionService;
+    }
+
+    public void setiDireccionService(IDireccionService iDireccionService) {
+        this.iDireccionService = iDireccionService;
+    }
+
+    public PerDireccion getPerDireccion() {
+        return perDireccion;
+    }
+
+    public void setPerDireccion(PerDireccion perDireccion) {
+        this.perDireccion = perDireccion;
+    }
+
+    public int getTrimestralAuto() {
+        return trimestralAuto;
+    }
+
+    public void setTrimestralAuto(int trimestralAuto) {
+        this.trimestralAuto = trimestralAuto;
+    }
+
+    public ParObligacionCalendario getPeriodoGestion() {
+        return periodoGestion;
+    }
+
+    public void setPeriodoGestion(ParObligacionCalendario periodoGestion) {
+        this.periodoGestion = periodoGestion;
+    }
+
+    public Long getPeriodoGestionId() {
+        return periodoGestionId;
+    }
+
+    public void setPeriodoGestionId(Long periodoGestionId) {
+        this.periodoGestionId = periodoGestionId;
+    }
+
+    public String getGestion() {
+        return gestion;
+    }
+
+    public void setGestion(String gestion) {
+        this.gestion = gestion;
     }
 }

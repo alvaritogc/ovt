@@ -291,5 +291,4 @@ public class DocDocumento implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.DocDocumento[ idDocumento=" + idDocumento + " ]";
     }
-    
 }

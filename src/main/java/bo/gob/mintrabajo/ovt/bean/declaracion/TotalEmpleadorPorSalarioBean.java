@@ -1,24 +1,14 @@
 package bo.gob.mintrabajo.ovt.bean.declaracion;
 
 import bo.gob.mintrabajo.ovt.Util.Util;
-import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
-import bo.gob.mintrabajo.ovt.entities.*;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-
-import org.primefaces.context.RequestContext;
+import bo.gob.mintrabajo.ovt.bean.EscritorioBean;
+import bo.gob.mintrabajo.ovt.entities.ParLocalidad;
+import bo.gob.mintrabajo.ovt.entities.PerPersona;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,19 +17,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 
 @ManagedBean
 @ViewScoped
@@ -139,7 +125,6 @@ public class TotalEmpleadorPorSalarioBean implements Serializable {
         } catch (Exception ex) {
             logger.error("====>>>> Error al exportar el reporte a PDF <<<<<=====");
             logger.error(ex.getMessage());
-            ex.printStackTrace();
         }
     }
 
@@ -167,7 +152,8 @@ public class TotalEmpleadorPorSalarioBean implements Serializable {
             }
             output.flush();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("No se pudo abrir el archivo");
         } finally {
             close(output);
             close(input);
@@ -181,7 +167,8 @@ public class TotalEmpleadorPorSalarioBean implements Serializable {
             try {
                 resource.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                logger.info("no se pudo cerrar el archivo");
             }
         }
     }

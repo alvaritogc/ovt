@@ -55,8 +55,12 @@
                         <h:outputText value="#{calendario.fechaHasta}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
                     </p:column>
 
-                    <p:column headerText="Fecha plazo">  
+                    <p:column headerText="1º Fecha plazo">  
                         <h:outputText value="#{calendario.fechaPlazo}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>  
+                    </p:column>
+                    
+                    <p:column headerText="2º Fecha plazo">  
+                        <h:outputText value="#{calendario.fechaPlazo2}" ><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>  
                     </p:column>
                     
                     <p:column headerText="Acciones" style="width: 60px;">
@@ -136,12 +140,16 @@
                         <p:calendar id="fechaHasta" value="#{obligacionCalendarioBean.obligacionCalendario.fechaHasta}" showOn="button" required="true" 
                                     requiredMessage="Debe ingresar la Fecha hasta" pattern="dd/MM/yyyy"/> 
 
-                        <p:outputLabel for="fechaPlazo" value="Fecha plazo:" style="font-weight:bold"/>  
-                        <p:calendar id="fechaPlazo" value="#{obligacionCalendarioBean.obligacionCalendario.fechaPlazo}" showOn="button" required="true" 
+                        <p:outputLabel for="fechaPlazo1" value="1º Fecha plazo:" style="font-weight:bold"/>  
+                        <p:calendar id="fechaPlazo1" value="#{obligacionCalendarioBean.obligacionCalendario.fechaPlazo}" showOn="button" required="true" 
                                     requiredMessage="Debe ingresar la Fecha plazo" pattern="dd/MM/yyyy"/> 
+                        
+                        <p:outputLabel for="fechaPlazo2" value="2º Fecha plazo:" style="font-weight:bold"/>  
+                        <p:calendar id="fechaPlazo2" value="#{obligacionCalendarioBean.obligacionCalendario.fechaPlazo2}" showOn="button" 
+                                     pattern="dd/MM/yyyy"/>
 
                         <p:commandButton value="Guardar" action="#{obligacionCalendarioBean.guardarModificar}" update=":tablaCalendario" icon="ui-icon-disk"/>
-                        <p:commandButton value="Canselar" actionListener="#{obligacionCalendarioBean.nuevo}" immediate="true" 
+                        <p:commandButton value="Cancelar" actionListener="#{obligacionCalendarioBean.nuevo}" immediate="true" 
                                          onclick="dlgFormObligacionCalendario.hide();" update="formCalendario" icon="ui-icon-close"/>
 
                     </h:panelGrid> 

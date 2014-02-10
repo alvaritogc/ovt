@@ -6,6 +6,32 @@
 
     <p:panel id="pnlRepLegal1" >
 
+            <p:commandButton id="cmdButtonRepLegalAgregar"
+                             value="Agregar"
+                             icon="ui-icon-plus"
+                             actionListener="#{personaUnidadBean.nuevo}"
+                             update=":frmRepLegal:pnlRepLegal,:txtDlgRepLegal"
+                             rendered="#{personaUnidadBean.repLegalPrincipal.idReplegal==null}"
+                             onclick="PF('dlgRepLegal').show()">
+
+                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
+            <p:commandButton id="cmdButtonRepLegalModificar"
+                             value="Modificar"
+                             icon="ui-icon-pencil"
+                             update=":frmRepLegal:pnlRepLegal,:txtDlgRepLegal"
+                             onclick="PF('dlgRepLegal').show()"
+                             rendered="#{personaUnidadBean.repLegalPrincipal.idReplegal!=null}">
+                <f:setPropertyActionListener value="#{personaUnidadBean.repLegalPrincipal.perUnidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.repLegalPrincipal}" target="#{personaUnidadBean.repLegal}"/>
+                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
+        <br/><br/><br/>
 
         <h:panelGrid columns="2">
             <h:outputText value="Nombre: &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;"/>

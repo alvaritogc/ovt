@@ -8,6 +8,7 @@ import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 @OpenJpaSettings
@@ -40,4 +41,10 @@ public interface UnidadRepository extends OpenJpaRepository<PerUnidad, PerUnidad
             "      and u.estadoUnidad = '1' ")
     PerUnidad obtenerPorIdPersonaIdUnidad(@Param("idPersona")String idPersona,@Param("idUnidad")long idUnidad);
 
+    @Query("SELECT u FROM PerUnidad u " +
+            "WHERE u.perUnidadPK.idPersona=:idPersona " +
+            "AND u.perUnidadPK.idUnidad NOT IN " +
+            "(SELECT d.perUnidad.perUnidadPK.idUnidad " +
+            "FROM DocDocumento d WHERE d.perUnidad.perUnidadPK.idPersona=:idPersona AND d.docDefinicion.docDefinicionPK.codDocumento =:codDocumento AND d.fechaDocumento BETWEEN :fechaHasta AND :fechaPlazo2)")
+    List<PerUnidad> listarSucursalesPorPersonaYUnidadSegunFecha(@Param("idPersona")String idPersona, @Param("codDocumento") String codDocumento, @Param("fechaHasta")Date fechaHasta, @Param("fechaPlazo2")Date fechaPlazo2);
 }

@@ -1,24 +1,16 @@
 package bo.gob.mintrabajo.ovt.bean.declaracion;
 
+import bo.gob.mintrabajo.ovt.Util.Dominios;
 import bo.gob.mintrabajo.ovt.Util.Util;
-import bo.gob.mintrabajo.ovt.bean.*;
 import bo.gob.mintrabajo.ovt.api.*;
-import bo.gob.mintrabajo.ovt.entities.*;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-
-import org.primefaces.context.RequestContext;
+import bo.gob.mintrabajo.ovt.bean.EscritorioBean;
+import bo.gob.mintrabajo.ovt.entities.ParDominio;
+import bo.gob.mintrabajo.ovt.entities.ParLocalidad;
+import bo.gob.mintrabajo.ovt.entities.PerPersona;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,19 +19,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 
 @ManagedBean
 @ViewScoped
@@ -71,6 +59,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
     private IEntidadService iEntidadService;
     @ManagedProperty(value = "#{localidadService}")
     private ILocalidadService iLocalidadService;
+    @ManagedProperty(value = "#{dominioService}")
+    private IDominioService iDominioService;
     //
     private String tipoReporte;
     private String codLocalidad;
@@ -80,6 +70,9 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
     private Date fechaHasta;
 
     private PerPersona perPersona;
+
+
+    private List<ParDominio> listaDominios;
 
     @PostConstruct
     public void ini() {
@@ -93,6 +86,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
     public void cargar() {
         perPersona = iPersonaService.findById(idPersona);
         listaLocalidades = iLocalidadService.listarDepartamentos();
+        //
+        listaDominios = iDominioService.obtenerItemsDominio(Dominios.DOM_TIPO_GRUPO_DOCUMENTO);
     }
 
     public void generarReporte() {
@@ -130,12 +125,11 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             } else {
                 parametros.put("mostrarDetalles", "false");
             }
+            //            
+            ParDominio dominio = iDominioService.obtenerDominioPorNombreYValor(Dominios.DOM_TIPO_GRUPO_DOCUMENTO, tipoPlanilla);
             parametros.put("tipoPlanilla", tipoPlanilla);
-            if (tipoPlanilla != null && tipoPlanilla.equals("LC1010")) {
-                parametros.put("descripcionTipoPlanilla", "PLANILLA TRIMESTRAL");
-            } else {
-                parametros.put("descripcionTipoPlanilla", "PLANILLA DE AGUINALDOS");
-            }
+            parametros.put("descripcionTipoPlanilla", dominio.getDescripcion());
+            //
             parametros.put("fechaDesde", fechaDesde);
             parametros.put("fechaHasta", fechaHasta);
             parametros.put("usuarioIdentificacion", perPersona.getNroIdentificacion());
@@ -151,7 +145,7 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
         } catch (Exception ex) {
             logger.error("====>>>> Error al exportar el reporte a PDF <<<<<=====");
             logger.error(ex.getMessage());
-            ex.printStackTrace();
+
         }
     }
 
@@ -179,7 +173,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             }
             output.flush();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("No se pudo abrir el archivo");
         } finally {
             close(output);
             close(input);
@@ -193,7 +188,8 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
             try {
                 resource.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                logger.info("No se pudo cerrar el recurso");
             }
         }
     }
@@ -325,5 +321,21 @@ public class TotalEmpleadorPlanillaBean implements Serializable {
 
     public void setFechaHasta(Date fechaHasta) {
         this.fechaHasta = fechaHasta;
+    }
+
+    public IDominioService getiDominioService() {
+        return iDominioService;
+    }
+
+    public void setiDominioService(IDominioService iDominioService) {
+        this.iDominioService = iDominioService;
+    }
+
+    public List<ParDominio> getListaDominios() {
+        return listaDominios;
+    }
+
+    public void setListaDominios(List<ParDominio> listaDominios) {
+        this.listaDominios = listaDominios;
     }
 }

@@ -48,6 +48,31 @@
 
     <p:panel  id="pnlInfoLaboralPrincipal" >
 
+            <p:commandButton id="cmdButtonInfoLaboral"
+                             icon="ui-icon-pencil"
+                             value="Modificar"
+                             rendered="#{personaUnidadBean.infolaboral.idInfolaboral!=null}"
+                             update=":frmInfoLaboral:pnlInfoLaboral,:txtDlgInfoLaboral,:frmInfoLaboral:cmdButtonInfoLaboral"
+                             onclick="PF('dlgInfoLaboral').show()">
+                <f:setPropertyActionListener value="#{personaUnidadBean.infolaboral.perUnidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="#{personaUnidadBean.infolaboral}" target="#{personaUnidadBean.infolaboralRegistro}"/>
+                <f:setPropertyActionListener value="Modificar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-pencil" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
+            <p:commandButton id="cmdButtonInfoLaboralPAgregar"
+                             icon="ui-icon-plus"
+                             value="Agregar"
+                             actionListener="#{personaUnidadBean.nuevo}"
+                             rendered="#{personaUnidadBean.infolaboral.idInfolaboral==null}"
+                             onclick="PF('dlgInfoLaboral').show()"
+                             update=":frmInfoLaboral:pnlInfoLaboral,:txtDlgInfoLaboral,:frmInfoLaboral:cmdButtonInfoLaboral">
+                <f:setPropertyActionListener value="#{personaUnidadBean.unidad}" target="#{personaUnidadBean.unidadRegistro}"/>
+                <f:setPropertyActionListener value="Agregar" target="#{personaUnidadBean.tituloDialog}"/>
+                <f:setPropertyActionListener value="ui-icon-plus" target="#{personaUnidadBean.iconoUnidad}"/>
+            </p:commandButton>
+
+        <br/><br/><br/>
 
             <h:panelGrid  cellpadding="2" columns="6"  style="width: 680px;" columnClasses="column1,column2,column3,column4,column5,column6">
                 <h:outputText value="Hombres:"/>

@@ -22,5 +22,11 @@ public interface TransicionRepository extends OpenJpaRepository<DocTransicion, D
             + " p.docTransicionPK.codEstadoFinal =:estadoFinal")
     DocTransicion obtieneTransicionPk(@Param("codigo")String codigo, @Param("version")short version, 
             @Param("estadoInicial")String estadoInicial, @Param("estadoFinal")String estadoFinal);
+    
+    @Query("select p "
+            + " from DocTransicion p "
+            + " where "
+            + " p.docTransicionPK.codDocumento = :documento")
+    List<DocTransicion> listaTransicionPorDocumento(@Param("documento")String tipoDocumento);
 
 }

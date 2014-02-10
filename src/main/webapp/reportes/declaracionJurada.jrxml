@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="declaracionJurada" language="groovy" pageWidth="612" pageHeight="792" columnWidth="500" leftMargin="56" rightMargin="56" topMargin="20" bottomMargin="15" uuid="1abc3a07-2f6b-448c-bb07-7fbf6c225db1">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="declaracionJurada" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="NoDataSection" columnWidth="500" leftMargin="56" rightMargin="56" topMargin="20" bottomMargin="15" uuid="1abc3a07-2f6b-448c-bb07-7fbf6c225db1">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="218"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -31,19 +31,21 @@
 	<parameter name="escudoDerecha" class="java.lang.String"/>
 	<parameter name="nro_unidades" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT distinct t8.*,coalesce(dom.descripcion,' ') tipoDireccionDominio
+		<![CDATA[select t9.*
+from (
+SELECT t8.*,coalesce(dom.descripcion,' ') tipoDireccionDominio
 FROM par_dominio dom
 RIGHT OUTER JOIN
 (
-SELECT t7.*,coalesce(ae.descripcion,' ') actividadEconomica
+SELECT distinct t7.*,coalesce(ae.descripcion,' ') actividadEconomica
 FROM par_actividad_economica ae
 RIGHT OUTER JOIN
 (
- SELECT t6.*,a.id_actividad_economica idActividadEconomica
+ SELECT distinct t6.*,a.id_actividad_economica idActividadEconomica,coalesce(a.estado,'VER') estadoActividad
  FROM per_actividad a
  RIGHT OUTER JOIN
  (
- SELECT t5.*,coalesce(info.nro_total_trabajadores,0) nroTotalTrabajadores,
+ SELECT distinct t5.*,coalesce(info.nro_total_trabajadores,0) nroTotalTrabajadores,
         coalesce(info.nro_hombres,0) hombres,coalesce(info.nro_mujeres,0) mujeres,
         coalesce(info.nro_extranjeros,0) extranjeros,coalesce(info.nro_fijos,0) fijos,coalesce(info.nro_eventuales,0) eventuales,
         coalesce(info.nro_menores18,0) menores18,coalesce(info.nro_mayores60,0) mayores60,
@@ -53,58 +55,63 @@ RIGHT OUTER JOIN
         coalesce(info.nro_aseg_afp,0) asegAfp,coalesce(info.monto_aseg_afp,0) montoAfp,
         decode(info.tipo_sindicato,'true','SI'
                                   ,'false','NO'
-                                  ,null,'NO') sindicato
+                                  ,null,'NO') sindicato,
+                                        coalesce(info.estado_infolaboral,'VER') estadoInfoLaboral
+                                      FROM per_infolaboral info
+                                      RIGHT OUTER JOIN
+                                          (
+                                            SELECT distinct t4.*,coalesce(l.descripcion,' ') deptoDireccion
+                                            FROM par_localidad l
+                                            RIGHT OUTER JOIN
+                                            (
+                                              SELECT distinct t3.*,
+                                                    coalesce(d.cod_localidad,' ') cod_localidad,coalesce(d.zona_urbanizacion,' ') zonaUrbanizacion,
+                                                    coalesce(d.piso_dep_ofi,' ') edificio,
+                                                    coalesce(d.direccion,' ') direccion,
+                                                    coalesce(d.tipo_direccion,' ') tipoDireccion,
+                                                    coalesce(d.telefono,' ') || ' ' || coalesce(d.telefono2,' ') telefono,
+                                                    coalesce(d.fax,' ') fax,
+                                                    coalesce(d.email,' ') || ' ' || coalesce(d.email2,' ') correoElectronico,
+                                                    coalesce(d.estado,'VER') estadoDireccion
+                                              FROM per_direccion d RIGHT OUTER JOIN
+                                              (
+                                                  SELECT distinct t2.*,coalesce(r.estado_rep_legal,'VER') estadoRepLegal,
+                                                         coalesce(r.nombre,' ') || ' ' || coalesce(r.apellido_paterno,' ') || ' ' || coalesce(r.apellido_materno,' ') representanteLegal,
+                                                         coalesce(r.nro_indentificacion,' ') nroIdentificacionRepLegal
+                                                   FROM per_replegal r RIGHT OUTER JOIN
+                                                      (
+                                                        SELECT distinct t1.*,d2.descripcion tipoSociedad
+                                                        FROM par_dominio d2  JOIN
+                                                            (
+                                                                SELECT distinct p.id_persona ,
+                                                                                p.nombre_razon_social || ' ' ||
+                                                                                coalesce(p.apellido_paterno,' ') || ' ' || coalesce(p.apellido_materno,' ') nombreRazonSocial,
+                                                                                p.nro_identificacion NIT,
+                                                                                u.nombre_comercial nombreComercial,TO_CHAR(u.fecha_nacimiento,'DD/MM/YYYY') fechaActividades,
+                                                                                coalesce(u.nro_caja_salud,' ') cajaSalud,
+                                                                                u.tipo_sociedad ,d.descripcion tipoEmpleador,
+                                                                                u.id_unidad ,
+                                                                                estado_unidad estadoUnidad
+                                                                FROM per_persona p
+                                                                  LEFT OUTER JOIN per_unidad u
+                                                                  ON(u.id_persona = p.id_persona)
+                                                                  JOIN par_dominio d
+                                                                  ON (d.valor =u.tipo_empresa )
+                                                                WHERE p.id_persona = $P{idPersona} order by u.id_unidad
+                                                            ) t1
+                                                        ON d2.id_dominio = 'TSOCIEDAD' and d2.valor = t1. tipo_sociedad
+                                                      ) t2
+                                                  ON (r.id_persona = t2.id_persona and r.id_unidad = t2.id_unidad)
 
- FROM per_infolaboral info
- RIGHT OUTER JOIN
- (
- SELECT t4.*,coalesce(l.descripcion,' ') deptoDireccion
- FROM par_localidad l
- RIGHT OUTER JOIN
- (
- select t3.*,
-        coalesce(d.cod_localidad,' ') cod_localidad,coalesce(d.zona_urbanizacion,' ') zonaUrbanizacion,
-        coalesce(d.piso_dep_ofi,' ') edificio,
-        coalesce(d.direccion,' ') direccion,
-        coalesce(d.tipo_direccion,' ') tipoDireccion,
-        coalesce(d.telefono,' ') || ' ' || coalesce(d.telefono2,' ') telefono,
-        coalesce(d.fax,' ') fax,
-        coalesce(d.email,' ') || ' ' || coalesce(d.email2,' ') correoElectronico
-  FROM per_direccion d RIGHT OUTER JOIN
-  (
-                        SELECT t2.*,
-                               coalesce(r.nombre,' ') || ' ' || coalesce(r.apellido_paterno,' ') || ' ' || coalesce(r.apellido_materno,' ') representanteLegal,
-                               coalesce(r.nro_indentificacion,' ') nroIdentificacionRepLegal
-                        FROM per_replegal r RIGHT OUTER JOIN
-                                       (
-                                            SELECT t1.*,d2.descripcion tipoSociedad
-                                            FROM par_dominio d2  JOIN
-                                                  (SELECT p.id_persona ,
-                                                          p.nombre_razon_social || ' ' ||
-                                                          coalesce(p.apellido_paterno,' ') || ' ' || coalesce(p.apellido_materno,' ') nombreRazonSocial,
-                                                          p.nro_identificacion NIT,
-                                                          u.id_unidad ,
-                                                          u.nombre_comercial nombreComercial,TO_CHAR(u.fecha_nacimiento,'DD/MM/YYYY') fechaActividades,
-                                                          coalesce(u.nro_caja_salud,' ') cajaSalud,
-                                                          u.tipo_sociedad ,d.descripcion tipoEmpleador
-                                                  FROM per_persona p
-                                                       LEFT OUTER JOIN per_unidad u
-                                                       ON(u.id_persona = p.id_persona)
-                                                       JOIN par_dominio d
-                                                       ON (d.valor =u.tipo_empresa )
-                                                  WHERE p.id_persona = $P{idPersona}
-
-                                                  ) t1
-                                           ON d2.id_dominio = 'TSOCIEDAD' and d2.valor = t1. tipo_sociedad
-                                       ) t2
-                      ON (r.id_persona = t2.id_persona and r.id_unidad = t2.id_unidad)
                       ) t3
 ON ( d.id_persona = t3.id_persona and d.id_unidad = t3.id_unidad )
+
 )t4
 
 ON (l.cod_localidad = t4.cod_localidad)
 )t5
 ON ( info.id_persona = t5.id_persona and info.id_unidad = t5.id_unidad )
+
 )t6
 ON ( a.id_persona = t6.id_persona and a.id_unidad = t6.id_unidad )
 )t7
@@ -112,7 +119,10 @@ ON (t7.idActividadEconomica = ae.id_actividad_economica)
 )t8
 ON (dom.valor = t8.tipoDireccion)
 
-order by t8.id_unidad]]>
+order by t8.id_unidad
+)t9
+where (t9.estadoDireccion='A' or t9.estadoDireccion='VER') and (t9.estadoRepLegal='A' or t9.estadoRepLegal='VER') and (t9.estadoActividad = 'A' or t9.estadoActividad ='VER') and
+      (t9.estadoInfoLaboral='A' or t9.estadoInfoLaboral='VER')]]>
 	</queryString>
 	<field name="ID_PERSONA" class="java.lang.String"/>
 	<field name="NOMBRERAZONSOCIAL" class="java.lang.String"/>
@@ -1273,6 +1283,7 @@ order by t8.id_unidad]]>
 	</title>
 	<pageHeader>
 		<band height="40">
+			<printWhenExpression><![CDATA[$F{ID_UNIDAD}>0]]></printWhenExpression>
 			<staticText>
 				<reportElement uuid="cd001717-0ebc-4e0c-b740-ab7715b41688" x="9" y="8" width="480" height="30"/>
 				<textElement>
@@ -1287,6 +1298,7 @@ order by t8.id_unidad]]>
 	</pageHeader>
 	<detail>
 		<band height="239">
+			<printWhenExpression><![CDATA[$F{ID_UNIDAD}>0]]></printWhenExpression>
 			<rectangle>
 				<reportElement uuid="8d0caa26-0f2d-4102-9610-c45197334fb5" x="421" y="210" width="73" height="13"/>
 				<graphicElement>

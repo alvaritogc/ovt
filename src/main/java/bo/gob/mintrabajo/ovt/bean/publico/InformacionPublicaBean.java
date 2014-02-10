@@ -1,9 +1,8 @@
 package bo.gob.mintrabajo.ovt.bean.publico;
 
-import bo.gob.mintrabajo.ovt.bean.*;
-import bo.gob.mintrabajo.ovt.api.*;
-import bo.gob.mintrabajo.ovt.entities.*;
-//import bo.gob.mintrabajo.ovt.envano.DobleTrabajoConexion;
+import bo.gob.mintrabajo.ovt.api.IMensajeAppService;
+import bo.gob.mintrabajo.ovt.bean.EscritorioBean;
+import bo.gob.mintrabajo.ovt.entities.ParMensajeApp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,20 +11,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.*;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-//import java.util.Collection;
-//import java.util.Collection;
-
-import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import org.primefaces.context.RequestContext;
+
+//import bo.gob.mintrabajo.ovt.envano.DobleTrabajoConexion;
+//import java.util.Collection;
+//import java.util.Collection;
 
 @ManagedBean
 @ViewScoped
@@ -76,7 +66,8 @@ public class InformacionPublicaBean {
             parMensajeApp = iMensajeAppService.findById(idMensajeApp);
             rutaInformacionOvt = "file://" + parMensajeApp.getReferencia();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("====>>>> Error al cargar <<<<<=====");
+            logger.error(e.getMessage());
             rutaInformacionOvt = "/pages/util/default.xhtml";
         }
     }

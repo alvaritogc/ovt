@@ -103,14 +103,14 @@
     </servlet-mapping>
     <!-- Para JETTY -->
     <!--<welcome-file-list>  <welcome-file>pages/inicio.jsf</welcome-file> </welcome-file-list>-->
-    <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
-    </session-config>
+        <session-config>
+            <session-timeout>
+                600
+            </session-timeout>
+        </session-config>
     <!-- Para JBOSS -->
     <welcome-file-list>
-    <welcome-file>faces/pages/inicio.xhtml</welcome-file>
+        <welcome-file>faces/pages/inicio.xhtml</welcome-file>
     </welcome-file-list>
 
 </web-app>

@@ -84,6 +84,24 @@ public class MensajeContenidoService implements IMensajeContenidoService {
     }
 
     @Override
+    public ParMensajeContenido modificarBinario(Long idMensajeContenido, String archivo, String metadata, byte[] binario, String bitacoraSession) {
+        ParMensajeContenido parMensajeContenido = repository.findOne(idMensajeContenido);
+        parMensajeContenido.setArchivo(archivo);
+        parMensajeContenido.setMetadata(metadata);
+        parMensajeContenido = repository.save(parMensajeContenido);
+        repository.flush();
+
+        ParMensajeBinario parMensajeBinario = mensajeBinarioRepository.buscarPorMensajeContenido(idMensajeContenido);
+        parMensajeBinario.setBinario(binario);
+        parMensajeBinario.setIdMensajeContenido(parMensajeContenido);
+        parMensajeBinario.setRegistroBitacora(bitacoraSession);
+        parMensajeBinario = mensajeBinarioRepository.save(parMensajeBinario);
+        mensajeBinarioRepository.flush();
+
+        return parMensajeContenido;
+    }
+
+    @Override
     public boolean delete(Long idMensajeContenido) {
         try {
             ParMensajeBinario parMensajeBinario = mensajeBinarioRepository.buscarPorMensajeContenido(idMensajeContenido);
@@ -96,7 +114,8 @@ public class MensajeContenidoService implements IMensajeContenidoService {
             //
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            //no se pudo borrar el mensaje contenido
         }
         return false;
     }

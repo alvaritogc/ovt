@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formularioLC1010V1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="568" leftMargin="22" rightMargin="22" topMargin="36" bottomMargin="29" uuid="54ed5ff0-e063-45f1-bf51-22a9cd535eb5">
 	<property name="ireport.zoom" value="1.3636363636363635"/>
-	<property name="ireport.x" value="145"/>
-	<property name="ireport.y" value="82"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="370"/>
 	<subDataset name="Table Dataset 1" uuid="88c88a65-992c-4a71-90ea-825f6471794f"/>
 	<parameter name="nroOrden" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
@@ -807,7 +807,7 @@ aportado (Bs)]]></text>
 				<text><![CDATA[4.5 Monto
 aportado (Bs)]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement uuid="47c401f7-7d72-4836-af95-cb5ea72ee17c" x="234" y="10" width="59" height="20"/>
 				<box>
 					<pen lineWidth="1.0"/>
@@ -821,7 +821,7 @@ aportado (Bs)]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{montoAportadoAsegurados}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement uuid="ce2e6e4d-db7c-427a-ba7c-33694e5c1bcb" x="234" y="46" width="59" height="20"/>
 				<box>
 					<pen lineWidth="1.0"/>

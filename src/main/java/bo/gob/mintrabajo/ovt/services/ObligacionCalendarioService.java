@@ -63,7 +63,7 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
     public List<ParObligacionCalendario> listaObligacionCalendarioPorObligacion(String codObligacion){
         List<ParObligacionCalendario> lista;
         try {
-            lista = obligacionCalendarioRepository.findByCodObligacion_CodObligacion(codObligacion);
+            lista = obligacionCalendarioRepository.listaEnOrdenYPorCodObligacion(codObligacion);
         } catch (Exception e) {
             e.printStackTrace();
             lista = null;
@@ -89,6 +89,7 @@ public class ObligacionCalendarioService implements IObligacionCalendarioService
         poc.setFechaDesde(obligacionCalendario.getFechaDesde());
         poc.setFechaHasta(obligacionCalendario.getFechaHasta());
         poc.setFechaPlazo(obligacionCalendario.getFechaPlazo());
+        poc.setFechaPlazo2(obligacionCalendario.getFechaPlazo2());
 
         poc.setFechaBitacora(new Date());
         poc.setRegistroBitacora(REGISTRO_BITACORA);

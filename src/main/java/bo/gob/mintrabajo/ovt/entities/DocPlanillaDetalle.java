@@ -473,5 +473,4 @@ public class DocPlanillaDetalle implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.DocPlanillaDetalle[ idPlanillaDetalle=" + idPlanillaDetalle + " ]";
     }
-    
 }

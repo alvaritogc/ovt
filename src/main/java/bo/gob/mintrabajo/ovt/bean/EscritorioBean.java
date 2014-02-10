@@ -70,6 +70,8 @@ public class EscritorioBean {
     private IUtilsService iUtilsService;
     @ManagedProperty(value = "#{parametrizacionService}")
     private IParametrizacionService iParametrizacionService;
+    @ManagedProperty(value = "#{direccionService}")
+    private IDireccionService iDireccionService;
     //
     private String textoBenvenida;
     //
@@ -93,6 +95,9 @@ public class EscritorioBean {
     private String observacionLogEstado;
     private String conBinario;
     private String bitacoraSession;
+    
+    /////
+   private boolean delegado=false;
 
     @PostConstruct
     public void ini() {
@@ -101,6 +106,9 @@ public class EscritorioBean {
         idPersona = (String) session.getAttribute("idPersona");
         idEmpleador = (String) session.getAttribute("idEmpleador");
         bitacoraSession = (String) session.getAttribute("bitacoraSession");
+        //////////////////////////////////////////LUIS
+        delegado = "siDelegado".equals((String) session.getAttribute("delegado"));
+
         System.out.println("idPersona: " + idPersona);
         System.out.println("idEmpleador: " + idEmpleador);
         //
@@ -118,18 +126,47 @@ public class EscritorioBean {
 
     public void cargar() {
         textoBenvenida = "Bienvenido  OVT";
-        listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
+        listaUnidades= new ArrayList<PerUnidad>();
+        //listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
+        /////////////////////////////////LUIS
+        if(delegado){
+            List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,idEmpleador);
+        
+            for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                if(perUsuarioUnidad.getEstado().equals("A"))
+                    listaUnidades.add(iUnidadService.obtenerPorIdPersonaIdUnidad(idEmpleador, perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+            }   
+        }else{
+            listaUnidades = iUnidadService.buscarPorPersona(idEmpleador);
+        }
+        /////////////////////////////////
         cargarDocumentos();
     }
 
     public void cargarDocumentos() {
         try {
-            listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
+            listaDocumentos = new ArrayList<DocDocumento>();
+            /////////////////////////////////LUIS
+            if (delegado) {
+                List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario, idEmpleador);
+                for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                    if (perUsuarioUnidad.getEstado().equals("A")) {
+                        //DocDocumento doc = new DocDocumento();                      
+                        listaDocumentos.addAll(iDocumentoService.obtenerPorIdPersonaIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+//                        if (doc != null)
+//                            listaDocumentos.add(doc);
+                    }
+                }
+            } else {
+                listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
+            }
+            
+            //listaDocumentos = iDocumentoService.listarPorPersona(idEmpleador);
             if (listaDocumentos == null) {
                 listaDocumentos = new ArrayList<DocDocumento>();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             listaDocumentos = new ArrayList<DocDocumento>();
         }
     }
@@ -205,17 +242,32 @@ public class EscritorioBean {
                 parametros.put("mesPresentacion", docPlanilla.getParCalendario().getParCalendarioPK().getTipoPeriodo());
                 parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
-                parametros.put("departamento", vperPersona.getDirDepartamento());
-                parametros.put("direccion", vperPersona.getDirDireccion());
-                parametros.put("telefono", vperPersona.getTelefono());
+
+
+                PerDireccion perDireccion = iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+                if(perDireccion!=null){
+                    parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
+                    parametros.put("direccion", perDireccion.getDireccion());
+                    parametros.put("telefono", perDireccion.getTelefono());
+                    parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
+                    parametros.put("fax", perDireccion.getFax());
+                    parametros.put("zona", perDireccion.getZonaUrbanizacion());
+                    parametros.put("numero", perDireccion.getPisoDepOfi());
+                    parametros.put("correoElectronico", perDireccion.getEmail());
+                }else{
+                    parametros.put("departamento", "");
+                    parametros.put("direccion", "");
+                    parametros.put("telefono", "");
+                    parametros.put("ciudadLocalidad", "");
+                    parametros.put("fax", "");
+                    parametros.put("zona","");
+                    parametros.put("numero", "");
+                    parametros.put("correoElectronico", "");
+                }
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getLocalidad());
-                parametros.put("fax", vperPersona.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
-                parametros.put("zona", vperPersona.getDirZona());
-                parametros.put("numero", vperPersona.getDirNroDireccion());
-                parametros.put("correoElectronico", vperPersona.getEmail());
+
                 parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
                 parametros.put("montoAportadoAsegurados", docPlanilla.getMontoAsegCaja());
                 if (docPlanilla.getIdEntidadSalud() != null) {
@@ -250,14 +302,14 @@ public class EscritorioBean {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(docPlanilla.getFechaOperacion());
                 parametros.put("diaDeposito", cal.get(Calendar.DAY_OF_MONTH));
-                int mes1=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesDeposito", mes1+1);
+                int mes1 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesDeposito", mes1 + 1);
                 parametros.put("anioDeposito", cal.get(Calendar.YEAR));
                 cal = Calendar.getInstance();
                 cal.setTime(docDocumento.getFechaDocumento());
                 parametros.put("diaFechaPresentacion", cal.get(Calendar.DAY_OF_MONTH));
-                int mes2=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesFechaPresentacion", mes2+1);
+                int mes2 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesFechaPresentacion", mes2 + 1);
                 parametros.put("anioFechaPresentacion", cal.get(Calendar.YEAR));
                 parametros.put("montoDeposito", docPlanilla.getMontoOperacion());
                 parametros.put("nroComprobante", docPlanilla.getNumOperacion());
@@ -273,19 +325,20 @@ public class EscritorioBean {
                 parametros.put("escudoBolivia", servletContext.getRealPath("/") + "/images/escudo.jpg");
                 parametros.put("logo", servletContext.getRealPath("/") + "/images/logoMIN.jpg");
 
-                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento + "-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
 
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC1010V1.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
-
         if (codDocumento.equals("ROE010")) {
             parametros.clear();
-            parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
+            //parametros.put("codigoEmpleador", vperPersona.getNroIdentificacion());
+            parametros.put("codigoEmpleador", vperPersona.getNroOtro());
             String nombreCompleto = vperPersona.getNombreRazonSocial();
             if (vperPersona.getApellidoPaterno() != null) {
                 nombreCompleto = nombreCompleto + " " + vperPersona.getApellidoPaterno();
@@ -298,10 +351,22 @@ public class EscritorioBean {
             parametros.put("domOficina", vperPersona.getDirDireccion());
             parametros.put("repLegal", vperPersona.getRlNombre());
             parametros.put("fechaEmision", (new SimpleDateFormat("dd/MM/yyyy")).format(new Date()));
-            parametros.put("nroUbicaciones", vperPersona.getNroOtro());
+            //parametros.put("nroUbicaciones", vperPersona.getNroOtro());
+            List<PerUnidad> listaUnidades = iUnidadService.buscarPorPersona(vperPersona.getIdPersona());
+            int nroUbicaciones;
+            if (listaUnidades != null && !listaUnidades.isEmpty()) {
+                nroUbicaciones = listaUnidades.size() - 1;
+            } else {
+                nroUbicaciones = 0;
+            }
+            parametros.put("nroUbicaciones", String.valueOf(nroUbicaciones));
 
-
-            parametros.put("roe", servletContext.getRealPath("/") + "/images/roe.jpg");
+            if (esInterno) {
+                parametros.put("roe", servletContext.getRealPath("/") + "/images/roe.jpg");
+            } else {
+                parametros.put("roe", servletContext.getRealPath("/") + "/images/roeInvalido.jpg");
+            }
+            //parametros.put("roe", servletContext.getRealPath("/") + "/images/roe.jpg");
 
             try {
                 String nombrePdf = codDocumento.concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
@@ -329,8 +394,8 @@ public class EscritorioBean {
                 file.delete();
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("ERROR al generar el reporte: " + e.getMessage());
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -344,7 +409,7 @@ public class EscritorioBean {
                 parametros.put("direccion", vperPersona.getDirDireccion());
                 parametros.put("telefono", vperPersona.getTelefono());
                 parametros.put("patronalSS", vperPersona.getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getLocalidad());
+                parametros.put("ciudadLocalidad", vperPersona.getDirLocalidad());
                 parametros.put("fax", vperPersona.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
@@ -356,8 +421,8 @@ public class EscritorioBean {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(docDocumento.getFechaDocumento());
                 parametros.put("diaFechaPresentacion", cal.get(Calendar.DAY_OF_MONTH));
-                int mes1=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesFechaPresentacion", mes1+1);
+                int mes1 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesFechaPresentacion", mes1 + 1);
                 parametros.put("anioFechaPresentacion", cal.get(Calendar.YEAR));
                 parametros.put("nombreEmpleador", vperPersona.getRlNombre());
                 parametros.put("nroDocumento", vperPersona.getRlNroIdentidad());
@@ -385,12 +450,12 @@ public class EscritorioBean {
                     parametros.put("bajaSeguroLargoPlazo", "");
                 }
                 parametros.put("nombreFuncionario", docGenerico.getCadena10());
-                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento + "-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe012.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("ERROR al generar el reporte: " + e.getMessage());
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -407,7 +472,7 @@ public class EscritorioBean {
                 parametros.put("direccion", vperPersona.getDirDireccion());
                 parametros.put("telefono", vperPersona.getTelefono());
                 parametros.put("patronalSS", vperPersona.getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getLocalidad());
+                parametros.put("ciudadLocalidad", vperPersona.getDirLocalidad());
                 parametros.put("fax", vperPersona.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
@@ -419,13 +484,12 @@ public class EscritorioBean {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(docDocumento.getFechaDocumento());
                 parametros.put("diaFechaPresentacion", cal.get(Calendar.DAY_OF_MONTH));
-                int mes1=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesFechaPresentacion", mes1+1);
+                int mes1 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesFechaPresentacion", mes1 + 1);
                 parametros.put("anioFechaPresentacion", cal.get(Calendar.YEAR));
                 parametros.put("nombreEmpleador", vperPersona.getRlNombre());
                 parametros.put("nroDocumento", vperPersona.getRlNroIdentidad());
                 parametros.put("lugarPresentacion", "Oficina Virtual");
-
 
                 parametros.put("cadena1", docGenerico.getCadena01() != null ? docGenerico.getCadena01() : "SIN MOVIMIENTO");
                 parametros.put("cadena2", docGenerico.getCadena02() != null ? docGenerico.getCadena02() : "SIN MOVIMIENTO");
@@ -439,12 +503,12 @@ public class EscritorioBean {
                 String cadena4 = docGenerico.getValor01() != null ? (df.format(docGenerico.getValor01())) : "SIN MOVIMIENTO";
                 parametros.put("cadena4", cadena4);
 
-                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento + "-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/roe013.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("ERROR al generar el reporte: " + e.getMessage());
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -464,17 +528,32 @@ public class EscritorioBean {
                 parametros.put("mesPresentacion", docPlanilla.getParCalendario().getParCalendarioPK().getGestion());
                 parametros.put("empleadorMTEPS", docDocumento.getPerUnidad().getNroReferencial());
                 parametros.put("razonSocial", persona.getNombreRazonSocial());
-                parametros.put("departamento", vperPersona.getDirDepartamento());
-                parametros.put("direccion", vperPersona.getDirDireccion());
-                parametros.put("telefono", vperPersona.getTelefono());
+
+                PerDireccion perDireccion = iDireccionService.obtenerPorIdPersonaYIdUnidadYEstadoActivo(docDocumento.getPerUnidad().getPerUnidadPK());
+                if(perDireccion!=null){
+                    parametros.put("departamento", perDireccion.getCodLocalidad().getDescripcion());
+                    parametros.put("direccion", perDireccion.getDireccion());
+                    parametros.put("telefono", perDireccion.getTelefono());
+                    parametros.put("ciudadLocalidad", perDireccion.getLocalidad());
+                    parametros.put("fax", perDireccion.getFax());
+                    parametros.put("zona", perDireccion.getZonaUrbanizacion());
+                    parametros.put("numero", perDireccion.getPisoDepOfi());
+                    parametros.put("correoElectronico", perDireccion.getEmail());
+                }else{
+                    parametros.put("departamento", "");
+                    parametros.put("direccion", "");
+                    parametros.put("telefono", "");
+                    parametros.put("ciudadLocalidad", "");
+                    parametros.put("fax", "");
+                    parametros.put("zona","");
+                    parametros.put("numero", "");
+                    parametros.put("correoElectronico", "");
+                }
+
                 parametros.put("patronalSS", docDocumento.getPerUnidad().getNroCajaSalud());
-                parametros.put("ciudadLocalidad", vperPersona.getLocalidad());
-                parametros.put("fax", vperPersona.getFax());
                 parametros.put("nit", vperPersona.getNroIdentificacion() + "");
                 parametros.put("actividadEconomica", vperPersona.getActividadDeclarada());
-                parametros.put("zona", vperPersona.getDirZona());
-                parametros.put("numero", vperPersona.getDirNroDireccion());
-                parametros.put("correoElectronico", vperPersona.getEmail());
+
                 parametros.put("nroAsegurados", docPlanilla.getNroAsegCaja());
                 parametros.put("montoAportadoAsegurados", docPlanilla.getMontoAsegCaja());
                 if (docPlanilla.getIdEntidadSalud() != null) {
@@ -495,15 +574,15 @@ public class EscritorioBean {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(docPlanilla.getFechaOperacion());
                 parametros.put("diaDeposito", cal.get(Calendar.DAY_OF_MONTH));
-                int mes1=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesDeposito", mes1+1);
+                int mes1 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesDeposito", mes1 + 1);
                 parametros.put("anioDeposito", cal.get(Calendar.YEAR));
                 cal = Calendar.getInstance();
                 cal.setTime(docDocumento.getFechaDocumento());
                 parametros.put("diaFechaPresentacion", cal.get(Calendar.DAY_OF_MONTH));
 //                cal.add(Calendar.MONTH, 1);
-                int mes2=Integer.valueOf(cal.get(Calendar.MONTH));
-                parametros.put("mesFechaPresentacion", mes2+1);
+                int mes2 = Integer.valueOf(cal.get(Calendar.MONTH));
+                parametros.put("mesFechaPresentacion", mes2 + 1);
                 parametros.put("anioFechaPresentacion", cal.get(Calendar.YEAR));
                 parametros.put("montoDeposito", docPlanilla.getMontoOperacion());
                 parametros.put("nroComprobante", docPlanilla.getNumOperacion());
@@ -516,12 +595,13 @@ public class EscritorioBean {
                 parametros.put("escudoBolivia", servletContext.getRealPath("/") + "/images/escudo.jpg");
                 parametros.put("logo", servletContext.getRealPath("/") + "/images/logoMIN.jpg");
 
-                String nombrePdf = codDocumento+"-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
+                String nombrePdf = codDocumento + "-".concat(Util.encriptaMD5(String.valueOf(idUsuarioEmpleador).concat(String.valueOf(idPersonaPorDocumento)))) + ".pdf";
 
                 redirecionarReporte(iDocumentoService.generateReport(nombrePdf, "/reportes/formularioLC2010V1.jasper", parametros));
                 verificaReporte = true;
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("====>>>> Error al generar el reporte a PDF <<<<<=====");
+                logger.error(e.getMessage());
             }
         }
 
@@ -532,91 +612,88 @@ public class EscritorioBean {
         }
     }
 
-
     /**
-     *  Genera un nombre para archivo PDF.
-     *  Este nombre esta compuesto del nombreRazonSocial, la fecha
-     *  y un randomico de dos dígitos.
+     * Genera un nombre para archivo PDF.
+     * Este nombre esta compuesto del nombreRazonSocial, la fecha
+     * y un randomico de dos dígitos.
      */
-    static String generarNombreReporte(String nombreRazonSocial){
-        String nombreArchivo="";
-        SimpleDateFormat sdf=new SimpleDateFormat("ddMMyyyyHHmmss");
-        Date fecha=new Date();
-        Random num=new Random();
-        String nu=String.valueOf(num.nextInt(2));
-        nombreArchivo=sdf.format(fecha).toString()+nu;
-        nombreArchivo="declaracionJurada-"+nombreRazonSocial+nombreArchivo+".pdf";
+    static String generarNombreReporte(String nombreRazonSocial) {
+        String nombreArchivo = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyHHmmss");
+        Date fecha = new Date();
+        Random num = new Random();
+        String nu = String.valueOf(num.nextInt(2));
+        nombreArchivo = sdf.format(fecha).toString() + nu;
+        nombreArchivo = "declaracionJurada-" + nombreRazonSocial + nombreArchivo + ".pdf";
         return nombreArchivo;
     }
+
     /*
     *  GENERA EL REPORTE DE LA DECLARACION JURADA
      */
-    public void generarReporte(){
+    public void generarReporte() {
 
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String rutaWebApp = servletContext.getRealPath("/");
 
-        ServletContext servletContext=(ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext();
-        String rutaWebApp=servletContext.getRealPath("/");
+        String jrxmlFileName = rutaWebApp + "/reportes/declaracionJurada.jrxml";
+        String jasperFileName = rutaWebApp + "/reportes/declaracionJurada.jasper";
+        String pdfFileName = "";
 
-        String jrxmlFileName=rutaWebApp+"/reportes/declaracionJurada.jrxml";
-        String jasperFileName=rutaWebApp+"/reportes/declaracionJurada.jasper";
-        String pdfFileName="";
+        String dbUrl = "jdbc:oracle:thin:@192.168.50.7:1521:desa";
+        String dbDriver = "oracle.jdbc.driver.OracleDriver";
+        String dbUname = "ovt";
+        String dbPwd = "prueba";
 
-        String dbUrl="jdbc:oracle:thin:@192.168.50.7:1521:desa";
-        String dbDriver="oracle.jdbc.driver.OracleDriver";
-        String dbUname="ovt";
-        String dbPwd="prueba";
+        Connection conn = null;
 
-        Connection conn=null;
+        String idPersona = (String) session.getAttribute("idEmpleador");
+        PerPersona p = iPersonaService.findById(idPersona);
+        pdfFileName = generarNombreReporte(p.getNombreRazonSocial());
 
-
-        String idPersona=(String)session.getAttribute("idEmpleador");
-        PerPersona p=iPersonaService.findById(idPersona);
-        pdfFileName=generarNombreReporte(p.getNombreRazonSocial());
-
-        try{
+        try {
             Class.forName(dbDriver);
-        }catch(ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             logger.error("ORACLE JDBC Driver no encontrado");
         }
 
-        try{
+        try {
             //conn= DriverManager.getConnection(dbUrl, dbUname, dbPwd);
-            conn=Util.obtenerDatasource().getConnection();
-        }catch (SQLException e){
-            logger.error("Error de conexion "+e.getMessage());
+            conn = Util.obtenerDatasource().getConnection();
+        } catch (SQLException e) {
+            logger.error("Error de conexion " + e.getMessage());
         }
 
-        try{
-            String rutaEscudoIzquierda=rutaWebApp+"/images/escudo.jpg";
-            String rutaEscudoDerecha=rutaWebApp+"/images/escudo.jpg";
+        try {
+            String rutaEscudoIzquierda = rutaWebApp + "/images/escudo.jpg";
+            String rutaEscudoDerecha = rutaWebApp + "/images/escudo.jpg";
             // Paramatros para el reporte
-            HashMap hm=new HashMap();
-            hm.put("idPersona",idPersona);
+            HashMap hm = new HashMap();
+            hm.put("idPersona", idPersona);
 
-            hm.put("escudoIzquierda",rutaEscudoIzquierda);
-            hm.put("escudoDerecha",rutaEscudoDerecha);
+            hm.put("escudoIzquierda", rutaEscudoIzquierda);
+            hm.put("escudoDerecha", rutaEscudoDerecha);
 
-            long nroUnidades=0;
-            if(iUnidadService.buscarPorPersona(idPersona)!=null){
-                nroUnidades= iUnidadService.buscarPorPersona(idPersona).size();
+            long nroUnidades = 0;
+            if (iUnidadService.buscarPorPersona(idPersona) != null) {
+                nroUnidades = iUnidadService.buscarPorPersona(idPersona).size();
             }
-            hm.put("nro_unidades",nroUnidades);
-
+            hm.put("nro_unidades", nroUnidades);
 
             JasperCompileManager.compileReportToFile(jrxmlFileName, jasperFileName);
 
-            String rutaPdf="/reportes/temp/"+pdfFileName;
-            String nombrePdf=rutaWebApp+rutaPdf;
+            String rutaPdf = "/reportes/temp/" + pdfFileName;
+            String nombrePdf = rutaWebApp + rutaPdf;
 
-            JasperPrint jprint=(JasperPrint) JasperFillManager.fillReport(jasperFileName, hm, conn);
+            JasperPrint jprint = (JasperPrint) JasperFillManager.fillReport(jasperFileName, hm, conn);
             JasperExportManager.exportReportToPdfFile(jprint, nombrePdf);
 
             redirecionarReporte(nombrePdf);
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             logger.error("====>>>> Error al exportar el reporte a PDF <<<<<=====");
             logger.error(ex.getMessage());
-            ex.printStackTrace();
+//            ex.printStackTrace();
         }
     }
 
@@ -879,5 +956,21 @@ public class EscritorioBean {
 
     public void setConBinario(String conBinario) {
         this.conBinario = conBinario;
+    }
+
+    public boolean isDelegado() {
+        return delegado;
+    }
+
+    public void setDelegado(boolean delegado) {
+        this.delegado = delegado;
+    }
+
+    public IDireccionService getiDireccionService() {
+        return iDireccionService;
+    }
+
+    public void setiDireccionService(IDireccionService iDireccionService) {
+        this.iDireccionService = iDireccionService;
     }
 }

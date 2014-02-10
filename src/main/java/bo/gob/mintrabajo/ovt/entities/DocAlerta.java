@@ -122,7 +122,12 @@ public class DocAlerta implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.gob.mintrabajo.ovt.entities.DocAlerta[ idAlerta=" + idAlerta + " ]";
+        return "DocAlerta{" +
+                "idAlerta=" + idAlerta +
+                ", estadoAlerta='" + estadoAlerta + '\'' +
+                ", idDocumento=" + idDocumento +
+                ", codAlerta=" + codAlerta +
+                ", observacion='" + observacion + '\'' +
+                '}';
     }
-    
 }

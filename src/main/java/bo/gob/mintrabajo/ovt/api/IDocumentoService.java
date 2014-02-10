@@ -13,9 +13,10 @@ public interface IDocumentoService {
     public DocDocumento findById(Long id);
 
     List<DocDocumento> listarPorPersona(String idPersona);
+    public List<DocDocumento> obtenerPorIdPersonaIdUnidad(String idPersona, Long idUnidad);
 
     //    void guardaDocumentoBinarioPlanilla(DocDocumento docDocumento, List<DocBinario> listaBinarios, DocPlanilla docPlanilla);
-    String guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas, String bitacoraSession);
+    void guardaDocumentoPlanillaBinario(DocDocumento docDocumento, DocPlanilla docPlanilla, List<DocBinario> listaBinarios, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas, String bitacoraSession);
 
     DocDocumento guardarCambioEstado(DocDocumento documento, String codEstadoFinal, String idUsuario, String observacionLogEstado);
 
@@ -53,5 +54,18 @@ public interface IDocumentoService {
     List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumento(String idPersona, Date fechaHasta, Date fechaPlazo, String codDocumento);
 
     DocDocumento buscarPorUnindad(PerUnidadPK perUnidadPK);
+
     List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumentos(String idPersona, Date fechaDesde, Date fechaHasta, String codDocumento1, String codDocumento2);
+
+    public boolean validarReactivacionRoe(PerUnidadPK perUnidadPK);
+
+    void guardaDetallesAlertasActualizaInfLab(DocDocumento docDocumento, List<DocPlanillaDetalle> docPlanillaDetalles, List<DocAlerta> alertas);
+
+    List<DocDocumento> listarDocumentosPorUnidadCodFechaHastaPlazo2(PerUnidadPK perUnidadPK, String codDocumento, Date fechaHasta, Date fechaPlazo2);
+
+    List<DocDocumento> listarDocumentosPorPersonaUnidadFechasHastaPlazoCodDocumentos(PerUnidadPK perUnidadPK,Date fechaHasta, Date fechaPlazo2, String codDocumento1, String codDocumento2);
+
+    List<DocDocumento> listarDocumentosPorPersonaEntreFechasTrim(String idPersona,Date fechaHasta, Date fechaPlazo);
+
+    List<DocDocumento> listarDocumentosPorPersonaEntreFechasAgui(String idPersona,Date fechaHasta, Date fechaPlazo);
 }

@@ -112,7 +112,7 @@ public class LocalidadService implements ILocalidadService {
         boolean estado = false;
         try {
             localidadRepository.delete(idLoc);
-            estado = true;
+            estado=true;
         } catch (Exception e) {
             e.printStackTrace();
         }

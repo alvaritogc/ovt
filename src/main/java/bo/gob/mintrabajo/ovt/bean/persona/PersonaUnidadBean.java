@@ -94,6 +94,9 @@ public class PersonaUnidadBean implements Serializable{
 
     @ManagedProperty(value = "#{documentoService}")
     private IDocumentoService documentoService;
+    
+    @ManagedProperty(value = "#{vParLocalidadService}")
+    private IVParLocalidadService iVParLocalidadService;
 
     private PerPersona persona=new PerPersona();
     private String idLocalidadPersona;
@@ -102,6 +105,9 @@ public class PersonaUnidadBean implements Serializable{
 
     private String idLocalidad;
     private List<SelectItem>listaLocalidad;
+    
+    private List<VparLocalidad> listaLocalidades;
+    private String idLocalidadAux;
 
     private PerUnidad unidad;
     private List<PerUnidad>listaUnidad;
@@ -112,6 +118,7 @@ public class PersonaUnidadBean implements Serializable{
     List<SelectItem>listaTipoEmpresa;
     List<SelectItem>listaTipoSociedad;
     List<SelectItem>listaTipoIdentificacion;
+    List<SelectItem>listaTipoIdentificacionROE;
 
 
     private PerDireccion direccion;
@@ -157,16 +164,26 @@ public class PersonaUnidadBean implements Serializable{
     private boolean tieneROE=false;
 
     UsrUsuario empleador;
+    
+    ///////////////////////////////////LUIS
+    private boolean delegado=false;
+    ///////////////////////////////////
 
 
     @PostConstruct
     public void ini(){
+        idLocalidad="";
+        idLocalidadAux="";
+        listaLocalidades=new ArrayList<VparLocalidad>();
 
         persona=new PerPersona();
         String idEmpleador=   (String)session.getAttribute("idEmpleador");
          idUsuario = (Long) session.getAttribute("idUsuario");
         //REGISTRO_BITACORA=iUsuarioService.findById(idUsuario).getUsuario();
         REGISTRO_BITACORA=(String) session.getAttribute("bitacoraSession");
+        //////////////////////////////////////////////LUIS
+        delegado = "siDelegado".equals((String)session.getAttribute("delegado"));
+        //////////////////////////////////////////////
         persona=iPersonaService.findById(idEmpleador);
         titulo=persona.getNombreRazonSocial().toUpperCase()+" ";
         titulo=persona.getApellidoPaterno()==null ?titulo+"":titulo+persona.getApellidoPaterno().toUpperCase()+" ";
@@ -304,12 +321,28 @@ public class PersonaUnidadBean implements Serializable{
         listaTipoEmpresa=cargarListas(listaTipoEmpresa,DOM_TIPOS_EMPRESA);
         listaTipoSociedad=cargarListas(listaTipoEmpresa,DOM_TIPOS_SOCIEDAD);
         listaTipoIdentificacion=cargarListas(listaTipoEmpresa,DOM_TIPOS_IDENTIFICACION);
+        listaTipoIdentificacionROE=cargarListas(listaTipoEmpresa,DOM_TIPOS_IDENTIFICACIONROE);
         listaTipoDirecciones=cargarListas(listaTipoDirecciones,DOM_TIPO_DIRECCION);
         cargarUnidad();
         cargarActividadDeclarda();
         cargarDireccion();
         cargarRepLegal();
         cargarInfoLaboral();
+    }
+    
+    public void cargarLocalidadDeDepartamento(){
+        String idAux;
+        if(!idLocalidad.equals(""))
+            idAux=idLocalidad;
+        else{
+            idAux=direccionPrincipal.getCodLocalidad().getCodLocalidad();
+        }
+        if(idAux.equals("")){
+            FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se encontrarón Localidades para este departamento."));
+        }else{
+            listaLocalidades= iVParLocalidadService.listarVLocalidadesHijo(idAux);
+        }
     }
 
     /*
@@ -326,7 +359,9 @@ public class PersonaUnidadBean implements Serializable{
         unidad=new PerUnidad();
         listaUnidad=new ArrayList<PerUnidad>();
         //Obtiene en una lista auxiliar las unidades de la persona
-        List<PerUnidad>listaUnidadAux=iUnidadService.buscarPorPersona(persona.getIdPersona());
+        List<PerUnidad>listaUnidadAux= new ArrayList<PerUnidad>();
+        listaUnidadAux=iUnidadService.buscarPorPersona(persona.getIdPersona());
+
         //setea la unidad principal
         unidad=listaUnidadAux.get(listaUnidadAux.size()-1);
         try{
@@ -338,7 +373,17 @@ public class PersonaUnidadBean implements Serializable{
 
         // carga la varible listaUnidad desde el primer registro hasta el penultimo
         // se carga asi, por que en el ultimo registro esta la unidadPrincipal
-       listaUnidad=listaUnidadAux.subList(0,listaUnidadAux.size()-1);
+        ///////////////////////////////////////////////////LUIS
+        if(delegado){
+            List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,persona.getIdPersona());
+            for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                if(perUsuarioUnidad.getEstado().equals("A"))
+                    listaUnidad.add(iUnidadService.obtenerPorIdPersonaIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+            }   
+        }else{
+            listaUnidad=listaUnidadAux.subList(0,listaUnidadAux.size()-1);
+        }
+        ///////////////////////////////////////////////////////////////
         for(PerUnidad u:listaUnidad){
             u.setTipoEmpresaAuxiliar(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_EMPRESA,u.getTipoEmpresa()).getDescripcion());
             u.setTipoSociedadAuxiliar(iDominioService.obtenerDominioPorNombreYValor(DOM_TIPOS_SOCIEDAD,u.getTipoSociedad()).getDescripcion());
@@ -348,6 +393,7 @@ public class PersonaUnidadBean implements Serializable{
     public void nuevo(){
         unidadRegistro=new PerUnidad();
         unidadRegistro.setTipoEmpresa(unidad.getTipoEmpresa());
+        unidadRegistro.setTipoSociedad(unidad.getTipoSociedad());
         unidadRegistro.setActividadDeclarada(unidad.getActividadDeclarada());
         direccion=new PerDireccion();
         repLegal=new PerReplegal();
@@ -633,9 +679,7 @@ public class PersonaUnidadBean implements Serializable{
             ini();
             return ;
         }
-         logger.info("====>>> EMAIL DE PERSONA1 "+direccion.getEmail());
-        logger.info("====>>> EMAIL DE PERSONA2 "+direccion.getEmail2());
-        System.out.print("correeeeooooo======================================");
+
         if(direccion.getEmail()!=null){
             if(!direccion.getEmail().trim().equals("")){
                 if(!validarEmail(direccion.getEmail())){
@@ -717,7 +761,22 @@ public class PersonaUnidadBean implements Serializable{
         // Cargando Direccion
         direccionPrincipal=new PerDireccion();
         listaDireccion=new ArrayList<PerDireccion>();
-        listaDireccion= iDireccionService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
+        //listaDireccion= iDireccionService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
+        ///////////////////////////////////////////////LUIS
+        if(delegado){
+            List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,persona.getIdPersona());
+            for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                if(perUsuarioUnidad.getEstado().equals("A")){
+                    PerDireccion perDireccion = iDireccionService.obtenerPorIdPersonaAndIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad());
+                    if(perDireccion!=null){
+                        listaDireccion.add(perDireccion);
+                    }
+                }
+            }   
+        }else{
+            listaDireccion= iDireccionService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
+        }
+        ////////////////////////////////////////////////
         if (!listaDireccion.isEmpty()){
             //Significa que solo se registro la unidad principal, entonces solo puede haber una direccion
             // que seria para la unidad principal.
@@ -751,7 +810,7 @@ public class PersonaUnidadBean implements Serializable{
             listaLocalidad=new ArrayList<SelectItem>();
             localidades=iLocalidadService.getAllLocalidades();
             for (ParLocalidad l:localidades){
-                if(!l.getDescripcion().equalsIgnoreCase("BOLIVIA"))
+                if(!l.getDescripcion().equalsIgnoreCase("BOLIVIA") && l.getCodLocalidadPadre().getCodLocalidad().equalsIgnoreCase("BOL"))
                     listaLocalidad.add(new SelectItem(l.getCodLocalidad(),l.getDescripcion()));
             }
         }
@@ -832,7 +891,22 @@ public class PersonaUnidadBean implements Serializable{
     public void cargarRepLegal(){
          repLegalPrincipal=new PerReplegal();
         listaRepLegal=new ArrayList<PerReplegal>();
-        listaRepLegal=iRepLegalService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
+        //listaRepLegal=iRepLegalService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
+        ///////////////////////////////////////////////////LUIS
+        if(delegado){
+            List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,persona.getIdPersona());
+            for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                if(perUsuarioUnidad.getEstado().equals("A")){
+                    PerReplegal perReplegal =iRepLegalService.obtenerPorIdPersonaAndIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad());
+                    if(perReplegal!=null){
+                        listaRepLegal.add(perReplegal);
+                    }
+                }
+            }   
+        }else{
+            listaRepLegal=iRepLegalService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
+        }
+        ///////////////////////////////////////////////////////////////
         if(!listaRepLegal.isEmpty()){
             //Solo se registro a la unidad principal, entonces solo puede existir un
             //representante legal para esa unidad.
@@ -965,7 +1039,6 @@ public class PersonaUnidadBean implements Serializable{
         long jubilados=infolaboralRegistro.getNroJubilados();
         long capDiferenciales=infolaboralRegistro.getNroCapdiferente();
 
-
         //Validacion  para extranjeros, fijos y eventuales
         if(extranjeros>nroTotalTrabajadores){
             FacesContext.getCurrentInstance().addMessage(null,
@@ -1041,9 +1114,8 @@ public class PersonaUnidadBean implements Serializable{
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error."," El campo Cuenta con sindicato es obligatorio."));
             return ;
         }
-
-
-         iInfoLaboralService.save(infolaboralRegistro,REGISTRO_BITACORA,unidadRegistro);
+        
+        iInfoLaboralService.save(infolaboralRegistro,REGISTRO_BITACORA,unidadRegistro);
         ini();
         //Cerrar dialog
         RequestContext.getCurrentInstance().execute("dlgInfoLaboral.hide()");
@@ -1053,7 +1125,23 @@ public class PersonaUnidadBean implements Serializable{
         infolaboral=new PerInfolaboral();
         List<PerInfolaboral>listaInfoLaboral=new ArrayList<PerInfolaboral>();
         /*listaInfoLaboral=iInfoLaboralService.findByPerUnidad(unidad);*/
-        listaInfoLaboral=iInfoLaboralService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
+        //listaInfoLaboral=iInfoLaboralService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
+        ///////////////////////////////////////////////////////////////////////////////LUIS
+        if(delegado){
+            List<PerUsuarioUnidad> listaSucursalesDelegadas = iPersonaService.listaUsuarioUnidadPorIdUsuarioIdPersona(idUsuario,persona.getIdPersona());
+            for (PerUsuarioUnidad perUsuarioUnidad : listaSucursalesDelegadas) {
+                if(perUsuarioUnidad.getEstado().equals("A")){
+                    //PerInfolaboral perInfolaboral = iInfoLaboralService.obtienePorIdPersonaAndIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad());
+                    listaInfoLaboral.addAll(iInfoLaboralService.obtienePorIdPersonaAndIdUnidad(perUsuarioUnidad.getPerUsuarioUnidadPK().getIdPersona(), perUsuarioUnidad.getPerUsuarioUnidadPK().getIdUnidad()));
+//                    if(perInfolaboral!=null){
+//                        listaInfoLaboral.add(perInfolaboral);
+//                    }
+                }
+            }   
+        }else{
+            listaInfoLaboral=iInfoLaboralService.obtenerPorIdPersona(unidad.getPerPersona().getIdPersona());
+        }
+        ////////////////////////////////////////////////////////////////////////
         if(listaInfoLaboral!=null){
            if(!listaInfoLaboral.isEmpty()){
                //se obtiene el primer registro, por que una persona solo tiene
@@ -1560,5 +1648,69 @@ public class PersonaUnidadBean implements Serializable{
 
     public void setEmpleador(UsrUsuario empleador) {
         this.empleador = empleador;
+    }
+
+    public List<SelectItem> getListaTipoIdentificacionROE() {
+        return listaTipoIdentificacionROE;
+    }
+
+    public void setListaTipoIdentificacionROE(List<SelectItem> listaTipoIdentificacionROE) {
+        this.listaTipoIdentificacionROE = listaTipoIdentificacionROE;
+    }
+
+    /**
+     * @return the iVParLocalidadService
+     */
+    public IVParLocalidadService getiVParLocalidadService() {
+        return iVParLocalidadService;
+    }
+
+    /**
+     * @param iVParLocalidadService the iVParLocalidadService to set
+     */
+    public void setiVParLocalidadService(IVParLocalidadService iVParLocalidadService) {
+        this.iVParLocalidadService = iVParLocalidadService;
+    }
+
+    /**
+     * @return the listaLocalidades
+     */
+    public List<VparLocalidad> getListaLocalidades() {
+        return listaLocalidades;
+    }
+
+    /**
+     * @param listaLocalidades the listaLocalidades to set
+     */
+    public void setListaLocalidades(List<VparLocalidad> listaLocalidades) {
+        this.listaLocalidades = listaLocalidades;
+    }
+
+    /**
+     * @return the idLocalidadAux
+     */
+    public String getIdLocalidadAux() {
+        return idLocalidadAux;
+    }
+
+    /**
+     * @param idLocalidadAux the idLocalidadAux to set
+     */
+    public void setIdLocalidadAux(String idLocalidadAux) {
+        this.idLocalidadAux = idLocalidadAux;
+    }
+
+    /**
+     * @return the delegado
+     */
+    public boolean isDelegado() {
+        return delegado;
+    }
+
+    /**
+     * @param delegado the delegado to set
+     */
+    public void setDelegado(boolean delegado) {
+        this.delegado = delegado;
     }
 }

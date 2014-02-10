@@ -2,11 +2,9 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IDireccionService;
-import bo.gob.mintrabajo.ovt.api.IDominioService;
-import bo.gob.mintrabajo.ovt.entities.ParDominio;
-import bo.gob.mintrabajo.ovt.entities.ParDominioPK;
 import bo.gob.mintrabajo.ovt.entities.PerDireccion;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
+import bo.gob.mintrabajo.ovt.entities.PerUnidadPK;
 import bo.gob.mintrabajo.ovt.repositories.DireccionRepository;
 import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
 import org.springframework.data.domain.PageRequest;
@@ -18,13 +16,10 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_ESTADO;
-import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_ACTIVO;
-import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_INACTIVO;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
 import static bo.gob.mintrabajo.ovt.Util.Sequencias.PER_DIRECCION_SEC;
 
 /**
@@ -47,11 +42,8 @@ public class DireccionService implements IDireccionService{
         this.dominioRepository=dominioRepository;
     }
 
-
-
     @Override
     public PerDireccion save(PerDireccion direccion,String registroBitacora,PerUnidad unidad) {
-
         if(direccion.getIdDireccion()==null){
             //Nuevo
             direccion.setIdDireccion(this.obtenerSecuencia(PER_DIRECCION_SEC));
@@ -59,7 +51,7 @@ public class DireccionService implements IDireccionService{
             direccion.setEstado(dominioRepository.obtenerDominioPorNombreYValor(DOM_ESTADO,PAR_ESTADO_ACTIVO).getParDominioPK().getValor());
             direccion.setFechaBitacora(new Date());
             direccion.setRegistroBitacora(registroBitacora);
-           return direccionRepository.save(direccion);
+            return direccionRepository.save(direccion);
         }else{
             // - Cambia el estado de direccion
             PerDireccion direccionHistorico=direccionRepository.findOne(direccion.getIdDireccion());
@@ -82,17 +74,17 @@ public class DireccionService implements IDireccionService{
 
     }
 
-//    @Override
+    //    @Override
     public boolean delete(PerDireccion direccion) {
         boolean deleted = false;
         direccionRepository.delete(direccion);
         return deleted;
     }
 
-     public List<PerDireccion>obtenerPorIdPersonaYIdUnidad(String idPersona,long idUnidad){
-         Sort sort=new Sort(Sort.Direction.DESC,"idDireccion");
-         return direccionRepository.obtenerPorIdPersonaYIdUnidad(idPersona, idUnidad, new PageRequest(0, 500,sort));
-     }
+    public List<PerDireccion>obtenerPorIdPersonaYIdUnidad(String idPersona,long idUnidad){
+        Sort sort=new Sort(Sort.Direction.DESC,"idDireccion");
+        return direccionRepository.obtenerPorIdPersonaYIdUnidad(idPersona, idUnidad, new PageRequest(0, 500,sort));
+    }
 
     /*
     *Obtiene una direccion por su id.
@@ -117,4 +109,14 @@ public class DireccionService implements IDireccionService{
         return rtn.longValue();
     }
 
+    @Override
+    public PerDireccion obtenerPorIdPersonaYIdUnidadYEstadoActivo(PerUnidadPK perUnidadPK){
+        return direccionRepository.obtenerPorIdPersonaYIdUnidadYEstadoActivo(perUnidadPK.getIdPersona(), perUnidadPK.getIdUnidad());
+    }
+    
+    /////////////////////////////////LUIS
+    @Override
+    public PerDireccion obtenerPorIdPersonaAndIdUnidad(String idPersona, Long idUnidad){
+        return direccionRepository.obtenerPorIdPersonaYIdUnidadYEstadoActivo(idPersona, idUnidad);
+    }
 }

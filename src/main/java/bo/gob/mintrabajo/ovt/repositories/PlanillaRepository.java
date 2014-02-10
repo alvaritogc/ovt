@@ -1,12 +1,12 @@
 package bo.gob.mintrabajo.ovt.repositories;
 
-import bo.gob.mintrabajo.ovt.entities.DocDocumento;
 import bo.gob.mintrabajo.ovt.entities.DocPlanilla;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaSettings;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 @OpenJpaSettings
@@ -23,7 +23,7 @@ public interface PlanillaRepository extends OpenJpaRepository<DocPlanilla, Long>
 
     DocPlanilla findByIdDocumento_IdDocumento(Long idDocumento);
 
-        @Query(
+    @Query(
             "   select d "
                     + " from DocPlanilla d"
                     + " where "
@@ -31,4 +31,31 @@ public interface PlanillaRepository extends OpenJpaRepository<DocPlanilla, Long>
                     + " and d.idDocumento.codEstado.codEstado like '110' and d.idDocumento.docDefinicion.docDefinicionPK.codDocumento = :codDocumento"
     )
     List<DocPlanilla> listarPlanillasParaRectificar(@Param("idEmpleador") String idPersona, @Param("codDocumento") String codDocumento);
+
+    @Query(
+            "   select d "
+                    + " from DocPlanilla d"
+                    + " where "
+                    + " d.idDocumento.fechaDocumento between :fechaHasta and :fechaPlazo2"
+                    + " and d.idDocumento.perUnidad.perUnidadPK.idPersona=:idEmpleador "
+                    + " and d.idDocumento.perUnidad.perUnidadPK.idUnidad=:idUnidad "
+                    + " and d.idDocumento.codEstado.codEstado like '110'"
+                    + " and (d.idDocumento.docDefinicion.docDefinicionPK.codDocumento like 'LC1010'"
+                    + " or d.idDocumento.docDefinicion.docDefinicionPK.codDocumento like 'LC1011')"
+    )
+    List<DocPlanilla> listarPlanillasTrimestralesParaRectificar(@Param("idEmpleador") String idPersona, @Param("idUnidad") Long idUnidad, @Param("fechaHasta") Date fechaHasta, @Param("fechaPlazo2") Date fechaPlazo2);
+    
+    @Query(
+            "   select d "
+                    + " from DocPlanilla d"
+                    + " where "
+                    + " d.idDocumento.perUnidad.perUnidadPK.idPersona=:idEmpleador "
+                    + " and d.idDocumento.perUnidad.perUnidadPK.idUnidad=:idUnidad "
+                    + " and d.parCalendario.parCalendarioPK.gestion=:gestion "
+                    + " and d.parCalendario.parCalendarioPK.tipoPeriodo=:tipoPeriodo "
+                    //+ " and d.tipoPlanilla=:tipoPlanilla "
+                    + " and d.idDocumento.docDefinicion.docDefinicionPK.codDocumento =:tipoPlanilla"
+    )
+    List<DocPlanilla> listarPlanillasTrimestrales(@Param("idEmpleador") String idEmpleador, @Param("idUnidad") Long idUnidad
+            , @Param("tipoPlanilla") String tipoPlanilla, @Param("gestion") String gestion,@Param("tipoPeriodo") String tipoPeriodo);
 }

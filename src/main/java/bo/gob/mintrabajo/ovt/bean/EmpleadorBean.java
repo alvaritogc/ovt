@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -17,21 +18,13 @@ import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.application.FacesMessage;
 
 //
 
 @ManagedBean
 @SessionScoped
 public class EmpleadorBean implements Serializable {
-    //
-    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-    private Long idUsuario;
-    private String idPersona;
-    private String idEmpleador;
-    private String idUnidad;
-    private static final Logger logger = LoggerFactory.getLogger(EmpleadorBean.class);
-    //
+
     @ManagedProperty(value = "#{usuarioService}")
     private IUsuarioService iUsuarioService;
     @ManagedProperty(value = "#{personaService}")
@@ -41,9 +34,12 @@ public class EmpleadorBean implements Serializable {
     @ManagedProperty(value = "#{documentoService}")
     private IDocumentoService iDocumentoService;
 
-
-    //
-    //
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    private Long idUsuario;
+    private String idPersona;
+    private String idEmpleador;
+    private String idUnidad;
+    private static final Logger logger = LoggerFactory.getLogger(EmpleadorBean.class);
     private PerPersona persona;
     private List<PerPersona> listaPersonas;
     private PerPersona personaABM;
@@ -83,7 +79,8 @@ public class EmpleadorBean implements Serializable {
                     return "";
                 }
             }
-            listaPersonas = iPersonaService.buscarPorNroNombre(busquedaNombreRazonSocial, "", busquedaNroIdentificacion);
+            //listaPersonas = iPersonaService.buscarPorNroNombre(busquedaNombreRazonSocial, "", busquedaNroIdentificacion);
+            listaPersonas = iPersonaService.listarEmpleadores(busquedaNombreRazonSocial, busquedaNroIdentificacion);
         }
         return "";
     }

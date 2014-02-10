@@ -2,6 +2,7 @@ package bo.gob.mintrabajo.ovt.Util;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import bo.gob.mintrabajo.ovt.entities.DocBinario;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.*;
 
 import javax.faces.context.FacesContext;
@@ -22,10 +23,10 @@ public class XlsToCSV {
             ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             //First we read the Excel file in binary format into FileInputStream
 //        FileInputStream input_document = new FileInputStream(new File("C:\\excel_to_csv.xls"));
-
             // Read workbook into HSSFWorkbook
 //        HSSFWorkbook my_xls_workbook = new HSSFWorkbook(binario.getInputStream());
             Workbook wb = WorkbookFactory.create(binario.getInputStream());
+//            Workbook wb = WorkbookFactory.create(new FileInputStream("/home/rvelasquez/Desktop/PLANILAS OVT/planillas-JUL-2013.xlsx"));
             // Read worksheet into HSSFSheet
             Sheet my_worksheet = wb.getSheetAt(0);
             FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
@@ -50,16 +51,17 @@ public class XlsToCSV {
                 while(cellIterator.hasNext() && i<columnas) {
                     Cell cell = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
 //                cellIterator.next(); //Fetch CELL
-                    int ev=evaluator.evaluateFormulaCell(cell);
-                    switch(ev) { //Identify CELL type
+                    switch(cell.getCellType()) { //Identify CELL type
                         //you need to add more code here based on
                         //your requirement / transformations
                         case Cell.CELL_TYPE_STRING:
                             csvdata[i]= cell.getStringCellValue();
                             break;
                         case Cell.CELL_TYPE_NUMERIC:
-                            evaluator.evaluate(cell).formatAsString();
-                            csvdata[i]= String.valueOf(cell.getNumericCellValue());
+                            if (HSSFDateUtil.isCellDateFormatted(cell))
+                                csvdata[i]= String.valueOf(cell.getDateCellValue());
+                            else
+                                csvdata[i]= String.valueOf(cell.getNumericCellValue());
                             break;
                         case Cell.CELL_TYPE_BLANK:
                             csvdata[i]= "";
@@ -68,14 +70,8 @@ public class XlsToCSV {
                             csvdata[i]= String.valueOf(cell.getBooleanCellValue());
                             break;
                         case Cell.CELL_TYPE_FORMULA:
-
-                            String stringValue =cell.getCellFormula();
-
-//                        getRichStringCellValue();
-                            String value = stringValue;
-                            csvdata[i]= String.valueOf(value);
-
-
+                            evaluator.evaluate(cell).formatAsString();
+                            csvdata[i]= String.valueOf(round(cell.getNumericCellValue(), 2));
                             break;
                     }
                     i=i+1;
@@ -89,8 +85,18 @@ public class XlsToCSV {
             return file;
         }
         catch (Exception e){
-            e.printStackTrace();
+            System.out.println("====>>>> Error en la conversion del archivo <<<<<=====");
+            System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 }

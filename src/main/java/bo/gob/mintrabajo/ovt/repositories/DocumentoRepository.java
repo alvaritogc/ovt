@@ -27,6 +27,17 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " order by d.idDocumento desc"
     )
     List<DocDocumento> listarPorPersona(@Param("idPersona") String idPersona);
+    
+    @Query(
+            "   select d "
+                    + " from DocDocumento d"
+                    + " join fetch d.docDefinicion"
+                    + " where "
+                    + " d.perUnidad.perUnidadPK.idPersona=:idPersona and "
+                    + " d.perUnidad.perUnidadPK.idUnidad=:idUnidad "
+                    + " order by d.idDocumento desc"
+    )
+    List<DocDocumento> obtenerPorIdPersonaIdUnidad(@Param("idPersona") String idPersona, @Param("idUnidad") Long idUnidad);
 
 
     @Query(
@@ -45,7 +56,7 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " where "
                     + " d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
                     + " and d.perUnidad.perUnidadPK.idUnidad=:idUnidad"
-                    + " and d.docDefinicion.docDefinicionPK.codDocumento='ROE011'"
+                    + " and d.docDefinicion.docDefinicionPK.codDocumento='ROE013'"
                     + " and d.codEstado.codEstado = '010'"
     )
     List<DocDocumento> listarRoe011(@Param("idEmpleador") String idPersona, @Param("idUnidad") long idUnidad);
@@ -148,7 +159,7 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " and d.fechaDocumento between :fechaDesde and :fechaHasta"
                     + " and upper( d.docDefinicion.docDefinicionPK.codDocumento) = :codDocumento"
     )
-    List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumento(@Param("idEmpleador") String idPersona, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta,  @Param("codDocumento") String codDocumento);
+    List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumento(@Param("idEmpleador") String idPersona, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta, @Param("codDocumento") String codDocumento);
 
     @Query(
             "   select d "
@@ -156,6 +167,7 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " where "
                     + " d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
                     + " and d.perUnidad.perUnidadPK.idUnidad=:idUnidad "
+                    + " and d.docDefinicion.docDefinicionPK.codDocumento like 'LC1020'"
 
     )
     DocDocumento buscarPorUnindad(@Param("idEmpleador") String idPersona, @Param("idUnidad") Long idUnidad);
@@ -168,5 +180,47 @@ public interface DocumentoRepository extends OpenJpaRepository<DocDocumento, Lon
                     + " and d.fechaDocumento between :fechaDesde and :fechaHasta"
                     + " and (upper( d.docDefinicion.docDefinicionPK.codDocumento) = :codDocumento1 or upper( d.docDefinicion.docDefinicionPK.codDocumento) = :codDocumento2)"
     )
-    List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumentos(@Param("idEmpleador") String idPersona, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta,  @Param("codDocumento1") String codDocumento1,  @Param("codDocumento2") String codDocumento2);
+    List<DocDocumento> listarDocumentosPorpersonaUnidadFechasCodDocumentos(@Param("idEmpleador") String idPersona, @Param("fechaDesde") Date fechaDesde, @Param("fechaHasta") Date fechaHasta, @Param("codDocumento1") String codDocumento1, @Param("codDocumento2") String codDocumento2);
+
+    @Query(
+            "   select d "
+                    + " from DocDocumento d"
+                    + " where "
+                    + " d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
+                    + " and d.perUnidad.perUnidadPK.idUnidad=:idUnidad "
+                    + " and d.fechaDocumento between :fechaHasta and :fechaPlazo2"
+                    + " and upper( d.docDefinicion.docDefinicionPK.codDocumento) =:codDocumento"
+    )
+    List<DocDocumento> listarDocumentosPorUniCodFecha(@Param("idEmpleador") String idPersona, @Param("idUnidad") Long idUnidad, @Param("codDocumento") String codDocumento, @Param("fechaHasta") Date fechaHasta, @Param("fechaPlazo2") Date fechaPlazo2);
+
+    @Query(
+            "   select d "
+                    + " from DocDocumento d"
+                    + " where "
+                    + " d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
+                    + " and d.perUnidad.perUnidadPK.idUnidad=:idUnidad "
+                    + " and d.fechaDocumento between :fechaHasta and :fechaPlazo2"
+                    + " and (upper( d.docDefinicion.docDefinicionPK.codDocumento) = :codDocumento1 or upper( d.docDefinicion.docDefinicionPK.codDocumento) = :codDocumento2)"
+    )
+    List<DocDocumento> listarDocumentosPorPersonaUnidadFechasHastaPlazoCodDocumentos(@Param("idEmpleador") String idPersona, @Param("idUnidad") Long idUnidad, @Param("fechaHasta") Date fechaHasta, @Param("fechaPlazo2") Date fechaPlazo2, @Param("codDocumento1") String codDocumento1, @Param("codDocumento2") String codDocumento2);
+
+    @Query(
+            "   select d "
+                    + " from DocDocumento d"
+                    + " where "
+                    + " d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
+                    + " and d.docDefinicion.docDefinicionPK.codDocumento like 'LC101%' "
+                    + " and d.fechaDocumento between :fechaHasta and :fechaPlazo"
+    )
+    List<DocDocumento> listarDocumentosPorPersonaEntreFechasTrim(@Param("idEmpleador") String idPersona, @Param("fechaHasta") Date fechaHasta, @Param("fechaPlazo") Date fechaPlazo);
+
+    @Query(
+            "   select d "
+                    + " from DocDocumento d"
+                    + " where "
+                    + " d.perUnidad.perUnidadPK.idPersona=:idEmpleador "
+                    + " and d.docDefinicion.docDefinicionPK.codDocumento like 'LC102%' "
+                    + " and d.fechaDocumento between :fechaHasta and :fechaPlazo"
+    )
+    List<DocDocumento> listarDocumentosPorPersonaEntreFechasAgui(@Param("idEmpleador") String idPersona, @Param("fechaHasta") Date fechaHasta, @Param("fechaPlazo") Date fechaPlazo);
 }

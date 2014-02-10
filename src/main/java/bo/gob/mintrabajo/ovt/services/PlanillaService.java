@@ -1,7 +1,6 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IPlanillaService;
-import bo.gob.mintrabajo.ovt.entities.DocDocumento;
 import bo.gob.mintrabajo.ovt.entities.DocPlanilla;
 import bo.gob.mintrabajo.ovt.repositories.BinarioRepository;
 import bo.gob.mintrabajo.ovt.repositories.EntidadRepository;
@@ -19,6 +18,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -126,6 +126,16 @@ public class PlanillaService implements IPlanillaService {
 
     public List<DocPlanilla> listarPlanillasParaRectificar(String idPersona, String codDocumento) {
         return planillaRepository.listarPlanillasParaRectificar(idPersona, codDocumento);
-}
+    }
 
+    public List<DocPlanilla> listarPlanillasTrimestralesParaRectificar(String idPersona, Long idUnidad, Date fechaHasta, Date fechaPlazo2) {
+        return planillaRepository.listarPlanillasTrimestralesParaRectificar(idPersona, idUnidad, fechaHasta, fechaPlazo2);
+    }
+    
+    ////////////////////////////////////////////////////LUIS
+    @Override
+    public List<DocPlanilla> listaPlanillasTrimestrales (String idPersona, Long idUnidad, String tipoPlanilla,
+            String gestion, String periodo){
+        return planillaRepository.listarPlanillasTrimestrales(idPersona, idUnidad, tipoPlanilla, gestion, periodo);
+    }
 }

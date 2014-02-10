@@ -58,6 +58,7 @@ public class TransicionBean implements Serializable{
     private IRolService iRolService;
     
     private HttpSession session;
+    private String REGISTRO_BITACORA;
     private UsrUsuario usuario;
     
     private List<DocTransicion> listaTransicion;
@@ -67,6 +68,7 @@ public class TransicionBean implements Serializable{
     private List<ParDocumentoEstado> listaEstadoInicial;
     private List<ParDocumentoEstado> listaEstadoFinal;
     private List<DocDefinicion> listaDefinicion;
+    private List<DocDefinicion> listaDefinicionDocumento;
     private List<DocDefinicion> listaVersion;
     private List<UsrRol> listaRoles;    
     
@@ -77,6 +79,7 @@ public class TransicionBean implements Serializable{
     private short version;
     private String estadoInicial;
     private String estadoFinal;
+    private String tipoDocumento;
     private Long rol;
     
     @PostConstruct
@@ -84,8 +87,7 @@ public class TransicionBean implements Serializable{
         docTransicion= new DocTransicion();
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            Long idUsuario = (Long) session.getAttribute("idUsuario");
-            usuario = iUsuarioService.findById(idUsuario);
+            REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,6 +95,7 @@ public class TransicionBean implements Serializable{
         listaEstadoInicial= new ArrayList<ParDocumentoEstado>();
         listaEstadoFinal= new ArrayList<ParDocumentoEstado>();
         listaDefinicion= new ArrayList<DocDefinicion>();
+        listaDefinicionDocumento= new ArrayList<DocDefinicion>();
         listaVersion= new ArrayList<DocDefinicion>();
         listaRoles = new ArrayList<UsrRol>();
         limpiar();
@@ -119,9 +122,17 @@ public class TransicionBean implements Serializable{
         return Util.descripcionDominio("ESTADO", valor);
     }
     
+    public void listarTransiciones(){
+       if(tipoDocumento.isEmpty() || tipoDocumento.equals(" ")){
+            listaTransicion= iTransicionService.listaTransicion();
+        }else{
+            listaTransicion= iTransicionService.listaTransicionPorDocumento(tipoDocumento);
+        }
+    }
+    
     public void guardarModificar(){
         RequestContext context = RequestContext.getCurrentInstance();
-        final String  REGISTRO_BITACORA=usuario.getUsuario();
+        //final String  REGISTRO_BITACORA=usuario.getUsuario();
         try {
             DocTransicionPK docTransicionPK=new DocTransicionPK();
             docTransicionPK.setCodDocumento(codigo);
@@ -149,6 +160,7 @@ public class TransicionBean implements Serializable{
         listaEstadoInicial=iDocumentoEstadoService.listarDocumentoEstados();
         listaEstadoFinal=iDocumentoEstadoService.listarDocumentoEstados();
         listaDefinicion=iDefinicionService.listarDefiniciones();
+        listaDefinicionDocumento=iDefinicionService.listarDefiniciones();
         listaVersion=iDefinicionService.listaVersionesPorCodDocumento(listaDefinicion.get(0).getDocDefinicionPK().getCodDocumento());
         listaRoles=iRolService.getAllRoles();
         nuevo();
@@ -159,6 +171,7 @@ public class TransicionBean implements Serializable{
         evento=false;
         estadoTransicion=true;
         codigo="";
+        tipoDocumento="";
         version=0;
         estadoInicial="";
         estadoFinal="";
@@ -429,6 +442,34 @@ public class TransicionBean implements Serializable{
      */
     public void setRol(Long rol) {
         this.rol = rol;
+    }
+
+    /**
+     * @return the listaDefinicionDocumento
+     */
+    public List<DocDefinicion> getListaDefinicionDocumento() {
+        return listaDefinicionDocumento;
+    }
+
+    /**
+     * @param listaDefinicionDocumento the listaDefinicionDocumento to set
+     */
+    public void setListaDefinicionDocumento(List<DocDefinicion> listaDefinicionDocumento) {
+        this.listaDefinicionDocumento = listaDefinicionDocumento;
+    }
+
+    /**
+     * @return the tipoDocumento
+     */
+    public String getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    /**
+     * @param tipoDocumento the tipoDocumento to set
+     */
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
     
 }

@@ -1,14 +1,13 @@
 package bo.gob.mintrabajo.ovt.bean.publico;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 
 @ManagedBean
 @ViewScoped
@@ -42,7 +41,8 @@ public class DescargaPlanilla {
                 ctx.responseComplete();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("====>>>> Error al descargar el archivo <<<<<=====");
+            System.out.println(e.getMessage());
         }
     }
     
@@ -102,7 +102,8 @@ public class DescargaPlanilla {
                 ctx.responseComplete();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("====>>>> Error al descargar el archivo <<<<<=====");
+            System.out.println(e.getMessage());
         }
     }
 }

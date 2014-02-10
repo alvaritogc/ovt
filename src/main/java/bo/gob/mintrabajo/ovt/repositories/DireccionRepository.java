@@ -1,7 +1,5 @@
 package bo.gob.mintrabajo.ovt.repositories;
 
-import bo.gob.mintrabajo.ovt.entities.ParDominio;
-import bo.gob.mintrabajo.ovt.entities.ParDominioPK;
 import bo.gob.mintrabajo.ovt.entities.PerDireccion;
 import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import name.marcelomorales.siqisiqi.openjpa.spring.OpenJpaRepository;
@@ -30,4 +28,10 @@ public interface DireccionRepository extends OpenJpaRepository<PerDireccion, Lon
 
     List<PerDireccion> findByPerUnidad(@Param("unidad") PerUnidad unidad, Pageable pageable);
 
+    @Query("select d " +
+            "   from PerDireccion d " +
+            "   where d.perUnidad.perUnidadPK.idPersona = :idPersona and " +
+            "         d.perUnidad.perUnidadPK.idUnidad = :idUnidad " +
+            "         and lower(d.estado) = lower('A')")
+    PerDireccion obtenerPorIdPersonaYIdUnidadYEstadoActivo(@Param("idPersona") String idPersona, @Param("idUnidad")long idUnidad);
 }

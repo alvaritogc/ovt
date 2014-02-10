@@ -41,9 +41,9 @@ import static bo.gob.mintrabajo.ovt.Util.Sequencias.USR_USUARIO_SEC;
 
 @ManagedBean(name = "personaBean")
 @ViewScoped
-public class PersonaBean implements Serializable{
+public class PersonaBean implements Serializable {
 
-    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 
     @ManagedProperty(value = "#{personaService}")
     private IPersonaService iPersonaService;
@@ -61,34 +61,34 @@ public class PersonaBean implements Serializable{
     private IUsuarioService iUsuarioService;
 
 
-    @ManagedProperty(value="#{dominioService}")
+    @ManagedProperty(value = "#{dominioService}")
     private IDominioService iDominioService;
 
-    @ManagedProperty(value="#{parametrizacionService}")
+    @ManagedProperty(value = "#{parametrizacionService}")
     private IParametrizacionService iParametrizacion;
 
 
-    private PerPersona persona=new PerPersona();
-    private List<PerPersona>listaPersona=new ArrayList<PerPersona>();
+    private PerPersona persona = new PerPersona();
+    private List<PerPersona> listaPersona = new ArrayList<PerPersona>();
 
     private String idLocalidad;
-    private List<SelectItem>listaLocalidad;
+    private List<SelectItem> listaLocalidad;
 
-    private PerUnidad unidad=new PerUnidad();
-    private List<PerUnidad>listaUnidad;
+    private PerUnidad unidad = new PerUnidad();
+    private List<PerUnidad> listaUnidad;
 
-    private  UsrUsuario usuario;
+    private UsrUsuario usuario;
 
 
-    private boolean mostrar=false;
+    private boolean mostrar = false;
 
-    private ExternalContext externalContext= FacesContext.getCurrentInstance().getExternalContext();
+    private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 
     private static final Logger logger = LoggerFactory.getLogger(PersonaBean.class);
 
-    List<SelectItem>listaTipoEmpresa;
-    List<SelectItem>listaTipoSociedad;
-    List<SelectItem>listaTipoIdentificacion;
+    List<SelectItem> listaTipoEmpresa;
+    List<SelectItem> listaTipoSociedad;
+    List<SelectItem> listaTipoIdentificacion;
 
     private String from;
     private String subject;
@@ -100,21 +100,21 @@ public class PersonaBean implements Serializable{
 
     private String confirmarContrasenia;
 
-    private  final int LONGITUD_MINIMA=7;
-     static String REGISTRO_BITACORA;
+    private final int LONGITUD_MINIMA = 7;
+    static String REGISTRO_BITACORA;
 
     @PostConstruct
-    public void ini(){
-       persona=new PerPersona();
-       persona.setEsNatural(false);
-       listaPersona=new ArrayList<PerPersona>();
-        unidad=new PerUnidad();
-        listaUnidad=new ArrayList<PerUnidad>();
-        usuario=new UsrUsuario();
+    public void ini() {
+        persona = new PerPersona();
+        persona.setEsNatural(false);
+        listaPersona = new ArrayList<PerPersona>();
+        unidad = new PerUnidad();
+        listaUnidad = new ArrayList<PerUnidad>();
+        usuario = new UsrUsuario();
         cargar();
     }
 
-//    public void crearReporte()throws IOException,DocumentException,Exception{
+    //    public void crearReporte()throws IOException,DocumentException,Exception{
 //        ReporteDeclaracionJurada reporte=new ReporteDeclaracionJurada();
 //        reporte.crearDeclaracionJurada();
 //    }
@@ -126,156 +126,158 @@ public class PersonaBean implements Serializable{
      *@Param dominio .- Representa un dominio de la tabla PAR_DOMINIO. Estos valores
      *                  estan parametrizados en la clase Dominios.java
      */
-    public List<SelectItem> cargarListas(List<SelectItem>lista,String dominio){
-        lista=new ArrayList<SelectItem>();
-        try{
-            List<ParDominio>valoresDominio=iDominioService.obtenerItemsDominio(dominio);
-            for(ParDominio d:valoresDominio){
-                lista.add(new SelectItem(d.getParDominioPK().getValor(),d.getDescripcion()));
+    public List<SelectItem> cargarListas(List<SelectItem> lista, String dominio) {
+        lista = new ArrayList<SelectItem>();
+        try {
+            List<ParDominio> valoresDominio = iDominioService.obtenerItemsDominio(dominio);
+            for (ParDominio d : valoresDominio) {
+                lista.add(new SelectItem(d.getParDominioPK().getValor(), d.getDescripcion()));
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return lista;
     }
 
-    public void cargar(){
-     cargarLocalidad();
-     listaTipoEmpresa=cargarListas(listaTipoEmpresa,DOM_TIPOS_EMPRESA);
-     listaTipoSociedad=cargarListas(listaTipoEmpresa,DOM_TIPOS_SOCIEDAD);
-     listaTipoIdentificacion=cargarListas(listaTipoEmpresa,DOM_TIPOS_IDENTIFICACION);
+    public void cargar() {
+        cargarLocalidad();
+        listaTipoEmpresa = cargarListas(listaTipoEmpresa, DOM_TIPOS_EMPRESA);
+        listaTipoSociedad = cargarListas(listaTipoEmpresa, DOM_TIPOS_SOCIEDAD);
+        listaTipoIdentificacion = cargarListas(listaTipoEmpresa, DOM_TIPOS_IDENTIFICACION);
     }
 
-    public void cargarLocalidad(){
+    public void cargarLocalidad() {
         try {
-            List<ParLocalidad>localidades=new ArrayList<ParLocalidad>();
-            listaLocalidad=new ArrayList<SelectItem>();
-            localidades=iLocalidadService.getAllLocalidades();
-            for (ParLocalidad l:localidades){
-                if(!l.getDescripcion().equalsIgnoreCase("BOLIVIA"))
-                    listaLocalidad.add(new SelectItem(l.getCodLocalidad(),l.getDescripcion()));
+            List<ParLocalidad> localidades = new ArrayList<ParLocalidad>();
+            listaLocalidad = new ArrayList<SelectItem>();
+            localidades = iLocalidadService.getAllLocalidades();
+            for (ParLocalidad l : localidades) {
+                if (!l.getDescripcion().equalsIgnoreCase("BOLIVIA") && l.getCodLocalidadPadre().getCodLocalidad().equalsIgnoreCase("BOL"))
+                    listaLocalidad.add(new SelectItem(l.getCodLocalidad(), l.getDescripcion()));
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 
-    public void registrar(){
+    public void registrar() {
 
-        if(unidad.getTipoEmpresa()==null || unidad.getTipoEmpresa().trim().equals("") ){
+        if (unidad.getTipoEmpresa() == null || unidad.getTipoEmpresa().trim().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de empresa es obligatorio."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL campo Tipo de empresa es obligatorio."));
             ini();
-            return ;
+            return;
         }
 
-        if(unidad.getTipoSociedad()==null || unidad.getTipoSociedad().trim().equals("")){
+        if (unidad.getTipoSociedad() == null || unidad.getTipoSociedad().trim().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de sociedad es obligatorio."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL campo Tipo de sociedad es obligatorio."));
             ini();
-            return ;
+            return;
         }
 
-        if(unidad.getNombreComercial()==null || unidad.getNombreComercial().trim().equals("")){
+        if (unidad.getNombreComercial() == null || unidad.getNombreComercial().trim().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre comercial es obligatorio."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL campo Nombre comercial es obligatorio."));
             ini();
-            return ;
-        }
-
-
-        if(unidad.getActividadDeclarada()==null || unidad.getActividadDeclarada().trim().equals("")){
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Actividad declarada es obligatorio."));
-            ini();
-            return ;
+            return;
         }
 
 
-        if(persona.getNombreRazonSocial()==null || persona.getNombreRazonSocial().trim().equals("")){
-          FacesContext.getCurrentInstance().addMessage(null,
-                  new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nombre o Razon social es obligatorio."));
-            ini();
-            return ;
-        }
-        if(persona.getTipoIdentificacion()==null || persona.getTipoIdentificacion().trim().equals("")){
+        if (unidad.getActividadDeclarada() == null || unidad.getActividadDeclarada().trim().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Tipo de identificacion es obligatorio."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL campo Actividad declarada es obligatorio."));
             ini();
-            return ;
+            return;
         }
 
-        if(idLocalidad==null && idLocalidad.equals("")){
+
+        if (persona.getNombreRazonSocial() == null || persona.getNombreRazonSocial().trim().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Localidad es obligatorio."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL campo Nombre o Razon social es obligatorio."));
             ini();
-            return ;
+            return;
+        }
+        if (persona.getTipoIdentificacion() == null || persona.getTipoIdentificacion().trim().equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL campo Tipo de identificacion es obligatorio."));
+            ini();
+            return;
         }
 
-        if(persona.getNroIdentificacion()==null || persona.getNroIdentificacion().trim().equals("")){
+        if (idLocalidad == null && idLocalidad.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Nro. de identificacion es obligatorio."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL campo Localidad es obligatorio."));
             ini();
-            return ;
-        }else{
+            return;
+        }
+
+        if (persona.getNroIdentificacion() == null || persona.getNroIdentificacion().trim().equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL campo Nro. de identificacion es obligatorio."));
+            ini();
+            return;
+        } else {
 
             //validar que nro de identificacion sea unico
-            if(iPersonaService.findByNroIdentificacion(persona.getNroIdentificacion())!=null){
+            if (iPersonaService.findByNroIdentificacion(persona.getNroIdentificacion()) != null) {
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL valor del campo Nro. de identificacion ya existe. Modifique este valor"));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL valor del campo Nro. de identificacion ya existe. Modifique este valor"));
                 ini();
-                return ;
+                return;
             }
         }
 
-        if(usuario.getUsuario()==null || usuario.getUsuario().trim().equals("")){
+        if (usuario.getUsuario() == null || usuario.getUsuario().trim().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Usuario es obligatorio."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL campo Usuario es obligatorio."));
             ini();
-            return ;
-        }else{
-            if(iUsuarioService.obtenerUsuarioPorNombreUsuario(usuario.getUsuario())!=null){
+            return;
+        } else {
+            if (iUsuarioService.obtenerUsuarioPorNombreUsuario(usuario.getUsuario()) != null) {
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL valor del campo Usuario ya existe. Modifique este valor."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL valor del campo Usuario ya existe. Modifique este valor."));
                 ini();
-                return ;
+                return;
             }
 
-            if(!validarEmail(usuario.getUsuario())){
+            if (!validarEmail(usuario.getUsuario())) {
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL formato del correo electronico es incorrecto."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL formato del correo electronico es incorrecto."));
                 ini();
-                return ;
+                return;
             }
         }
 
-        if(usuario.getClave()==null || usuario.getClave().trim().equals("")){
+        if (usuario.getClave() == null || usuario.getClave().trim().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","EL campo Contrasenia es obligatorio."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "EL campo Contrasenia es obligatorio."));
             ini();
-            return ;
+            return;
         }
 
-       if(!usuario.getClave().equals(confirmarContrasenia)){
-           FacesContext.getCurrentInstance().addMessage(null,
-                   new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","La valor de la Contrasenia debe ser igual al valor del campo Confirmar contrasenia."));
-           ini();
-           return ;
-       }
-
-        String contraseniaEsValida=validarContrasenia(usuario.getClave(),LONGITUD_MINIMA);
-        if(!contraseniaEsValida.equals("OK")){
+        if (!usuario.getClave().equals(confirmarContrasenia)) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",contraseniaEsValida));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La valor de la Contrasenia debe ser igual al valor del campo Confirmar contrasenia."));
             ini();
-            return ;
+            return;
+        }
+
+        String contraseniaEsValida = validarContrasenia(usuario.getClave(), LONGITUD_MINIMA);
+        if (!contraseniaEsValida.equals("OK")) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", contraseniaEsValida));
+            ini();
+            return;
         }
 
         try {
           /*    HttpServletRequest request;
             request.getRemoteAddr();*/
-            REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
+
+            //REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
+            REGISTRO_BITACORA = (String) ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
+
             //REGISTRO_BITACORA=Inet4Address.getLocalHost().getHostAddress().toString();
             Long seq = iLocalidadService.localidadSecuencia(PER_PERSONA_SEC);
             persona.setIdPersona(seq.toString());
@@ -330,16 +332,16 @@ public class PersonaBean implements Serializable{
     }
 
     //Valida si el parametro es numerico
-    private static boolean esNumero(String cadena){
+    private static boolean esNumero(String cadena) {
         try {
             Integer.parseInt(cadena);
             return true;
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             return false;
         }
     }
 
-    public boolean validarEmail(String email){
+    public boolean validarEmail(String email) {
         final String EMAIL_PATTERN =
                 "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                         + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -352,28 +354,28 @@ public class PersonaBean implements Serializable{
         }
     }
 
-    public String validarContrasenia(String pass, int longitudMinima){
+    public String validarContrasenia(String pass, int longitudMinima) {
 
-        String mensaje="";
+        String mensaje = "";
 
-        if(pass.length()<longitudMinima){
-             mensaje="La longitud minima de la contrasenia es "+longitudMinima+". Intente nuevamente";
-        }else{
-            String validacion="((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{"+String.valueOf(longitudMinima)+",50})";
+        if (pass.length() < longitudMinima) {
+            mensaje = "La longitud minima de la contrasenia es " + longitudMinima + ". Intente nuevamente";
+        } else {
+            String validacion = "((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{" + String.valueOf(longitudMinima) + ",50})";
             /*Pattern pattern = Pattern
                     .compile("((?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_={}+\\|:;\"'<>,-.?/]).{3,50})");*/
             Pattern pattern = Pattern.compile(validacion);
             if (!pattern.matcher(pass).matches()) {
-                mensaje="La contraseña debe contener al menos un caracter númerico, alfabetico y especial.";
-            }else{
+                mensaje = "La contraseña debe contener al menos un caracter númerico, alfabetico y especial.";
+            } else {
                 //La contrasenia es valida
-                mensaje="OK";
+                mensaje = "OK";
             }
         }
         return mensaje;
     }
 
-    public String volverLogin()throws IOException {
+    public String volverLogin() throws IOException {
         return "irInicio";
     }
 
@@ -391,8 +393,8 @@ public class PersonaBean implements Serializable{
         }
     }*/
 
-    public Map<String,String> cargaParametricasEmail() {
-        Map<String,String>configuracionEmail=new HashMap<String, String>();
+    public Map<String, String> cargaParametricasEmail() {
+        Map<String, String> configuracionEmail = new HashMap<String, String>();
         try {
             String from = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_CUENTA_EMAIL).getDescripcion();
             String subject_confirm = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_ASUNTO).getDescripcion();
@@ -401,14 +403,14 @@ public class PersonaBean implements Serializable{
             String password = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PASSWORD).getDescripcion();
             String host = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_SERVIDOR).getDescripcion();
             String port = iParametrizacion.obtenerParametro(ID_PARAMETRO_MENSAJERIA, VALOR_PUERTO).getDescripcion();
-            configuracionEmail.put("from",from);
-            configuracionEmail.put("subject",subject_confirm);
-            configuracionEmail.put("urlRedireccion",urlRedireccion);
-            configuracionEmail.put("cuerpoMensaje",cuerpoMensaje);
-            configuracionEmail.put("password",password);
-            configuracionEmail.put("host",host);
-            configuracionEmail.put("port",port);
-            configuracionEmail.put("sw","0");
+            configuracionEmail.put("from", from);
+            configuracionEmail.put("subject", subject_confirm);
+            configuracionEmail.put("urlRedireccion", urlRedireccion);
+            configuracionEmail.put("cuerpoMensaje", cuerpoMensaje);
+            configuracionEmail.put("password", password);
+            configuracionEmail.put("host", host);
+            configuracionEmail.put("port", port);
+            configuracionEmail.put("sw", "0");
             return configuracionEmail;
         } catch (NullPointerException ne) {
             logger.info("El parámetro no existe en base de datos ...");

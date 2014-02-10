@@ -2,11 +2,7 @@
 package bo.gob.mintrabajo.ovt.services;
 
 import bo.gob.mintrabajo.ovt.api.IActividadEconomicaService;
-import bo.gob.mintrabajo.ovt.api.IActividadService;
 import bo.gob.mintrabajo.ovt.entities.ParActividadEconomica;
-import bo.gob.mintrabajo.ovt.entities.PerActividad;
-import bo.gob.mintrabajo.ovt.entities.PerPersona;
-import bo.gob.mintrabajo.ovt.entities.PerUnidad;
 import bo.gob.mintrabajo.ovt.repositories.ActividadEconomicaRepository;
 import bo.gob.mintrabajo.ovt.repositories.ActividadRepository;
 import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
@@ -20,7 +16,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static bo.gob.mintrabajo.ovt.Util.Dominios.*;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.DOM_ESTADO;
+import static bo.gob.mintrabajo.ovt.Util.Dominios.PAR_ESTADO_ACTIVO;
 
 /**
  *
@@ -63,9 +60,13 @@ public class ActividadEconomicaService implements IActividadEconomicaService {
 
     @Override
     public boolean guardarActividadEconomica(ParActividadEconomica actividadEconomica, boolean estadoActividadEconomica,
-            String REGISTRO_BITACORA, String tipoNodo, Long idPadre, Long idHijo){
+                                             String REGISTRO_BITACORA, String tipoNodo, Long idPadre, Long idHijo){
         boolean guardado=false;
 
+        ///System.out.println("==> estado " + estadoActividadEconomica);
+        ///System.out.println("==>REGISTRO_BITACORA "+REGISTRO_BITACORA);
+        ///System.out.println("==> tipoNodo "+tipoNodo);
+        ///System.out.println("==> idPadre"+ idPadre);
 
 
         ParActividadEconomica aEconimica= new ParActividadEconomica();
@@ -78,10 +79,10 @@ public class ActividadEconomicaService implements IActividadEconomicaService {
                 ///System.out.println("=> edicion");
                 aEconimica=actividadEconomicaRepository.findOne(idHijo);
             }
-            
+
             if(tipoNodo.equals("Hijo")){
                 aEconimica.setIdActividadEconomica2(actividadEconomicaRepository.findOne(idPadre));
-            }    
+            }
             ///System.out.println("=>0 "+ aEconimica.getIdActividadEconomica());
             aEconimica.setCodActividadEconomica(actividadEconomica.getCodActividadEconomica());
             ///System.out.println("=>1 "+ aEconimica.getCodActividadEconomica());

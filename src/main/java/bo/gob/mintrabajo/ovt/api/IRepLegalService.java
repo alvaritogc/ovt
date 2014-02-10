@@ -11,4 +11,6 @@ import java.util.List;
 public interface IRepLegalService {
     public PerReplegal save(PerReplegal replegal,String registroBitacora,PerUnidad unidad);
     public List<PerReplegal>obtenerPorIdPersona(String idPersona);
+    ///////////////////////////LUIS
+    public PerReplegal obtenerPorIdPersonaAndIdUnidad(String idPersona, Long idUnidad);
 }

@@ -59,6 +59,10 @@ public class ContenidoBean implements Serializable {
     private boolean edicion;
     private boolean tieneImagenes;
     private String bitacoraSession;
+    //
+    private byte[] binarioModificacion;
+    private String archivoModificacion;
+    private String metadataModificacion;
 
     @PostConstruct
     public void ini() {
@@ -113,7 +117,8 @@ public class ContenidoBean implements Serializable {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("No se pudo recargar la pagina");
         }
         return "";
     }
@@ -142,7 +147,8 @@ public class ContenidoBean implements Serializable {
             output.close();
             facesContext.responseComplete();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("No se pudo descargar el archivo");
         }
         mensajeContenido = new ParMensajeContenido();
     }
@@ -158,9 +164,41 @@ public class ContenidoBean implements Serializable {
         try {
             contex.getExternalContext().redirect("/ovt/pages/contenidos/contenidoRecurso.jsf?p=" + mensajeApp.getIdRecurso().getIdRecurso());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            logger.info("No se pudo redireccionar a la pagina " + "/ovt/pages/contenidos/contenidoRecurso.jsf?p=" + mensajeApp.getIdRecurso().getIdRecurso());
         }
 
+    }
+
+
+    public void nuevaModificacionDescargable() {
+        archivoModificacion = "";
+        metadataModificacion = "";
+        binarioModificacion = null;
+    }
+
+    public void subirArchivoModificacion(FileUploadEvent event) {
+        archivoModificacion = event.getFile().getFileName();
+        metadataModificacion = event.getFile().getContentType();
+        binarioModificacion = event.getFile().getContents();
+    }
+
+    public String modificarArchivoBinario() {
+        if (binarioModificacion == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR
+                            , "Error", "No se encontro el archivo."));
+            return "";
+        }
+        iMensajeContenidoService.modificarBinario(mensajeContenido.getIdMensajeContenido(), archivoModificacion, metadataModificacion, binarioModificacion, bitacoraSession);
+        try {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+        } catch (Exception e) {
+            //e.printStackTrace();
+            logger.info("No se pudo recargar la pagina");
+        }
+        return "";
     }
 
     public IRecursoService getiRecursoService() {
@@ -241,5 +279,29 @@ public class ContenidoBean implements Serializable {
 
     public void setTieneImagenes(boolean tieneImagenes) {
         this.tieneImagenes = tieneImagenes;
+    }
+
+    public byte[] getBinarioModificacion() {
+        return binarioModificacion;
+    }
+
+    public void setBinarioModificacion(byte[] binarioModificacion) {
+        this.binarioModificacion = binarioModificacion;
+    }
+
+    public String getArchivoModificacion() {
+        return archivoModificacion;
+    }
+
+    public void setArchivoModificacion(String archivoModificacion) {
+        this.archivoModificacion = archivoModificacion;
+    }
+
+    public String getMetadataModificacion() {
+        return metadataModificacion;
+    }
+
+    public void setMetadataModificacion(String metadataModificacion) {
+        this.metadataModificacion = metadataModificacion;
     }
 }

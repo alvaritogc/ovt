@@ -5,7 +5,6 @@ import bo.gob.mintrabajo.ovt.entities.UsrRecurso;
 import bo.gob.mintrabajo.ovt.repositories.DominioRepository;
 import bo.gob.mintrabajo.ovt.repositories.ModuloRepository;
 import bo.gob.mintrabajo.ovt.repositories.RecursoRepository;
-
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ *
  * @author pc01
  */
 @Named("recursoService")
@@ -37,7 +37,7 @@ public class RecursoService implements IRecursoService {
         this.moduloRepository = moduloRepository;
     }
 
-    //    @Override
+//    @Override
     public List<UsrRecurso> getAllRecursos() {
         List<UsrRecurso> allRecursos;
         allRecursos = recursoRepository.findAll();
@@ -58,7 +58,7 @@ public class RecursoService implements IRecursoService {
     }
 
     @Override
-    public List<UsrRecurso> obtenerTodosRecursoListaOrdenados() {
+    public List<UsrRecurso> obtenerTodosRecursoListaOrdenados(){
         return recursoRepository.listaPorOrdenModuloId();
     }
 
@@ -69,11 +69,7 @@ public class RecursoService implements IRecursoService {
 
     @Override
     public List<UsrRecurso> buscarPorUsuario(Long idUsuario) {
-        List<UsrRecurso> lista = recursoRepository.buscarPorUsuario(idUsuario);
-        for (UsrRecurso ur : lista) {
-            entityManager.detach(ur);
-        }
-        return lista;
+        return recursoRepository.buscarPorUsuario(idUsuario);
     }
 
     @Override
@@ -86,7 +82,6 @@ public class RecursoService implements IRecursoService {
         return recursoRepository.obtenerRecursoEnUsuarioRecurso(idUsuario);
     }
 
-    @Override
     public List<UsrRecurso> listarRecursosPorTipo(String tipoRecurso) {
         return recursoRepository.listarRecursosPorTipo(tipoRecurso);
 
@@ -99,7 +94,7 @@ public class RecursoService implements IRecursoService {
 
     @Override
     public boolean guardarRecurso(UsrRecurso recurso, String usrModuloId, boolean estadoRecurso,
-                                  String REGISTRO_BITACORA, String tipoNodo, Long idPadre, Long idHijo) {
+            String REGISTRO_BITACORA, String tipoNodo, Long idPadre, Long idHijo) {
         boolean guardado = false;
         System.out.println("entra a guardar");
 

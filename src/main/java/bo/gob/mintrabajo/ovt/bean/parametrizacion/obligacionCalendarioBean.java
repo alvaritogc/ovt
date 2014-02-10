@@ -61,6 +61,7 @@ public class obligacionCalendarioBean implements Serializable{
     private IUsuarioService iUsuarioService;
     
     private HttpSession session;
+    private String REGISTRO_BITACORA;
     private UsrUsuario usuario;
     
     private List<ParObligacionCalendario> listaObligacionCalendario;
@@ -84,8 +85,7 @@ public class obligacionCalendarioBean implements Serializable{
     public void ini() {
         try {
             session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            Long idUsuario = (Long) session.getAttribute("idUsuario");
-            usuario = iUsuarioService.findById(idUsuario);
+            REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,7 +136,7 @@ public class obligacionCalendarioBean implements Serializable{
     
     public void guardarModificar(){
         RequestContext context = RequestContext.getCurrentInstance();
-        String  REGISTRO_BITACORA=usuario.getUsuario();
+        //String  REGISTRO_BITACORA=usuario.getUsuario();
         try {
             ParObligacionCalendario ob = iObligacionCalendarioService.saveObligacionCalendario(obligacionCalendario,
                     iCalendarioService.obtenerCalendarioPorGestionYPeriodo(gestion, periodo).getParCalendarioPK(), REGISTRO_BITACORA, codObligacionForm, evento);

@@ -41,6 +41,8 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "PerUsuarioUnidad.findAll", query = "SELECT p FROM PerUsuarioUnidad p")})
 public class PerUsuarioUnidad implements Serializable {
+    @Column(name = "ESTADO")
+    private String estado;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PerUsuarioUnidadPK perUsuarioUnidadPK;
@@ -140,6 +142,14 @@ public class PerUsuarioUnidad implements Serializable {
     @Override
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.PerUsuarioUnidad[ perUsuarioUnidadPK=" + perUsuarioUnidadPK + " ]";
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
     
 }

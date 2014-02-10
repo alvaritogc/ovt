@@ -8,11 +8,15 @@
 <ui:composition template="../../pages/template/templateInicio.xhtml">
 
     <ui:define name="content">
-        <h:form id="form2" style="font-size: 13px">
-
+        <p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();"/>
+        <p:dialog modal="true" widgetVar="statusDialog" header="Cargando" resizable="false"
+                  draggable="false" closable="false">
+            <p:graphicImage value="../../images/ajax-loader.gif"/>
+        </p:dialog>
+        <h:form id="form">
             <style type="text/css">
                 label, input, button, select, textarea {
-                    font-size: 14px;
+                    font-size: 13px;
                     font-weight: normal;
                     line-height: 10px;
                 }
@@ -21,28 +25,91 @@
                 <h1>Información</h1>
                 <p:outputLabel value="#{seleccionaCentralSucursalBean.mensajeValidacion}" style="font-size: 15px;"/>
             </p:outputPanel>
-            <center>
 
-                <p:outputPanel rendered="#{seleccionaCentralSucursalBean.habilitado}" >
-                <p:outputLabel value="El siguiente formulario se declarará, para:" style="font-size: 14px"/> <br/><br/>
 
-                    <p:selectOneRadio id="customRadio" value="#{seleccionaCentralSucursalBean.tipoEmpresa}" columns="2">
+            <p:outputPanel rendered="#{seleccionaCentralSucursalBean.habilitado}" >
+                <center>
+                    <h3>El siguiente formulario se declarará, para:</h3>
+
+                    <p:selectOneRadio id="customRadio" value="#{seleccionaCentralSucursalBean.tipoEmpresa}" columns="2" rendered="#{!seleccionaCentralSucursalBean.delegado}" >
                         <p:ajax event="change" update="tipoEmpresa"/>
-                        <f:selectItem itemLabel="Declaración consolidada de todas las sucursales" itemValue="1"/>
-                        <f:selectItem itemLabel="Declaración por sucursal" itemValue="2"/>
+                        <f:selectItem itemLabel="Declaración consolidada de todas las sucursales" itemValue="1" itemDisabled="#{!seleccionaCentralSucursalBean.consolidado}"/>
+                        <f:selectItem itemLabel="Declaración por sucursal" itemValue="2" itemDisabled="#{!seleccionaCentralSucursalBean.sucursal}"/>
                     </p:selectOneRadio>
+
                     <br/>
                     <h:panelGroup id="tipoEmpresa">
-                        <p:outputLabel id="central" value="#{seleccionaCentralSucursalBean.central.nombreComercial}" rendered="#{seleccionaCentralSucursalBean.tipoEmpresa==1}" />
-                        <p:selectOneMenu id="sucursal" style="width: 260px; height: 20px" rendered="#{seleccionaCentralSucursalBean.tipoEmpresa==2}" value="#{seleccionaCentralSucursalBean.idUnidad}">
+                        <p:outputLabel id="central" style="font-size: 13px" value="#{seleccionaCentralSucursalBean.central.nombreComercial}" rendered="#{seleccionaCentralSucursalBean.tipoEmpresa==1}" />
+                        <p:selectOneMenu id="sucursal" style="width: 260px; height: 18px" rendered="#{seleccionaCentralSucursalBean.tipoEmpresa==2}" value="#{seleccionaCentralSucursalBean.idUnidad}">
                             <f:selectItem itemLabel="---Seleccione---" itemDisabled="true"/>
                             <f:selectItems value="#{seleccionaCentralSucursalBean.sucursales}" var="sucursal" itemLabel="#{sucursal.nombreComercial}" itemValue="#{sucursal.perUnidadPK.idUnidad}"/>
                         </p:selectOneMenu>
                     </h:panelGroup>
-                 <br/>
-                <p:commandButton value="Aceptar" action="#{seleccionaCentralSucursalBean.seleccionaUnidad}" update="form2"/>
-                </p:outputPanel>
-            </center>
+
+                <br/><br/>
+                <p:panelGrid columns="2" rendered="#{seleccionaCentralSucursalBean.verificaValidacion==true}">
+                    <p:outputLabel value="Errores" style="font-weight: bold"/>
+                    <p:outputLabel value="Alertas" style="font-weight: bold"/>
+                    <p:scrollPanel style="width:330px;height:150px" mode="native">
+                        <p:dataList value="#{seleccionaCentralSucursalBean.errores}" var="e" itemType="disc" emptyMessage="Sin errores.">#{e}</p:dataList>
+                    </p:scrollPanel>
+                    <p:scrollPanel style="width:329px;height:150px" mode="native">
+                        <p:dataList value="#{seleccionaCentralSucursalBean.alertas}" var="a" itemType="disc" emptyMessage="Sin alertas.">#{a.observacion}</p:dataList>
+                    </p:scrollPanel>
+                </p:panelGrid>
+                </center>
+                <!-- Renato Codigo -->
+                <br/>
+                <h:panelGrid columns="2" style="text-align: left" rendered="#{seleccionaCentralSucursalBean.habilitaTrim}">
+                    <h:outputText style="font-weight: bold;text-align: center" value="Primer mes trimestre" /> &nbsp;
+                    <p:fileUpload fileUploadListener="#{seleccionaCentralSucursalBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
+                                  fileLimitMessage="Sólo se puede elegir un archivo."
+                                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
+                                  style="width: 500px"
+                                  mode="advanced" update="idArchivo1,form:btnAceptar" fileLimit="1" label="Seleccione"
+                                  invalidSizeMessage="Archivo demasiado grande."
+                                  sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
+                                  />
+                    <h:outputText id="idArchivo1" value="#{seleccionaCentralSucursalBean.nombres[0]}" style="font-weight: bold;text-align: center"/>
+
+                    <h:outputText value="Segundo mes trimestre" style="font-weight: bold" /> &nbsp;
+                    <p:fileUpload fileUploadListener="#{seleccionaCentralSucursalBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
+                                  fileLimitMessage="Sólo se puede elegir un archivo."
+                                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
+                                  style="width: 500px"
+                                  mode="advanced" update="idArchivo2,form:btnAceptar" fileLimit="1" label="Seleccione"
+                                  invalidSizeMessage="Archivo demasiado grande."
+                                  sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
+                                  />
+                    <h:outputText id="idArchivo2" value="#{seleccionaCentralSucursalBean.nombres[1]}" style="font-weight: bold;text-align: center"/>
+
+                    <h:outputText value="Tercer mes trimestre" style="font-weight: bold" /> &nbsp;
+                    <p:fileUpload fileUploadListener="#{seleccionaCentralSucursalBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
+                                  fileLimitMessage="Sólo se puede elegir un archivo."
+                                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
+                                  style="width: 500px"
+                                  mode="advanced" update="idArchivo3,form:btnAceptar" fileLimit="1" label="Seleccione"
+                                  invalidSizeMessage="Archivo demasiado grande."
+                                  sizeLimit="5242880" allowTypes="/(\.|\/)(csv|CSV|xls|XLS|xlsx|XLSX)$/"
+                                  />
+                    <h:outputText id="idArchivo3" value="#{seleccionaCentralSucursalBean.nombres[2]}" style="font-weight: bold;text-align: center"/>
+                </h:panelGrid>
+                <h:panelGrid columns="2" style="text-align: left" rendered="#{seleccionaCentralSucursalBean.habilitaAgui}">
+                    <h:outputText style="font-weight: bold;text-align: center" value="Planilla Aguinaldo"/> &nbsp;
+                    <p:fileUpload fileUploadListener="#{seleccionaCentralSucursalBean.upload}" uploadLabel="Subir" cancelLabel="Cancelar"
+                                  fileLimitMessage="Sólo se puede elegir un archivo."
+                                  invalidFileMessage="El archivo no es válido, solo se acepta extensiones: .xls, .xlsx y .csv..."
+                                  style="width: 500px"
+                                  mode="advanced" update="idArchivo4,btnAceptar" fileLimit="1" label="Seleccione"
+                                  invalidSizeMessage="Archivo demasiado grande."
+                                  sizeLimit="5242880" allowTypes="/(\.|\/)(xls|xlsx|csv|XLS|XLSX|CSV)$/"/>
+                    <h:outputText id="idArchivo4" value="#{seleccionaCentralSucursalBean.nombres[0]}"
+                                  style="font-weight: bold;text-align: center"/>
+                </h:panelGrid>
+                <br/><br/>
+                <p:commandButton id="btnAceptar" value="Aceptar" action="#{seleccionaCentralSucursalBean.seleccionaUnidad}" update="messages form"/>
+                <p:growl id="messages" showDetail="true"/>
+            </p:outputPanel>
         </h:form>
     </ui:define>
 </ui:composition>

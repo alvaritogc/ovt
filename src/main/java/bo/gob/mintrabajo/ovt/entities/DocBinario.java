@@ -18,6 +18,7 @@ package bo.gob.mintrabajo.ovt.entities;
 
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -52,6 +53,9 @@ public class DocBinario implements Serializable {
     @JoinColumn(name = "ID_DOCUMENTO", referencedColumnName = "ID_DOCUMENTO", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DocDocumento docDocumento;
+    @Basic(optional = false)
+    @Column(name = "VALIDADO")
+    private boolean validado;
     @Transient
     private InputStream inputStream;
 
@@ -62,12 +66,13 @@ public class DocBinario implements Serializable {
         this.docBinarioPK = docBinarioPK;
     }
 
-    public DocBinario(DocBinarioPK docBinarioPK, String tipoDocumento, String metadata, Date fechaBitacora, String registroBitacora) {
+    public DocBinario(DocBinarioPK docBinarioPK, String tipoDocumento, String metadata, Date fechaBitacora, String registroBitacora, boolean validado) {
         this.docBinarioPK = docBinarioPK;
         this.tipoDocumento = tipoDocumento;
         this.metadata = metadata;
         this.fechaBitacora = fechaBitacora;
         this.registroBitacora = registroBitacora;
+        this.validado = validado;
     }
 
     public DocBinario(long idBinario, long idDocumento) {
@@ -130,6 +135,14 @@ public class DocBinario implements Serializable {
         this.docDocumento = docDocumento;
     }
 
+    public boolean isValidado() {
+        return validado;
+    }
+
+    public void setValidado(boolean validado) {
+        this.validado = validado;
+    }
+
     public InputStream getInputStream() {
         return inputStream;
     }
@@ -162,5 +175,4 @@ public class DocBinario implements Serializable {
     public String toString() {
         return "bo.gob.mintrabajo.ovt.entities.DocBinario[ docBinarioPK=" + docBinarioPK + " ]";
     }
-    
 }

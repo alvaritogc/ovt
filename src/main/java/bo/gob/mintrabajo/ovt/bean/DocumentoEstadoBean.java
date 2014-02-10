@@ -33,6 +33,8 @@ public class DocumentoEstadoBean implements Serializable{
     private IUsuarioService iUsuarioService;
 
     private Long idUsuario;
+    //private HttpSession session;
+    private String REGISTRO_BITACORA;
     private UsrUsuario usrUsuario;
     private ParDocumentoEstado parDocumentoEstado;
     private List<ParDocumentoEstado> listaParDocumentoEstado;
@@ -44,6 +46,12 @@ public class DocumentoEstadoBean implements Serializable{
     public void ini() {
         idUsuario = (Long) session.getAttribute("idUsuario");
         usrUsuario = iUsuarioService.findById(idUsuario);
+        try {
+            session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            REGISTRO_BITACORA = (String) session.getAttribute("bitacoraSession");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         parDocumentoEstado = new ParDocumentoEstado();
         modifica = false;
         cargar();
@@ -75,7 +83,8 @@ public class DocumentoEstadoBean implements Serializable{
 
     public void guardaModificaDocumentoEstado(){
         parDocumentoEstado.setFechaBitacora(new Date());
-        parDocumentoEstado.setRegistroBitacora(usrUsuario.getUsuario());
+        //parDocumentoEstado.setRegistroBitacora(usrUsuario.getUsuario());
+        parDocumentoEstado.setRegistroBitacora(REGISTRO_BITACORA);
         if(estado==true)
             parDocumentoEstado.setEstado(Dominios.PAR_ESTADO_ACTIVO);
         else
