@@ -25,32 +25,40 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Named("mensajeBinarioService")
 @TransactionAttribute
-public class MensajeBinarioService implements IMensajeBinarioService{
+public class MensajeBinarioService implements IMensajeBinarioService {
 
     private final MensajeBinarioRepository mensajeBinarioRepository;
     private final IUtilsService utils;
 
+    @PersistenceContext(unitName = "entityManagerFactory")
+    private EntityManager entityManager;
+
     @Inject
-    public MensajeBinarioService(IUtilsService utils,MensajeBinarioRepository mensajeBinarioRepository) {
-        this.mensajeBinarioRepository=mensajeBinarioRepository;
-        this.utils=utils;
+    public MensajeBinarioService(IUtilsService utils, MensajeBinarioRepository mensajeBinarioRepository) {
+        this.mensajeBinarioRepository = mensajeBinarioRepository;
+        this.utils = utils;
     }
-    
+
     @Override
     public ParMensajeBinario findById(Long id) {
         return mensajeBinarioRepository.findOne(id);
     }
-    
+
     @Override
     public List<ParMensajeBinario> findByAll() {
         return mensajeBinarioRepository.findAll();
     }
+
     @Override
     public ParMensajeBinario buscarPorMensajeContenido(Long idMensajeContenido) {
-        return mensajeBinarioRepository.buscarPorMensajeContenido(idMensajeContenido);
+        ParMensajeBinario mb = mensajeBinarioRepository.buscarPorMensajeContenido(idMensajeContenido);
+        entityManager.detach(mb);
+        return mb;
     }
-    
+
 }

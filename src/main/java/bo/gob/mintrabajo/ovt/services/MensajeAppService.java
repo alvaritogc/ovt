@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * User: Renato Velasquez
@@ -33,6 +35,8 @@ public class MensajeAppService implements IMensajeAppService {
     private final MensajeAppRepository repository;
     private final RecursoRepository recursoRepository;
     private final IUtilsService utils;
+    @PersistenceContext(unitName = "entityManagerFactory")
+    private EntityManager entityManager;
 
     @Inject
     public MensajeAppService(MensajeAppRepository repository, RecursoRepository recursoRepository, IUtilsService utils) {
@@ -58,6 +62,9 @@ public class MensajeAppService implements IMensajeAppService {
         List<ParMensajeApp> lista = null;
         try {
             lista = repository.listarPorRecursoYFecha(idRecurso, new Date());
+            for (ParMensajeApp mapp : lista) {
+                entityManager.detach(mapp);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error al buscar ParMensajeApp.");
